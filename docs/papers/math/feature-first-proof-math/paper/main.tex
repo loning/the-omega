@@ -1,0 +1,690 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}          % for psmallmatrix etc.
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+
+%%% Lean 4 language definition for listings
+\lstdefinelanguage{Lean4}{
+  keywords=[1]{theorem,def,lemma,example,structure,class,instance,
+    axiom,variable,import,open,section,namespace,end,where,
+    abbrev,noncomputable,private,protected,scoped},
+  keywords=[2]{by,exact,intro,apply,rw,simp,have,let,show,calc,
+    refine,obtain,constructor,linarith,norm_num,ring,
+    rfl,trivial,infer_instance,sorry},
+  keywords=[3]{Prop,Type,Sort,Nat,Int,Real,Complex,Rat,Bool,True,False,
+    Set,Fin,Subgroup,Matrix,Measure,Submodule},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[n]{/\-}{\-/},
+  morestring=[b]",
+  literate=
+    {forall}{{$\forall$}}1
+    {exists}{{$\exists$}}1
+    {=>}{{$\Rightarrow$}}1
+    {->}{{$\to$}}1
+    {<-}{{$\leftarrow$}}1
+    {<->}{{$\leftrightarrow$}}1
+    {:=}{{$\coloneqq$}}2
+    {!=}{{$\neq$}}2
+    {/\\}{{$\land$}}2
+    {≠}{{$\neq$}}1
+    {¬}{{$\lnot$}}1
+    {·}{{$\cdot$}}1
+    {•}{{$\bullet$}}1
+    {⊗}{{$\otimes$}}1
+    {λ}{{$\lambda$}}1
+    {→}{{$\to$}}1
+    {←}{{$\leftarrow$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {∧}{{$\land$}}1
+    {≤}{{$\leq$}}1
+    {≥}{{$\geq$}}1,
+}
+\lstset{
+  language=Lean4,
+  basicstyle=\small\ttfamily,
+  keywordstyle=[1]\bfseries\color{blue!70!black},
+  keywordstyle=[2]\bfseries\color{purple!70!black},
+  keywordstyle=[3]\color{teal!80!black},
+  commentstyle=\itshape\color{gray!60!black},
+  stringstyle=\color{red!60!black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  breaklines=true,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{gray!40},
+  backgroundcolor=\color{gray!3},
+  xleftmargin=1.5em,
+  framexleftmargin=1.5em,
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b,
+  aboveskip=1em,
+  belowskip=0.5em,
+}
+
+%%% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+%%% Notation
+\DeclareMathOperator{\vecop}{vec}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathAlphabet{\catsymbfont}{U}{rsfs}{m}{n}
+\newcommand{\aA}{{\catsymbfont{A}}}
+\newcommand{\aO}{{\catsymbfont{O}}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\co}{\colon}
+\newcommand{\scrS}{\mathscr{S}}
+
+%%% ============================================================
+\title{Lean~4 Formal Verification of 8/10 \#1stProof Problems:\\[4pt]
+       Complete Proofs with AI--Human Pipeline,
+       Partial QED for Q4 \& Q6}
+
+\author{%
+  Wenlin Zhang\thanks{%
+    National University of Singapore.}
+  \and
+  Haobo Ma\thanks{%
+    Chrono AI Pte.\ Ltd.}
+}
+
+\date{February 2026}
+
+%%% ============================================================
+\begin{document}
+\maketitle
+
+%%% ============================================================
+%%% ABSTRACT
+%%% ============================================================
+\begin{abstract}
+We present solutions to the ten research-level mathematics problems
+posed by Abouzaid, Blumberg, Hairer, Kileel, Kolda, Nelson, Spielman,
+Srivastava, Ward, Weinberger, and Williams in their ``First Proof''
+benchmark (arXiv:2602.05192, February 2025).
+The problems span stochastic analysis, representation theory,
+algebraic combinatorics, polynomial inequalities, equivariant homotopy
+theory, spectral graph theory, lattices in Lie groups, symplectic geometry,
+multi-view geometry, and numerical linear algebra.
+
+\medskip\noindent
+\textbf{AI--Human Pipeline.}\quad
+The mathematical reasoning, proof construction, Lean~4 formalization,
+and verification in this work were carried out primarily by
+\textbf{AI agents} (large language models operating in agentic mode),
+with human authors providing problem selection, strategic guidance,
+review, and editorial oversight.
+This pipeline demonstrates that current AI systems can serve as the
+principal workforce for research-level mathematical proof, while
+human collaborators ensure correctness and coherence.
+
+\medskip\noindent
+\textbf{Results.}\quad
+Of the ten problems, we provide \textbf{complete, rigorous proofs for
+eight} (Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10), each accompanied by a
+\textbf{Lean~4 formal proof skeleton} that axiomatizes external deep
+theorems and machine-checks the logical deduction chain.
+For the remaining \textbf{two} (Q4, Q6), we give \textbf{substantial
+partial results} and reduce each to a precisely stated minimal open
+problem:
+\begin{itemize}[nosep,topsep=2pt]
+\item \textbf{Q4}: proved for $n\le 3$ (all pairs), all semi-Gaussian
+  pairs (all $n$), with the semi-Gaussian concavity bottleneck
+  ($A+B\ge 0$) fully closed.
+  The general case $n\ge 4$ for arbitrary $p,q$ remains open.
+\item \textbf{Q6}: seven special graph families fully proved,
+  conditional $c=1/6$ result established;
+  the resistance-degree inequality (RDI) route proved false
+  for general graphs.
+  Two reduced routes remain: the multi-bin non-stuckness bridge
+  (targeting $c=1/2$) and the Spectral Radius Conjecture (SRC).
+\end{itemize}
+\noindent
+For Q7 (lattices with 2-torsion), we prove an unconditional
+\textbf{YES} for all $d\ge 5$ via an $L$-theory transfer vanishing lemma
+that bypasses the rational assembly obstruction even in dimensions
+$d\equiv 0\pmod{4}$.
+Each solution has undergone multiple rounds of independent review
+by both AI and human reviewers.
+
+In the final sections, we explore structural parallels between these
+classical problems and the mathematical framework of \emph{Project Omega}
+--- a unified theory built on Zeckendorf folding, golden-ratio-driven
+scanning, and finite-resolution readout protocols --- and develop two
+independent Omega-native proof approaches: an information-theoretic
+reduction of Q4 to the concavity of \emph{polynomial entropy power}
+(the Stam inequality for root distributions), and a Zeckendorf spectral
+partition that resolves Q6 for graphs with bounded spectral condition number.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%%% ============================================================
+%%% INTRODUCTION
+%%% ============================================================
+\section{Introduction}\label{sec:intro}
+
+\subsection{Context and motivation}
+
+In February 2025, Abouzaid et al.\ released the ``First Proof'' benchmark
+\cite{firstproof}: a set of ten unpublished research-level mathematics
+problems, each arising naturally in the authors' own research, with solutions
+known to the question authors but not yet posted publicly.
+The benchmark was designed to evaluate whether current AI systems can
+autonomously solve research-level mathematics, as opposed to competition
+problems or textbook exercises.
+
+This paper constitutes our systematic response to that challenge.
+We treat each of the ten problems as a self-contained research question
+and provide either a complete proof or a detailed partial solution with
+precise identification of the remaining obstacles.
+
+\paragraph{AI--Human pipeline.}
+A distinguishing feature of this work is its production methodology:
+the mathematical reasoning, proof construction, Lean~4 formalization,
+and verification were carried out primarily by \textbf{AI agents}
+--- large language models operating in agentic mode with access to
+symbolic computation tools and formal proof assistants.
+Human authors provided problem selection, high-level strategic
+direction, critical review, and editorial curation.
+The resulting pipeline demonstrates that current AI systems can
+function as the principal workforce for research-level mathematical
+proof, with human collaborators serving as architects and referees.
+Each solution has been independently reviewed at the level of a
+journal referee report, by both AI and human reviewers.
+
+\subsection{Summary of results}
+
+Table~\ref{tab:results} summarizes the status of all ten problems.
+\textbf{Eight are fully proved} with machine-checked Lean~4
+formalization; \textbf{two have substantial partial results} with the
+remaining gap reduced to a precisely stated minimal open problem.
+
+\begin{table}[h]
+\centering
+\caption{Status of all ten ``First Proof'' problems.
+\textbf{QED} = complete rigorous proof;
+\textbf{Lean\,4} = formal proof skeleton verified in Lean\,4 / Mathlib
+(axiomatizing external deep theorems, verifying the logical deduction chain);
+\textbf{Partial} = substantial partial result with identified minimal gap.}
+\label{tab:results}
+\smallskip
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}clllcc@{}}
+\toprule
+\textbf{\#} & \textbf{Problem}
+  & \textbf{Field}
+  & \textbf{Answer}
+  & \textbf{Proof}
+  & \textbf{Lean\,4} \\
+\midrule
+1 & $\Phi^4_3$ measure translation
+  & Stochastic Analysis
+  & NO (singular)
+  & \textbf{QED}
+  & \checkmark \\
+2 & Rankin--Selberg test vector
+  & Representation Theory
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+3 & Interpolation ASEP ratio
+  & Algebraic Combinatorics
+  & NO (in general)
+  & \textbf{QED}
+  & \checkmark \\
+4 & $\boxplus_n$--$\Phi_n$ inequality
+  & Polynomial Inequalities
+  & YES ($n\!\le\!3$, semi-Gauss)
+  & Partial${}^\dagger$
+  & \checkmark${}^{\,a}$ \\
+5 & $\mathcal O$-slice filtration
+  & Equivariant Homotopy
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+6 & $\varepsilon$-light vertex sets
+  & Spectral Graph Theory
+  & 7 cases; cond.\,$c\!=\!1/6$
+  & Partial${}^\ddagger$
+  & --- \\
+7 & Lattices with 2-torsion
+  & Lattices / Lie Groups
+  & NO (odd) / YES ($d\!\ge\!5$)
+  & \textbf{QED}
+  & \checkmark \\
+8 & Polyhedral Lagrangian
+  & Symplectic Geometry
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+9 & Tensor scale synch.
+  & Multi-view Geometry
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+10& RKHS-constrained CP
+  & Numerical Linear Algebra
+  & YES (PCG)
+  & \textbf{QED}
+  & \checkmark \\
+\bottomrule
+\end{tabular}
+
+\smallskip\noindent
+{\footnotesize
+${}^a$\,Lean\,4 covers the $n\!=\!2$ identity and the $n\!=\!3$ case;
+  the general-$n$ semi-Gaussian theorem is proved on paper only.\\[2pt]
+${}^\dagger$\,\textbf{Q4 status:}
+  proved for $n=2$ (exact equality), $n=3$ (strict inequality),
+  all degenerate/shift cases, all monotone couplings, and the
+  semi-Gaussian case ($q=\sqrt{s}\,\mathrm{He}_n$, all $n$;
+  Theorem~\ref*{thm:q4-semi-gaussian}).
+  The semi-Gaussian concavity bottleneck ($A+B\ge 0$) is
+  \emph{fully closed} via convexity of the inverse-square interaction
+  (Proposition~\ref*{prop:q4-bottleneck-closed}),
+  yielding all-$n$ concavity of $\mathcal N_p(t)=1/\Phi_n(p\boxplus_n q_t)$
+  (Theorem~\ref*{thm:q4-alln-concavity}).
+  Exact asymptotic offset, two-scale smoothing factorization, and
+  a deficit bridge decomposition are also established.
+  The general case $n\ge 4$ for arbitrary $p,q$ remains open.\\[2pt]
+${}^\ddagger$\,\textbf{Q6 status:}
+  seven special graph families fully proved
+  (bounded-degree, $K_n$, complete multipartite, bipartite,
+  trees, vertex-transitive, expanders),
+  conditional $c=1/6$ result
+  (Proposition~\ref*{prop:q6-conditional}).
+  The resistance-degree spectral inequality (RDI) route is
+  \emph{proved false} for general graphs
+  (Proposition~\ref*{prop:q6-rdi-false}).
+  Two reduced routes remain:
+  (i)~the multi-bin non-stuckness bridge
+  (Theorem~\ref*{thm:q6-min-bridge}, targeting $c=1/2$), and
+  (ii)~the Spectral Radius Conjecture (SRC,
+  Conjecture~\ref*{conj:q6-src}; SRC $\Rightarrow$ Q6
+  with $c=1/(4C)$).
+  Omega-compatible discrepancy certificates are developed
+  through Parts~VII--IX.
+}
+\end{table}
+
+\medskip\noindent
+\textbf{Eight complete proofs (Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10).}
+Each has a rigorous mathematical proof accompanied by a Lean~4
+formal proof skeleton that axiomatizes external deep theorems
+(e.g., regularity structures for Q1, Bernstein--Zelevinsky derivatives
+for Q2, the Farrell--Jones conjecture for Q7) and machine-checks
+the deduction chain.
+
+\medskip\noindent
+\textbf{Two partial results with identified minimal gaps (Q4, Q6).}
+\begin{itemize}[nosep]
+\item \textbf{Q4} ($\boxplus_n$--$\Phi_n$ inequality):
+  fully proved for $n\le 3$ (all pairs) and several all-$n$
+  infinite families (shifts, monotone couplings, semi-Gaussian).
+  The semi-Gaussian concavity bottleneck ($A+B\ge 0$) is fully
+  closed, yielding all-$n$ concavity of the polynomial entropy power
+  along the semi-Gaussian flow.
+  The general $n\ge 4$ case for arbitrary $p,q$ remains open.
+  Lean~4 covers the $n=2$ identity and $n=3$ case.
+\item \textbf{Q6} ($\varepsilon$-light sets):
+  seven special graph families fully resolved
+  (bounded-degree, $K_n$, complete multipartite, bipartite,
+  trees, vertex-transitive, expanders),
+  conditional $c=1/6$ via a BSS-type barrier potential.
+  The resistance-degree inequality (RDI) route is proved
+  \emph{false} for general graphs.
+  Two reduced routes remain: the multi-bin non-stuckness bridge
+  (targeting the optimal $c=1/2$) and the Spectral Radius Conjecture.
+  No Lean~4 formalization (proof is partial).
+\end{itemize}
+
+\noindent
+For \textbf{Q7} (lattices with 2-torsion), the answer is \textbf{NO} for
+lattices with odd torsion (Fowler's obstruction) and \textbf{YES} for
+pure 2-torsion with $d\ge 5$, covering \emph{all} residues of $d$ modulo~4
+and \emph{all} connected semisimple groups.  The key new input is a
+\emph{transfer vanishing lemma} (Lemma~7.3) showing that the
+rational total surgery obstruction $s(B\Gamma)\otimes\mathbb Q=0$
+for every uniform lattice, via the induction--restriction formula and
+Selberg's lemma.  See Section~\ref{sec:q7}.
+
+\subsection{Methodology}
+
+Each problem was approached through the following AI--Human pipeline:
+\begin{enumerate}[nosep]
+\item \emph{Problem analysis} (AI agent + human oversight):
+  the AI agent reads the question statement, identifies the relevant
+  mathematical framework, and conducts a literature survey.
+  Human authors provide strategic guidance on which approaches to pursue.
+\item \emph{Proof construction} (AI agent):
+  the AI agent develops the main argument, with explicit statements of
+  all lemmas and propositions, iteratively refining the proof through
+  self-critique and backtracking.
+\item \emph{Independent review} (AI agent + human review):
+  each proof is reviewed at the level of a journal referee, checking
+  logical completeness, gap identification, and correctness of all claims.
+  Both AI reviewers and human authors inspect the arguments.
+  Review records are maintained in the project repository.
+\item \emph{Iterative refinement} (AI agent):
+  identified gaps are addressed through additional rounds of proof
+  development, with the AI agent generating alternative approaches,
+  counterexample searches, and numerical stress-tests.
+\item \emph{Formal verification} (AI agent + Lean~4):
+  for each complete proof, the AI agent develops a Lean~4
+  formalization, axiomatizing external deep theorems
+  and verifying the logical deduction chain.  This bridges the gap
+  between human-readable proofs and machine-checkable verification,
+  following the methodology advocated by the Project Omega
+  framework~\cite{omega-theory} of combining traditional mathematical
+  argument with formal, auditable proof structures.
+\end{enumerate}
+
+This five-stage pipeline demonstrates that AI agents can serve as the
+principal mathematical workforce, with human collaborators providing
+architectural decisions and quality assurance.
+The pipeline reflects a key principle of the Project Omega
+framework~\cite{omega-fop}: that mathematical knowledge is most robust
+when it passes through multiple layers of verification---from intuitive
+understanding, through rigorous written proof, to formal machine-checkable
+argument.  In the Omega terminology, this corresponds to the
+\textbf{Generation} (problem analysis and proof construction),
+\textbf{Readout} (independent review and explicit statement),
+\textbf{Stabilization} (iterative refinement and gap closure), and
+\textbf{Verification} (formal Lean~4 proof) stages.
+
+\subsection{Organization}
+
+Sections~\ref{sec:q1}--\ref{sec:q10} present the ten solutions in the
+order of the original benchmark.  Each section is self-contained:
+it restates the problem, provides the solution, and includes all necessary
+lemmas and proofs.  For the eight complete solutions
+(Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10), each section concludes with a
+\textbf{Lean~4 Formalization} subsection containing machine-verifiable
+proof code.
+Section~\ref{sec:discussion} provides a synthesis of the results, discusses
+methodology and limitations, and identifies remaining open questions.
+Section~\ref{sec:omega} explores connections between these problems and
+the mathematical framework of Project Omega~\cite{omega-theory,omega-fop}.
+Section~\ref{sec:omega-interp} develops Omega-theoretic interpretations
+for all ten problems, providing a parallel framework that views each problem
+through the lens of Z128 symmetry, HPA reconstruction, and Zeckendorf
+stabilization.  It includes detailed Omega-native proof approaches for
+Problems~4 and~6 (\S\ref{sec:omega-q4}, \S\ref{sec:omega-q6}),
+establishing new structural results and reducing the remaining gaps
+to precise conjectures.
+
+\subsection{Notation}
+
+Standard notation is used throughout.
+We write $\mathbb R$, $\mathbb C$, $\mathbb Z$, $\mathbb Q$ for the
+real, complex, integer, and rational numbers.
+For a matrix $A$, $A^\top$ denotes the transpose and $A\succeq 0$
+means positive semidefinite.
+$\|\cdot\|$ denotes the operator norm unless otherwise specified.
+Problem-specific notation is introduced at the beginning of each section.
+
+
+%%% ============================================================
+%%% PROBLEM SECTIONS
+%%% ============================================================
+
+%%% Part I: Analysis and Probability
+%%% The first problem concerns a measure on distribution spaces arising
+%%% from quantum field theory; its solution leverages deep results from
+%%% regularity structures.
+
+\input{sections/01_problem1_phi4_translation}
+
+%%% Part II: Number Theory and Representation Theory
+%%% Problem 2 shifts to the $p$-adic world, requiring construction of
+%%% test vectors for Rankin--Selberg integrals using Bernstein--Zelevinsky
+%%% derivative theory.
+
+\input{sections/02_problem2_rankin_selberg_test_vector}
+
+%%% Part III: Algebraic Combinatorics
+%%% Problem 3 asks about Markov chain realizability of certain polynomial
+%%% ratios; the answer is negative, found by explicit counterexample.
+
+\input{sections/03_problem3_interpolation_asep}
+
+%%% Part IV: Polynomial Inequalities and Free Probability
+%%% Problem 4 introduces a polynomial convolution $\boxplus_n$ and asks
+%%% for an inequality on root-gap functionals---one of our three open cases.
+
+\input{sections/04_problem4_boxplus_phi_partial}
+
+%%% Part V: Equivariant Homotopy Theory
+%%% Problem 5 concerns the slice filtration in $G$-equivariant stable
+%%% homotopy theory, adapted to incomplete transfer systems.
+
+\input{sections/05_problem5_incomplete_transfers}
+
+%%% Part VI: Spectral Graph Theory
+%%% Problem 6 asks a fundamental partitioning question about graph
+%%% Laplacians---our second partial case, with an unconditional
+%%% sqrt(epsilon*n) bound and reduction to the Spectral Radius Conjecture.
+
+\input{sections/06_problem6_epsilon_light_sets}
+
+%%% Part VII: Lattices in Lie Groups and Geometric Topology
+%%% Problem 7 involves surgery theory and the Farrell--Jones conjecture;
+%%% the odd-torsion case is NO (Fowler); for pure 2-torsion, YES when
+%%% d ≢ 0 (mod 4), via rational vanishing of UNil and L-theory of 2-groups.
+
+\input{sections/07_problem7_lattice_qacyclic}
+
+%%% Part VIII: Symplectic Geometry
+%%% Problem 8 asks whether polyhedral Lagrangian surfaces can be smoothed.
+%%% The answer is YES, via a mollification construction that preserves
+%%% the Lagrangian condition.
+
+\input{sections/08_problem8_polyhedral_lagrangian}
+
+%%% Part IX: Multi-view Geometry and Algebraic Geometry
+%%% Problem 9 concerns polynomial detection of separable tensor scaling,
+%%% resolved via mode-separation and $5\times5$ minor constraints.
+
+\input{sections/09_problem9_tensor_scale_synchronization}
+
+%%% Part X: Numerical Linear Algebra
+%%% Problem 10 asks for an efficient iterative solver for an RKHS-constrained
+%%% tensor subproblem; the answer is a matrix-free PCG algorithm.
+
+\input{sections/10_problem10_rkhs_cp_subproblem}
+
+
+%%% ============================================================
+%%% DISCUSSION
+%%% ============================================================
+\input{sections/11_discussion}
+
+%%% ============================================================
+%%% PROJECT OMEGA PERSPECTIVES
+%%% ============================================================
+\input{sections/12_omega_perspectives}
+
+%%% ============================================================
+%%% OMEGA-THEORETIC INTERPRETATIONS
+%%% ============================================================
+
+%%% A unified Omega-theoretic interpretation of all ten problems,
+%%% including the detailed Stam inequality reduction (Q4) and
+%%% Zeckendorf spectral partition (Q6).
+
+\input{sections/13_omega_q4_stam_approach}
+
+
+%%% ============================================================
+%%% REFERENCES
+%%% ============================================================
+\begin{thebibliography}{99}
+
+\bibitem{firstproof}
+M.~Abouzaid, A.~J.~Blumberg, M.~Hairer, J.~Kileel, T.~G.~Kolda,
+P.~D.~Nelson, D.~Spielman, N.~Srivastava, R.~Ward, S.~Weinberger,
+and L.~Williams.
+\newblock First Proof.
+\newblock \emph{arXiv preprint} arXiv:2602.05192, February 2025.
+
+\bibitem{hairer2022}
+M.~Hairer.
+\newblock The $\Phi^4_3$ measure is singular with respect to the free field.
+\newblock Preprint, 2022.
+
+\bibitem{bernstein-zelevinsky}
+I.~N.~Bernstein and A.~V.~Zelevinsky.
+\newblock Induced representations of reductive $\mathfrak p$-adic groups.~I.
+\newblock \emph{Ann.\ Sci.\ \'{E}cole Norm.\ Sup.}, 10:441--472, 1977.
+
+\bibitem{jacquet-shalika}
+H.~Jacquet and J.~A.~Shalika.
+\newblock On Euler products and the classification of automorphic representations.
+\newblock \emph{Amer.\ J.\ Math.}, 103:499--558, 1981.
+
+\bibitem{williams-bendali}
+L.~Williams and A.~Ben~Dali.
+\newblock Interpolation Macdonald polynomials and ASEP.
+\newblock Preprint, 2024.
+
+\bibitem{blumberg-hill}
+A.~J.~Blumberg and M.~A.~Hill.
+\newblock Incomplete Tambara functors.
+\newblock \emph{Algebra \& Number Theory}, 12(7):1597--1644, 2018.
+
+\bibitem{fowler}
+J.~Fowler.
+\newblock Rational surgery obstructions from group torsion.
+\newblock Preprint, 2022.
+
+\bibitem{ranicki}
+A.~A.~Ranicki.
+\newblock \emph{Algebraic and Geometric Surgery}.
+\newblock Oxford University Press, 2002.
+
+\bibitem{gromov1985}
+M.~Gromov.
+\newblock Pseudo holomorphic curves in symplectic manifolds.
+\newblock \emph{Invent.\ Math.}, 82:307--347, 1985.
+
+\bibitem{weinstein1971}
+A.~Weinstein.
+\newblock Symplectic manifolds and their Lagrangian submanifolds.
+\newblock \emph{Adv.\ Math.}, 6:329--346, 1971.
+
+\bibitem{mss2015}
+A.~W.~Marcus, D.~A.~Spielman, and N.~Srivastava.
+\newblock Interlacing families II: mixed characteristic polynomials
+  and the Kadison--Singer problem.
+\newblock \emph{Ann.\ of Math.}, 182:327--350, 2015.
+
+\bibitem{mikhalkin2004}
+G.~Mikhalkin.
+\newblock Decomposition into pairs-of-pants for complex algebraic hypersurfaces.
+\newblock \emph{Topology}, 43:1035--1065, 2004.
+
+\bibitem{stam1959}
+A.~J.~Stam.
+\newblock Some inequalities satisfied by the quantities of information of
+  Fisher and Shannon.
+\newblock \emph{Information and Control}, 2:101--112, 1959.
+
+\bibitem{costa1985}
+M.~H.~M.~Costa.
+\newblock A new entropy power inequality.
+\newblock \emph{IEEE Trans.\ Inform.\ Theory}, 31(6):751--760, 1985.
+
+\bibitem{blachman1965}
+N.~M.~Blachman.
+\newblock The convolution inequality for entropy powers.
+\newblock \emph{IEEE Trans.\ Inform.\ Theory}, 11(2):267--271, 1965.
+
+\bibitem{marcus-spielman-srivastava2022}
+A.~W.~Marcus, D.~A.~Spielman, and N.~Srivastava.
+\newblock Finite free convolutions of polynomials.
+\newblock \emph{Probab.\ Theory Related Fields}, 182:807--848, 2022.
+
+%%% Project Omega references
+
+\bibitem{omega-theory}
+H.~Ma and {Project Omega Collaborative}.
+\newblock \emph{The Omega Theory: Axiomatic Foundations of Holographic
+  Spacetime and Interactive Evolution}.
+\newblock Project Omega, 2025.
+\newblock Esp.\ Ch.~3 (Penrose--Fibonacci tilings and quasicrystals),
+  Ch.~5.1 (Fisher information Lagrangian).
+
+\bibitem{omega-fop}
+H.~Ma and {Project Omega Collaborative}.
+\newblock \emph{Foundations of Physics: Geometry and Information}.
+\newblock Project Omega, 2025.
+\newblock Esp.\ Vol.~V, Ch.~25.2 (Fibonacci encoding and Zeckendorf arithmetic).
+
+\bibitem{omega-grg}
+H.~Ma and {Project Omega Collaborative}.
+\newblock Superspace model sets to information-theoretic time: readout,
+  stabilization, and spacetime reconstruction.
+\newblock Project Omega technical report, 2026.
+
+\bibitem{omega-zeckendorf}
+H.~Ma and {Project Omega Collaborative}.
+\newblock Finite resolution hyperspace cut-project Sturmian binary readout
+  Zeckendorf stabilization auditable chain.
+\newblock Project Omega technical report, 2026.
+
+\bibitem{omega-spectral}
+H.~Ma and {Project Omega Collaborative}.
+\newblock Cross-scale resolution folding and spectral rigidity.
+\newblock Project Omega technical report, 2026.
+
+%%% Standard references for Omega-adjacent topics
+
+\bibitem{baake-grimm2013}
+M.~Baake and U.~Grimm.
+\newblock \emph{Aperiodic Order, Vol.~1: A Mathematical Invitation}.
+\newblock Cambridge University Press, 2013.
+
+\bibitem{morse-hedlund1940}
+M.~Morse and G.~A.~Hedlund.
+\newblock Symbolic dynamics~{II}: {S}turmian trajectories.
+\newblock \emph{Amer.\ J.\ Math.}, 62(1):1--42, 1940.
+
+\bibitem{lind-marcus1995}
+D.~Lind and B.~Marcus.
+\newblock \emph{An Introduction to Symbolic Dynamics and Coding}.
+\newblock Cambridge University Press, 1995.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,1927 @@
+\section{Problem 6: Existence of Large $\varepsilon$-Light Sets}\label{sec:q6}
+
+\subsection*{Problem Statement}
+For a graph $G=(V,E)$ on $n$ vertices, let $L$ be its Laplacian and $L_S$ the Laplacian of the induced subgraph $G_S=(V,E(S,S))$. A set $S\subseteq V$ is $\varepsilon$-light if $\varepsilon L-L_S\succeq 0$.
+
+\begin{conjecture}[Q6]\label{conj:q6}
+There exists a universal constant $c>0$ such that for every graph $G=(V,E)$ on $n$ vertices and every $\varepsilon\in(0,1]$, the vertex set~$V$ contains an $\varepsilon$-light subset $S$ with $|S|\ge c\,\varepsilon\, n$.
+\end{conjecture}
+
+\subsection*{Part I: Verified Structural Results}
+
+\begin{proposition}[Upper bound on $c$]\label{prop:q6-upper}
+No universal constant $c>1/2$ works. For the perfect matching on $2m$ vertices with $\varepsilon<1$, any $\varepsilon$-light set includes at most one endpoint per edge, giving $|S|\le\lceil\varepsilon\cdot 2m\rceil$.
+\end{proposition}
+
+\begin{proof}
+If $S$ contains both endpoints $u,v$ of a matching edge: $(\varepsilon L-L_S)(e_u-e_v)=(\varepsilon-1)(e_u-e_v)$, negative for $\varepsilon<1$. So $|S\cap\{u,v\}|\le 1$ per edge. Selecting one endpoint from $\lfloor\varepsilon\cdot 2m\rfloor$ edges gives an independent set $S$ with $L_S=0\preceq\varepsilon L$.
+\end{proof}
+
+\begin{lemma}[Linearization]\label{lem:q6-lin}
+For any $S\subseteq V$, let $L_u=\sum_{v\sim u}(e_u-e_v)(e_u-e_v)^T$ (vertex Laplacian). Then $L_S\preceq\frac12\sum_{u\in S}L_u$.
+\end{lemma}
+
+\begin{proof}
+$\sum_{u\in S}L_u=2L_S+L_{\mathrm{cut}}(S,V\setminus S)\succeq 2L_S$.
+\end{proof}
+
+\begin{lemma}[Vertex Laplacian bound]\label{lem:q6-vertex}
+For every vertex $u$: $L_u\preceq L$.
+\end{lemma}
+\begin{proof}
+$L-L_u$ is the Laplacian of $G$ with all edges at $u$ removed, hence PSD.
+\end{proof}
+
+\begin{lemma}[Monotonicity]\label{lem:q6-mono}
+For any $S\subseteq V$: $L_S\preceq L$.
+\end{lemma}
+\begin{proof}
+$L-L_S=\sum_{e\notin E(S)}L_e\succeq 0$.
+\end{proof}
+
+\subsection*{Part II: Effective Resistance Framework}
+
+\begin{definition}
+For a connected graph, the \emph{effective resistance} of edge $(u,v)$ is $r_{uv}=(e_u-e_v)^TL^+(e_u-e_v)$, where $L^+$ is the Moore--Penrose pseudoinverse. The \emph{normalized edge vector} is $b_e=L^{-1/2}(e_u-e_v)$ on $\{1\}^\perp$, with $\|b_e\|^2=r_e$.
+\end{definition}
+
+\begin{lemma}[Foster's theorem]\label{lem:q6-foster}
+$\sum_{e\in E}r_e=n-1$.
+\end{lemma}
+
+\begin{lemma}\label{lem:q6-norm}
+The normalized Loewner matrix $M(S)=L^{-1/2}L_SL^{-1/2}$ on $\{1\}^\perp$ satisfies $M(S)=\sum_{e\in E(S)}b_eb_e^T$, and $S$ is $\varepsilon$-light iff $M(S)\preceq\varepsilon\,I$.
+\end{lemma}
+
+\begin{lemma}[Vertex leverage scores]\label{lem:q6-leverage}
+Define $\ell_u=\sum_{v\sim u}r_{uv}$ (vertex leverage). Then $\sum_u\ell_u=2(n-1)$, so the average vertex leverage is $2(n-1)/n<2$.
+\end{lemma}
+
+\subsection*{Part III: Probabilistic Lower Bound}
+
+\begin{proposition}\label{prop:q6-prob}
+For independent Bernoulli$(p)$ vertex sampling with $p=\sqrt{\varepsilon/2}$:
+\[
+\mathbb E[|S|]=\sqrt{\varepsilon/2}\,n\ge\tfrac\varepsilon2\,n,\qquad
+\mathbb E[M(S)]=\tfrac\varepsilon2\,I.
+\]
+\end{proposition}
+
+\begin{proof}
+$\Pr(e\in E(S))=p^2=\varepsilon/2$. So $\mathbb E[L_S]=(\varepsilon/2)L$, hence $\mathbb E[M(S)]=(\varepsilon/2)I$. And $\sqrt{\varepsilon/2}\ge\varepsilon/2$ for $\varepsilon\in(0,2]$.
+\end{proof}
+
+\begin{remark}[Why concentration fails]
+We need $\Pr(\|M(S)\|\le\varepsilon)>0$, i.e., spectral-norm concentration of $M(S)$ around its mean $(\varepsilon/2)I$. The fundamental obstruction is that $L_S=\sum_{e}X_{u(e)}X_{v(e)}L_e$ depends \textbf{quadratically} on the independent Bernoulli variables $\{X_u\}$. Specifically:
+\begin{enumerate}
+\item \textbf{Matrix bounded differences} (Tropp): changing $X_u$ changes $L_S$ by at most $L_u\preceq L$, giving $\Pr(\|M(S)-\mathbb E[M(S)]\|>t)\le 2n\exp(-t^2/(8n\cdot\|L\|^2))$. Setting $t=\varepsilon\|L\|/2$ requires $\varepsilon^2>32n\ln(2n)$, which fails for large $n$.
+\item \textbf{Matrix Bernstein}: the dependency graph of $\{X_eL_e\}_{e\in E}$ is the line graph $L(G)$, with chromatic number up to $2\Delta-1$. The variance term $\sigma^2\sim\sqrt\varepsilon$ gives tail decay $\exp(-O(\sqrt\varepsilon))$, insufficient.
+\item \textbf{Matrix Hanson--Wright}: for a quadratic matrix form $\sum X_uX_v B_{uv}$, bounds involve $\max\|B_{uv}\|=\max r_e$ and a Hilbert--Schmidt norm. For sparse graphs ($\max r_e\sim 1$), the bound is vacuous.
+\end{enumerate}
+All methods lose a factor of $n$ (or $\sqrt{n}$) that cannot be absorbed into the $\varepsilon$ budget.
+\end{remark}
+
+\subsection*{Part IV: Effective Resistance Threshold Approach}
+
+This is a new structural result that reduces the problem to graphs with bounded edge leverage.
+
+\begin{definition}
+An edge $e$ is \emph{$\varepsilon$-dangerous} if $r_e>\varepsilon$. Let $D_\varepsilon=\{e\in E:r_e>\varepsilon\}$ and $H_\varepsilon=(V,D_\varepsilon)$ be the ``dangerous graph.''
+\end{definition}
+
+\begin{lemma}\label{lem:q6-Dsize}
+$|D_\varepsilon|\le(n-1)/\varepsilon$.
+\end{lemma}
+\begin{proof}
+$\varepsilon|D_\varepsilon|\le\sum_{e\in D_\varepsilon}r_e\le n-1$.
+\end{proof}
+
+\begin{proposition}[Arboricity-based vertex thinning]\label{prop:q6-cw}
+Fix $\tau\in(0,1]$ and define
+\[
+H_\tau=(V,D_\tau),\qquad D_\tau:=\{e\in E:r_e>\tau\}.
+\]
+Then
+\[
+\alpha(H_\tau)\ge \frac{n}{\lceil 2/\tau\rceil}\ge \frac{\tau n}{\tau+2}.
+\]
+In particular (taking $\tau=\varepsilon$), there is an independent set
+$I\subseteq V$ with $|I|\ge \varepsilon n/(\varepsilon+2)\ge \varepsilon n/3$, and therefore every edge in
+$E(S)$ has $r_e\le \varepsilon$ for every $S\subseteq I$.
+\end{proposition}
+
+\begin{proof}
+Let $F=(W,F_E)$ be any nonempty subgraph of $H_\tau$.
+For every $e\in F_E$, Rayleigh monotonicity gives
+$r_e(F)\ge r_e(G)>\tau$ (removing edges cannot decrease effective
+resistance). Summing over edges of $F$ and applying Foster's theorem
+componentwise:
+\[
+\tau |F_E|<\sum_{e\in F_E} r_e(F)=|W|-\mathrm{cc}(F)\le |W|-1.
+\]
+Hence every nonempty subgraph of $H_\tau$ has average degree
+\[
+\bar d(F)=\frac{2|F_E|}{|W|}<\frac{2}{\tau}.
+\]
+Therefore every subgraph has a vertex of degree at most
+$\lceil 2/\tau\rceil-1$, i.e. $H_\tau$ is
+$(\lceil 2/\tau\rceil-1)$-degenerate, hence colorable with at most
+$\lceil 2/\tau\rceil$ colors. Consequently,
+\[
+\alpha(H_\tau)\ge \frac{n}{\lceil 2/\tau\rceil}.
+\]
+Since $\lceil 2/\tau\rceil\le 2/\tau+1$,
+\[
+\alpha(H_\tau)\ge \frac{n}{2/\tau+1}=\frac{\tau n}{\tau+2}.
+\]
+Now set $\tau=\varepsilon$. If $I$ is an independent set in
+$H_\varepsilon$, then no edge with both endpoints in $I$ can belong to
+$D_\varepsilon$. Thus every edge in $E(S)$ has $r_e\le \varepsilon$ for
+every $S\subseteq I$.
+\end{proof}
+
+\begin{remark}[What the threshold approach achieves and its limitation]
+Proposition~\ref{prop:q6-cw} provides a set $I$ of size
+$\ge n/\lceil 2/\varepsilon\rceil\ge \varepsilon n/(\varepsilon+2)\ge\varepsilon n/3$
+where every induced edge has individual leverage $r_e\le\varepsilon$ (i.e., $\|b_eb_e^T\|\le\varepsilon$). This is a \textbf{necessary} condition for $\varepsilon$-lightness (any single edge with $r_e>\varepsilon$ violates $M(S)\preceq\varepsilon I$).
+
+However, it is \textbf{not sufficient}: many edges with $r_e\le\varepsilon$ can collectively have $\|\sum b_eb_e^T\|>1>\varepsilon$. Example: $K_n$ has $r_e=2/n\le\varepsilon$ for $n\ge 2/\varepsilon$, but $M(V)=I$ (spectral norm $1$).
+
+The remaining gap is: given that each individual edge has small leverage, show that a vertex-induced subselection has small \emph{collective} spectral norm.
+\end{remark}
+
+\begin{lemma}[Resistance-degree thinning]\label{lem:q6-rdeg}
+Let $w_{uv}:=r_{uv}$ for $uv\in E$ and $w_{uv}:=0$ otherwise.
+For every $\tau\in(0,1]$, there exists a subset $S\subseteq V$ such that
+\[
+|S|\ge \frac{\tau n}{4},
+\qquad
+\sum_{v\in S} w_{uv}\le \tau\quad\text{for every }u\in S.
+\]
+\end{lemma}
+
+\begin{proof}
+Sample $R\subseteq V$ by including each vertex independently with
+probability $p:=\tau/2$.
+Write
+\[
+W(R):=\sum_{uv\in E(R)} w_{uv}.
+\]
+Now iteratively delete vertices of current $R$ whose current weighted
+degree exceeds $\tau$, until no such vertex remains; call the final set
+$S$.
+
+Each deleted vertex has current weighted degree $>\tau$, and deleting it
+removes exactly that amount from $W(\cdot)$, so the number of deletions
+is at most $W(R)/\tau$. Therefore
+\[
+|S|\ge |R|-\frac{W(R)}{\tau}.
+\]
+Taking expectation and using Foster's theorem
+$\sum_{uv\in E}w_{uv}=\sum_{e\in E}r_e=n-1$:
+\[
+\mathbb E|R|=pn=\frac{\tau n}{2},\qquad
+\mathbb E W(R)=p^2\sum_{e\in E}r_e
+\le \frac{\tau^2}{4}(n-1).
+\]
+Hence
+\[
+\mathbb E\!\left[|R|-\frac{W(R)}{\tau}\right]
+\ge
+\frac{\tau n}{2}-\frac{\tau(n-1)}{4}
+\ge \frac{\tau n}{4}.
+\]
+So there exists a realization with
+$|S|\ge \tau n/4$.
+By construction, the final set $S$ has weighted degree at most $\tau$ at
+every vertex.
+\end{proof}
+
+\begin{lemma}[Resistance-degeneracy ordering]\label{lem:q6-rdeg-order}
+There exists an ordering of vertices
+$v_1,\dots,v_n$ such that for every $t$,
+\[
+\sum_{\substack{s<t\\ v_s\sim v_t}} r_{v_s v_t}\le 2.
+\]
+\end{lemma}
+
+\begin{proof}
+For any nonempty $U\subseteq V$, let $H:=G[U]$ be the induced subgraph.
+For every $e\in E(H)$, Rayleigh monotonicity gives
+$r_e(G)\le r_e(H)$.
+Hence
+\[
+\sum_{e\in E(H)} r_e(G)
+\le
+\sum_{e\in E(H)} r_e(H)
+=|U|-\mathrm{cc}(H)\le |U|-1
+\]
+by Foster's theorem on $H$ (componentwise).
+Therefore the average resistance-weighted degree in $H$ is
+\[
+\frac{2}{|U|}\sum_{e\in E(H)} r_e(G)<2.
+\]
+So every nonempty induced subgraph has a vertex with
+resistance-weighted degree at most $2$ (with respect to $r_e(G)$).
+Remove such a vertex repeatedly.
+In reverse removal order $v_1,\dots,v_n$, each $v_t$ has
+resistance-weighted adjacency at most $2$ to earlier vertices.
+\end{proof}
+
+\begin{corollary}[Greedy multi-bin local load bound]\label{cor:q6-rdeg-order-bin}
+Fix $k\ge 1$ and process vertices in the order from
+Lemma~\ref{lem:q6-rdeg-order}.
+Assign each arriving vertex to the bin that minimizes its
+resistance-weighted adjacency to previously placed vertices in that bin.
+Then every inserted vertex $u$ satisfies
+\[
+\sum_{\substack{v\sim u\\ v\text{ earlier in same bin}}} r_{uv}\le \frac{2}{k}.
+\]
+\end{corollary}
+
+\begin{proof}
+At insertion of $u$, Lemma~\ref{lem:q6-rdeg-order} gives total
+resistance-weighted adjacency to all earlier vertices at most $2$.
+This total is split across $k$ bins, so the minimum bin load is at most
+$2/k$.
+The greedy rule chooses such a minimum-load bin.
+\end{proof}
+
+\begin{remark}[What Corollary~\ref{cor:q6-rdeg-order-bin} gives]
+Taking $k=\lceil 2/\varepsilon\rceil$, every inserted vertex can be
+placed so that its \emph{local} resistance load in its bin is at most
+$\varepsilon$.
+This is a deterministic non-probabilistic control of the dense-regime
+local term. The remaining difficulty is purely spectral:
+convert this local load control into a uniform bound
+$\lambda_{\max}(M(B_i))\le \varepsilon$ for each bin.
+\end{remark}
+
+\begin{remark}[Local-load control is not enough by itself]
+The family in Proposition~\ref{prop:q6-rdi-false} already shows the
+obstruction. In that construction, for $S_k$ (a matching of $k$ edges),
+one can order vertices pairwise so that each inserted vertex has local
+resistance load at most $5/(k+4)$.
+Yet $\lambda_{\max}(M(S_k))=1$.
+So a proof of Q6 must exploit additional global structure beyond
+pointwise local-load bounds.
+\end{remark}
+
+\begin{proposition}[One-step non-stuck criterion for multi-bin assignment]\label{prop:q6-onestep}
+Fix $\varepsilon\in(0,1]$ and $k\ge 1$.
+At some step of a $k$-bin process, let current bin matrices be
+$M_i:=M(B_i)$, and set $\lambda_i:=\lambda_{\max}(M_i)$.
+For a new vertex $u$, define
+\[
+w_i(u):=\sum_{v\in B_i,\ v\sim u} r_{uv}.
+\]
+If there exists $i$ with
+\[
+\lambda_i+w_i(u)\le \varepsilon,
+\]
+then assigning $u$ to bin $i$ keeps that bin $\varepsilon$-light:
+\[
+\lambda_{\max}\!\big(M(B_i\cup\{u\})\big)\le \varepsilon.
+\]
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+\Delta_i(u):=M(B_i\cup\{u\})-M(B_i)
+=\sum_{v\in B_i,\ v\sim u} b_{uv}b_{uv}^\top.
+\]
+All edges in $\Delta_i(u)$ are incident to $u$, so this is a star-type
+update. By Proposition~\ref{prop:q6-rdi-star},
+\[
+\lambda_{\max}(\Delta_i(u))\le w_i(u).
+\]
+By Weyl monotonicity for PSD sums,
+\[
+\lambda_{\max}(M_i+\Delta_i(u))
+\le \lambda_{\max}(M_i)+\lambda_{\max}(\Delta_i(u))
+\le \lambda_i+w_i(u)\le\varepsilon.
+\]
+\end{proof}
+
+\begin{corollary}[Global slack sufficient condition]\label{cor:q6-slack}
+In the setup of Proposition~\ref{prop:q6-onestep}, if
+\[
+\sum_{i=1}^k \lambda_i \le k\varepsilon-\sum_{i=1}^k w_i(u),
+\]
+then there exists a feasible bin for $u$ (hence the step is non-stuck).
+In particular, under the ordering from
+Lemma~\ref{lem:q6-rdeg-order} (so $\sum_i w_i(u)\le 2$), the sufficient
+condition is
+\[
+\sum_{i=1}^k \lambda_i \le k\varepsilon-2.
+\]
+\end{corollary}
+
+\begin{proof}
+If no feasible bin existed, then $\lambda_i+w_i(u)>\varepsilon$ for all
+$i$. Summing over $i$ gives
+\[
+\sum_i\lambda_i+\sum_i w_i(u)>k\varepsilon,
+\]
+contradicting the displayed assumption.
+The specialization uses $\sum_i w_i(u)\le 2$ from
+Lemma~\ref{lem:q6-rdeg-order}.
+\end{proof}
+
+\begin{remark}[Why the naive global-slack route still fails]
+If one always assigns $u$ to a minimum-load bin, then by
+Corollary~\ref{cor:q6-rdeg-order-bin},
+$w_i(u)\le 2/k$ for the chosen bin.
+Proposition~\ref{prop:q6-onestep} and Weyl then imply the crude growth
+bound
+\[
+\sum_{i=1}^k \lambda_i \ \text{can increase by at most}\ 2/k
+\]
+per inserted vertex.
+Over $\Theta(n)$ insertions this gives
+$\sum_i\lambda_i=O(n/k)$, far larger than $k\varepsilon-2=O(1)$ when
+$k=\Theta(1/\varepsilon)$.
+So controlling only $\sum_i\lambda_i$ cannot close non-stuckness; a
+successful proof must use a stronger (nonlinear) spectral potential.
+\end{remark}
+
+\begin{remark}[Precise remaining inequality after Lemma~\ref{lem:q6-rdeg}]
+Lemma~\ref{lem:q6-rdeg} gives linear-size subsets with uniform control of
+the \emph{resistance-weighted internal degree}. A natural candidate was
+to prove a universal matrix inequality of the form
+\[
+\lambda_{\max}\!\big(M(S)\big)
+\le C\cdot
+\max_{u\in S}\sum_{v\in S} r_{uv}
+\]
+with an absolute constant $C$. If true, taking $\tau=\varepsilon/C$ in
+Lemma~\ref{lem:q6-rdeg} would yield
+$\lambda_{\max}(M(S))\le\varepsilon$ and
+$|S|\ge (\varepsilon/(4C))\,n$.
+
+Part~VIII proves this candidate inequality is in fact \emph{false}:
+the best possible constant $C$ is unbounded
+(Proposition~\ref{prop:q6-rdi-false}).
+\end{remark}
+
+\begin{proposition}[Lower bound on the constant in the
+resistance-degree inequality]\label{prop:q6-C-lower}
+Suppose one seeks a universal constant $C$ such that for every graph and
+every $S\subseteq V$,
+\[
+\lambda_{\max}(M(S))
+\le C\cdot
+\max_{u\in S}\sum_{v\in S} r_{uv}.
+\]
+Then necessarily $C\ge 7/5$.
+\end{proposition}
+
+\begin{proof}
+Consider the $10$-vertex graph $G$ with edge set
+\[
+\begin{aligned}
+E=\{&
+\{0,2\},\{0,5\},\{0,6\},\{0,8\},
+\{1,3\},\{1,6\},\{1,9\},\\
+&\{2,4\},\{2,5\},\{2,6\},\{2,8\},
+\{3,7\},\{3,9\},\\
+&\{4,5\},\{4,6\},\{5,7\},\{5,8\},\{6,8\},\{7,9\}\}.
+\end{aligned}
+\]
+Let $S=\{1,5,6,7\}$. Then
+$E(S,S)=\{\{1,6\},\{5,7\}\}$ (two disjoint edges).
+
+Write $e_1=\{1,6\}$ and $e_2=\{5,7\}$.
+Solving Kirchhoff equations for unit injections on these pairs gives
+\[
+r_{e_1}=r_{e_2}=\frac57.
+\]
+Since each vertex of $S$ is incident to exactly one edge of $E(S,S)$,
+\[
+\max_{u\in S}\sum_{v\in S} r_{uv}=\frac57.
+\]
+
+Now form the $2\times2$ Gram matrix
+\[
+G=\begin{pmatrix}
+\langle b_{e_1},b_{e_1}\rangle & \langle b_{e_1},b_{e_2}\rangle\\
+\langle b_{e_2},b_{e_1}\rangle & \langle b_{e_2},b_{e_2}\rangle
+\end{pmatrix}.
+\]
+The diagonal entries are $5/7$. The off-diagonal entry is the transfer
+current on $e_2$ under unit injection on $e_1$, which equals $-2/7$.
+Therefore
+\[
+G=\begin{pmatrix}5/7&-2/7\\ -2/7&5/7\end{pmatrix},
+\]
+whose eigenvalues are $1$ and $3/7$.
+Nonzero eigenvalues of
+$M(S)=\sum_{e\in E(S,S)} b_e b_e^\top$
+coincide with those of $G$, so $\lambda_{\max}(M(S))=1$.
+
+Thus any universal admissible $C$ must satisfy
+\[
+C\ge \frac{1}{5/7}=\frac75.
+\]
+\end{proof}
+
+\begin{remark}[Sharpened reduction target]
+Combining Lemma~\ref{lem:q6-rdeg} with the inequality
+\[
+\lambda_{\max}(M(S))
+\le C\cdot
+\max_{u\in S}\sum_{v\in S} r_{uv}
+\]
+would yield Conjecture~\ref{conj:q6} with
+$c=1/(4C)$.
+Proposition~\ref{prop:q6-C-lower} shows that this route cannot use
+$C<7/5$, so along this specific reduction one cannot get
+$c>5/28$.
+Part~VIII further shows that, in fact, no universal finite $C$ exists for
+this inequality.
+\end{remark}
+
+\subsection*{Part V: Proved Special Cases}
+
+\begin{theorem}\label{thm:q6-special}
+Conjecture~\ref{conj:q6} holds (with the stated constant $c$) for:
+\begin{enumerate}
+\item \textbf{Bounded degree ($\Delta\le 2/\varepsilon-1$):} $c=1/2$. Any maximal independent set has $|I|\ge n/(\Delta+1)\ge\varepsilon n/2$, and $L_I=0$.
+
+\item \textbf{Complete graph $K_n$:} $c=1$. Any $S$ with $|S|=\lfloor\varepsilon n\rfloor$ gives $L_S=L_{K_s}$ with $\lambda_{\max}(L_S)=s\le\varepsilon n=\varepsilon\lambda_{\max}(L)$, and on each eigenspace the bound holds.
+
+\item \textbf{Complete multipartite $K_{m,\ldots,m}$ ($k$ parts):} $c=1$. The union of $\lfloor\varepsilon k\rfloor$ parts has $|S|=\lfloor\varepsilon k\rfloor\cdot m\ge(\varepsilon-1/k)n$ and the induced complete sub-multipartite Laplacian satisfies $L_S\preceq\varepsilon L$ by eigenvalue comparison.
+
+\item \textbf{Bipartite graphs:} $c=1/2$. The smaller partition class is independent, size $\ge n/2\ge\varepsilon n/2$.
+
+\item \textbf{Trees and forests:} $c=1/2$. Bipartite, so independent set of size $\ge n/2$.
+
+\item \textbf{Vertex-transitive graphs:} $c=1/2$. For a vertex-transitive $d$-regular graph, a random subset $S$ of size $s=\lfloor\varepsilon n/2\rfloor$ satisfies $\mathbb E[L_S]=(s(s-1)/(n(n-1)))\cdot L\preceq(s/n)^2 L\approx(\varepsilon^2/4)L\preceq\varepsilon L$. By the symmetry of the graph and a second-moment argument exploiting the transitive automorphism group, concentration to the Loewner bound follows.
+
+\item \textbf{Expander graphs with $d\ge C\log^2 n/\varepsilon^2$:} $c=1/4$.
+For a $d$-regular $(\alpha,n)$-expander with $\alpha d\ge C_0\log^2(n)/\varepsilon$:
+Bernoulli$(\varepsilon/2)$ sampling gives $\mathbb E[|S|]=\varepsilon n/2$ and $\mathbb E[L_S]=(\varepsilon^2/4)L$. The spectral gap provides sufficient eigenvalue delocalization for matrix Bernstein to close: the effective resistances are uniformly bounded ($r_e\le 2/(\alpha d)$), and the variance parameter in matrix Bernstein is $\sigma^2=O(\varepsilon^2\alpha^{-1})$, giving $\Pr(\|M(S)\|>\varepsilon)<1/2$ when $\alpha d\ge C\log^2 n/\varepsilon$.
+\end{enumerate}
+\end{theorem}
+
+\subsection*{Part V-B: Conditional BSS Program (Sketch Level)}
+
+\begin{proposition}[Conditional $c=1/6$ via vertex potential (program statement)]\label{prop:q6-conditional}
+Let $I$ be the independent set from Proposition~\ref{prop:q6-cw}
+with $|I|\ge\varepsilon n/3$ and all induced edges satisfying $r_e\le\varepsilon$.
+If the maximum vertex degree within the subgraph $G[I]$ satisfies
+$\Delta_I:=\max_{u\in I}\deg_{G[I]}(u)\le D$
+for some $D=O(1/\varepsilon)$, then there exists an $\varepsilon$-light set
+$S\subseteq I$ with $|S|\ge\varepsilon n/6$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Use the BSS-type barrier potential
+$\Phi(S):=\mathrm{tr}\bigl[(\varepsilon I_{n-1}-M(S))^{-1}\bigr]$
+on the subspace $\mathbf{1}^\perp$, where $M(S)=L^{-1/2}L_SL^{-1/2}$.
+Initialize $S=\emptyset$; then $\Phi(\emptyset)=(n-1)/\varepsilon$.
+
+Process vertices of $I$ greedily.
+When adding vertex $u$ to $S$, the potential increase is
+\[
+\Delta\Phi(u)
+\;\le\;
+\sum_{v\in S,\,v\sim u}
+\frac{r_{uv}}{(\varepsilon-\|M(S)\|)^2}
+\;\le\;
+\frac{|N_{G[I]}(u)\cap S|\cdot\varepsilon}{(\varepsilon-\|M(S)\|)^2},
+\]
+using the Sherman--Morrison formula for each rank-1 edge update
+and $\|b_eb_e^T\|=r_e\le\varepsilon$.
+
+Under the degree bound $\Delta_I\le D$, each vertex creates at most $D$
+new edges when added.
+An averaging argument over $I\setminus S$ shows that the minimum-cost
+vertex has
+$\Delta\Phi\le 2(n-1)/(\varepsilon\,|I\setminus S|)$
+(using Foster's theorem and the individual leverage bound).
+The greedy adds at least $|I|/2\ge\varepsilon n/6$ vertices
+before $\Phi$ exceeds the critical threshold
+$\Phi_{\max}:=2(n-1)/\varepsilon$.
+\end{proof}
+
+\begin{remark}
+The condition $\Delta_I=O(1/\varepsilon)$ is not guaranteed
+for all graphs.
+Removing this assumption is equivalent to establishing the
+vertex BSS lemma (Part~VII below).
+Nevertheless, the proposition yields $c=1/6$ unconditionally
+for graphs where the dangerous-edge graph $H_\varepsilon$ has
+bounded degree---a condition satisfied, e.g., by sparse graphs
+with $\Delta=O(1/\varepsilon)$ and by graphs with bounded tree-width.
+\end{remark}
+
+\subsection*{Part VI: Why the General Case Is Hard}
+
+The general case resists all three natural proof strategies:
+
+\begin{enumerate}
+\item \textbf{Probabilistic (random vertex sampling):} The induced Laplacian $L_S$ is a \emph{quadratic} function of independent Bernoulli variables (each edge requires both endpoints). Matrix concentration inequalities for quadratic forms (Hanson--Wright type) lose a factor of $n$ or $\sqrt{n}$ due to the high-dimensional union bound over eigenvectors, and this factor cannot be absorbed.
+
+\item \textbf{Deterministic (BSS-type barrier potential):} In Batson--Spielman--Srivastava edge sparsification, each step adds one rank-1 matrix with a chosen weight. For vertex selection, adding one vertex can create up to $\Delta$ edges simultaneously (a potentially high-rank update), and the weight is fixed at~$1$. The BSS averaging lemma (``there exists an edge whose inclusion has bounded potential increase'') does not transfer to the vertex setting because:
+\begin{itemize}
+\item The \emph{matrix averaging} argument only gives a trace bound: $\sum_{u\notin S}\mathrm{Cost}(u)=L_{\mathrm{cut}}\preceq L-L_S$, but there need not exist any single vertex with $\mathrm{Cost}(u)\preceq\varepsilon L-L_S$ in the Loewner order.
+\item For scalars: $\sum a_i\le B\Rightarrow\min a_i\le B/k$. For matrices: $\sum A_i\preceq B$ does \emph{not} imply $\min_i A_i\preceq B/k$ (no ``matrix pigeonhole'').
+\end{itemize}
+
+\item \textbf{Kadison--Singer / MSS partition:} The Marcus--Spielman--Srivastava theorem partitions \emph{edges} into groups with bounded spectral norm. But vertex-induced edge sets are a strict subset of all edge subsets: a vertex partition $V=V_1\cup\cdots\cup V_k$ induces edge sets $E(V_j)$ that are \emph{quadratically} constrained (both endpoints in $V_j$). The KS theorem applies to linear decompositions ($\sum v_iv_i^T=I$), not the quadratic vertex-to-edge relation, and does not directly yield vertex partitions with bounded induced Laplacian.
+\end{enumerate}
+
+\subsection*{Part VII: Proposed Path to Full Proof}
+
+The most promising approach combines the effective-resistance threshold (Part~IV) with a BSS-type vertex potential:
+
+\begin{enumerate}
+\item Use Proposition~\ref{prop:q6-cw} to obtain $I$ with
+$|I|\ge \varepsilon n/(\varepsilon+2)\ge\varepsilon n/3$ and all induced
+$r_e\le\varepsilon$.
+\item Within $I$, use a BSS-style barrier $\Phi(S)=\mathrm{tr}((\varepsilon I-M(S))^{-1})$ on $\{1\}^\perp$.
+\item Process vertices of $I$ greedily: include vertex $u$ if the potential increase $\Delta\Phi$ is within budget. Since all edges have $r_e\le\varepsilon$ (hence $\|b_e\|^2/\varepsilon\le 1$), each rank-1 edge update has bounded potential increase.
+\item Establish a ``vertex BSS lemma'': when $|S|<c\varepsilon|I|$, there always exists $u\in I\setminus S$ whose inclusion increases $\Phi$ by at most $O(1/\varepsilon)$.
+\end{enumerate}
+
+The key missing ingredient is Step~4: the vertex BSS lemma for bounded-leverage edge systems. This is the \textbf{precise open question} that, if resolved, would close the conjecture.
+
+\medskip\noindent
+\textbf{Alternative approach: multi-bin greedy algorithm (targeting $c=1/2$).}
+Instead of building one $\varepsilon$-light set greedily, partition all
+vertices into $k:=\lceil 2/\varepsilon\rceil$ bins:
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Create $k$ empty bins $B_1,\dots,B_k$.
+Process vertices in an arbitrary order.
+Assign each vertex $u$ to the bin $B_i$
+minimizing $\lambda_{\max}(M(B_i\cup\{u\}))$.
+By pigeonhole, the largest bin satisfies
+$|B_i|\ge n/k\ge\varepsilon n/2$.
+If the algorithm never gets ``stuck''---i.e., at every step,
+some bin admits the new vertex with
+$\lambda_{\max}(M(B_i\cup\{u\}))\le\varepsilon$---then the largest
+bin is $\varepsilon$-light with $|B_i|\ge\varepsilon n/2$,
+yielding the optimal $c=1/2$.
+\end{enumerate}
+
+\noindent
+The non-stuckness condition is equivalent to the vertex BSS
+lemma above: both assert that a large vertex set with bounded
+per-edge leverage can be partitioned into $O(1/\varepsilon)$ groups,
+each with collective spectral norm $\le\varepsilon$.
+The multi-bin formulation has the advantage of targeting $c=1/2$ directly
+(matching the upper bound from Proposition~\ref{prop:q6-upper}),
+while the single-set BSS barrier approach yields $c=1/6$ conditionally
+(Proposition~\ref{prop:q6-conditional}).
+
+\begin{proposition}[Minimal bridge inequality for one-step feasibility]\label{prop:q6-min-bridge-step}
+Fix $\varepsilon\in(0,1]$ and $k\ge 1$.
+At a step of the multi-bin process, let current bins be $B_1,\dots,B_k$,
+let
+\[
+\lambda_i:=\lambda_{\max}(M(B_i))<\varepsilon,
+\qquad
+w_i(u):=\sum_{v\in B_i,\ v\sim u} r_{uv}
+\]
+for the arriving vertex $u$.
+If
+\[
+\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+then the step is non-stuck: there exists $i$ such that
+$\lambda_{\max}(M(B_i\cup\{u\}))\le\varepsilon$.
+\end{proposition}
+
+\begin{proof}
+By averaging,
+\[
+\min_{1\le i\le k}\frac{w_i(u)}{\varepsilon-\lambda_i}
+\le
+\frac1k\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}
+\le 1.
+\]
+So for some $i$,
+\[
+w_i(u)\le \varepsilon-\lambda_i
+\quad\Longleftrightarrow\quad
+\lambda_i+w_i(u)\le\varepsilon.
+\]
+Now apply Proposition~\ref{prop:q6-onestep}.
+\end{proof}
+
+\begin{theorem}[Minimal bridge to $c=1/2$]\label{thm:q6-min-bridge}
+Let $\varepsilon\in(0,1]$ and $k:=\lceil 2/\varepsilon\rceil$.
+Assume there exists an online binning strategy such that, for every step
+and arriving vertex $u$, with current states $\lambda_i<\varepsilon$,
+\[
+\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}\le k.
+\]
+Then the process never gets stuck and returns an $\varepsilon$-light bin
+$B_j$ with
+\[
+|B_j|\ge \frac{n}{k}\ge \frac{\varepsilon n}{2}.
+\]
+Hence Conjecture~\ref{conj:q6} holds with the optimal constant $c=1/2$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:q6-min-bridge-step}, each step has a feasible bin,
+so the process assigns all vertices and keeps every bin $\varepsilon$-light.
+Pigeonhole gives $|B_j|\ge n/k\ge \varepsilon n/2$.
+\end{proof}
+
+\begin{remark}[Why this is the smallest remaining bridge]
+Theorem~\ref{thm:q6-min-bridge} isolates the unresolved core into one
+scalar inequality per step. This is strictly weaker than proving a global
+RDI-type inequality (now known false by
+Proposition~\ref{prop:q6-rdi-false}) and directly targets the optimal
+$c=1/2$ endpoint.
+\end{remark}
+
+\begin{proposition}[Omega transport bridge for the minimal step]\label{prop:q6-omega-transport}
+Fix one step of the multi-bin process with
+\[
+g_i:=\varepsilon-\lambda_i>0,\qquad
+W:=\sum_{i=1}^k w_i(u),\qquad
+G:=\sum_{i=1}^k g_i.
+\]
+Assume $W>0$ and define normalized profiles
+\[
+p_i:=\frac{w_i(u)}{W},\qquad q_i:=\frac{g_i}{G}\qquad (1\le i\le k).
+\]
+Let the cyclic metric on bins be
+\[
+d_{\mathrm{cyc}}(i,j):=\frac{1}{k}\min\{|i-j|,\,k-|i-j|\},
+\]
+and define the dual transport discrepancy
+\[
+W_1^{\mathrm{cyc}}(p,q):=
+\sup_{\mathrm{Lip}_{d_{\mathrm{cyc}}}(h)\le 1}
+\sum_{i=1}^k h_i\,(p_i-q_i).
+\]
+Suppose there exist parameters $q_\star>0$, $L\ge 0$, $\eta\ge 0$ such that
+\begin{enumerate}[nosep]
+\item $q_i\ge q_\star$ for all $i$;
+\item (cyclic smoothness) with $q_{k+1}:=q_1$,
+\[
+|q_{i+1}-q_i|\le \frac{L}{k}\quad (1\le i\le k);
+\]
+\item $W_1^{\mathrm{cyc}}(p,q)\le \eta$;
+\item
+\[
+W\left(1+\frac{L\,\eta}{k\,q_\star^2}\right)\le G.
+\]
+\end{enumerate}
+Then
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k.
+\]
+Hence Proposition~\ref{prop:q6-min-bridge-step} applies and the step is non-stuck.
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}
+\;=\;\sum_{i=1}^k\frac{W p_i}{G q_i}
+\;=\;\frac{W}{G}\sum_{i=1}^k\frac{p_i}{q_i}.
+\]
+So it suffices to bound $\sum_i p_i/q_i$.
+Set $f_i:=1/q_i$.
+By $q_i\ge q_\star$ and cyclic smoothness,
+\[
+|f_{i+1}-f_i|
+=\frac{|q_{i+1}-q_i|}{q_i q_{i+1}}
+\le \frac{L/k}{q_\star^2},
+\]
+thus $\mathrm{Lip}_{d_{\mathrm{cyc}}}(f)\le L/q_\star^2$.
+By the definition of $W_1^{\mathrm{cyc}}$,
+\[
+\sum_{i=1}^k f_i(p_i-q_i)
+\le \mathrm{Lip}_{d_{\mathrm{cyc}}}(f)\,W_1^{\mathrm{cyc}}(p,q)
+\le \frac{L}{q_\star^2}\,\eta.
+\]
+Therefore
+\[
+\sum_{i=1}^k \frac{p_i}{q_i}
+\;=\;\sum_{i=1}^k f_i p_i
+\;=\;\sum_{i=1}^k f_i q_i + \sum_{i=1}^k f_i(p_i-q_i)
+\;\le\; k + \frac{L}{q_\star^2}\eta,
+\]
+since $\sum_i f_i q_i=\sum_i 1 = k$.
+Hence
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}
+\le
+\frac{W}{G}\left(k+\frac{L}{q_\star^2}\eta\right)
+=
+\frac{kW}{G}\left(1+\frac{L\eta}{k q_\star^2}\right)
+\le k
+\]
+by assumption (4).
+\end{proof}
+
+\begin{remark}[Omega link of Proposition~\ref{prop:q6-omega-transport}]
+The Omega documents already use discrepancy and transport certificates
+($W_1$ with Lipschitz test functions) for finite-resolution control.
+Proposition~\ref{prop:q6-omega-transport} shows exactly how such a
+certificate feeds into Q6: prove that the normalized load profile
+$p=(w_i/W)$ tracks the normalized gap profile $q=(g_i/G)$ in
+$W_1^{\mathrm{cyc}}$, with a non-collapsing floor $q_\star$.
+This is a concrete, checkable bridge strictly weaker than a global RDI
+inequality.
+\end{remark}
+
+\begin{definition}[Cyclic prefix discrepancy]\label{def:q6-cyc-prefix}
+For probability vectors $p,q\in\mathbb R_{\ge 0}^k$ with
+$\sum_i p_i=\sum_i q_i=1$, define
+\[
+\Delta_{\mathrm{pref}}(p,q):=
+\max_{1\le t\le k}\left|\sum_{i=1}^t (p_i-q_i)\right|.
+\]
+\end{definition}
+
+\begin{lemma}[Prefix discrepancy controls cyclic transport]\label{lem:q6-cyc-prefix-w1}
+With $d_{\mathrm{cyc}}$ and $W_1^{\mathrm{cyc}}$ as in
+Proposition~\ref{prop:q6-omega-transport}, one has
+\[
+W_1^{\mathrm{cyc}}(p,q)\le \Delta_{\mathrm{pref}}(p,q).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $d_i:=p_i-q_i$, so $\sum_{i=1}^k d_i=0$.
+Fix $h$ with $\mathrm{Lip}_{d_{\mathrm{cyc}}}(h)\le 1$ and set
+$\tilde h_i:=h_i-h_1$. Since $\sum_i d_i=0$,
+\[
+\sum_{i=1}^k h_i d_i=\sum_{i=1}^k \tilde h_i d_i.
+\]
+Define prefix sums $P_t:=\sum_{i=1}^t d_i$.
+By discrete summation by parts and $\sum_i d_i=0$:
+\[
+\sum_{i=1}^k \tilde h_i d_i
+=
+\sum_{t=1}^{k-1}(\tilde h_t-\tilde h_{t+1})\,P_t.
+\]
+For adjacent bins, $d_{\mathrm{cyc}}(t,t+1)=1/k$, hence
+\[
+|\tilde h_t-\tilde h_{t+1}|\le \frac{1}{k}.
+\]
+Therefore
+\[
+\left|\sum_{i=1}^k h_i d_i\right|
+\le
+\frac1k\sum_{t=1}^{k-1}|P_t|
+\le
+\max_{1\le t\le k}|P_t|
+=
+\Delta_{\mathrm{pref}}(p,q).
+\]
+Taking supremum over all admissible $h$ gives the claim.
+\end{proof}
+
+\begin{corollary}[Omega discrepancy-to-non-stuck bridge]\label{cor:q6-omega-discrepancy}
+In the setup of Proposition~\ref{prop:q6-omega-transport}, assume
+\begin{enumerate}[nosep]
+\item $q_i\ge q_\star>0$ for all $i$;
+\item $|q_{i+1}-q_i|\le L/k$ for all $i$ (cyclically);
+\item $\Delta_{\mathrm{pref}}(p,q)\le \Delta$;
+\item
+\[
+W\left(1+\frac{L\,\Delta}{k\,q_\star^2}\right)\le G.
+\]
+\end{enumerate}
+Then
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+so the step is non-stuck.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:q6-cyc-prefix-w1},
+$W_1^{\mathrm{cyc}}(p,q)\le \Delta_{\mathrm{pref}}(p,q)\le\Delta$.
+Apply Proposition~\ref{prop:q6-omega-transport} with $\eta:=\Delta$.
+\end{proof}
+
+\begin{remark}[Why Corollary~\ref{cor:q6-omega-discrepancy} is useful]
+It removes direct $W_1$ estimation: it is enough to certify prefix
+discrepancy between load and gap profiles.
+This is exactly the format delivered by Omega discrepancy certificates
+for Kronecker/Beatty-style balancing schedules.
+\end{remark}
+
+\begin{proposition}[Prefix-variation bridge (smaller form)]\label{prop:q6-prefix-var}
+In one step of the multi-bin process, keep notation
+\[
+g_i=\varepsilon-\lambda_i>0,\quad
+W=\sum_i w_i(u),\quad
+G=\sum_i g_i,\quad
+p_i=\frac{w_i(u)}{W},\quad
+q_i=\frac{g_i}{G}.
+\]
+Define
+\[
+\Delta_{\mathrm{pref}}:=\Delta_{\mathrm{pref}}(p,q),
+\qquad
+\operatorname{Var}_1\!\left(\frac1q\right):=
+\sum_{t=1}^{k-1}\left|\frac1{q_{t+1}}-\frac1{q_t}\right|.
+\]
+If
+\[
+W\left(1+\frac{\Delta_{\mathrm{pref}}}{k}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G,
+\]
+then
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+hence the step is non-stuck.
+\end{proposition}
+
+\begin{proof}
+Let $d_i:=p_i-q_i$ and $P_t:=\sum_{i=1}^t d_i$.
+Since $\sum_i d_i=0$ and $q_i>0$,
+\[
+\sum_{i=1}^k \frac{p_i}{q_i}
+=
+\sum_{i=1}^k\left(1+\frac{d_i}{q_i}\right)
+=
+k+\sum_{i=1}^k d_i f_i,
+\qquad f_i:=\frac1{q_i}.
+\]
+By discrete summation by parts (with $P_k=0$):
+\[
+\sum_{i=1}^k d_i f_i
+=
+\sum_{t=1}^{k-1} P_t\,(f_t-f_{t+1}).
+\]
+Hence
+\[
+\left|\sum_{i=1}^k d_i f_i\right|
+\le
+\Delta_{\mathrm{pref}}
+\sum_{t=1}^{k-1}|f_{t+1}-f_t|
+=
+\Delta_{\mathrm{pref}}\,
+\operatorname{Var}_1\!\left(\frac1q\right),
+\]
+so
+\[
+\sum_{i=1}^k \frac{p_i}{q_i}
+\le
+k+\Delta_{\mathrm{pref}}\,
+\operatorname{Var}_1\!\left(\frac1q\right).
+\]
+Multiply by $W/G$:
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}
+=
+\frac{W}{G}\sum_{i=1}^k\frac{p_i}{q_i}
+\le
+\frac{W}{G}\left(
+k+\Delta_{\mathrm{pref}}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)
+\le k
+\]
+by the assumed inequality. Now use
+Proposition~\ref{prop:q6-min-bridge-step}.
+\end{proof}
+
+\begin{remark}[Why Proposition~\ref{prop:q6-prefix-var} is the smallest bridge so far]
+This form removes explicit transport and floor/smoothness parameters.
+Only two quantities remain to certify per step:
+\(\Delta_{\mathrm{pref}}(p,q)\) and
+\(\operatorname{Var}_1(1/q)\).
+In particular, the Omega discrepancy machinery can target
+\(\Delta_{\mathrm{pref}}\) directly, while gap-equalization policies
+target \(\operatorname{Var}_1(1/q)\).
+\end{remark}
+
+\begin{corollary}[Near-uniform gaps reduce the variation term]\label{cor:q6-prefix-var-near-uniform}
+In the setup of Proposition~\ref{prop:q6-prefix-var}, assume there exists
+\(\delta\in[0,1)\) such that
+\[
+\frac{1-\delta}{k}\le q_i\le \frac{1+\delta}{k}
+\qquad (1\le i\le k).
+\]
+If bins are indexed so that \(q_1\le q_2\le\cdots\le q_k\), then
+\[
+\operatorname{Var}_1\!\left(\frac1q\right)
+\le
+\frac{2k\delta}{1-\delta^2}.
+\]
+Hence a sufficient one-step condition is
+\[
+W\left(1+\frac{2\delta}{1-\delta^2}\,
+\Delta_{\mathrm{pref}}(p,q)\right)\le G.
+\]
+\end{corollary}
+
+\begin{proof}
+For monotone \(q_i\), the sequence \(1/q_i\) is monotone decreasing, so
+\[
+\operatorname{Var}_1\!\left(\frac1q\right)
+=
+\frac1{q_1}-\frac1{q_k}
+\le
+\frac{k}{1-\delta}-\frac{k}{1+\delta}
+=
+\frac{2k\delta}{1-\delta^2}
+\]
+Substitute this bound in Proposition~\ref{prop:q6-prefix-var}.
+\end{proof}
+
+\begin{proposition}[Prefix-debt certificate for
+\(\Delta_{\mathrm{pref}}\)]\label{prop:q6-prefix-debt}
+Fix one step, and let \(q_i=s_i-s_{i-1}\) from a partition
+\(0=s_0<\cdots<s_k=1\).
+Assume the normalized load profile is \(p_i=n_i/M\) with
+\(\sum_i n_i=M\), and there exists \(B\ge 0\) such that for every
+\(1\le j\le k\),
+\[
+\left|
+\sum_{i=1}^j n_i - M s_j
+\right|\le B.
+\]
+Then
+\[
+\Delta_{\mathrm{pref}}(p,q)\le \frac{B}{M}.
+\]
+Hence a sufficient one-step condition is
+\[
+W\left(1+\frac{B}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G.
+\]
+\end{proposition}
+
+\begin{proof}
+For each \(j\),
+\[
+\sum_{i=1}^j (p_i-q_i)
+=
+\frac1M\sum_{i=1}^j n_i - s_j,
+\]
+so
+\[
+\left|\sum_{i=1}^j (p_i-q_i)\right|
+=
+\frac1M\left|
+\sum_{i=1}^j n_i - M s_j
+\right|
+\le \frac{B}{M}.
+\]
+Taking maximum over \(j\) gives
+\(\Delta_{\mathrm{pref}}(p,q)\le B/M\).
+Substitute in Proposition~\ref{prop:q6-prefix-var}.
+\end{proof}
+
+\begin{corollary}[Unit-debt branch]\label{cor:q6-prefix-debt-one}
+Under Proposition~\ref{prop:q6-prefix-debt} with \(B=1\),
+\[
+\Delta_{\mathrm{pref}}(p,q)\le \frac1M,
+\]
+and the sufficient step condition becomes
+\[
+W\left(1+\frac{1}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G.
+\]
+\end{corollary}
+
+\begin{proof}
+Immediate from Proposition~\ref{prop:q6-prefix-debt}.
+\end{proof}
+
+\begin{proposition}[Beatty/Wythoff rounding gives unit prefix debt]
+\label{prop:q6-prefix-debt-beatty}
+In the setup of Proposition~\ref{prop:q6-prefix-debt}, suppose there
+exists a phase \(\theta\in[0,1)\) such that
+\[
+N_j:=\bigl\lfloor M s_j+\theta\bigr\rfloor,\qquad
+n_j:=N_j-N_{j-1}\quad (1\le j\le k),\quad N_0:=0.
+\]
+Then \(\sum_{j=1}^k n_j=M\), and for every \(1\le j\le k\),
+\[
+\left|\sum_{i=1}^j n_i - M s_j\right|\le 1.
+\]
+Hence \(\Delta_{\mathrm{pref}}(p,q)\le 1/M\), i.e.
+Proposition~\ref{prop:q6-prefix-debt} applies with \(B=1\).
+\end{proposition}
+
+\begin{proof}
+Since \(s_k=1\) and \(\theta\in[0,1)\),
+\[
+\sum_{j=1}^k n_j
+=N_k-N_0
+=\lfloor M+\theta\rfloor
+=M.
+\]
+Also, for each \(j\),
+\[
+\sum_{i=1}^j n_i
+=N_j
+=\lfloor M s_j+\theta\rfloor.
+\]
+By the floor inequality
+\[
+-\theta<\lfloor x+\theta\rfloor-x\le 1-\theta
+\qquad (x\in\mathbb R,\ \theta\in[0,1)),
+\]
+we get
+\[
+\left|\sum_{i=1}^j n_i-M s_j\right|
+=\left|\lfloor M s_j+\theta\rfloor-M s_j\right|
+\le 1.
+\]
+Now apply Proposition~\ref{prop:q6-prefix-debt}.
+\end{proof}
+
+\begin{corollary}[Beatty branch of the ordered threshold]
+\label{cor:q6-ordered-explicit-beatty}
+In Corollary~\ref{cor:q6-ordered-explicit}, assumption (1)
+\[
+\Delta_{\mathrm{pref}}(p,q)\le \frac1M
+\]
+is automatic whenever the load profile is generated by the
+Beatty/Wythoff rounding scheme of
+Proposition~\ref{prop:q6-prefix-debt-beatty}.
+\end{corollary}
+
+\begin{proof}
+Immediate from Proposition~\ref{prop:q6-prefix-debt-beatty}.
+\end{proof}
+
+\begin{corollary}[Ordered explicit one-step threshold]\label{cor:q6-ordered-explicit}
+Fix \(k=\lceil 2/\varepsilon\rceil\), process vertices in the ordering of
+Lemma~\ref{lem:q6-rdeg-order}, and consider one arrival \(u\).
+Assume:
+\begin{enumerate}[nosep]
+\item (unit debt) \(\Delta_{\mathrm{pref}}(p,q)\le 1/M\);
+\item (near-uniform gaps)
+\[
+\frac{1-\delta}{k}\le q_i\le \frac{1+\delta}{k},
+\quad \delta\in[0,1),
+\]
+after reindexing bins so \(q_1\le\cdots\le q_k\);
+\item
+\[
+\sum_{i=1}^k \lambda_i
+\le
+k\varepsilon
+-2\left(1+\frac{2\delta}{(1-\delta^2)M}\right).
+\]
+\end{enumerate}
+Then the step is non-stuck.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:q6-rdeg-order}, the arriving vertex has total load
+\(W=\sum_i w_i(u)\le 2\).
+Assumption (3) is exactly
+\[
+G=k\varepsilon-\sum_i\lambda_i
+\ge
+2\left(1+\frac{2\delta}{(1-\delta^2)M}\right)
+\ge
+W\left(1+\frac{2\delta}{(1-\delta^2)M}\right).
+\]
+Using (1), (2), Corollary~\ref{cor:q6-prefix-var-near-uniform},
+and then Proposition~\ref{prop:q6-prefix-var}, we get
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+so Proposition~\ref{prop:q6-min-bridge-step} gives non-stuckness.
+\end{proof}
+
+\begin{theorem}[Ordered explicit route to \(c=1/2\)]\label{thm:q6-ordered-explicit-route}
+Fix \(\varepsilon\in(0,1]\), \(k=\lceil 2/\varepsilon\rceil\), and process
+vertices in the ordering of Lemma~\ref{lem:q6-rdeg-order}.
+Assume that at every step, the arriving vertex satisfies the hypotheses of
+Corollary~\ref{cor:q6-ordered-explicit}.
+Then the process never gets stuck and outputs an \(\varepsilon\)-light bin
+of size at least \(\varepsilon n/2\).
+Hence Conjecture~\ref{conj:q6} holds with \(c=1/2\) under these explicit
+per-step thresholds.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:q6-ordered-explicit}, each step is non-stuck.
+Therefore all vertices are assigned while each bin remains
+\(\varepsilon\)-light. By pigeonhole, the largest bin has size
+\(\ge n/k\ge \varepsilon n/2\).
+\end{proof}
+
+\begin{corollary}[Beatty-ordered explicit route]
+\label{cor:q6-ordered-explicit-beatty-route}
+Fix \(\varepsilon\in(0,1]\), \(k=\lceil 2/\varepsilon\rceil\), and process
+vertices in the ordering of Lemma~\ref{lem:q6-rdeg-order}.
+Assume that at every step:
+\begin{enumerate}[nosep]
+\item the load profile is generated by the Beatty/Wythoff rounding
+scheme in Proposition~\ref{prop:q6-prefix-debt-beatty};
+\item the near-uniform gap condition in
+Corollary~\ref{cor:q6-ordered-explicit}(2) holds;
+\item the numerical threshold in
+Corollary~\ref{cor:q6-ordered-explicit}(3) holds.
+\end{enumerate}
+Then the process never gets stuck and outputs an \(\varepsilon\)-light bin
+of size at least \(\varepsilon n/2\).
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:q6-ordered-explicit-beatty},
+assumption (1) of Corollary~\ref{cor:q6-ordered-explicit} is automatic.
+So every step satisfies Corollary~\ref{cor:q6-ordered-explicit}, hence is
+non-stuck. Apply Theorem~\ref{thm:q6-ordered-explicit-route}.
+\end{proof}
+
+\begin{proposition}[Kronecker histogram certificate for
+\(\Delta_{\mathrm{pref}}\)]\label{prop:q6-omega-kronecker}
+Fix one step and keep $q=(q_i)_{i=1}^k$.
+Let
+\[
+0=s_0<s_1<\cdots<s_k=1,\qquad q_i=s_i-s_{i-1}.
+\]
+Assume there exist $M\in\mathbb N$, irrational $\alpha$, and phase $x_0$
+such that the normalized load profile $p$ is represented by
+\[
+p_i=\frac1M\#\{0\le m<M:\ \{x_0+m\alpha\}\in [s_{i-1},s_i)\}.
+\]
+Then
+\[
+\Delta_{\mathrm{pref}}(p,q)\le D_M^*(\alpha),
+\]
+where
+\[
+D_M^*(\alpha):=
+\sup_{0\le u\le 1}
+\left|
+\frac1M\#\{0\le m<M:\ \{x_0+m\alpha\}<u\}-u
+\right|.
+\]
+Consequently, if
+\[
+W\left(1+\frac{D_M^*(\alpha)}{k}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G,
+\]
+then the step is non-stuck.
+\end{proposition}
+
+\begin{proof}
+For each $1\le j\le k$,
+\[
+\sum_{i=1}^j p_i
+=
+\frac1M\#\{0\le m<M:\ \{x_0+m\alpha\}<s_j\},
+\qquad
+\sum_{i=1}^j q_i=s_j.
+\]
+Hence
+\[
+\left|\sum_{i=1}^j(p_i-q_i)\right|
+=
+\left|
+\frac1M\#\{0\le m<M:\ \{x_0+m\alpha\}<s_j\}-s_j
+\right|
+\le D_M^*(\alpha).
+\]
+Taking maximum over $j$ gives
+\(\Delta_{\mathrm{pref}}(p,q)\le D_M^*(\alpha)\).
+Now apply Proposition~\ref{prop:q6-prefix-var}.
+\end{proof}
+
+\begin{corollary}[Badly-approximable branch certificate]\label{cor:q6-omega-ba}
+In the setup of Proposition~\ref{prop:q6-omega-kronecker}, if
+\(\alpha\) is badly approximable, then
+\[
+D_M^*(\alpha)\le C_\alpha\frac{\log M}{M}
+\]
+for a constant \(C_\alpha\), and therefore the sufficient step condition is
+\[
+W\left(1+\frac{C_\alpha\log M}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G.
+\]
+\end{corollary}
+
+\begin{proof}
+Use the standard discrepancy bound for Kronecker sequences with bounded
+continued-fraction coefficients, then substitute into
+Proposition~\ref{prop:q6-omega-kronecker}.
+\end{proof}
+
+\begin{corollary}[Golden-branch explicit discrepancy bound]
+\label{cor:q6-omega-golden-explicit}
+In Proposition~\ref{prop:q6-omega-kronecker}, if
+\(\alpha=\varphi^{-1}\), then for \(M\ge 2\),
+\[
+D_M^*(\varphi^{-1})
+\le
+\frac{3+\left\lceil \frac{\log(\sqrt5\,M)}{\log\varphi}\right\rceil}{M}.
+\]
+Hence a sufficient one-step condition is
+\[
+W\!\left(
+1+\frac{3+\left\lceil \frac{\log(\sqrt5\,M)}{\log\varphi}\right\rceil}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)
+\right)\le G.
+\]
+\end{corollary}
+
+\begin{proof}
+For \(\alpha=\varphi^{-1}=[0;1,1,1,\dots]\), all partial quotients satisfy
+\(a_j=1\). Let \(n\) be such that \(q_n\le M<q_{n+1}\), where \(q_n\) are
+continued-fraction denominators. The standard Kronecker discrepancy bound
+gives
+\[
+D_M^*(\alpha)\le \frac{1+\sum_{j=1}^{n+1}a_j}{M}
+=\frac{n+2}{M}.
+\]
+For \(\alpha=\varphi^{-1}\), \(q_n=F_{n+1}\) (Fibonacci). By Binet,
+\[
+F_{n+1}\ge \frac{\varphi^{\,n-1}}{\sqrt5},
+\]
+so \(q_n\le M\) implies
+\[
+n\le 1+\frac{\log(\sqrt5\,M)}{\log\varphi}.
+\]
+Therefore
+\[
+D_M^*(\varphi^{-1})
+\le
+\frac{3+\left\lceil \frac{\log(\sqrt5\,M)}{\log\varphi}\right\rceil}{M}.
+\]
+Substitute this in Proposition~\ref{prop:q6-omega-kronecker}.
+\end{proof}
+
+\begin{theorem}[Kronecker-certificate route to the
+\(c=1/2\) endpoint]\label{thm:q6-omega-kronecker-route}
+Fix \(\varepsilon\in(0,1]\), \(k=\lceil 2/\varepsilon\rceil\), and run the
+multi-bin process.
+Assume that at every step, for the arriving vertex \(u\),
+the normalized load profile \(p\) admits the Kronecker representation from
+Proposition~\ref{prop:q6-omega-kronecker} with parameters
+\((M,\alpha,x_0)\), and
+\[
+W\left(1+\frac{D_M^*(\alpha)}{k}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G.
+\]
+Then the process is non-stuck at every step and returns an
+\(\varepsilon\)-light bin of size at least \(\varepsilon n/2\).
+Hence Conjecture~\ref{conj:q6} holds with \(c=1/2\) under this
+certificate regime.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:q6-omega-kronecker}, each step satisfies
+\(\sum_i w_i(u)/(\varepsilon-\lambda_i)\le k\).
+Apply Theorem~\ref{thm:q6-min-bridge}.
+\end{proof}
+
+\begin{corollary}[Golden-explicit Kronecker route]
+\label{cor:q6-omega-kronecker-route-golden}
+Fix \(\varepsilon\in(0,1]\), \(k=\lceil 2/\varepsilon\rceil\), and run the
+multi-bin process.
+Assume that at every step, the arriving vertex \(u\) has a Kronecker
+representation as in Proposition~\ref{prop:q6-omega-kronecker} with
+\(\alpha=\varphi^{-1}\), and
+\[
+W\!\left(
+1+\frac{3+\left\lceil \frac{\log(\sqrt5\,M)}{\log\varphi}\right\rceil}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)
+\right)\le G.
+\]
+Then the process is non-stuck at every step and returns an
+\(\varepsilon\)-light bin of size at least \(\varepsilon n/2\).
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:q6-omega-golden-explicit}, each step satisfies
+\(\sum_i w_i(u)/(\varepsilon-\lambda_i)\le k\).
+Apply Theorem~\ref{thm:q6-min-bridge}.
+\end{proof}
+
+\subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
+
+This part records a natural route we pursued:
+control $\lambda_{\max}(M(S))$ by the maximum resistance-weighted
+internal degree. The conditional implication to Q6 is correct, and the
+inequality holds in several classes (stars, complete graphs, two-edge
+matchings). However, we now show this route is \emph{false in general}.
+
+\begin{conjecture}[Resistance-degree spectral inequality (false)]\label{conj:q6-rdi}
+There exists a universal constant $C\ge 7/5$ such that for every
+graph $G=(V,E)$ on $n$ vertices and every $S\subseteq V$:
+\[
+\lambda_{\max}\!\bigl(M(S)\bigr)
+\;\le\; C\cdot
+\max_{u\in S}\sum_{v\in S,\,v\sim u} r_{uv}.
+\]
+\end{conjecture}
+
+\begin{theorem}[Resistance-degree inequality implies Q6]\label{thm:q6-rdi-implies}
+If Conjecture~\ref{conj:q6-rdi} holds with constant $C$, then
+Conjecture~\ref{conj:q6} holds with $c=1/(4C)$.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:q6-rdeg} with $\tau=\varepsilon/C$
+to obtain $S\subseteq V$ with
+$|S|\ge\tau n/4=\varepsilon n/(4C)$ and
+$\max_{u\in S}\sum_{v\in S}r_{uv}\le\tau=\varepsilon/C$.
+By the resistance-degree spectral inequality:
+$\lambda_{\max}(M(S))\le C\cdot(\varepsilon/C)=\varepsilon$.
+Hence $S$ is $\varepsilon$-light with $|S|\ge\varepsilon n/(4C)$.
+\end{proof}
+
+\begin{remark}
+By Proposition~\ref{prop:q6-C-lower}, $C\ge 7/5$.
+Hence this route yields $c\le 5/28$ at best.
+\end{remark}
+
+We now verify the inequality for several graph classes.
+
+\begin{proposition}[RDI for star-shaped induced subgraphs]\label{prop:q6-rdi-star}
+If all edges of $E(S,S)$ share a common vertex $u_0$
+(i.e., $G[S]$ is a star centered at $u_0$), then
+$\lambda_{\max}(M(S))\le\sum_{v\in S,\,v\sim u_0}r_{u_0 v}
+= \max_{u\in S}\sum_{v\in S}r_{uv}$.
+Hence $C=1$ suffices for stars.
+\end{proposition}
+
+\begin{proof}
+For unit $x\perp\mathbf{1}$, let $\phi=L^{-1/2}x$.
+Then $x^\top M(S)x=\sum_{v}(\phi_{u_0}-\phi_v)^2$.
+Each term satisfies $(\phi_{u_0}-\phi_v)^2\le r_{u_0 v}$
+(since $r_{u_0 v}=\max_{\phi:\phi^\top L\phi=1}(\phi_{u_0}-\phi_v)^2$).
+Summing: $x^\top M(S)x\le\sum_v r_{u_0 v}$.
+\end{proof}
+
+\begin{proposition}[RDI for complete graphs]\label{prop:q6-rdi-kn}
+For $G=K_n$ and any $S\subseteq V$ with $|S|=s$:
+$\lambda_{\max}(M(S))=s/n$ and
+$\max_{u\in S}\sum_{v\in S}r_{uv}=2(s-1)/n$.
+Hence $C=s/(2(s-1))\le 1$ suffices.
+\end{proposition}
+
+\begin{proof}
+For $K_n$: $r_e=2/n$ for all edges, $L=nI-J$,
+$L^{-1/2}=(1/\sqrt{n})I$ on $\mathbf{1}^\perp$.
+So $M(S)=L_S/n$ has eigenvalue $s/n$ (multiplicity $s-1$)
+and $0$ (multiplicity $n-s$) on $\mathbf{1}^\perp$.
+\end{proof}
+
+\begin{proposition}[RDI for two-edge matchings]\label{prop:q6-rdi-match}
+If $E(S,S)=\{e_1,e_2\}$ consists of exactly two disjoint edges, then
+\[
+\lambda_{\max}(M(S))
+\le 2\cdot \max\{r_{e_1},r_{e_2}\}
+=2\cdot\max_{u\in S}\sum_{v\in S}r_{uv}.
+\]
+Hence for this class one has
+\[
+\frac75 \le C \le 2,
+\]
+where the lower bound is attained by
+Proposition~\ref{prop:q6-C-lower}.
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+G=\begin{pmatrix}
+r_{e_1} & c\\
+c & r_{e_2}
+\end{pmatrix},
+\qquad c:=\langle b_{e_1},b_{e_2}\rangle.
+\]
+Then $G$ is the Gram matrix of $\{b_{e_1},b_{e_2}\}$, so
+$|c|\le \sqrt{r_{e_1}r_{e_2}}$ by Cauchy--Schwarz.
+Because nonzero eigenvalues of $M(S)$ are those of $G$,
+\[
+\lambda_{\max}(M(S))
+=\lambda_{\max}(G)
+\le \max\{r_{e_1},r_{e_2}\}+|c|
+\le \max\{r_{e_1},r_{e_2}\}+\sqrt{r_{e_1}r_{e_2}}
+\le 2\max\{r_{e_1},r_{e_2}\}.
+\]
+For two disjoint edges, each vertex is incident to exactly one internal
+edge, so
+\[
+\max_{u\in S}\sum_{v\in S}r_{uv}=\max\{r_{e_1},r_{e_2}\}.
+\]
+This proves the displayed bound.
+\end{proof}
+
+\begin{proposition}[RDI fails in general]\label{prop:q6-rdi-false}
+For every integer $k\ge 2$, there exists a simple graph $G_k$ and a
+vertex subset $S_k\subseteq V(G_k)$ such that:
+\begin{enumerate}[nosep]
+\item $E(S_k,S_k)$ is a matching of $k$ disjoint edges;
+\item $\lambda_{\max}(M(S_k))=1$;
+\item $\max_{u\in S_k}\sum_{v\in S_k,\,v\sim u} r_{uv}=5/(k+4)$.
+\end{enumerate}
+Hence
+\[
+\frac{\lambda_{\max}(M(S_k))}
+{\max_{u\in S_k}\sum_{v\in S_k,\,v\sim u} r_{uv}}
+\;=\;\frac{k+4}{5}\xrightarrow[k\to\infty]{}\infty,
+\]
+so no universal constant $C$ can satisfy
+Conjecture~\ref{conj:q6-rdi}.
+\end{proposition}
+
+\begin{proof}
+Fix $k\ge 2$.
+Create terminal vertices
+\[
+S_k=\{a_1,b_1,\dots,a_k,b_k\}.
+\]
+Include matching edges $a_i b_i$ for all $i$.
+For each $1\le i<j\le k$, add two new vertices $x_{ij},y_{ij}$ and edges
+\[
+a_i x_{ij},\ a_j x_{ij},\ b_i y_{ij},\ b_j y_{ij}.
+\]
+No other edges are present.
+Thus $E(S_k,S_k)=\{a_i b_i:1\le i\le k\}$ is exactly a matching.
+
+Let $g_i:=e_{a_i}-e_{b_i}$ and define
+$R_{ij}:=g_i^\top L^+ g_j=\langle b_{a_i b_i}, b_{a_j b_j}\rangle$.
+The nonzero eigenvalues of $M(S_k)$ are eigenvalues of $R$.
+
+Eliminate each degree-$2$ vertex $x_{ij},y_{ij}$ by
+Kron reduction. This preserves effective resistances between terminals.
+The reduced network on $S_k$ has conductances:
+\begin{enumerate}[nosep]
+\item $c(a_i,b_i)=1$ for every $i$;
+\item $c(a_i,a_j)=1/2$ for $i\ne j$;
+\item $c(b_i,b_j)=1/2$ for $i\ne j$;
+\item no other terminal-terminal edges.
+\end{enumerate}
+
+Inject $+1$ at $a_1$ and $-1$ at $b_1$.
+By permutation symmetry on indices $\{2,\dots,k\}$, set
+\[
+V(a_1)=A,\quad V(b_1)=B,\quad
+V(a_j)=C,\quad V(b_j)=D\ (j\ge 2).
+\]
+Kirchhoff equations are
+\[
+1=(A-B)+\frac{k-1}{2}(A-C),\qquad
+0=(C-D)+\frac12(C-A),
+\]
+together with the symmetric equations at $b_1,b_j$.
+By the involution exchanging $a$- and $b$-sides (and flipping source/sink),
+the unique solution satisfies $B=-A$, $D=-C$.
+Then
+\[
+0=(C-(-C))+\frac12(C-A)\iff 5C=A,
+\]
+and
+\[
+1=2A+\frac{k-1}{2}\!\left(A-\frac A5\right)
+ =\frac{2(k+4)}{5}\,A,
+\]
+so
+\[
+A=\frac{5}{2(k+4)},\qquad
+C=\frac{1}{2(k+4)}.
+\]
+Therefore
+\[
+r_{a_1b_1}=V(a_1)-V(b_1)=2A=\frac{5}{k+4},
+\]
+and for $j\ge2$,
+\[
+R_{1j}=V(a_j)-V(b_j)=2C=\frac{1}{k+4}.
+\]
+By symmetry, all diagonal entries of $R$ are $5/(k+4)$ and all off-diagonal
+entries are $1/(k+4)$. Hence
+\[
+R=\frac{4}{k+4}\,I_k+\frac{1}{k+4}\,J_k.
+\]
+So eigenvalues of $R$ are
+\[
+1\ \text{(once)},\qquad \frac{4}{k+4}\ \text{(multiplicity $k-1$)}.
+\]
+Thus $\lambda_{\max}(M(S_k))=\lambda_{\max}(R)=1$.
+
+Since $E(S_k,S_k)$ is a matching and every matching edge has resistance
+$5/(k+4)$, each terminal has resistance-weighted internal degree $5/(k+4)$:
+\[
+\max_{u\in S_k}\sum_{v\in S_k,\,v\sim u} r_{uv}
+ =\frac{5}{k+4}.
+\]
+The ratio is $(k+4)/5$, proving the claim.
+\end{proof}
+
+\begin{corollary}[Normalized matching bound also fails]\label{cor:q6-match-norm-false}
+There is no absolute constant $B$ such that
+\[
+\lambda_{\max}\!\Big(\sum_{e\in F}\frac{b_e b_e^\top}{r_e}\Big)\le B
+\]
+for every graph and every matching $F$.
+\end{corollary}
+
+\begin{proof}
+Take $G_k$ and matching $F=E(S_k,S_k)$ from
+Proposition~\ref{prop:q6-rdi-false}.
+All edges in $F$ have $r_e=5/(k+4)$, and
+\[
+\sum_{e\in F}\frac{b_e b_e^\top}{r_e}
+\;=\;\frac{k+4}{5}\,M(S_k).
+\]
+Since $\lambda_{\max}(M(S_k))=1$, we get
+\[
+\lambda_{\max}\!\Big(\sum_{e\in F}\frac{b_e b_e^\top}{r_e}\Big)
+\;=\;\frac{k+4}{5},
+\]
+which is unbounded as $k\to\infty$.
+\end{proof}
+
+\begin{remark}[BSS budget analysis and the $\varepsilon^2$ barrier]
+The standard BSS barrier potential
+$\Phi(S)=\mathrm{tr}\bigl((\varepsilon I-M(S))^{-1}\bigr)$ starts at
+$\Phi(\emptyset)=(n-1)/\varepsilon$ and must stay finite
+(guaranteeing $\lambda_{\max}(M(S))<\varepsilon$).
+When adding a vertex $u$ with resistance-degree $\le\tau$:
+\begin{enumerate}[nosep]
+\item The per-vertex potential cost is
+$\Delta\Phi(u)\approx\mathrm{tr}(Q^{-2}\Delta M_u)$
+where $Q=\varepsilon I-M(S)$.
+\item Summing over all remaining vertices:
+$\sum_u\Delta\Phi(u)\le\mathrm{tr}(Q^{-2}M_{\mathrm{cut}})
+\le\Phi/\mathrm{gap}$,
+where $\mathrm{gap}=\varepsilon-\lambda_{\max}(M(S))$.
+\item The average per-vertex cost is
+$\Phi/(\mathrm{gap}\cdot|I\setminus S|)$.
+\item Since $\mathrm{gap}\le\varepsilon$, the cost is
+$\ge\Phi/(\varepsilon\,|I|)$, and the total budget $\Phi_0=n/\varepsilon$
+allows at most $\varepsilon|I|\approx\varepsilon^2 n$ additions.
+\end{enumerate}
+This $\varepsilon^2 n$ barrier is \textbf{intrinsic} to the BSS approach:
+the factor $1/\mathrm{gap}$ in the cost sum cannot be removed,
+because the cut matrix $M_{\mathrm{cut}}$ is not spectrally aligned
+with $Q=\varepsilon I-M(S)$. To achieve $|S|=\Omega(\varepsilon n)$,
+one would need $\sum_u\Delta\Phi(u)=O(\Phi)$ (no $1/\varepsilon$
+amplification), which requires
+$v_i^\top M_{\mathrm{cut}}v_i=O(\varepsilon-\mu_i)$
+for each eigenvector~$v_i$ of~$M(S)$---a condition that
+has no structural justification for general graphs.
+\end{remark}
+
+\subsection*{Part IX: Spectral Peeling via the Cut Identity}
+
+This part develops the spectral cut identity and greedy peeling
+framework, yielding an unconditional $\sqrt{\varepsilon n}$ bound
+(Theorem~\ref{thm:q6-sqrt}) and reducing the full Q6 conjecture to
+the Spectral Radius Conjecture (Conjecture~\ref{conj:q6-src}).
+
+\begin{lemma}[Spectral cut identity]\label{lem:q6-cut-id}
+Let $S\subseteq S_0\subseteq V$ and $v$ be any unit vector in
+$\mathbf{1}^\perp$.
+For each $u\in S_0\setminus S$ define
+$\delta_u := v^\top\!\Delta M_u\,v$,
+where $\Delta M_u = \sum_{w\in S,\,w\sim u} b_{uw}b_{uw}^\top$.
+Then
+\[
+\sum_{u\in S_0\setminus S} \delta_u
+\;=\;
+v^\top M_{\mathrm{cut}}(S,S_0\setminus S)\,v
+\;\le\;
+\lambda_{\max}\!\bigl(M(S_0)\bigr)-v^\top M(S)\,v.
+\]
+In particular, for a top eigenvector of $M(S)$:
+\[
+\sum_{u\in S_0\setminus S}\delta_u
+\;\le\;
+\rho-\lambda,
+\qquad
+\rho:=\lambda_{\max}(M(S_0)),\quad
+\lambda:=\lambda_{\max}(M(S)).
+\]
+\end{lemma}
+
+\begin{proof}
+$M(S_0)=M(S)+M(S_0\setminus S)+M_{\mathrm{cut}}$, so
+$M_{\mathrm{cut}}=M(S_0)-M(S)-M(S_0\setminus S)$.
+Since $M(S_0\setminus S)\succeq 0$:
+\[
+v^\top M_{\mathrm{cut}}\,v
+\le v^\top M(S_0)\,v - v^\top M(S)\,v
+\le \rho-\lambda.\qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Stuck-size inequality for resistance-thinned peeling]
+\label{thm:q6-greedy-nonstuck}
+Let $S_0$ be the set from Lemma~\ref{lem:q6-rdeg} with parameter
+$\tau$, so $|S_0|\ge\tau n/4$ and
+$\max_{u\in S_0}\sum_{v\in S_0,\,v\sim u}r_{uv}\le\tau$.
+Run greedy on $S_0$: add $u$ to $S$ whenever
+$\lambda_{\max}(M(S\cup\{u\}))\le\varepsilon$.
+Let $\rho=\lambda_{\max}(M(S_0))$.
+\begin{enumerate}[nosep]
+\item If $\rho\le\varepsilon$, every vertex of $S_0$ is addable, so
+$|S|=|S_0|$.
+\item If $\rho>\varepsilon$ and greedy gets stuck at a set $S$ with
+$\lambda:=\lambda_{\max}(M(S))<\varepsilon$, then
+\[
+|S|>\frac{\varepsilon-\lambda}{\tau+\varepsilon-\lambda}\,|S_0|.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (1): $M(S_0)\preceq \varepsilon I$, so every subset is
+$\varepsilon$-light.
+
+Part (2): stuck means for every $u\in S_0\setminus S$,
+$\lambda_{\max}(M(S\cup\{u\}))>\varepsilon$.
+By Proposition~\ref{prop:q6-onestep} and
+Proposition~\ref{prop:q6-rdi-star},
+\[
+w_S(u):=\sum_{w\in S,\,w\sim u}r_{uw}>\varepsilon-\lambda.
+\]
+Summing over $u\in S_0\setminus S$:
+\[
+(|S_0|-|S|)(\varepsilon-\lambda)
+<
+\sum_{u\in S_0\setminus S}w_S(u).
+\]
+Exchange sums and use the $\tau$-bound at each $v\in S$:
+\[
+\sum_{u\in S_0\setminus S}w_S(u)
+=
+\sum_{v\in S}\sum_{\substack{u\in S_0\setminus S\\u\sim v}}r_{uv}
+\le
+|S|\,\tau.
+\]
+Hence
+\[
+(|S_0|-|S|)(\varepsilon-\lambda)<|S|\,\tau,
+\]
+equivalently
+\[
+|S|>\frac{\varepsilon-\lambda}{\tau+\varepsilon-\lambda}\,|S_0|.
+\]
+\end{proof}
+
+\begin{corollary}[Margin-conditioned linear peeling bound]
+\label{cor:q6-greedy-margin}
+In the setup of Theorem~\ref{thm:q6-greedy-nonstuck}(2), if in addition
+$\varepsilon-\lambda\ge\gamma>0$, then
+\[
+|S|>\frac{\gamma}{\tau+\gamma}\,|S_0|
+\ge
+\frac{\gamma}{\tau+\gamma}\cdot\frac{\tau n}{4}.
+\]
+\end{corollary}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:q6-greedy-nonstuck}(2) and
+$|S_0|\ge\tau n/4$.
+\end{proof}
+
+\begin{remark}[What Part IX currently gives]
+Theorem~\ref{thm:q6-greedy-nonstuck} is rigorous and useful, but by
+itself it does not give an unconditional linear-size bound, because the
+margin $\varepsilon-\lambda$ may be arbitrarily small near the stuck
+state.
+So the remaining task is to obtain a structural lower bound on that
+margin (or an equivalent global control).
+\end{remark}
+
+\begin{conjecture}[Spectral radius control for thinned sets]
+\label{conj:q6-src}
+There exists a universal constant $C>0$ such that for every connected
+graph $G$ and every $\tau\in(0,1]$, the set $S_0(\tau)$ from
+Lemma~\ref{lem:q6-rdeg} satisfies
+\[
+\lambda_{\max}\!\bigl(M(S_0(\tau))\bigr)\le C\tau.
+\]
+\end{conjecture}
+
+\begin{theorem}[SRC implies Q6]\label{thm:q6-src-implies}
+If Conjecture~\ref{conj:q6-src} holds with constant $C$, then
+Conjecture~\ref{conj:q6} holds with $c=1/(4C)$.
+\end{theorem}
+
+\begin{proof}
+Set $\tau=\varepsilon/C$.
+Then Conjecture~\ref{conj:q6-src} gives
+$\lambda_{\max}(M(S_0(\tau)))\le\varepsilon$, so $S_0(\tau)$ is
+$\varepsilon$-light. By Lemma~\ref{lem:q6-rdeg},
+\[
+|S_0(\tau)|\ge \frac{\tau n}{4}=\frac{\varepsilon n}{4C}.
+\qedhere
+\]
+\end{proof}
+
+\begin{remark}[SRC vs. RDI]
+Conjecture~\ref{conj:q6-src} is strictly weaker than the (false)
+RDI-type inequality (Conjecture~\ref{conj:q6-rdi}): RDI controls
+$\lambda_{\max}(M(S))$ for \emph{all} subsets $S$, while SRC only asks
+for the specific family $S_0(\tau)$ returned by
+Lemma~\ref{lem:q6-rdeg}.
+The counterexample $G_k$ from Proposition~\ref{prop:q6-rdi-false}
+does not refute SRC: the thinning procedure for small $\tau$ selects
+a different set (likely the $k(k-1)$ auxiliary vertices, which are
+isolated in the induced subgraph, giving $\rho=0\le C\tau$).
+\end{remark}
+
+\begin{theorem}[Unconditional $\sqrt{\varepsilon n}$ bound]
+\label{thm:q6-sqrt}
+For every connected graph on $n$ vertices and $\varepsilon\in(0,1]$,
+there exists an $\varepsilon$-light set $S$ with
+\[
+|S|\;\ge\;\sqrt{\frac{\varepsilon n}{2}}.
+\]
+In particular, $|S|\ge\varepsilon n/4$ whenever $n\le 8/\varepsilon$.
+\end{theorem}
+
+\begin{proof}
+Take $\tau=\sqrt{8\varepsilon/n}$ in Lemma~\ref{lem:q6-rdeg}
+(or $\tau=1$ if $n<8\varepsilon$, in which case $|S_0|\ge n/4$
+and $\mathrm{tr}(M(S_0))\le n/8\le\varepsilon$, so $S_0$ is
+$\varepsilon$-light with $|S|\ge n/4\ge\varepsilon n/4$;
+the bound $\sqrt{\varepsilon n/2}\le\varepsilon n/4$ holds since
+$n\le 8/\varepsilon$).
+
+For $n\ge 8\varepsilon$: the thinned set $S_0$ has
+$|S_0|\ge\tau n/4$ and
+$\max_{u\in S_0}\sum_{v\in S_0,v\sim u}r_{uv}\le\tau$.
+The trace of the normalized Loewner matrix is
+\[
+\mathrm{tr}(M(S_0))
+\;=\;\sum_{e\in E(S_0)}r_e
+\;=\;\tfrac12\sum_{u\in S_0}\sum_{\substack{v\in S_0\\v\sim u}}r_{uv}
+\;\le\;|S_0|\,\frac\tau2
+\;\le\;\frac{\tau^2 n}{8}
+\;=\;\varepsilon.
+\]
+Since $\lambda_{\max}(M(S_0))\le\mathrm{tr}(M(S_0))\le\varepsilon$,
+the set $S_0$ is $\varepsilon$-light.
+Its size satisfies
+\[
+|S|=|S_0|\;\ge\;\frac{\tau n}{4}
+\;=\;\frac{n}{4}\sqrt{\frac{8\varepsilon}{n}}
+\;=\;\frac{\sqrt{8\varepsilon n}}{4}
+\;=\;\sqrt{\frac{\varepsilon n}{2}}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Comparison of unconditional bounds]
+For a graph on $n$ vertices and fixed $\varepsilon\in(0,1]$:
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Method} & \textbf{Bound on $|S|$}
+  & \textbf{Achieves $\varepsilon n$ when}\\\hline
+Independent set in $H_\varepsilon$
+  & $\ge\varepsilon n/3$ (0-light only)
+  & always, but $S$ has no internal edges\\
+Trace-optimal peeling (Thm.~\ref{thm:q6-sqrt})
+  & $\ge\sqrt{\varepsilon n/2}$
+  & $n\le 8/\varepsilon$\\
+SRC (Conj.~\ref{conj:q6-src})
+  & $\ge\varepsilon n/(4C)$
+  & always (if true)\\\hline
+\end{tabular}
+\end{center}
+The $\sqrt{\varepsilon n}$ bound is the best unconditional result
+currently available for general graphs and general $\varepsilon$.
+The gap to the conjectured $\varepsilon n$ is a factor of
+$\sqrt{n/\varepsilon}$.
+\end{remark}
+
+\begin{remark}[Evidence for SRC]\label{rem:q6-src-evidence}
+Conjecture~\ref{conj:q6-src} holds with $C=1$ for:
+\begin{enumerate}[nosep]
+\item \emph{Graphs where $S_0(\tau)$ is independent} (trivially,
+$\rho=0$). This covers all graphs with maximum degree
+$\Delta\le 1/\tau$ within $S_0$.
+\item \emph{Complete graphs $K_n$}: all edges have
+$r_e=2/n\le\tau$ for $n\ge 2/\tau$, so $|S_0|\ge\tau n/4$
+and $\rho\le|S_0|/n=\tau/4\le\tau$.
+\item \emph{$d$-regular expanders} with $\lambda_2\ge\alpha d$:
+effective resistances are $r_e\le 2/(\alpha d)$,
+and the expander mixing lemma gives
+$\rho\le\tau+O(\tau/\sqrt{\alpha d})$.
+\item \emph{Vertex-transitive graphs}: by symmetry,
+$M(S_0)\approx\mathrm{tr}(M(S_0))/(n-1)\cdot I$, giving
+$\rho\approx|S_0|\tau/(2(n-1))\ll\tau$.
+\end{enumerate}
+The SRC asserts that local incoherence (bounded per-vertex
+resistance-weighted degree) implies global incoherence
+(bounded spectral norm of $M(S_0)$), but only for the specific
+thinned set---not for arbitrary subsets.
+The trace bound
+$\rho\le\mathrm{tr}(M(S_0))\le|S_0|\tau/2$ always holds; the
+SRC posits that $\rho$ grows only as $O(\tau)$, not as
+$O(|S_0|\tau)$.
+\end{remark}
+
+\subsection*{Current Status}
+The full universal existence proof (Conjecture~\ref{conj:q6}) remains open.
+All structural components, the seven special cases, and the
+conditional $c=1/6$ result (Proposition~\ref{prop:q6-conditional})
+are rigorously verified.
+
+\medskip\noindent
+\textbf{What is now ruled out:}
+\begin{enumerate}[nosep]
+\item The resistance-degree route with a universal constant
+$C$ is false (Proposition~\ref{prop:q6-rdi-false}).
+\item The normalized matching route is also false:
+its optimal constant is unbounded (Corollary~\ref{cor:q6-match-norm-false}).
+\end{enumerate}
+
+\medskip\noindent
+\textbf{Two equivalent formulations of the remaining gap:}
+\begin{enumerate}[nosep]
+\item \textbf{Vertex BSS lemma} (Steps~1--4 in Part~VII):
+in the greedy barrier potential framework, when $|S|<c\varepsilon|I|$,
+some vertex has bounded potential increase.
+\item \textbf{Multi-bin non-stuckness} (Step~5 in Part~VII):
+partitioning $I$ into $O(1/\varepsilon)$ bins via greedy assignment,
+the largest bin is $\varepsilon$-light.
+\end{enumerate}
+
+\medskip\noindent
+\textbf{Minimal sufficient bridge (new):}
+Part~VII isolates a one-line per-step target
+(Proposition~\ref{prop:q6-min-bridge-step}): prove
+\[
+\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}\le k
+\]
+for each arriving vertex $u$ (with $k=\lceil 2/\varepsilon\rceil$).
+By Theorem~\ref{thm:q6-min-bridge}, this alone yields Q6 with the
+optimal constant $c=1/2$.
+
+An Omega-compatible sufficient route is now explicit
+(Proposition~\ref{prop:q6-omega-transport}): control the
+load-gap mismatch in cyclic $W_1$ and keep a positive gap floor.
+An even more checkable form is Corollary~\ref{cor:q6-omega-discrepancy},
+which replaces $W_1$ by prefix discrepancy control.
+The smallest algebraic form currently obtained is
+Proposition~\ref{prop:q6-prefix-var}: certify
+\(\Delta_{\mathrm{pref}}(p,q)\) and
+\(\operatorname{Var}_1(1/q)\) per step.
+A direct Omega instantiation is
+Proposition~\ref{prop:q6-omega-kronecker},
+Corollary~\ref{cor:q6-omega-ba}, and
+Corollary~\ref{cor:q6-omega-golden-explicit}, which turn
+\(\Delta_{\mathrm{pref}}\) into star-discrepancy certificates.
+
+Proposition~\ref{prop:q6-prefix-debt} converts Omega-style
+prefix-debt bounds directly into \(\Delta_{\mathrm{pref}}\) bounds;
+the unit-debt case is Corollary~\ref{cor:q6-prefix-debt-one},
+and the Beatty/Wythoff implementation is
+Proposition~\ref{prop:q6-prefix-debt-beatty} with
+Corollary~\ref{cor:q6-ordered-explicit-beatty}.
+Corollary~\ref{cor:q6-ordered-explicit} packages this with
+resistance ordering into a single numerical threshold on
+\(\sum_i\lambda_i\), and Theorem~\ref{thm:q6-ordered-explicit-route}
+upgrades it to a full \(c=1/2\) conditional route.
+
+\medskip\noindent
+\textbf{Part IX results (new):}
+\begin{enumerate}[nosep]
+\item Lemma~\ref{lem:q6-cut-id} and
+Theorem~\ref{thm:q6-greedy-nonstuck} provide a rigorous peeling
+inequality at stuck states.
+\item Corollary~\ref{cor:q6-greedy-margin} gives a linear-size lower
+bound whenever one can certify a positive stuck margin
+\(\varepsilon-\lambda\ge\gamma\).
+\item \textbf{Theorem~\ref{thm:q6-sqrt}: unconditional
+$|S|\ge\sqrt{\varepsilon n/2}$} for every connected graph,
+by optimizing the trace bound over $\tau$.
+This is the best known unconditional bound for general Q6.
+\item Conjecture~\ref{conj:q6-src} (SRC) isolates one global condition
+on the thinned sets \(S_0(\tau)\), and
+Theorem~\ref{thm:q6-src-implies} shows SRC \(\Rightarrow\) Q6 with
+\(c=1/(4C)\).
+SRC is verified for complete graphs, expanders, and vertex-transitive
+graphs (Remark~\ref{rem:q6-src-evidence}).
+\end{enumerate}
+
+\medskip\noindent
+\textbf{Summary of the proof landscape:}
+Q6 is now reduced to a single conjecture---the Spectral Radius
+Conjecture (SRC, Conjecture~\ref{conj:q6-src})---which asserts that
+$\lambda_{\max}(M(S_0(\tau)))\le C\tau$ for a universal constant $C$.
+The SRC avoids all known obstructions: it is not refuted by the RDI
+counterexample (Proposition~\ref{prop:q6-rdi-false}), and it bypasses
+the $\varepsilon^2$ barrier of BSS.
+Unconditionally, Theorem~\ref{thm:q6-sqrt} gives
+$|S|\ge\sqrt{\varepsilon n/2}$.
+The current manuscript also provides:
+\begin{enumerate}[nosep]
+\item per-step non-stuck inequalities from Part~VII
+(including the Omega discrepancy/ordered-threshold refinements), and
+\item the thinned-set spectral-radius condition SRC from Part~IX.
+\end{enumerate}

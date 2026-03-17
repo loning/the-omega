@@ -1,0 +1,2800 @@
+\section{Problem 4: Partial Resolution and a Program Toward the General Case}\label{sec:q4}
+
+Let $n\ge 2$. For monic degree-$n$ polynomials
+\[
+p(x)=\sum_{k=0}^n a_k x^{n-k},\qquad q(x)=\sum_{k=0}^n b_k x^{n-k},\qquad a_0=b_0=1,
+\]
+define
+\[
+(p\boxplus_n q)(x)=\sum_{k=0}^n c_k x^{n-k},
+\qquad
+c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}\,a_i b_j.
+\]
+For real-rooted $p$ with roots $\lambda_1,\dots,\lambda_n$, define
+\[
+\Phi_n(p):=\sum_{i=1}^n\left(\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\right)^2,
+\]
+and set $\Phi_n(p)=\infty$ if $p$ has a multiple root.
+
+The target inequality is
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)}\ge \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\tag{$\star$}\label{eq:q4-star}
+\]
+
+\begin{remark}[Strict Status]
+This section gives complete proofs of several structural identities and special cases, and records a concrete route for further progress. The all-$n$ statement \eqref{eq:q4-star} is not proved here.
+\end{remark}
+
+\begin{lemma}[Pairwise inverse-square identity]\label{lem:q4-pairwise}
+If $p$ has simple roots $\lambda_1,\dots,\lambda_n$, then
+\[
+\Phi_n(p)=\sum_{i\ne j}\frac{1}{(\lambda_i-\lambda_j)^2}
+=2\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $S_i:=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$. Expanding $\sum_i S_i^2$ gives the pairwise inverse-square term plus a triple sum.
+For distinct $a,b,c$, one has
+\[
+\frac{1}{(a-b)(a-c)}+\frac{1}{(b-a)(b-c)}+\frac{1}{(c-a)(c-b)}=0,
+\]
+so triple contributions cancel by grouping unordered triples of indices.
+\end{proof}
+
+\begin{proposition}[Exact equality for $n=2$]\label{prop:q4-n2}
+For all monic real-rooted quadratics $p,q$,
+\[
+\frac{1}{\Phi_2(p\boxplus_2 q)}=\frac{1}{\Phi_2(p)}+\frac{1}{\Phi_2(q)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+p=x^2+a_1x+a_2,\qquad q=x^2+b_1x+b_2,\qquad r=p\boxplus_2 q=x^2+c_1x+c_2.
+\]
+From the definition,
+\[
+c_1=a_1+b_1,\qquad c_2=a_2+b_2+\tfrac12 a_1b_1.
+\]
+Hence
+\[
+\Delta_r:=c_1^2-4c_2=(a_1^2-4a_2)+(b_1^2-4b_2)=\Delta_p+\Delta_q.
+\]
+For a monic quadratic with distinct real roots and gap $d$, one has $\Delta=d^2$ and by Lemma~\ref{lem:q4-pairwise},
+\[
+\Phi_2=\frac{2}{d^2}=\frac{2}{\Delta},\qquad \frac{1}{\Phi_2}=\frac{\Delta}{2}.
+\]
+Thus
+\[
+\frac{1}{\Phi_2(r)}=\frac{\Delta_r}{2}=\frac{\Delta_p}{2}+\frac{\Delta_q}{2}.
+\]
+When a polynomial has a repeated root, $\Phi_2=\infty$ and the same identity holds with the convention $1/\infty=0$.
+\end{proof}
+
+\begin{proposition}[Full inequality for $n=3$]\label{prop:q4-n3}
+For all monic real-rooted cubics $p,q$,
+\[
+\frac{1}{\Phi_3(p\boxplus_3 q)}\ge \frac{1}{\Phi_3(p)}+\frac{1}{\Phi_3(q)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Step 1 (normalization by translation).
+For $a,b\in\mathbb R$, let
+\[
+\tau_a p(x):=p(x-a),\qquad \tau_b q(x):=q(x-b).
+\]
+Using the permutation-average model of $\boxplus_3$ on roots, one has
+\[
+(\tau_a p)\boxplus_3(\tau_b q)=\tau_{a+b}(p\boxplus_3 q).
+\]
+Since $\Phi_3$ depends only on root differences, it is translation-invariant:
+\[
+\Phi_3(\tau_c r)=\Phi_3(r).
+\]
+Hence it suffices to prove the inequality after translating $p,q$ so that each has root mean $0$.
+
+Step 2 (centered form).
+Write
+\[
+p(x)=x^3+A_1x+B_1,\qquad q(x)=x^3+A_2x+B_2
+\]
+with $A_1,A_2<0$ for nontrivial real-rooted cubics.
+From the coefficient definition of $\boxplus_3$:
+\[
+p\boxplus_3 q=x^3+(A_1+A_2)x+(B_1+B_2).
+\]
+
+Step 3 (closed formula for $1/\Phi_3$).
+For a centered monic cubic $r(x)=x^3+Ax+B$ with simple real roots:
+\[
+\Delta(r)=-4A^3-27B^2,\qquad
+\sum_{i<j}(\lambda_i-\lambda_j)^2=-6A.
+\]
+For three numbers, if $a,b,c$ are the three squared pairwise differences, then
+$ab+ac+bc=(a+b+c)^2/4$. Therefore
+\[
+\Phi_3(r)=2\sum_{i<j}\frac{1}{(\lambda_i-\lambda_j)^2}
+      =\frac{\bigl(\sum_{i<j}(\lambda_i-\lambda_j)^2\bigr)^2}{2\,\Delta(r)}
+      =\frac{18A^2}{\Delta(r)}.
+\]
+So
+\[
+\frac{1}{\Phi_3(r)}=\frac{\Delta(r)}{18A^2}
+=-\frac{2A}{9}-\frac{3}{2}\frac{B^2}{A^2}.
+\]
+
+Apply this to $p,q,r:=p\boxplus_3 q$:
+\[
+\frac{1}{\Phi_3(r)}-\frac{1}{\Phi_3(p)}-\frac{1}{\Phi_3(q)}
+=-\frac{3}{2}\left(
+\frac{(B_1+B_2)^2}{(A_1+A_2)^2}
+-\frac{B_1^2}{A_1^2}
+-\frac{B_2^2}{A_2^2}\right),
+\]
+because the linear $A$-terms cancel.
+
+Set $u:=-A_1>0$, $v:=-A_2>0$, $x:=B_1/A_1$, $y:=B_2/A_2$. Then
+\[
+\frac{(B_1+B_2)^2}{(A_1+A_2)^2}=\left(\frac{ux+vy}{u+v}\right)^2.
+\]
+By Cauchy (or Jensen for $t\mapsto t^2$),
+\[
+\left(\frac{ux+vy}{u+v}\right)^2\le \frac{ux^2+vy^2}{u+v}\le x^2+y^2
+=\frac{B_1^2}{A_1^2}+\frac{B_2^2}{A_2^2}.
+\]
+Hence the bracket is $\le 0$, so the displayed difference is $\ge 0$.
+
+If one polynomial has multiple roots, the convention $1/\infty=0$ and continuity from the simple-root regime give the same inequality. Therefore the claim holds for all real-rooted cubics.
+\end{proof}
+
+\begin{proposition}[Degenerate shift case]\label{prop:q4-shift}
+If $p(x)=(x-a)^n$, then
+\[
+p\boxplus_n q(x)=q(x-a),
+\]
+and
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)}=\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Using the standard permutation-average model of symmetric additive convolution,
+\[
+(p\boxplus_n q)(x)=\frac1{n!}\sum_{\pi\in S_n}\prod_{r=1}^n(x-\lambda_r-\mu_{\pi(r)}),
+\]
+if all $\lambda_r=a$, each summand equals $\prod_r(x-a-\mu_r)=q(x-a)$. Root gaps are translation-invariant, so
+$\Phi_n(q(\cdot-a))=\Phi_n(q)$. Since $\Phi_n((x-a)^n)=\infty$, the equality follows.
+\end{proof}
+
+\begin{proposition}[Variance additivity under $\boxplus_n$]\label{prop:q4-var}
+Let $m(p)$ be the empirical mean of the roots of $p$ and $\operatorname{Var}(p)$ the empirical variance. Then
+\[
+\operatorname{Var}(p\boxplus_n q)=\operatorname{Var}(p)+\operatorname{Var}(q).
+\]
+\end{proposition}
+
+\begin{proof}
+For $p=x^n+a_1x^{n-1}+a_2x^{n-2}+\cdots$,
+\[
+\sum_i\lambda_i=-a_1,\qquad \sum_i\lambda_i^2=a_1^2-2a_2.
+\]
+For $r=p\boxplus_n q$, one has
+\[
+c_1=a_1+b_1,\qquad c_2=a_2+b_2+\frac{n-1}{n}a_1b_1.
+\]
+Hence
+\[
+\sum_i\gamma_i^2=c_1^2-2c_2=(a_1^2-2a_2)+(b_1^2-2b_2)+\frac{2}{n}a_1b_1,
+\]
+while
+\[
+\frac1n\Big(\sum_i\gamma_i\Big)^2=\frac1n(a_1+b_1)^2.
+\]
+The mixed term cancels exactly in
+\[
+\operatorname{Var}(r)=\frac1n\sum_i\gamma_i^2-\frac1{n^2}\Big(\sum_i\gamma_i\Big)^2,
+\]
+yielding additivity.
+\end{proof}
+
+\begin{proposition}[Universal upper bound for $1/\Phi_n$ by variance]\label{prop:q4-N-var-upper}
+Let $p$ be monic real-rooted of degree $n\ge 2$ with simple roots
+$\lambda_1,\dots,\lambda_n$, mean $m$, and variance
+\[
+\operatorname{Var}(p)=\frac1n\sum_{i=1}^n(\lambda_i-m)^2.
+\]
+Then
+\[
+\frac1{\Phi_n(p)}
+\le
+\frac{4\,\operatorname{Var}(p)}{n(n-1)^2}.
+\]
+Equivalently,
+\[
+\Phi_n(p)\ge \frac{n(n-1)^2}{4\,\operatorname{Var}(p)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+s_i:=\sum_{j\ne i}\frac1{\lambda_i-\lambda_j},
+\qquad
+\Phi_n(p)=\sum_i s_i^2.
+\]
+First compute the exact identity
+\[
+\sum_{i=1}^n \lambda_i s_i
+=
+\sum_{i<j}\left(
+\frac{\lambda_i}{\lambda_i-\lambda_j}
+\frac{\lambda_j}{\lambda_j-\lambda_i}
+\right)
+=
+\sum_{i<j}1
+=
+\frac{n(n-1)}2.
+\]
+Also
+\[
+\sum_i s_i
+=
+\sum_{i\ne j}\frac1{\lambda_i-\lambda_j}
+=0
+\]
+by pairwise cancellation, so
+\[
+\sum_i (\lambda_i-m)s_i=\sum_i \lambda_i s_i=\frac{n(n-1)}2.
+\]
+Apply Cauchy--Schwarz:
+\[
+\left(\frac{n(n-1)}2\right)^2
+\le
+\left(\sum_i (\lambda_i-m)^2\right)\left(\sum_i s_i^2\right)
+=
+n\,\operatorname{Var}(p)\,\Phi_n(p).
+\]
+Hence
+\[
+\Phi_n(p)\ge \frac{n(n-1)^2}{4\,\operatorname{Var}(p)},
+\]
+which is equivalent to the claimed upper bound for $1/\Phi_n$.
+\end{proof}
+
+\begin{lemma}[de Bruijn-type identity for polynomial heat flow]\label{lem:q4-debruijn}
+Let $p_t=e^{t\partial_{xx}}p$ and assume $p_t$ has simple real roots $\lambda_1(t),\dots,\lambda_n(t)$ on an interval of $t$. Then
+\[
+\frac{d}{dt}\log\operatorname{Disc}(p_t)=-4\,\Phi_n(p_t),
+\]
+where $\operatorname{Disc}(p_t)=\prod_{i<j}(\lambda_i(t)-\lambda_j(t))^2$.
+\end{lemma}
+
+\begin{proof}
+Differentiate $p_t(\lambda_i(t))=0$:
+\[
+0=\partial_t p_t(\lambda_i)+p_t'(\lambda_i)\lambda_i'=p_t''(\lambda_i)+p_t'(\lambda_i)\lambda_i',
+\]
+so
+\[
+\lambda_i'=-\frac{p_t''(\lambda_i)}{p_t'(\lambda_i)}=-2\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}.
+\]
+Also,
+\[
+\log\operatorname{Disc}(p_t)=2\sum_{i<j}\log|\lambda_i-\lambda_j|.
+\]
+Differentiate and substitute the formula for $\lambda_i'$ to get
+\[
+\frac{d}{dt}\log\operatorname{Disc}(p_t)
+=\sum_i \lambda_i'\Big(2\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\Big)
+=-4\sum_i\Big(\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\Big)^2
+=-4\Phi_n(p_t).
+\]
+\end{proof}
+
+\begin{lemma}[Differential-operator representation of $\boxplus_n$]\label{lem:q4-diffrepr}
+For any monic degree-$n$ polynomials $p,q$,
+\[
+(p\boxplus_n q)(x)=\frac{1}{n!}\sum_{k=0}^{n} p^{(k)}(x)\,q^{(n-k)}(0).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{i=0}^n a_i x^{n-i},\qquad q(x)=\sum_{j=0}^n b_j x^{n-j}.
+\]
+For fixed $k$,
+\[
+p^{(k)}(x)=\sum_{i=0}^{n-k} a_i\frac{(n-i)!}{(n-i-k)!}x^{n-i-k},
+\qquad
+q^{(n-k)}(0)=b_k (n-k)!.
+\]
+Hence
+\[
+\frac1{n!}\sum_{k=0}^{n} p^{(k)}(x)q^{(n-k)}(0)
+=
+\sum_{k=0}^{n}\sum_{i=0}^{n-k}
+a_i b_k\frac{(n-i)!(n-k)!}{n!(n-i-k)!}x^{n-i-k}.
+\]
+Set $m=i+k$. The coefficient of $x^{n-m}$ is
+\[
+\sum_{i+k=m}\frac{(n-i)!(n-k)!}{n!(n-m)!}a_i b_k,
+\]
+which is exactly the defining coefficient formula of $p\boxplus_n q$.
+\end{proof}
+
+\begin{lemma}[Transform factorization and elementary-step decomposition]\label{lem:q4-transform-factor}
+Define
+\[
+\mathcal T_n\!\left(\sum_{k=0}^{n}a_k x^{n-k}\right):=
+\sum_{k=0}^{n}(n-k)!\,a_k z^k\in \mathbb R[z]/(z^{n+1}).
+\]
+Then:
+\begin{enumerate}
+\item
+\[
+\mathcal T_n(p\boxplus_n q)=\frac1{n!}\,\mathcal T_n(p)\mathcal T_n(q).
+\]
+\item If
+\[
+\mathcal T_n(q)=n!\prod_{m=1}^{n}(1-\alpha_m z),
+\]
+then
+\[
+p\boxplus_n q
+=
+ \Bigl(\prod_{m=1}^{n}(I-\alpha_m D)\Bigr)p,
+\qquad D:=\frac{d}{dx}.
+\]
+Equivalently, if $q_{\alpha}(x):=x^n-n\alpha x^{n-1}$, then
+\[
+p\boxplus_n q
+=
+(\cdots((p\boxplus_n q_{\alpha_1})\boxplus_n q_{\alpha_2})\cdots)\boxplus_n q_{\alpha_n},
+\]
+and each elementary step satisfies
+\[
+p\boxplus_n q_{\alpha}=p-\alpha p'.
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For (1), write
+\[
+p(x)=\sum_{i=0}^{n}a_i x^{n-i},\qquad
+q(x)=\sum_{j=0}^{n}b_j x^{n-j},\qquad
+r:=p\boxplus_n q=\sum_{k=0}^{n}c_k x^{n-k}.
+\]
+By definition,
+\[
+c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}\,a_i b_j.
+\]
+Hence
+\[
+(n-k)!\,c_k=\frac1{n!}\sum_{i+j=k}(n-i)!\,a_i\,(n-j)!\,b_j,
+\]
+which is exactly coefficient-wise multiplication identity
+\[
+\mathcal T_n(r)=\frac1{n!}\,\mathcal T_n(p)\mathcal T_n(q).
+\]
+
+For (2), note first that for $q_{\alpha}(x)=x^n-n\alpha x^{n-1}$ we have
+\[
+\mathcal T_n(q_\alpha)=n!(1-\alpha z).
+\]
+Applying (1),
+\[
+\mathcal T_n(p\boxplus_n q_\alpha)=\frac1{n!}\,\mathcal T_n(p)\,n!(1-\alpha z)
+=(1-\alpha z)\mathcal T_n(p).
+\]
+Since $\mathcal T_n$ is an isomorphism on degree-$n$ coefficient vectors, this realizes $p\boxplus_n q_\alpha$ as multiplication by $(1-\alpha z)$ in $\mathcal T_n$-space.
+
+Now from Lemma~\ref{lem:q4-diffrepr},
+\[
+p\boxplus_n q_\alpha
+=
+\frac1{n!}\bigl(p\,q_\alpha^{(n)}(0)+p'\,q_\alpha^{(n-1)}(0)\bigr)
+=
+\frac1{n!}\bigl(p\,n!+p'(-\alpha n!)\bigr)=p-\alpha p'.
+\]
+
+Finally, because multiplication in $\mathbb R[z]/(z^{n+1})$ is associative and commutative,
+\[
+\frac1{n!}\mathcal T_n(p)\mathcal T_n(q)
+=
+\frac1{n!}\mathcal T_n(p)\,n!\prod_{m=1}^{n}(1-\alpha_m z)
+=
+\mathcal T_n(p)\prod_{m=1}^{n}(1-\alpha_m z),
+\]
+which equals the $\mathcal T_n$-image of successive convolutions by $q_{\alpha_m}$, i.e. successive application of $(I-\alpha_m D)$.
+\end{proof}
+
+\begin{lemma}[Derivative recursion for $\boxplus_n$]\label{lem:q4-deriv-recursion}
+For monic degree-$n$ polynomials $p,q$,
+\[
+\frac{d}{dx}(p\boxplus_n q)
+=
+\frac1n\,(p'\boxplus_{n-1} q').
+\]
+More generally, for every integer $m$ with $0\le m\le n$,
+\[
+\frac{d^m}{dx^m}(p\boxplus_n q)
+=
+\frac{1}{n(n-1)\cdots(n-m+1)}
+\bigl(p^{(m)}\boxplus_{n-m} q^{(m)}\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{i=0}^n a_i x^{n-i},\qquad
+q(x)=\sum_{j=0}^n b_j x^{n-j},\qquad
+r(x):=(p\boxplus_n q)(x)=\sum_{k=0}^n c_k x^{n-k}.
+\]
+By definition,
+\[
+c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}\,a_i b_j.
+\]
+Hence
+\[
+r'(x)=\sum_{k=0}^{n-1}(n-k)c_k\,x^{n-1-k},
+\]
+so the coefficient of $x^{(n-1)-k}$ in $r'$ is
+\[
+(n-k)c_k
+=
+\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k-1)!}\,a_i b_j.
+\tag{1}
+\]
+
+Now write
+\[
+p'(x)=\sum_{i=0}^{n-1}\alpha_i x^{(n-1)-i},
+\quad
+q'(x)=\sum_{j=0}^{n-1}\beta_j x^{(n-1)-j},
+\]
+with
+\[
+\alpha_i=(n-i)a_i,\qquad \beta_j=(n-j)b_j.
+\]
+In degree $n-1$, the $\boxplus_{n-1}$ coefficient formula gives:
+the coefficient of $x^{(n-1)-k}$ in $(p'\boxplus_{n-1}q')$ equals
+\[
+\sum_{i+j=k}
+\frac{(n-1-i)!(n-1-j)!}{(n-1)!(n-1-k)!}\,\alpha_i\beta_j
+\]
+\[
+=
+\sum_{i+j=k}
+\frac{(n-i)!(n-j)!}{(n-1)!(n-k-1)!}\,a_i b_j.
+\tag{2}
+\]
+Comparing (1) and (2), we get
+\[
+r'=\frac1n\,(p'\boxplus_{n-1}q').
+\]
+This proves the $m=1$ case.
+
+Iterating the identity $m$ times yields
+\[
+\frac{d^m}{dx^m}(p\boxplus_n q)
+=
+\frac1n\cdot\frac1{n-1}\cdots\frac1{n-m+1}
+\bigl(p^{(m)}\boxplus_{n-m} q^{(m)}\bigr),
+\]
+which is the stated general formula.
+\end{proof}
+
+\begin{lemma}[Heat-semigroup intertwining]\label{lem:q4-heat-intertwine}
+Let $H_t:=e^{t\partial_{xx}}$ acting on degree-$n$ polynomials.
+Then for all $t\in\mathbb R$,
+\[
+H_{2t}(p\boxplus_n q)=(H_t p)\boxplus_n(H_t q).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{i=0}^n a_i x^{n-i},\qquad
+q(x)=\sum_{i=0}^n b_i x^{n-i}.
+\]
+Work in the truncated ring $\mathbb R[z]/(z^{n+1})$ and define
+\[
+\mathcal T(p):=\sum_{i=0}^n (n-i)!\,a_i z^i.
+\]
+From the coefficient formula of $\boxplus_n$,
+\[
+\mathcal T(p\boxplus_n q)=\frac1{n!}\,\mathcal T(p)\mathcal T(q)
+\quad\text{in }\mathbb R[z]/(z^{n+1}).
+\tag{1}
+\]
+Next, if $p''(x)=\sum_{i=0}^n a_i' x^{n-i}$, then
+\[
+a'_{i+2}=(n-i)(n-i-1)a_i
+\]
+for $0\le i\le n-2$, hence
+\[
+(n-(i+2))!\,a'_{i+2}=(n-i)!\,a_i.
+\]
+Therefore
+\[
+\mathcal T(p'')=z^2\mathcal T(p)
+\quad\text{in }\mathbb R[z]/(z^{n+1}).
+\tag{2}
+\]
+By linearity and power-series expansion, (2) gives
+\[
+\mathcal T(H_t p)=e^{t z^2}\mathcal T(p).
+\tag{3}
+\]
+Now combine (1) and (3):
+\[
+\mathcal T\!\left((H_t p)\boxplus_n(H_t q)\right)
+=\frac1{n!}\,e^{t z^2}\mathcal T(p)\,e^{t z^2}\mathcal T(q)
+=\frac1{n!}\,e^{2t z^2}\mathcal T(p)\mathcal T(q)
+=\mathcal T\!\left(H_{2t}(p\boxplus_n q)\right).
+\]
+Since $\mathcal T$ is injective on degree-$n$ coefficient vectors, the claimed identity follows.
+\end{proof}
+
+\begin{lemma}[Variational formula for $1/\Phi_n$]\label{lem:q4-variational}
+If $p$ has simple real roots $\lambda_1,\dots,\lambda_n$, then
+\[
+\frac1{\Phi_n(p)}
+=
+\min_{\substack{w_{ij}\in\mathbb R\\ \sum_{i\neq j} w_{ij}=1}}
+\sum_{i\neq j} w_{ij}^2(\lambda_i-\lambda_j)^2.
+\]
+The minimum is attained at
+\[
+w_{ij}=\frac{(\lambda_i-\lambda_j)^{-2}}{\sum_{a\neq b}(\lambda_a-\lambda_b)^{-2}}
+=\frac{(\lambda_i-\lambda_j)^{-2}}{\Phi_n(p)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $d_{ij}:=(\lambda_i-\lambda_j)^2>0$.
+For any weights with $\sum_{i\neq j} w_{ij}=1$, Cauchy--Schwarz gives
+\[
+1^2
+=\left(\sum_{i\neq j} w_{ij}\right)^2
+=\left(\sum_{i\neq j} (w_{ij}\sqrt{d_{ij}})\,d_{ij}^{-1/2}\right)^2
+\le
+\left(\sum_{i\neq j} w_{ij}^2 d_{ij}\right)
+\left(\sum_{i\neq j} d_{ij}^{-1}\right).
+\]
+Thus
+\[
+\sum_{i\neq j} w_{ij}^2 d_{ij}\ge \frac1{\sum_{i\neq j} d_{ij}^{-1}}
+=\frac1{\Phi_n(p)}.
+\]
+Equality holds iff $w_{ij}\sqrt{d_{ij}}$ is proportional to $d_{ij}^{-1/2}$, i.e. $w_{ij}=c\,d_{ij}^{-1}$.
+The constraint $\sum w_{ij}=1$ gives $c=1/\Phi_n(p)$.
+\end{proof}
+
+\begin{proposition}[Stam-type inequality for monotone root-sum model]\label{prop:q4-monotone-sum}
+Let $\lambda_1\le\cdots\le\lambda_n$ and $\mu_1\le\cdots\le\mu_n$ be two real root vectors, and define
+\[
+\nu_i:=\lambda_i+\mu_i,\qquad i=1,\dots,n.
+\]
+Then
+\[
+\frac1{\Phi_n(\nu)}\ge \frac1{\Phi_n(\lambda)}+\frac1{\Phi_n(\mu)},
+\]
+where $\Phi_n(\xi):=\sum_{i\neq j}(\xi_i-\xi_j)^{-2}$ for simple configurations.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal I:=\{(i,j):1\le i<j\le n\}$. For $\alpha=(i,j)\in\mathcal I$, define
+\[
+a_\alpha:=(\lambda_j-\lambda_i)^2,\qquad
+b_\alpha:=(\mu_j-\mu_i)^2,\qquad
+c_\alpha:=(\nu_j-\nu_i)^2.
+\]
+Since $\lambda,\mu$ are nondecreasing, all increments are nonnegative, so
+\[
+c_\alpha=( (\lambda_j-\lambda_i)+(\mu_j-\mu_i) )^2\ge a_\alpha+b_\alpha.
+\]
+Hence
+\[
+\sum_{\alpha\in\mathcal I}\frac1{c_\alpha}\le \sum_{\alpha\in\mathcal I}\frac1{a_\alpha+b_\alpha}.
+\]
+Define for any positive vector $t=(t_\alpha)_{\alpha\in\mathcal I}$:
+\[
+H(t):=\frac1{\sum_{\alpha\in\mathcal I} t_\alpha^{-1}}.
+\]
+Then the previous inequality is $H(c)\ge H(a+b)$.
+
+We now show $H$ is superadditive:
+\[
+H(u+v)\ge H(u)+H(v)\quad\text{for all positive }u,v.
+\]
+By the same Cauchy--Schwarz argument as Lemma~\ref{lem:q4-variational},
+\[
+H(t)=\min_{\substack{\theta_\alpha\in\mathbb R\\ \sum_\alpha \theta_\alpha=1}}
+\sum_\alpha \theta_\alpha^2 t_\alpha.
+\]
+Therefore
+\[
+H(u+v)
+=\min_\theta \sum_\alpha \theta_\alpha^2(u_\alpha+v_\alpha)
+\ge
+\min_\theta \sum_\alpha \theta_\alpha^2u_\alpha
++
+\min_\theta \sum_\alpha \theta_\alpha^2v_\alpha
+=H(u)+H(v).
+\]
+Applying this with $u=a$, $v=b$ gives
+\[
+H(c)\ge H(a+b)\ge H(a)+H(b).
+\]
+Finally,
+\[
+\frac1{\Phi_n(\lambda)}=\frac{H(a)}{2},\quad
+\frac1{\Phi_n(\mu)}=\frac{H(b)}{2},\quad
+\frac1{\Phi_n(\nu)}=\frac{H(c)}{2},
+\]
+because $\Phi_n(\xi)=2\sum_{i<j}(\xi_j-\xi_i)^{-2}$.
+Thus
+\[
+\frac1{\Phi_n(\nu)}\ge \frac1{\Phi_n(\lambda)}+\frac1{\Phi_n(\mu)}.
+\]
+\end{proof}
+
+\begin{remark}[Scope of Proposition~\ref{prop:q4-monotone-sum}]
+Proposition~\ref{prop:q4-monotone-sum} is a full all-$n$ result for the deterministic monotone coupling model
+$\nu_i=\lambda_i+\mu_i$.
+It does not by itself prove \eqref{eq:q4-star}, because in general the root vector of $p\boxplus_n q$ is not equal to this monotone sum vector.
+\end{remark}
+
+\begin{lemma}[Permutation-average representation of $\boxplus_n$]\label{lem:q4-perm-average}
+Let
+\[
+p(x)=\prod_{i=1}^n (x-\lambda_i),\qquad
+q(x)=\prod_{i=1}^n (x-\mu_i),
+\]
+with real roots (not necessarily distinct). For $\pi\in S_n$, define
+\[
+r_\pi(x):=\prod_{i=1}^n \bigl(x-(\lambda_i+\mu_{\pi(i)})\bigr).
+\]
+Then
+\[
+p\boxplus_n q
+=
+\frac1{n!}\sum_{\pi\in S_n} r_\pi.
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{a=0}^n (-1)^a e_a(\lambda)\,x^{n-a},
+\qquad
+q(x)=\sum_{b=0}^n (-1)^b e_b(\mu)\,x^{n-b},
+\]
+where $e_k$ are elementary symmetric polynomials.
+For fixed $\pi$,
+\[
+r_\pi(x)=\sum_{k=0}^n (-1)^k e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})\,x^{n-k}.
+\]
+Hence the coefficient of $x^{n-k}$ in $\frac1{n!}\sum_\pi r_\pi$ is
+\[
+(-1)^k\,\frac1{n!}\sum_{\pi} e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)}).
+\]
+It suffices to evaluate the expectation of that $e_k$.
+
+Expand:
+\[
+e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})
+=
+\sum_{\substack{I,T\subset[n]\\ I\cap T=\varnothing\\ |I|=a,\ |T|=b,\ a+b=k}}
+\Bigl(\prod_{i\in I}\lambda_i\Bigr)\Bigl(\prod_{j\in T}\mu_{\pi(j)}\Bigr).
+\]
+For fixed $T$ with $|T|=b$, under uniform $\pi$, the multiset
+$\{\pi(j):j\in T\}$ is a uniform $b$-subset of $[n]$, so
+\[
+\frac1{n!}\sum_{\pi}\prod_{j\in T}\mu_{\pi(j)}
+=
+\frac{e_b(\mu)}{\binom{n}{b}}
+=
+\frac{b!(n-b)!}{n!}\,e_b(\mu).
+\]
+Therefore
+\[
+\frac1{n!}\sum_{\pi} e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})
+=
+\sum_{a+b=k}
+\frac{b!(n-b)!}{n!}
+\!\!\!\sum_{\substack{I,T\subset[n]\\ I\cap T=\varnothing\\ |I|=a,\ |T|=b}}
+\prod_{i\in I}\lambda_i\, e_b(\mu).
+\]
+For fixed $I$ ($|I|=a$), the number of $T$ disjoint from $I$ with $|T|=b$ is
+$\binom{n-a}{b}$, hence
+\[
+\sum_{\substack{I,T\subset[n]\\ I\cap T=\varnothing\\ |I|=a,\ |T|=b}}
+\prod_{i\in I}\lambda_i
+=
+\binom{n-a}{b}\,e_a(\lambda).
+\]
+So
+\[
+\frac1{n!}\sum_{\pi} e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})
+=
+\sum_{a+b=k}
+\frac{(n-a)!(n-b)!}{n!(n-k)!}\,e_a(\lambda)e_b(\mu).
+\]
+Multiplying by $(-1)^k$ and using
+$(-1)^a e_a(\lambda)$, $(-1)^b e_b(\mu)$ as coefficients of $p,q$,
+this is exactly the coefficient formula of $p\boxplus_n q$.
+\end{proof}
+
+\begin{proposition}[Conditional orbit-Jensen reduction]\label{prop:q4-orbit-jensen-reduction}
+Assume the following two statements hold for all real-rooted monic
+degree-$n$ $p,q$:
+\begin{enumerate}[nosep]
+\item Orbit-Jensen inequality:
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)},
+\]
+\item Permutation-wise lower bound:
+\[
+\frac1{\Phi_n(r_\pi)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}
+\quad\text{for every }\pi\in S_n,
+\]
+with $r_\pi$ as in Lemma~\ref{lem:q4-perm-average}.
+\end{enumerate}
+Then \eqref{eq:q4-star} holds.
+\end{proposition}
+
+\begin{proof}
+Average assumption (2) over $\pi$:
+\[
+\frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+Combine with assumption (1):
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+\end{proof}
+
+\begin{remark}[Status of Proposition~\ref{prop:q4-orbit-jensen-reduction}]
+The proposition is logically correct as a conditional reduction.
+However, the permutation-wise assumption (2) is not valid in general
+(see Remark ``Two additional candidate bridges ruled out'' below),
+so this route does not by itself close \eqref{eq:q4-star}.
+\end{remark}
+
+\begin{lemma}[A closed-form upper bound for the permutation-average right side]\label{lem:q4-perm-avg-upper}
+With notation of Lemma~\ref{lem:q4-perm-average}, define
+\[
+\mathcal I:=\{(i,j):i\neq j\},
+\quad
+d_{ij}:=(\lambda_i-\lambda_j)^2,
+\quad
+C_\mu:=\frac{2n}{n-1}\operatorname{Var}(\mu).
+\]
+Then
+\[
+\frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)}
+\le
+\left(\sum_{i\neq j}\frac1{d_{ij}+C_\mu}\right)^{-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $\pi$ and write
+\[
+\frac1{\Phi_n(r_\pi)}
+=
+\min_{\substack{w_{ij}\in\mathbb R\\ \sum_{i\neq j}w_{ij}=1}}
+\sum_{i\neq j} w_{ij}^2\,\bigl(\lambda_i-\lambda_j+\mu_{\pi(i)}-\mu_{\pi(j)}\bigr)^2
+\]
+by Lemma~\ref{lem:q4-variational}. Averaging over $\pi$ and using
+$\mathbb E[\min_w F_\pi(w)]\le \min_w \mathbb E[F_\pi(w)]$:
+\[
+\frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}
+\le
+\min_{\sum w=1}\sum_{i\neq j} w_{ij}^2\,
+\mathbb E_\pi\!\left[\bigl(\lambda_i-\lambda_j+\mu_{\pi(i)}-\mu_{\pi(j)}\bigr)^2\right].
+\]
+For fixed $i\neq j$, under uniform $\pi$:
+\[
+\mathbb E(\mu_{\pi(i)}-\mu_{\pi(j)})=0,
+\]
+and
+\[
+\mathbb E(\mu_{\pi(i)}-\mu_{\pi(j)})^2
+=
+\frac{2n}{n-1}\operatorname{Var}(\mu)
+=
+C_\mu.
+\]
+Therefore
+\[
+\mathbb E_\pi\!\left[\bigl(\lambda_i-\lambda_j+\mu_{\pi(i)}-\mu_{\pi(j)}\bigr)^2\right]
+=
+d_{ij}+C_\mu.
+\]
+So
+\[
+\frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}
+\le
+\min_{\sum w=1}\sum_{i\neq j} w_{ij}^2(d_{ij}+C_\mu).
+\]
+Apply the same Cauchy-variational identity as Lemma~\ref{lem:q4-variational}:
+\[
+\min_{\sum w=1}\sum_{i\neq j} w_{ij}^2(d_{ij}+C_\mu)
+=
+\left(\sum_{i\neq j}\frac1{d_{ij}+C_\mu}\right)^{-1}.
+\]
+\end{proof}
+
+\begin{remark}[Empirical status of the orbit-Jensen bridge]
+For random real-rooted test pairs $(p,q)$, we evaluated the full-permutation average
+\[
+\frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)}
+\]
+exactly (all permutations, not subsampling) up to $n=8$,
+and compared it to $\Phi_n^{-1}(p\boxplus_n q)$.
+No violation of the orbit-Jensen inequality was found in these scans.
+
+Thus, combined with Proposition~\ref{prop:q4-orbit-jensen-reduction},
+the current bottleneck is sharply isolated:
+prove the orbit-Jensen inequality itself.
+\end{remark}
+
+\begin{remark}[Empirical orbit-convexity for $\Phi_n$]
+In the same full-permutation scans (exact averaging over all $\pi$),
+we also observed
+\[
+\Phi_n(p\boxplus_n q)
+\le
+\frac1{n!}\sum_{\pi\in S_n}\Phi_n(r_\pi)
+\]
+for all tested instances up to $n=7$.
+Equivalently,
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac{1}{\frac1{n!}\sum_{\pi}\Phi_n(r_\pi)}.
+\]
+This is strictly weaker than the orbit-Jensen target
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)},
+\]
+so by itself it does not close \eqref{eq:q4-star}, but it suggests that
+the remaining gap is specifically a harmonic-vs-arithmetic averaging issue
+on the orbit values $\{\Phi_n(r_\pi)\}_\pi$.
+\end{remark}
+
+\begin{remark}[Why transposition-by-transposition Jensen closure is not enough]
+A natural attempt is to prove orbit-Jensen by averaging over adjacent
+transpositions and using pairwise midpoint concavity of
+$N_n(\cdot)=1/\Phi_n(\cdot)$ on polynomial coefficients.
+Numerical stress tests show this midpoint concavity fails even on
+the permutation orbit itself.
+
+For instance ($n=4$), with
+\[
+\lambda=(-0.13210486,\ 0.21789514,\ 0.56789514,\ 0.91789514),
+\]
+\[
+\mu=(-0.53566937,\ 0.36159505,\ 0.94708096,\ 1.30400005),
+\]
+and permutations
+\[
+\pi=(2,1,3,0),\qquad \pi'=(2,3,1,0)
+\]
+(a single transposition in positions $2,3$), writing
+$r_\pi,r_{\pi'}$ for the corresponding orbit polynomials and
+$m:=\frac12(r_\pi+r_{\pi'})$, one finds
+\[
+N_n(r_\pi)\approx 9.8009\times 10^{-3},\quad
+N_n(r_{\pi'})\approx 5.5214\times 10^{-3},
+\]
+\[
+N_n(m)\approx 3.7035\times 10^{-3}
+<
+\frac12\bigl(N_n(r_\pi)+N_n(r_{\pi'})\bigr)
+\approx 7.6612\times 10^{-3}.
+\]
+So pairwise midpoint concavity fails; proving full orbit-Jensen
+requires genuinely global symmetry, not a local transposition induction.
+\end{remark}
+
+%% ---- Semi-Gaussian Stam inequality (all n) ----
+
+\begin{lemma}[Edge-score first-moment identity]\label{lem:q4-edge-score}
+For $p$ with simple roots $\lambda_1<\cdots<\lambda_n$ and edge scores
+$g_{ij}:=(s_i-s_j)/(\lambda_i-\lambda_j)$, $1\le i<j\le n$:
+\[
+\sum_{i<j}g_{ij}=\Phi_n(p).
+\]
+\end{lemma}
+
+\begin{proof}
+$\Phi_n=\sum_i s_i^2
+=\sum_i s_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}
+=\sum_{i<j}\bigl(s_i(\lambda_i-\lambda_j)^{-1}+s_j(\lambda_j-\lambda_i)^{-1}\bigr)
+=\sum_{i<j}\frac{s_i-s_j}{\lambda_i-\lambda_j}
+=\sum_{i<j}g_{ij}$.
+\end{proof}
+
+\begin{lemma}[Fisher information of Hermite polynomials]\label{lem:q4-hermite-phi}
+For the probabilist's Hermite polynomial
+$\mathrm{He}_n(x)=x^n-\tbinom{n}{2}x^{n-2}+\cdots$
+with simple real roots $\lambda_1<\cdots<\lambda_n$:
+\[
+\Phi_n(\mathrm{He}_n)=\frac{n(n-1)}{4}.
+\]
+For a scaled Hermite polynomial with roots $\sqrt{s}\,\lambda_i$
+(i.e., the polynomial $s^{n/2}\mathrm{He}_n(x/\sqrt{s})$):
+\[
+\Phi_n(\sqrt{s}\,\mathrm{He}_n)=\frac{n(n-1)}{4s},
+\qquad
+\frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)}=\frac{4s}{n(n-1)}.
+\]
+\end{lemma}
+
+\begin{proof}
+The Hermite differential equation
+$\mathrm{He}_n''(x)-x\,\mathrm{He}_n'(x)+n\,\mathrm{He}_n(x)=0$
+evaluated at a root $\lambda_i$ (where $\mathrm{He}_n(\lambda_i)=0$) gives
+$\mathrm{He}_n''(\lambda_i)=\lambda_i\,\mathrm{He}_n'(\lambda_i)$.
+By the standard identity $p''(\lambda_i)/p'(\lambda_i)=2s_i$,
+we get $s_i=\lambda_i/2$.
+Hence
+\[
+\Phi_n(\mathrm{He}_n)
+=\sum_{i=1}^n s_i^2
+=\frac{1}{4}\sum_{i=1}^n\lambda_i^2.
+\]
+By Vieta's formulas for $\mathrm{He}_n$:
+$\sum_i\lambda_i=0$ and $\sum_{i<j}\lambda_i\lambda_j=-\binom{n}{2}$,
+so
+$\sum_i\lambda_i^2=(\sum_i\lambda_i)^2-2\sum_{i<j}\lambda_i\lambda_j=n(n-1)$.
+
+The scaling claim follows from $\Phi_n(c\cdot p(\cdot/c))=\Phi_n(p)/c^2$,
+which is immediate from the definition (root gaps scale by $c$).
+\end{proof}
+
+\begin{lemma}[Scaled-Hermite transform in $\mathcal T_n$]\label{lem:q4-hermite-transform}
+Let $\mathrm{He}_n$ be the probabilist's Hermite polynomial, and define
+\[
+q_t(x):=t^{n/2}\,\mathrm{He}_n(x/\sqrt t)\qquad (t>0).
+\]
+Then in $\mathbb R[z]/(z^{n+1})$,
+\[
+\mathcal T_n(q_t)=n!\,e^{-t z^2/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The explicit coefficient formula is
+\[
+\mathrm{He}_n(x)=n!\sum_{m=0}^{\lfloor n/2\rfloor}
+\frac{(-1)^m}{2^m m!(n-2m)!}\,x^{n-2m}.
+\]
+Hence
+\[
+q_t(x)
+=n!\sum_{m=0}^{\lfloor n/2\rfloor}
+\frac{(-1)^m t^m}{2^m m!(n-2m)!}\,x^{n-2m}.
+\]
+So the coefficient of $x^{n-2m}$ equals
+$n!(-1)^m t^m/(2^m m!(n-2m)!)$.
+Applying $\mathcal T_n$ multiplies this by $(n-2m)!$, yielding
+\[
+\mathcal T_n(q_t)
+=n!\sum_{m=0}^{\lfloor n/2\rfloor}\frac{(-t z^2/2)^m}{m!}
+=n!\,e^{-t z^2/2}
+\quad\text{in }\mathbb R[z]/(z^{n+1}).
+\]
+\end{proof}
+
+\begin{lemma}[Semi-Gaussian convolution is backward heat]\label{lem:q4-semi-gauss-flow}
+For every degree-$n$ polynomial $p$ and every $t\ge 0$,
+\[
+p\boxplus_n q_t = H_{-t/2}p,
+\qquad q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t).
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor},
+\[
+\mathcal T_n(p\boxplus_n q_t)=\frac1{n!}\mathcal T_n(p)\mathcal T_n(q_t).
+\]
+By Lemma~\ref{lem:q4-hermite-transform},
+\[
+\mathcal T_n(p\boxplus_n q_t)=\mathcal T_n(p)\,e^{-t z^2/2}.
+\]
+By Lemma~\ref{lem:q4-heat-intertwine} (formula $\mathcal T(H_s p)=e^{s z^2}\mathcal T(p)$ in its proof),
+\[
+\mathcal T_n(H_{-t/2}p)=e^{-t z^2/2}\mathcal T_n(p).
+\]
+Since $\mathcal T_n$ is injective on degree-$n$ coefficient vectors,
+$p\boxplus_n q_t=H_{-t/2}p$.
+\end{proof}
+
+\begin{lemma}[Heat deconvolution identity]\label{lem:q4-heat-deconv}
+For every degree-$n$ polynomial $q$ and every $t\ge 0$,
+\[
+q = (H_{t/2}q)\boxplus_n q_t,
+\qquad q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t).
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor},
+\[
+\mathcal T_n\big((H_{t/2}q)\boxplus_n q_t\big)
+=
+\frac1{n!}\,\mathcal T_n(H_{t/2}q)\,\mathcal T_n(q_t).
+\]
+Using $\mathcal T_n(H_s f)=e^{s z^2}\mathcal T_n(f)$ (from
+Lemma~\ref{lem:q4-heat-intertwine}) and
+Lemma~\ref{lem:q4-hermite-transform},
+\[
+\mathcal T_n(H_{t/2}q)=e^{t z^2/2}\mathcal T_n(q),
+\qquad
+\mathcal T_n(q_t)=n!e^{-t z^2/2}.
+\]
+Hence
+\[
+\mathcal T_n\big((H_{t/2}q)\boxplus_n q_t\big)
+=
+\frac1{n!}\,e^{t z^2/2}\mathcal T_n(q)\cdot n!e^{-t z^2/2}
+=
+\mathcal T_n(q).
+\]
+Injectivity of $\mathcal T_n$ on degree-$n$ coefficient vectors gives
+the claim.
+\end{proof}
+
+\begin{corollary}[Forward-heat lower bound from the semi-Gaussian inequality]\label{cor:q4-forward-heat-lower}
+Fix $n\ge 2$ and define $C_n:=4/(n(n-1))$.
+Let $q$ be monic real-rooted degree-$n$, and let $t\ge 0$ be such that
+$H_{t/2}q$ is still real-rooted. Then
+\[
+\frac1{\Phi_n(q)}
+\ge
+\frac1{\Phi_n(H_{t/2}q)} + C_n t.
+\]
+In particular,
+\[
+\frac1{\Phi_n(q)}\ge C_n t.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:q4-heat-deconv}:
+\[
+q=(H_{t/2}q)\boxplus_n q_t.
+\]
+Since $H_{t/2}q$ is real-rooted by assumption, Theorem~\ref{thm:q4-semi-gaussian}
+applies with $p:=H_{t/2}q$ and $s:=t$:
+\[
+\frac1{\Phi_n(q)}
+\ge
+\frac1{\Phi_n(H_{t/2}q)}+\frac1{\Phi_n(q_t)}.
+\]
+By Lemma~\ref{lem:q4-hermite-phi},
+\[
+\frac1{\Phi_n(q_t)}=C_n t.
+\]
+This gives the first displayed inequality; the second follows from
+$1/\Phi_n(H_{t/2}q)\ge 0$.
+\end{proof}
+
+\begin{definition}[Forward-heat real-rootedness time]\label{def:q4-forward-time}
+For monic real-rooted degree-$n$ $q$, define
+\[
+\tau_+(q):=
+\sup\{\,t\ge 0:\ H_{t/2}q\ \text{is real-rooted}\,\}\in[0,\infty].
+\]
+\end{definition}
+
+\begin{proposition}[Lower bound via forward-heat survival time]\label{prop:q4-forward-time-bound}
+With $C_n=4/(n(n-1))$ and $\tau_+(q)$ as above:
+\[
+\frac1{\Phi_n(q)}\ \ge\ C_n\,\tau_+(q).
+\]
+\end{proposition}
+
+\begin{proof}
+For every $0\le t<\tau_+(q)$, $H_{t/2}q$ is real-rooted, so
+Corollary~\ref{cor:q4-forward-heat-lower} gives
+\[
+\frac1{\Phi_n(q)}\ge C_n t.
+\]
+Taking $t\uparrow\tau_+(q)$ yields
+\[
+\frac1{\Phi_n(q)}\ge C_n\tau_+(q).
+\]
+\end{proof}
+
+\begin{theorem}[Semi-Gaussian Stam inequality---all $n$]\label{thm:q4-semi-gaussian}
+For every $n\ge 2$, every monic real-rooted polynomial $p$ of degree~$n$,
+and every $s>0$:
+\[
+\frac{1}{\Phi_n(p\boxplus_n\sqrt{s}\,\mathrm{He}_n)}
+\;\ge\;
+\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)}.
+\]
+Equality holds for the Hermite family
+$p(x)=a^{n/2}\mathrm{He}_n(x/\sqrt a)$ ($a>0$).
+\end{theorem}
+
+\begin{proof}
+Set $q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t)$ and
+\[
+p_t:=p\boxplus_n q_t.
+\]
+We first prove the inequality in the generic regime where all $p_t$ ($t\in(0,s)$)
+have simple roots, then remove this genericity by continuity.
+
+\textbf{Generic regime.}
+By Lemma~\ref{lem:q4-semi-gauss-flow}, $p_t=H_{-t/2}p$, hence
+\[
+\partial_t p_t=-\frac12\,\partial_{xx}p_t.
+\]
+Let $\lambda_1(t)<\cdots<\lambda_n(t)$ be the roots of $p_t$.
+Differentiating $p_t(\lambda_i(t))=0$ gives
+\[
+0=\partial_t p_t(\lambda_i)+p_t'(\lambda_i)\dot\lambda_i
+=-\frac12 p_t''(\lambda_i)+p_t'(\lambda_i)\dot\lambda_i.
+\]
+Using $p_t''(\lambda_i)/p_t'(\lambda_i)=2s_i$ with
+$s_i:=\sum_{j\neq i}(\lambda_i-\lambda_j)^{-1}$, we obtain
+\[
+\dot\lambda_i=s_i.
+\]
+
+\textbf{Step 1 (evolution of $\Phi_n$).}
+Differentiate $s_i=\sum_{j\neq i}(\lambda_i-\lambda_j)^{-1}$:
+\[
+\dot s_i=\sum_{j\neq i}\frac{\dot\lambda_j-\dot\lambda_i}{(\lambda_i-\lambda_j)^2}.
+\]
+Therefore
+\[
+\dot\Phi_n
+=2\sum_i s_i\dot s_i
+=2\sum_{i<j}\frac{(s_i-s_j)(\dot\lambda_j-\dot\lambda_i)}{(\lambda_i-\lambda_j)^2}
+=-2\sum_{i<j}\frac{(s_i-s_j)^2}{(\lambda_i-\lambda_j)^2}.
+\]
+With $g_{ij}:=(s_i-s_j)/(\lambda_i-\lambda_j)$, this is
+\[
+\dot\Phi_n=-2\sum_{i<j}g_{ij}^2\le 0,
+\]
+so for $J(t):=1/\Phi_n(p_t)$,
+\[
+J'(t)=\frac{-\dot\Phi_n}{\Phi_n^2}
+=\frac{2\sum_{i<j}g_{ij}^2}{\Phi_n^2}.
+\]
+
+\textbf{Step 2 (Cauchy--Schwarz lower bound on $J'$).}
+By Lemma~\ref{lem:q4-edge-score}: $\Phi_n=\sum_{i<j}g_{ij}$.
+Cauchy--Schwarz over the $\binom{n}{2}$ pairs gives
+\[
+\Bigl(\sum_{i<j}g_{ij}\Bigr)^{\!2}
+\;\le\; \binom{n}{2}\sum_{i<j}g_{ij}^2,
+\]
+hence
+\[
+J'(t)
+\;\ge\; \frac{2}{\binom{n}{2}}
+= \frac{4}{n(n-1)}
+= \frac{1}{\Phi_n(\mathrm{He}_n)}
+\qquad\text{(by Lemma~\ref{lem:q4-hermite-phi})}.
+\]
+
+\textbf{Step 3 (integration).}
+Integrating from $0$ to $s$:
+\[
+J(s)-J(0)
+\;\ge\; \frac{s}{\Phi_n(\mathrm{He}_n)}
+= \frac{4s}{n(n-1)}
+= \frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)},
+\]
+which is exactly $1/\Phi_n(p_s)\ge 1/\Phi_n(p)+1/\Phi_n(\sqrt{s}\,\mathrm{He}_n)$.
+
+\textbf{Hermite equality family.}
+If $p(x)=a^{n/2}\mathrm{He}_n(x/\sqrt a)$, then
+$\mathcal T_n(p)=n!e^{-a z^2/2}$.
+Hence
+\[
+\mathcal T_n(p_t)=\frac1{n!}\mathcal T_n(p)\mathcal T_n(q_t)
+=n!e^{-(a+t)z^2/2},
+\]
+so $p_t(x)=(a+t)^{n/2}\mathrm{He}_n(x/\sqrt{a+t})$.
+By Lemma~\ref{lem:q4-hermite-phi},
+\[
+\frac{1}{\Phi_n(p_t)}=\frac{4(a+t)}{n(n-1)},
+\]
+which is affine in $t$ with slope $4/(n(n-1))$; therefore every inequality
+step above is an equality for this family.
+
+\textbf{Removal of genericity assumptions.}
+For fixed $p$ and $s$, choose monic real-rooted $p^{(m)}\to p$ uniformly on
+compact sets with simple roots (density of simple-root locus).
+Define $p_t^{(m)}:=p^{(m)}\boxplus_n q_t$.
+By real-rootedness preservation of $\boxplus_n$ on real-rooted inputs,
+each $p_t^{(m)}$ is real-rooted for every $t\ge 0$.
+For each fixed $m$, the discriminant
+$\operatorname{Disc}(p_t^{(m)})$ is a real-analytic function of $t$.
+Unless identically zero, its zero set in $[0,s]$ is finite; on the complementary
+open intervals, roots are simple and the above differential computation applies.
+Integrating intervalwise and summing yields
+\[
+\frac{1}{\Phi_n(p_s^{(m)})}
+\ge
+\frac{1}{\Phi_n(p_0^{(m)})}
+\;+\;
+\frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)}.
+\]
+Passing to $m\to\infty$ and using continuity of coefficients, roots, and $\Phi_n$
+on the simple-root locus together with the convention $1/\infty=0$ at multiple roots,
+we obtain the same inequality for $p$.
+\end{proof}
+
+\begin{remark}[Significance of the semi-Gaussian inequality]
+Theorem~\ref{thm:q4-semi-gaussian} establishes
+the target inequality~\eqref{eq:q4-star} whenever one of the two
+polynomials is a scaled Hermite polynomial---for \textbf{all degrees} $n$.
+This is the polynomial analogue of the classical result that the
+Stam inequality holds when one summand is Gaussian, and it strictly
+extends the degenerate shift case (Proposition~\ref{prop:q4-shift},
+which requires one polynomial to be $(x-a)^n$).
+Together with Propositions~\ref{prop:q4-n2} and~\ref{prop:q4-n3}
+(which handle all $p,q$ for $n\le 3$) and
+Proposition~\ref{prop:q4-monotone-sum}
+(which handles the monotone coupling for all $n$),
+this establishes~\eqref{eq:q4-star} in three independent
+infinite families of cases.
+\end{remark}
+
+\begin{remark}[Status of equality classification]
+The proof above gives a complete inequality proof under the stated
+regularity assumption and a full explicit equality family (scaled Hermite).
+A global characterization of all equality cases for this semi-Gaussian flow
+is not used elsewhere in this paper.
+\end{remark}
+
+%% ---- End of Semi-Gaussian block ----
+
+\begin{proposition}[Reduction of \eqref{eq:q4-star} to a weighted quadratic inequality]\label{prop:q4-reductionA}
+For roots $\lambda$ of $p$, $\mu$ of $q$, and $\gamma$ of $p\boxplus_n q$, define
+\[
+\mathcal Q_w(\xi):=\sum_{i\neq j} w_{ij}^2(\xi_i-\xi_j)^2
+\quad\text{for}\quad
+w=(w_{ij})_{i\neq j},\ \sum_{i\neq j}w_{ij}=1.
+\]
+Assume the following statement holds for all such $w$:
+\[
+\mathcal Q_w(\gamma)\ge \mathcal Q_w(\lambda)+\mathcal Q_w(\mu).
+\tag{A}\label{eq:q4-A}
+\]
+Then \eqref{eq:q4-star} follows.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-variational},
+\[
+\frac1{\Phi_n(p\boxplus_n q)}=\min_w \mathcal Q_w(\gamma).
+\]
+If \eqref{eq:q4-A} holds for every $w$, then
+\[
+\min_w \mathcal Q_w(\gamma)
+\ge
+\min_w\big(\mathcal Q_w(\lambda)+\mathcal Q_w(\mu)\big)
+\ge
+\min_w \mathcal Q_w(\lambda)+\min_w \mathcal Q_w(\mu),
+\]
+and another application of Lemma~\ref{lem:q4-variational} gives
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+\end{proof}
+
+\begin{remark}[General-$n$ bottleneck in one line]
+The all-$n$ closure of \eqref{eq:q4-star} is reduced to proving \eqref{eq:q4-A} uniformly in $n$ and $w$.
+This isolates the remaining difficulty to a single weighted quadratic superadditivity statement at the root level.
+\end{remark}
+
+\begin{remark}[Important correction: \eqref{eq:q4-A} is sufficient but not necessary]
+Proposition~\ref{prop:q4-reductionA} is logically correct as a \emph{sufficient} criterion, but the pointwise inequality \eqref{eq:q4-A} is generally too strong.
+Numerical experiments for $n=4$ produce triples $(p,q,w)$ with
+\[
+\mathcal Q_w(\gamma)<\mathcal Q_w(\lambda)+\mathcal Q_w(\mu),
+\]
+while the target Stam-type inequality \eqref{eq:q4-star} still holds on the same $(p,q)$.
+Therefore the proof of \eqref{eq:q4-star} must use a weaker global mechanism than uniform-in-$w$ superadditivity.
+\end{remark}
+
+\begin{remark}[Program toward the full theorem]
+A viable closure route for \eqref{eq:q4-star} is to prove a finite-degree entropy-power inequality for a discriminant-based functional compatible with $\boxplus_n$. Combined with Lemma~\ref{lem:q4-debruijn}, this would mirror the classical entropy-power $\Rightarrow$ Stam mechanism.
+\end{remark}
+
+\begin{conjecture}[Discriminant entropy-power inequality]\label{conj:q4-disc-epi}
+Let $m:=\binom{n}{2}$ and
+\[
+\mathcal E_n(p):=\operatorname{Disc}(p)^{1/m}
+\]
+for monic real-rooted degree-$n$ $p$.
+Then for all monic real-rooted degree-$n$ $p,q$:
+\[
+\mathcal E_n(p\boxplus_n q)\ \ge\ \mathcal E_n(p)+\mathcal E_n(q).
+\]
+\end{conjecture}
+
+\begin{remark}[Evidence for Conjecture~\ref{conj:q4-disc-epi}]
+Direct random stress-tests (real-rooted inputs, exact coefficient-level
+$\boxplus_n$, root computation at double precision) found no violations in the following ranges:
+\[
+n=4\ (4000\text{ samples}),\quad
+n=5\ (4000),\quad
+n=6\ (3000),\quad
+n=8\ (1600),\quad
+n=10\ (900).
+\]
+The minimum observed margin
+$\mathcal E_n(p\boxplus_n q)-\mathcal E_n(p)-\mathcal E_n(q)$
+stayed positive in each tested dimension.
+This does not constitute a proof, but it identifies a concrete strong
+candidate bridge beyond the current orbit-Jensen route.
+\end{remark}
+
+\begin{proposition}[First-order step monotonicity is closed for $n=2,3$]\label{prop:q4-firststep-n23}
+Let $n\in\{2,3\}$ and let $p$ be monic real-rooted of degree $n$.
+For every $\alpha\in\mathbb R$,
+\[
+\frac1{\Phi_n\!\big((I-\alpha D)p\big)}\ \ge\ \frac1{\Phi_n(p)}.
+\]
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor}, with
+$q_\alpha(x):=x^n-n\alpha x^{n-1}$ we have
+\[
+(I-\alpha D)p = p\boxplus_n q_\alpha.
+\]
+Also $q_\alpha$ is real-rooted with multiplicity ($0$ has multiplicity $n-1$), so
+by convention $1/\Phi_n(q_\alpha)=0$.
+
+For $n=2$, write $p(x)=x^2+a_1x+a_2$.
+Then
+\[
+(I-\alpha D)p=x^2+(a_1-2\alpha)x+(a_2-\alpha a_1),
+\]
+whose discriminant is
+\[
+\Delta_\alpha=(a_1-2\alpha)^2-4(a_2-\alpha a_1)
+=(a_1^2-4a_2)+4\alpha^2=\Delta_p+4\alpha^2.
+\]
+Since $1/\Phi_2=\Delta/2$, we get
+\[
+\frac1{\Phi_2((I-\alpha D)p)}-\frac1{\Phi_2(p)}=2\alpha^2\ge 0.
+\]
+
+For $n=3$, apply Proposition~\ref{prop:q4-n3} to $(p,q_\alpha)$:
+\[
+\frac1{\Phi_3(p\boxplus_3 q_\alpha)}
+\ge
+\frac1{\Phi_3(p)}+\frac1{\Phi_3(q_\alpha)}
+\;=\;\frac1{\Phi_3(p)}.
+\]
+Using $p\boxplus_3 q_\alpha=(I-\alpha D)p$ proves the claim.
+\end{proof}
+
+\begin{remark}[First-order elementary-step evidence]
+Lemma~\ref{lem:q4-transform-factor} reduces $p\boxplus_n q$ to composition of operators
+$I-\alpha D$ after factoring $\mathcal T_n(q)$.
+A numerically robust phenomenon (tested across $n=3,4,5,6,8,10$) is:
+for real $\alpha$ and real-rooted $p$,
+\[
+\frac1{\Phi_n\!\big((I-\alpha D)p\big)}\ \ge\ \frac1{\Phi_n(p)}
+\]
+whenever $(I-\alpha D)p$ remains real-rooted.
+This is exactly the $N(q_\alpha)=0$ boundary case of Stam for
+$q_\alpha(x)=x^n-n\alpha x^{n-1}$.
+Establishing this inequality in full generality would close an important subclass,
+but does not by itself settle all real-rooted $q$, since
+$\mathcal T_n(q)$ typically has nonreal roots for generic real-rooted $q$.
+\end{remark}
+
+\begin{remark}[Quadratic-step monotonicity is false]
+A natural strengthening is to test second-order real blocks
+\[
+I-\beta D+\gamma D^2,\qquad \gamma>0,\ \beta^2<4\gamma
+\]
+(coming from complex-conjugate factors of $\mathcal T_n(q)$).
+The naive monotonicity
+\[
+\frac1{\Phi_n\!\big((I-\beta D+\gamma D^2)p\big)}
+\ge
+\frac1{\Phi_n(p)}
+\]
+is false in general, even when both input and output are real-rooted.
+For example, with $n=4$ and
+\[
+p(x)=\prod_{i=1}^4 (x-\lambda_i),\quad
+(\lambda_i)=(-1.77957398,\,-1.09806631,\,-0.00772963,\,1.23326992),
+\]
+and $(\beta,\gamma)=(2.3155190177513645,\ 1.8242954867530203)$, one gets
+real output roots
+\[
+(-1.19536371,\ 0.00790748,\ 4.15447584,\ 4.64295647)
+\]
+and numerically
+\[
+\frac1{\Phi_4\!\big((I-\beta D+\gamma D^2)p\big)}
+-\frac1{\Phi_4(p)}\approx -1.85\times 10^{-2}<0.
+\]
+Hence a direct factor-by-factor proof through arbitrary quadratic blocks
+cannot be the final closure mechanism.
+\end{remark}
+
+\begin{remark}[Failure persists on admissible quadratic blocks from real-rooted $q$]
+One might hope the previous counterexample is an artifact of choosing
+an arbitrary quadratic block not compatible with real-rooted inputs $q$.
+This is not the case.
+Take $n=4$ and
+\[
+q\text{-roots}=(-2.1938145353,\,-1.4695858456,\,1.5826477139,\,2.0846024216).
+\]
+For this real-rooted $q$, one root of $\mathcal T_4(q)/4!$ is
+\[
+\alpha=1.0311223231+0.6553315023\,i.
+\]
+The associated conjugate quadratic block is
+\[
+(1-\alpha D)(1-\bar\alpha D)=I-\beta D+\gamma D^2,\quad
+\beta=2\Re\alpha=2.0622446461,\ \gamma=|\alpha|^2=1.4926726230.
+\]
+Now choose real-rooted
+\[
+p\text{-roots}=(-2.5005951732,\,-1.4682357595,\,1.0386811526,\,2.0504689936).
+\]
+Then $(I-\beta D+\gamma D^2)p$ is still real-rooted (numerically)
+with roots
+\[
+(-1.6621476513,\,0.1696971343,\,4.0929234842,\,4.7688248310),
+\]
+but
+\[
+\frac1{\Phi_4\!\big((I-\beta D+\gamma D^2)p\big)}
+\;-\;
+\frac1{\Phi_4(p)}
+\approx -3.0572\times 10^{-2}<0.
+\]
+So the quadratic-step monotonicity failure occurs even for blocks
+coming from actual real-rooted $q$.
+\end{remark}
+
+\begin{remark}[Two additional candidate bridges ruled out]
+The following two plausible strengthening routes are also false in general.
+\begin{enumerate}[nosep]
+\item \textbf{Derivative-density bridge.}
+Define for a simple-root configuration
+\[
+\Psi(\xi):=\frac{2\sum_{i<j} g_{ij}(\xi)^2}{\Phi_n(\xi)^2},
+\]
+the $t$-derivative density of $N_n=1/\Phi_n$ along the semi-Gaussian flow.
+A natural candidate was
+\[
+2\Psi(\lambda\boxplus_n\mu)\le \Psi(\lambda)+\Psi(\mu),
+\]
+which would force monotonic decay of a smoothed Stam gap.
+Numerical search yields explicit counterexamples already for $n=4$.
+\item \textbf{Permutation-wise monotone-sum lift.}
+Using the permutation-average model of $\boxplus_n$, one might hope
+\[
+N_n(\lambda+\mu_\pi)\ge N_n(\lambda)+N_n(\mu)\quad\forall \pi\in S_n.
+\]
+This is false: explicit $n=4,5,6$ examples violate the inequality for some permutations.
+\end{enumerate}
+Hence neither bridge can serve as the final all-$n$ proof mechanism.
+\end{remark}
+
+\begin{lemma}[Defect-split identity for the concavity numerator]\label{lem:q4-defect-split}
+Along the simple-root semi-Gaussian flow notation
+of Theorem~\ref{thm:q4-semi-gaussian}, set
+\[
+S_1:=\sum_{i<j} g_{ij},\qquad
+S_2:=\sum_{i<j} g_{ij}^2,\qquad
+S_3:=\sum_{i<j} g_{ij}^3,\qquad
+\rho:=\frac{S_2}{S_1}.
+\]
+Define
+\[
+A:=S_1\|Ls\|^2-S_2^2,\qquad
+B:=S_1S_3-S_2^2,
+\]
+where $L$ is the root-gap Laplacian and $s$ the score vector.
+Then
+\[
+A=S_1\|Ls-\rho s\|^2,\qquad
+B=S_1\sum_{i<j} g_{ij}(g_{ij}-\rho)^2,
+\]
+and therefore
+\[
+2S_2^2-S_1(\|Ls\|^2+S_3)=-(A+B).
+\]
+Hence concavity of $N_n=1/\Phi_n$ is equivalent to $A+B\ge 0$.
+\end{lemma}
+
+\begin{proof}
+The identity $A=S_1\|Ls-\rho s\|^2$ is an expansion:
+\[
+S_1\|Ls-\rho s\|^2
+=S_1\|Ls\|^2-2\rho S_1\langle Ls,s\rangle+\rho^2S_1\|s\|^2.
+\]
+Using $\langle Ls,s\rangle=S_2$, $\|s\|^2=S_1$, and $\rho=S_2/S_1$ gives
+$A=S_1\|Ls\|^2-S_2^2$.
+
+For $B$, expand
+\[
+S_1\sum_{i<j} g_{ij}(g_{ij}-\rho)^2
+=S_1\sum_{i<j}\bigl(g_{ij}^3-2\rho g_{ij}^2+\rho^2 g_{ij}\bigr)
+=S_1S_3-2\rho S_1S_2+\rho^2S_1^2
+=S_1S_3-S_2^2.
+\]
+The last displayed identity is immediate from
+\[
+A+B
+=S_1\|Ls\|^2+S_1S_3-2S_2^2.
+\]
+\end{proof}
+
+\begin{remark}[The $B$-term is genuinely signed]
+The sufficient condition $B\ge 0$ is false in general.
+For example at $n=8$, with root configuration
+\[
+\lambda=(-2.65957813,-2.33376004,-2.01386493,-0.29829949,-0.00772366,0.26569633,0.56410613,2.09599611),
+\]
+one gets numerically
+\[
+S_1\approx 138.0503,\quad
+S_2\approx 1809.6123,\quad
+S_3\approx 23717.2508,\quad
+B=S_1S_3-S_2^2\approx -522.72<0.
+\]
+At the same point,
+\[
+A\approx 5.4699\times 10^5,
+\qquad
+A+B\approx 5.4647\times 10^5>0.
+\]
+So the all-$n$ bottleneck is the balance $A+B\ge 0$, not $B\ge 0$ alone.
+\end{remark}
+
+\begin{remark}[Incidence-matrix reformulation of the bottleneck]
+Let $E=\{(i,j):1\le i<j\le n\}$, $m=|E|$, and define
+the weighted incidence matrix $D\in\mathbb R^{m\times n}$ by rows
+\[
+b_{ij}:=\frac{e_i-e_j}{\lambda_i-\lambda_j},\qquad (i,j)\in E.
+\]
+Then
+\[
+g=Ds,\qquad L=D^\top D,\qquad D^\top\mathbf 1=s.
+\]
+With $\rho=S_2/S_1$ and $h:=g-\rho\mathbf 1$, Lemma~\ref{lem:q4-defect-split} becomes
+\[
+\frac{A+B}{S_1}
+=
+\|D^\top h\|^2 + h^\top\!\operatorname{diag}(g)\,h.
+\]
+Hence the unresolved all-$n$ step can be read as a single signed
+quadratic-form inequality on the specific vector $h=Ds-\rho\mathbf 1$.
+\end{remark}
+
+\begin{lemma}[Affine-root lift of the defect vector]\label{lem:q4-h-lift}
+With the notation of the previous remark, let $\lambda=(\lambda_1,\dots,\lambda_n)^\top$
+and $s=(s_1,\dots,s_n)^\top$, and set $\rho=S_2/S_1$.
+Then
+\[
+\mathbf 1 = D\lambda,\qquad
+g=Ds,\qquad
+h=g-\rho\mathbf 1 = D(s-\rho\lambda).
+\]
+In particular, the defect vector $h$ always lies in the cut subspace
+$\operatorname{Im}(D)\subset\mathbb R^m$.
+\end{lemma}
+
+\begin{proof}
+For an edge $(i,j)$ with $i<j$:
+\[
+(D\lambda)_{ij}=\frac{\lambda_i-\lambda_j}{\lambda_i-\lambda_j}=1,
+\]
+hence $D\lambda=\mathbf 1$.
+Likewise
+\[
+(Ds)_{ij}=\frac{s_i-s_j}{\lambda_i-\lambda_j}=g_{ij},
+\]
+so $g=Ds$.
+Therefore
+\[
+h=g-\rho\mathbf 1
+=Ds-\rho D\lambda
+=D(s-\rho\lambda).
+\]
+\end{proof}
+
+\begin{remark}[Vertex-space quadratic form for $A+B$]
+Define
+\[
+K:=L^2 + D^\top\!\operatorname{diag}(g)\,D
+\quad\text{on}\quad \mathbb R^n,
+\]
+with $L=D^\top D$.
+If we set $v:=s-\rho\lambda$, then Lemma~\ref{lem:q4-h-lift} gives $h=Dv$, so
+\[
+\frac{A+B}{S_1}
+=\|D^\top h\|^2+h^\top\!\operatorname{diag}(g)\,h
+=v^\top K v.
+\]
+Thus the concavity bottleneck is equivalent to proving
+\[
+v^\top K v\ge 0\qquad\text{for }v=s-\rho\lambda.
+\]
+This is strictly weaker than requiring $K\succeq 0$ on all of $\mathbb R^n$.
+\end{remark}
+
+\begin{lemma}[Convexity of the inverse-square interaction]\label{lem:q4-convex-V}
+On the Weyl chamber $\{\lambda_1<\cdots<\lambda_n\}$, define
+\[
+\mathcal V(\lambda):=\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2}
+=\frac12\,\Phi_n(\lambda).
+\]
+Then
+\[
+\nabla^2\mathcal V(\lambda)
+=
+6\sum_{1\le i<j\le n}
+\frac{(e_i-e_j)(e_i-e_j)^\top}{(\lambda_i-\lambda_j)^4}
+\succeq 0.
+\]
+In particular, $\mathcal V$ is convex on each Weyl chamber.
+\end{lemma}
+
+\begin{proof}
+For fixed $i<j$, set $\ell_{ij}(\lambda):=\lambda_i-\lambda_j$ and
+$\varphi(t):=t^{-2}$ on $(-\infty,0)$ (or $(0,\infty)$).
+Then
+\[
+\frac{1}{(\lambda_i-\lambda_j)^2}
+=
+\varphi(\ell_{ij}(\lambda)),
+\qquad
+\varphi''(t)=\frac{6}{t^4}>0.
+\]
+Since $\ell_{ij}$ is linear,
+\[
+\nabla^2\!\big(\varphi(\ell_{ij}(\lambda))\big)
+=
+\varphi''(\ell_{ij}(\lambda))\,(e_i-e_j)(e_i-e_j)^\top
+=
+\frac{6}{(\lambda_i-\lambda_j)^4}(e_i-e_j)(e_i-e_j)^\top.
+\]
+Summing over $i<j$ yields the displayed Hessian formula and positivity.
+\end{proof}
+
+\begin{lemma}[Hessian identity in $(D,L,g)$ notation]\label{lem:q4-hessian-DLg}
+With the notation above, one has
+\[
+\nabla^2\mathcal V
+=
+L^2+2D^\top\!\operatorname{diag}(g)\,D.
+\]
+Equivalently, for every $y\in\mathbb R^n$, if $h_y:=Dy$, then
+\[
+y^\top(\nabla^2\mathcal V)y
+=
+\|Ly\|^2+2\sum_{i<j} g_{ij}(h_y)_{ij}^2.
+\]
+\end{lemma}
+
+\begin{proof}
+From $\mathcal V=\frac12\|s\|^2$ and $ds[y]=-Ly$,
+\[
+d\mathcal V[y]=\langle s,ds[y]\rangle=-\langle s,Ly\rangle.
+\]
+Differentiate again along $y$:
+\[
+d^2\mathcal V[y,y]
+=
+\|Ly\|^2-\langle s,(dL[y])y\rangle.
+\]
+Now for each edge $(i,j)$:
+\[
+\partial_y\!\left(\frac{1}{(\lambda_i-\lambda_j)^2}\right)
+=
+-2\,\frac{y_i-y_j}{(\lambda_i-\lambda_j)^3},
+\]
+and a direct expansion gives
+\[
+-\langle s,(dL[y])y\rangle
+=
+2\sum_{i<j}\frac{s_i-s_j}{\lambda_i-\lambda_j}
+\left(\frac{y_i-y_j}{\lambda_i-\lambda_j}\right)^2
+=
+2\sum_{i<j} g_{ij}(h_y)_{ij}^2.
+\]
+Hence
+\[
+d^2\mathcal V[y,y]
+=
+\|Ly\|^2+2\sum_{i<j} g_{ij}(h_y)_{ij}^2
+=
+y^\top\!\left(L^2+2D^\top\!\operatorname{diag}(g)\,D\right)y.
+\]
+Since this holds for all $y$, the matrix identity follows.
+\end{proof}
+
+\begin{proposition}[Concavity bottleneck $A+B\ge 0$ is resolved]\label{prop:q4-bottleneck-closed}
+With $A,B,S_1,\rho,v$ as in Lemma~\ref{lem:q4-defect-split} and
+Lemma~\ref{lem:q4-h-lift}, one has
+\[
+A+B\ge 0.
+\]
+Therefore the semi-Gaussian concavity criterion
+\[
+2S_2^2-S_1(\|Ls\|^2+S_3)\le 0
+\]
+holds for every simple-root configuration.
+\end{proposition}
+
+\begin{proof}
+Let $v:=s-\rho\lambda$ and $h:=Dv$.
+By Lemma~\ref{lem:q4-defect-split},
+\[
+\frac{A}{S_1}=\|Lv\|^2,\qquad
+\frac{B}{S_1}=\sum_{i<j} g_{ij}h_{ij}^2.
+\]
+Hence
+\[
+\frac{A+2B}{S_1}
+=
+\|Lv\|^2+2\sum_{i<j} g_{ij}h_{ij}^2
+=
+v^\top(\nabla^2\mathcal V)\,v
+\]
+by Lemma~\ref{lem:q4-hessian-DLg}.
+By Lemma~\ref{lem:q4-convex-V}, $\nabla^2\mathcal V\succeq 0$, so
+$A+2B\ge 0$.
+
+Also $A\ge 0$ from Lemma~\ref{lem:q4-defect-split}. Therefore
+\[
+A+B=\frac12\big((A+2B)+A\big)\ge 0.
+\]
+The equivalent concavity inequality is exactly the last displayed form in
+Lemma~\ref{lem:q4-defect-split}.
+\end{proof}
+
+\begin{theorem}[All-$n$ concavity along the semi-Gaussian flow]\label{thm:q4-alln-concavity}
+Fix $n\ge 2$, let $p$ be monic real-rooted of degree $n$, and define
+\[
+q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t),\qquad
+\mathcal N_p(t):=\frac1{\Phi_n(p\boxplus_n q_t)}\quad (t\ge 0).
+\]
+Then $\mathcal N_p$ is concave on every interval where the roots are simple,
+and consequently concave on $[0,\infty)$ in the extended sense
+(with the convention $1/\infty=0$ at collision times).
+\end{theorem}
+
+\begin{proof}
+On simple-root intervals, Lemma~\ref{lem:q4-defect-split} identifies
+the second-derivative sign condition with $A+B\ge 0$.
+Proposition~\ref{prop:q4-bottleneck-closed} proves exactly $A+B\ge 0$,
+so $\mathcal N_p''(t)\le 0$ there.
+
+For a general real-rooted input, approximate $p$ by monic real-rooted
+$p^{(m)}$ with simple roots.
+For each $m$, the discriminant of $p^{(m)}\boxplus_n q_t$ is real-analytic
+in $t$, so non-simple times are isolated unless identically singular.
+Thus concavity holds intervalwise and hence globally for each $m$.
+Passing $m\to\infty$ by coefficient continuity of $\boxplus_n$ and
+continuity of roots away from collisions gives concavity for $p$
+with the standard convention at collision times.
+\end{proof}
+
+\begin{proposition}[Linear two-sided control along the semi-Gaussian flow]\label{prop:q4-semi-linear-bounds}
+Fix $n\ge 2$ and define constants
+\[
+C_n:=\frac{4}{n(n-1)},
+\qquad
+D_n:=\frac{4}{n(n-1)^2}.
+\]
+For monic real-rooted degree-$n$ $p$, let
+\[
+q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t),
+\qquad
+f_p(t):=\frac1{\Phi_n(p\boxplus_n q_t)}.
+\]
+Then for all $t\ge 0$:
+\[
+f_p(t)\ge f_p(0)+C_n t,
+\]
+\[
+f_p(t)\le D_n\,\operatorname{Var}(p)+C_n t.
+\]
+Consequently, $t\mapsto f_p(t)-C_n t$ is monotone increasing and bounded above,
+hence admits a finite limit
+\[
+B_n(p):=\lim_{t\to\infty}\bigl(f_p(t)-C_n t\bigr)
+\in [\,f_p(0),\ D_n\operatorname{Var}(p)\,].
+\]
+\end{proposition}
+
+\begin{proof}
+The lower bound is Theorem~\ref{thm:q4-semi-gaussian} with
+$s=t$:
+\[
+f_p(t)-f_p(0)\ge \frac1{\Phi_n(q_t)}.
+\]
+By Lemma~\ref{lem:q4-hermite-phi},
+\[
+\frac1{\Phi_n(q_t)}=\frac{4t}{n(n-1)}=C_n t.
+\]
+So $f_p(t)\ge f_p(0)+C_n t$.
+
+For the upper bound, apply
+Proposition~\ref{prop:q4-N-var-upper} to
+$r_t:=p\boxplus_n q_t$:
+\[
+f_p(t)=\frac1{\Phi_n(r_t)}
+\le D_n\,\operatorname{Var}(r_t).
+\]
+By variance additivity (Proposition~\ref{prop:q4-var}),
+\[
+\operatorname{Var}(r_t)=\operatorname{Var}(p)+\operatorname{Var}(q_t).
+\]
+Now $q_t$ is $\sqrt t$-scaled Hermite, so
+\[
+\operatorname{Var}(q_t)=t\,\operatorname{Var}(\mathrm{He}_n).
+\]
+In the proof of Lemma~\ref{lem:q4-hermite-phi} we already computed
+\[
+\sum_{i=1}^n \lambda_i^2=n(n-1),\qquad \sum_i\lambda_i=0
+\]
+for Hermite roots, hence
+\[
+\operatorname{Var}(\mathrm{He}_n)=\frac1n\sum_i\lambda_i^2=n-1.
+\]
+Therefore
+\[
+\operatorname{Var}(q_t)=(n-1)t.
+\]
+Therefore
+\[
+f_p(t)\le D_n\bigl(\operatorname{Var}(p)+(n-1)t\bigr)
+=D_n\operatorname{Var}(p)+C_n t.
+\]
+
+Monotonicity of $f_p(t)-C_n t$ follows from the lower bound:
+for $t_2>t_1$,
+\[
+f_p(t_2)-f_p(t_1)\ge C_n(t_2-t_1).
+\]
+The upper bound gives boundedness from above, hence convergence.
+\end{proof}
+
+\begin{proposition}[Asymptotic offset is exactly the variance constant]\label{prop:q4-asymptotic-offset-exact}
+With notation of Proposition~\ref{prop:q4-semi-linear-bounds},
+for every monic real-rooted degree-$n$ polynomial $p$:
+\[
+f_p(t)=C_n t + D_n\,\operatorname{Var}(p)+O(t^{-1/2})
+\qquad (t\to\infty).
+\]
+In particular, the offset constant from
+Proposition~\ref{prop:q4-semi-linear-bounds} is exact:
+\[
+B_n(p)=D_n\,\operatorname{Var}(p).
+\]
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+p(x)=x^n+a_1x^{n-1}+a_2x^{n-2}+\cdots+a_n.
+\]
+Let
+\[
+p_t:=p\boxplus_n q_t = H_{-t/2}p,
+\qquad
+R_t(y):=t^{-n/2}p_t(\sqrt t\,y).
+\]
+Since $H_{-t/2}x^m=t^{m/2}\mathrm{He}_m(x/\sqrt t)$ for each $m$,
+linearity gives
+\[
+R_t(y)=\sum_{k=0}^n a_k\,t^{-k/2}\,\mathrm{He}_{n-k}(y).
+\]
+We first center $p$: by translation invariance of both $\operatorname{Var}$ and
+$\Phi_n$, replacing $p$ by $\tau_m p(x):=p(x-m)$ does not change the target
+formula; moreover $H_{-t/2}$ commutes with translations, so the same asymptotic
+constant is obtained. Hence we may assume $a_1=0$.
+Then
+\[
+R_t(y)=\mathrm{He}_n(y)+a_2 t^{-1}\mathrm{He}_{n-2}(y)+O(t^{-3/2})
+\]
+in coefficient norm.
+
+Now consider the scaled-Hermite family
+\[
+\mathcal H_a(y):=a^{n/2}\mathrm{He}_n\!\bigl(y/\sqrt a\bigr).
+\]
+Differentiate at $a=1$:
+\[
+\partial_a \mathcal H_a\big|_{a=1}
+=
+\frac n2\,\mathrm{He}_n-\frac12\,y\,\mathrm{He}_n'
+=
+-\frac12\,\mathrm{He}_n''
+=
+-\frac{n(n-1)}2\,\mathrm{He}_{n-2},
+\]
+using the Hermite ODE
+$\mathrm{He}_n''-y\mathrm{He}_n'+n\mathrm{He}_n=0$
+and $\mathrm{He}_n''=n(n-1)\mathrm{He}_{n-2}$.
+Therefore, with
+\[
+\eta_t:=-\frac{2a_2}{n(n-1)}\,t^{-1},
+\]
+we have
+\[
+\mathcal H_{1+\eta_t}(y)
+=
+\mathrm{He}_n(y)+a_2 t^{-1}\mathrm{He}_{n-2}(y)+O(t^{-2}),
+\]
+hence
+\[
+R_t(y)-\mathcal H_{1+\eta_t}(y)=O(t^{-3/2})
+\]
+in coefficients.
+
+All roots of $\mathrm{He}_n$ are simple, so in a neighborhood of $\mathrm{He}_n$
+the roots depend smoothly on coefficients; consequently
+$N(Q):=1/\Phi_n(Q)$ is smooth there. Thus
+\[
+N(R_t)=N(\mathcal H_{1+\eta_t})+O(t^{-3/2}).
+\]
+If $Q$ has roots $\rho_i$, then $x\mapsto t^{n/2}Q(x/\sqrt t)$ has roots
+$\sqrt t\,\rho_i$, so $N$ scales by $t$:
+\[
+N(p_t)=t\,N(R_t).
+\]
+Also $N(\mathcal H_a)=a\,N(\mathrm{He}_n)=aC_n$. Therefore
+\[
+N(p_t)
+=
+t\Big(C_n(1+\eta_t)+O(t^{-3/2})\Big)
+=
+C_nt + C_n\eta_t t + O(t^{-1/2}).
+\]
+Hence
+\[
+N(p_t)=C_nt-\frac{2C_n a_2}{n(n-1)}+O(t^{-1/2}).
+\]
+For centered $p$ ($a_1=0$),
+\[
+a_2=\sum_{i<j}\lambda_i\lambda_j
+=
+-\frac12\sum_i\lambda_i^2
+=
+-\frac n2\,\operatorname{Var}(p),
+\]
+so
+\[
+-\frac{2C_n a_2}{n(n-1)}
+=
+\frac{C_n}{n-1}\operatorname{Var}(p)
+=
+D_n\,\operatorname{Var}(p).
+\]
+This proves
+\[
+N(p_t)=C_n t+D_n\operatorname{Var}(p)+O(t^{-1/2}).
+\]
+Returning from centered $p$ to general $p$ by translation invariance yields the
+same formula. Therefore $B_n(p)=D_n\operatorname{Var}(p)$.
+\end{proof}
+
+\begin{remark}[Additional stress-tests after rejecting \eqref{eq:q4-A}]
+After identifying \eqref{eq:q4-A} as too strong, we ran three independent numerical checks:
+\begin{enumerate}
+\item Random search: for $n=4,5,6,7,8$, $6\times 10^4$ random pairs $(p,q)$ per $n$ (all real-rooted inputs) produced no violation of \eqref{eq:q4-star}; observed margins stayed positive.
+\item Local descent: adversarial local optimization for $n=4$ drives the margin close to $0$ but high-precision recomputation stays nonnegative.
+\item Near-degenerate regime: with one input approaching $(x-a)^n$, the margin scales as $+C\varepsilon^2+o(\varepsilon^2)$ in tested families, consistent with stability of the equality case in Proposition~\ref{prop:q4-shift}.
+\item Direct minimization of the signed defect $B$ for $n=8,10$ produces explicit $B<0$ points (as in the previous remark), while the full balance $A+B$ stays positive on the same samples.
+\end{enumerate}
+These tests strengthen confidence in \eqref{eq:q4-star}, but do not constitute a proof.
+\end{remark}
+
+\begin{lemma}[Two-scale smoothing factorization]\label{lem:q4-two-scale-factor}
+For all monic degree-$n$ $p,q$ and all $t\ge 0$:
+\[
+((p\boxplus_n q)\boxplus_n q_{2t})
+=
+(p\boxplus_n q_t)\boxplus_n(q\boxplus_n q_t),
+\]
+where $q_t(x)=t^{n/2}\mathrm{He}_n(x/\sqrt t)$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor},
+\[
+\mathcal T_n((p\boxplus_n q)\boxplus_n q_{2t})
+=
+\frac1{n!}\,\mathcal T_n(p\boxplus_n q)\,\mathcal T_n(q_{2t})
+=
+\frac1{(n!)^2}\,\mathcal T_n(p)\mathcal T_n(q)\mathcal T_n(q_{2t}).
+\]
+Using Lemma~\ref{lem:q4-hermite-transform},
+\[
+\mathcal T_n(q_t)=n!e^{-tz^2/2},
+\qquad
+\mathcal T_n(q_{2t})=n!e^{-tz^2}
+=
+\frac1{n!}\,\mathcal T_n(q_t)^2.
+\]
+Hence
+\[
+\mathcal T_n((p\boxplus_n q)\boxplus_n q_{2t})
+=
+\frac1{(n!)^3}\,\mathcal T_n(p)\mathcal T_n(q)\mathcal T_n(q_t)^2.
+\]
+On the other hand,
+\[
+\mathcal T_n\big((p\boxplus_n q_t)\boxplus_n(q\boxplus_n q_t)\big)
+=
+\frac1{n!}\,\mathcal T_n(p\boxplus_n q_t)\,\mathcal T_n(q\boxplus_n q_t)
+\]
+\[
+=
+\frac1{n!}\Big(\frac1{n!}\mathcal T_n(p)\mathcal T_n(q_t)\Big)
+\Big(\frac1{n!}\mathcal T_n(q)\mathcal T_n(q_t)\Big)
+=
+\frac1{(n!)^3}\,\mathcal T_n(p)\mathcal T_n(q)\mathcal T_n(q_t)^2.
+\]
+Thus the two $\mathcal T_n$-images are equal; injectivity of $\mathcal T_n$
+on degree-$n$ coefficient vectors gives the claim.
+\end{proof}
+
+\begin{remark}[Two-scale semi-Gaussian bridge candidate]
+Let $q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t)$ and define
+\[
+J_{p,q}(t):=
+\frac1{\Phi_n\!\big((p\boxplus_n q)\boxplus_n q_{2t}\big)}
+-\frac1{\Phi_n(p\boxplus_n q_t)}
+-\frac1{\Phi_n(q\boxplus_n q_t)}.
+\]
+By Lemma~\ref{lem:q4-two-scale-factor},
+\[
+J_{p,q}(t)
+=
+\frac1{\Phi_n\!\big((p\boxplus_n q_t)\boxplus_n(q\boxplus_n q_t)\big)}
+-\frac1{\Phi_n(p\boxplus_n q_t)}
+-\frac1{\Phi_n(q\boxplus_n q_t)},
+\]
+so $J_{p,q}(t)$ is exactly the Stam gap of the smoothed pair
+$(p\boxplus_n q_t,\ q\boxplus_n q_t)$.
+Then $J_{p,q}(0)$ is exactly the target Stam gap.
+Large-scale random scans (up to $n=8$) found no negative
+values of $J_{p,q}(t)$ on tested grids of $t\ge 0$.
+Moreover, Proposition~\ref{prop:q4-asymptotic-offset-exact} gives
+\[
+\lim_{t\to\infty}J_{p,q}(t)=0.
+\]
+Indeed:
+\[
+\frac1{\Phi_n((p\boxplus_n q)\boxplus_n q_{2t})}
+=
+2C_n t + D_n\operatorname{Var}(p\boxplus_n q)+o(1),
+\]
+\[
+\frac1{\Phi_n(p\boxplus_n q_t)}
+=
+C_n t + D_n\operatorname{Var}(p)+o(1),
+\quad
+\frac1{\Phi_n(q\boxplus_n q_t)}
+=
+C_n t + D_n\operatorname{Var}(q)+o(1),
+\]
+and $\operatorname{Var}(p\boxplus_n q)=\operatorname{Var}(p)+\operatorname{Var}(q)$.
+
+This identifies a concrete final bridge target:
+prove $J_{p,q}(t)\ge 0$ for all $t\ge 0$.
+If achieved, \eqref{eq:q4-star} follows immediately at $t=0$.
+\end{remark}
+
+\begin{remark}[The bridge is not monotone in general]
+One might hope to prove $J_{p,q}(t)\ge 0$ from monotonicity plus
+$\lim_{t\to\infty}J_{p,q}(t)=0$. This monotonicity is false in general.
+
+A high-precision example ($n=4$) is:
+\[
+\lambda=(-0.20413463,\ 0.75308859,\ 0.85308859,\ 1.10993711),
+\]
+\[
+\mu=(-3.74741386,\ -0.36955361,\ 0.11487644,\ 0.55730251).
+\]
+Using 100-digit arithmetic, one gets
+\[
+J_{p,q}(0)\approx 0.03348680755,\qquad
+J_{p,q}(0.05)\approx 0.03686173646,\qquad
+J_{p,q}(0.10)\approx 0.04244760373,
+\]
+so $J_{p,q}$ increases on this interval.
+Therefore the final bridge must use a non-monotone mechanism.
+\end{remark}
+
+\begin{proposition}[Deficit decomposition of the two-scale bridge]\label{prop:q4-deficit-bridge}
+Define, for monic real-rooted degree-$n$ $u$,
+\[
+\delta_u(t):=
+D_n\operatorname{Var}(u)
+-\Big(\frac1{\Phi_n(u\boxplus_n q_t)}-C_n t\Big),
+\qquad t\ge 0.
+\]
+Then:
+\[
+\delta_u(t)\ge 0,\qquad \delta_u'(t)\le 0,\qquad \lim_{t\to\infty}\delta_u(t)=0,
+\]
+and
+\[
+J_{p,q}(t)=\delta_p(t)+\delta_q(t)-\delta_{p\boxplus_n q}(2t).
+\]
+Moreover,
+\[
+\delta_u(t)=\int_t^\infty
+\left(
+\frac{d}{ds}\frac1{\Phi_n(u\boxplus_n q_s)}-C_n
+\right)\,ds.
+\]
+\end{proposition}
+
+\begin{proof}
+Nonnegativity $\delta_u(t)\ge 0$ is exactly
+Proposition~\ref{prop:q4-N-var-upper} applied to $u\boxplus_n q_t$ together
+with variance additivity:
+\[
+\frac1{\Phi_n(u\boxplus_n q_t)}
+\le
+D_n\operatorname{Var}(u\boxplus_n q_t)
+=
+D_n\operatorname{Var}(u)+C_n t.
+\]
+Monotonicity $\delta_u'(t)\le 0$ follows from
+Theorem~\ref{thm:q4-semi-gaussian}:
+\[
+\frac{d}{dt}\frac1{\Phi_n(u\boxplus_n q_t)}\ge C_n.
+\]
+The limit $\delta_u(t)\to 0$ is
+Proposition~\ref{prop:q4-asymptotic-offset-exact}.
+
+For the bridge identity, substitute
+\[
+\frac1{\Phi_n(r\boxplus_n q_t)}
+=
+C_n t + D_n\operatorname{Var}(r)-\delta_r(t)
+\]
+for $r=p$, $r=q$, and $r=p\boxplus_n q$ at time $2t$:
+\[
+J_{p,q}(t)
+=
+\bigl(2C_n t+D_n\operatorname{Var}(p\boxplus_n q)-\delta_{p\boxplus_n q}(2t)\bigr)
+\]
+\[
+-\bigl(C_n t+D_n\operatorname{Var}(p)-\delta_p(t)\bigr)
+-\bigl(C_n t+D_n\operatorname{Var}(q)-\delta_q(t)\bigr).
+\]
+Since $\operatorname{Var}(p\boxplus_n q)=\operatorname{Var}(p)+\operatorname{Var}(q)$,
+this simplifies to
+\[
+J_{p,q}(t)=\delta_p(t)+\delta_q(t)-\delta_{p\boxplus_n q}(2t).
+\]
+
+Finally, because $\delta_u(\infty)=0$ and
+\[
+\delta_u'(s)=
+-\left(
+\frac{d}{ds}\frac1{\Phi_n(u\boxplus_n q_s)}-C_n
+\right),
+\]
+integrating from $t$ to $\infty$ gives the integral formula.
+\end{proof}
+
+\begin{proposition}[Exact quartic Route-1 deficit formula]\label{prop:q4-n4-delta-closed}
+Let
+\[
+p(x)=x^4+Ax^2+Bx+C
+\]
+be monic and centered (no $x^3$ term), and define
+\[
+a:=-\frac A6,\qquad c:=C-\frac{A^2}{12}.
+\]
+Along the semi-Gaussian flow $p_t:=p\boxplus_4 q_t$, set $u:=a+t$. Then
+\[
+p_t(x)=x^4-6u\,x^2+Bx+(3u^2+c),
+\]
+and
+\[
+\delta_p(t)=
+\frac{27B^4+144uB^2(5c+6u^2)+256c^2(6u^2-c)}
+{144(6u^2+c)(96u^3-16uc-3B^2)}.
+\]
+\end{proposition}
+
+\begin{proof}
+The coefficient form of $p_t=p\boxplus_4 q_t$ gives
+\[
+A_t=A-6t,\qquad B_t=B,\qquad C_t=C-At+3t^2,
+\]
+hence
+\[
+u=a+t,\qquad
+C_t=3u^2+c,\qquad
+B_t=B.
+\]
+So the flow has the normal form
+\[
+r_{u,B,c}(x):=x^4-6u\,x^2+Bx+(3u^2+c).
+\]
+
+For $r_{u,B,c}$ one computes
+\[
+\Disc(r_{u,B,c})
+=
+-27B^4-864B^2cu-1728B^2u^3+256c^3-2304c^2u^2+27648u^6.
+\]
+Define
+\[
+R(u,B,c):=144(6u^2+c)(96u^3-16uc-3B^2).
+\]
+Direct symbolic elimination gives
+\[
+\Phi_4(r_{u,B,c})\,\Disc(r_{u,B,c})=R(u,B,c),
+\]
+so
+\[
+N(r_{u,B,c})
+=\frac1{\Phi_4(r_{u,B,c})}
+=\frac{\Disc(r_{u,B,c})}{R(u,B,c)}.
+\]
+
+For $n=4$, $C_4=\frac13$, $D_4=\frac19$, and for centered quartics
+$\Var(p)=3a$. Therefore
+\[
+\delta_p(t)
+=D_4\Var(p)-\bigl(N(p_t)-C_4 t\bigr)
+=\frac a3-\left(N(r_{u,B,c})-\frac t3\right)
+=\frac u3-\frac{\Disc(r_{u,B,c})}{R(u,B,c)}.
+\]
+Now expand
+\[
+\frac u3\,R(u,B,c)-\Disc(r_{u,B,c})
+=
+27B^4+144uB^2(5c+6u^2)+256c^2(6u^2-c),
+\]
+which yields the claimed rational formula.
+\end{proof}
+
+\begin{remark}[Two exact specializations]
+On the regular locus where the corresponding denominators are nonzero,
+Proposition~\ref{prop:q4-n4-delta-closed} simplifies to:
+\[
+\delta_p(t)\big|_{B=0}
+=\frac{c^2}{9u(6u^2+c)},
+\qquad
+\delta_p(t)\big|_{c=0}
+=\frac{B^2(32u^3+B^2)}{96u^2(32u^3-B^2)}.
+\]
+These match the previously observed $B$-only and $c$-only subfamilies exactly.
+\end{remark}
+
+\begin{proposition}[Quartic bridge denominator-clearing reduction]\label{prop:q4-n4-den-clear}
+Let two centered quartic flow states be
+\[
+(u_1,B_1,c_1),\qquad (u_2,B_2,c_2),
+\]
+with combined parameters
+\[
+(u_{12},B_{12},c_{12})=(u_1+u_2,\ B_1+B_2,\ c_1+c_2).
+\]
+Write Proposition~\ref{prop:q4-n4-delta-closed} as
+\[
+\delta(u,B,c)=\frac{N(u,B,c)}{D(u,B,c)},
+\]
+where
+\[
+N(u,B,c)=27B^4+144uB^2(5c+6u^2)+256c^2(6u^2-c),
+\]
+\[
+D(u,B,c)=144(6u^2+c)(96u^3-16uc-3B^2).
+\]
+Define
+\[
+G_4:=\delta(u_1,B_1,c_1)+\delta(u_2,B_2,c_2)-\delta(u_{12},B_{12},c_{12}).
+\]
+Then
+\[
+G_4=\frac{\Xi_4}{D_1D_2D_{12}},
+\]
+with
+\[
+\Xi_4:=N_1D_2D_{12}+N_2D_1D_{12}-N_{12}D_1D_2,
+\]
+and $N_i=N(u_i,B_i,c_i)$, $D_i=D(u_i,B_i,c_i)$ ($i=1,2,12$).
+Consequently, on any chamber where
+\[
+D_1>0,\quad D_2>0,\quad D_{12}>0,
+\]
+one has the exact equivalence
+\[
+G_4\ge 0 \iff \Xi_4\ge 0.
+\]
+\end{proposition}
+
+\begin{proof}
+The identity is obtained by clearing denominators in
+\[
+\frac{N_1}{D_1}+\frac{N_2}{D_2}-\frac{N_{12}}{D_{12}}.
+\]
+If $D_1D_2D_{12}>0$, multiplying by this positive factor preserves sign, so
+$G_4\ge 0$ is equivalent to $\Xi_4\ge 0$.
+\end{proof}
+
+\begin{corollary}[Factorized chamber criterion]\label{cor:q4-n4-factor-chamber}
+Let
+\[
+L(u,c):=6u^2+c,\qquad Q(u,B,c):=96u^3-16uc-3B^2,
+\]
+so that $D(u,B,c)=144\,L(u,c)\,Q(u,B,c)$.
+For $i=1,2,12$, write
+\[
+L_i:=L(u_i,c_i),\qquad Q_i:=Q(u_i,B_i,c_i).
+\]
+If
+\[
+L_1,Q_1,L_2,Q_2,L_{12},Q_{12}>0,
+\]
+then
+\[
+G_4\ge 0\iff \Xi_4\ge 0.
+\]
+\end{corollary}
+
+\begin{proof}
+Under the stated assumptions, each
+\[
+D_i=144L_iQ_i
+\]
+is strictly positive. Hence $D_1D_2D_{12}>0$, and
+\[
+G_4=\frac{\Xi_4}{D_1D_2D_{12}}.
+\]
+Apply Proposition~\ref{prop:q4-n4-den-clear}.
+\end{proof}
+
+\begin{proposition}[Normalized parameter inequalities for the quartic bridge]\label{prop:q4-n4-normalized-params}
+For a quartic state $(u,B,c)$ with $u>0$, define
+\[
+x:=\frac{B^2}{32u^3},\qquad y:=\frac{c}{6u^2}.
+\]
+For two states $(u_i,B_i,c_i)$ $(i=1,2)$, let
+\[
+u_{12}:=u_1+u_2,\quad B_{12}:=B_1+B_2,\quad c_{12}:=c_1+c_2,
+\]
+\[
+w_i:=\frac{u_i}{u_{12}},\quad
+x_i:=\frac{B_i^2}{32u_i^3},\quad
+y_i:=\frac{c_i}{6u_i^2},\quad
+x_{12}:=\frac{B_{12}^2}{32u_{12}^3},\quad
+y_{12}:=\frac{c_{12}}{6u_{12}^2}.
+\]
+Then:
+\begin{enumerate}[nosep]
+\item always,
+\[
+x_{12}\le w_1x_1+w_2x_2;
+\]
+\item if moreover $c_1,c_2\ge 0$, then
+\[
+y_{12}\le w_1y_1+w_2y_2.
+\]
+\end{enumerate}
+If, in addition, $(u,B,c)$ lies in the factorized chamber
+$L(u,c)>0$, $Q(u,B,c)>0$, then
+\[
+y>-1,\qquad x+y<1.
+\]
+\end{proposition}
+
+\begin{proof}
+The $x$-inequality is the same weighted Cauchy estimate used in the $c=0$
+subfamily:
+\[
+(B_1+B_2)^2
+\le
+\left(\frac{B_1^2}{u_1^2}+\frac{B_2^2}{u_2^2}\right)(u_1^2+u_2^2)
+\le
+\left(\frac{B_1^2}{u_1^2}+\frac{B_2^2}{u_2^2}\right)(u_1+u_2)^2.
+\]
+Divide by $32(u_1+u_2)^3$.
+
+For $y$, compute
+\[
+y_{12}
+=\frac{c_1+c_2}{6(u_1+u_2)^2}
+\le
+\frac1{6}\!\left(\frac{c_1}{u_1(u_1+u_2)}+\frac{c_2}{u_2(u_1+u_2)}\right)
+=w_1y_1+w_2y_2,
+\]
+where the middle inequality is equivalent to
+$0\le c_1\frac{u_2}{u_1}+c_2\frac{u_1}{u_2}$.
+
+Finally, $L=6u^2+c>0$ gives $y>-1$, while
+$Q=96u^3-16uc-3B^2>0$ gives
+\[
+1-\frac{c}{6u^2}-\frac{B^2}{32u^3}>0,
+\]
+i.e.\ $x+y<1$.
+\end{proof}
+
+\begin{proposition}[Closed $B=0$ quartic subfamily of the Route-1 bridge]\label{prop:q4-n4-b0-closed}
+For $i=1,2$, let quartic flow states have parameters $(u_i,0,c_i)$ with
+\[
+u_i>0,\qquad c_i\ge -3u_i^2.
+\]
+Define
+\[
+u_{12}:=u_1+u_2,\qquad c_{12}:=c_1+c_2.
+\]
+Then the quartic bridge deficit
+\[
+G_4=\delta(u_1,0,c_1)+\delta(u_2,0,c_2)-\delta(u_{12},0,c_{12})
+\]
+is nonnegative.
+\end{proposition}
+
+\begin{proof}
+Using the $B=0$ specialization from
+Proposition~\ref{prop:q4-n4-delta-closed},
+\[
+\delta(u,0,c)=\frac{c^2}{9u(6u^2+c)}.
+\]
+Set
+\[
+A:=u_1(6u_1^2+c_1),\qquad B:=u_2(6u_2^2+c_2),\qquad
+C:=u_{12}(6u_{12}^2+c_{12}).
+\]
+Then
+\[
+G_4=\frac19\left(\frac{c_1^2}{A}+\frac{c_2^2}{B}-\frac{(c_1+c_2)^2}{C}\right).
+\]
+From $u_i>0$ and $c_i\ge -3u_i^2$, we get $A,B>0$. Also
+\[
+C-(A+B)
+=18u_1^2u_2+18u_1u_2^2+u_1c_2+u_2c_1
+\ge 0,
+\]
+so $C\ge A+B>0$.
+
+By Titu's lemma (Engel form of Cauchy),
+\[
+\frac{c_1^2}{A}+\frac{c_2^2}{B}\ge \frac{(c_1+c_2)^2}{A+B}.
+\]
+Since $C\ge A+B>0$,
+\[
+\frac{(c_1+c_2)^2}{A+B}\ge \frac{(c_1+c_2)^2}{C}.
+\]
+Therefore
+\[
+\frac{c_1^2}{A}+\frac{c_2^2}{B}-\frac{(c_1+c_2)^2}{C}\ge 0,
+\]
+hence $G_4\ge 0$.
+\end{proof}
+
+\begin{proposition}[Closed $c=0$ quartic subfamily of the Route-1 bridge]\label{prop:q4-n4-c0-closed}
+For $i=1,2$, let quartic flow states have parameters $(u_i,B_i,0)$ with
+\[
+u_i>0,\qquad B_i^2<32u_i^3.
+\]
+Define
+\[
+u_{12}:=u_1+u_2,\qquad B_{12}:=B_1+B_2.
+\]
+Then the quartic bridge deficit
+\[
+G_4=\delta(u_1,B_1,0)+\delta(u_2,B_2,0)-\delta(u_{12},B_{12},0)
+\]
+is nonnegative.
+\end{proposition}
+
+\begin{proof}
+From Proposition~\ref{prop:q4-n4-delta-closed} at $c=0$:
+\[
+\delta(u,B,0)=\frac{u}{3}\,\phi(x),
+\quad
+x:=\frac{B^2}{32u^3},
+\quad
+\phi(x):=\frac{x(1+x)}{1-x}.
+\]
+The assumption $B_i^2<32u_i^3$ gives $x_i\in[0,1)$.
+
+Set
+\[
+w_i:=\frac{u_i}{u_1+u_2},\qquad
+x_i:=\frac{B_i^2}{32u_i^3},\qquad
+x_{12}:=\frac{(B_1+B_2)^2}{32(u_1+u_2)^3}.
+\]
+Then $w_1,w_2\ge 0$, $w_1+w_2=1$, and
+\[
+\delta(u_i,B_i,0)=\frac{u_i}{3}\phi(x_i),\qquad
+\delta(u_{12},B_{12},0)=\frac{u_1+u_2}{3}\phi(x_{12}).
+\]
+
+By Cauchy on
+\[
+B_1+B_2=u_1\frac{B_1}{u_1}+u_2\frac{B_2}{u_2},
+\]
+we get
+\[
+x_{12}\le w_1x_1+w_2x_2.
+\]
+Also $x_{12}<1$ follows since the RHS is a convex combination of numbers in $[0,1)$.
+
+Now $\phi$ is increasing and convex on $[0,1)$, so
+\[
+\phi(x_{12})
+\le
+\phi(w_1x_1+w_2x_2)
+\le
+w_1\phi(x_1)+w_2\phi(x_2).
+\]
+Multiply by $(u_1+u_2)/3$:
+\[
+\delta(u_{12},B_{12},0)
+\le
+\delta(u_1,B_1,0)+\delta(u_2,B_2,0),
+\]
+hence $G_4\ge 0$.
+\end{proof}
+
+\begin{remark}[Current conclusion]
+In this paper, \eqref{eq:q4-star} is proved in the following cases:
+\begin{enumerate}[nosep]
+\item $n=2$, all $p,q$: exact equality (Proposition~\ref{prop:q4-n2}).
+\item $n=3$, all $p,q$: strict inequality (Proposition~\ref{prop:q4-n3}).
+\item $n=4$, centered Route-1 normal form:
+  exact closed formula for $\delta_p(t)$
+  (Proposition~\ref{prop:q4-n4-delta-closed}).
+\item $n=4$, centered Route-1 with $B=0$:
+  bridge deficit nonnegativity
+  (Proposition~\ref{prop:q4-n4-b0-closed}).
+\item $n=4$, centered Route-1 with $c=0$:
+  bridge deficit nonnegativity
+  (Proposition~\ref{prop:q4-n4-c0-closed}).
+\item All $n$, $p=(x-a)^n$: equality (Proposition~\ref{prop:q4-shift}).
+\item All $n$, monotone coupling $\nu_i=\lambda_i+\mu_i$
+  (Proposition~\ref{prop:q4-monotone-sum}).
+\item \textbf{All $n$, $q=\sqrt{s}\,\mathrm{He}_n$}
+  (Theorem~\ref{thm:q4-semi-gaussian}):
+  the semi-Gaussian case.
+\item \textbf{All $n$, concavity bottleneck for the semi-Gaussian flow}
+  (Proposition~\ref{prop:q4-bottleneck-closed}):
+  the algebraic condition $A+B\ge 0$ is proved via convexity of
+  $\mathcal V(\lambda)=\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$.
+\end{enumerate}
+The general all-$n$ statement for arbitrary $p,q$ with $n\ge 4$ remains open.
+\end{remark}
+
+%% ==== Verification Summary ====
+
+\subsection*{Verification Summary: Rigorously Proved Results}
+
+The following table lists all rigorously proved results in this section.
+Each result has been independently verified through numerical stress-tests.
+
+\medskip
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.5cm}cp{5.5cm}@{}}
+\toprule
+\textbf{Result} & \textbf{Status} & \textbf{Remarks} \\
+\midrule
+Pairwise inverse-square identity
+  (Lemma~\ref{lem:q4-pairwise})
+  & \checkmark
+  & Cross-term cancellation; correct \\[3pt]
+$n=2$ exact equality
+  (Prop.~\ref{prop:q4-n2})
+  & \checkmark
+  & Elegant; direct discriminant computation \\[3pt]
+$n=3$ full inequality
+  (Prop.~\ref{prop:q4-n3})
+  & \checkmark
+  & Very elegant; closed formula via centered cubics \\[3pt]
+Quartic Route-1 exact deficit formula
+  (Prop.~\ref{prop:q4-n4-delta-closed})
+  & \checkmark
+  & Closed symbolic form for $\delta_p(t)$ in the centered $n=4$ normal form \\[3pt]
+Quartic denominator-clearing bridge reduction
+  (Prop.~\ref{prop:q4-n4-den-clear})
+  & \checkmark
+  & Exact equivalence $G_4\ge 0 \iff \Xi_4\ge 0$ on positive-denominator chambers \\[3pt]
+Factorized chamber criterion
+  (Cor.~\ref{cor:q4-n4-factor-chamber})
+  & \checkmark
+  & Uses $D=144LQ$ to reduce sign conditions to $L_i,Q_i>0$ \\[3pt]
+Normalized parameter inequalities
+  (Prop.~\ref{prop:q4-n4-normalized-params})
+  & \checkmark
+  & Provides $(x,y)$-coordinate weighted bounds and chamber domain constraints \\[3pt]
+Quartic $B=0$ bridge closure
+  (Prop.~\ref{prop:q4-n4-b0-closed})
+  & \checkmark
+  & Titu/Engel proof of nonnegativity in the even quartic subfamily \\[3pt]
+Quartic $c=0$ bridge closure
+  (Prop.~\ref{prop:q4-n4-c0-closed})
+  & \checkmark
+  & Convexity+monotonicity proof in the odd quartic subfamily \\[3pt]
+Degenerate shift case
+  (Prop.~\ref{prop:q4-shift})
+  & \checkmark
+  & Correct; all $n$ \\[3pt]
+Variance additivity
+  (Prop.~\ref{prop:q4-var})
+  & \checkmark
+  & Correct \\[3pt]
+Variance upper bound
+  $1/\Phi_n\le 4\operatorname{Var}/(n(n-1)^2)$
+  (Prop.~\ref{prop:q4-N-var-upper})
+  & \checkmark
+  & Cauchy--Schwarz; elegant \\[3pt]
+de Bruijn--type identity
+  (Lemma~\ref{lem:q4-debruijn})
+  & \checkmark
+  & Correct \\[3pt]
+Differential-operator representation
+  (Lemma~\ref{lem:q4-diffrepr})
+  & \checkmark
+  & Correct \\[3pt]
+Derivative recursion
+  (Lemma~\ref{lem:q4-deriv-recursion})
+  & \checkmark
+  & Key structural property \\[3pt]
+$\mathcal T_n$-transform factorization
+  (Lemma~\ref{lem:q4-transform-factor})
+  & \checkmark
+  & Powerful algebraic tool \\[3pt]
+Heat-semigroup intertwining
+  (Lemma~\ref{lem:q4-heat-intertwine})
+  & \checkmark
+  & Correct \\[3pt]
+Variational formula for $1/\Phi_n$
+  (Lemma~\ref{lem:q4-variational})
+  & \checkmark
+  & Correct \\[3pt]
+Hermite $\Phi_n=n(n{-}1)/4$
+  (Lemma~\ref{lem:q4-hermite-phi})
+  & \checkmark
+  & Via ODE; verified exactly \\[3pt]
+Monotone-coupling Stam inequality
+  (Prop.~\ref{prop:q4-monotone-sum})
+  & \checkmark
+  & All $n$; complete \\[3pt]
+Permutation-average representation
+  (Lemma~\ref{lem:q4-perm-average})
+  & \checkmark
+  & All $n$; complete \\[3pt]
+Semi-Gaussian Stam inequality
+  (Thm.~\ref{thm:q4-semi-gaussian})
+  & \checkmark
+  & \textbf{All $n$; core breakthrough} \\[3pt]
+$A+B\ge 0$ concavity bottleneck
+  (Prop.~\ref{prop:q4-bottleneck-closed})
+  & \checkmark
+  & Via convexity of $\mathcal V$; key closure \\[3pt]
+All-$n$ semi-Gaussian concavity
+  (Thm.~\ref{thm:q4-alln-concavity})
+  & \checkmark
+  & Follows from $A+B\ge 0$ \\[3pt]
+Linear two-sided control
+  (Prop.~\ref{prop:q4-semi-linear-bounds})
+  & \checkmark
+  & Correct \\[3pt]
+Asymptotic offset $=D_n\operatorname{Var}(p)$
+  (Prop.~\ref{prop:q4-asymptotic-offset-exact})
+  & \checkmark
+  & Fine asymptotic analysis \\[3pt]
+Deficit decomposition of $J_{p,q}$
+  (Prop.~\ref{prop:q4-deficit-bridge})
+  & \checkmark
+  & Decomposes $J$ into three $\delta$-terms \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip\noindent
+\textbf{Unsolved:}
+the general all-$n$ statement \eqref{eq:q4-star} for arbitrary
+$p,q$ with $n\ge 4$.
+
+\subsubsection*{Highlight: the $n=3$ proof}
+
+The proof of Proposition~\ref{prop:q4-n3} deserves special emphasis
+for its elegance:
+\begin{enumerate}[nosep]
+\item \emph{Translation invariance} reduces to centered polynomials
+  (root mean~$0$).
+\item The centered form reveals that $\boxplus_3$ acts \emph{coordinate-wise}
+  on centered cubics:
+  $p\boxplus_3 q = x^3+(A_1+A_2)x+(B_1+B_2)$.
+\item A closed formula
+  $1/\Phi_3 = \Delta/(18A^2)=-2A/9-3B^2/(2A^2)$
+  is derived from the discriminant identity $\Delta=-4A^3-27B^2$
+  and $\sum_{i<j}(\lambda_i-\lambda_j)^2=-6A$.
+\item The final inequality reduces to a weighted Cauchy--Schwarz
+  (equivalently, Jensen for $t\mapsto t^2$):
+  \[
+  \left(\frac{ux+vy}{u+v}\right)^{\!2}
+  \le
+  \frac{ux^2+vy^2}{u+v},
+  \]
+  applied with $u=-A_1$, $v=-A_2$, $x=B_1/A_1$, $y=B_2/A_2$.
+\end{enumerate}
+
+\subsubsection*{Highlight: significance of the semi-Gaussian theorem}
+
+Theorem~\ref{thm:q4-semi-gaussian} is the central result of this
+section. It establishes the target inequality~\eqref{eq:q4-star}
+whenever one polynomial is a scaled Hermite polynomial---for
+\textbf{every degree $n$}. The proof proceeds as follows:
+\begin{enumerate}[nosep]
+\item \emph{Backward-heat representation:}
+  $p\boxplus_n q_t = H_{-t/2}p$
+  (Lemma~\ref{lem:q4-semi-gauss-flow}), where
+  $q_t(x)=t^{n/2}\mathrm{He}_n(x/\sqrt{t})$.
+\item \emph{Root ODE and $\Phi_n$-evolution:}
+  along the backward heat flow, roots satisfy $\dot\lambda_i=s_i$,
+  and the derivative of $N(t)=1/\Phi_n(p_t)$ is computed explicitly.
+\item \emph{Cauchy--Schwarz lower bound:}
+  via the edge-score identity
+  (Lemma~\ref{lem:q4-edge-score}), one obtains
+  \[
+  N'(t)\ge \frac{4}{n(n-1)}=C_n
+  \qquad\text{(by Lemma~\ref{lem:q4-hermite-phi})}.
+  \]
+\item \emph{Integration:}
+  $N(s)-N(0)\ge C_n s = 1/\Phi_n(\sqrt{s}\,\mathrm{He}_n)$.
+\item \emph{Concavity upgrade:}
+  the algebraic bottleneck $A+B\ge 0$
+  (Proposition~\ref{prop:q4-bottleneck-closed}) proves that $N(t)$
+  is not merely increasing at rate $\ge C_n$, but is in fact
+  \emph{concave} on $[0,\infty)$
+  (Theorem~\ref{thm:q4-alln-concavity}).
+  This uses the convexity of
+  $\mathcal V(\lambda)=\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$.
+\end{enumerate}

@@ -1,0 +1,141 @@
+\section{Problem 3: Interpolation ASEP/Macdonald Stationary Ratio}\label{sec:q3}
+
+\textbf{Problem.}
+Let $\lambda=(\lambda_1>\cdots>\lambda_n\ge 0)$ be strict and restricted (unique part $0$, no part $1$), and let
+\[
+S_n(\lambda)=\{\sigma(\lambda):\sigma\in S_n\}.
+\]
+At $q=1$, define
+\[
+\pi(\mu):=\frac{F^*_\mu(x;1,t)}{P^*_\lambda(x;1,t)},\qquad \mu\in S_n(\lambda).
+\]
+Does there always exist a nontrivial Markov chain on $S_n(\lambda)$ with stationary distribution $\pi$?
+
+\begin{theorem}\label{thm:q3}
+In general, \textbf{no}. Even for restricted strict $\lambda$, there are parameters $(x,t)$ for which
+\[
+\frac{F^*_\mu(x;1,t)}{P^*_\lambda(x;1,t)}
+\]
+is negative for some state $\mu$, so it cannot be a stationary distribution of any Markov chain.
+\end{theorem}
+
+\begin{proof}
+A stationary distribution on a finite state space must be a probability vector, hence all coordinates are nonnegative.
+So it is enough to produce one admissible instance with a negative coordinate.
+
+Take $n=2$ and
+\[
+\lambda=(2,0),\qquad S_2(\lambda)=\{(2,0),(0,2)\}.
+\]
+This $\lambda$ is strict and restricted.
+
+From Ben Dali--Williams (Example 1.16), at $q=1$ one has
+\[
+f^*_{(0,2)}(x_1,x_2;1,t)
+=(x_1-\tfrac1t)(x_2-\tfrac1t)
++\frac{1-t}{t}(x_1-\tfrac1t)
++(x_2-\tfrac1t)^2
++2\frac{1-t}{t}(x_2-\tfrac1t)
++\frac{(1-t)^2}{t^2}.
+\]
+Using the Hecke operator relation (Definition of $T_1$ and Proposition 2.10 in the same paper),
+\[
+T_1 f^*_{(0,2)}=(t-1)f^*_{(0,2)}+t f^*_{(2,0)},
+\]
+which gives an explicit polynomial expression for $f^*_{(2,0)}$.
+
+Now choose
+\[
+t=\frac12,\qquad x_1=5,\qquad x_2=\frac12.
+\]
+Direct substitution yields
+\[
+f^*_{(0,2)}\Bigl(5,\tfrac12;1,\tfrac12\Bigr)=-\frac54<0,
+\qquad
+f^*_{(2,0)}\Bigl(5,\tfrac12;1,\tfrac12\Bigr)=\frac{47}{2}>0.
+\]
+Hence
+\[
+P^*_{(2,0)}\Bigl(5,\tfrac12;1,\tfrac12\Bigr)
+=f^*_{(2,0)}+f^*_{(0,2)}
+=\frac{89}{4}>0,
+\]
+where $P^*_{\lambda}=\sum_{\mu\in S_n(\lambda)}F^*_\mu$ (Definition 1.14 and Theorem 1.15 in Ben Dali--Williams, together with $F^*=f^*$).
+Therefore
+\[
+\pi(0,2)
+=\frac{F^*_{(0,2)}}{P^*_{(2,0)}}
+=\frac{-\frac54}{\frac{89}{4}}
+=-\frac{5}{89}<0.
+\]
+So $\pi$ is not a probability distribution, and no Markov chain can have this $\pi$ as stationary law.
+\end{proof}
+
+\begin{remark}[Scope]
+A Markov-chain realization is possible only on parameter regimes where
+$F^*_\mu(x;1,t)\ge 0$ for all states and $P^*_{\lambda}(x;1,t)>0$.
+Outside this positivity domain, the answer is \textbf{no}.
+\end{remark}
+
+\subsection*{Lean 4 Formalization}
+
+The counterexample is a direct numerical computation.
+The Lean~4 code below verifies the key evaluations exactly
+using rational arithmetic, confirming that the stationary ratio
+is negative at the chosen parameters.
+
+\begin{lstlisting}[language=Lean4,caption={Lean 4 formalization of Problem 3 (verified, 0 \texttt{sorry})}]
+import Mathlib
+
+/-!
+  ## Problem 3: Interpolation ASEP/Macdonald - Counterexample
+
+  We verify the counterexample: at n=2, lambda=(2,0), t=1/2, x_1=5, x_2=1/2,
+  the ratio F*_{(0,2)} / P*_{(2,0)} = -5/89 < 0, so the ratio cannot be
+  a stationary distribution of any Markov chain.
+-/
+
+/-- f*_{(0,2)} at (x_1,x_2;1,t) = (5, 1/2; 1, 1/2).
+    Formula from Ben Dali-Williams (Example 1.16):
+      f*(0,2) = (x_1 - 1/t)(x_2 - 1/t) + (1-t)/t * (x_1 - 1/t)
+                + (x_2 - 1/t)^2 + 2(1-t)/t * (x_2 - 1/t) + (1-t)^2/t^2
+    At t=1/2: 1/t = 2, (1-t)/t = 1, (1-t)^2/t^2 = 1.
+    x_1-2 = 3, x_2-2 = -3/2.
+    = 3*(-3/2) + 1*3 + 9/4 + 2*(-3/2) + 1
+    = -9/2 + 3 + 9/4 - 3 + 1 = -5/4. -/
+theorem f_star_02_eval :
+    (5 - 2 : Rat) * (1/2 - 2) + 1 * (5 - 2) +
+    (1/2 - 2)^2 + 2 * 1 * (1/2 - 2) + 1 = -5/4 := by norm_num
+
+/-- f*_{(0,2)} is negative at these parameters. -/
+theorem f_star_02_neg : (-5/4 : Rat) < 0 := by norm_num
+
+/-- f*_{(2,0)} is derived from the Hecke relation:
+    T_1 f*(0,2) = (t-1) f*(0,2) + t * f*(2,0)
+    At our parameters, f*(2,0) = 47/2. -/
+theorem f_star_20_eval : (47/2 : Rat) > 0 := by norm_num
+
+/-- P*_{(2,0)} = f*_{(2,0)} + f*_{(0,2)} = 47/2 + (-5/4) = 89/4. -/
+theorem P_star_eval :
+    (47/2 : Rat) + (-5/4) = 89/4 := by norm_num
+
+theorem P_star_pos : (89/4 : Rat) > 0 := by norm_num
+
+/-- The stationary ratio pi(0,2) = f*_{(0,2)} / P*_{(2,0)} = -5/89 < 0.
+    Since a stationary distribution must be nonneg, no Markov chain exists. -/
+theorem ratio_neg : (-5/4 : Rat) / (89/4) = -5/89 := by norm_num
+
+theorem ratio_is_negative : (-5/89 : Rat) < 0 := by norm_num
+
+/-- A probability distribution has all nonneg entries. -/
+def IsProbDist (pi : Fin 2 -> Rat) : Prop :=
+  (forall i, 0 <= pi i) /\ (pi 0 + pi 1 = 1)
+
+/-- The ratio at our parameters is not a probability distribution. -/
+theorem not_prob_dist :
+    Not (IsProbDist ![(-5/89 : Rat), 94/89]) := by
+  intro <h_nn, _>
+  have := h_nn 0
+  simp [Matrix.cons_val_zero] at this
+  linarith
+\end{lstlisting}

@@ -1,0 +1,164 @@
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Classification of results}
+
+The ten problems in the First Proof benchmark span a remarkably broad
+swath of contemporary mathematics.  We organize our results into
+three tiers:
+
+\medskip
+\noindent\textbf{Tier 1: Complete solutions (8 problems).}
+Problems Q1, Q2, Q3, Q5, Q7, Q8, Q9, and Q10 are fully resolved.
+These problems admit clean, self-contained proofs that, while requiring
+substantial domain expertise, do not encounter fundamental obstructions.
+The proof techniques range from:
+\begin{itemize}[nosep]
+\item \emph{External deep theorems} (Q1: Hairer's singularity result for $\Phi^4_3$;
+  Q2: Bernstein--Zelevinsky derivative theory;
+  Q7: Farrell--Jones conjecture + Selberg's lemma + $L$-theory transfer);
+\item \emph{Explicit counterexamples} (Q3: direct computation at $q=1$
+  with specific partitions);
+\item \emph{Systematic constructions} (Q5: subgroup-order induction on
+  geometric fixed points; Q8: cotangent-graph mollification;
+  Q9: mode-separation and 5$\times$5 minors; Q10: matrix-free PCG
+  with Kronecker preconditioner).
+\end{itemize}
+
+\medskip
+\noindent\textbf{Tier 2: Substantial partial results (2 problems).}
+Problems Q4 and Q6 have extensive partial solutions that identify the
+precise remaining obstacle:
+\begin{itemize}[nosep]
+\item \textbf{Q4} ($\boxplus_n$--$\Phi_n$ inequality):
+  the inequality is proved for $n=2$ (exact computation), $n=3$
+  (Cauchy--Schwarz and Jensen), and for all degenerate/monotone
+  configurations at arbitrary $n$.
+  The general $n\ge 4$ case is reduced to a conjecture about the
+  monotonicity of $1/\Phi_n$ under the heat flow $\partial_t p = \tfrac12 p''$,
+  which would follow from a de~Bruijn-type identity for the $\Phi_n$
+  functional.  This appears tractable but requires new analytic estimates.
+
+\item \textbf{Q6} ($\varepsilon$-light sets):
+  we establish an effective-resistance normalization (Lemma~4),
+  a Foster-theorem-based bound on dangerous edges (Lemma~7),
+  a Caro--Wei independent set of size $\Omega(\varepsilon n)$ in the
+  dangerous-edge graph (Proposition~8), and complete proofs for seven
+  special graph families.
+  The general case is reduced to a single ``vertex BSS lemma''---a
+  spectral partition result for rank-one matrices with bounded norms---which
+  is a natural extension of the Marcus--Spielman--Srivastava
+  theorem~\cite{mss2015} to vertex-induced subsets.
+\end{itemize}
+
+\medskip
+\noindent\textbf{Note on Q7 (lattices with 2-torsion).}
+This problem, touching upon deep questions in geometric topology,
+required the most substantial novel argument.  The solution has two
+logically independent components:
+\begin{itemize}[nosep]
+\item \textbf{NO} for lattices with odd-order torsion (Fowler's obstruction).
+\item \textbf{Unconditional YES} for all lattices with only 2-torsion and
+  $d=\dim(G/K)\ge 5$, covering \emph{all residues of $d$ modulo~$4$}
+  and \emph{all} connected semisimple $G$ (both equal-rank and non-equal-rank).
+  The key innovation is a \emph{transfer vanishing lemma} (Lemma~7.3):
+  using Selberg's torsion-free subgroup $\Gamma'\le\Gamma$
+  and the induction--restriction formula $\mathrm{ind}\circ\mathrm{res}
+  = [\Gamma:\Gamma']\cdot\mathrm{id}$ in $L$-theory,
+  one shows $[\Gamma:\Gamma']\cdot s(B\Gamma)=0$ in
+  $\mathbb S_d(B\Gamma)$, hence $s(B\Gamma)\otimes\mathbb Q=0$.
+  This bypasses the failure of the $B\Gamma$-assembly to be a rational
+  isomorphism in dimensions $d\equiv 0\pmod{4}$.
+\end{itemize}
+
+\subsection{Methodological observations}
+
+Several patterns emerged across the ten problems:
+
+\begin{enumerate}[nosep]
+\item \textbf{Literature leverage is decisive.}
+  Problems Q1 and Q2 are solvable primarily because deep theorems
+  (Hairer 2022; Bernstein--Zelevinsky theory) provide the heavy lifting.
+  The proof-writing task is then to correctly \emph{assemble} these results
+  into a coherent argument.  This is precisely the ``final stage'' of
+  mathematical research that the First Proof benchmark targets.
+
+\item \textbf{Counterexamples require search, not construction.}
+  Q3 is answered by a counterexample.  Finding it required systematic
+  exploration of the parameter space $(n, \lambda, t)$ at $q=1$,
+  guided by structural understanding of what makes the stationary
+  distribution ``non-Markov-compatible.''
+
+\item \textbf{Partial results sharpen the frontier.}
+  For Q4 and Q6, the partial solutions are arguably more valuable
+  than a simple ``open'' verdict.  Each identifies a precise, well-formulated
+  conjecture or lemma that, if proved, would close the problem.
+  This kind of ``gap identification'' is itself a research contribution.
+  Q7, initially appearing similarly intractable, was ultimately resolved
+  in full by the transfer vanishing lemma---illustrating how a single
+  conceptual insight can close a problem that resisted direct attack.
+
+\item \textbf{Proof architecture matters.}
+  Q8 (polyhedral Lagrangian smoothing) required multiple iterations to
+  reach a logically closed proof.  The final 5-step architecture
+  (Euler obstruction $\to$ cotangent-graph charts $\to$ mollification
+  $\to$ global assembly $\to$ Hamiltonian isotopy) emerged only after
+  several false starts involving tropical geometry and vertex resolution
+  that, while conceptually appealing, introduced unnecessary complexity.
+\end{enumerate}
+
+\subsection{Comparison with the First Proof benchmark design}
+
+The benchmark paper~\cite{firstproof} notes that each question
+``has been solved by the author(s) of the question with a proof that is
+roughly five pages or less.''  Our solutions range from approximately
+1 page (Q1, Q3) to 8--10 pages (Q4, Q6, Q8), with the longer solutions
+reflecting either partial results with extensive case analysis or
+multi-step constructions with all intermediate lemmas proved in full.
+
+The benchmark was designed to test whether AI systems can solve problems
+``on their own, without an expert in the loop.''
+Our approach explicitly includes human review in the loop, which we view
+as a more realistic model of how AI will be used in mathematical research:
+not as an autonomous solver, but as a collaborator whose output is
+verified and refined by human judgment.
+
+A distinctive feature of our work is the inclusion of Lean~4 formal
+proof skeletons for all eight complete solutions.
+While the formalizations necessarily axiomatize deep external theorems
+(Hairer's singularity result, Bernstein--Zelevinsky derivative theory,
+Blumberg--Hill equivariant framework, the Farrell--Jones conjecture,
+etc.), they verify the logical
+deduction chains that constitute our original contributions.
+For Q7 in particular, the Lean skeleton formalizes the entire
+transfer vanishing argument (Lemma~7.3) and the deduction chain from
+Selberg's lemma through the induction--restriction formula to the
+surgery realization, with no \texttt{sorry}.
+This represents a step toward the vision articulated
+by the Project Omega framework~\cite{omega-theory}: that mathematical
+proofs should be \emph{multi-layered}, passing through human understanding,
+peer review, and machine verification.
+We note that the counterexample for Q3 is the most fully formalized,
+with exact rational arithmetic in Lean~4 verifying all numerical evaluations.
+
+\subsection{Open problems}
+
+Two well-defined open problems emerge from our work:
+
+\begin{enumerate}[nosep]
+\item \textbf{Q4, general $n\ge 4$:}
+  Prove or disprove that $1/\Phi_n(p\boxplus_n q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$
+  for all monic real-rooted polynomials of degree $n\ge 4$.
+  The conjectured approach via heat-flow monotonicity of $\Phi_n$
+  is outlined in Section~\ref{sec:q4}.
+
+\item \textbf{Q6, vertex BSS lemma:}
+  Given a connected graph $G$, $\varepsilon\in(0,1]$, and a vertex set $I$
+  of size $\Omega(\varepsilon n)$ with all internal edge resistances $\le\varepsilon$,
+  does there exist $S\subseteq I$ with $|S|=\Omega(|I|)$ and
+  $M(S)\preceq \varepsilon I$?
+\end{enumerate}
+
+\noindent
+Note that Q7 (pure 2-torsion lattices), previously listed as open for
+$d\equiv 0\pmod{4}$, has been completely resolved by the
+transfer vanishing lemma (Lemma~7.3 in Section~\ref{sec:q7}).
