@@ -153,6 +153,76 @@ K_N\overset{d}{=}\sum_{j=1}^{m_N}B_{N,j}
 对 Poisson--binomial 和应用 Berry--Esseen 型界（以第三绝对中心矩上界为代价）得到误差 \(O(V_N^{-1/2})\)，从而得到中心极限定理。证毕。
 \end{proof}
 
+\begin{corollary}[单位权素数硬核 Gibbs 场的中心极限定律]\label{cor:xi-prime-hardcore-gibbs-clt-t1-explicit}
+在定理 \ref{thm:xi-prime-hardcore-gibbs-clt} 中取 \(t=1\)。
+记
+\[
+I_N
+:=
+\sum_{\substack{S\subseteq\{1,\dots,N\}\\ S\ \mathrm{无相邻}}}\prod_{i\in S}\frac1{p_i},
+\qquad
+\PP_N(S):=\frac{1}{I_N}\prod_{i\in S}\frac1{p_i},
+\]
+并令 \(\omega_N:=|S|\)。
+则
+\[
+\frac{\omega_N-\mu_N}{\sigma_N}\Longrightarrow \mathcal N(0,1),
+\]
+其中
+\[
+\mu_N=\sum_{i=1}^{N}\frac{1}{p_i+1}+O(1),
+\qquad
+\sigma_N^2=\sum_{i=1}^{N}\frac{p_i}{(p_i+1)^2}+O(1),
+\]
+并且
+\[
+\sigma_N^2\sim \sum_{i\le N}\frac1{p_i}\sim \log\log p_N.
+\]
+\end{corollary}
+\begin{proof}
+定理 \ref{thm:xi-prime-hardcore-gibbs-clt} 在 \(t=1\) 时给出
+\[
+\EE[\omega_N]=\log\log p_N+O(1),
+\qquad
+\mathrm{Var}(\omega_N)=\log\log p_N+O(1),
+\]
+并且
+\(
+(\omega_N-\EE[\omega_N])/\sqrt{\mathrm{Var}(\omega_N)}
+\Rightarrow
+\mathcal N(0,1)
+\)。
+
+另一方面，
+\[
+\frac1{p_i}-\frac{1}{p_i+1}=\frac{1}{p_i(p_i+1)}=O(p_i^{-2}),
+\]
+以及
+\[
+\frac1{p_i}-\frac{p_i}{(p_i+1)^2}
+=
+\frac{2p_i+1}{p_i(p_i+1)^2}
+=
+O(p_i^{-2}).
+\]
+由于 \(\sum_i p_i^{-2}<\infty\)，故
+\[
+\sum_{i=1}^{N}\frac{1}{p_i+1}
+=
+\sum_{i=1}^{N}\frac1{p_i}+O(1),
+\qquad
+\sum_{i=1}^{N}\frac{p_i}{(p_i+1)^2}
+=
+\sum_{i=1}^{N}\frac1{p_i}+O(1).
+\]
+再由素数倒数和的 Mertens 渐近，
+\[
+\sum_{i=1}^{N}\frac1{p_i}=\log\log p_N+O(1),
+\]
+即得所示 \(\mu_N,\sigma_N^2\) 的表达式与发散结论。
+最后，由 \(\sigma_N^2=\mathrm{Var}(\omega_N)+O(1)\) 且 \(\sigma_N^2\to\infty\)，两种标准化只相差 \(1+o(1)\) 因子，从而极限正态性保持。证毕。
+\end{proof}
+
 \begin{proposition}[素数寄存器与 Lee--Yang 谱的 Newton--Maclaurin 对应及不等式链]\label{prop:xi-prime-hardcore-newton-maclaurin}
 设 \(m_N=\deg P_N=\lfloor(N+1)/2\rfloor\)，并写
 \[

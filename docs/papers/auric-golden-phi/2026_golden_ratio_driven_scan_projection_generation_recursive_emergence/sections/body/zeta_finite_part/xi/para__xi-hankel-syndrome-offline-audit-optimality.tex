@@ -214,6 +214,42 @@ K^\ast\sim \frac{\log(2M)}{\log\log(2M)},
 
 \input{subsubsec__xi-hankel-syndrome-random-prime-single-round-refutation}
 
+\begin{proposition}[一次模素数秩审计的缺口恢复与失败概率]\label{prop:xi-hankel-defect-single-prime-rank-audit}
+令 \(H\in\ZZ^{n\times n}\) 为整数 Hankel 矩阵，并记
+\[
+d:=\mathrm{rank}_{\QQ}(H),
+\qquad
+\delta:=n-d.
+\]
+则存在有限素数集 \(\mathcal B(H)\) 使得对一切 \(p\notin\mathcal B(H)\) 有
+\[
+\mathrm{rank}_{\FF_p}(H\bmod p)=d,
+\qquad
+\dim_{\FF_p}\ker(H\bmod p)=\delta.
+\]
+并且若从区间 \([P,2P]\) 内的素数中按均匀分布抽取 \(p\)，则
+\[
+\PP[p\in\mathcal B(H)]
+\ \le\
+\frac{|\mathcal B(H)|}{\pi(2P)-\pi(P)}
+\ \xrightarrow[P\to\infty]{}\ 0.
+\]
+\end{proposition}
+
+\begin{proof}
+由 \(d=\mathrm{rank}_{\QQ}(H)\)，存在某个 \(d\times d\) 子式 \(\Delta\in\ZZ\setminus\{0\}\)，并且所有 \((d+1)\times(d+1)\) 子式均为零整数。
+令
+\(
+\mathcal B(H):=\{p:\ p\mid \Delta\}
+\)，则 \(\mathcal B(H)\) 有限。
+若 \(p\notin\mathcal B(H)\)，则 \(\Delta\bmod p\neq 0\)，从而 \(\mathrm{rank}_{\FF_p}(H\bmod p)\ge d\)；
+另一方面，由所有 \((d+1)\times(d+1)\) 子式恒为零，得 \(\mathrm{rank}_{\FF_p}(H\bmod p)\le d\)，故秩恰为 \(d\)。
+于是核维数为 \(n-d=\delta\)。
+\par
+概率界由计数恒等式给出：区间 \([P,2P]\) 内能整除 \(\Delta\) 的素数至多为 \(|\mathcal B(H)|\) 个，除以区间内素数总数 \(\pi(2P)-\pi(P)\) 即得；
+极限由 \(\pi(2P)-\pi(P)\to\infty\) 推出。证毕。
+\end{proof}
+
 \begin{proposition}[线性递推约束的局部核验与拒绝率下界（按违反率）]\label{prop:xi-linear-recurrence-local-test-by-violation-rate}
 令 \(\FF\) 为任意域，取 \(r\ge 1\) 与 \(c=(c_0,\dots,c_r)\in\FF^{r+1}\) 满足 \(c_0c_r\neq 0\)。
 对任意长度 \(N>r\) 定义线性约束族

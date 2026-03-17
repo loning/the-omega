@@ -129,6 +129,8 @@ F(t)=H\!\left(t^{q_1q_2}\right).
 证毕。
 \end{proof}
 
+\input{sections/body/pom/parts/subsubsec__pom-wreath-artin-factorization-torsion-classification-residue-rigidity}
+
 \begin{remark}[角色侧的可观测必要条件：torsion 对称 \texorpdfstring{$\Rightarrow$}{=>} 非主角色系数全消失]\label{rem:pom-torsion-symmetry-implies-no-nonprincipal-character}
 若模 \(q\) torsion 对称成立，即 \(F(t)=G_q(t^q)\)，则对任意 \(a\in(\ZZ/q\ZZ)^\times\) 有
 \(
@@ -215,6 +217,7 @@ e_\lambda=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\sigma
 
 \input{sections/body/pom/parts/subsubsec__pom-schur-frobenius-primitive-fiber-coordinates}
 \input{sections/body/pom/parts/subsubsec__pom-schur-character-sieve-thermodynamic}
+\input{sections/body/pom/parts/subsubsec__pom-schur-cfinite-realization-information-completeness}
 \input{sections/body/pom/parts/subsubsec__pom-schur-variance-spectroscopy}
 \input{sections/body/pom/parts/subsubsec__pom-schur-near-rh-linear-inequalities}
 \input{sections/body/pom/parts/subsubsec__pom-schur-dirichlet-torsion-factorization}
@@ -301,7 +304,7 @@ p_{n,\lambda}:=\frac{1}{n}\sum_{m\mid n}\mu(m)\,\Tr\!\bigl(B_{q,\lambda}^{\,n/m}
 因而在有限矩阶窗内，\(\{S_q(m)\}\) 既是“纤维谱断层扫描”，亦是“Schur 谱断层扫描”，并且两端之间存在完全可逆的纯代数编译桥。
 \end{theorem}
 
-\begin{theorem}[单一矩阶的“信息完备性”：当 \(q\) 足够大时 Schur 迹逐 \(m\) 决定完整纤维谱]\label{thm:pom-single-q-schur-traces-complete-fiber-spectrum}
+\begin{theorem}[单一高阶 Schur 迹向量的信息完备性]\label{thm:pom-single-q-schur-traces-complete-fiber-spectrum}
 固定分辨率 \(m\)，并写纤维多重度的取值集合为
 \[
 \mathcal{D}_m=\{a_1<\cdots<a_{r_m}\}\subset\NN,
@@ -312,19 +315,55 @@ n_i:=\#\{x\in X_m:\ d_m(x)=a_i\}.
 \(
 \mathbf T_q(m)=(T_{q,\lambda}(m))_{\lambda\vdash q}
 \)，
-则可唯一恢复 \(\{(a_i,n_i)\}_{i=1}^{r_m}\)，从而唯一恢复推前分布
-\(
-w_m(x)=d_m(x)/2^m
-\)
-在 \(X_m\) 上的完整直方图结构（含重数）。
+则它唯一决定下列对象：
+\begin{enumerate}
+  \item 纤维直方图
+  \[
+  \{(a_i,n_i)\}_{i=1}^{r_m};
+  \]
+  \item 全部低阶碰撞矩
+  \[
+  \{S_k(m)\}_{k=1}^{q};
+  \]
+  \item 全部循环型单项式
+  \[
+  \{\mathsf{M}_\nu(m)\}_{\nu\vdash q},
+  \]
+  从而唯一决定花环对称类型对应的共轭不变轮廓
+  \[
+  \sigma\longmapsto \mathcal C_\sigma(m)
+  \qquad(\sigma\in S_q);
+  \]
+  \item 推前分布
+  \[
+  w_m(x)=d_m(x)/2^m
+  \]
+  在 \(X_m\) 上的完整直方图结构（含重数）。
+\end{enumerate}
 并且该阈值在一般意义下不可降低：若仅能获得 \(q\le 2r_m-2\) 的单阶 Schur 迹数据，则在不附加额外结构假设时不能保证唯一恢复（定理 \ref{thm:pom-fiber-spectrum-prony-hankel-threshold-sharp}）。
 \end{theorem}
 \begin{proof}
-由推论 \ref{cor:pom-schur-traces-determine-low-moments}，\(\mathbf T_q(m)\)（配合已知的 \(S_1(m)=2^m\)）可显式恢复全部幂和矩 \(\{S_k(m)\}_{1\le k\le q}\)。
-又 \(S_0(m)=|X_m|\) 在 Fold 口径下由分辨率 \(m\) 唯一决定，故当 \(q\ge 2r_m-1\) 时得到矩列 \(\{S_k(m)\}_{k=0}^{2r_m-1}\)。
-由 Prony--Hankel 完全重构定理 \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}，该有限矩列唯一确定全部原子 \(\{a_i\}\) 及其重数 \(\{n_i\}\)，从而得到所示纤维谱与推前直方图。
+由定理 \ref{thm:pom-schur-tomography-inverse-partition-monomials}，
+\(\mathbf T_q(m)\) 立即恢复全部 \(\{\mathsf M_\nu(m)\}_{\nu\vdash q}\)，
+因而共轭不变函数 \(\sigma\mapsto \mathcal C_\sigma(m)\) 亦被唯一确定。
+这给出第 \(3\) 项。
+
+再由推论 \ref{cor:pom-schur-traces-determine-low-moments}，
+\(\mathbf T_q(m)\) 可显式恢复全部低阶碰撞矩 \(\{S_k(m)\}_{1\le k\le q}\)，得到第 \(2\) 项。
+
+另一方面，\(S_0(m)=|X_m|\) 在 Fold 口径下由分辨率 \(m\) 唯一决定。
+由于 \(q\ge 2r_m-1\)，于是得到有限矩列
+\[
+\{S_k(m)\}_{k=0}^{2r_m-1}.
+\]
+由 Prony--Hankel 完全重构定理 \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}，
+该矩列唯一确定全部原子 \(\{a_i\}\) 及其重数 \(\{n_i\}\)，即第 \(1\) 项。
+将 \(\{(a_i,n_i)\}\) 除以 \(2^m\) 归一化，便得到 \(w_m(x)=d_m(x)/2^m\) 的完整直方图结构，即第 \(4\) 项。
+
 阈值不可降低性由定理 \ref{thm:pom-fiber-spectrum-prony-hankel-threshold-sharp} 给出。证毕。
 \end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-schur-highorder-package-forcing-ladder}
 
 \begin{corollary}[有限矩阶窗内的全谱审计可判定性]\label{cor:pom-finite-q-window-decidable-full-audit}
 在定理 \ref{thm:pom-fiber-schur-bidirectional-compilation} 的设定下，若对每个 \(q\le Q\) 与每个 \(\lambda\vdash q\)，迹序列 \(m\mapsto T_{q,\lambda}(m)\) 来自某个有限维矩阵幂读出（等价地：满足有限阶线性递推），

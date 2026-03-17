@@ -75,6 +75,92 @@ H_n(\mathcal Q_m,A_{\neg S};\ZZ)=Z_n(\mathcal Q_m,A_{\neg S};\ZZ)/B_n(\mathcal Q
 证毕。
 \end{proof}
 
+\begin{theorem}[屏幕核的连通分量闭式]\label{thm:spg-screen-kernel-connected-components}
+在定理 \ref{thm:spg-partial-boundary-screen-kernel-relative-homology} 的设定下，
+令 \(\Gamma\) 为 \(\mathcal Q_m\) 的顶维胞腔邻接图并添加外部顶点 \(\infty\)：其顶点集为
+\[
+V(\Gamma):=\mathcal Q_m^{(n)}\ \cup\ \{\infty\},
+\]
+其中 \(\mathcal Q_m^{(n)}\) 表示全部 \(n\)-胞腔（按单元而非取向计）。
+由屏幕 \(S\subset \overrightarrow{\mathcal F_{m}^{n-1}}\) 诱导边集 \(E_S\) 如下：
+\begin{enumerate}
+  \item 若 \(\vec f\in S\) 的底层 \((n-1)\)-面为内部共享面，且其两侧顶维胞腔为 \(u,v\in\mathcal Q_m^{(n)}\)，则令 \(\{u,v\}\in E_S\)；
+  \item 若 \(\vec f\in S\) 的底层 \((n-1)\)-面为外边界面，且其唯一相邻顶维胞腔为 \(v\in\mathcal Q_m^{(n)}\)，则令 \(\{v,\infty\}\in E_S\)。
+\end{enumerate}
+记 \(\Gamma_S:=(V(\Gamma),E_S)\) 的连通分量数为 \(c(\Gamma_S)\)。
+则有自然同构
+\[
+\ker f_S\ \cong\ \ZZ^{\,c(\Gamma_S)-1}.
+\]
+\end{theorem}
+\begin{proof}
+将 \(x\in C_n(\mathcal Q_m;\ZZ)\) 写为 \(x=\sum_{v\in\mathcal Q_m^{(n)}}x(v)[v]\)，其中 \(x(v)\in\ZZ\) 为对应顶维胞腔系数（取一组固定的顶维取向基）。
+对任意 \(\vec f\in S\)，\((\partial_n x)(\vec f)\) 仅依赖于与 \(\vec f\) 相邻的一个或两个顶维系数：
+若 \(\vec f\) 为内部共享面且两侧为 \(u,v\)，则
+\(
+(\partial_n x)(\vec f)=\pm(x(u)-x(v))
+\)；
+若 \(\vec f\) 为外边界面且相邻胞腔为 \(v\)，则
+\(
+(\partial_n x)(\vec f)=\pm x(v)
+\)。
+因此 \(f_S(x)=0\) 当且仅当满足如下约束：
+\[
+u\text{ 与 }v\text{ 由 }E_S\text{ 相连}\ \Longrightarrow\ x(u)=x(v),\qquad
+v\text{ 与 }\infty\text{ 由 }E_S\text{ 相连}\ \Longrightarrow\ x(v)=0.
+\]
+从而 \(x(\cdot)\) 在 \(\Gamma_S\) 的每个连通分量上取常值，且包含 \(\infty\) 的分量常值被迫为 \(0\)。
+令 \(\Phi:\ker f_S\to \ZZ^{c(\Gamma_S)-1}\) 为“读取其余各分量常值”的映射，则由上式刻画知 \(\Phi\) 为双射群同态，故为同构。证毕。
+\end{proof}
+
+\begin{corollary}[部分屏幕的唯一回放判据与最小审计补全成本闭式]\label{cor:spg-screen-injectivity-and-audit-cost-components}
+在定理 \ref{thm:spg-screen-kernel-connected-components} 的设定下，以下条件等价：
+\begin{enumerate}
+  \item \(f_S\) 为单射；
+  \item \(c(\Gamma_S)=1\)（亦即 \(\Gamma_S\) 连通）。
+\end{enumerate}
+并且最小审计补全成本满足
+\[
+\min_{(R,r_S)}\cdim(R)
+=\rank_{\ZZ}(\ker f_S)
+=c(\Gamma_S)-1.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:spg-screen-kernel-connected-components}，
+\(
+\ker f_S\cong \ZZ^{c(\Gamma_S)-1}
+\)。
+故 \(f_S\) 单射当且仅当 \(\ker f_S=0\)，等价于 \(c(\Gamma_S)=1\)，得到前半部。
+最小审计补全成本等于 \(\rank_{\ZZ}(\ker f_S)\) 由推论 \ref{cor:spg-partial-boundary-min-audit-cost-kernel-rank} 给出；
+代入闭式即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[轴向屏幕的面积律：审计成本的指数级下界可达]\label{prop:spg-axial-screen-area-law-audit-cost}
+固定坐标方向 \(x_1\)。
+令 \(S^{(1)}\subset \overrightarrow{\mathcal F_{m}^{n-1}}\) 为所有\emph{正交于 \(x_1\)} 的内部 \((n-1)\)-面（即两顶维胞腔仅沿 \(x_1\) 方向相邻时所共享的面；不含任何外边界面）。
+则
+\[
+c(\Gamma_{S^{(1)}})=2^{m(n-1)}+1,
+\qquad
+\min_{(R,r_{S^{(1)}})}\cdim(R)=2^{m(n-1)}.
+\]
+\end{proposition}
+\begin{proof}
+在 \(\Gamma_{S^{(1)}}\) 中，两顶维胞腔相连当且仅当其 dyadic 坐标仅在 \(x_1\) 方向相邻。
+因此对每个固定的 \((i_2,\dots,i_n)\in\{0,\dots,2^m-1\}^{n-1}\)，全体
+\(
+(i_1,i_2,\dots,i_n)
+\)
+（\(i_1\) 变动）构成一条长度 \(2^m\) 的路径图连通分量；不同 \((i_2,\dots,i_n)\) 之间无边相连。
+故由内部面诱导的连通分量共有 \(2^{m(n-1)}\) 个。
+又因为 \(S^{(1)}\) 不含外边界面，顶点 \(\infty\) 为孤立分量，从而
+\(
+c(\Gamma_{S^{(1)}})=2^{m(n-1)}+1
+\)。
+最后由推论 \ref{cor:spg-screen-injectivity-and-audit-cost-components} 得最小审计补全成本为 \(c(\Gamma_{S^{(1)}})-1=2^{m(n-1)}\)。证毕。
+\end{proof}
+
 \begin{corollary}[\texorpdfstring{$\FF_2$}{F2} 计数下的纤维基数：相对 Betti 数的精确公式]\label{cor:spg-partial-boundary-fiber-cardinality-f2}
 在定理 \ref{thm:spg-partial-boundary-screen-kernel-relative-homology} 的设定下，将系数域改为 \(\FF_2\)，并把 \(f_S\) 视为线性映射
 \[
@@ -192,5 +278,7 @@ r(S)=\dim_{\QQ}\Span\{\text{rows of }A\text{ indexed by }S\}.
 由秩亏恒等式得 \(\delta(S)=\rank_{\QQ}(C_n(\mathcal Q_m;\QQ))-r(S)\)，因此 \(\delta\) 为超模函数且单调不增。
 最后一条由 \(\ker f_S\) 的秩在张量到 \(\QQ\) 后保持不变，以及推论 \ref{cor:spg-partial-boundary-min-audit-cost-kernel-rank} 的同一刻画直接推出。证毕。
 \end{proof}
+
+\input{sections/body/spg/para__spg-coordinate-bundle-screen-audit-closure}
 
 \endinput

@@ -330,11 +330,6 @@ D_{\mathrm{KL}}(U_\kappa\Vert q)
 \prod_{m=1}^{\kappa}\frac{\pi_m(\sigma)}{p_{\sigma(m)}}
 =\prod_{1\le j<k\le\kappa}\rho(a_j,a_k)^2\; } .
 \]
-因此若记 \(\rho_{\min}:=\min_{j<k}\rho(a_j,a_k)\in(0,1)\)，则对任意排列 \(\sigma\) 必存在某个 \(m\) 使
-\[
-\boxed{\;
-\frac{\pi_m(\sigma)}{p_{\sigma(m)}}\le \rho_{\min}^{\,\kappa-1}\; } .
-\]
 \end{conclusion}
 \begin{proof}
 由 Schur 补链式分解可得 \(\det\mathsf P=\prod_{m=1}^{\kappa}\pi_m(\sigma)\)（对置换后的矩阵施行同一分解）。
@@ -344,13 +339,48 @@ D_{\mathrm{KL}}(U_\kappa\Vert q)
 \)。
 将两式相除并注意 \(\prod_m p_{\sigma(m)}=\prod_j p_j\)，得到归一化乘积恒等式。
 \par
-再由 \(\prod_{j<k}\rho(a_j,a_k)^2\le \rho_{\min}^{\,\kappa(\kappa-1)}\) 得
+证毕。
+\end{proof}
+
+\begin{proposition}[Schur 消元熵的排列不变性与瓶颈步界]\label{prop:xi-schur-elimination-entropy-permutation-invariant-bottleneck}
+沿用结论 \ref{con:xi-terminal-pick-poisson-schur-vandermonde-externalization} 的设定与记号。
+对任意排列 \(\sigma\in\mathfrak S_\kappa\)，定义 \textbf{Schur 消元熵}
 \[
-\prod_{m=1}^{\kappa}\frac{\pi_m(\sigma)}{p_{\sigma(m)}}
-\le \rho_{\min}^{\,\kappa(\kappa-1)}.
+\mathcal E_{\mathrm{elim}}
+:=\frac1\kappa\sum_{m=1}^{\kappa}\log\frac{p_{\sigma(m)}}{\pi_m(\sigma)}.
 \]
-若对所有 \(m\) 都有 \(\pi_m(\sigma)/p_{\sigma(m)}>\rho_{\min}^{\,\kappa-1}\)，则左端 \(>\rho_{\min}^{\,\kappa(\kappa-1)}\)，矛盾。
-故存在某个 \(m\) 满足所示不等式。证毕。
+则：
+\begin{enumerate}
+  \item \(\mathcal E_{\mathrm{elim}}\) 与排列 \(\sigma\) 无关，并满足闭式
+  \[
+  \mathcal E_{\mathrm{elim}}
+  =\frac{-1}{\kappa}\log\!\Bigl(\prod_{1\le j<k\le\kappa}\rho(a_j,a_k)^2\Bigr)
+  =\frac{2}{\kappa}\sum_{1\le j<k\le\kappa}\log\frac{1}{\rho(a_j,a_k)}.
+  \]
+  \item 对任意排列 \(\sigma\)，必存在某一步 \(m_\star\in\{1,\dots,\kappa\}\) 使
+  \[
+  \frac{\pi_{m_\star}(\sigma)}{p_{\sigma(m_\star)}}
+  \ \le\
+  \exp\!\bigl(-\mathcal E_{\mathrm{elim}}\bigr)
+  =\Bigl(\prod_{1\le j<k\le\kappa}\rho(a_j,a_k)^2\Bigr)^{1/\kappa}.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由结论 \ref{con:xi-terminal-pick-poisson-schur-vandermonde-externalization} 的乘积恒等式，
+\(
+\prod_{m=1}^{\kappa}\frac{\pi_m(\sigma)}{p_{\sigma(m)}}=\prod_{j<k}\rho(a_j,a_k)^2
+\)；
+取对数并除以 \(\kappa\) 得
+\[
+\frac1\kappa\sum_{m=1}^{\kappa}\log\frac{p_{\sigma(m)}}{\pi_m(\sigma)}
+=\frac{-1}{\kappa}\log\!\Bigl(\prod_{j<k}\rho(a_j,a_k)^2\Bigr)
+=\frac{2}{\kappa}\sum_{j<k}\log\frac1{\rho(a_j,a_k)},
+\]
+从而 \(\mathcal E_{\mathrm{elim}}\) 与 \(\sigma\) 无关并满足闭式。
+\par
+对数列 \(\{\log(p_{\sigma(m)}/\pi_m(\sigma))\}_{m=1}^{\kappa}\) 取平均，存在某个 \(m_\star\) 使该项不小于平均值 \(\mathcal E_{\mathrm{elim}}\)；
+指数化即得所示瓶颈步界。证毕。
 \end{proof}
 
 \begin{conclusion}[Toeplitz 负谱几何均值的严格同伦缩放]\label{con:xi-terminal-toeplitz-negative-geometric-mean-homothety}

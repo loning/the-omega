@@ -184,4 +184,119 @@ a_j:=\frac{d_{f_{1:i}}(x_i^{(j)})}{\overline d_i(x_{i+1})}\ >0,
 再对 \(i=1,\dots,k-1\) 作并集上界并应用定理 \ref{thm:pom-bc-high-order-ledger-decomposition} 的总缺陷分解，得到所示不等式。证毕。
 \end{proof}
 
+\begin{theorem}[链式 Beck--Chevalley 缺陷等于逐层 escort 曲率的总和]\label{thm:pom-bc-chain-defect-equals-escort-curvature-sum}
+设
+\[
+X_0\xrightarrow{f_1}X_1\xrightarrow{f_2}\cdots\xrightarrow{f_k}X_k
+\]
+为有限集合上的满射链。
+对 \(1\le i\le k\) 记
+\[
+h_i:=f_i\circ\cdots\circ f_1:X_0\twoheadrightarrow X_i.
+\]
+给定 \(\nu\in\Delta(X_k)\)，并对 \(1\le i\le k-1\) 定义
+\[
+\nu^{(i+1)}:=L_{f_{i+2}}\cdots L_{f_k}\nu\in\Delta(X_{i+1}),
+\]
+其中当 \(i=k-1\) 时空乘积按恒等算子解释。
+再对 \(z\in X_{i+1}\) 定义局部缺陷
+\[
+\alpha_i(z)
+:=
+\log\frac{
+\frac1{d_{f_{i+1}}(z)}
+\sum\limits_{y\in f_{i+1}^{-1}(z)} d_{h_i}(y)
+}{
+\exp\!\Bigl(
+\frac1{d_{f_{i+1}}(z)}
+\sum\limits_{y\in f_{i+1}^{-1}(z)} \log d_{h_i}(y)
+\Bigr)
+},
+\]
+并定义 \(f_{i+1}^{-1}(z)\) 上的 escort 族
+\[
+p_{i,z,t}(y)
+:=
+\frac{d_{h_i}(y)^t}
+{\sum\limits_{y'\in f_{i+1}^{-1}(z)}d_{h_i}(y')^t}
+\qquad
+(0\le t\le 1).
+\]
+则成立精确恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}\!\bigl(L_{f_1}\cdots L_{f_k}\nu\,\|\,L_{h_k}\nu\bigr)
+=
+\sum_{i=1}^{k-1}
+\int_{X_{i+1}}
+\int_0^1
+(1-t)\,
+\mathrm{Var}_{Y\sim p_{i,z,t}}\!\bigl(\log d_{h_i}(Y)\bigr)\,
+\dd t\,
+\dd \nu^{(i+1)}(z).
+\;}
+\]
+因此下列命题等价：
+\begin{enumerate}
+  \item 全链严格可交换，即
+  \[
+  L_{f_1}\cdots L_{f_k}\nu=L_{h_k}\nu.
+  \]
+  \item 上式右端为 \(0\)。
+  \item 对每个 \(1\le i\le k-1\)，函数 \(d_{h_i}\) 在 \(f_{i+1}\)-纤维上于
+  \(\nu^{(i+1)}\)-几乎处处为常数。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-bc-high-order-ledger-decomposition}，
+\[
+D_{\mathrm{KL}}\!\bigl(L_{f_1}\cdots L_{f_k}\nu\,\|\,L_{h_k}\nu\bigr)
+=
+\sum_{i=1}^{k-1}
+\int_{X_{i+1}}\alpha_i(z)\,\dd \nu^{(i+1)}(z).
+\]
+另一方面，对每个固定 \(i\)，将命题
+\ref{prop:pom-bc-amgm-defect-escort-variance-energy}
+应用于满射对
+\[
+h_i:X_0\twoheadrightarrow X_i,
+\qquad
+f_{i+1}:X_i\twoheadrightarrow X_{i+1},
+\]
+便得到对每个 \(z\in X_{i+1}\) 都有
+\[
+\alpha_i(z)
+=
+\int_0^1
+(1-t)\,
+\mathrm{Var}_{Y\sim p_{i,z,t}}\!\bigl(\log d_{h_i}(Y)\bigr)\,
+\dd t.
+\]
+将此式代回前述账本分解，即得所示逐层 escort 曲率积分公式。
+
+再证等价性。被积核
+\[
+(1-t)\,
+\mathrm{Var}_{Y\sim p_{i,z,t}}\!\bigl(\log d_{h_i}(Y)\bigr)
+\]
+对每个 \(i,z,t\) 都非负，故右端为零当且仅当对每个 \(i\)，上述方差在
+\(\nu^{(i+1)}\otimes \mathbf 1_{[0,1]}(t)\dd t\)-几乎处处为零。
+对固定的 \(i,z\)，由于纤维 \(f_{i+1}^{-1}(z)\) 有限且 escort 权重
+\(p_{i,z,t}(y)\) 关于 \(t\in[0,1]\) 连续变化，函数
+\[
+t\longmapsto \mathrm{Var}_{Y\sim p_{i,z,t}}\!\bigl(\log d_{h_i}(Y)\bigr)
+\]
+在 \([0,1]\) 上连续。
+因此它若几乎处处为零，便必处处为零；特别在 \(t=0\) 时，\(p_{i,z,0}\) 是该纤维上的均匀分布，从而方差为零当且仅当 \(\log d_{h_i}\) 在纤维 \(f_{i+1}^{-1}(z)\) 上处处相等，亦即 \(d_{h_i}\) 在该纤维上为常数。
+因此第二条与第三条等价。
+
+最后，由定理 \ref{thm:pom-bc-high-order-ledger-decomposition} 可知
+\[
+L_{f_1}\cdots L_{f_k}\nu=L_{h_k}\nu
+\quad\Longleftrightarrow\quad
+D_{\mathrm{KL}}\!\bigl(L_{f_1}\cdots L_{f_k}\nu\,\|\,L_{h_k}\nu\bigr)=0,
+\]
+从而第一条与第二条等价，结论遂得。证毕。
+\end{proof}
+
 \endinput

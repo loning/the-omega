@@ -533,7 +533,7 @@ def collect_tex_crossref_index(
                 label_to_atom_kgid[source_label] = atom.kg_id
                 continue
             # Prefer newest atom if multiple atoms define same source label.
-            if atom.kg_id > existing_kgid:
+            if parse_kg_id_key(atom.kg_id) > parse_kg_id_key(existing_kgid):
                 label_to_atom[source_label] = atom.label
                 label_to_atom_kgid[source_label] = atom.kg_id
 
@@ -803,7 +803,7 @@ def parse_task_seq(task_id: str) -> int:
 def order_atoms_by_source_position(kg_root: Path, selected_atoms: Sequence[Atom]) -> List[Atom]:
     source_index = load_merged_source_start_index(kg_root)
     if not source_index:
-        return sorted(selected_atoms, key=lambda a: (a.kg_id, a.label))
+        return sorted(selected_atoms, key=lambda a: (parse_kg_id_key(a.kg_id), a.label))
 
     def key(atom: Atom) -> Tuple[int, int, str, str]:
         meta = load_atom_meta(atom)
@@ -814,7 +814,7 @@ def order_atoms_by_source_position(kg_root: Path, selected_atoms: Sequence[Atom]
             else sys.maxsize
         )
         task_seq = parse_task_seq(str(meta.get("task_id") or ""))
-        return (source_rank, task_seq, atom.kg_id, atom.label)
+        return (source_rank, task_seq, parse_kg_id_key(atom.kg_id), atom.label)
 
     return sorted(selected_atoms, key=key)
 

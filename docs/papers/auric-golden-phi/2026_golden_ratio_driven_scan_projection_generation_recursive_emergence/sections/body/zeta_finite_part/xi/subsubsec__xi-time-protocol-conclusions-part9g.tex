@@ -226,6 +226,234 @@ v_2(\alpha_{M,x})\ge n.
 停机深度 \(N\) 时 \(\alpha_{M,x}=-2^{LN}\) 恰有 \(v_2(\alpha_{M,x})=LN\)，故结论立即得到。
 \end{proof}
 
+\begin{proposition}[有限层扭子投影的可计算性与首次偏离深度的停机不可计算性]\label{prop:xi-time-part9g-deviation-depth-computability-separation}
+沿命题 \ref{prop:xi-time-part9g-first-deviation-depth} 的记号，并定义首次偏离深度
+\[
+\delta(M,x):=\min\{n\ge 1:\ Q_{M,x}^{(n)}\neq P_{i,n}\}\in\NN\cup\{\infty\},
+\]
+其中若集合为空则约定 \(\delta(M,x)=\infty\)。
+则：
+\begin{enumerate}
+\normalfont
+  \item \textbf{有限层投影可计算：}映射 \((M,x,n)\mapsto Q_{M,x}^{(n)}\in\Pi_{i,n}\) 为全可计算函数；
+  \item \textbf{首次偏离深度不可计算：}映射 \((M,x)\mapsto \delta(M,x)\) 不是全可计算函数；
+  \item \textbf{统一验证深度的 Busy--Beaver 下界：}
+  若存在函数 \(\Phi:\NN\to\NN\) 使对所有满足 \(|(M,x)|\le \ell\) 的停机实例都有 \(\delta(M,x)\le \Phi(\ell)\)，
+  则存在常数 \(c\)（仅依赖于编码）使对所有 \(\ell\) 有
+  \[
+  \Phi(\ell)\ \ge\ L\cdot \mathrm{BB}(\ell-c)+1,
+  \]
+  其中 \(\mathrm{BB}\) 为 Busy--Beaver 函数（定理 \ref{thm:conclusion-finite-test-depth-busybeaver}），从而 \(\Phi\) 不可计算。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+对 (1)，给定 \((M,x,n)\)。
+令 \(t:=\lfloor (n-1)/L\rfloor\)。
+若 \(M(x)\) 在不超过 \(t\) 步内停机，则首次停机时间 \(N\le t\) 可由有限步模拟得到，进而由命题 \ref{prop:xi-time-part9g-first-deviation-depth} 确定 \(\alpha_{M,x}=-2^{LN}\) 及 \(\Pi_{i,n}\) 中的点 \(Q_{M,x}^{(n)}=\mathrm{pr}_n(P_i+\alpha_{M,x}e)\)。
+若 \(M(x)\) 在 \(t\) 步内不停机，则无论其是否在更晚时刻停机，都有 \(n\le LN\)（停机时）或 \(\alpha_{M,x}=0\)（不停机时），从而由命题 \ref{prop:xi-time-part9g-first-deviation-depth} 得 \(Q_{M,x}^{(n)}=P_{i,n}\)。
+因此 \(Q_{M,x}^{(n)}\) 可由有限步模拟与有限群运算构造性求出，故为全可计算函数。
+\par
+对 (2)，由命题 \ref{prop:xi-time-part9g-first-deviation-depth}，
+\[
+\delta(M,x)<\infty\quad\Longleftrightarrow\quad M(x)\ \text{停机}.
+\]
+若 \(\delta\) 全可计算，则停机问题可判定，矛盾。
+\par
+对 (3)，若 \(M(x)\) 首次停机时间为 \(N\)，则由命题 \ref{prop:xi-time-part9g-first-deviation-depth} 有 \(\delta(M,x)=LN+1\)，从而
+\[
+N\le \frac{\Phi(|(M,x)|)-1}{L}.
+\]
+于是 \(\Phi\) 给出了按描述长度统一控制的停机时间上界，违背定理 \ref{thm:conclusion-finite-test-depth-busybeaver} 所给出的 Busy--Beaver 下界；整理常数即得所示不等式。证毕。
+\end{proof}
+
+\paragraph{\texorpdfstring{$2^L$}{2^L}-进仿射半群的固定点刚性}
+沿用推论 \ref{cor:xi-terminal-zm-leyang-branchpoint-tate-torsor-decomposition} 给出的识别
+\[
+T_2(E_{\min})\cong \varprojlim_n E_{\min}[2^n]\cong \ZZ_2^2.
+\]
+固定正整数 \(L\)，并记 \(B:=2^L\)。
+设 \(R\) 为交换幺半群，\(\Sigma:R\to R\) 为幺半群端同态，
+\[
+H:=R\rtimes_{\Sigma}\NN
+\]
+为乘法
+\[
+(r,k)(r',k'):=\bigl(r+\Sigma^k r',\,k+k'\bigr)
+\]
+定义的半直积幺半群。
+再设 \(\operatorname{ev}_B:R\to T_2(E_{\min})\) 为加法映射，满足
+\[
+\operatorname{ev}_B(\Sigma^k r)=B^k\operatorname{ev}_B(r)
+\qquad (r\in R,\ k\in\NN),
+\]
+并令
+\[
+\Psi(r,k)(x):=B^k x+\operatorname{ev}_B(r)
+\qquad \bigl(x\in T_2(E_{\min})\bigr)
+\]
+为 \(H\) 在 \(T_2(E_{\min})\) 上的忠实 \(2^L\)-进仿射表示。
+
+\begin{theorem}[正层 \texorpdfstring{$2^L$}{2^L}-进仿射元的唯一不动点]\label{thm:xi-time-part9g-affine-semigroup-unique-fixed-point}
+沿用上段记号。设 \(g=(r,k)\in H\)。
+\begin{enumerate}
+  \item 若 \(k\ge 1\)，则 \(\Psi(g)\) 存在唯一不动点
+  \[
+  x_g=(1-B^k)^{-1}\operatorname{ev}_B(r)\in T_2(E_{\min}).
+  \]
+  \item 若 \(k=0\)，则 \(\Psi(r,0)\) 有不动点当且仅当 \((r,0)\) 为 \(H\) 的单位元。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+在 \(T_2(E_{\min})\cong \ZZ_2^2\) 的识别下，若 \(k\ge 1\) 则
+\[
+1-B^k=1-2^{Lk}
+\]
+为奇数，因而是 \(\ZZ_2\) 中的单位元；于是乘法
+\(
+x\mapsto (1-B^k)x
+\)
+是 \(T_2(E_{\min})\) 上的自同构。
+不动点方程
+\[
+x=B^k x+\operatorname{ev}_B(r)
+\]
+等价于
+\[
+(1-B^k)x=\operatorname{ev}_B(r),
+\]
+故唯一解即为
+\(
+x_g=(1-B^k)^{-1}\operatorname{ev}_B(r)
+\)。
+
+若 \(k=0\)，则
+\[
+\Psi(r,0)(x)=x+\operatorname{ev}_B(r).
+\]
+其存在不动点当且仅当 \(\operatorname{ev}_B(r)=0\)，亦即 \(\Psi(r,0)=\Id\)。
+由于表示 \(\Psi\) 忠实，且 \(\Psi(0,0)=\Id\)，故此时且仅此时 \((r,0)=(0,0)\)，即 \((r,0)\) 为 \(H\) 的单位元。
+\end{proof}
+
+\begin{theorem}[不动点族的仿射 \texorpdfstring{$1$}{1}-余循环律]\label{thm:xi-time-part9g-affine-fixed-point-cocycle}
+沿用上段记号。设
+\[
+g=(r,k),\qquad h=(r',k')\in H,
+\qquad k,k'\ge 1,
+\]
+并记各自唯一不动点为 \(x_g\)、\(x_h\)。
+则乘积 \(gh\) 的唯一不动点满足严格闭式
+\[
+x_{gh}
+=
+\frac{1-B^k}{1-B^{k+k'}}\,x_g
++\frac{B^k(1-B^{k'})}{1-B^{k+k'}}\,x_h.
+\]
+从而映射
+\[
+g\longmapsto x_g
+\]
+在正层子半群
+\(
+\{(r,k)\in H:\ k\ge 1\}
+\)
+上满足严格的 \(2\)-进仿射 \(1\)-余循环律。
+\end{theorem}
+\begin{proof}
+由半直积乘法，
+\[
+gh=(r+\Sigma^k r',\,k+k').
+\]
+因此
+\[
+x_{gh}
+=(1-B^{k+k'})^{-1}\operatorname{ev}_B(r+\Sigma^k r').
+\]
+再由 \(\operatorname{ev}_B\) 的加法性与移位相容性，
+\[
+\operatorname{ev}_B(r+\Sigma^k r')
+=\operatorname{ev}_B(r)+B^k\operatorname{ev}_B(r').
+\]
+于是
+\[
+x_{gh}
+=(1-B^{k+k'})^{-1}
+\bigl(\operatorname{ev}_B(r)+B^k\operatorname{ev}_B(r')\bigr).
+\]
+将
+\[
+\operatorname{ev}_B(r)=(1-B^k)x_g,
+\qquad
+\operatorname{ev}_B(r')=(1-B^{k'})x_h
+\]
+代入即可得到所示公式。
+\end{proof}
+
+\begin{theorem}[固定点的指数吸引与同层可分辨性]\label{thm:xi-time-part9g-affine-fixed-point-contraction-rigidity}
+沿用上段记号。设 \(g=(r,k)\in H\) 且 \(k\ge 1\)，并记其唯一不动点为 \(x_g\)。
+则对任意 \(x\in T_2(E_{\min})\) 与任意 \(n\ge 1\)，有
+\[
+\Psi(g)^n(x)-x_g=B^{kn}(x-x_g).
+\]
+因此 \(2\)-进范数满足
+\[
+\bigl|\Psi(g)^n(x)-x_g\bigr|_2
+=
+2^{-Lkn}\,\bigl|x-x_g\bigr|_2.
+\]
+特别地，每个正层元 \(\Psi(g)\) 都是严格 \(2\)-进压缩映射，其全部轨道以指数速率收敛到唯一不动点。
+
+进一步，若
+\[
+g=(r,k),\qquad g'=(r',k)\in H
+\]
+具有相同层级 \(k\ge 1\)，且 \(x_g=x_{g'}\)，则 \(g=g'\)。
+换言之，不动点在每个固定层级上完全可分辨。
+\end{theorem}
+\begin{proof}
+由 \(x_g\) 的定义，
+\[
+(1-B^k)x_g=\operatorname{ev}_B(r).
+\]
+故
+\[
+\Psi(g)(x)-x_g
+=B^k x+\operatorname{ev}_B(r)-x_g
+=B^k x+(1-B^k)x_g-x_g
+=B^k(x-x_g).
+\]
+迭代 \(n\) 次即得
+\[
+\Psi(g)^n(x)-x_g=B^{kn}(x-x_g).
+\]
+又因 \(|B|_2=|2^L|_2=2^{-L}\)，故
+\[
+\bigl|B^{kn}(x-x_g)\bigr|_2
+=2^{-Lkn}\,\bigl|x-x_g\bigr|_2,
+\]
+从而严格压缩与指数吸引成立。
+
+若 \(x_g=x_{g'}\)，则
+\[
+\operatorname{ev}_B(r)
+=(1-B^k)x_g
+=(1-B^k)x_{g'}
+=\operatorname{ev}_B(r').
+\]
+于是
+\[
+\Psi(g)(x)=B^k x+\operatorname{ev}_B(r)
+=B^k x+\operatorname{ev}_B(r')
+=\Psi(g')(x)
+\]
+对所有 \(x\) 成立，即 \(\Psi(g)=\Psi(g')\)。
+由于 \(\Psi\) 忠实，遂得 \(g=g'\)。
+\end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part9g-canonical-fixedpoint-periodicity}
+\input{subsubsec__xi-time-protocol-conclusions-part9gb-canonical-fixedpoint-cantor-dimension}
+\input{subsubsec__xi-time-protocol-conclusions-part9ga-cross-resolution-affine-rigidity}
+\input{subsubsec__xi-time-protocol-conclusions-part9gc-resolution-haar-ranksplit}
+
 \begin{theorem}[Lee--Yang 三次核的判别式分解与 \texorpdfstring{\(S_3\)}{S3} 分裂域]\label{thm:xi-time-part9g-leyang-cubic-discriminant}
 定义
 \[

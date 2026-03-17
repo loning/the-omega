@@ -115,6 +115,48 @@ k+\overline{\cdim}_{\mathrm{res}}(\mathcal{R}_\bullet)\ \ge\ \cdim(G).
 并且该增长率在 \(\overline{\cdim}_{\mathrm{res}}\) 中精确读出为缺口维数 \(r-k\)。
 \end{remark}
 
+\begin{theorem}[受限素数寄存器的 Gödel 压缩必然引入 \texorpdfstring{$b\log b$}{b log b} 级额外位长]\label{thm:cdim-restricted-prime-register-godel-bilogb-overhead}
+沿用定理 \ref{thm:cdim-phase-residual-budget-lower-bound} 的设定。
+进一步假设存在常数 \(B\ge 2\)（与 \(b\) 无关）以及一族单射编码
+\[
+\tau_b:\ \mathcal{R}_b\hookrightarrow \{1,2,\dots,B\}^{T_b}\qquad(b\ge 1),
+\]
+其中码长 \(T_b\in\NN\) 允许依赖于 \(b\)。
+将 \(\tau_b(z)=(\tau_1,\dots,\tau_{T_b})\) 通过 Gödel 规则压缩为单整数
+\[
+G(\tau_b(z)):=\prod_{t=1}^{T_b} p_t^{\tau_t},
+\]
+其中 \(p_t\) 为第 \(t\) 个素数，并定义最大位长
+\[
+L_b:=\max_{z\in\mathcal{R}_b}\log_2 G(\tau_b(z)).
+\]
+则对任意实现，存在仅依赖于 \(B\) 的常数 \(c>0\) 使
+\[
+L_b\ \ge\ c\,(r-k)\,b\log_2 b\ -\ O(b)\qquad(b\to\infty),
+\]
+其中 \(O(b)\) 项的常数可依赖于 \(B\) 与 \(\card{T}\) 但与 \(b\) 无关；并且可取 \(c\) 为 \(1/\log_2 B\) 的量纲。
+\end{theorem}
+\begin{proof}
+由 \(\tau_b\) 单射得 \(\card{\mathcal R_b}\le B^{T_b}\)，从而
+\[
+T_b\ \ge\ \frac{\log_2\card{\mathcal R_b}}{\log_2 B}.
+\]
+由定理 \ref{thm:cdim-phase-residual-budget-lower-bound} 的证明中不等式
+\(\log_2\card{\mathcal R_b}\ge (r-k)b+\log_2\card{T}\)，得到
+\[
+T_b\ \ge\ \frac{(r-k)b}{\log_2 B}\ -\ O(1).
+\]
+另一方面，对任意码字序列 \(\tau\in\NN_{\ge 1}^{T_b}\)，定理 \ref{thm:xi-godel-integerization-log-overhead} 给出
+\[
+\log_2 G(\tau)\ \ge\ T_b\log_2 T_b-O(T_b).
+\]
+取最大值并代入 \(T_b\ge \frac{(r-k)b}{\log_2 B}-O(1)\)，得到
+\[
+L_b\ \ge\ T_b\log_2 T_b-O(T_b)\ \ge\ \frac{(r-k)b}{\log_2 B}\log_2 b\ -\ O(b).
+\]
+证毕。
+\end{proof}
+
 \begin{definition}[最优残差圆维下界]\label{def:cdim-min-residual-budget}
 在上述编码模型下，定义给定 \(k\) 的最优残差圆维下界为
 \[
@@ -225,6 +267,30 @@ H_2(Y_b,Z_b)=H_2(X_b)=\log_2\card{W_b(G)}=rb+\log_2\card{T}.
 H_2(Y_b)\le \log_2\card{\mathrm{Phase}_b^{(k)}}=kb
 \)。
 整理即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[残差熵下界取等的刚性判据]\label{prop:cdim-residual-entropy-lower-bound-rigidity}
+沿用定理 \ref{thm:cdim-residual-entropy-lower-bound} 的记号。
+则等号
+\[
+H_2(Z_b)= (r-k)b+\log_2\card{T}
+\]
+成立当且仅当同时满足：
+\begin{enumerate}
+  \item \(Y_b\) 在 \(\mathrm{Phase}_b^{(k)}\) 上均匀分布（从而 \(H_2(Y_b)=kb\)）；
+  \item \(Y_b\) 与 \(Z_b\) 独立（从而 \(H_2(Y_b,Z_b)=H_2(Y_b)+H_2(Z_b)\)）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+定理 \ref{thm:cdim-residual-entropy-lower-bound} 的推导链包含两处不等式：
+\[
+H_2(Y_b)\le \log_2\card{\mathrm{Phase}_b^{(k)}}=kb,
+\qquad
+H_2(Y_b,Z_b)\le H_2(Y_b)+H_2(Z_b).
+\]
+上界 \(H_2(Y_b)\le \log_2\card{\mathrm{Phase}_b^{(k)}}\) 取等当且仅当 \(Y_b\) 在其支撑上均匀；而右端恰为全空间对数基数，故取等迫使 \(Y_b\) 在 \(\mathrm{Phase}_b^{(k)}\) 上均匀。
+次可加性取等当且仅当 \(Y_b\) 与 \(Z_b\) 独立。
+两处同时取等即与所示等号等价，结论成立。证毕。
 \end{proof}
 
 \paragraph{有限相位探针：从外部恢复结构圆维与素数残差谱}

@@ -1,6 +1,6 @@
 \subsection{Joukowsky 逆平方坐标与 Lee--Yang 奇异环：Fibonacci 纤维的单位圆提升}\label{subsec:lee-yang-joukowsky-singular-ring}
-本小节给出一个与 \S\ref{subsec:unit-disk-rh-equivalence} 的“圆盘零点禁入”等价式并行的代数模型：在一个显式的有理坐标门下，某些递推多项式族的零点可被严格提升为单位圆上的单位根，从而其像在参数平面上落入一条由 Joukowsky 退化边界诱导的负实射线。
-该模型同时提供一条可审计的阿贝尔分裂域控制律，并在 \(\GL_2\) 的 Satake 局部参数上呈现出同构的几何图式。
+本小节以“单位圆提升—Joukowsky 逆平方坐标—Lee--Yang 奇异环”的有理坐标门为出发点，构造一个与 \S\ref{subsec:unit-disk-rh-equivalence} 的圆盘化完成化/视界缺陷接口形成可计算互译框架的代数模型：递推多项式族的零点可被严格提升为单位圆上的单位根，其像在参数平面上退化为由 Joukowsky 边界诱导的负实射线；同时，端点 \(-1\) 的 Poisson 核与 \(J\) 的模长之间存在精确恒等式（引理 \ref{lem:app-endpoint-poisson-cayley-joukowsky}），从而把端点角窗的圆周平均转写为 Lee--Yang 奇异环上的一维推前积分（定理 \ref{thm:leyang-haar-pushforward-density}）。
+该模型同时给出一条可审计的阿贝尔分裂域控制律，并在 \(\GL_2\) 的 Satake 局部参数上呈现出同构的几何图式。
 
 \paragraph{坐标门与奇异环}
 定义有理映射
@@ -9,6 +9,8 @@
 J(u):=-\frac{u}{(1+u)^2}\qquad(u\in\CC\setminus\{-1\})\; }.
 \end{equation}
 并记 Joukowsky 映射 \(W(z):=z+z^{-1}\)（\(z\in\CC^{\times}\)）。
+
+\input{para__lee-yang-trace-mobius-invertibility}
 
 \begin{proposition}[Joukowsky 逆平方恒等式与奇异环的几何化]\label{prop:jouwkowsky-inverse-square}
 对任意 \(z\in\CC^{\times}\) 成立严格恒等式
@@ -48,6 +50,324 @@ J(e^{2\mathrm{i}\theta})=-\frac{1}{(2\cos\theta)^2}\in(-\infty,-\tfrac14]
 \)。
 \end{proof}
 
+\input{para__lee-yang-branch-cover-square-root}
+\input{para__lee-yang-orthogonal-dual-imaginary-projection}
+
+\input{para__lee-yang-chebyshev-semiconjugacy}
+
+\paragraph{有理玫瑰曲线的单位圆提升与奇异环坐标}
+对任意互素正整数 \(n,d\)，考虑极坐标形式给出的复平面轨迹
+\begin{equation}\label{eq:leyang-polar-cos-family}
+w(\theta):=r(\theta)e^{\mathrm{i}\theta},\qquad
+r(\theta):=\cos\!\Bigl(\frac{n}{d}\theta\Bigr)\qquad(\theta\in\RR).
+\end{equation}
+下述定理把该族严格识别为二维环面上一条 \((n,d)\)-型扭结的复干涉投影，并给出 Lee--Yang 奇异环坐标由径向模长反推的无参数公式。
+
+\input{thm__leyang-rational-rose-torus-projection}
+
+\begin{proposition}[推前覆盖度与退化预像计数]\label{prop:leyang-polar-family-preimage-count}
+设 \(\gcd(n,d)=1\)，并把 \(\theta\) 视作模 \(2\pi d\) 的圆参数。
+考虑映射
+\[
+\Theta_{n,d}:\ \theta\longmapsto t(\theta)=-\frac{1}{4\cos^2(\frac{n}{d}\theta)}\in(-\infty,-\tfrac14],
+\]
+其中 \(t(\theta)\) 由 \eqref{eq:leyang-polar-family-t-closed} 给出（在 \(\cos(\frac{n}{d}\theta)=0\) 处取发散端点）。
+则对任意 \(t\in(-\infty,-\tfrac14)\) 有
+\begin{equation}\label{eq:leyang-polar-family-preimage-4n}
+\boxed{\;\card{\Theta_{n,d}^{-1}(t)}=4n\; }.
+\end{equation}
+并且在端点处预像计数退化为
+\begin{equation}\label{eq:leyang-polar-family-preimage-endpoints}
+\boxed{\;
+\card{\Theta_{n,d}^{-1}(-\tfrac14)}=2n,\qquad
+\card{\{\theta:\ \cos(\tfrac{n}{d}\theta)=0\}}=2n\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+令 \(\varphi:=\frac{n}{d}\theta\)。
+当 \(\theta\) 取遍 \([0,2\pi d)\) 时，\(\varphi\) 取遍 \([0,2\pi n)\)。
+对给定 \(t\in(-\infty,-\tfrac14)\)，令 \(c^2:=-\frac{1}{4t}\in(0,1)\)。
+则 \(\Theta_{n,d}(\theta)=t\) 等价于 \(\cos^2\varphi=c^2\)。
+在每个长度为 \(\pi\) 的周期区间上，方程 \(\cos^2\varphi=c^2\) 恰有两解；区间 \([0,2\pi n)\) 含 \(2n\) 个周期，故总解数为 \(4n\)，得到 \eqref{eq:leyang-polar-family-preimage-4n}。
+\par
+端点 \(t=-\tfrac14\) 对应 \(\cos^2\varphi=1\)，其解为 \(\varphi=k\pi\)（\(0\le k\le 2n-1\)），故 \(\card{\Theta_{n,d}^{-1}(-\tfrac14)}=2n\)。
+发散端点对应 \(\cos\varphi=0\)，其解为 \(\varphi=\frac{\pi}{2}+k\pi\)（\(0\le k\le 2n-1\)），故 \(\card{\{\theta:\cos(\tfrac{n}{d}\theta)=0\}}=2n\)。
+证毕。
+\end{proof}
+
+\begin{remark}[双层分解与覆盖度解释]\label{rem:leyang-polar-family-two-layer-factorization}
+映射 \(\Theta_{n,d}\) 可分解为两步压缩：
+先取迹变量
+\(
+x(\theta):=\cos(\tfrac{n}{d}\theta)\in[-1,1]
+\)，再施加逆平方门
+\(
+t=-\frac{1}{4x^2}
+\)
+得到 Lee--Yang 奇异环坐标。
+在 \(x\neq 0\) 的开集中，第一步 \(\theta\mapsto x(\theta)\) 为 \(2n\)-重覆盖，而第二步 \(x\mapsto t\) 为二值折叠（由 \(x\mapsto \pm x\) 的符号辨识给出）；式 \eqref{eq:leyang-polar-family-preimage-4n} 的 \(4n\) 因而可视为两步覆盖度之乘积。
+端点 \(t=-\tfrac14\) 对应 \(x=\pm 1\)（等价于 \(\alpha^n=\pm 1\)），而发散端 \(t=-\infty\) 对应 \(x=0\)（等价于 \(\alpha^n=\pm\mathrm{i}\)）。
+\end{remark}
+
+\input{para__lee-yang-singular-ring-haar-pushforward}
+
+\paragraph{Lissajous 环面的单位圆提升与二维奇异环坐标}
+本段把二维 Lissajous 族
+\begin{equation}\label{eq:leyang-lissajous-family}
+x(t)=\cos(at+\delta),\qquad y(t)=\cos(bt)
+\qquad(a,b\in\ZZ_{>0},\ \delta\in\RR)
+\end{equation}
+纳入本小节的坐标门 \((W,J)\) 语言：先将时间参数提升为单位圆相位 \(z=e^{\mathrm{i}t}\in\TT\)，再通过 \(\zeta\mapsto \frac12W(\zeta)\) 取实投影得到 \((x,y)\in[-1,1]^2\)，并进一步通过 \(\zeta\mapsto J(\zeta^2)\) 得到一对落在 Lee--Yang 奇异环上的负实参数。
+
+\begin{proposition}[带相位 Lissajous 轨道的算术奇异环纤维积模型]\label{prop:leyang-lissajous-unit-circle-uplift}
+定义带相位环面结关系
+\[
+K_{a,b,\delta}:=\{(\alpha,\beta)\in\TT^2:\ \alpha^b=e^{\mathrm{i}b\delta}\beta^a\},
+\qquad
+K_{a,b,\delta}^{\circ}:=\{(e^{\mathrm{i}(at+\delta)},e^{\mathrm{i}bt}):\ t\in\RR\}\subset K_{a,b,\delta},
+\]
+以及投影
+\[
+\Pi_{\mathrm{Lis}}(\alpha,\beta):=(\Re\alpha,\Re\beta),\qquad
+\Pi_{\mathrm{LY}}(\alpha,\beta):=(J(\alpha^2),J(\beta^2)).
+\]
+则成立：
+\begin{enumerate}
+  \item \(K_{a,b,\delta}^{\circ}\subset K_{a,b,\delta}\)，并且当 \(\gcd(a,b)=1\) 时 \(K_{a,b,\delta}^{\circ}=K_{a,b,\delta}\)。
+  并且
+  \begin{equation}\label{eq:leyang-lissajous-joukowsky-projection}
+  \boxed{\;
+  \Pi_{\mathrm{Lis}}(e^{\mathrm{i}(at+\delta)},e^{\mathrm{i}bt})
+  =(x(t),y(t))\; }.
+  \end{equation}
+  因而 \(\Pi_{\mathrm{Lis}}(K_{a,b,\delta}^{\circ})\) 恰为 \eqref{eq:leyang-lissajous-family} 的像集。
+  \item 对任意 \((\alpha,\beta)\in K_{a,b,\delta}^{\circ}\) 且 \(\Re\alpha\,\Re\beta\neq 0\)，有
+  \begin{equation}\label{eq:leyang-lissajous-leyang-readout}
+  \boxed{\;
+  \Pi_{\mathrm{LY}}(\alpha,\beta)
+  =\left(-\frac{1}{4(\Re\alpha)^2},\ -\frac{1}{4(\Re\beta)^2}\right)\in(-\infty,-\tfrac14]^2\; }.
+  \end{equation}
+  因此 \(\Pi_{\mathrm{LY}}(K_{a,b,\delta}^{\circ})\) 的 Zariski 闭包由定理 \ref{thm:leyang-lissajous-chebyshev-resultant} 的方程在代换 \(t_x=-1/(4x^2)\)、\(t_y=-1/(4y^2)\) 后清分母给出。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由定义直接有
+\[
+e^{\mathrm{i}(at+\delta)b}=e^{\mathrm{i}b\delta}e^{\mathrm{i}abt}
+=e^{\mathrm{i}b\delta}(e^{\mathrm{i}bt})^a,
+\]
+故 \(K_{a,b,\delta}^{\circ}\subset K_{a,b,\delta}\)。
+它作为连续映射 \(t\mapsto (e^{\mathrm{i}(at+\delta)},e^{\mathrm{i}bt})\) 的像，显然连通。
+若 \(\gcd(a,b)=1\)，取整数 \(p,q\) 使 \(pa+qb=1\)。
+对任意 \((\alpha,\beta)\in K_{a,b,\delta}\)，令
+\[
+z:=(e^{-\mathrm{i}\delta}\alpha)^p\beta^q\in\TT.
+\]
+则
+\[
+z^a
+=(e^{-\mathrm{i}\delta}\alpha)^{pa}\beta^{qa}
+=(e^{-\mathrm{i}\delta}\alpha)^{1-qb}\beta^{qa}
+=e^{-\mathrm{i}\delta}\alpha\,(e^{-\mathrm{i}b\delta}\alpha^b)^{-q}\beta^{qa}
+=e^{-\mathrm{i}\delta}\alpha,
+\]
+以及
+\[
+z^b
+=(e^{-\mathrm{i}\delta}\alpha)^{pb}\beta^{qb}
+=e^{-\mathrm{i}pb\delta}\alpha^{pb}\beta^{qb}
+=\beta^{pa+qb}
+=\beta,
+\]
+其中用到了关系 \(\alpha^b=e^{\mathrm{i}b\delta}\beta^a\)。
+于是 \((\alpha,\beta)=(e^{\mathrm{i}\delta}z^a,z^b)\in K_{a,b,\delta}^{\circ}\)，故此时 \(K_{a,b,\delta}^{\circ}=K_{a,b,\delta}\)。
+
+再由 \(\Re(e^{\mathrm{i}(at+\delta)})=\cos(at+\delta)=x(t)\)、\(\Re(e^{\mathrm{i}bt})=\cos(bt)=y(t)\)，得到 \eqref{eq:leyang-lissajous-joukowsky-projection}。
+另一方面，命题 \ref{prop:jouwkowsky-inverse-square} 给出
+\[
+J(\alpha^2)=-\frac{1}{(\alpha+\alpha^{-1})^2}
+=-\frac{1}{4(\Re\alpha)^2},
+\qquad
+J(\beta^2)=-\frac{1}{(\beta+\beta^{-1})^2}
+=-\frac{1}{4(\Re\beta)^2},
+\]
+从而得到 \eqref{eq:leyang-lissajous-leyang-readout}。
+最后将定理 \ref{thm:leyang-lissajous-chebyshev-resultant} 的方程作上述代换并清分母，即得 \(\Pi_{\mathrm{LY}}(K_{a,b,\delta}^{\circ})\) 的代数闭包。证毕。
+\end{proof}
+
+\input{para__lee-yang-lissajous-chebyshev-resultant}
+
+\begin{proposition}[环面自同态的频率同步化与 Chebyshev 折叠]\label{prop:leyang-lissajous-torus-endomorphism-chebyshev}
+令 \(T_n\) 为第一类 Chebyshev 多项式（以特征恒等式 \(T_n(\cos\theta)=\cos(n\theta)\) 定义）。
+并记参数化闭环
+\[
+\gamma_{a,b,\delta}:\TT\to K_{a,b,\delta}^{\circ},\qquad
+\gamma_{a,b,\delta}(z):=\bigl(e^{\mathrm{i}\delta}z^a,\ z^b\bigr).
+\]
+定义环面自同态
+\[
+\Phi_{a,b}:\TT^2\to\TT^2,\qquad \Phi_{a,b}(z_1,z_2):=(z_1^b,\ z_2^a).
+\]
+则存在严格分解
+\begin{equation}\label{eq:leyang-lissajous-torus-factorization}
+\boxed{\;
+\Phi_{a,b}\circ \gamma_{a,b,\delta}(z)
+=\bigl(e^{\mathrm{i}b\delta}z^{ab},\ z^{ab}\bigr)
+=\Delta_{b\delta}\circ \pi_{ab}(z)\; } ,
+\end{equation}
+其中 \(\pi_{ab}(z)=z^{ab}\) 为 \(ab\) 次覆盖，\(\Delta_{b\delta}(w)=(e^{\mathrm{i}b\delta}w,w)\) 为对角闭环。
+在实投影层面，该同步化等价于多项式折叠
+\[
+(x,y)\longmapsto (U,V):=\bigl(T_b(x),\ T_a(y)\bigr),
+\]
+并对 \eqref{eq:leyang-lissajous-family} 给出统一频率的参数化
+\begin{equation}\label{eq:leyang-lissajous-chebyshev-folded-uv}
+\boxed{\;
+U(t)=\cos(abt+b\delta),\qquad V(t)=\cos(abt).\;}
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 \(\gamma_{a,b,\delta}(z)=(e^{\mathrm{i}\delta}z^a,z^b)\) 直接计算得
+\(
+(e^{\mathrm{i}\delta}z^a)^b=e^{\mathrm{i}b\delta}z^{ab}
+\)
+与
+\(
+(z^b)^a=z^{ab}
+\)，从而得到 \eqref{eq:leyang-lissajous-torus-factorization}。
+\par
+对实投影，取 \(\zeta\in\TT\) 并记 \(x=\frac12W(\zeta)=\cos\theta\)（\(\zeta=e^{\mathrm{i}\theta}\)）。
+由 \(T_n(\cos\theta)=\cos(n\theta)\) 得
+\[
+T_n\!\left(\frac12W(\zeta)\right)=\cos(n\theta)=\frac12W(\zeta^n).
+\]
+将该恒等式分别应用到 \(\zeta_1=e^{\mathrm{i}\delta}z^a=e^{\mathrm{i}(at+\delta)}\) 与 \(\zeta_2=z^b=e^{\mathrm{i}bt}\)，并结合
+\(
+x(t)=\frac12W(\zeta_1)
+\)、
+\(
+y(t)=\frac12W(\zeta_2)
+\)，即得
+\(
+T_b(x(t))=\frac12W(\zeta_1^b)=\cos(b(at+\delta))
+\)
+与
+\(
+T_a(y(t))=\frac12W(\zeta_2^a)=\cos(a(bt))
+\)，化简得到 \eqref{eq:leyang-lissajous-chebyshev-folded-uv}。证毕。
+\end{proof}
+
+\begin{theorem}[Lee--Yang 平面上的统一代数范式]\label{thm:leyang-lissajous-singular-ring-normal-form}
+令 \(\varphi:=b\delta\)，并记 \(c:=\cos\varphi\)、\(s:=\sin\varphi\)。
+对任意 \(t\in\RR\) 定义
+\[
+U(t):=T_b(x(t)),\qquad V(t):=T_a(y(t)),
+\qquad
+p(t):=-\frac{1}{4U(t)^2},\qquad q(t):=-\frac{1}{4V(t)^2},
+\]
+其中 \(x(t),y(t)\) 由 \eqref{eq:leyang-lissajous-family} 给出，并约定在 \(U(t)=0\) 或 \(V(t)=0\) 时以上表达式取扩展值 \(-\infty\)。
+则对所有满足 \(U(t)V(t)\neq 0\) 的 \(t\) 有
+\[
+(p(t),q(t))\in(-\infty,-\tfrac14]^2
+\]
+并且 \((p(t),q(t))\) 满足与 \(a\) 无关的代数方程
+\begin{equation}\label{eq:leyang-lissajous-singular-ring-curve}
+\boxed{\ \bigl(p+q+4s^2pq\bigr)^2=4c^2pq\ }.
+\end{equation}
+因此，在 Chebyshev 同步化坐标中，\(\delta\) 的信息仅通过组合相位 \(\varphi=b\delta\) 进入 Lee--Yang 平面上的对应曲线，而参数 \(a\) 仅改变轨迹在该曲线上的覆盖次数。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:leyang-lissajous-torus-endomorphism-chebyshev}，存在 \(\theta:=abt\) 使
+\(
+U(t)=\cos(\theta+\varphi)
+\)、
+\(
+V(t)=\cos\theta
+\)。
+于是恒等式
+\[
+\cos(\theta+\varphi)^2-2(\cos\varphi)\cos(\theta+\varphi)\cos\theta+\cos^2\theta-\sin^2\varphi\equiv 0
+\]
+化为
+\[
+U(t)^2-2c\,U(t)V(t)+V(t)^2-s^2=0.
+\]
+记 \(u:=U(t)^2\)、\(v:=V(t)^2\)，则
+\(
+u+v-s^2=2c\,U(t)V(t)
+\)，两边平方并用 \(U(t)^2V(t)^2=uv\) 得
+\(
+(u+v-s^2)^2=4c^2uv
+\)。
+代入 \(u=-1/(4p)\)、\(v=-1/(4q)\) 并清分母即得 \eqref{eq:leyang-lissajous-singular-ring-curve}。
+此外，由 \(|U(t)|\le 1\)、\(|V(t)|\le 1\) 与定义可得 \(p(t),q(t)\in(-\infty,-\tfrac14]\)（在零点处取发散端点）。证毕。
+\end{proof}
+
+\begin{theorem}[参数奇异点的判别与浸入条件]\label{thm:leyang-lissajous-immersion-criterion}
+令 \(g:=\gcd(a,b)\)，并记 \(b':=b/g\)。
+则曲线 \(t\mapsto (x(t),y(t))\) 在某点处失去浸入性（即存在 \(t\) 使 \((x'(t),y'(t))=(0,0)\)）当且仅当
+\begin{equation}\label{eq:leyang-lissajous-singular-phase-lattice}
+\boxed{\ \delta\in \frac{\pi}{b'}\,\ZZ\quad(\mathrm{mod}\ \pi)\ }.
+\end{equation}
+因此该参数化为浸入的充要条件为 \(\delta\notin \frac{\pi}{b'}\ZZ\ (\mathrm{mod}\ \pi)\)。
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:leyang-lissajous-family} 得
+\[
+x'(t)=-a\sin(at+\delta),\qquad y'(t)=-b\sin(bt).
+\]
+条件 \(y'(t)=0\) 等价于 \(bt=\ell\pi\)（\(\ell\in\ZZ\)）。
+代入 \(x'(t)=0\) 得
+\[
+at+\delta=k\pi
+\quad\Longleftrightarrow\quad
+\delta=k\pi-\frac{a\ell}{b}\pi,
+\qquad k,\ell\in\ZZ.
+\]
+写 \(a=ga'\)、\(b=gb'\) 且 \(\gcd(a',b')=1\)，则 \(\frac{a\ell}{b}=\frac{a'\ell}{b'}\)。
+由于乘法映射 \(\ell\mapsto a'\ell\) 在 \(\ZZ/b'\ZZ\) 上为置换，集合 \(\{a'\ell\bmod b':\ell\in\ZZ\}=\ZZ/b'\ZZ\)，从而
+\(
+\delta/\pi
+\)
+在模 \(1\) 意义下恰取遍 \(\frac{1}{b'}\ZZ/\ZZ\)，即得到 \eqref{eq:leyang-lissajous-singular-phase-lattice}。证毕。
+\end{proof}
+
+\begin{proposition}[旋转诱导对应与二值显式分支]\label{prop:leyang-lissajous-rotation-correspondence}
+令 \(\varphi=b\delta\) 并记 \(\tau:=\tan\varphi\)。
+对 \(\theta\in\RR\) 定义
+\[
+q(\theta):=J(e^{2\mathrm{i}\theta})=-\frac{1}{4\cos^2\theta},\qquad
+p(\theta):=J(e^{2\mathrm{i}(\theta+\varphi)})=-\frac{1}{4\cos^2(\theta+\varphi)}.
+\]
+则 \(\theta\mapsto(p(\theta),q(\theta))\) 为 \eqref{eq:leyang-lissajous-singular-ring-curve} 在 \((-\infty,-\tfrac14]^2\) 上的有理参数化。
+并且对任意 \(q\in(-\infty,-\tfrac14]\)，满足 \eqref{eq:leyang-lissajous-singular-ring-curve} 的 \(p\) 等价于二值表达式
+\begin{equation}\label{eq:leyang-lissajous-two-branch-p-from-q}
+\boxed{\;
+p=\frac{(1+\tau^2)\,q}{\bigl(1\mp \tau\sqrt{-4q-1}\bigr)^2}\; }.
+\end{equation}
+其中分支选择对应于 \(\tan\theta=\pm\sqrt{-4q-1}\) 的符号。
+因此，单位圆上的刚性旋转 \(\theta\mapsto\theta+\varphi\) 在坐标门 \(J\circ(\cdot)^2\) 下诱导一个二值代数对应；其消去分支后的闭包恰为 \eqref{eq:leyang-lissajous-singular-ring-curve}。
+\end{proposition}
+\begin{proof}
+由 \(q(\theta)=-\frac{1+\tan^2\theta}{4}\) 得 \(\tan^2\theta=-4q-1\)。
+令 \(u:=\tan\theta\) 与 \(\tau:=\tan\varphi\)，则
+\(
+\tan(\theta+\varphi)=\frac{u+\tau}{1-u\tau}
+\)。
+因此
+\[
+p(\theta)=-\frac{1}{4}\Bigl(1+\tan^2(\theta+\varphi)\Bigr)
+=-\frac{1}{4}\left(1+\frac{(u+\tau)^2}{(1-u\tau)^2}\right)
+=-\frac{1+\tau^2}{4}\cdot\frac{1+u^2}{(1-u\tau)^2}
+=\frac{(1+\tau^2)\,q(\theta)}{(1-u\tau)^2}.
+\]
+代入 \(u=\pm\sqrt{-4q-1}\) 即得 \eqref{eq:leyang-lissajous-two-branch-p-from-q}。
+另一方面，\eqref{eq:leyang-lissajous-two-branch-p-from-q} 的二值化正是 \(\theta\mapsto q(\theta)\) 的二对一性所致；将 \(p(\theta),q(\theta)\) 代入并消去 \(\theta\) 等价于消去 \(u\)，得到 \eqref{eq:leyang-lissajous-singular-ring-curve}。
+证毕。
+\end{proof}
+
+\input{para__lee-yang-rose-lissajous-fiberproduct-leakage}
+
 \paragraph{Fibonacci 多项式的单位圆提升}
 令 Fibonacci 多项式族 \(\{F_n(t)\}_{n\ge 0}\subset\ZZ[t]\) 由递推
 \begin{equation}\label{eq:fib-poly-recurrence}
@@ -84,6 +404,8 @@ H_n(u):=\frac{u^n-1}{u-1}
 零点参数化由 \(H_n(u)=0\iff u^n=1,\ u\ne 1\) 以及 \(t=J(u)\) 立即得到。
 当 \(|u|=1\) 时，由命题 \ref{prop:jouwkowsky-inverse-square}（取 \(u=z^2\)）知 \(t\in(-\infty,-\tfrac14]\)。
 \end{proof}
+
+\input{thm__lee-yang-fibonacci-uplift-rigidity-chebyshev-parity}
 
 \paragraph{纤维因子分解的 cyclotomic 控制}
 设某一纤维多项式 \(Z_x(t)\) 具有分解
@@ -160,9 +482,8 @@ t_{n,k}=-\frac{1}{4\cos^2(\pi k/n)}\qquad\Bigl(1\le k\le\Bigl\lfloor\frac{n-1}{2
 \frac{2}{\pi}\int_0^{\pi/2} f\!\left(-\frac{1}{4\cos^2\varphi}\right)\dd\varphi,
 \]
 即为 \(\varphi\sim\mathrm{Unif}(0,\pi/2)\) 经 \(t=-1/(4\cos^2\varphi)\) 的推前测度。
-对密度计算，置 \(y=\cos^2\varphi\in(0,1)\)。
-由换元知 \(y\) 服从 arcsine 密度 \((\pi\sqrt{y(1-y)})^{-1}\)。
-再由 \(t=-1/(4y)\) 进行换元并化简得到 \eqref{eq:singular-ring-limit-density}。
+注意到 \(U=e^{2\mathrm{i}\varphi}\sim m_{\TT}\)，上述推前测度即为 \(T=J(U)\) 的分布；
+其密度由定理 \ref{thm:leyang-haar-pushforward-density} 直接给出，从而得到 \eqref{eq:singular-ring-limit-density}。
 \end{proof}
 
 \paragraph{端点双尺度渐近}
@@ -232,4 +553,6 @@ J(u)=-\frac{\alpha^2}{(1+\alpha^2)^2}=-\frac{1}{(\alpha+\alpha^{-1})^2}=-\frac{1
 \end{enumerate}
 在阿贝尔纤维因子（Fibonacci--Lee--Yang）情形，(i)--(ii) 由定理 \ref{thm:fib-unit-circle-uplift-identity} 与命题 \ref{prop:fiber-cyclotomic-splitting} 给出严格实现。
 \end{conjecture}
+
+\input{conj__singular-ring-finite-anchors}
 

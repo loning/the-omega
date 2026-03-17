@@ -31,10 +31,10 @@ knowledgegraph/
     kg-node-template.tex
     reference_aliases.json            # 历史/重命名 label 对齐表（ref -> canonical label）
   atoms/                             # 真相层（统一 Atom，append-only）
-    KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex
-    KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex.meta.json
-    KG-20260303-0101__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py
-    KG-20260303-0101__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py.meta.json
+    KG-20260303-174124017812345678900424200000__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex
+    KG-20260303-174124017812345678900424200000__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex.meta.json
+    KG-20260303-174124017812399999900424200001__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py
+    KG-20260303-174124017812399999900424200001__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py.meta.json
   bibliography/                      # DAG 内部参考文献库（编译仅使用这里的 .bib）
     references.bib
     references_*.bib
@@ -55,6 +55,7 @@ knowledgegraph/
     kg_build_index.py
     kg_compile.py
     kg_analyze_build_log.py
+    kg_sync_bibliography_atoms.py
   .kgcache/                          # 临时缓存，可忽略提交
     merged/
       *.latexpanded.tex
@@ -64,7 +65,7 @@ knowledgegraph/
 说明：
 - `atoms/` 是唯一真相层。
 - `index_nodes/` 仅用于展示与编译，不承载知识真相。
-- `bibliography/` 是 DAG-only 编译时唯一 BibTeX 输入目录。
+- `bibliography/` 是 DAG-only 编译时唯一 BibTeX 输入目录，由 bibliography atom 物化生成。
 - `.kgcache/merged/*` 是 TeX 抽取唯一输入（单一事实源）。
 
 ---
@@ -76,7 +77,7 @@ knowledgegraph/
 ```
 
 字段：
-1. `<ID>`：`KG-YYYYMMDD-NNNNN`（5 位序号），全局唯一。
+1. `<ID>`：`KG-YYYYMMDD-<numeric-token>`，并行安全、全局唯一（不保证连续递增）。
 2. `<SELF>`：Atom label slug（建议 `[a-z0-9-]`）。
 3. `<TYPE>`：Atom 类型。
 4. `<SHA12>`：内容 `sha256` 前 12 位（用于不可变校验）。
@@ -92,7 +93,7 @@ knowledgegraph/
 
 ```json
 {
-  "kg_id": "KG-20260303-0002",
+  "kg_id": "KG-20260303-174124017812345678900424200000",
   "label": "thm-main-hdf363889c236",
   "atom_type": "tp-thm",
   "parents": ["lem-base-h3123dca2ca16"],
@@ -372,12 +373,12 @@ python3 knowledgegraph/scripts/kg_compile.py \
   --fresh-build
 ```
 
-将源工程 `.bib` 一次性迁移到 DAG 内部文献库（仅迁移，不在编译阶段回源）：
+从源目录解析 `.bib` 并节点化到 `atoms/`，再物化到 DAG bibliography 目录：
 
 ```bash
-mkdir -p knowledgegraph/bibliography
-cp -f docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references*.bib \
-  knowledgegraph/bibliography/
+python3 knowledgegraph/scripts/kg_sync_bibliography_atoms.py \
+  --kg-root knowledgegraph \
+  --source-spec auric_bibliography
 ```
 
 日志体检（统计 warning/error）：
@@ -448,8 +449,9 @@ python3 -m pip install --user --break-system-packages -r knowledgegraph/requirem
 1. 先运行 `kg_latexpand_merge.py` 生成统一的 merged tex + map。
 2. 运行 `kg_emit_llm_tasks.py`（显式传 merged 路径）生成知识单元任务。
 3. 运行 `kg_ingest_atoms.py` 将任务落地为 append-only Atom。
-4. 运行 `kg_check_dag.py` 校验无环与父节点可解析。
-5. 建立 `index_specs/*.idx` 生成专著/章节视图并编译。
+4. 运行 `kg_sync_bibliography_atoms.py` 将源 `.bib` 解析为 bibliography atoms，并物化 `knowledgegraph/bibliography/*.bib`。
+5. 运行 `kg_check_dag.py` 校验无环与父节点可解析。
+6. 建立 `index_specs/*.idx` 生成专著/章节视图并编译。
 
 ---
 
@@ -464,7 +466,8 @@ python3 -m pip install --user --break-system-packages -r knowledgegraph/requirem
 7. `scripts/kg_ingest_atoms.py`
 8. `scripts/kg_build_index.py`
 9. `scripts/kg_compile.py`
-10. `index_specs/book_grg.idx`
+10. `scripts/kg_sync_bibliography_atoms.py`
+11. `index_specs/book_grg.idx`
 
 这套闭环满足：
 - TeX 知识单元统一由 merged 源驱动入图。

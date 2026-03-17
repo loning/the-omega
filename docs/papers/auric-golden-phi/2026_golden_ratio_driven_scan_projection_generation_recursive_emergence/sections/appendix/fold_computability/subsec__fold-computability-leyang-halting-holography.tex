@@ -203,6 +203,158 @@ d(\widehat{\mu}_{N,\varepsilon},\mu)<\varepsilon.
 因此 \(e\in\mathcal H\) 可由有限计算判定，矛盾。证毕。
 \end{proof}
 
+\paragraph{Fourier 时窗盲区与停机谱反演的非连续性}
+为把“有限 Fourier 读出”与“极限反演”之间的结构性鸿沟表述为纯度量命题，引入下述测度族。
+
+\begin{definition}[Lee--Yang 停机谱测度族]\label{def:fold-computability-leyang-halting-spectrum-measure-family}
+对任意子集 \(\mathsf H\subseteq\NN\)，令
+\[
+S_{\mathsf H}:=\sum_{e\in\mathsf H}2^{-e}\in[0,1],
+\]
+并定义单位圆 \(\mathbb T\) 上的概率测度
+\[
+\mu_{\mathsf H}
+:=
+\frac{1}{1+S_{\mathsf H}}\,m_{\mathbb T}
+\;+\;
+\sum_{e\in\mathsf H}\frac{2^{-e}}{1+S_{\mathsf H}}\,\nu_{q_e}.
+\]
+记
+\(
+\mathcal M:=\{\mu_{\mathsf H}:\ \mathsf H\subseteq\NN\}\subset\mathrm{Prob}(\mathbb T)
+\)。
+在定理 \ref{thm:fold-computability-halting-leyang-holographic-encoding} 的设定下，\(\mu=\mu_{\mathcal H}\)。
+\end{definition}
+
+\begin{proposition}[有限 Fourier 时窗的不可辨识盲区]\label{prop:fold-computability-halting-spectrum-finite-fourier-window-blindspot}
+给定任意 \(N\ge 1\)，取 \(e\) 使得 \(q_e>N\)。
+令 \(\mathsf H_0:=\varnothing\)、\(\mathsf H_1:=\{e\}\)。
+则对所有 \(1\le n\le N\) 有
+\[
+\int_{\mathbb T}z^n\,\dd\mu_{\mathsf H_0}
+\;=\;
+\int_{\mathbb T}z^n\,\dd\mu_{\mathsf H_1}.
+\]
+因此任何仅依赖有限观测向量
+\(
+(\int z\,\dd\mu,\dots,\int z^N\,\dd\mu)
+\)
+的判定过程，都无法在最坏情形下以错误率 \(<1/2\) 区分 \(\mathsf H_0\) 与 \(\mathsf H_1\)。
+\end{proposition}
+\begin{proof}
+对 Haar 测度 \(m_{\mathbb T}\) 有 \(\int_{\mathbb T}z^n\,\dd m_{\mathbb T}=0\)（\(n\ge 1\)）。
+对均匀原子测度 \(\nu_{q}\) 有
+\(
+\int_{\mathbb T}z^n\,\dd\nu_{q}=1
+\)
+当且仅当 \(q\mid n\)，否则为 \(0\)。
+当 \(1\le n\le N<q_e\) 时 \(q_e\nmid n\)，故 \(\mu_{\mathsf H_0}\) 与 \(\mu_{\mathsf H_1}\) 在前 \(N\) 个 Fourier 矩上同为 \(0\)，得到第一断言。
+第二断言为经典“同分布输入不可区分”下界：任意判定在两输入实例上的输出分布相同，而真值相反，故至少一例上错误率不小于 \(1/2\)。证毕。
+\end{proof}
+
+\begin{theorem}[停机谱反演算子的处处不连续性]\label{thm:fold-computability-halting-spectrum-inversion-everywhere-discontinuous}
+在度量空间 \((\mathcal M,d)\) 上定义反演算子
+\[
+\mathrm{Inv}:\mathcal M\to 2^{\NN},\qquad
+\mathrm{Inv}(\mu_{\mathsf H})=\mathsf H.
+\]
+则 \(\mathrm{Inv}\) 在 \((\mathcal M,d)\) 上处处不连续：对任意 \(\mathsf H\subseteq\NN\) 与任意 \(\varepsilon>0\)，存在 \(e\) 足够大使得令 \(\mathsf H':=\mathsf H\triangle\{e\}\) 有
+\[
+d(\mu_{\mathsf H},\mu_{\mathsf H'})<\varepsilon
+\quad\text{而}\quad
+\mathrm{Inv}(\mu_{\mathsf H})\neq \mathrm{Inv}(\mu_{\mathsf H'}).
+\]
+\end{theorem}
+\begin{proof}
+记 \(S:=S_{\mathsf H}\)、\(S':=S_{\mathsf H'}\)，则 \(|S-S'|=2^{-e}\) 且
+\[
+\left|\frac{1}{1+S}-\frac{1}{1+S'}\right|
+=\frac{2^{-e}}{(1+S)(1+S')}\le 2^{-e}.
+\]
+对任意 \(n\ge 1\)，由
+\[
+\int_{\mathbb T} z^n\,\dd\mu_{\mathsf H}
+=\frac{1}{1+S}\sum_{\substack{j\in\mathsf H\\ q_j\mid n}}2^{-j}
+\]
+与 \(\sum_{j\ge 1}2^{-j}=1\) 得到一致界
+\[
+\left|\int z^n\,\dd\mu_{\mathsf H}-\int z^n\,\dd\mu_{\mathsf H'}\right|
+\le
+2^{-e}\sum_{\substack{j\in\mathsf H\\ q_j\mid n}}2^{-j}
+\;+\;
+\frac{2^{-e}}{1+S'}\mathbf 1_{\{q_e\mid n\}}
+\le 2^{1-e}.
+\]
+代入定义 \ref{def:fold-computability-fourier-moment-metric} 并用 \(\sum_{n\ge 1}2^{-n}=1\)，得
+\(
+d(\mu_{\mathsf H},\mu_{\mathsf H'})\le 2^{1-e}
+\)。
+取 \(e\) 使 \(2^{1-e}<\varepsilon\) 即得。
+由于 \(\mathsf H'\neq \mathsf H\)，反演值不同，故 \(\mathrm{Inv}\) 在 \(\mu_{\mathsf H}\) 处不连续；\(\mathsf H\) 任意，处处不连续成立。证毕。
+\end{proof}
+
+\begin{theorem}[Lee--Yang 停机谱测度像的 Hausdorff 维数]\label{thm:fold-computability-halting-spectrum-measure-image-hausdorff-dim}
+在度量空间 \((\mathrm{Prob}(\mathbb T),d)\) 中，集合 \(\mathcal M\) 的 Hausdorff 维数满足
+\[
+\dim_H(\mathcal M)=1.
+\]
+\end{theorem}
+\begin{proof}
+\textbf{上界：}
+对任意 \(N\ge 1\)，对每个 \(A\subseteq\{1,\dots,N\}\) 取中心 \(\mu_A\)。
+对任意 \(\mathsf H\subseteq\NN\) 令 \(A:=\mathsf H\cap\{1,\dots,N\}\)，则 \(|S_{\mathsf H}-S_A|\le \sum_{e>N}2^{-e}\le 2^{-N}\)。
+按上一定理证明中的一致界（把 \(2^{-e}\) 换为 \(2^{-N}\)）可得
+\(
+d(\mu_{\mathsf H},\mu_A)\le 2^{1-N}
+\)。
+因此 \(\mathcal M\) 可被 \(2^N\) 个半径 \(r_N:=2^{1-N}\) 的 \(d\)-球覆盖，从而对任意 \(s>1\),
+\[
+\mathscr{H}^s_\infty(\mathcal M)
+\le \liminf_{N\to\infty}2^N r_N^s
+\le 2^s\liminf_{N\to\infty}2^{(1-s)N}
+=0,
+\]
+故 \(\dim_H(\mathcal M)\le 1\)。
+\par
+\textbf{下界：}
+取子族 \(\mathcal M_1:=\{\mu_{\mathsf H}:\ 1\in\mathsf H\}\subset\mathcal M\)。
+对 \(\mu_{\mathsf H}\in\mathcal M_1\)，由 \(q_1=3\) 得
+\[
+\int_{\mathbb T}z^{3}\,\dd\mu_{\mathsf H}=\frac{2^{-1}}{1+S_{\mathsf H}}.
+\]
+当 \(1\in\mathsf H\) 固定时，\(S_{\mathsf H}\) 取遍区间 \([1/2,1]\)，上式值域包含区间 \([1/4,1/3]\)。
+又因映射 \(\mu\mapsto \int z^3\,\dd\mu\) 为 \(8\)-Lipschitz（由定义 \ref{def:fold-computability-fourier-moment-metric} 的第 \(n=3\) 项立得），其像集的 Hausdorff 维数不超过原集，故
+\(
+1=\dim_H([1/4,1/3])\le \dim_H(\mathcal M_1)\le \dim_H(\mathcal M)
+\)。
+合并上下界即得 \(\dim_H(\mathcal M)=1\)。证毕。
+\end{proof}
+
+\begin{corollary}[全息边界、扭子塔与分形读出的停机图灵等价]\label{cor:fold-computability-holography-torsion-fractal-halting-equivalent}
+在本文固定的编码与语义下，下列三类读出任务均与停机问题图灵等价（从而与 \(\mathbf 0'\) 同度）：
+\begin{enumerate}
+\normalfont
+  \item \textbf{全息边界 Fourier 读出：}
+  给定 \(\mu=\mu_{\mathcal H}\) 的 \(d\)-柯西名（即对任意精度 \(N\) 可获得 \(\nu_N\) 使 \(d(\nu_N,\mu)\le 2^{-N}\)），判定任意 \(e\) 是否属于停机集 \(\mathcal H\)；
+  \item \textbf{二进扭子塔读出：}
+  给定 \((M,x)\)，计算首次偏离深度 \(\delta(M,x)\) 或判定其是否为 \(\infty\)（命题 \ref{prop:xi-time-part9g-deviation-depth-computability-separation}）；
+  \item \textbf{二元吸引子分形读出：}
+  给定 \((M,x)\)，计算二元数字吸引子的 Hausdorff 维数（定理 \ref{thm:conclusion-halting-dimension-binary-law}）或临界 Hausdorff 测度 \(\mathcal H^{1/L}(K_{M,x})\)（定理 \ref{thm:xi-time-part9g-godel-leyang-hausdorff}）。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\textbf{(1)} 由定理 \ref{thm:fold-computability-halting-leyang-holographic-encoding} 的显式公式，
+\(
+\int z^{q_e}\dd\mu=\frac{2^{-e}}{1+S}\mathbf 1_{\{e\in\mathcal H\}}
+\)。
+由定义 \ref{def:fold-computability-fourier-moment-metric}，从 \(d\)-柯西名可把 \(\int z^{q_e}\dd\mu\) 逼近到误差 \(<2^{-e}/12\)，从而以阈值 \(2^{-e}/6\) 判定 \(e\in\mathcal H\)（同推论 \ref{cor:fold-computability-halting-no-uniform-learning} 的阈值论证）。
+反向，若可判定 \(\mathcal H\)，则可有效逼近 \(S=\sum_{e\in\mathcal H}2^{-e}\) 并据 \eqref{eq:fold-computability-halting-leyang-limit-measure} 构造 \(\mu\) 的 \(d\)-柯西名。
+\par
+\textbf{(2)--(3)} 由命题 \ref{prop:xi-time-part9g-first-deviation-depth} 与定理 \ref{thm:conclusion-halting-dimension-binary-law}（或定理 \ref{thm:xi-time-part9g-godel-leyang-hausdorff}）可知：
+\(\delta(M,x)<\infty\) 与 \(\dim_H(K_{M,x})>0\) 均当且仅当 \(M(x)\) 停机，故任一读出任务都可判定停机；
+反向，停机预言机可先判定停机与否，再在停机情形下通过有限步模拟得到首次停机时间，从而由上述显式关系计算 \(\delta\) 与相应分形量。证毕。
+\end{proof}
+
 \paragraph{统一电路族的首次碰撞时间}
 停机不可计算性不仅能通过 Lee--Yang 边界的极限原子谱读出，也可在完全离散的有限门模型中以“纤维阈值首次穿越”实现。
 

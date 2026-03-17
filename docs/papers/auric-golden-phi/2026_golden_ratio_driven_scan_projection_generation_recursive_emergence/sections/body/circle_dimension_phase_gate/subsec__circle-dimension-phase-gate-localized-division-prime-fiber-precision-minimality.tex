@@ -105,6 +105,87 @@ a_{k+1}\equiv a_k\ (\mathrm{mod}\ N^k)
 \input{thm__cdim-mobius-inversion-localization-multiset-classification}
 \input{prop__cdim-higher-spectrum-not-determined-by-marginals}
 
+\paragraph{有限素支撑局部化的偏序刚性}
+在有限素数集情形，局部化群不仅由圆维与素数支撑在同构意义下决定，而且其可嵌入关系本身就恢复素数支撑偏序。
+这一步把前述“圆因子不变、素数账本变化”的双层结构提升为严格的范畴论刚性。
+
+\begin{theorem}[有限素支撑局部化的偏序嵌入判别]\label{thm:cdim-localized-gs-embedding-order}
+设 \(S,T\) 为有限素数集，并记
+\[
+G_S:=\ZZ[S^{-1}],\qquad G_T:=\ZZ[T^{-1}]
+\]
+为加法群。
+则下列命题等价：
+\begin{enumerate}
+  \item 存在群单射 \(G_S\hookrightarrow G_T\)；
+  \item \(S\subseteq T\)。
+\end{enumerate}
+等价地，若记
+\[
+\Sigma_S:=\widehat{G_S},\qquad \Sigma_T:=\widehat{G_T},
+\]
+并令 \(\pi_S:\Sigma_S\twoheadrightarrow\TT\)、\(\pi_T:\Sigma_T\twoheadrightarrow\TT\) 为由 \(\ZZ\hookrightarrow G_S,G_T\) 对偶得到的典范圆因子，则下列命题等价：
+\begin{enumerate}
+  \item 存在连续满射 \(f:\Sigma_T\twoheadrightarrow \Sigma_S\) 使 \(\pi_S\circ f=\pi_T\)；
+  \item \(S\subseteq T\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+若 \(S\subseteq T\)，则 \(G_S\subseteq G_T\subseteq\QQ\) 为自然包含，从而存在群单射 \(G_S\hookrightarrow G_T\)。
+
+反之，设 \(\phi:G_S\to G_T\) 为单射。
+由于 \(G_S\subseteq\QQ\) 为秩 \(1\) 无挠群，\(\phi\) 由 \(\phi(1)\) 唯一决定，且 \(\phi(1)\neq 0\)。
+对任意 \(p\in S\) 与 \(n\ge 1\)，由 \(p^n\cdot p^{-n}=1\) 得
+\[
+p^n\phi(p^{-n})=\phi(1),
+\qquad\text{故}\qquad
+\phi(p^{-n})=\frac{\phi(1)}{p^n}.
+\]
+将 \(\phi(1)\) 写成
+\[
+\phi(1)=a\prod_{q\in T}q^{-m_q}\in G_T,
+\qquad a\in\ZZ.
+\]
+若存在 \(p\in S\setminus T\)，则对充分大的 \(n\)（例如 \(n>v_p(a)\)）,
+\[
+\frac{\phi(1)}{p^n}=a\,p^{-n}\prod_{q\in T}q^{-m_q}
+\]
+在既约分母中仍含有素因子 \(p\)，因而不属于 \(G_T\)，矛盾。
+故必有 \(S\subseteq T\)。
+
+对偶命题由 Pontryagin 对偶的反变等价立即得到：离散群单射对偶为紧群满射，而圆因子相容性正对应于保留典范嵌入 \(\ZZ\hookrightarrow G_S\) 所诱导的投影。
+\end{proof}
+
+\begin{corollary}[有限素支撑局部化的对偶完全分类]\label{cor:cdim-localized-gs-dual-complete-classification}
+对任意有限素数集 \(S,T\)，有
+\[
+\Sigma_S\cong \Sigma_T
+\qquad\Longleftrightarrow\qquad
+S=T.
+\]
+并且对每个有限 \(S\)，皆有
+\[
+\cdim^\ast(G_S)=1,
+\qquad
+\ker(\pi_S)\cong \prod_{p\in S}\ZZ_p.
+\]
+因此，连续相位主分量在全部 \(G_S\) 上保持不变，而对象的完整分类由素数账本核的素数支撑承担。
+\end{corollary}
+\begin{proof}
+若 \(\Sigma_S\cong \Sigma_T\)，则由对偶化得到 \(G_S\cong G_T\)。
+于是定理 \ref{thm:cdim-localized-gs-embedding-order} 同时应用于两个方向，推出 \(S\subseteq T\) 与 \(T\subseteq S\)，故 \(S=T\)。
+反向显然。
+
+再取 \(N:=\prod_{p\in S}p\)，则 \(G_S=\ZZ[1/N]\)。
+由定理 \ref{thm:cdim-localized-division-prime-fiber-no-growth}（取 \(r=1\)）得
+\[
+\cdim^\ast(G_S)=1,
+\qquad
+\ker(\pi_S)\cong \prod_{p\mid N}\ZZ_p=\prod_{p\in S}\ZZ_p.
+\]
+于是圆因子数固定为 \(1\)，而素数账本核精确记录 \(S\)。
+\end{proof}
+
 \begin{theorem}[素数纤维实现层极限压缩：procyclic 与最小生成元数]\label{thm:cdim-zn-procyclic-and-min-generators}
 设 \(N\ge 2\)。
 则：

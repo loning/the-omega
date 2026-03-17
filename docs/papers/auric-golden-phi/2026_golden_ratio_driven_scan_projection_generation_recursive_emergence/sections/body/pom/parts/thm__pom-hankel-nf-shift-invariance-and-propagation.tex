@@ -115,6 +115,45 @@ D_{r+1}D_{r-1}=D_r^2.
 证毕。
 \end{proof}
 
+\begin{corollary}[外代数综合征的有限记忆递推]\label{cor:pom-hankel-exterior-power-finite-memory}
+在定理 \ref{thm:pom-hankel-exterior-power-propagation} 的设定下，固定 \(s\in\{1,\dots,d\}\) 并记
+\[
+B_s:=\bigwedge\nolimits^s(\mathcal A)\in M_{N_s}(k),
+\qquad
+N_s:=\binom{d}{s}.
+\]
+令 \(B_s\) 的特征多项式为
+\[
+\chi_s(t):=\det(tI-B_s)=t^{N_s}+c_{N_s-1}t^{N_s-1}+\cdots+c_0\in k[t].
+\]
+定义外代数传播矩阵序列
+\[
+W_r^{(s)}:=\bigwedge\nolimits^s(H_{k_0+r})\in M_{N_s}(k),\qquad r\ge 0.
+\]
+则对一切 \(r\ge 0\) 成立严格递推
+\[
+W_{r+N_s}^{(s)}\ =\ -\sum_{j=0}^{N_s-1} c_j\,W_{r+j}^{(s)}.
+\]
+特别地，在固定基底下 \(W_r^{(s)}\) 的每个矩阵元（等价于 \(H_{k_0+r}\) 的任一固定 \(s\times s\) 子式）都满足同一长度 \(N_s\) 的线性递推。
+\end{corollary}
+\begin{proof}
+由 Cayley--Hamilton 定理，\(\chi_s(B_s)=0\)，即
+\[
+B_s^{N_s}=-\sum_{j=0}^{N_s-1}c_j\,B_s^{j}.
+\]
+两侧右乘 \(B_s^{r}\)，并左乘 \(\bigwedge^s(H_{k_0})\)，得
+\[
+\bigl(\bigwedge\nolimits^s H_{k_0}\bigr)B_s^{r+N_s}
+=-\sum_{j=0}^{N_s-1}c_j\,\bigl(\bigwedge\nolimits^s H_{k_0}\bigr)B_s^{r+j}.
+\]
+由定理 \ref{thm:pom-hankel-exterior-power-propagation} 的传播式
+\(
+W_r^{(s)}=(\bigwedge^s H_{k_0})B_s^r
+\)
+代回即得所示递推。
+最后一句由 \(W_r^{(s)}\) 的矩阵元与 \(H_{k_0+r}\) 的 \(s\times s\) 子式在外幂基底下的一一对应（Grassmann--Pl\"ucker 坐标表示）直接推出。证毕。
+\end{proof}
+
 \begin{corollary}[\texorpdfstring{$p$}{p}-进刚性指数的严格仿射律]\label{cor:pom-hankel-stiffness-affine-law}
 设 \(p\) 为素数，且对所有相关的 \(r\) 有 \(\det(H_{k_0+r})\neq 0\) 且 \(\det(\mathcal A)\neq 0\)，从而赋值 \(v_p\) 可作用于这些行列式。
 定义刚性指数
@@ -156,6 +195,27 @@ D_{r+1}D_{r-1}=D_r^2.
 \)
 即得所示公式。
 因此 \(\det(H_{k_0+r})\) 的分子与分母所含素数均来自 \(\det(H_{k_0})\) 与 \(\det(H_{k_0+1})\) 的素因子集合，结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[有限模层面的纯周期性与有限群轨道闭包]\label{cor:pom-hankel-modM-pure-periodicity}
+设 \((a_n)_{n\ge 0}\subset\ZZ\) 且满足定理 \ref{thm:pom-hankel-nf-shift-invariance-and-power-propagation} 的 Hankel 秩与可逆偏移条件。
+固定整数 \(M\ge 2\) 并假设 \(\gcd(\det(H_{k_0}),M)=1\)，从而 \(\bar H_{k_0}\in\GL_d(\ZZ/M\ZZ)\) 可逆（横线表示模 \(M\) 约化）。
+令
+\[
+\bar{\mathcal A}:=\bar H_{k_0}^{-1}\bar H_{k_0+1}\ \in\ \GL_d(\ZZ/M\ZZ).
+\]
+则对一切 \(r\ge 0\) 有
+\[
+\bar H_{k_0+r}=\bar H_{k_0}\,\bar{\mathcal A}^{\,r}.
+\]
+因此序列 \(r\mapsto \bar H_{k_0+r}\) 为纯周期序列，其周期整除 \(\bar{\mathcal A}\) 在有限群 \(\GL_d(\ZZ/M\ZZ)\) 中的阶；换言之，模 \(M\) 层面的后续 Hankel 轨道由两相邻块 \((\bar H_{k_0},\bar H_{k_0+1})\) 唯一确定并在有限群中闭合。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-hankel-nf-shift-invariance-and-power-propagation}，对一切 \(r\ge 0\) 有 \(H_{k_0+r}=H_{k_0}\mathcal A^{\,r}\)。
+两侧模 \(M\) 约化得到 \(\bar H_{k_0+r}=\bar H_{k_0}\,\overline{\mathcal A^{\,r}}\)。
+又因 \(\bar{\mathcal A}=\bar H_{k_0}^{-1}\bar H_{k_0+1}\)，并且在有限环 \(\ZZ/M\ZZ\) 上矩阵乘法与幂运算与约化相容，故 \(\overline{\mathcal A^{\,r}}=\bar{\mathcal A}^{\,r}\)，从而得到所示公式。
+由于 \(\GL_d(\ZZ/M\ZZ)\) 为有限群，\(\bar{\mathcal A}\) 具有有限阶 \(T\)，满足 \(\bar{\mathcal A}^{\,r+T}=\bar{\mathcal A}^{\,r}\) 对所有 \(r\) 成立；代回即得 \(\bar H_{k_0+r+T}=\bar H_{k_0+r}\)，从而序列为纯周期并且周期整除 \(T\)。
+最后一句由 \(\bar{\mathcal A}=\bar H_{k_0}^{-1}\bar H_{k_0+1}\) 与 \(\bar H_{k_0+r}=\bar H_{k_0}\bar{\mathcal A}^{\,r}\) 的确定性立得。证毕。
 \end{proof}
 
 \begin{conjecture}[Fold 碰撞矩 Hankel-正规形的二进分母约束]\label{conj:pom-fold-collision-hankel-nf-dyadic-denominator}

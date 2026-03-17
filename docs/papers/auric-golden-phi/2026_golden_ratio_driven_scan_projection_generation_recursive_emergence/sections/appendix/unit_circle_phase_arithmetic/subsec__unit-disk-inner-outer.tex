@@ -67,6 +67,67 @@ K_\rho(\theta):=P_{\rho e^{\mathrm{i}\theta}}(-1)=\frac{1-\rho^2}{|1+\rho e^{\ma
 对称分量被保留为余弦模态，而反对称分量在端点评价处强制为零。
 \end{remark}
 
+\begin{lemma}[端点 Poisson 核、Cayley 虚部与 \(J\) 模长]\label{lem:app-endpoint-poisson-cayley-joukowsky}
+沿用 Cayley 变换 \(\mathcal{C}\) 及其逆 \(\mathcal{C}^{-1}\)（式 \eqref{eq:app-cayley-disk}），并沿用 Lee--Yang 小节中定义的 \(J\)（式 \eqref{eq:lee-yang-J-def}）。
+对任意 \(w\in\mathbb{D}\) 令 \(t=\mathcal{C}^{-1}(w)\in\mathbb{H}\)。
+则有严格恒等式
+\begin{equation}\label{eq:app-joukowsky-modulus-cayley-im}
+\boxed{\;
+\Im t=\frac{1-|w|^{2}}{|1+w|^{2}}=P_w(-1),
+\qquad
+|J(w)|=\frac{|w|}{|1+w|^{2}}=\frac{|w|}{1-|w|^{2}}\,\Im t\; }.
+\end{equation}
+\end{lemma}
+\begin{proof}
+由 \(\mathcal{C}^{-1}(w)=-\mathrm{i}\frac{w-1}{w+1}\) 直接计算虚部得到 \(\Im t=(1-|w|^2)/|1+w|^2\)；
+再与 Poisson 核定义式 \eqref{eq:app-poisson-kernel} 在 \(\xi=-1\) 处对照，即得 \(P_w(-1)=\Im t\)。
+另一方面，\(J(w)=-\frac{w}{(1+w)^2}\) 直接推出 \(|J(w)|=|w|/|1+w|^2\)。
+合并两式即得 \eqref{eq:app-joukowsky-modulus-cayley-im}。证毕。
+\end{proof}
+
+\begin{proposition}[固定半径上的 \(J\) 模长分布]\label{prop:app-joukowsky-modulus-fixed-radius-density}
+固定 \(0<\rho<1\)。
+令 \(\Theta\sim\mathrm{Unif}[0,2\pi)\)，并定义随机变量
+\[
+S_{\rho}:=\abs{J(\rho e^{\mathrm{i}\Theta})}
+=\frac{\rho}{|1+\rho e^{\mathrm{i}\Theta}|^{2}}
+=\frac{\rho}{1+\rho^{2}+2\rho\cos\Theta}.
+\]
+则 \(S_{\rho}\) 的支撑为区间
+\[
+\left[\frac{\rho}{(1+\rho)^2},\ \frac{\rho}{(1-\rho)^2}\right],
+\]
+且其分布对 Lebesgue 测度绝对连续，密度为
+\begin{equation}\label{eq:app-joukowsky-modulus-fixed-radius-density}
+\boxed{\;
+f_{S_\rho}(s)
+=\frac{\rho}{\pi(1-\rho^{2})}\cdot
+\frac{1}{s\sqrt{(s-s_-)(s_+-s)}}
+\;\ind_{[s_-,s_+]}(s),
+\quad
+s_-=\frac{\rho}{(1+\rho)^{2}},\ s_+=\frac{\rho}{(1-\rho)^{2}}\; }.
+\end{equation}
+此外，当 \(\rho\uparrow 1\) 时，取 \(t=-s\) 则 \eqref{eq:app-joukowsky-modulus-fixed-radius-density} 在 \(t\le -\tfrac14\) 的尺度下退化为 Lee--Yang 奇异环的极限密度 \eqref{eq:singular-ring-limit-density}。
+\end{proposition}
+\begin{proof}
+由 \(S_\rho=\rho/(1+\rho^{2}+2\rho\cos\Theta)\)。
+令 \(X:=\cos\Theta\)，则 \(X\) 在 \([-1,1]\) 上服从 arcsine 密度 \(f_X(x)=(\pi\sqrt{1-x^2})^{-1}\)。
+设 \(D:=1+\rho^{2}+2\rho X\)，则 \(D\in[(1-\rho)^2,(1+\rho)^2]\) 且
+\[
+f_D(d)=\frac{1}{\pi\sqrt{(d-(1-\rho)^2)\bigl((1+\rho)^2-d\bigr)}}.
+\]
+由 \(S_\rho=\rho/D\) 作反演换元并整理端点得到 \eqref{eq:app-joukowsky-modulus-fixed-radius-density}。
+最后的极限陈述由 \(s_-\to\tfrac14\)、\(s_+\to\infty\) 及密度的主项比较得到，并与 \eqref{eq:singular-ring-limit-density} 一致。证毕。
+\end{proof}
+
+\begin{remark}[与端点角窗圆平均的互译]\label{rem:app-joukowsky-modulus-window-translation}
+由引理 \ref{lem:app-endpoint-poisson-cayley-joukowsky}，
+\(
+K_\rho(\Theta)=P_{\rho e^{\mathrm{i}\Theta}}(-1)=\frac{1-\rho^2}{\rho}\,S_\rho
+\)。
+因此，在固定半径 \(|w|=\rho\) 上，任何以端点 \(-1\) 为基点的 Poisson 核圆周平均（例如端点角窗质量与相应的视界缺陷型圆平均）均可改写为关于 \(S_\rho\) 的一维期望，并可由密度 \eqref{eq:app-joukowsky-modulus-fixed-radius-density} 显式计算。
+\end{remark}
+
 \begin{definition}[内因子相位电流测度]\label{def:app-inner-phase-current}
 在本小节的 Hardy/Smirnov 条件口径下，写 \(F_{\zeta}=BSO\) 并令内因子 \(I(w):=B(w)S(w)\)。
 令 \(\{a_k\}\subset\mathbb{D}\) 为 \(B\) 的盘内零点（按重数计）。

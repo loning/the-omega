@@ -142,6 +142,107 @@ u_r:=D^r\mathbf 1\qquad(0\le r\le q)
 正定性由 \(\{u_r\}\) 的线性无关性推出。证毕。
 \end{proof}
 
+\begin{theorem}[固定 \texorpdfstring{$q$}{q} 时的对称 Krylov 扇区压缩]\label{thm:conclusion-disjointness-fixedq-symmetric-krylov-sector}
+沿用定理 \ref{thm:conclusion-disjointness-fixedm-krylov-lowrank} 与定理 \ref{thm:conclusion-disjointness-krylov-hankel-symmetric-subspace} 的记号，并记
+\[
+U_q:=[u_0,u_1,\cdots,u_q]\in\RR^{2^q\times(q+1)}.
+\]
+则对任意 \(m\ge 1\)，存在实矩阵
+\[
+\widetilde C_m(a,b;q)\in M_{q+1}(\RR)
+\]
+使得
+\[
+B^{(q)}(a,b)^m=d^m D^m+U_q\,\widetilde C_m(a,b;q)\,U_q^{\mathsf T}.
+\]
+从而
+\[
+\rank\bigl(B^{(q)}(a,b)^m-d^mD^m\bigr)\le q+1,
+\]
+并且对一切 \(x\in \mathcal H_{\mathrm{sym}}^\perp\) 都有
+\[
+\bigl(B^{(q)}(a,b)^m-d^mD^m\bigr)x=0.
+\]
+换言之，固定 \(q\) 时，全部非平凡时间依赖始终被压缩在 \((q+1)\)-维对称 Krylov 扇区 \(\mathcal H_{\mathrm{sym}}\) 内。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-disjointness-fixedm-krylov-lowrank}，存在 \(m\times m\) 矩阵 \(C_m(a,b;q)\) 使
+\[
+B^{(q)}(a,b)^m=d^m D^m+U_m\,C_m(a,b;q)\,U_m^{\mathsf T},
+\qquad
+U_m=[u_0,\dots,u_{m-1}].
+\]
+另一方面，定理 \ref{thm:conclusion-disjointness-krylov-hankel-symmetric-subspace} 已证明 \(u_0,\dots,u_q\) 构成 \(\mathcal H_{\mathrm{sym}}\) 的一组基，故对每个 \(r\ge q+1\)，向量 \(u_r\) 都是它们的线性组合。因此存在矩阵
+\[
+R_m\in \RR^{(q+1)\times m}
+\]
+使得
+\[
+U_m=U_qR_m.
+\]
+代回上式即可得到
+\[
+B^{(q)}(a,b)^m
+=
+d^m D^m+U_q\bigl(R_mC_m(a,b;q)R_m^{\mathsf T}\bigr)U_q^{\mathsf T}.
+\]
+取
+\[
+\widetilde C_m(a,b;q):=R_mC_m(a,b;q)R_m^{\mathsf T}
+\]
+便得所示分解。
+
+秩界由
+\[
+\rank\bigl(B^{(q)}(a,b)^m-d^mD^m\bigr)
+\le
+\rank(U_q)
+\le q+1
+\]
+立即得到。又由定理 \ref{thm:conclusion-disjointness-krylov-hankel-symmetric-subspace}，\(\operatorname{im}(U_q)=\mathcal H_{\mathrm{sym}}\)。若 \(x\in \mathcal H_{\mathrm{sym}}^\perp\)，则 \(U_q^{\mathsf T}x=0\)，从而
+\[
+\bigl(B^{(q)}(a,b)^m-d^mD^m\bigr)x
+=
+U_q\widetilde C_m(a,b;q)U_q^{\mathsf T}x
+=0.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[固定维 meromorphic 行列式证书控制全部例外谱]\label{cor:conclusion-disjointness-fixedq-meromorphic-determinant-certificate}
+沿用定理 \ref{thm:conclusion-disjointness-fixedq-symmetric-krylov-sector} 的记号。对任意
+\[
+\lambda\notin \Spec(d^mD^m),
+\]
+都有精确恒等式
+\[
+\det\!\bigl(\lambda I-B^{(q)}(a,b)^m\bigr)
+=
+\det\!\bigl(\lambda I-d^mD^m\bigr)
+\det\!\Bigl(
+I_{q+1}-\widetilde C_m(a,b;q)\,U_q^{\mathsf T}(\lambda I-d^mD^m)^{-1}U_q
+\Bigr).
+\]
+因此，\(B^{(q)}(a,b)^m\) 相对于背景算子 \(d^mD^m\) 的全部例外谱都由一个维数固定为 \(q+1\) 的 meromorphic determinant 完全控制。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-disjointness-fixedq-symmetric-krylov-sector}，
+\[
+B^{(q)}(a,b)^m=d^mD^m+U_q\,\widetilde C_m(a,b;q)\,U_q^{\mathsf T}.
+\]
+取
+\[
+A:=\lambda I-d^mD^m.
+\]
+由于 \(\lambda\notin \Spec(d^mD^m)\)，矩阵 \(A\) 可逆。对矩阵行列式引理
+\[
+\det(A-UCV^{\mathsf T})
+=
+\det(A)\det\!\bigl(I-CV^{\mathsf T}A^{-1}U\bigr)
+\]
+代入 \(U=V=U_q\)、\(C=\widetilde C_m(a,b;q)\)，便得所示公式。证毕。
+\end{proof}
+
 \begin{proposition}[秩一例外谱的 Cauchy 正交关系]\label{prop:conclusion-rankone-cauchy-orthogonality}
 设 \(t_0,\dots,t_q\) 两两不同、\(w_0,\dots,w_q>0\)，令
 \[

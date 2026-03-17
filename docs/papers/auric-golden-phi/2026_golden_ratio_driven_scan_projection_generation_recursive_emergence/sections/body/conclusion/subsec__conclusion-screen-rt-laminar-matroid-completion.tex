@@ -1,0 +1,322 @@
+\subsection{屏幕精确化的收缩拟阵结构与平方自由 RT 极小割的保序嵌套}\label{subsec:conclusion-screen-rt-laminar-matroid-completion}
+沿用 dyadic 边界全息中的屏幕核、边界行拟阵与 Gödel--Ryu--Takayanagi 切割原理的记号。前述链条已经把 exactization 代价编译为收缩拟阵上的最小基问题，并把平方自由权下的 RT 功能识别为离散最小割。由此还可进一步抽出如下四条后果：部分屏幕的加权精确化只依赖于其在可见秩拟阵中的独立核，可见屏幕与外置审计之间满足精确守恒律，审计缺口在边界算术超立方体上呈现尖锐的 Lipschitz 刚性，而任意层状边界族仍可选取与包含偏序相容的极小割系。
+
+\begin{theorem}[部分屏幕精确化的收缩拟阵独立核不变性]\label{thm:conclusion-screen-exactization-independent-kernel}
+沿用定理 \ref{thm:xi-time-part65a-weighted-exactization-matroid-top-gap} 的记号。令
+\[
+M_{m,n}:=\bigl(\overrightarrow{\mathcal F_m^{n-1}},r\bigr),
+\qquad
+\rho_{m,n}:=2^{mn}.
+\]
+给定部分屏幕
+\[
+S_0\subseteq \overrightarrow{\mathcal F_m^{n-1}},
+\]
+取 \(I_0\subseteq S_0\) 为任一极大独立子集，并给定非负权
+\[
+c:\overrightarrow{\mathcal F_m^{n-1}}\setminus S_0\to \RR_{\ge 0}.
+\]
+定义最小追加代价
+\[
+\kappa_c(S_0):=
+\min\Bigl\{
+\sum_{\vec f\in T}c(\vec f):
+\ T\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0,\
+\ker f_{S_0\cup T}=0
+\Bigr\}.
+\]
+则有
+\[
+\kappa_c(S_0)
+=
+\min\Bigl\{
+\sum_{\vec f\in B}c(\vec f):
+\ B\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0,\
+\ B\text{ 为 }M_{m,n}/I_0\text{ 的一组基}
+\Bigr\}.
+\]
+特别地，在无权情形 \(c\equiv 1\) 下，
+\[
+\min\Bigl\{
+|T|:
+\ T\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0,\
+\ \ker f_{S_0\cup T}=0
+\Bigr\}
+=
+\rho_{m,n}-r(S_0)
+=
+\delta(S_0).
+\]
+\end{theorem}
+\begin{proof}
+由于 \(I_0\subseteq S_0\) 是极大独立子集，故
+\[
+r(I_0)=r(S_0),
+\qquad
+S_0\subseteq \operatorname{cl}_{M_{m,n}}(I_0).
+\]
+于是对任意
+\[
+T\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0
+\]
+都有
+\[
+r(S_0\cup T)=r(I_0\cup T).
+\]
+因此
+\[
+\ker f_{S_0\cup T}=0
+\quad\Longleftrightarrow\quad
+r(S_0\cup T)=\rho_{m,n}
+\quad\Longleftrightarrow\quad
+r(I_0\cup T)=\rho_{m,n}.
+\]
+换言之，精确化 \(S_0\) 与精确化 \(I_0\) 的可行追加集完全一致。
+
+现在把权函数延拓为
+\[
+\widetilde c(\vec f):=
+\begin{cases}
+0, & \vec f\in S_0\setminus I_0,\\
+c(\vec f), & \vec f\notin S_0.
+\end{cases}
+\]
+对任意 \(\vec f\in S_0\setminus I_0\)，由 \(\vec f\in \operatorname{cl}(I_0)\) 得
+\[
+r(I_0\cup\{\vec f\})=r(I_0),
+\]
+故 \(\vec f\) 在收缩拟阵 \(M_{m,n}/I_0\) 中是 loop，从而不可能属于任何基。于是把定理 \ref{thm:xi-time-part65a-weighted-exactization-matroid-top-gap} 作用于屏幕 \(I_0\) 与权函数 \(\widetilde c\)，便得到
+\[
+\kappa_c(S_0)
+=
+\min\Bigl\{
+\sum_{\vec f\in B}\widetilde c(\vec f):
+\ B\text{ 为 }M_{m,n}/I_0\text{ 的一组基}
+\Bigr\},
+\]
+而所有此类基自动落在
+\[
+\overrightarrow{\mathcal F_m^{n-1}}\setminus S_0
+\]
+中，故上式即化为所述公式。
+
+当 \(c\equiv 1\) 时，所有基的基数都等于
+\[
+\rho_{m,n}-r(I_0)=\rho_{m,n}-r(S_0),
+\]
+再由定理 \ref{thm:spg-screen-rank-matroid-supermodularity} 中
+\[
+\delta(S_0)=\rho_{m,n}-r(S_0)
+\]
+即得无权情形的结论。证毕。
+\end{proof}
+
+\begin{theorem}[可见屏幕与外置审计的精确守恒律]\label{thm:conclusion-screen-visible-external-audit-conservation}
+沿用定理 \ref{thm:xi-time-part65a-weighted-exactization-matroid-top-gap} 的记号，并令
+\[
+M_{m,n}:=\bigl(\overrightarrow{\mathcal F_m^{n-1}},r\bigr),
+\qquad
+\rho_{m,n}:=2^{mn}.
+\]
+对任意屏幕
+\[
+S\subseteq \overrightarrow{\mathcal F_m^{n-1}},
+\]
+定义其最小审计补全成本
+\[
+a(S):=\min_{(R,r_S)}\cdim(R).
+\]
+则有严格恒等式
+\[
+a(S)=\rho_{m,n}-r(S)=2^{mn}-r(S).
+\]
+从而
+\[
+|S|+a(S)=\rho_{m,n}+\bigl(|S|-r(S)\bigr)\ge \rho_{m,n}.
+\]
+等号成立当且仅当 \(S\) 在边界行拟阵 \(M_{m,n}\) 中独立，即
+\[
+r(S)=|S|.
+\]
+因此，满足
+\[
+|S|+a(S)=2^{mn}
+\]
+的屏幕恰由 \(M_{m,n}\) 的独立集参数化；其中再满足 \(a(S)=0\) 的屏幕，恰为全部拟阵基，亦即全部极小精确屏幕。
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:spg-partial-boundary-min-audit-cost-kernel-rank}，
+\[
+a(S)=\delta(S).
+\]
+再由定理 \ref{thm:xi-time-part65a-weighted-exactization-matroid-top-gap} 在无权情形 \(c\equiv 1\) 下的公式，
+\[
+\delta(S)=\rho_{m,n}-r(S)=2^{mn}-r(S).
+\]
+于是
+\[
+|S|+a(S)=|S|+\rho_{m,n}-r(S)=\rho_{m,n}+\bigl(|S|-r(S)\bigr).
+\]
+而拟阵秩函数恒满足 \(r(S)\le |S|\)，故得到
+\[
+|S|+a(S)\ge \rho_{m,n}.
+\]
+等号成立当且仅当 \(r(S)=|S|\)，也即 \(S\) 为独立集。
+
+若进一步要求 \(a(S)=0\)，则必须有 \(r(S)=\rho_{m,n}\)，故 \(S\) 同时张成且独立，于是 \(S\) 为 \(M_{m,n}\) 的一组基。反过来，任一基都同时满足 \(r(S)=|S|=\rho_{m,n}\)，因而既使 \(|S|+a(S)=2^{mn}\) 取等，又给出精确屏幕。由定理 \ref{thm:spg-exact-screen-minima-are-matroid-bases}，这正是全部极小精确屏幕。证毕。
+\end{proof}
+
+\begin{theorem}[审计缺口在边界算术超立方体上的 Lipschitz 刚性]\label{thm:conclusion-screen-audit-gap-arithmetic-lipschitz}
+沿用定理 \ref{thm:spg-boundary-godel-arithmetic-hypercube-median} 的素数赋值 \(\{q_{\vec f}\}\) 与定理 \ref{thm:conclusion-screen-visible-external-audit-conservation} 的记号。对任意屏幕
+\[
+S\subseteq \overrightarrow{\mathcal F_m^{n-1}},
+\]
+定义其算术屏幕码
+\[
+\mathcal G(S):=\prod_{\vec f\in S}q_{\vec f}.
+\]
+则对任意两屏幕 \(S,T\) 都有
+\[
+|a(S)-a(T)|
+\le
+d_m^{\mathrm{arith}}\bigl(\mathcal G(S),\mathcal G(T)\bigr)
+=
+|S\triangle T|.
+\]
+该常数 \(1\) 为尖锐常数。
+
+此外，若 \(B,B'\) 为任意两组极小精确屏幕，则存在一条链
+\[
+B=B_0,B_1,\dots,B_\ell=B'
+\]
+使每个 \(B_j\) 仍为极小精确屏幕，且
+\[
+d_m^{\mathrm{arith}}\bigl(\mathcal G(B_j),\mathcal G(B_{j+1})\bigr)=2
+\qquad(0\le j<\ell).
+\]
+换言之，全部极小精确屏幕在边界算术超立方体中由单次基交换生成一张连通图。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-screen-visible-external-audit-conservation}，
+\[
+|a(S)-a(T)|=|r(T)-r(S)|.
+\]
+取一条最短对称差链
+\[
+S=S_0,S_1,\dots,S_k=T,
+\qquad
+|S_i\triangle S_{i+1}|=1,
+\qquad
+k=|S\triangle T|.
+\]
+对每一步单元素增删，由定理 \ref{thm:xi-time-part65f-single-face-zero-one-marginal-law} 可知秩增量只能取 \(0\) 或 \(1\)；对删除步则反向视作添加，故秩变化幅度同样至多为 \(1\)。于是
+\[
+|r(T)-r(S)|
+\le
+\sum_{i=0}^{k-1}|r(S_{i+1})-r(S_i)|
+\le
+k
+=
+|S\triangle T|.
+\]
+另一方面，定理 \ref{thm:spg-boundary-godel-arithmetic-hypercube-median} 给出
+\[
+d_m^{\mathrm{arith}}\bigl(\mathcal G(S),\mathcal G(T)\bigr)=|S\triangle T|,
+\]
+遂得所示 Lipschitz 不等式。
+
+尖锐性可由任一基 \(B\) 与其中元素 \(e\in B\) 给出。此时 \(r(B)=2^{mn}\)、\(r(B\setminus\{e\})=2^{mn}-1\)，故
+\[
+a(B)=0,
+\qquad
+a(B\setminus\{e\})=1,
+\]
+并且
+\[
+d_m^{\mathrm{arith}}\bigl(\mathcal G(B),\mathcal G(B\setminus\{e\})\bigr)=1.
+\]
+故常数 \(1\) 不能再改进。
+
+若 \(B,B'\) 均为极小精确屏幕，则由定理 \ref{thm:spg-exact-screen-minima-are-matroid-bases}，它们是同一边界行拟阵的两组基。基交换定理给出一条基链
+\[
+B=B_0,B_1,\dots,B_\ell=B'
+\]
+使相邻两项恰进行一次元素替换，因此
+\[
+|B_j\triangle B_{j+1}|=2.
+\]
+再次利用算术距离与 Hamming 距离的一致性，即得
+\[
+d_m^{\mathrm{arith}}\bigl(\mathcal G(B_j),\mathcal G(B_{j+1})\bigr)=2.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[平方自由 RT 极小割对层状边界族的保序嵌套]\label{thm:conclusion-squarefree-rt-laminar-nesting}
+沿用定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 的记号，并记
+\[
+f(S):=\sum_{e\in\delta(S)}\log q_e.
+\]
+若
+\[
+A\subseteq B\subseteq \partial V(\Gamma_m),
+\]
+且 \(S_A,S_B\) 分别实现 \(\mathsf S_{\mathrm{RT}}(A)\) 与 \(\mathsf S_{\mathrm{RT}}(B)\)，则
+\[
+S_A\cap S_B
+\]
+仍实现 \(\mathsf S_{\mathrm{RT}}(A)\)，而
+\[
+S_A\cup S_B
+\]
+仍实现 \(\mathsf S_{\mathrm{RT}}(B)\)。
+
+进一步，对任意层状边界族
+\[
+\mathcal L\subseteq 2^{\partial V(\Gamma_m)},
+\]
+都可递归选取一族极小解 \((S_A^\ast)_{A\in\mathcal L}\)，使得
+\[
+A\subseteq B
+\quad\Longrightarrow\quad
+S_A^\ast\subseteq S_B^\ast.
+\]
+并且由定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 的割边集唯一性，所选极小解在割边支撑层面是规范的。
+\end{theorem}
+\begin{proof}
+由 \(A\subseteq B\) 可知
+\[
+(S_A\cap S_B)\cap \partial V(\Gamma_m)=A,
+\qquad
+(S_A\cup S_B)\cap \partial V(\Gamma_m)=B,
+\]
+故二者分别是对应极小割问题的可行解。另一方面，定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 的证明已经给出 \(f\) 的次模性：
+\[
+f(S_A)+f(S_B)\ge f(S_A\cap S_B)+f(S_A\cup S_B).
+\]
+又由于 \(S_A,S_B\) 本身极小，
+\[
+f(S_A)\le f(S_A\cap S_B),
+\qquad
+f(S_B)\le f(S_A\cup S_B).
+\]
+比较两侧即知上式中的全部不等号都必须取等，于是
+\[
+f(S_A)=f(S_A\cap S_B)=\mathsf S_{\mathrm{RT}}(A),
+\]
+\[
+f(S_B)=f(S_A\cup S_B)=\mathsf S_{\mathrm{RT}}(B).
+\]
+故交与并仍分别是 \(A\) 与 \(B\) 的极小解。
+
+对层状边界族 \(\mathcal L\)，按包含偏序自上而下递归选择极小解：先对极大元任取极小解；若 \(A\) 的直接上覆元为 \(B\)，则把 \(A\) 的任一极小解替换为其与已选 \(S_B^\ast\) 的交。由上段结论，该替换仍为 \(A\) 的极小解，并自动满足
+\[
+S_A^\ast\subseteq S_B^\ast.
+\]
+沿偏序递归即得到所需的保序嵌套族。最后，割边支撑的规范性正是定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 中平方自由极小割唯一性的直接推论。证毕。
+\end{proof}
+
+\noindent
+由此，dyadic 屏幕 exactization 与平方自由 RT 极小割在结论层获得了更完整的结构压缩：收缩拟阵控制任何部分屏幕的最小加权补全；可见面数与外置审计圆维之间满足严格守恒律，其下界等号类恰由拟阵独立集参数化；审计缺口在边界算术超立方体上满足尖锐的 \(1\)-Lipschitz 刚性，而极小精确屏幕之间则由单次基交换连通；最后，平方自由 RT 极小割可在层状边界数据上选成与包含偏序相容的保序系统。于是，拟阵收缩、可见/补账分配、算术屏幕几何与 RT 型极小化不再是彼此分离的技术链，而是同一组可递归调用的边界优化法则。
+
+\endinput

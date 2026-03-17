@@ -5,7 +5,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
+import secrets
+import time
 from fnmatch import fnmatchcase
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -598,22 +601,50 @@ def topological_order(atoms: Sequence[Atom], subset: Optional[Set[str]] = None) 
 
 
 def next_kg_id(kg_root: Path, now: Optional[datetime] = None) -> str:
-    now = now or datetime.now(timezone.utc)
-    date_part = now.strftime("%Y%m%d")
-    prefix = f"KG-{date_part}-"
-    atoms_dir = kg_root / "atoms"
-    max_seq = 0
-    if atoms_dir.exists():
-        for path in atoms_dir.rglob("*"):
-            if not path.is_file():
-                continue
-            name = path.name
-            if not name.startswith(prefix):
-                continue
-            m = re.match(rf"^{re.escape(prefix)}(?P<seq>\d+)", name)
-            if m:
-                max_seq = max(max_seq, int(m.group("seq")))
-    return f"{prefix}{max_seq + 1:04d}"
+    _ = kg_root  # Kept for backward-compatible function signature.
+    return parallel_kg_id_factory(now)()
+
+
+def parallel_kg_id_factory(now: Optional[datetime] = None):
+    """Return a lock-free, parallel-safe KG ID generator.
+
+    Format: KG-YYYYMMDD-<numeric-token>
+    The numeric token is stable-width and combines:
+    - UTC nanosecond timestamp
+    - PID shard
+    - per-factory nonce
+    - per-timestamp local counter
+    This avoids global max-sequence scans and supports concurrent writers.
+    """
+
+    fixed_date_part = now.strftime("%Y%m%d") if now else None
+    pid_shard = os.getpid() % 100000
+    nonce = secrets.randbelow(10000)
+    last_ts_ns = 0
+    intra_ts_counter = 0
+
+    def _next() -> str:
+        nonlocal last_ts_ns, intra_ts_counter
+
+        ts_ns = time.time_ns()
+        if ts_ns < last_ts_ns:
+            ts_ns = last_ts_ns
+
+        if ts_ns == last_ts_ns:
+            intra_ts_counter += 1
+        else:
+            last_ts_ns = ts_ns
+            intra_ts_counter = 0
+
+        if fixed_date_part is not None:
+            date_part = fixed_date_part
+        else:
+            date_part = datetime.fromtimestamp(ts_ns / 1_000_000_000, tz=timezone.utc).strftime("%Y%m%d")
+
+        token = f"{ts_ns:019d}{pid_shard:05d}{nonce:04d}{intra_ts_counter:04d}"
+        return f"KG-{date_part}-{token}"
+
+    return _next
 
 
 def parse_kv_spec(path: Path) -> Dict[str, str]:

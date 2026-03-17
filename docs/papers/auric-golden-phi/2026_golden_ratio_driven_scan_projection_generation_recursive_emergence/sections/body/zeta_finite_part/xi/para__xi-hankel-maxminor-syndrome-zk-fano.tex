@@ -94,6 +94,134 @@ Ae_{d-1}=-(p_0,\dots,p_{d-1})^{\mathsf T}.
 又由 (2) 递推阶为 \(d\)，可知 \(A\) 的最小湮灭多项式次数至少为 \(d\)；而 \(\deg P=d\) 且 \(P(A)=0\) 给出次数至多为 \(d\)，故次数恰为 \(d\)。证毕。
 \end{proof}
 
+\begin{corollary}[良素数下最小递推多项式的保持性]\label{cor:xi-hankel-minimal-recurrence-good-prime-preservation}
+取 \(k=\QQ\) 并设 \((a_n)_{n\ge 0}\subset\ZZ\) 在 \(\QQ\) 上的 Hankel 秩为 \(d\)，且 \(H_0\in M_d(\ZZ)\) 在 \(\QQ\) 上可逆。
+令 \(P(\lambda)=\sum_{j=0}^{d}p_j\lambda^j\in\QQ[\lambda]\) 为定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness} 给出的唯一首一递推多项式。
+取素数 \(p\nmid \det(H_0)\)，并记 \(\bar a_n:=a_n\bmod p\in\FF_p\) 与 \(\bar P:=P\bmod p\in\FF_p[\lambda]\)。
+则对一切 \(n\ge 0\) 有
+\[
+\sum_{j=0}^{d}\bar p_j\,\bar a_{n+j}=0,
+\]
+并且 \(\bar P\) 为序列 \((\bar a_n)\) 在 \(\FF_p\) 上的最小首一递推多项式（因而其阶仍为 \(d\)）。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness}(2)，存在整数 \(\Delta_0,\dots,\Delta_d\in\ZZ\) 使得
+\[
+\sum_{j=0}^{d}\Delta_j a_{n+j}=0\qquad(\forall\,n\ge 0),
+\qquad
+\Delta_d=\det(H_0)\neq 0,
+\]
+且 \(p_j=\Delta_j/\Delta_d\)。
+逐项模 \(p\) 约化得到
+\[
+\sum_{j=0}^{d}\overline{\Delta_j}\,\bar a_{n+j}=0\qquad(\forall\,n\ge 0).
+\]
+由于 \(p\nmid \Delta_d\)，在 \(\FF_p\) 中有 \(\overline{\Delta_d}\neq 0\)，可将上式除以 \(\overline{\Delta_d}\) 得到所示首一递推，且系数恰为 \(\bar p_j\)。
+\par
+另一方面，\(\bar H_0:=H_0\bmod p\) 可逆。
+令 \(\bar c_j:=(\bar a_{i+j})_{i\ge 0}\) 为 \(\FF_p\) 上无限 Hankel 矩阵的第 \(j\) 列。
+若存在阶 \(r<d\) 的首一递推消去 \((\bar a_n)\)，则存在 \(u_0,\dots,u_{r-1}\in\FF_p\) 使得
+\[
+\bar c_r+\sum_{j=0}^{r-1}u_j\,\bar c_j=0,
+\]
+从而 \(\bar c_0,\dots,\bar c_{d-1}\) 线性相关，进而 \(\bar H_0\) 奇异，矛盾。
+故最小阶必为 \(d\)，从而 \(\bar P\) 为最小首一递推多项式。证毕。
+\end{proof}
+
+\begin{corollary}[极小递推的 Hankel 主块可逆性与反演系数公式]\label{cor:xi-hankel-minimal-recurrence-inversion-formula}
+设 \(k\) 为域，\((a_m)_{m\ge 0}\subset k\) 满足某个\emph{极小阶}常系数线性递推：存在 \(d\ge 1\) 与系数 \(c_0,\dots,c_{d-1}\in k\) 使
+\[
+a_{m+d}=c_{d-1}a_{m+d-1}+\cdots+c_0a_m\qquad(m\ge 0),
+\]
+并且 \(d\) 在所有满足该性质的阶数中最小。
+定义 Hankel 主块与右端向量
+\[
+H_d:=\bigl(a_{i+j}\bigr)_{0\le i,j\le d-1}\in M_d(k),
+\qquad
+b:=(a_d,a_{d+1},\dots,a_{2d-1})^{\mathsf T}\in k^d.
+\]
+则 \(H_d\) 必可逆，且系数向量 \(c:=(c_0,\dots,c_{d-1})^{\mathsf T}\) 由有限样本唯一确定并满足
+\[
+\boxed{\;c=H_d^{-1}b.\;}
+\]
+\end{corollary}
+\begin{proof}
+对 \(m=0,1,\dots,d-1\) 写出递推式得到线性系统
+\(
+H_d\,c=b
+\)。
+若 \(H_d\) 奇异，则存在 \(0\neq \alpha\in k^d\) 使 \(H_d\alpha=0\)，即
+\(
+\sum_{j=0}^{d-1}\alpha_j a_{i+j}=0
+\)
+对 \(0\le i\le d-1\) 成立。
+由递推闭包可推出该关系对一切 \(i\ge 0\) 成立，从而给出阶 \(\le d-1\) 的非平凡递推，与极小性矛盾。
+故 \(H_d\) 可逆，且 \(c\) 唯一并由 \(c=H_d^{-1}b\) 给出。证毕。
+\end{proof}
+
+\begin{theorem}[有限窗 Hankel 零空间的截断理想结构]\label{thm:xi-hankel-nullspace-truncated-ideal-structure}
+设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)。
+假设存在某个偏移 \(\ell\ge 0\) 使得
+\[
+H_0^{(\ell)}:=\bigl(a_{\ell+i+j}\bigr)_{0\le i,j\le d-1}\in M_d(k)
+\]
+可逆。
+令
+\[
+P(\lambda)=\lambda^{d}+c_{d-1}\lambda^{d-1}+\cdots+c_0\in k[\lambda]
+\]
+为 \(a\) 的首一极小递推多项式（等价地，对一切 \(n\ge 0\) 有 \(\sum_{j=0}^{d}c_j a_{n+j}=0\)，其中 \(c_d=1\)，且 \(d\) 极小）。
+对任意 \(N\ge d\)，令
+\[
+H^{(N)}_{\ell}:=\bigl(a_{\ell+i+j}\bigr)_{0\le i,j\le N-1}\in M_N(k)
+\]
+为长度 \(N\) 的 Hankel 主块。
+则存在自然同构
+\[
+\ker H^{(N)}_{\ell}\ \cong\ (P)\big/(\lambda^{N})\ \subset\ k[\lambda]/(\lambda^{N}),
+\]
+其中右端按 \(k\)-向量空间结构理解，并且该同构可取为：
+对任意 \(\deg Q\le N-d-1\)，将 \(Q(\lambda)\) 送到向量
+\[
+\mathrm{coef}\bigl(Q(\lambda)P(\lambda)\bmod \lambda^{N}\bigr)\in k^{N}.
+\]
+因此 \(\dim_k\ker H^{(N)}_{\ell}=N-d\)，并且每一个长度为 \(N\) 的 Hankel 零向量都唯一对应于某个截断倍多项式 \(Q(\lambda)P(\lambda)\bmod\lambda^{N}\)。
+\end{theorem}
+\begin{proof}
+记线性泛函 \(L:k[\lambda]\to k\) 为 \(L(\lambda^{t})=a_{\ell+t}\)。
+对 \(x=(x_0,\dots,x_{N-1})^{\mathsf T}\in k^N\) 定义多项式
+\(
+Q_x(\lambda):=\sum_{j=0}^{N-1}x_j\lambda^j
+\)。
+则
+\[
+(H^{(N)}_{\ell}x)_i=\sum_{j=0}^{N-1}a_{\ell+i+j}x_j=L(\lambda^{i}Q_x(\lambda))
+\qquad(0\le i\le N-1),
+\]
+从而 \(x\in\ker H^{(N)}_{\ell}\) 等价于 \(L(\lambda^{i}Q_x)=0\) 对所有 \(0\le i\le N-1\) 成立。
+\par
+由极小递推 \(\sum_{j=0}^{d}c_j a_{n+j}=0\) 可知对一切 \(t\ge 0\) 有 \(L(\lambda^{t}P(\lambda))=0\)。
+因此对任意 \(\deg Q\le N-d-1\) 与任意 \(0\le i\le N-1\)，有
+\(
+L(\lambda^{i}Q(\lambda)P(\lambda))=0
+\)；
+又因 \(L(\lambda^{n})\) 仅依赖于幂指数 \(n\)，故截断 \(Q(\lambda)P(\lambda)\bmod \lambda^{N}\) 的系数向量必落在 \(\ker H^{(N)}_{\ell}\)。
+这给出线性映射
+\[
+k[\lambda]_{\le N-d-1}\longrightarrow \ker H^{(N)}_{\ell},
+\qquad
+Q\longmapsto \mathrm{coef}\bigl(QP\bmod \lambda^N\bigr).
+\]
+其像同构于 \((P)/(\lambda^N)\)，并且 \(\dim (P)/(\lambda^N)=N-d\)。
+\par
+另一方面，由 Hankel 秩为 \(d\) 知任意有限 Hankel 块秩不超过 \(d\)，而 \(H_0^{(\ell)}\) 可逆给出 \(\mathrm{rank}(H^{(N)}_{\ell})\ge d\)，故 \(\mathrm{rank}(H^{(N)}_{\ell})=d\) 并得到
+\(
+\dim\ker H^{(N)}_{\ell}=N-d
+\)。
+维数比较迫使上述映射为同构，因而得到所述唯一性。证毕。
+\end{proof}
+
 \begin{theorem}[最大子式综合征的偏移射影不变性与规范化唯一性]\label{thm:xi-hankel-maximal-minor-syndrome-offset-projective-invariance}
 设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)。
 对任意偏移 \(\ell\ge 0\)，定义移位 Hankel 主块与扩展块
@@ -144,6 +272,36 @@ p_d^{(\ell)}:=1,
 \Delta^{(\ell)}=\Delta_d^{(\ell)}\cdot(p_0,\dots,p_{d-1},1)^{\mathsf T}
 \)。
 代入 \(\Delta_d^{(\ell)}=\det(H_0^{(\ell)})\) 即得盒中恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[最小递推系数的共同分母整除所有满秩 Hankel 行列式]\label{cor:xi-hankel-recurrence-common-denominator-divides-determinants}
+取 \(k=\QQ\) 并设 \((a_n)_{n\ge 0}\subset\ZZ\) 在 \(\QQ\) 上 Hankel 秩为 \(d\)。
+令
+\[
+P(\lambda)=\lambda^d+c_{d-1}\lambda^{d-1}+\cdots+c_0\in\QQ[\lambda]
+\]
+为定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness} 抽取的唯一首一最小递推多项式。
+令
+\[
+D:=\min\{N\in\NN:\ Nc_j\in\ZZ\ \forall\,0\le j\le d-1\}
+\]
+为系数共同分母。
+则对任意满足 \(\det(H_0^{(\ell)})\neq 0\) 的偏移 \(\ell\ge 0\) 都有
+\[
+D\mid \det(H_0^{(\ell)}).
+\]
+因此 \(D\mid \gcd_{\ell:\det(H_0^{(\ell)})\neq 0}\det(H_0^{(\ell)})\)。
+特别地，若存在 \(\ell\) 使 \(|\det(H_0^{(\ell)})|=1\)，则 \(P(\lambda)\in\ZZ[\lambda]\)。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-hankel-maximal-minor-syndrome-offset-projective-invariance}，对任意满足 \(\det(H_0^{(\ell)})\neq 0\) 的 \(\ell\) 有
+\[
+c_j=p_j=\frac{\Delta_j^{(\ell)}}{\Delta_d^{(\ell)}}=\frac{\Delta_j^{(\ell)}}{\det(H_0^{(\ell)})}\qquad(0\le j\le d-1),
+\]
+其中 \(\Delta_j^{(\ell)}\in\ZZ\) 且 \(\Delta_d^{(\ell)}=\det(H_0^{(\ell)})\)。
+因此每个 \(c_j\) 的分母都整除 \(\det(H_0^{(\ell)})\)，共同分母 \(D\) 亦整除 \(\det(H_0^{(\ell)})\)。
+最后一条由 \(D\mid \pm 1\Rightarrow D=1\) 立得。证毕。
 \end{proof}
 
 \begin{theorem}[Hankel 奇异性的三步公开币完美零知识证明]\label{thm:xi-hankel-singularity-hvzk}
@@ -269,6 +427,33 @@ H_p:=\widehat H\bmod p\in\FF_p^{n\times n}
 零知识部分由公开抽样 \(p\) 与内层 HVZK 的可模拟性直接组合：先抽 \(p\)，再模拟内层转录，分布保持一致。证毕。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$p$}{p}-进赋值对模 \texorpdfstring{$p$}{p} 秩坍缩的数量控制]\label{prop:xi-det-vp-controls-rank-drop}
+设 \(A\in\ZZ^{d\times d}\) 满秩，并令 \(\Delta:=\det(A)\in\ZZ\setminus\{0\}\)。
+对任意素数 \(p\) 记 \(A_p:=A\bmod p\in \FF_p^{d\times d}\)，并令
+\[
+\delta_p:=d-\mathrm{rank}_{\FF_p}(A_p).
+\]
+则有不等式
+\[
+\boxed{\;\delta_p\ \le\ v_p(\Delta)\;}
+\]
+并且当 \(p\nmid \Delta\) 时必有 \(\delta_p=0\)（即 \(A_p\) 在 \(\FF_p\) 上仍满秩）。
+\end{proposition}
+\begin{proof}
+取 Smith 正规形：存在 \(U,V\in\mathrm{GL}_d(\ZZ)\) 使
+\[
+UAV=\mathrm{diag}(s_1,\dots,s_d),\qquad s_1\mid s_2\mid\cdots\mid s_d,
+\]
+且 \(\Delta=\prod_{i=1}^{d}s_i\)。
+模 \(p\) 下，\(\mathrm{rank}_{\FF_p}(A_p)\) 等于对角元中不被 \(p\) 整除者的个数，因此秩亏损 \(\delta_p\) 等于满足 \(p\mid s_i\) 的指标个数。
+每出现一次 \(p\mid s_i\) 至少贡献 \(v_p(s_i)\ge 1\)，从而
+\[
+\delta_p=\#\{i:\ p\mid s_i\}\le \sum_{i=1}^{d} v_p(s_i)=v_p(\Delta),
+\]
+得到所示不等式。
+当 \(p\nmid\Delta\) 时 \(v_p(\Delta)=0\)，故 \(\delta_p=0\)。证毕。
+\end{proof}
+
 \begin{proposition}[\texorpdfstring{$p$}{p}-进求值的精度损失由 \texorpdfstring{$\det(H_0)$}{det(H0)} 精确控制]\label{prop:xi-hankel-padics-precision-loss-detH0}
 令 \(p\) 为素数，取 \(d\ge 1\)。
 设 \(H_0,H_1\in \ZZ_{p}^{d\times d}\) 且 \(\det(H_0)\neq 0\)，并令
@@ -298,6 +483,79 @@ A=\frac{1}{p^s},\qquad
 A'=\frac{1+p^N}{p^s}=A+p^{N-s},
 \]
 故不确定性不可消去于 \(p^{N-s}\) 阶。证毕。
+\end{proof}
+
+\begin{theorem}[判别式控制的 \(p\)-进节点分辨率半损耗律]\label{thm:xi-padic-root-resolution-discriminant-half-loss}
+沿用命题 \ref{prop:xi-hankel-padics-precision-loss-detH0} 的设定，并令 \(M:=N-s\)。
+设 \(K/\QQ_p\) 为某个分裂扩张，\(\mathcal O_K\) 为其赋值环，\(\pi\) 为均值元，赋值记为 \(v=v_\pi\)。
+令 \(\chi(T)\in\mathcal O_K[T]\) 为某个首一 \(d\) 次多项式，并假设其在 \(K\) 中分裂为互异根 \(\{z_j\}_{j=1}^{d}\subset\mathcal O_K\)。
+记判别式赋值
+\[
+D:=v\!\bigl(\operatorname{Disc}(\chi)\bigr).
+\]
+若仅给定 \(\chi\) 的系数向量在模 \(\pi^{M}\) 意义下的同余类，则根多重集 \(\{z_j\}\) 在最坏情形下至多可唯一确定到模 \(\pi^{M-\lceil D/2\rceil}\)，并且一般不能提升到模 \(\pi^{M-\lceil D/2\rceil+1}\)。
+在 Gram--shift 实现口径下，将 \(\chi\) 取为 \(A\) 的特征多项式即可得到：在模 \(p^{N}\) 数据之下，节点谱的额外损耗由判别式赋值的半量纲 \(\lceil D/2\rceil\) 强制给出。
+\end{theorem}
+
+\begin{proof}
+把根到系数的 Vieta 映射写为
+\[
+\Psi:\ \mathcal O_K^{d}\longrightarrow \mathcal O_K^{d},\qquad
+(z_1,\dots,z_d)\longmapsto (c_1,\dots,c_d),
+\]
+其中 \(\chi(T)=T^{d}+c_1T^{d-1}+\cdots+c_d\)。
+在互异根处，\(\det(D\Psi)\) 等于 Vandermonde 行列式 \(\prod_{i<j}(z_j-z_i)\) 的单位倍，因此
+\[
+v\!\bigl(\det(D\Psi)\bigr)=\sum_{1\le i<j\le d}v(z_j-z_i)=\frac12\,v\!\Bigl(\prod_{i<j}(z_j-z_i)^2\Bigr)=\frac{D}{2}.
+\]
+因此当系数仅给到模 \(\pi^{M}\) 时，任何试图反演 \(\Psi\) 的过程在最坏情形下都无法在 \(\pi\)-进意义下获得超过 \(M-\lceil D/2\rceil\) 的根分辨率；这是非阿基米德逆函数定理/多变量 Hensel 线性化中由雅可比赋值强制出现的精度损耗量纲。
+\par
+尖锐性可在二次情形显式给出。
+取任意 \(e\ge 1\) 并令
+\(
+\chi(T)=(T-a)(T-a-\pi^{e})
+=T^2-(2a+\pi^{e})T+a(a+\pi^{e})
+\)
+（\(a\in\mathcal O_K\) 任取），则 \(\operatorname{Disc}(\chi)=\pi^{2e}\) 从而 \(D=2e\)。
+对任意满足 \(M\ge 2e+1\) 的整数 \(M\)，令 \(\delta:=\pi^{M-e}\) 并定义另一组互异根
+\[
+z_1':=a+\delta,\qquad z_2':=a+\pi^{e}-\delta.
+\]
+则 \(z_1'+z_2'=2a+\pi^e\) 与 \(z_1'z_2'=a(a+\pi^e)+\delta(\pi^e-\delta)\)。
+由于 \(v(\delta\pi^e)=M\) 且 \(v(\delta^2)=2(M-e)\ge M+1\)，得
+\(
+z_1'z_2'\equiv a(a+\pi^e)\ (\mathrm{mod}\ \pi^{M})
+\)，
+从而以 \(\{z_1',z_2'\}\) 为根的首一二次多项式与 \(\chi\) 的系数向量在模 \(\pi^{M}\) 意义下完全一致。
+另一方面，\(v(z_1'-a)=v(\delta)=M-e\)，故 \(z_1'\not\equiv a\ (\mathrm{mod}\ \pi^{M-e+1})\)（同理 \(z_2'\not\equiv a+\pi^e\ (\mathrm{mod}\ \pi^{M-e+1})\)），
+从而根多重集不能由系数同余类唯一确定到模 \(\pi^{M-e+1}=\pi^{M-\lceil D/2\rceil+1}\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[多素数总预算下界由 \texorpdfstring{$\log|\det(H_0)|$}{log|det(H0)|} 完全刻画]\label{cor:xi-hankel-padics-global-budget-detH0}
+设 \(H_0,H_1\in \ZZ^{d\times d}\) 且 \(\det(H_0)\neq 0\)，并令
+\(
+s_p:=v_p(\det(H_0))
+\)。
+对每个素数 \(p\) 设仅给定 \((H_0,H_1)\) 的模 \(p^{N_p}\) 截断数据。
+若要求在所有坏素数通道上达到 \emph{非退化恢复}（即对一切 \(p\mid \det(H_0)\) 有 \(N_p>s_p\)，从而 \(A=H_0^{-1}H_1\) 在每个通道上至少可确定到模 \(p^{N_p-s_p}\) 的非平凡精度），则必要条件为
+\[
+\mathcal B\ >\ \mathcal S,
+\qquad
+\mathcal B:=\sum_{p} N_p\log p,
+\qquad
+\mathcal S:=\sum_{p} s_p\log p=\log|\det(H_0)|.
+\]
+\end{corollary}
+\begin{proof}
+对每个坏素数 \(p\mid \det(H_0)\)，命题 \ref{prop:xi-hankel-padics-precision-loss-detH0} 表明：若 \(N_p\le s_p\)，则通道精度在损失后不超过 \(p^{0}\) 级别，无法获得非平凡的 \(p\)-进确定性。
+因此非退化恢复要求对所有 \(p\mid \det(H_0)\) 有 \(N_p>s_p\)。
+两边乘以 \(\log p\) 并对所有素数求和，得到
+\(
+\sum_p N_p\log p>\sum_p s_p\log p
+\)。
+另一方面，由整数分解恒等式 \(|\det(H_0)|=\prod_p p^{v_p(\det(H_0))}=\prod_p p^{s_p}\)，取对数得 \(\sum_p s_p\log p=\log|\det(H_0)|\)。
+合并即得所示必要条件。证毕。
 \end{proof}
 
 \begin{theorem}[低于 \texorpdfstring{$2d$}{2d} 窗口的完美零知识不可判别性]\label{thm:xi-hankel-window-2dminus1-perfect-zk-indistinguishability}

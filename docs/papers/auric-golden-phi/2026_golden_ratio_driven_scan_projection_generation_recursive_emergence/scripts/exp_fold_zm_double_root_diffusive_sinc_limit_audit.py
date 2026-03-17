@@ -6,15 +6,15 @@ This script is English-only by repository convention.
 
 We numerically audit the scaling statement (paper):
 
-  (2/m) * Z_m( -u / m^2 )  ->  sinc( sqrt(u/2) )
+  (2/m) * Z_m( -u / m^2 )  ->  sinc( sqrt(u)/2 )
 
 and we also report the same comparison under the exact normalization by
 Z_m(0)=floor(m/2)+1:
 
-  Z_m( -u / m^2 ) / Z_m(0)  ->  sinc( sqrt(u/2) )
+  Z_m( -u / m^2 ) / Z_m(0)  ->  sinc( sqrt(u)/2 )
 
 for u on a real grid (a compact subset of C), and we also locate the first few
-scaled near-zero roots via u = -m^2 * y, comparing them to 2*pi^2*j^2.
+scaled near-zero roots via u = -m^2 * y, comparing them to 4*pi^2*j^2.
 
 Outputs (default):
   - artifacts/export/fold_zm_double_root_diffusive_sinc_limit_audit.json
@@ -45,9 +45,9 @@ def _sinc(z: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
 
 
 def _target(u: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
-    # sinc(sqrt(u/2)) is an entire function of u; mpmath's principal sqrt is fine
+    # sinc(sqrt(u)/2) is an entire function of u; mpmath's principal sqrt is fine
     # for this numerical audit on R.
-    return _sinc(mp.sqrt(u / 2))
+    return _sinc(mp.sqrt(u) / 2)
 
 
 def _zm_eval(m: int, y: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
@@ -161,7 +161,7 @@ def _bisect_root(m: int, a: mp.mpf, b: mp.mpf, tol: mp.mpf) -> mp.mpf:
 
 
 def _scaled_root_u(m: int, j: int, tol: mp.mpf) -> Optional[mp.mpf]:
-    u_star = mp.mpf(2) * (mp.pi**2) * (j * j)
+    u_star = mp.mpf(4) * (mp.pi**2) * (j * j)
 
     # First attempt: secant findroot near u_star.
     try:
@@ -242,7 +242,7 @@ def main() -> None:
     roots: List[Dict[str, object]] = []
     for m in m_values:
         for j in range(1, int(args.j_max) + 1):
-            u_star = mp.mpf(2) * (mp.pi**2) * (j * j)
+            u_star = mp.mpf(4) * (mp.pi**2) * (j * j)
             u_hat = _scaled_root_u(m, j, tol=tol)
             entry: Dict[str, object] = {"m": m, "j": j, "u_star": float(u_star)}
             if u_hat is None:
@@ -263,10 +263,10 @@ def main() -> None:
         "grid_errors": grid_errors,
         "scaled_roots": roots,
         "notes": {
-            "limit_target": "sinc(sqrt(u/2))",
+            "limit_target": "sinc(sqrt(u)/2)",
             "scaling": "evaluate Z_m at y=-u/m^2 and scale by 2/m",
             "scaling_alt": "evaluate Z_m at y=-u/m^2 and normalize by Z_m(0)=floor(m/2)+1",
-            "root_scaling": "u = -m^2*y_root should approach 2*pi^2*j^2",
+            "root_scaling": "u = -m^2*y_root should approach 4*pi^2*j^2",
         },
     }
 

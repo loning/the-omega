@@ -1,7 +1,7 @@
-\subsubsection{例外谱的秩一交错与 Perron 根的首项夹逼：固定张量谱的可核验谱护栏}
+\subsubsection{例外谱的秩一交错、Perron 根的首项夹逼与 \texorpdfstring{$\mathrm{rank}\,1$}{rank-1} 谱塌缩：固定张量谱的可核验谱护栏}
 沿用命题 \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction} 的例外块 \(A^{(q)}\)（定义 \eqref{eq:pom-multiplicity-composition-Aq-def}）及其谱
 \(\{\lambda_i^{(q)}\}_{i=0}^{q}\)（按降序排列）。
-本段把例外谱与固定张量谱 \(\{(-1)^k\varphi^{q-2k}/2\}_{k=0}^{q}\) 的关系压缩为一条严格交错链，并由此导出符号惯性与 Perron 根的可核验首项夹逼。
+本段把例外谱与固定张量谱 \(\{(-1)^k\varphi^{q-2k}/2\}_{k=0}^{q}\) 的关系压缩为一条严格交错链，并由此导出符号惯性、Perron 根的可核验首项夹逼，以及非 Perron 谱相对于主特征值的严格塌缩。
 
 \begin{theorem}[秩一扰动的严格交错：例外谱夹在固定张量谱之间]\label{thm:xi-replica-softcore-exceptional-interlacing}
 固定整数 \(q\ge 1\)，记 \(b_k:=\binom{q}{k}\) 并令 \(\mathbf{1}:=(1,\dots,1)^{\mathsf T}\in\RR^{q+1}\)、\(b:=(b_0,\dots,b_q)^{\mathsf T}\)。
@@ -208,6 +208,130 @@ S_2(q)=4^{q-1}+\frac12\,3^{q}+\frac14F_{2q+2}
 \]
 而 \(F_{2q+2}=O(\varphi^{2q})\) 且 \(\varphi^2/3<1\)，故右端余项趋于 \(0\)；
 夹逼即得极限为 \(1/2\)。证毕。
+\end{proof}
+
+\begin{theorem}[例外块的 \texorpdfstring{$\mathrm{rank}\,1$}{rank-1} 谱塌缩与迹主项]\label{thm:xi-replica-softcore-rankone-spectral-collapse}
+沿用定理 \ref{thm:xi-replica-softcore-exceptional-interlacing} 与
+\ref{thm:xi-replica-softcore-perron-leading-term-bounds} 的记号，并定义
+\[
+\Lambda_q:=\max_{1\le i\le q}|\lambda_i^{(q)}|.
+\]
+则对一切 \(q\ge 1\) 都有
+\[
+\boxed{\;
+\Lambda_q\le \frac{\varphi^q}{2}.\;}
+\]
+从而
+\[
+\boxed{\;
+\frac{\Lambda_q}{\rho_q}
+\le
+\left(\frac{\varphi}{2}\right)^q(1+o(1))
+\longrightarrow 0.\;}
+\]
+另一方面，Perron 根满足精确归一化
+\[
+\boxed{\;
+\frac{\rho_q}{2^{q-1}}
+=
+1+\left(\frac34\right)^q
++o\!\left(\left(\frac34\right)^q\right).\;}
+\]
+进一步，对任意固定整数 \(m\ge 1\)，有
+\[
+\boxed{\;
+\Tr\!\bigl((A^{(q)})^m\bigr)
+=
+\rho_q^{\,m}
++O\!\left(q\left(\frac{\varphi^q}{2}\right)^m\right).\;}
+\]
+特别地，
+\[
+\boxed{\;
+\frac{\Tr\!\bigl((A^{(q)})^m\bigr)}{2^{m(q-1)}}\longrightarrow 1
+\qquad(q\to\infty).\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-replica-softcore-exceptional-interlacing}，对每个 \(1\le i\le q\) 都有
+\[
+\nu_i<\lambda_i^{(q)}<\nu_{i-1},
+\]
+其中
+\[
+\{\nu_j\}_{j=0}^{q}
+=
+\left\{\frac{(-1)^k\varphi^{q-2k}}{2}:0\le k\le q\right\}.
+\]
+因此
+\[
+|\lambda_i^{(q)}|
+\le
+\max\{|\nu_{i-1}|,|\nu_i|\}
+\le
+\frac{\varphi^q}{2},
+\]
+从而得到 \(\Lambda_q\le \varphi^q/2\)。
+
+再由定理 \ref{thm:xi-replica-softcore-perron-leading-term-bounds}，
+\[
+\rho_q
+=
+2^{q-1}
++\frac12\left(\frac32\right)^q
++o\!\left(\left(\frac32\right)^q\right),
+\]
+故
+\[
+\frac{\rho_q}{2^{q-1}}
+=
+1+\frac{\frac12(3/2)^q}{2^{q-1}}
++o\!\left(\frac{(3/2)^q}{2^{q-1}}\right)
+=
+1+\left(\frac34\right)^q+o\!\left(\left(\frac34\right)^q\right).
+\]
+又因为 \(\rho_q=2^{q-1}(1+o(1))\)，便有
+\[
+\frac{\Lambda_q}{\rho_q}
+\le
+\frac{\varphi^q/2}{2^{q-1}(1+o(1))}
+=
+\left(\frac{\varphi}{2}\right)^q(1+o(1))
+\longrightarrow 0.
+\]
+
+最后，由谱分解
+\[
+\Tr\!\bigl((A^{(q)})^m\bigr)
+=
+\sum_{i=0}^{q}\lambda_i^{(q)\,m}
+=
+\rho_q^{\,m}+\sum_{i=1}^{q}\lambda_i^{(q)\,m}.
+\]
+利用上界 \(|\lambda_i^{(q)}|\le \varphi^q/2\) 得
+\[
+\left|\sum_{i=1}^{q}\lambda_i^{(q)\,m}\right|
+\le
+q\left(\frac{\varphi^q}{2}\right)^m,
+\]
+于是
+\[
+\Tr\!\bigl((A^{(q)})^m\bigr)
+=
+\rho_q^{\,m}
++O\!\left(q\left(\frac{\varphi^q}{2}\right)^m\right).
+\]
+两边再除以 \(2^{m(q-1)}\)。由上式的 Perron 归一化可知
+\(
+\rho_q^{\,m}/2^{m(q-1)}\to 1
+\)，并且
+\[
+\frac{q(\varphi^q/2)^m}{2^{m(q-1)}}
+=
+q\left(\frac{\varphi}{2}\right)^{mq}
+\longrightarrow 0.
+\]
+故所示极限成立。证毕。
 \end{proof}
 
 \endinput

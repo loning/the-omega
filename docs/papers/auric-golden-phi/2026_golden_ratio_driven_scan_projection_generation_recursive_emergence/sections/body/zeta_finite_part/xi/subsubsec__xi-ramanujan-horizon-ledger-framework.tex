@@ -83,6 +83,161 @@ c_n=\int_{\TT}\xi^{-n}\,d\mu(\xi)
 另一方面，Fourier 矩 \(c_n=\int_{\TT}\xi^{-n}\,d\mu(\xi)\) 对测度 \(\mu\) 线性；若 \(\mu\) 由有限模态权重线性生成，则每个 \(c_n\) 以及由其构成的 Toeplitz 矩阵 \(\mathbf{T}_N\) 对这些权重均为仿射函数。故 \(\mathbf{T}_N\succeq 0\) 为关于参数的 LMI，从而对应一个标准 SDP 可行性约束。证毕。
 \end{proof}
 
+\begin{theorem}[window-\(6\) 的 \texorpdfstring{$B_3$}{B3} 三扇区框架分解与 Cartan/\texorpdfstring{$A_2$}{A2} 能量反演]\label{thm:xi-horizon-b3-sector-frame-decomposition}
+沿用定理 \ref{thm:boundary-m10-b3c3-rigid-four-block-split} 的 \(B_3\) 根字典。记
+\[
+\Phi_{\mathrm{short}}=\{\pm e_1,\pm e_2,\pm e_3\},
+\]
+\[
+\Phi_{A_2(+)}=\{\pm(e_1+e_2),\pm(e_1+e_3),\pm(e_2+e_3)\},
+\]
+\[
+\Phi_{A_2(-)}=\{\pm(e_1-e_2),\pm(e_1-e_3),\pm(e_2-e_3)\}.
+\]
+定义三块框架算子
+\[
+S_{\mathrm{short}}:=\sum_{v\in\Phi_{\mathrm{short}}}vv^\top,
+\qquad
+S_{+}:=\sum_{v\in\Phi_{A_2(+)}}vv^\top,
+\qquad
+S_{-}:=\sum_{v\in\Phi_{A_2(-)}}vv^\top.
+\]
+再记
+\[
+u_0:=\frac1{\sqrt3}(1,1,1)^\top,
+\qquad
+P_{\parallel}:=u_0u_0^\top,
+\qquad
+P_{\perp}:=I_3-P_{\parallel}.
+\]
+则有精确分解
+\[
+\boxed{\;
+S_{\mathrm{short}}=2I_3,\qquad
+S_{+}=8P_{\parallel}+2P_{\perp},\qquad
+S_{-}=6P_{\perp}.
+\;}
+\]
+从而总框架算子满足
+\[
+\boxed{\;
+S_{\mathrm{short}}+S_{+}+S_{-}=10I_3.
+\;}
+\]
+因此，对任意 \(u\in\RR^3\)，若定义三块二次能量
+\[
+Q_{\mathrm{short}}(u):=\sum_{v\in\Phi_{\mathrm{short}}}\langle u,v\rangle^2,
+\qquad
+Q_{+}(u):=\sum_{v\in\Phi_{A_2(+)}}\langle u,v\rangle^2,
+\qquad
+Q_{-}(u):=\sum_{v\in\Phi_{A_2(-)}}\langle u,v\rangle^2,
+\]
+则
+\[
+Q_{\mathrm{short}}(u)=2|u|^2,
+\qquad
+Q_{+}(u)=8|P_{\parallel}u|^2+2|P_{\perp}u|^2,
+\qquad
+Q_{-}(u)=6|P_{\perp}u|^2.
+\]
+特别地，
+\[
+\boxed{\;
+|P_{\perp}u|^2=\frac16\,Q_{-}(u),\qquad
+|P_{\parallel}u|^2=\frac18\Bigl(Q_{+}(u)-\frac13Q_{-}(u)\Bigr).
+\;}
+\]
+故 \(A_2(+)\) 与 \(A_2(-)\) 两扇区共同精确反演出 \(u\) 在 Cartan 轴 \(\RR(1,1,1)\) 与 \(A_2\) 根平面 \(\{x_1+x_2+x_3=0\}\) 上的正交能量。
+\end{theorem}
+\begin{proof}
+短根部分直接给出
+\[
+S_{\mathrm{short}}
+=
+\sum_{i=1}^{3}\bigl(e_ie_i^\top+(-e_i)(-e_i)^\top\bigr)
+=
+2\sum_{i=1}^{3}e_ie_i^\top
+=
+2I_3.
+\]
+
+对 \(A_2(+)\) 部分，记
+\[
+a_{12}:=e_1+e_2,\qquad
+a_{13}:=e_1+e_3,\qquad
+a_{23}:=e_2+e_3.
+\]
+则
+\[
+S_+=2\sum_{1\le i<j\le 3}a_{ij}a_{ij}^\top.
+\]
+直接展开得
+\[
+a_{12}a_{12}^\top+a_{13}a_{13}^\top+a_{23}a_{23}^\top
+=
+\begin{pmatrix}
+2&1&1\\
+1&2&1\\
+1&1&2
+\end{pmatrix}
+=
+I_3+J,
+\]
+其中 \(J\) 为全 \(1\) 矩阵。由于 \(J=3P_{\parallel}\)，故
+\[
+S_+=2(I_3+J)=2(P_{\parallel}+P_{\perp})+6P_{\parallel}=8P_{\parallel}+2P_{\perp}.
+\]
+
+对 \(A_2(-)\) 部分，记
+\[
+b_{12}:=e_1-e_2,\qquad
+b_{13}:=e_1-e_3,\qquad
+b_{23}:=e_2-e_3.
+\]
+则
+\[
+S_-=2\sum_{1\le i<j\le 3}b_{ij}b_{ij}^\top.
+\]
+直接展开得
+\[
+b_{12}b_{12}^\top+b_{13}b_{13}^\top+b_{23}b_{23}^\top
+=
+\begin{pmatrix}
+2&-1&-1\\
+-1&2&-1\\
+-1&-1&2
+\end{pmatrix}
+=
+3I_3-J.
+\]
+因此
+\[
+S_-=2(3I_3-J)=6I_3-2J=6P_{\perp}.
+\]
+
+三式相加便得到
+\[
+S_{\mathrm{short}}+S_++S_-=10I_3.
+\]
+又因为
+\[
+Q_{\bullet}(u)=u^\top S_{\bullet}u,
+\]
+故三块二次能量公式立即成立。最后由
+\[
+Q_-(u)=6|P_{\perp}u|^2,
+\qquad
+Q_+(u)=8|P_{\parallel}u|^2+2|P_{\perp}u|^2
+\]
+解出
+\[
+|P_{\perp}u|^2=\frac16Q_-(u),
+\qquad
+|P_{\parallel}u|^2=\frac18\Bigl(Q_+(u)-\frac13Q_-(u)\Bigr).
+\]
+证毕。
+\end{proof}
+
 \begin{corollary}[Weyl-压缩的 Toeplitz 可行域为低维谱体，并存在三原子极小实现]\label{cor:xi-weyl-toeplitz-spectrahedron-rank3-atomic}
 在命题 \ref{prop:xi-horizon-21mode-weyl-compression} 的 Weyl-压缩线性参数化下，固定任意 \(N\ge 0\)，记参数维数 \(d\le 6\)，并将第 \(N\) 级 Toeplitz 主子矩阵写作 \(\mathbf{T}_N(\mathbf{a})\)（\(\mathbf{a}\in\RR^d\)）。
 令

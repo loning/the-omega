@@ -251,6 +251,144 @@ n_i:=|\widehat{G_i}|=|G_i|
 并剔除 \(S=\varnothing\) 与单元素集合项。证毕。
 \end{proof}
 
+\begin{theorem}[高阶异常签名的 Möbius--ANOVA 分解及其精确维数]\label{thm:pom-cross-anom-mobius-anova-dimension-theory}
+设 \(G_1,\dots,G_k\) 为有限阿贝尔群，记
+\[
+\widehat G:=\widehat G_1\times\cdots\times\widehat G_k,
+\qquad
+\chi^0:=(\chi_{1,0},\dots,\chi_{k,0}),
+\]
+并定义归一化函数空间
+\[
+\mathcal A_k:=\{f:\widehat G\to\RR:\ f(\chi^0)=0\}.
+\]
+对任意非空子集 \(S\subseteq[k]\)，定义 \(\mathcal A_S\subset \mathcal A_k\) 为所有满足下列条件的函数：
+\begin{enumerate}
+  \item \(f(\chi)\) 仅依赖于子元组 \(\chi_S=(\chi_i)_{i\in S}\)；
+  \item 若某个 \(i\in S\) 满足 \(\chi_i=\chi_{i,0}\)，则 \(f(\chi)=0\)。
+\end{enumerate}
+则存在规范直和分解
+\[
+\boxed{
+\mathcal A_k=\bigoplus_{\varnothing\neq S\subseteq[k]}\mathcal A_S.
+}
+\]
+并且每个纯 \(S\)-体分量都满足精确维数公式
+\[
+\boxed{
+\dim \mathcal A_S=\prod_{i\in S}\bigl(|G_i|-1\bigr).
+}
+\]
+因而总维数为
+\[
+\boxed{
+\dim\mathcal A_k
+=
+\sum_{\varnothing\neq S\subseteq[k]}\prod_{i\in S}\bigl(|G_i|-1\bigr)
+=
+\prod_{i=1}^{k}|G_i|-1.
+}
+\]
+特别地，只含一体项的轴可分解子空间维数为
+\[
+\sum_{i=1}^{k}(|G_i|-1),
+\]
+而所有两体及以下可见分量的总维数为
+\[
+\sum_{i=1}^{k}(|G_i|-1)
++
+\sum_{1\le i<j\le k}(|G_i|-1)(|G_j|-1).
+\]
+因此三体及更高阶隐藏耦合的精确余维数为
+\[
+\sum_{|S|\ge 3}\prod_{i\in S}(|G_i|-1).
+\]
+\end{theorem}
+\begin{proof}
+对任意 \(f\in\mathcal A_k\) 与非空 \(S\subseteq[k]\)，定义 Möbius 分量
+\[
+f_S(\chi)
+:=
+\sum_{T\subseteq S}(-1)^{|S|-|T|}f(\chi^{(T)}),
+\]
+其中 \(\chi^{(T)}\) 表示在 \(T\) 上保留原坐标、其余坐标取平凡角色的元组。由定理 \ref{thm:pom-mobius-complete-decomposition} 的同一 Möbius 反演计算，
+\[
+f=\sum_{\varnothing\neq S\subseteq[k]} f_S.
+\]
+并且每个 \(f_S\) 仅依赖于 \(\chi_S\)，且若某个 \(i\in S\) 上 \(\chi_i=\chi_{i,0}\)，则交替和按包含/不包含 \(i\) 的项成对抵消，故 \(f_S\in \mathcal A_S\)。由 Möbius 反演的唯一性，上述分解是规范且唯一的，从而得到直和分解。
+
+现算维数。固定非空 \(S\subseteq[k]\)。由于 \(\mathcal A_S\) 中的函数在任一平凡坐标处必为零，故其全部自由参数恰落在
+\[
+\prod_{i\in S}\bigl(\widehat G_i\setminus\{\chi_{i,0}\}\bigr)
+\]
+上；反之，在该集合上任意指定实值后，都可唯一扩张为 \(\mathcal A_S\) 中的函数。于是
+\[
+\dim \mathcal A_S=\prod_{i\in S}\bigl(|\widehat G_i|-1\bigr)
+=
+\prod_{i\in S}\bigl(|G_i|-1\bigr).
+\]
+对所有非空 \(S\) 求和即得
+\[
+\dim\mathcal A_k
+=
+\sum_{\varnothing\neq S\subseteq[k]}\prod_{i\in S}(|G_i|-1).
+\]
+再由恒等式
+\[
+\prod_{i=1}^{k}\bigl(1+(|G_i|-1)\bigr)
+=
+\sum_{S\subseteq[k]}\prod_{i\in S}(|G_i|-1)
+\]
+并剔除空集项，即得
+\[
+\dim\mathcal A_k=\prod_{i=1}^{k}|G_i|-1.
+\]
+最后，把 \(|S|=1\)、\(|S|\le 2\)、\(|S|\ge 3\) 的项分别分组，便得到轴可分解维数、两体可见维数与高阶隐藏余维数公式。证毕。
+\end{proof}
+
+\begin{corollary}[异常签名塔与对称幂 moment-kernel 的指数--多项式复杂度分离]\label{cor:pom-anom-signature-tower-sympower-complexity-separation}
+设 \(G\) 为任意非平凡有限阿贝尔群，\(|G|\ge 2\)。对每个整数 \(q\ge 2\)，定义 \ref{def:pom-anom-signature-tower} 的 \(q\)-阶异常签名塔
+\[
+\mathsf{Anom}^{(q)}_G
+\]
+的坐标数精确等于
+\[
+\boxed{
+|G|^{q-1}-1.
+}
+\]
+另一方面，若底层在线同步核的状态数为 \(|Q|\)，则由命题 \ref{prop:pom-ak-symmetric-compression}，\(q\)-重碰撞对称幂商核的状态数至多为
+\[
+\boxed{
+\binom{q+|Q|-1}{|Q|-1}=O\!\left(q^{|Q|-1}\right).
+}
+\]
+因而
+\[
+\boxed{
+\frac{|G|^{q-1}-1}{\binom{q+|Q|-1}{|Q|-1}}
+\xrightarrow[q\to\infty]{}
+\infty.
+}
+\]
+这说明异常语义侧的证书维数按 \(q\) 指数增长，而对称幂 moment-kernel 的最优状态压缩至多保持多项式增长；二者之间存在不可消除的指数--多项式分离。
+\end{corollary}
+\begin{proof}
+由定义 \ref{def:pom-anom-signature-tower}，满足约束
+\[
+\chi_1\cdots\chi_q=\chi_0
+\]
+的 \(q\)-元角色组中，前 \(q-1\) 个角色可以在 \(\widehat G\) 中任意选取，而最后一个由乘积约束唯一决定，因此总数恰为 \(|\widehat G|^{q-1}=|G|^{q-1}\)。去掉全平凡元组 \((\chi_0,\dots,\chi_0)\) 后，即得坐标数
+\[
+|G|^{q-1}-1.
+\]
+另一方面，命题 \ref{prop:pom-ak-symmetric-compression} 已给出 \(q\)-重 moment-kernel 的对称幂商状态数上界
+\[
+\dim(\widetilde A_q)\le \binom{q+|Q|-1}{|Q|-1}.
+\]
+当 \(|Q|\) 固定时，上式是 \(q\) 的 \((|Q|-1)\) 次多项式，而 \(|G|^{q-1}-1\) 以底数 \(|G|>1\) 指数增长，故其比值趋于 \(+\infty\)。证毕。
+\end{proof}
+
 \begin{theorem}[Euler 缺陷的正交分解：交叉项能量的 Pythagoras 恒等式]\label{thm:pom-euler-defect-orthogonal-pythagoras}
 在定理 \ref{thm:pom-euler-defect-quotient-coordinate} 的设定下，赋予 \(\widehat G=\prod_{i=1}^k\widehat{G_i}\) 以均匀测度，并将 \(\mathcal F\subset L^2(\widehat G)\) 视为 Hilbert 子空间。
 对任意 \(f\in\mathcal F\)，定义坐标平均算子

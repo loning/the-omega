@@ -508,3 +508,76 @@ r_g^\sharp(p_t):=r_{g\circ f}(p_{2t-1})\qquad (t\ge 1).
 再用 \((x,r_f^\sharp)\) 经 \(\widetilde f^{\mathsf S_f}\) 的逆过程恢复唯一 \(\omega\in\Omega\)。
 故 \((y,r_{g\circ f})\) 唯一决定 \(\omega\)，即 \(\widetilde{(g\circ f)}^{\mathrm{mix}}\) 单射且可回放。证毕。
 \end{proof}
+
+\paragraph{无界素支撑账本与有限加法寄存器障碍}
+前述 prime-register 外置把可逆账本放在可数素数轴上。还可进一步说明：只要乘法型整数系数流具有无界素支撑，这种可数寄存器便不是编码选择，而是由交换幺半群的秩障碍所强制出的自然通用账本。
+
+\begin{theorem}[无界素支撑乘法型算 \texorpdfstring{$\pi$}{pi} 数据的有限寄存器不可同态化]\label{thm:conclusion-unbounded-prime-support-no-finite-register-embedding}
+沿用本小节
+\[
+\mathcal P=\NN^{(\mathbb P)}
+\]
+的记号。设 \(M\subset\NN_{\ge 1}\) 为某条乘法型算 \(\pi\) 路线所产生的整数系数流的乘法子幺半群。若 \(M\) 具有无界素支撑，即存在无穷多个两两不同的素数
+\[
+p_1,p_2,\dots \in M,
+\]
+则不存在任何有限整数 \(k\) 以及幺半群单射
+\[
+\Phi:M\hookrightarrow (\NN^k,+).
+\]
+换言之，此类乘法账本不可能被有限个加法寄存器忠实压缩。
+
+另一方面，素数估值映射
+\[
+\upsilon:M\to\mathcal P,
+\qquad
+\upsilon(n):=(v_p(n))_{p\in\mathbb P},
+\]
+给出一个忠实幺半群表示；因此可数素数估值账本正是此类数据的自然通用寄存器。
+\end{theorem}
+\begin{proof}
+由 \(p_1,p_2,\dots\in M\) 且 \(M\) 对乘法封闭，映射
+\[
+\iota:\bigoplus_{j\ge 1}\NN e_j\longrightarrow M,
+\qquad
+e_j\longmapsto p_j,
+\]
+定义一个幺半群同态。由于算术基本定理保证素因子分解唯一，\(\iota\) 实际上是单射。
+
+若存在有限 \(k\) 与单射幺半群同态
+\[
+\Phi:M\hookrightarrow(\NN^k,+),
+\]
+则复合得到单射
+\[
+\Phi\circ\iota:\bigoplus_{j\ge 1}\NN e_j\hookrightarrow (\NN^k,+).
+\]
+对这两个可消去交换幺半群取 Grothendieck 群完成，得到群同态
+\[
+\widehat{\Phi\circ\iota}:\bigoplus_{j\ge 1}\ZZ e_j\longrightarrow \ZZ^k.
+\]
+该群同态仍为单射：若
+\[
+\widehat{\Phi\circ\iota}(u-v)=0
+\qquad
+(u,v\in \bigoplus_{j\ge 1}\NN e_j),
+\]
+则 \((\Phi\circ\iota)(u)=(\Phi\circ\iota)(v)\) 于 \(\NN^k\) 中成立，由单射性推出 \(u=v\)。
+然而左端是可数无限秩自由阿贝尔群，右端仅有秩 \(k\)，不可能存在这种群单射，矛盾。
+故任何有限寄存器单射同态都不存在。
+
+另一方面，对任意 \(m,n\in M\) 与任意素数 \(p\)，都有
+\[
+v_p(mn)=v_p(m)+v_p(n),
+\]
+且仅有限多个 \(v_p(n)\) 非零，故 \(\upsilon\) 的确取值于 \(\mathcal P\) 并满足
+\[
+\upsilon(mn)=\upsilon(m)+\upsilon(n).
+\]
+再由算术基本定理，\(\upsilon(n)\) 唯一决定 \(n\)，故 \(\upsilon\) 为忠实幺半群表示。证毕。
+\end{proof}
+
+\noindent
+因此，prime-register 机制之所以必须以可数素数轴出现，并非因为某种编码习惯，而是因为一旦乘法账本具有无界素支撑，就不存在任何有限维加法寄存器能够在保真意义下吸收其全部算术状态。就信息结构而言，可由有限容量/Wedderburn 数据完全呈现的 bulk 常数，与必须保留在可数素数估值账本中的 arithmetic side-data，确实构成两类不可互相压缩的对象。
+
+\endinput

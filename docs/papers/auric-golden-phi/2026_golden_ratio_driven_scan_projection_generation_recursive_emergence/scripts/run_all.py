@@ -303,6 +303,54 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_branch_rh_zero_temp_galois_chebotarev_audit",
+            script="exp_xi_branch_rh_zero_temp_galois_chebotarev_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_branch_rh_zero_temp_galois_chebotarev_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_real_input_40_collision_ldp_median_twist_audit",
+            script="exp_xi_real_input_40_collision_ldp_median_twist_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_real_input_40_collision_ldp_median_twist_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_real_input_40_c_infty_quartic_audit",
+            script="exp_xi_real_input_40_c_infty_quartic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_real_input_40_c_infty_quartic_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_jensen_comoving_prony_audit",
+            script="exp_xi_jensen_comoving_prony_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_jensen_comoving_prony_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_freezing_capacity_core_twist_audit",
+            script="exp_xi_freezing_capacity_core_twist_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_freezing_capacity_core_twist_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_zg_branch_tower_field_separation_audit",
+            script="exp_xi_zg_branch_tower_field_separation_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_zg_branch_tower_field_separation_audit.json",
+            ],
+        ),
+        Step(
             name="pom_xi_s5_primitive_element_minpoly_certificate",
             script="exp_pom_xi_s5_primitive_element_minpoly_certificate.py",
             args=[],
@@ -501,6 +549,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_gauge_anomaly_clt_variance.json",
                 "sections/generated/eq_fold_gauge_anomaly_clt_variance.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_hankel_mean_variance_certificates",
+            script="exp_fold_gauge_anomaly_hankel_mean_variance_certificates.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_hankel_mean_variance_certificates.json",
             ],
         ),
         Step(
@@ -833,6 +889,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_escort_threelevel_crossover_audit",
+            script="exp_window6_escort_threelevel_crossover_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_escort_threelevel_crossover_audit.json",
+                "sections/generated/eq_window6_escort_threelevel_crossover_audit.tex",
+            ],
+        ),
+        Step(
+            name="window6_cyclic_escort_axis_audit",
+            script="exp_window6_cyclic_escort_axis_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_cyclic_escort_axis_audit.json",
+                "sections/generated/eq_window6_cyclic_escort_axis_audit.tex",
+            ],
+        ),
+        Step(
+            name="window6_multiplicity_bulk_defect_audit",
+            script="exp_window6_multiplicity_bulk_defect_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_multiplicity_bulk_defect_audit.json",
+                "sections/generated/eq_window6_multiplicity_bulk_defect_audit.tex",
+            ],
+        ),
+        Step(
             name="window6_fib_tail_psl2_orbit_decomposition_p23",
             script="exp_window6_fib_tail_psl2_orbit_decomposition_p23.py",
             args=[],
@@ -1132,6 +1215,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_long_bloch_bielliptic_audit",
+            script="exp_window6_long_bloch_bielliptic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_long_bloch_bielliptic_audit.json",
+                "sections/generated/eq_window6_long_bloch_band_edges.tex",
+            ],
+        ),
+        Step(
             name="fold_bin_degeneracy_spectrum_m6_m12",
             script="exp_fold_bin_degeneracy_spectrum_m6_m12.py",
             args=[],
@@ -1147,6 +1239,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_bin_auditable_invariants_m6_m12.json",
                 "sections/generated/tab_fold_bin_auditable_invariants_m6_m12.tex",
+            ],
+        ),
+        Step(
+            name="fold_bin_critical_tail_zero_lattice_audit",
+            script="exp_fold_bin_critical_tail_zero_lattice_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_critical_tail_zero_lattice_audit.json",
+                "sections/generated/eq_fold_bin_critical_tail_zero_lattice_audit.tex",
             ],
         ),
         Step(
@@ -2772,6 +2873,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="arity_pure_collision_cubic_field_decoupling_audit",
+            script="exp_arity_pure_collision_cubic_field_decoupling_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_field_decoupling_audit.json",
+            ],
+        ),
+        Step(
             name="arity_pure_collision_cubic_beta_asymptotic_rate",
             script="exp_arity_pure_collision_cubic_beta_asymptotic_rate.py",
             args=["--dps", "80"],
@@ -2947,6 +3056,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_output_potential_cumulants_closed.json",
                 "sections/generated/tab_real_input_40_output_potential_cumulants_closed.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_local_rate_series",
+            script="exp_real_input_40_output_potential_local_rate_series.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_local_rate_series.json",
+                "sections/generated/eq_real_input_40_output_potential_local_rate_series.tex",
             ],
         ),
         Step(
@@ -3155,6 +3273,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_collision_frequency_prime_shadow_audit",
+            script="exp_real_input_40_collision_frequency_prime_shadow_audit.py",
+            args=["--dps", "80", "--p-max", "2000"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_collision_frequency_prime_shadow_audit.json",
+                "sections/generated/eq_real_input_40_collision_frequency_prime_shadow_audit.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_A_compare",
             script="exp_sync_kernel_A_compare.py",
             args=[],
@@ -3346,6 +3473,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_bulk_resonance_fibonacci_directional_limits.json",
                 "sections/generated/eq_fold_bulk_resonance_fibonacci_directional_limits_numeric.tex",
+                "sections/generated/eq_fold_bulk_resonance_fib_luc_log_lower_bound_numeric.tex",
             ],
         ),
         Step(
