@@ -19,206 +19,188 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-\newtheorem*{theoremA}{Theorem A}
-\newtheorem*{theoremB}{Theorem B}
-\newtheorem*{theoremC}{Theorem C}
 
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\ZZ}{\mathbb{Z}}
 \DeclareMathOperator{\lcmop}{lcm}
+\DeclareMathOperator{\Atom}{Atom}
 \DeclareMathOperator{\Val}{Val}
 \DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\widthop}{width}
 
-\title{First-appearance spectra and prime-power ladders for the Fibonacci modulus chain}
-% Fill in author names, affiliations, corresponding-author e-mail addresses,
-% and ORCID iDs before submission.
-% Example:
-% \author{First Author\\Department, University, City, Country\\
-% \texttt{first.author@example.edu}\\ORCID: 0000-0000-0000-0000
-% \and
-% Second Author\\Department, University, City, Country\\
-% \texttt{second.author@example.edu}\\ORCID: 0000-0000-0000-0000}
-\author{}
+\title{Upper fibers and witness covers for the Fibonacci order-of-apparition map}
+\author{
+Haobo Ma\\
+AELF PTE LTD.\\
+\#14-02, Marina Bay Financial Centre Tower 1, 8 Marina Blvd\\
+Singapore 018981, Singapore\\
+\texttt{auric@aelf.io}
+\and
+Wenlin Zhang\thanks{Correspondence: \texttt{e1327962@u.nus.edu}}\\
+National University of Singapore\\
+Singapore\\
+\texttt{e1327962@u.nus.edu}
+}
 \date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We study first-appearance phenomena for cyclic quotients along the Fibonacci
-modulus chain $\ZZ/(F_{m+2}\ZZ)$ and its canonical realization on admissible
-Zeckendorf words. We prove that a quotient onto $\ZZ/(q\ZZ)$ occurs at depth
-$m$ if and only if $q\mid F_{m+2}$; equivalently, the least supporting depth is
-$\alpha(q)-2$, where $\alpha(q)$ is the rank of apparition of $q$ in the
-Fibonacci sequence. This gives the minimal common depth for any finite family
-of moduli and an explicit formula for the fibers of the joint quotient map. We
-next show that the numbers of cyclic, prime, and prime-power quotients born for
-the first time at index $n$ are given by M\"obius transforms of $\tau(F_n)$,
-$\omega(F_n)$, and $\Omega(F_n)$. Using Lengyel's valuation theorem, we compute
-$\alpha(p^r)$ exactly and obtain rigid $p$-primary ladders. In particular, for
-odd primes $p\neq 5$, the primitive $p$-layer already supports a quotient
-modulo $p^2$ if and only if $p$ is a Wall--Sun--Sun prime. Finally,
-reconstruction from proper quotient data exhibits a sharp dichotomy: levels
-whose modulus has at least two distinct prime divisors are recovered from two
-proper shadows, whereas prime-power levels require all prime-power factors of
-$F_{m+2}$.
+For each $n\ge 2$, let $B_n$ be the set of divisors $q$ of $F_n$ with
+rank of apparition $\alpha(q)=n$. We study $B_n$ as a fiber of the
+order-of-apparition map inside the divisor lattice of $F_n$. We show that each
+birth layer is an upper fiber obtained by removing the covering ideals
+associated with the maximal proper divisors of $n$, so it is controlled by its
+minimal generators. Our main theorem classifies those minimal generators by
+pairwise coprime witness covers built from atomic prime-power birth moduli.
+From this we deduce the bound $\omega(m)\le \omega(n)$ for every minimal
+generator $m$, a primitive-versus-ladder dichotomy for effective atomic
+factors, an exact description of the case $\omega(n)=2$, and an explicit list
+of the admissible witness-cover types when $\omega(n)=3$. As secondary
+consequences we obtain canonical principal intervals and Boolean subposets in
+nonexceptional birth layers, together with the counting identities furnished by
+Stroinski's $\alpha$-contraction formalism and a supplementary quotient-ring
+interpretation.
 \end{abstract}
 
 \medskip
-\noindent\textbf{Keywords.} Fibonacci numbers, rank of apparition, M\"obius
-inversion, Wall--Sun--Sun primes, Chinese remainder theorem.
+\noindent\textbf{Keywords.} Fibonacci numbers, rank of apparition, divisor
+lattices, upper sets, witness covers, atomic decompositions.
 
 \smallskip
 \noindent\textbf{Mathematics Subject Classification (2020).}
 11B39, 11A07, 11A25.
 
-\section{Introduction and main results}
+\section{Introduction}
 
 Let $\alpha(q)$ denote the rank of apparition of an integer $q\ge 2$ in the
-Fibonacci sequence, that is, the least index $n$ for which $q\mid F_n$. The
-starting point of the paper is the following first-appearance problem.
-For which integers $q$ does the cyclic ring $\ZZ/(q\ZZ)$ occur naturally along
-the Fibonacci modulus chain
+Fibonacci sequence, that is, the least index $n$ for which $q\mid F_n$. For
+each $n\ge 2$, write
 \[
-\ZZ/(F_3\ZZ),\ \ZZ/(F_4\ZZ),\ \ZZ/(F_5\ZZ),\ \dots,
+D_n:=\operatorname{Div}(F_n),
+\qquad
+B_n:=\{q\in D_n:\ \alpha(q)=n\}.
 \]
-and at which index does it appear for the first time? We also ask for exact
-counts of the quotients born at each index, for the structure of the
-$p$-primary part of the hierarchy, and for the amount of quotient data needed
-to reconstruct one level from proper residue information.
+We study $B_n$ as an ordered subset of $D_n$. The point of view is simple:
+rather than asking only how many moduli are born for the first time at level
+$n$, we ask how the whole birth layer sits inside the divisor lattice of
+$F_n$, how it is generated as an upper set, and what kind of internal
+combinatorics it carries.
 
-The chain above has a convenient model in Zeckendorf numeration. For each
-$m\ge 1$, let
+Three classical facts drive the geometry. First, Wall and Vinson show that
 \[
-X_m:=\{(w_1,\dots,w_m)\in\{0,1\}^m:\ w_iw_{i+1}=0\text{ for }1\le i<m\},
+q\mid F_m\iff \alpha(q)\mid m
 \]
-the set of admissible Fibonacci words of length $m$. The finite value map
+\cite{Wall1960FibonacciModm,Vinson1963RankApparition}. Second, the Fibonacci
+sequence is a strong divisibility sequence:
 \[
-V_m(w_1,\dots,w_m):=\sum_{k=1}^m w_kF_{k+1}
+\gcd(F_a,F_b)=F_{\gcd(a,b)}.
 \]
-identifies $X_m$ with $\{0,1,\dots,F_{m+2}-1\}$ by the finite-range form of
-Zeckendorf's theorem. Pulling back addition and multiplication modulo
-$F_{m+2}$ therefore equips $X_m$ with a finite commutative ring structure
-canonically isomorphic to $\ZZ/(F_{m+2}\ZZ)$. The role of Zeckendorf words in
-what follows is therefore structural rather than foundational: they provide a
-uniform realization of the arithmetic questions on the Fibonacci modulus chain.
-
-Classical apparition theory already supplies the basic divisibility input.
-Wall and Vinson show that $q\mid F_n$ is controlled exactly by $\alpha(q)$
-\cite{Wall1960FibonacciModm,Vinson1963RankApparition}. Primitive divisor
-theorems explain when a genuinely new prime first appears
+Third, ranks of apparition respect least common multiples:
+\[
+\alpha(\lcmop(u,v))=\lcmop(\alpha(u),\alpha(v)).
+\]
+Primitive divisor theorems then guarantee genuinely new primes at every
+nonexceptional index $n\ge 3$, $n\notin\{6,12\}$
 \cite{Yabuta2001PrimitiveDivisorFibonacci,BiluHanrotVoutier2001PrimitiveDivisorsLucas},
-while Lengyel's valuation formula determines the $p$-adic depth of Fibonacci
-divisibility \cite{Lengyel1995OrderFibonacciLucas}. Taken together, these
-ingredients lead to a hierarchy theory with exact
-first-appearance spectra for cyclic and prime-power quotients, a precise
-$p$-primary ladder law, and a Wall--Sun--Sun criterion expressed at the
-primitive layer itself. This is distinct from the algorithmic literature on
-Zeckendorf addition and normalization
-\cite{Frougny1988LinearNumerationOrderTwo,Frougny1992NumbersAutomata,Frougny1999OnlineAddition,
-AhlbachUsatineFrougnyPippenger2013,LabbeLepsova2023FibonacciTwosComplement},
-where the main questions concern implementation and normalization rather than
-first occurrence and fixed-depth reconstruction.
+while the classical prime-power formulas of Fulton--Morris, Jarden, and
+Lengyel control the $p$-primary side
+\cite{FultonMorris1969ArithmeticalFunctions,Jarden1966RecurringSequences,Lengyel1995OrderFibonacciLucas}.
 
-\subsection*{Arithmetic form of the main theorems}
+This point of view is different from several nearby strands in the literature.
+Stroinski introduced the $\alpha$-contraction of an arithmetic function and
+proved a Dirichlet-product identity that already subsumes the usual M\"obius
+counting formulas for first appearances \cite{Stroinski2016AlphaContraction}.
+Accordingly, Section~3 treats those formulas as corollaries rather than as
+primary new results. Luca and Pomerance study the local behavior of the order
+of appearance under additive shifts \cite{LucaPomerance2014LocalBehavior};
+Trojovsk\'a and FitzGibbons--Javaheri--Miller--Verga study periodic points,
+fixed points, and iteration dynamics of the self-map $z:\NN\to\NN$
+\cite{Trojovska2020PeriodicPoints,FitzGibbonsJavaheriMillerVerga2025Dynamics};
+and Cameron, Counts, Lund, Miller, Piechnik, and Wong study fibotomic
+polynomials and related algebraic factorizations
+\cite{CameronCountsLundMillerPiechnikWong2022Fibotomic}. The present paper
+instead fixes a single fiber $B_n$ and studies its divisibility geometry inside
+$D_n$. We are not aware of earlier work that formulates these fibers as upper
+sets in divisor lattices or that gives the two-support and three-support
+classifications proved here.
 
-The core results may be read without the language of admissible words.
+A quotient-ring model in terms of Fibonacci words is recalled in
+Section~\ref{sec:preliminaries}; it is useful for the auxiliary threshold and
+readout questions, but the main line of the paper is lattice-theoretic rather
+than automata-theoretic.
 
-\begin{theoremA}
-For $n\ge 2$, define
+\subsection*{Main results}
+
+Our first result identifies each birth layer as an upper fiber in the divisor
+lattice. Theorem~\ref{thm:upper-fiber-cover-ideal} shows that
 \[
-A(n)=\#\{q\ge 2:\alpha(q)=n\},
-\quad
-A_{\mathrm{pr}}(n)=\#\{p\text{ prime}:\alpha(p)=n\},
+B_n=D_n\setminus \bigcup_{p\mid n} D_{n/p},
 \]
+so $B_n$ is obtained by removing the covering ideals corresponding to the
+maximal proper divisors of $n$. It follows in
+Theorem~\ref{thm:minimal-generators} that $B_n$ is an upper set, determined by
+its minimal generators $\mathcal M_n$ through the interval decomposition
 \[
-A_{\mathrm{pp}}(n)=\#\{p^r:r\ge 1,\ p\text{ prime},\ \alpha(p^r)=n\}.
+B_n=\bigcup_{m\in\mathcal M_n}[m,F_n].
 \]
-Then
+
+The main structural theorem is
+Theorem~\ref{thm:atomic-witness-classification}. It classifies the minimal
+generators in terms of pairwise coprime witness covers built from atomic
+prime-power birth moduli. As a first consequence we obtain the general support
+bound
 \[
-A(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\tau(F_d),\qquad
-A_{\mathrm{pr}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\omega(F_d),
+\omega(m)\le \omega(n)
+\qquad
+(m\in\mathcal M_n),
 \]
-\[
-A_{\mathrm{pp}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\Omega(F_d).
-\]
-In particular, the exceptional indices $6$ and $12$ are prime-field empty but
-not prime-power empty.
-\end{theoremA}
+recorded in Corollary~\ref{cor:minimal-generator-support-bound}.
 
-\begin{theoremB}
-For every prime $p$ and $r\ge 1$, the rank of apparition of $p^r$ is explicit.
-One has $\alpha(5^r)=5^r$ and
-\[
-\alpha(2^r)=3\cdot 2^{\max(1,r-2)}\qquad (r\ge 2).
-\]
-If $p\neq 2,5$ and $e_p=\nu_p(F_{\alpha(p)})$, then
-\[
-\alpha(p^r)=\alpha(p)\,p^{\max(0,r-e_p)}.
-\]
-Hence, once $r\ge e_p$, the sequence $\alpha(p^r)$ grows by a factor of $p$ at
-each step.
-\end{theoremB}
+Section~\ref{sec:atomic-ladders} makes this classification effective by
+combining the witness-cover formalism with the classical prime-power formulas.
+Theorem~\ref{thm:primitive-ladder-dichotomy} shows that every effective atomic
+factor is of exactly one of two types: either it is primitive, in the sense
+that lowering the prime-power exponent destroys the apparition index entirely,
+or it lies on a genuine prime-power ladder and changes exactly one prime
+coordinate. This dichotomy is the bridge from the local $p$-primary formulas
+to the global witness-cover geometry.
 
-\begin{theoremC}
-Let $p\neq 2,5$ be prime. The following are equivalent:
-\[
-\alpha(p^2)=\alpha(p),\qquad \nu_p(F_{\alpha(p)})\ge 2,
-\qquad p\text{ is a Wall--Sun--Sun prime}.
-\]
-Equivalently, the primitive $p$-layer is already locally thickened by a
-quotient modulo $p^2$.
-\end{theoremC}
+The same section sharpens the general witness-cover theorem in the first
+nontrivial support cases. Theorem~\ref{thm:extremal-coordinate-separation}
+describes the extremal case $\omega(m)=\omega(n)$, and
+Corollary~\ref{cor:two-support-complete-classification} gives an exact
+if-and-only-if classification of the layers with $\omega(n)=2$. For
+$\omega(n)=3$, Theorem~\ref{thm:abstract-three-coordinate-types} gives the
+complete abstract type table, Theorem~\ref{thm:fibonacci-three-coordinate-types}
+shows that exactly one abstract type is excluded in the Fibonacci setting, and
+Corollary~\ref{cor:three-coordinate-realization} reduces the realization
+problem to finitely many primitive and ladder atomic families.
 
-Our first result is a complete classification of cyclic quotients at fixed
-depth. Theorem~\ref{thm:quotient-observable-threshold} shows that there is a
-unit-preserving quotient
-\[
-X_m\twoheadrightarrow \ZZ/(q\ZZ)
-\]
-if and only if $q\mid F_{m+2}$. If $\alpha(q)$ denotes the rank of apparition
-of $q$, then the smallest supporting depth is $m_{\min}(q)=\alpha(q)-2$.
-Theorems~\ref{thm:finite-signature-unified-resolution-minimal}
-and~\ref{thm:finite-signature-joint-readout-image-fiber} extend this to finite
-families of moduli.
+Several secondary consequences are included as well. Primitive divisors yield
+canonical principal intervals inside nonexceptional birth layers
+(Corollary~\ref{thm:canonical-principal-interval}), and the same input produces
+large Boolean subposets and quantitative lower bounds for the size and width of
+$B_n$ (Corollary~\ref{thm:boolean-skeleton} and
+Theorem~\ref{thm:birth-layer-maximal-order}). On the more classical side,
+Section~3 records the counting identities furnished by Stroinski's
+$\alpha$-contraction formalism, while Section~6 gives a brief quotient-ring
+interpretation of the same structures.
 
-The next step is to count the quotients that are born for the first time at a
-given index. Theorem~\ref{thm:birth-spectrum-mobius} expresses the cyclic,
-prime, and prime-power birth spectra as M\"obius transforms of $\tau(F_n)$,
-$\omega(F_n)$, and $\Omega(F_n)$. In particular, the exceptional indices $6$
-and $12$ are not empty layers: they carry no new prime fields, but they do
-carry new prime-power quotients. Combined with the primitive divisor theorem,
-this also shows that every resolution except $m=4$ and $m=10$ carries a prime
-field quotient that first appears there; see
-Theorem~\ref{thm:primitive-field-quotients}.
+\subsection*{Organization}
 
-The local $p$-primary structure is described by
-Theorem~\ref{thm:prime-power-apparition-ladders}. Using Lengyel's valuation
-theorem, we determine $\alpha(p^r)$ for every prime power. For odd primes
-$p\neq 5$, if $e_p=\nu_p(F_{\alpha(p)})$, then the primitive $p$-birth layer
-already contains
-\[
-\ZZ/(p\ZZ),\ \ZZ/(p^2\ZZ),\ \dots,\ \ZZ/(p^{e_p}\ZZ),
-\]
-and thereafter the birth depths scale geometrically by a factor of $p$.
-Corollary~\ref{cor:wss-thickening-criterion} interprets the Wall--Sun--Sun
-condition as the presence of a quotient modulo $p^2$ already on the primitive
-$p$-layer.
+Section~\ref{sec:preliminaries} collects the background on Fibonacci
+divisibility and recalls the quotient-ring model based on Fibonacci words.
+Section~3 records the quotient-threshold criterion and the counting corollaries
+coming from $\alpha$-contraction. Section~4 develops the upper-fiber and
+witness-cover theory in general. Section~\ref{sec:atomic-ladders} treats the
+prime-power input and the effective classifications for $\omega(n)=2$ and
+$\omega(n)=3$. Section~6 contains a short supplementary quotient-ring
+perspective, and Section~7 concludes with a few further questions.
 
-The final part of the paper concerns simultaneous quotient maps and exact
-reconstruction. Theorems~\ref{thm:proper-shadow-compressibility}
-and~\ref{thm:prime-power-shadow-complexity} show that CRT-split levels are
-recovered from two proper quotient shadows, whereas prime-power levels require
-all prime-power factors of $F_{m+2}$.
-
-The paper is organized as follows. Section~2 fixes the ring structure on
-$X_m$ and recalls the Fibonacci divisibility facts used later. Section~3
-contains the exact threshold theorem and the M\"obius formulas for the birth
-spectra. Section~4 treats prime-power ladders and the Wall--Sun--Sun criterion.
-Section~5 studies finite signatures, reconstruction, and shadow complexity.
-Appendix~A records a short table of initial birth data and ladder values.
-
-\section{Preliminaries on Fibonacci divisibility and finite quotient rings}
+\section{Preliminaries}
+\label{sec:preliminaries}
 
 For each $m\ge 1$, we continue to write
 \[
@@ -327,7 +309,35 @@ q_i\mid F_n\ \text{for all }i
 Applying the minimality characterization in part (1) gives the formula.
 \end{proof}
 
-\section{Exact quotient thresholds and birth spectra}
+\begin{proposition}
+\label{prop:fibonacci-strong-divisibility}
+For all integers $a,b\ge 1$,
+\[
+\gcd(F_a,F_b)=F_{\gcd(a,b)}.
+\]
+Consequently,
+\[
+F_a\mid F_b \iff a\mid b.
+\]
+\end{proposition}
+
+\begin{proof}
+The strong divisibility identity is classical; see, for example, Wall
+\cite{Wall1960FibonacciModm}. If $a\mid b$, then
+$\gcd(F_a,F_b)=F_a$, so $F_a\mid F_b$. Conversely, if $F_a\mid F_b$, then
+\[
+F_a=\gcd(F_a,F_b)=F_{\gcd(a,b)}.
+\]
+Since the Fibonacci sequence is strictly increasing for indices at least $2$,
+one gets $a=\gcd(a,b)$ whenever $a\ge 2$, hence $a\mid b$. The case $a=1$ is
+trivial.
+\end{proof}
+
+\section{Quotient thresholds and counting corollaries}
+
+We record here the quotient-threshold criterion and the standard counting
+identities that come from Stroinski's $\alpha$-contraction formalism. They form
+part of the arithmetic background for the later sections.
 
 \begin{theorem}
 \label{thm:quotient-observable-threshold}
@@ -372,9 +382,49 @@ A_{\mathrm{pr}}(n):=\#\{p\text{ prime}:\ \alpha(p)=n\},
 \[
 A_{\mathrm{pp}}(n):=\#\{p^r:\ p\text{ prime},\ r\ge 1,\ \alpha(p^r)=n\}.
 \]
+These symbols always denote cardinalities. To avoid any collision with this
+counting notation, the atomic prime-power sets introduced in Section~4 are
+written as $\Atom(d)$.
 \end{definition}
 
-\begin{theorem}
+\begin{definition}
+\label{def:alpha-contraction}
+Let $f:\NN\to \mathbb{C}$ be an arithmetic function with $f(1)=0$. Its
+\emph{$\alpha$-contraction} is the arithmetic function
+\[
+f_\alpha(n):=\sum_{\alpha(m)=n} f(m).
+\]
+\end{definition}
+
+\begin{proposition}
+\label{prop:stroinski-alpha-contraction}
+Let $f:\NN\to\mathbb{C}$ satisfy $f(1)=0$. Then for every $n\ge 1$,
+\[
+\sum_{d\mid F_n} f(d)=\sum_{d\mid n} f_\alpha(d).
+\]
+Equivalently,
+\[
+(1*f)(F_n)=(1*f_\alpha)(n).
+\]
+This is the Fibonacci-specialized form of Stroinski's $\alpha$-contraction
+identity \cite{Stroinski2016AlphaContraction}.
+\end{proposition}
+
+\begin{proof}
+Using Proposition~\ref{prop:rank-of-apparition-basic}(1), one has
+\[
+\sum_{d\mid F_n} f(d)
+=
+\sum_{\substack{m\ge 2\\ \alpha(m)\mid n}} f(m)
+=
+\sum_{d\mid n}\ \sum_{\alpha(m)=d} f(m)
+=
+\sum_{d\mid n} f_\alpha(d).
+\]
+The Dirichlet-convolution form is merely a rephrasing of the same identity.
+\end{proof}
+
+\begin{corollary}
 \label{thm:birth-spectrum-mobius}
 For every $n\ge 2$,
 \[
@@ -386,31 +436,30 @@ A_{\mathrm{pr}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\omega(F_d),
 \[
 A_{\mathrm{pp}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\Omega(F_d).
 \]
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-By Proposition~\ref{prop:rank-of-apparition-basic}(1), a nontrivial divisor
-$q$ of $F_n$ satisfies $\alpha(q)\mid n$. Hence the nontrivial divisors of
-$F_n$ are partitioned by their first-appearance index, and
+Take $f$ in Proposition~\ref{prop:stroinski-alpha-contraction} to be the
+indicator of the set of integers at least $2$. Then
 \[
-\tau(F_n)-1=\sum_{\substack{d\mid n\\ d\ge 2}} A(d).
+\tau(F_n)-1=\sum_{d\mid n} A(d),
 \]
-Since $n\ge 2$, one has
-$\sum_{d\mid n}\mu(n/d)=0$, so the constant term $1$ disappears under M\"obius
-inversion and
+because $f_\alpha(d)=A(d)$. M\"obius inversion yields
 \[
-A(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\tau(F_d).
+A(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\bigl(\tau(F_d)-1\bigr).
 \]
+Since $\sum_{d\mid n}\mu(n/d)=0$ for $n\ge 2$, this simplifies to the first
+displayed formula.
 
-The same argument with prime divisors instead of all divisors gives
+If $f$ is the indicator of the primes, then
 \[
 \omega(F_n)=\sum_{d\mid n} A_{\mathrm{pr}}(d),
 \]
-and with prime-power divisors gives
+and if $f$ is the indicator of the prime powers, then
 \[
 \Omega(F_n)=\sum_{d\mid n} A_{\mathrm{pp}}(d).
 \]
-Applying M\"obius inversion to these two identities yields the remaining
+Applying M\"obius inversion to these two identities gives the remaining
 formulas.
 \end{proof}
 
@@ -458,9 +507,599 @@ onto $\ZZ/(p_n\ZZ)$, and any factorization through $X_k$ with $k<n-2$ would
 force $p_n\mid F_{k+2}$, hence $\alpha(p_n)\le k+2<n$, a contradiction.
 \end{proof}
 
-\section{Prime-power ladders and the Wall--Sun--Sun criterion}
+\section{Upper fibers and witness covers}
+
+\begin{definition}
+\label{def:birth-layer-poset}
+For each $n\ge 2$, let
+\[
+D_n:=\operatorname{Div}(F_n),
+\]
+and define the \emph{birth layer}
+\[
+B_n:=\{q\in D_n:\ \alpha(q)=n\}.
+\]
+Ordered by divisibility, $B_n$ is a finite poset. Its width, namely the
+cardinality of a largest antichain, is denoted by $\widthop(B_n)$.
+\end{definition}
 
 \begin{theorem}
+\label{thm:upper-fiber-cover-ideal}
+For every $n\ge 2$,
+\[
+B_n=D_n\setminus\bigcup_{p\mid n} D_{n/p}.
+\]
+\end{theorem}
+
+\begin{proof}
+If $q\in B_n$, then $\alpha(q)=n$, so $q\nmid F_{n/p}$ for every prime
+$p\mid n$; otherwise Proposition~\ref{prop:rank-of-apparition-basic}(1) would
+give $n=\alpha(q)\mid n/p<n$, a contradiction. Hence
+$q\in D_n\setminus\bigcup_{p\mid n} D_{n/p}$.
+
+Conversely, let $q\in D_n$ and assume that $q\nmid F_{n/p}$ for every prime
+$p\mid n$. Since $q\mid F_n$, Proposition~\ref{prop:rank-of-apparition-basic}(1)
+gives $d:=\alpha(q)\mid n$. If $d<n$, then $n/d>1$, so choose a prime
+$p\mid n/d$. Then $d\mid n/p$, hence $q\mid F_d\mid F_{n/p}$, contradicting
+the assumption. Therefore $d=n$ and $q\in B_n$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:upper-fiber-inclusion-exclusion}
+Let $\mathcal P(n)$ be the set of prime divisors of $n$, and let
+$f:\NN\to\mathbb{C}$ satisfy $f(1)=0$. Then
+\[
+\sum_{q\in B_n} f(q)
+=
+\sum_{S\subseteq \mathcal P(n)}
+(-1)^{|S|}
+\sum_{q\mid F_{\,n/\prod_{p\in S}p}} f(q).
+\]
+In particular, Corollary~\ref{thm:birth-spectrum-mobius} is an
+inclusion--exclusion specialization of the upper-fiber decomposition.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:upper-fiber-cover-ideal}, the set $B_n$ is the complement
+in $D_n$ of the finite union $\bigcup_{p\mid n} D_{n/p}$. Applying
+inclusion--exclusion to this union yields the stated formula.
+\end{proof}
+
+\begin{theorem}
+\label{thm:minimal-generators}
+Let $\mathcal M_n:=\min(B_n)$ be the set of minimal elements of $B_n$ under
+divisibility. Then:
+\begin{enumerate}[label=(\arabic*)]
+\item $B_n$ is an upper set in $D_n$;
+\item $F_n$ is the unique maximal element of $B_n$;
+\item one has
+\[
+B_n=\bigcup_{m\in\mathcal M_n}[m,F_n],
+\qquad
+[m,F_n]:=\{d\in D_n:\ m\mid d\};
+\]
+\item for $q\in D_n$,
+\[
+q\in\mathcal M_n
+\iff
+\alpha(q)=n\ \text{and}\ \alpha(q/p)<n\ \text{for every prime }p\mid q.
+\]
+\end{enumerate}
+If $q=\prod_{i=1}^r p_i^{e_i}$ and we write
+\[
+\lambda_i:=\alpha(p_i^{e_i}),
+\qquad
+\lambda_i^-:=\alpha(p_i^{e_i-1})
+\]
+with the convention $\alpha(1)=1$, then $q\in\mathcal M_n$ if and only if
+\[
+\lcmop(\lambda_1,\dots,\lambda_r)=n
+\]
+and, for every $i$,
+\[
+\lcmop(\lambda_1,\dots,\lambda_{i-1},\lambda_i^-,
+\lambda_{i+1},\dots,\lambda_r)<n.
+\]
+\end{theorem}
+
+\begin{proof}
+If $q\in B_n$ and $q\mid d\mid F_n$, then $d\mid F_n$ gives $\alpha(d)\mid n$,
+while $q\mid d$ and $d\mid F_{\alpha(d)}$ imply
+$\alpha(q)\mid \alpha(d)$ by Proposition~\ref{prop:rank-of-apparition-basic}(1).
+Since $\alpha(q)=n$, one gets $n\mid \alpha(d)\mid n$, hence $\alpha(d)=n$.
+Thus $d\in B_n$, proving that $B_n$ is an upper set.
+
+By Proposition~\ref{prop:fibonacci-strong-divisibility},
+$F_n\mid F_m$ holds if and only if $n\mid m$. Therefore the least index at
+which $F_n$ appears is exactly $n$, so $\alpha(F_n)=n$ and $F_n\in B_n$. Since
+$F_n$ is the largest element of $D_n$, it is the unique maximal element of
+$B_n$.
+
+Because $D_n$ is finite and $B_n$ is an upper set, every element of $B_n$ lies
+above at least one minimal element of $B_n$. This proves the interval
+decomposition.
+
+Now let $q\in D_n$. If $q\in\mathcal M_n$, then certainly $\alpha(q)=n$.
+Moreover, for every prime $p\mid q$, the divisor $q/p$ lies in $D_n$ but must
+lie outside $B_n$ by minimality of $q$, so $\alpha(q/p)<n$.
+
+Conversely, assume $\alpha(q)=n$ and $\alpha(q/p)<n$ for every prime $p\mid q$.
+Let $d\mid q$ with $d\in B_n$. If $d<q$, choose a prime $p\mid q/d$. Then
+$d\mid q/p$. Since $B_n$ is an upper set in $D_n$, this would force
+$q/p\in B_n$, contradicting $\alpha(q/p)<n$. Hence $d=q$, so $q$ is minimal in
+$B_n$.
+
+For the lcm criterion, Proposition~\ref{prop:rank-of-apparition-basic}(2)
+gives
+\[
+\alpha(q)=\lcmop(\lambda_1,\dots,\lambda_r)
+\]
+and
+\[
+\alpha(q/p_i)=
+\lcmop(\lambda_1,\dots,\lambda_{i-1},\lambda_i^-,
+\lambda_{i+1},\dots,\lambda_r)
+\]
+for each $i$. The displayed characterization of $\mathcal M_n$ is therefore
+exactly the prime-power reformulation of part~(4).
+\end{proof}
+
+\subsection*{Atomic generators and witness covers}
+
+\begin{definition}
+\label{def:atomic-birth-families}
+For each $d\ge 2$, define the \emph{atomic birth family}
+\[
+\Atom(d):=\{p^e:\ \alpha(p^e)=d,\ \alpha(p^{e-1})<d\}.
+\]
+Thus $\Atom(d)$ consists of the prime-power moduli whose apparition index
+first reaches the value $d$ at that exponent.
+\end{definition}
+
+\begin{definition}
+\label{def:witness-cover}
+Let
+\[
+n=\prod_{\ell\in\mathcal P(n)}\ell^{a_\ell}.
+\]
+For $\theta=p^e\in \Atom(d)$ with $d\mid n$, write
+\[
+d(\theta):=\alpha(\theta)=d,
+\qquad
+d^{-}(\theta):=\alpha(p^{e-1}),
+\]
+and define
+\[
+T_n(\theta):=\{\ell\in\mathcal P(n):\ \nu_\ell(d(\theta))=a_\ell\},
+\]
+\[
+E_n(\theta):=\{\ell\in\mathcal P(n):\ \nu_\ell(d(\theta))=a_\ell>
+\nu_\ell(d^{-}(\theta))\}.
+\]
+A finite set
+\[
+\Theta\subseteq \bigcup_{d\mid n}\Atom(d)
+\]
+is an \emph{$n$-witness cover} if its elements are pairwise coprime,
+\[
+\bigcup_{\theta\in\Theta}T_n(\theta)=\mathcal P(n),
+\]
+and, for every $\theta\in\Theta$,
+\[
+E_n(\theta)\nsubseteq
+\bigcup_{\eta\in\Theta\setminus\{\theta\}}T_n(\eta).
+\]
+\end{definition}
+
+\begin{theorem}
+\label{thm:atomic-witness-classification}
+For every $n\ge 2$,
+\[
+\mathcal M_n=
+\left\{
+\prod_{\theta\in\Theta}\theta:\ \Theta\text{ is an $n$-witness cover}
+\right\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $m\in\mathcal M_n$, and write its prime-power factorization as
+\[
+m=\prod_{i=1}^r \theta_i,
+\qquad
+\theta_i=p_i^{e_i}.
+\]
+The prime powers $\theta_i$ are pairwise coprime. We first show that each
+$\theta_i$ is atomic. If
+\[
+\alpha(p_i^{e_i-1})=\alpha(p_i^{e_i}),
+\]
+then replacing $\theta_i$ by $p_i^{e_i-1}$ does not change the least common
+multiple of the prime-power apparition values, so
+$\alpha(m/p_i)=\alpha(m)=n$. This contradicts the local minimality criterion in
+Theorem~\ref{thm:minimal-generators}. Hence every $\theta_i$ belongs to
+$\Atom(d(\theta_i))$.
+
+Since
+\[
+n=\alpha(m)=\lcmop\bigl(d(\theta_1),\dots,d(\theta_r)\bigr)
+\]
+and every $d(\theta_i)$ divides $n$, each prime coordinate of $n$ must be
+realized at full exponent by at least one factor $\theta_i$. Equivalently,
+\[
+\bigcup_{i=1}^r T_n(\theta_i)=\mathcal P(n).
+\]
+
+Now fix $\theta_i$. By Theorem~\ref{thm:minimal-generators},
+$\alpha(m/p_i)<n$. Write
+\[
+\alpha(m/p_i)=\lcmop\bigl(d(\theta_1),\dots,d(\theta_{i-1}),
+d^{-}(\theta_i),d(\theta_{i+1}),\dots,d(\theta_r)\bigr).
+\]
+If one had
+\[
+E_n(\theta_i)\subseteq \bigcup_{j\ne i}T_n(\theta_j),
+\]
+then every prime coordinate of $n$ lost by lowering $\theta_i$ would still be
+supplied at full exponent by one of the other factors, while the coordinates
+outside $E_n(\theta_i)$ would remain full already in $d^{-}(\theta_i)$. The
+displayed least common multiple would then still equal $n$, contradicting
+$\alpha(m/p_i)<n$. Therefore
+\[
+E_n(\theta_i)\nsubseteq \bigcup_{j\ne i}T_n(\theta_j).
+\]
+So
+\[
+\Theta(m):=\{\theta_1,\dots,\theta_r\}
+\]
+is an $n$-witness cover.
+
+Conversely, let $\Theta$ be an $n$-witness cover and set
+\[
+m_\Theta:=\prod_{\theta\in\Theta}\theta.
+\]
+Because the factors are pairwise coprime, Proposition~\ref{prop:rank-of-apparition-basic}(2)
+gives
+\[
+\alpha(m_\Theta)=\lcmop\bigl(d(\theta):\theta\in\Theta\bigr).
+\]
+The cover condition
+\[
+\bigcup_{\theta\in\Theta}T_n(\theta)=\mathcal P(n)
+\]
+implies that this least common multiple attains every prime coordinate of $n$
+at full exponent. Since each $d(\theta)$ divides $n$, one gets
+$\alpha(m_\Theta)=n$.
+
+Fix $\theta=p^e\in\Theta$. Then
+\[
+\alpha(m_\Theta/p)=
+\lcmop\bigl(d^{-}(\theta),d(\eta):\eta\in\Theta\setminus\{\theta\}\bigr).
+\]
+Choose
+\[
+\ell\in E_n(\theta)\setminus
+\bigcup_{\eta\in\Theta\setminus\{\theta\}}T_n(\eta),
+\]
+which exists by the witness condition. For this coordinate $\ell$, the
+exponent in $d^{-}(\theta)$ is strictly below $a_\ell$, and none of the other
+factors attains the full exponent $a_\ell$. Hence
+$\nu_\ell(\alpha(m_\Theta/p))<a_\ell$, so $\alpha(m_\Theta/p)<n$. By
+Theorem~\ref{thm:minimal-generators}, this proves that $m_\Theta\in\mathcal M_n$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:minimal-generator-support-bound}
+Every $m\in\mathcal M_n$ satisfies
+\[
+\omega(m)\le \omega(n).
+\]
+More precisely, $m$ is a product of at most $\omega(n)$ pairwise coprime atomic
+birth moduli.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:atomic-witness-classification}, $m$ comes from an
+$n$-witness cover $\Theta$. For each $\theta\in\Theta$, choose
+\[
+\ell(\theta)\in E_n(\theta)\setminus
+\bigcup_{\eta\in\Theta\setminus\{\theta\}}T_n(\eta).
+\]
+If $\theta\neq \eta$, then $\ell(\theta)\neq \ell(\eta)$, because
+$\ell(\theta)\notin T_n(\eta)$. Thus the map $\theta\mapsto \ell(\theta)$ is
+injective from $\Theta$ into $\mathcal P(n)$. Hence
+\[
+\#\Theta\le \#\mathcal P(n)=\omega(n).
+\]
+Since the elements of $\Theta$ are pairwise coprime prime powers, one has
+$\omega(m)=\#\Theta$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:two-support-binary}
+If $\omega(n)=2$, then every element of $\mathcal M_n$ is either atomic or the
+product of two pairwise coprime atomic birth moduli.
+\end{corollary}
+
+\begin{proof}
+This is immediate from Corollary~\ref{cor:minimal-generator-support-bound}.
+\end{proof}
+
+\begin{corollary}
+\label{cor:witness-cover-finite-type}
+Fix $k\ge 1$. Up to relabeling the prime coordinates by $[k]$, the witness
+patterns that occur in layers with $\omega(n)=k$ form a finite collection.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:minimal-generator-support-bound}, every witness cover for
+a layer with $\omega(n)=k$ has at most $k$ elements. For a fixed coordinate set
+$[k]$, each atomic factor contributes a pair
+\[
+(E,T)
+\qquad\text{with}\qquad
+\varnothing\neq E\subseteq T\subseteq [k].
+\]
+There are only finitely many such pairs. Hence there are only finitely many
+families of at most $k$ such pairs, up to permutation, and therefore only
+finitely many witness-cover types.
+\end{proof}
+
+\begin{corollary}
+\label{thm:canonical-principal-interval}
+Let $n\ge 3$ with $n\notin\{6,12\}$, and choose a primitive prime divisor
+$\pi_n$ with $\alpha(\pi_n)=n$. Then $\pi_n\in \mathcal M_n$, and therefore
+\[
+[\pi_n,F_n]\subseteq B_n.
+\]
+Hence the map
+\[
+\operatorname{Div}(F_n/\pi_n)\hookrightarrow B_n,
+\qquad
+d\longmapsto \pi_n d,
+\]
+is an order embedding, and
+\[
+A(n)\ge \tau(F_n/\pi_n)
+=\tau(F_n)\frac{\nu_{\pi_n}(F_n)}{\nu_{\pi_n}(F_n)+1}
+\ge \frac12\tau(F_n).
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:primitive-field-quotients}, such a prime $\pi_n$ exists.
+Since $\pi_n$ is prime, one has
+\[
+\pi_n\in \Atom(n),
+\qquad
+T_n(\pi_n)=\mathcal P(n),
+\qquad
+E_n(\pi_n)=\mathcal P(n).
+\]
+Thus $\{\pi_n\}$ is an $n$-witness cover. By
+Theorem~\ref{thm:atomic-witness-classification}, this gives
+$\pi_n\in\mathcal M_n$. The interval inclusion now follows from the upper-set
+property in Theorem~\ref{thm:minimal-generators}. The rest is the same divisor
+count as before.
+\end{proof}
+
+\begin{example}
+\label{ex:witness-cover-n20}
+For $n=20$, one has
+\[
+\mathcal M_{20}=\{15,33,41\}.
+\]
+The relevant atomic factors are
+\[
+3\in \Atom(4),\qquad
+5\in \Atom(5),\qquad
+11\in \Atom(10),\qquad
+41\in \Atom(20).
+\]
+The corresponding witness covers are
+\[
+\{41\},\qquad \{3,5\},\qquad \{3,11\},
+\]
+which yield the three minimal generators above.
+\end{example}
+
+\begin{example}
+\label{ex:witness-cover-n30}
+For $n=30$, one has
+\[
+\mathcal M_{30}=\{20,22,31,244,671\}.
+\]
+The relevant atomic factors are
+\[
+\begin{aligned}
+&2\in \Atom(3),\quad
+4\in \Atom(6),\quad
+5\in \Atom(5),\\
+&11\in \Atom(10),\quad
+31\in \Atom(30),\quad
+61\in \Atom(15).
+\end{aligned}
+\]
+The witness covers are
+\[
+\{31\},\qquad
+\{4,5\},\qquad
+\{2,11\},\qquad
+\{4,61\},\qquad
+\{11,61\},
+\]
+and their products are exactly the five minimal generators listed above.
+\end{example}
+
+\subsection*{Primitive-prime subgeometry}
+
+\begin{corollary}
+\label{thm:divisor-lattice-lift}
+Let $n\ge 3$ with $n\notin\{6,12\}$ and set
+\[
+\mathcal D^\sharp(n):=\{d\mid n:\ d\notin\{1,2,6,12\}\}.
+\]
+For each $d\in \mathcal D^\sharp(n)$, choose a prime $\pi_d$ such that
+$\alpha(\pi_d)=d$. For every $t\in \mathcal D^\sharp(n)$, define
+\[
+M_t:=\prod_{d\in \mathcal D^\sharp(t)} \pi_d.
+\]
+Then
+\[
+\alpha(M_t)=t,
+\qquad
+s\mid t \Longleftrightarrow M_s\mid M_t
+\quad (s,t\in \mathcal D^\sharp(n)).
+\]
+\end{corollary}
+
+\begin{proof}
+If $d\in \mathcal D^\sharp(t)$, then $\alpha(\pi_d)=d\mid t$, so
+Proposition~\ref{prop:rank-of-apparition-basic}(1) gives $\pi_d\mid F_t$ and
+hence $M_t\mid F_t$. Distinct indices $d$ yield distinct primes $\pi_d$,
+because the rank of apparition of a prime is unique. Therefore
+Proposition~\ref{prop:rank-of-apparition-basic}(2) yields
+\[
+\alpha(M_t)
+=
+\lcmop\bigl(\alpha(\pi_d):d\in \mathcal D^\sharp(t)\bigr)
+=
+\lcmop\bigl(d:d\in \mathcal D^\sharp(t)\bigr)
+=t,
+\]
+since $t\in \mathcal D^\sharp(t)$.
+
+If $s\mid t$, then $\mathcal D^\sharp(s)\subseteq \mathcal D^\sharp(t)$, so
+$M_s\mid M_t$. Conversely, if $M_s\mid M_t$, then $\pi_s\mid M_t$, and the
+pairwise distinctness of the $\pi_d$ forces $s\in \mathcal D^\sharp(t)$, hence
+$s\mid t$.
+\end{proof}
+
+\begin{corollary}
+\label{thm:boolean-skeleton}
+Let $n\ge 3$ with $n\notin\{6,12\}$, and retain the primes $\pi_d$ from
+Corollary~\ref{thm:divisor-lattice-lift}. Set
+\[
+r(n):=\#\bigl(\mathcal D^\sharp(n)\setminus\{n\}\bigr)
+=\tau(n)-2-\mathbf{1}_{2\mid n}-\mathbf{1}_{6\mid n}-\mathbf{1}_{12\mid n}.
+\]
+For each subset $S\subseteq \mathcal D^\sharp(n)\setminus\{n\}$, define
+\[
+Q_S:=\pi_n\prod_{d\in S}\pi_d.
+\]
+Then the map
+\[
+S\longmapsto Q_S
+\]
+is an order embedding from the Boolean lattice $B_{r(n)}$ into the birth layer
+$B_n$. In particular,
+\[
+Q_S\mid Q_T \Longleftrightarrow S\subseteq T,
+\qquad
+A(n)=\#B_n\ge 2^{r(n)}.
+\]
+\end{corollary}
+
+\begin{proof}
+For each $d\in S\cup\{n\}$ one has $\alpha(\pi_d)=d\mid n$, so
+Proposition~\ref{prop:rank-of-apparition-basic}(1) yields $\pi_d\mid F_n$.
+Hence $Q_S\mid F_n$. Proposition~\ref{prop:rank-of-apparition-basic}(2) then
+gives
+\[
+\alpha(Q_S)
+=\lcmop\bigl(\alpha(\pi_n),\alpha(\pi_d):d\in S\bigr)
+=\lcmop\bigl(n,d:d\in S\bigr)=n.
+\]
+Therefore $Q_S\in B_n$.
+
+The primes $\pi_d$ are pairwise distinct by the proof of
+Corollary~\ref{thm:divisor-lattice-lift}. Thus $Q_S\mid Q_T$ holds exactly when
+the prime support of $Q_S$ is contained in that of $Q_T$, namely when
+$S\subseteq T$. The image is therefore a Boolean subposet of rank $r(n)$
+inside $B_n$, and it contributes $2^{r(n)}$ distinct elements.
+\end{proof}
+
+\begin{corollary}
+\label{cor:birth-layer-width}
+For every $n\ge 3$ with $n\notin\{6,12\}$,
+\[
+\widthop(B_n)\ge \binom{r(n)}{\lfloor r(n)/2\rfloor}.
+\]
+In particular,
+\[
+\widthop(B_n)\gg \frac{2^{r(n)}}{\sqrt{r(n)+1}}.
+\]
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{thm:boolean-skeleton}, the poset $B_n$ contains a copy of the
+Boolean lattice $B_{r(n)}$. The largest antichain in $B_{r(n)}$ has cardinality
+$\binom{r(n)}{\lfloor r(n)/2\rfloor}$ by Sperner's theorem
+\cite{Sperner1928Subsets}. The displayed lower bound then follows from the
+standard central-binomial estimate.
+\end{proof}
+
+\begin{theorem}
+\label{thm:birth-layer-maximal-order}
+One has
+\[
+\limsup_{n\to\infty}
+\frac{\log\log A(n)\,\log\log n}{\log n}\ge \log 2,
+\]
+and
+\[
+\limsup_{n\to\infty}
+\frac{\log\log \widthop(B_n)\,\log\log n}{\log n}\ge \log 2.
+\]
+Equivalently, there exist infinitely many integers $n$ such that
+\[
+\log_2 A(n)\ge
+\exp\!\left((\log 2+o(1))\frac{\log n}{\log\log n}\right)
+\]
+and
+\[
+\log_2 \widthop(B_n)\ge
+\exp\!\left((\log 2+o(1))\frac{\log n}{\log\log n}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+For every $n\ge 3$ with $n\notin\{6,12\}$,
+Corollary~\ref{thm:boolean-skeleton} gives $\log_2 A(n)\ge r(n)$, while
+Corollary~\ref{cor:birth-layer-width} gives
+\[
+\log_2 \widthop(B_n)\ge r(n)-O(\log r(n)).
+\]
+Since
+\[
+r(n)=\tau(n)-2-\mathbf{1}_{2\mid n}-\mathbf{1}_{6\mid n}-\mathbf{1}_{12\mid n}
+=\tau(n)+O(1),
+\]
+it follows that
+\[
+\log r(n)=\log \tau(n)+o(1)
+\]
+along any sequence for which $\tau(n)\to\infty$.
+
+Wigert's theorem \cite{Wigert1907Divisors} states that
+\[
+\limsup_{n\to\infty}\frac{\log \tau(n)\,\log\log n}{\log n}=\log 2.
+\]
+Combining this with the previous inequalities yields the two limsup bounds.
+The equivalent exponential formulation follows immediately.
+\end{proof}
+
+\section{Atomic ladders and low-support classifications}
+\label{sec:atomic-ladders}
+
+This section recasts the classical prime-power apparition formulas as the local
+input for the atomic witness-cover classification. In particular, it identifies
+which prime powers are genuinely atomic on each $p$-primary ladder and which
+ones are only nonminimal thickenings of an already existing atomic layer, then
+uses that local input to make the witness-cover theory effective in the
+two-support and three-support cases.
+
+\begin{proposition}
 \label{thm:prime-power-apparition-ladders}
 Let $p$ be prime and $r\ge 1$.
 \begin{enumerate}[label=(\arabic*)]
@@ -479,9 +1118,15 @@ Let $p$ be prime and $r\ge 1$.
 \alpha(p^r)=\alpha(p)\,p^{\max(0,r-e_p)}.
 \]
 \end{enumerate}
-\end{theorem}
+\end{proposition}
 
 \begin{proof}
+These formulas are classical. For odd primes $p\neq 5$, part (3) goes back to
+Fulton and Morris \cite{FultonMorris1969ArithmeticalFunctions}. The special
+formula for powers of $2$ is already present in Jarden's treatment of
+$z(10^d)$ \cite{Jarden1966RecurringSequences}; we include the short valuation
+derivation because the notation is used repeatedly in what follows.
+
 For $p\neq 2,5$, Lengyel's valuation formula \cite{Lengyel1995OrderFibonacciLucas}
 states that
 \[
@@ -501,7 +1146,501 @@ The least such $u$ is $p^{\max(0,r-e_p)}$, which proves part (3).
 The case $p=5$ follows from the explicit valuation formula
 $\nu_5(F_n)=\nu_5(n)$, so the least $n$ with $5^r\mid F_n$ is $5^r$. For
 $p=2$, the classical valuation formula gives the stated values
-\cite{Lengyel1995OrderFibonacciLucas}.
+\cite{Lengyel1995OrderFibonacciLucas,Jarden1966RecurringSequences}.
+\end{proof}
+
+\begin{corollary}
+\label{cor:atomic-prime-power-inputs}
+Let $p$ be prime.
+\begin{enumerate}[label=(\arabic*)]
+\item Every power $5^r$ belongs to the atomic family $\Atom(5^r)$.
+\item One has
+\[
+2\in \Atom(3),\qquad 4\in \Atom(6),
+\qquad
+2^r\in \Atom(3\cdot 2^{r-2})\quad (r\ge 4),
+\]
+and no other power of $2$ is atomic.
+\item If $p\neq 2,5$, write
+\[
+z_p:=\alpha(p),
+\qquad
+e_p:=\nu_p(F_{z_p}).
+\]
+Then
+\[
+p\in \Atom(z_p),
+\qquad
+p^r\in \Atom(z_p\,p^{r-e_p})\quad (r\ge e_p+1),
+\]
+and no power $p^r$ with $2\le r\le e_p$ is atomic.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Part~(1) is immediate from Proposition~\ref{thm:prime-power-apparition-ladders}(1),
+since $\alpha(5^{r-1})=5^{r-1}<5^r$.
+
+For part~(2), Proposition~\ref{thm:prime-power-apparition-ladders}(2) gives
+\[
+\alpha(2)=3,\qquad \alpha(4)=6,\qquad \alpha(8)=6,
+\]
+and for $r\ge 4$,
+\[
+\alpha(2^r)=3\cdot 2^{r-2}>3\cdot 2^{r-3}=\alpha(2^{r-1}).
+\]
+This is exactly the atomicity criterion.
+
+For part~(3), Proposition~\ref{thm:prime-power-apparition-ladders}(3) shows that
+\[
+\alpha(p^r)=z_p \quad (1\le r\le e_p),
+\qquad
+\alpha(p^r)=z_p\,p^{r-e_p}\quad (r\ge e_p).
+\]
+Thus only $p$ is atomic on the initial plateau, while every step strictly above
+the plateau is atomic.
+\end{proof}
+
+\begin{theorem}
+\label{thm:primitive-ladder-dichotomy}
+Let $n\ge 2$, and let $\theta=p^e$ be an atomic birth modulus that occurs in
+some $n$-witness cover. Then exactly one of the following holds:
+\begin{enumerate}[label=(\arabic*)]
+\item $d^{-}(\theta)=1$, in which case
+\[
+E_n(\theta)=T_n(\theta);
+\]
+\item $d^{-}(\theta)>1$, in which case
+\[
+E_n(\theta)=\{\lambda\}
+\]
+for a unique prime coordinate $\lambda\in\mathcal P(n)$.
+\end{enumerate}
+Equivalently, every effective atomic factor is either a \emph{primitive atom},
+characterized by $E_n(\theta)=T_n(\theta)$, or a \emph{ladder atom},
+characterized by $\#E_n(\theta)=1$.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+d(\theta)=\alpha(p^e),
+\qquad
+d^{-}(\theta)=\alpha(p^{e-1}).
+\]
+By Corollary~\ref{cor:atomic-prime-power-inputs}, every odd prime
+$p\neq 2,5$ contributes atomic factors in exactly two ways. Either $e=1$, in
+which case $d^{-}(\theta)=1$, or $e\ge e_p+1$, in which case
+\[
+\alpha(p^e)=z_p\,p^{e-e_p},
+\qquad
+\alpha(p^{e-1})=z_p\,p^{e-1-e_p},
+\]
+so lowering $\theta$ changes only the $p$-coordinate. For $p=5$, one has
+$\alpha(5^r)=5^r$, so each atomic step changes only the $5$-coordinate. For
+$p=2$, the only atomic powers are $2$, $4$, and $2^r$ for $r\ge 4$; among
+these, $\theta=2$ has $d^{-}(\theta)=1$, while $4$ and $2^r$ for $r\ge 4$
+change only the $2$-coordinate.
+
+If $d^{-}(\theta)=1$, then by definition
+\[
+E_n(\theta)=\{\ell\in\mathcal P(n):\ \nu_\ell(d(\theta))=a_\ell>0\}=T_n(\theta).
+\]
+If $d^{-}(\theta)>1$, the preceding case-by-case analysis shows that exactly
+one prime coordinate drops when $\theta$ is lowered, so $E_n(\theta)$ is a
+singleton. This proves the dichotomy.
+\end{proof}
+
+\begin{theorem}
+\label{thm:extremal-coordinate-separation}
+Let $n\ge 2$, write $k:=\omega(n)$, and let $m\in\mathcal M_n$. Then
+\[
+\omega(m)=k
+\]
+if and only if, after indexing the prime coordinates as
+\[
+\mathcal P(n)=\{\ell_1,\dots,\ell_k\},
+\]
+one can write
+\[
+m=\theta_1\cdots \theta_k
+\]
+with pairwise coprime atomic birth moduli $\theta_i$ such that
+\[
+T_n(\theta_i)=\{\ell_i\}
+\qquad
+(1\le i\le k).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\Theta$ be the $n$-witness cover attached to $m$ by
+Theorem~\ref{thm:atomic-witness-classification}. The proof of
+Corollary~\ref{cor:minimal-generator-support-bound} constructs an injection
+\[
+\Theta\longrightarrow\mathcal P(n),
+\qquad
+\theta\longmapsto \ell(\theta),
+\]
+where
+\[
+\ell(\theta)\in E_n(\theta)\setminus
+\bigcup_{\eta\in\Theta\setminus\{\theta\}}T_n(\eta).
+\]
+Because the factors in a witness cover are pairwise coprime prime powers, one
+has
+\[
+\#\Theta=\omega(m).
+\]
+If $\omega(m)=k=\omega(n)$, then
+\[
+\#\Theta=\omega(m)=\omega(n)=\#\mathcal P(n),
+\]
+so the injection is a bijection.
+
+Fix $\theta\in\Theta$. Since $\ell(\theta)\in E_n(\theta)\subseteq T_n(\theta)$,
+it remains to show that no other coordinate belongs to $T_n(\theta)$. Let
+$\mu\in \mathcal P(n)\setminus\{\ell(\theta)\}$. Because the map
+$\eta\mapsto \ell(\eta)$ is bijective, there exists
+$\eta\in\Theta\setminus\{\theta\}$ with $\mu=\ell(\eta)$. By construction,
+\[
+\mu\notin \bigcup_{\xi\in\Theta\setminus\{\eta\}}T_n(\xi),
+\]
+and $\theta\in \Theta\setminus\{\eta\}$, so $\mu\notin T_n(\theta)$. Therefore
+$T_n(\theta)=\{\ell(\theta)\}$ for every $\theta\in\Theta$, proving the forward
+implication.
+
+Conversely, if
+\[
+m=\theta_1\cdots\theta_k
+\]
+with pairwise coprime atomic birth moduli satisfying
+$T_n(\theta_i)=\{\ell_i\}$, then
+\[
+\bigcup_{i=1}^k T_n(\theta_i)=\mathcal P(n).
+\]
+Moreover, each $E_n(\theta_i)$ is a nonempty subset of the singleton
+$T_n(\theta_i)$, so necessarily
+\[
+E_n(\theta_i)=\{\ell_i\}.
+\]
+Hence
+\[
+E_n(\theta_i)\cap \bigcup_{j\ne i}T_n(\theta_j)=\varnothing
+\qquad
+(1\le i\le k),
+\]
+and therefore $\{\theta_1,\dots,\theta_k\}$ is an $n$-witness cover. Theorem~\ref{thm:atomic-witness-classification}
+then gives $m\in\mathcal M_n$. Since the factors are pairwise coprime prime
+powers, one has $\omega(m)=k$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:two-support-complete-classification}
+Assume
+\[
+\mathcal P(n)=\{\ell_1,\ell_2\}.
+\]
+Define
+\[
+\Atom_{\ell_i}(n):=
+\left\{
+\theta\in \bigcup_{d\mid n}\Atom(d):\ T_n(\theta)=\{\ell_i\}
+\right\}
+\qquad
+(i=1,2).
+\]
+Then
+\[
+\mathcal M_n
+=
+\Atom(n)
+\sqcup
+\{xy:\ x\in\Atom_{\ell_1}(n),\ y\in\Atom_{\ell_2}(n),\ \gcd(x,y)=1\}.
+\]
+In particular, every non-atomic minimal generator in a two-support layer is
+obtained by taking one singleton-coordinate atom on each coordinate, and this
+criterion is both necessary and sufficient.
+\end{corollary}
+
+\begin{proof}
+Let $m\in\mathcal M_n$ be non-atomic. By
+Corollary~\ref{cor:minimal-generator-support-bound}, one has $\omega(m)\le 2$.
+Since $m$ is not atomic, its witness cover has at least two factors, so
+$\omega(m)=2=\omega(n)$. Theorem~\ref{thm:extremal-coordinate-separation} then
+shows that
+\[
+m=xy
+\]
+with $x$ and $y$ pairwise coprime atomic birth moduli satisfying
+$T_n(x)=\{\ell_1\}$ and $T_n(y)=\{\ell_2\}$ after relabeling if necessary.
+Thus
+\[
+x\in\Atom_{\ell_1}(n),
+\qquad
+y\in\Atom_{\ell_2}(n).
+\]
+
+Conversely, if
+\[
+x\in\Atom_{\ell_1}(n),
+\qquad
+y\in\Atom_{\ell_2}(n),
+\qquad
+\gcd(x,y)=1,
+\]
+then $E_n(x)$ and $E_n(y)$ are nonempty subsets of singleton sets, so
+\[
+E_n(x)=\{\ell_1\},
+\qquad
+E_n(y)=\{\ell_2\}.
+\]
+Therefore $\{x,y\}$ is an $n$-witness cover, and
+Theorem~\ref{thm:atomic-witness-classification} gives $xy\in\mathcal M_n$.
+The atomic part $\Atom(n)\subseteq \mathcal M_n$ is immediate from the local
+minimality criterion in Theorem~\ref{thm:minimal-generators}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:abstract-three-coordinate-types}
+Let $\Theta$ be an abstract witness family on $[3]$, meaning a finite family
+of pairs $(E,T)$ with
+\[
+\varnothing\neq E\subseteq T\subseteq [3],
+\qquad
+\bigcup_{(E,T)\in\Theta}T=[3],
+\]
+such that for every $(E,T)\in\Theta$,
+\[
+E\not\subseteq
+\bigcup_{(E',T')\in\Theta,\ (E',T')\neq (E,T)} T'.
+\]
+For brevity, write $123$ for $\{1,2,3\}$, $12$ for $\{1,2\}$, and similarly
+for the other subsets of $[3]$. Then, up to relabeling of $[3]$ and
+reordering of the factors, exactly nine abstract types occur:
+\[
+\Gamma_1=\{(123,123)\},
+\qquad
+\Gamma_2=\{(12,123)\},
+\qquad
+\Gamma_3=\{(1,123)\},
+\]
+\[
+\Gamma_4=\{(12,12),(23,23)\},
+\qquad
+\Gamma_5=\{(1,12),(23,23)\},
+\qquad
+\Gamma_6=\{(1,12),(3,23)\},
+\]
+\[
+\Gamma_7=\{(1,1),(23,23)\},
+\qquad
+\Gamma_8=\{(1,1),(2,23)\},
+\qquad
+\Gamma_9=\{(1,1),(2,2),(3,3)\}.
+\]
+\end{theorem}
+
+\begin{proof}
+For each $(E,T)\in\Theta$, choose
+\[
+\ell(E,T)\in E\setminus
+\bigcup_{(E',T')\in\Theta,\ (E',T')\neq (E,T)} T'.
+\]
+The witness condition guarantees that such a choice exists. If
+$(E,T)\neq (E',T')$, then $\ell(E,T)\notin T'$, so
+$\ell(E,T)\neq \ell(E',T')$. Hence the map
+\[
+(E,T)\longmapsto \ell(E,T)
+\]
+is injective from $\Theta$ into $[3]$, and therefore $\#\Theta\le 3$.
+
+If $\#\Theta=1$, then necessarily $T=[3]$. Up to relabeling, the set $E$ has
+size $3$, $2$, or $1$, giving $\Gamma_1$, $\Gamma_2$, or $\Gamma_3$.
+
+If $\#\Theta=3$, the preceding injection is bijective. Fix $(E,T)\in\Theta$.
+The chosen coordinate $\ell(E,T)$ belongs to $E\subseteq T$. Every other
+coordinate in $[3]\setminus\{\ell(E,T)\}$ is equal to $\ell(E',T')$ for some
+other factor $(E',T')$, and therefore lies outside $T$. Thus $T$ is a
+singleton for every factor, which yields $\Gamma_9$.
+
+It remains to consider $\#\Theta=2$. Write
+\[
+\Theta=\{(E_1,T_1),(E_2,T_2)\}.
+\]
+Neither $T_1$ nor $T_2$ can equal $[3]$, because if $T_1=[3]$, then
+$E_2\subseteq T_2\subseteq T_1$, contradicting the witness condition for the
+second factor. Hence each $T_i$ has size $1$ or $2$. Since $T_1\cup T_2=[3]$,
+there are only two support patterns up to relabeling:
+
+If
+\[
+T_1=\{1\},
+\qquad
+T_2=\{2,3\},
+\]
+then $E_1=\{1\}$, while $E_2$ is, up to swapping the coordinates $2$ and $3$,
+either $\{2,3\}$ or $\{2\}$. This gives $\Gamma_7$ and $\Gamma_8$.
+
+If
+\[
+T_1=\{1,2\},
+\qquad
+T_2=\{2,3\},
+\]
+then the witness conditions force $1\in E_1$ and $3\in E_2$, so
+\[
+E_1\in\bigl\{\{1,2\},\{1\}\bigr\},
+\qquad
+E_2\in\bigl\{\{2,3\},\{3\}\bigr\}.
+\]
+Up to interchanging the two factors, this yields exactly three cases:
+primitive/primitive, mixed, and ladder/ladder, namely
+$\Gamma_4$, $\Gamma_5$, and $\Gamma_6$.
+
+These exhaust all possibilities.
+\end{proof}
+
+\begin{theorem}
+\label{thm:fibonacci-three-coordinate-types}
+Assume $\omega(n)=3$, and relabel the prime coordinates of $n$ by $[3]$. Then
+the witness cover attached to any element of $\mathcal M_n$ is, up to
+relabeling of the coordinates and reordering of the factors, of one of the
+eight types
+\[
+\Gamma_1,\ \Gamma_3,\ \Gamma_4,\ \Gamma_5,\ \Gamma_6,\ \Gamma_7,\ \Gamma_8,\ \Gamma_9.
+\]
+Equivalently, among the nine abstract types of
+Theorem~\ref{thm:abstract-three-coordinate-types}, the unique type
+$\Gamma_2=\{(12,123)\}$ is the only one excluded in Fibonacci upper fibers.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:abstract-three-coordinate-types}, every witness cover on
+three coordinates belongs to one of the nine abstract types
+$\Gamma_1,\dots,\Gamma_9$. By
+Theorem~\ref{thm:primitive-ladder-dichotomy}, every atomic factor that occurs
+in a Fibonacci witness cover satisfies either $E_n(\theta)=T_n(\theta)$ or
+$\#E_n(\theta)=1$. The type $\Gamma_2$ is the unique abstract type containing
+a factor with
+\[
+1<\#E<\#T=3.
+\]
+Hence $\Gamma_2$ cannot occur in Fibonacci upper fibers, while every actual
+Fibonacci witness cover must belong to one of the remaining eight types.
+\end{proof}
+
+\begin{corollary}
+\label{cor:three-coordinate-realization}
+Assume $\omega(n)=3$, and relabel the prime coordinates by $[3]$. For
+nonempty $S\subseteq [3]$ and $i\in S$, define
+\[
+\mathcal P_S(n):=\{\theta:\ E_n(\theta)=T_n(\theta)=S\},
+\]
+\[
+\mathcal L_{i,S}(n):=\{\theta:\ E_n(\theta)=\{i\},\ T_n(\theta)=S\},
+\]
+and
+\[
+\mathcal S_i(n):=\mathcal P_{\{i\}}(n).
+\]
+Then every element of $\mathcal M_n$ is obtained by making pairwise coprime
+selections from one of the following families, together with a relabeling of
+the three coordinates:
+\[
+\mathcal P_{[3]}(n),
+\qquad
+\mathcal L_{i,[3]}(n),
+\qquad
+\mathcal P_{\{i,j\}}(n)\mathcal P_{\{j,k\}}(n),
+\qquad
+\mathcal L_{i,\{i,j\}}(n)\mathcal P_{\{j,k\}}(n),
+\]
+\[
+\mathcal L_{i,\{i,j\}}(n)\mathcal L_{k,\{j,k\}}(n),
+\qquad
+\mathcal S_i(n)\mathcal P_{\{j,k\}}(n),
+\qquad
+\mathcal S_i(n)\mathcal L_{j,\{j,k\}}(n),
+\qquad
+\mathcal S_i(n)\mathcal S_j(n)\mathcal S_k(n),
+\]
+where $\{i,j,k\}=[3]$ and each product family denotes the set of products of
+pairwise coprime choices from the displayed factors. Conversely, every such
+pairwise coprime selection yields an element of $\mathcal M_n$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:fibonacci-three-coordinate-types} lists the eight admissible
+abstract witness-cover types. By definition, each type corresponds exactly to
+one of the displayed primitive or ladder families. Conversely, if one chooses
+pairwise coprime atoms from any displayed family, then the resulting set of
+factors has precisely the corresponding $(E,T)$-pattern, hence is an
+$n$-witness cover. Theorem~\ref{thm:atomic-witness-classification} then gives
+the corresponding element of $\mathcal M_n$.
+\end{proof}
+
+\begin{corollary}
+\label{thm:prime-power-minimal-generators}
+If $n=\ell^a\ge 3$ is a prime power, then
+\[
+\mathcal M_n=\Atom(n),
+\qquad
+B_n=\bigcup_{\theta\in \Atom(n)}[\theta,F_n].
+\]
+If
+\[
+F_n=\prod_p p^{c_p}
+\]
+and
+\[
+\Atom(n)=\{p^{e_p(n)}:\ \alpha(p^{e_p(n)})=n\},
+\]
+then
+\[
+A(n)=\#B_n
+=
+\tau(F_n)\left(
+1-\prod_{p^{e_p(n)}\in\Atom(n)}
+\frac{e_p(n)}{c_p+1}
+\right).
+\]
+\end{corollary}
+
+\begin{proof}
+Since $\omega(n)=1$, Corollary~\ref{cor:minimal-generator-support-bound} shows
+that every minimal generator has only one prime factor. Theorem~\ref{thm:atomic-witness-classification}
+therefore gives $\mathcal M_n=\Atom(n)$. The interval decomposition follows
+from Theorem~\ref{thm:minimal-generators}, and the counting formula is the same
+divisor-complement count used in the support-one case of the previous version.
+\end{proof}
+
+\begin{corollary}
+\label{thm:odd-semiprime-minimal-generators}
+If $n=pq$ with $p$ and $q$ distinct odd primes, then
+\[
+\mathcal M_{pq}
+=
+\Atom(pq)
+\sqcup
+\{xy:\ x\in\Atom(p),\ y\in\Atom(q)\}.
+\]
+\end{corollary}
+
+\begin{proof}
+Since the prime coordinates of $pq$ are exactly $\{p,q\}$,
+Corollary~\ref{cor:two-support-complete-classification} gives
+\[
+\mathcal M_{pq}
+=
+\Atom(pq)
+\sqcup
+\{xy:\ x\in\Atom_p(pq),\ y\in\Atom_q(pq),\ \gcd(x,y)=1\}.
+\]
+If $x\in \Atom_p(pq)$, then $T_{pq}(x)=\{p\}$, so $\alpha(x)$ is a divisor of
+$pq$ divisible by $p$ but not by $q$; hence $\alpha(x)=p$, which means
+$x\in\Atom(p)$. Similarly, $\Atom_q(pq)=\Atom(q)$. Substituting these
+identities proves the claimed formula.
 \end{proof}
 
 \begin{corollary}
@@ -518,7 +1657,7 @@ m_{\min}(p^{r+1})+2=p\bigl(m_{\min}(p^r)+2\bigr).
 \end{corollary}
 
 \begin{proof}
-This is immediate from Theorem~\ref{thm:prime-power-apparition-ladders}(3).
+This is immediate from Proposition~\ref{thm:prime-power-apparition-ladders}(3).
 \end{proof}
 
 \begin{corollary}
@@ -536,7 +1675,7 @@ X_{\alpha(p)-2}\twoheadrightarrow \ZZ/(p^2\ZZ).
 \end{corollary}
 
 \begin{proof}
-By Theorem~\ref{thm:prime-power-apparition-ladders}(3),
+By Proposition~\ref{thm:prime-power-apparition-ladders}(3),
 \[
 \alpha(p^2)=\alpha(p)
 \iff
@@ -548,7 +1687,11 @@ Wall--Sun--Sun condition is equivalent to $\nu_p(F_{\alpha(p)})\ge 2$; see
 Sun and Sun \cite{SunSun1992FibonacciFLT}.
 \end{proof}
 
-\section{Finite signatures, reconstruction, and shadow complexity}
+\section{A quotient-ring perspective}
+
+We close the main body of the paper with a short quotient-ring interpretation
+of the birth-layer constructions. It complements the divisor-lattice point of
+view developed in the earlier sections.
 
 \begin{definition}
 \label{def:joint-readout}
@@ -736,62 +1879,40 @@ rank of apparition of a prime is unique. Hence
 $\omega(F_n)\ge \tau(n)-4$.
 \end{proof}
 
-\appendix
+\section{Further questions}
 
-\section{First-birth tables}
+The witness-cover theorem, together with the primitive-ladder dichotomy and the
+explicit support-two and support-three classifications, shifts the remaining
+questions away from low-support combinatorics and toward arithmetic realization
+and asymptotic complexity. The interval decomposition
+\[
+B_n=\bigcup_{m\in\mathcal M_n}[m,F_n].
+\]
+is now controlled abstractly by atomic witness covers, and Section~5 makes the
+$p$-primary atomic inputs explicit. Several natural questions remain.
 
-The tables below are included only as arithmetic summaries of the main
-theorems. They are direct consequences of
-Theorems~\ref{thm:birth-spectrum-mobius}
-and~\ref{thm:prime-power-apparition-ladders}; no additional computation enters
-the proofs.
+\begin{enumerate}[label=(\arabic*)]
+\item Turn the support-three classification into sharp arithmetic nonemptiness
+criteria for the families in Corollary~\ref{cor:three-coordinate-realization},
+and then extend the same effective program to $k=\omega(n)\ge 4$. The
+remaining obstacle is no longer combinatorial typing but determining which of
+the finitely many primitive and ladder atomic families are arithmetically
+nonempty and pairwise coprime in a given fiber.
+\item Determine how witness-cover decompositions control global invariants of
+$B_n$, such as $A(n)$, $\widthop(B_n)$, maximal-chain length, and overlap
+patterns among the intervals $[m,F_n]$. Corollary~\ref{thm:boolean-skeleton}
+gives one universal lower-bound mechanism, but the witness-cover theorem
+suggests that sharper estimates should come from counting atomic cover types
+rather than from one distinguished squarefree subposet.
+\item Extend the atomic witness-cover formalism to Lucas sequences and, more
+generally, to strong divisibility sequences equipped with a rank-of-apparition
+map and a primitive-divisor theorem. It is natural to ask which parts of the
+upper-fiber and atomic-generator theory persist in that wider setting.
+\end{enumerate}
 
-\begin{table}[ht]
-\centering
-\small
-\begin{tabular}{rrrrr}
-\toprule
-$n$ & $F_n$ & $A(n)$ & $A_{\mathrm{pr}}(n)$ & $A_{\mathrm{pp}}(n)$ \\
-\midrule
-$2$  & $1$   & $0$  & $0$ & $0$ \\
-$3$  & $2$   & $1$  & $1$ & $1$ \\
-$4$  & $3$   & $1$  & $1$ & $1$ \\
-$5$  & $5$   & $1$  & $1$ & $1$ \\
-$6$  & $8$   & $2$  & $0$ & $2$ \\
-$7$  & $13$  & $1$  & $1$ & $1$ \\
-$8$  & $21$  & $2$  & $1$ & $1$ \\
-$9$  & $34$  & $2$  & $1$ & $1$ \\
-$10$ & $55$  & $2$  & $1$ & $1$ \\
-$11$ & $89$  & $1$  & $1$ & $1$ \\
-$12$ & $144$ & $10$ & $0$ & $2$ \\
-\bottomrule
-\end{tabular}
-\caption{Initial values of the first-birth spectra. The exceptional indices $6$
-and $12$ are prime-field empty but not prime-power empty.}
-\label{tab:birth-spectra-small}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\small
-\begin{tabular}{rrrrr}
-\toprule
-$p$ & $\alpha(p)$ & $\nu_p(F_{\alpha(p)})$ & $\alpha(p^2)$ & $\alpha(p^3)$ \\
-\midrule
-$2$  & $3$  & $1$ & $6$   & $6$ \\
-$3$  & $4$  & $1$ & $12$  & $36$ \\
-$5$  & $5$  & $1$ & $25$  & $125$ \\
-$7$  & $8$  & $1$ & $56$  & $392$ \\
-$11$ & $10$ & $1$ & $110$ & $1210$ \\
-$13$ & $7$  & $1$ & $91$  & $1183$ \\
-$17$ & $9$  & $1$ & $153$ & $2601$ \\
-\bottomrule
-\end{tabular}
-\caption{Initial prime-power ladder data. For the odd primes listed here one
-has $\nu_p(F_{\alpha(p)})=1$, so the ladder begins with a single primitive
-field layer before geometric growth.}
-\label{tab:prime-power-ladders-small}
-\end{table}
+These questions indicate that first-appearance spectra are best viewed as a
+family of divisor-lattice fibers governed by atomic witness systems rather than
+by isolated counting functions.
 
 \section*{Declarations}
 
@@ -803,6 +1924,12 @@ field layer before geometric growth.}
 
 \smallskip
 
+\noindent\textbf{Author contributions.} Both authors contributed to the
+conception of the project, the development of the arguments, and the writing
+of the manuscript. Both authors read and approved the final version.
+
+\smallskip
+
 \noindent\textbf{Conflict of interest.} The authors declare that they have no
 conflict of interest.
 
@@ -810,7 +1937,10 @@ conflict of interest.
 \noindent\textbf{Data availability.} Data sharing not applicable to this
 article as no datasets were generated or analyzed during the current study.
 
+\smallskip
+\noindent\textbf{Code availability.} Not applicable.
+
 \bibliographystyle{unsrt}
-\bibliography{../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_fibonacci,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_algebra}
+\bibliography{../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_fibonacci,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_algebra,references_local}
 
 \end{document}
