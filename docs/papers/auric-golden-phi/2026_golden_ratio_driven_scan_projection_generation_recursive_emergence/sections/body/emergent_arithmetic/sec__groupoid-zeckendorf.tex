@@ -1,6 +1,8 @@
 \subsection{群胚视角：值保持重写的轨道与 Zeckendorf 横截面}\label{sec:groupoid-zeckendorf}
 
-为使“折叠为何是涌现而非注入”具有可审计表述，我们把 Fibonacci 关系实现为一族\textbf{可逆局部变换}（群胚生成元），并把 Zeckendorf 合法序列理解为其轨道横截面。
+上一小节已经把稳定算术表述为一个商结构：所有同值配置在 Fibonacci 关系下落入同一同余类，而 Zeckendorf 规范形给出每个同余类的唯一代表。
+本小节给出与之等价但更操作性的表述：把这些关系实现为一族可逆局部变换，并把规范化解释为沿值保持轨道投影到唯一横截面。
+其意义有二：一方面，它把“同值”从静态商关系改写为可执行的群胚轨道；另一方面，它为后续定向化归一化重写提供直接起点。
 
 \begin{definition}[Fibonacci 局部变换（可逆重写）]\label{def:fib-moves}
 定义以下作用于 $\mathcal{D}$ 的部分可逆变换（在各自可行域上）：
@@ -57,7 +59,8 @@
 \end{remark}
 
 \subsubsection{定向化归一化重写（\texorpdfstring{$\Fold_\infty$}{Fold\_infty} 的编译表述）}\label{subsec:directed-rewrite}
-定理 \ref{thm:zeckendorf-transversal} 已经把折叠解释为“沿值保持轨道投影到唯一稳定代表”。为获得直接可执行的归一化过程，可将群胚生成元定向为一套\textbf{值保持重写}：
+定理 \ref{thm:zeckendorf-transversal} 已经把折叠解释为“沿值保持轨道投影到唯一稳定代表”。
+为获得直接可执行的归一化过程，只需把群胚生成元定向为一套值保持重写：
 \begin{itemize}
   \item \textbf{相邻合并规则 (\ref{rule:fold:adj})：}若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
   \[
@@ -99,6 +102,12 @@ C(a)=a_2,
 \mu(a)=(A(a),B(a),C(a))
 \]
 按字典序比较。则规则 (\ref{rule:fold:adj}) 与 (\ref{rule:fold:dedup1}) 使 $A$ 减少 1；规则 (\ref{rule:fold:dedupk})（$k\ge 3$）使 $B$ 减少 1；规则 (\ref{rule:fold:dedup2}) 保持 $A,B$ 不变但使 $C$ 减少 2。故每步重写都严格降低 $\mu$，系统终止。不可约项必满足 $a_k\le 1$ 且无相邻 $11$，即属于 $X_\infty$；反之，当 $a\in X_\infty$ 时，四条规则 (\ref{rule:fold:adj})--(\ref{rule:fold:dedupk}) 的触发条件均不满足，因此不可约。又因每步重写保持 $\mathrm{Val}$，终止形与初态同值；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性知正规形唯一且为 $\Fold_\infty(a)$。证毕。
+
+\begin{remark}[与 forcing 语义的接口]\label{rem:directed-rewrite-forcing-interface}
+定向化归一化重写并不创造新的对象层事实。
+按推论 \ref{cor:observer-indexed-reading-of-emergent-arithmetic} 与命题 \ref{prop:observer-indexed-value-preserving-no-creation}，它只能作用于那些已经完成地址对象化、已经通过局部截面判据并已获得非 \(\mathsf{NULL}\) 读出的值类。
+因此，\(\Fold_\infty\) 的编译表述不是把未定义字符串强行送入算术层，而是在既有对象层值类内部选取唯一规范代表。
+\end{remark}
 
 \begin{remark}[残差的两种自然落点]\label{rem:residual}
 折叠 $\Fold_\infty$ 是值纤维到横截面的投影；因此“残差”可视为从 $a$ 到 $\Fold_\infty(a)$ 的群胚态射（重写路径/轨道坐标）。在有限分辨率 $m$ 下，则对应附录 D 中的折叠多重度 $d_m$：大量微态压缩到同一稳定类型，丢失的信息即是这些预像的区分标签。

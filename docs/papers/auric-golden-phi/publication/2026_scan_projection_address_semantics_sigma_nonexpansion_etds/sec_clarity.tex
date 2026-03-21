@@ -1,0 +1,932 @@
+\section{Finite observation error}\label{sec:clarity}
+
+We study the error made when an event is observed only through the
+depth-\(m\) visible \(\sigma\)-algebra \(\mathcal{F}_m\).
+
+\begin{definition}[Observation error]
+\label{def:scan-error}\label{def:scan-error-profile}
+Let \(\mathsf{P}\in\mathcal{F}_\infty\).  For \(m\geq 1\) define
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  := \inf\set{
+      \mu(g\neq \mathbf{1}_{\mathsf{P}}):
+      g\in L^\infty(\mathcal{F}_m),\ g(X)\subseteq\{0,1\}
+     }.
+\]
+\end{definition}
+
+For \(a\in\Sigma^m\) we continue to write \(C_a\) for the corresponding
+\(m\)-cylinder.
+
+\begin{proposition}[Exact cylinder formula]
+\label{prop:scan-error-cylinder}
+For every \(\mathsf{P}\in\mathcal{F}_\infty\) and every \(m\geq 1\),
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  = \sum_{a\in\Sigma^m}
+      \min\bigl\{\mu(\mathsf{P}\cap C_a),
+                 \mu(C_a\setminus\mathsf{P})\bigr\}.
+\]
+Equivalently, if
+\[
+  p_m := \mu(\mathsf{P}\mid \mathcal{F}_m),
+\]
+then
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  = \EE\bigl[\min\{p_m,1-p_m\}\bigr].
+\]
+\end{proposition}
+
+\begin{proof}
+The atoms of \(\mathcal{F}_m\) are precisely the non-empty cylinders
+\(C_a\).  Any \(\{0,1\}\)-valued \(\mathcal{F}_m\)-measurable function is
+constant on each atom, so on \(C_a\) it either accepts the whole atom or
+rejects the whole atom.  The corresponding error on \(C_a\) is
+therefore either \(\mu(\mathsf{P}\cap C_a)\) or
+\(\mu(C_a\setminus\mathsf{P})\), and the better choice is the minimum of
+the two.  Summing over the atoms gives the first formula.  The second
+follows by writing the minimum on each cylinder in terms of the
+conditional probability \(p_m\).
+\end{proof}
+
+\begin{proposition}[Bayes rule and functional stability]
+\label{prop:bayes-optimality}
+Let \(p_m=\mu(\mathsf{P}\mid\mathcal{F}_m)\) and define
+\[
+  \mathsf{P}_m^\ast := \set{x\in X:p_m(x)\geq \tfrac12}\in\mathcal{F}_m.
+\]
+Then the following hold.
+\begin{enumerate}[label=(\roman*)]
+  \item For every \(\mathsf{Q}\in\mathcal{F}_m\),
+    \[
+      \mu(\mathsf{P}\triangle \mathsf{Q})
+      \geq \varepsilon_m(\mathsf{P};\mu),
+      \qquad
+      \mu(\mathsf{P}\triangle \mathsf{P}_m^\ast)
+      = \varepsilon_m(\mathsf{P};\mu).
+    \]
+  \item For every bounded \(\mathcal{F}_\infty\)-measurable function
+    \(\varphi\),
+    \[
+      \left|
+        \int \varphi\,\mathbf{1}_{\mathsf{P}}\,\dd\mu
+        - \int \varphi\,\mathbf{1}_{\mathsf{P}_m^\ast}\,\dd\mu
+      \right|
+      \leq \norm{\varphi}_\infty\,
+           \varepsilon_m(\mathsf{P};\mu).
+    \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+On each atom of \(\mathcal{F}_m\) the optimal choice is to accept if the
+conditional probability of \(\mathsf{P}\) is at least \(1/2\) and to
+reject otherwise.  This proves~(i) by
+Proposition~\ref{prop:scan-error-cylinder}.  Part~(ii) follows from the
+estimate
+\[
+  \left|
+    \int \varphi\,
+      \bigl(\mathbf{1}_{\mathsf{P}}
+            -\mathbf{1}_{\mathsf{P}_m^\ast}\bigr)\,\dd\mu
+  \right|
+  \leq \norm{\varphi}_\infty\,
+       \mu(\mathsf{P}\triangle \mathsf{P}_m^\ast).
+\]
+\end{proof}
+
+\begin{theorem}[Tanaka identity]
+\label{thm:tanaka-stokes}
+Let \(\mathsf{P}\in\mathcal{F}_\infty\) and
+\(p_m=\mu(\mathsf{P}\mid \mathcal{F}_m)\).  Set
+\[
+  \varepsilon_0(\mathsf{P};\mu)
+  := \min\{\mu(\mathsf{P}),1-\mu(\mathsf{P})\}
+\]
+and define
+\[
+  L_m^{1/2}
+  := \sum_{k=0}^{m-1}
+      \left(
+        \abs{p_{k+1}-\tfrac12}
+        - \abs{p_k-\tfrac12}
+        - \operatorname{sgn}(p_k-\tfrac12)(p_{k+1}-p_k)
+      \right),
+\]
+where \(\operatorname{sgn}(0):=0\).  Then \(L_m^{1/2}\geq 0\),
+\(m\mapsto L_m^{1/2}\) is non-decreasing, and
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  = \varepsilon_0(\mathsf{P};\mu)
+    - \EE\bigl[L_m^{1/2}\bigr].
+\]
+If \(\mathbf{1}_{\mathsf{P}}\) is measurable with respect to
+\(\mathcal{F}_\infty\), then \(p_m\to \mathbf{1}_{\mathsf{P}}\) almost
+everywhere and
+\[
+  \EE\bigl[L_\infty^{1/2}\bigr]
+  = \varepsilon_0(\mathsf{P};\mu).
+\]
+\end{theorem}
+
+\begin{proof}
+Since \(\min\{u,1-u\}=\tfrac12-\abs{u-\tfrac12}\) for \(u\in[0,1]\),
+Proposition~\ref{prop:scan-error-cylinder} gives
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  = \frac12 - \EE\abs{p_m-\tfrac12}.
+\]
+For any real sequence \((x_k)\) and any threshold \(a\) one has the
+discrete Tanaka decomposition
+\begin{align*}
+  \abs{x_m-a}
+  &= \abs{x_0-a}
+     + \sum_{k=0}^{m-1}
+       \operatorname{sgn}(x_k-a)(x_{k+1}-x_k) \\
+  &\quad
+     + \sum_{k=0}^{m-1}
+       \left(
+         \abs{x_{k+1}-a}
+         - \abs{x_k-a}
+         - \operatorname{sgn}(x_k-a)(x_{k+1}-x_k)
+       \right).
+\end{align*}
+Apply this with \(x_k=p_k\) and \(a=\tfrac12\).  The last sum is
+exactly \(L_m^{1/2}\).  Since \((p_m)\) is a bounded martingale and
+\(\operatorname{sgn}(p_k-\tfrac12)\) is \(\mathcal{F}_k\)-measurable,
+\[
+  \EE\!\left[
+    \operatorname{sgn}(p_k-\tfrac12)(p_{k+1}-p_k)
+  \right]
+  = 0.
+\]
+Taking expectations yields
+\[
+  \EE\abs{p_m-\tfrac12}
+  = \abs{p_0-\tfrac12} + \EE[L_m^{1/2}],
+\]
+and therefore
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  = \left(\frac12-\abs{p_0-\tfrac12}\right)
+    - \EE[L_m^{1/2}]
+  = \varepsilon_0(\mathsf{P};\mu)-\EE[L_m^{1/2}].
+\]
+The summands defining \(L_m^{1/2}\) are non-negative by convexity of the
+absolute value, so \(L_m^{1/2}\) is non-decreasing in \(m\).  If
+\(\mathbf{1}_{\mathsf{P}}\) is \(\mathcal{F}_\infty\)-measurable, then
+\(p_m\to \mathbf{1}_{\mathsf{P}}\) almost surely by martingale
+convergence, hence \(\varepsilon_m(\mathsf{P};\mu)\to 0\), and the last
+identity follows by monotone convergence.
+\end{proof}
+
+\begin{corollary}\label{cor:clarity-monotone}
+The sequence \(m\mapsto \varepsilon_m(\mathsf{P};\mu)\) is
+non-increasing.  Moreover,
+\[
+  \varepsilon_m(\mathsf{P};\mu)=0
+  \qquad\Longleftrightarrow\qquad
+  \mathsf{P}\in\mathcal{F}_m.
+\]
+\end{corollary}
+
+\begin{proof}
+Monotonicity follows from Theorem~\ref{thm:tanaka-stokes}.  The second
+statement is immediate from Proposition~\ref{prop:bayes-optimality}.
+\end{proof}
+
+\subsection{Boundary cylinders and weighted boundary mass}
+
+\begin{definition}[Boundary cylinders]
+\label{def:boundary-cylinders}
+For \(\mathsf{P}\in\mathcal{F}_\infty\), let \(\varnothing\) denote the
+unique word of length \(0\), and set \(C_{\varnothing}:=X\).  For
+\(m\geq 0\) define
+\[
+  \partial_m\mathsf{P}
+  := \set{a\in\Sigma^m:
+      \mu(\mathsf{P}\cap C_a)>0
+      \text{ and }
+      \mu(C_a\setminus\mathsf{P})>0},
+\]
+and let
+\[
+  N_m(\partial\mathsf{P}) := \card{\partial_m\mathsf{P}},
+  \qquad
+  Z_m^\mu(\partial\mathsf{P})
+  := \sum_{a\in\partial_m\mathsf{P}}\mu(C_a).
+\]
+If the number of non-empty \(m\)-cylinders grows like
+\(\lambda_{\mathrm{cyl}}^m\) for some \(\lambda_{\mathrm{cyl}}>1\), we
+set
+\[
+  \overline{\dim}_B(\partial\mathsf{P})
+  := \limsup_{m\to\infty}
+      \frac{\log N_m(\partial\mathsf{P})}
+           {m\log \lambda_{\mathrm{cyl}}}.
+\]
+\end{definition}
+
+\begin{proposition}[Weighted boundary decomposition]
+\label{prop:weighted-boundary-decomposition}
+For \(\mathsf{P}\in\mathcal{F}_\infty\), \(m\geq 1\), and
+\(a\in\partial_m\mathsf{P}\), define
+\[
+  \beta_{\mathsf{P}}(a)
+  := \min\bigl\{\mu(\mathsf{P}\mid C_a),
+                1-\mu(\mathsf{P}\mid C_a)\bigr\}.
+\]
+Then
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  = \sum_{a\in\partial_m\mathsf{P}}
+      \mu(C_a)\beta_{\mathsf{P}}(a).
+\]
+Consequently,
+\[
+  \varepsilon_m(\mathsf{P};\mu)\leq \frac12 Z_m^\mu(\partial\mathsf{P}),
+\]
+and if \(\beta_{\mathsf{P}}(a)\geq \theta\) for all
+\(a\in\partial_m\mathsf{P}\), then
+\[
+  \theta Z_m^\mu(\partial\mathsf{P})
+  \leq \varepsilon_m(\mathsf{P};\mu)
+  \leq \frac12 Z_m^\mu(\partial\mathsf{P}).
+\]
+\end{proposition}
+
+\begin{proof}
+If \(a\notin\partial_m\mathsf{P}\), then either
+\(\mu(\mathsf{P}\cap C_a)=0\) or \(\mu(C_a\setminus\mathsf{P})=0\), so
+the contribution of \(C_a\) in Proposition~\ref{prop:scan-error-cylinder}
+is zero.  On a boundary cylinder,
+\[
+  \min\bigl\{\mu(\mathsf{P}\cap C_a),
+             \mu(C_a\setminus\mathsf{P})\bigr\}
+  = \mu(C_a)\beta_{\mathsf{P}}(a).
+\]
+Summing over boundary cylinders gives the identity.  The bounds follow
+from \(0<\beta_{\mathsf{P}}(a)\leq \tfrac12\).
+\end{proof}
+
+\begin{theorem}[Upper boundary estimate]
+\label{thm:clarity-boundary-dimension}
+Assume that there exist constants \(K<\infty\) and
+\(\lambda_{\mathrm{cyl}}>1\) such that every non-empty \(m\)-cylinder
+\(C\) satisfies
+\[
+  \mu(C)\leq K\lambda_{\mathrm{cyl}}^{-m}.
+\]
+Then for every \(\mathsf{P}\in\mathcal{F}_\infty\) and every \(m\geq 1\),
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  \leq \frac{K}{2}\lambda_{\mathrm{cyl}}^{-m}
+     N_m(\partial\mathsf{P}).
+\]
+In particular, if
+\(\overline{\dim}_B(\partial\mathsf{P})=d<1\), then
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  \leq \lambda_{\mathrm{cyl}}^{-(1-d)m+o(m)}.
+\]
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:weighted-boundary-decomposition},
+\[
+  \varepsilon_m(\mathsf{P};\mu)
+  \leq \frac12 Z_m^\mu(\partial\mathsf{P})
+  = \frac12\sum_{a\in\partial_m\mathsf{P}}\mu(C_a).
+\]
+The cylinder-size assumption gives
+\[
+  \sum_{a\in\partial_m\mathsf{P}}\mu(C_a)
+  \leq K\lambda_{\mathrm{cyl}}^{-m}N_m(\partial\mathsf{P}),
+\]
+which proves the first claim.  If
+\(N_m(\partial\mathsf{P})
+ = \lambda_{\mathrm{cyl}}^{dm+o(m)}\)
+along a limsup, then the second estimate follows immediately.
+\end{proof}
+
+\subsection{Markov visible sources and weighted boundary automata}
+
+We now pass from unweighted boundary counts to boundary mass.  The
+relevant finite-state object is no longer the counting automaton for the
+boundary language alone, but the product of that automaton with the
+visible Markov source.
+
+\begin{theorem}[Weighted boundary transfer]
+\label{thm:weighted-boundary-transfer}
+Assume that the visible factor law
+\(\nu:=\mu\circ\omega_\infty^{-1}\) is a fully supported stationary
+Markov measure on a topologically mixing one-step subshift of finite
+type \(Y\subseteq\Sigma^{\NNzero}\).  Let \(A=(A_{ij})_{i,j\in\Sigma}\)
+be the adjacency matrix of \(Y\), let \(\pi\) be the stationary vector
+of \(\nu\), and let \(K=(K_{ij})_{i,j\in\Sigma}\) be the transition
+matrix.  Assume that the boundary language
+\[
+  \mathcal{L}_\partial(\mathsf{P})
+  := \bigcup_{m\geq 1}\partial_m\mathsf{P}
+\]
+is regular, and choose a trim deterministic finite automaton
+\[
+  \mathcal{A}_\partial=(Q,q_\ast,\delta,F)
+\]
+recognizing \(\mathcal{L}_\partial(\mathsf{P})\), where the transition
+map \(\delta:Q\times\Sigma\rightharpoonup Q\) is allowed to be partial.
+Set \(\widehat Q:=Q\times\Sigma\), and define
+\[
+  B_{(q,i),(q',j)}
+  := K_{ij}\,
+     \mathbf{1}_{\{A_{ij}=1\}}
+     \mathbf{1}_{\{q'=\delta(q,j)\}},
+\]
+\[
+  u_{(q,i)}:=\pi_i\,\mathbf{1}_{\{q=\delta(q_\ast,i)\}},
+  \qquad
+  v_{(q,i)}:=\mathbf{1}_{\{q\in F\}}.
+\]
+When \(\delta(q,j)\) is undefined, the corresponding indicator is
+understood to be \(0\).
+Then the following hold.
+\begin{enumerate}[label=(\roman*)]
+  \item For every \(m\geq 1\),
+    \[
+      Z_m^\mu(\partial\mathsf{P})=u^{\mathsf T}B^{m-1}v.
+    \]
+  \item The weighted boundary zeta function
+    \[
+      \zeta_{\partial\mathsf{P},\mu}(s)
+      := \sum_{m\geq 1}
+          Z_m^\mu(\partial\mathsf{P})e^{-sm}
+    \]
+    satisfies
+    \[
+      \zeta_{\partial\mathsf{P},\mu}(s)
+      = e^{-s}u^{\mathsf T}
+        \bigl(I-e^{-s}B\bigr)^{-1}v
+    \]
+    for \(\Re(s)>\log\rho(B)\), and the right-hand side extends
+    meromorphically to the whole complex plane as a rational function of
+    \(e^{-s}\).
+  \item If \(B\) is primitive and \(\rho_\partial:=\rho(B)<1\), then
+    there exist \(c_\partial>0\) and \(0\leq \vartheta<\rho_\partial\)
+    such that
+    \[
+      Z_m^\mu(\partial\mathsf{P})
+      = c_\partial\rho_\partial^{\,m-1}+O(\vartheta^m).
+    \]
+    If, in addition, there exist \(\theta>0\) and \(m_0\) such that
+    \(\beta_{\mathsf{P}}(a)\geq \theta\) for every
+    \(m\geq m_0\) and every \(a\in\partial_m\mathsf{P}\), then
+    \[
+      \lim_{m\to\infty}
+      -\frac{1}{m}\log \varepsilon_m(\mathsf{P};\mu)
+      = -\log\rho_\partial.
+    \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let \(a=a_0\cdots a_{m-1}\in\Sigma^m\).  Since \(\nu\) is a stationary
+Markov measure on \(Y\),
+\[
+  \mu(C_a)=\nu([a])
+  = \pi_{a_0}K_{a_0a_1}\cdots K_{a_{m-2}a_{m-1}}
+\]
+whenever \(C_a\neq\varnothing\), and this is zero otherwise.  A word
+\(a\) lies in \(\partial_m\mathsf{P}\) exactly when it is accepted by
+\(\mathcal{A}_\partial\).  Thus every boundary word of length \(m\)
+corresponds to a unique path
+\[
+  (\delta(q_\ast,a_0),a_0),
+  (\delta(q_\ast,a_0a_1),a_1),\ldots,
+  (\delta(q_\ast,a_0\cdots a_{m-1}),a_{m-1})
+\]
+in the product graph, and the weight of that path is precisely
+\(\mu(C_a)\).  Summing over accepted words yields
+\[
+  Z_m^\mu(\partial\mathsf{P})=u^{\mathsf T}B^{m-1}v,
+\]
+proving~(i).
+
+For \(\Re(s)>\log\rho(B)\), the geometric series for
+\(e^{-s}B\) converges absolutely, so
+\[
+  \zeta_{\partial\mathsf{P},\mu}(s)
+  = \sum_{m\geq 1}
+      u^{\mathsf T}B^{m-1}v\,e^{-sm}
+  = e^{-s}u^{\mathsf T}
+    \sum_{n\geq 0}(e^{-s}B)^n v
+  = e^{-s}u^{\mathsf T}(I-e^{-s}B)^{-1}v.
+\]
+Since the resolvent is rational in the variable \(e^{-s}\), this gives
+the stated meromorphic continuation.  This proves~(ii).
+
+Assume now that \(B\) is primitive.  By the Perron--Frobenius theorem
+there exist positive left and right eigenvectors \(\ell\) and \(r\),
+normalized by \(\ell^{\mathsf T}r=1\), such that
+\[
+  B^n = \rho_\partial^n r\ell^{\mathsf T} + O(\vartheta^n)
+\]
+for some \(\vartheta<\rho_\partial\).  Because \(u\) and \(v\) are
+non-zero and non-negative, \((u^{\mathsf T}r)(\ell^{\mathsf T}v)>0\).
+Hence
+\[
+  Z_m^\mu(\partial\mathsf{P})
+  = u^{\mathsf T}B^{m-1}v
+  = c_\partial\rho_\partial^{\,m-1}+O(\vartheta^m),
+\]
+where
+\[
+  c_\partial := (u^{\mathsf T}r)(\ell^{\mathsf T}v)>0.
+\]
+The final exponent statement follows from this asymptotic and the
+two-sided estimate in
+Proposition~\ref{prop:weighted-boundary-decomposition}.
+\end{proof}
+
+\begin{corollary}[Weighted boundary pole law]
+\label{cor:weighted-boundary-pole}
+Assume
+Theorem~\ref{thm:weighted-boundary-transfer}(iii).  Then the weighted
+boundary zeta function has a simple pole at
+\[
+  s_\partial := \log\rho_\partial,
+\]
+and
+\[
+  \operatorname{Res}_{s=s_\partial}
+  \zeta_{\partial\mathsf{P},\mu}(s)
+  = \frac{c_\partial}{\rho_\partial}.
+\]
+\end{corollary}
+
+\begin{proof}
+The asymptotic in
+Theorem~\ref{thm:weighted-boundary-transfer}(iii) gives
+\[
+  \zeta_{\partial\mathsf{P},\mu}(s)
+  = \sum_{m\geq 1}
+      c_\partial\rho_\partial^{\,m-1}e^{-sm}
+    + H(s)
+  = \frac{c_\partial e^{-s}}
+         {1-\rho_\partial e^{-s}}
+    + H(s),
+\]
+where \(H\) is analytic in a neighborhood of \(s_\partial\).  Since
+\[
+  1-\rho_\partial e^{-s}
+  = s-s_\partial + O\bigl((s-s_\partial)^2\bigr)
+\]
+near \(s_\partial\), the pole is simple and its residue is
+\(c_\partial e^{-s_\partial}=c_\partial/\rho_\partial\).
+\end{proof}
+
+\begin{corollary}[Pressure gap formula]
+\label{cor:pressure-gap}
+Assume the hypotheses of
+Theorem~\ref{thm:weighted-boundary-transfer}.  Suppose further that the
+visible Markov source is generated by a one-step potential \(\varphi\),
+that is,
+\[
+  L_\varphi(i,j):=A_{ij}e^{\varphi(i,j)},
+  \qquad
+  P_Y(\varphi):=\log\rho(L_\varphi),
+\]
+and let \(h>0\) be a Perron right eigenvector of \(L_\varphi\).  Define
+\[
+  \widetilde B_\varphi{}_{(q,i),(q',j)}
+  := A_{ij}e^{\varphi(i,j)}
+     \mathbf{1}_{\{q'=\delta(q,j)\}},
+  \qquad
+  P_\partial(\varphi):=\log\rho(\widetilde B_\varphi).
+\]
+Then
+\[
+  K_{ij}
+  = A_{ij}e^{\varphi(i,j)-P_Y(\varphi)}\frac{h_j}{h_i},
+  \qquad
+  B = e^{-P_Y(\varphi)}D^{-1}\widetilde B_\varphi D,
+\]
+where \(D_{(q,i),(q,i)}:=h_i\).  Consequently
+\[
+  \rho_\partial
+  = e^{P_\partial(\varphi)-P_Y(\varphi)}.
+\]
+If \(B\) is primitive, \(\rho_\partial<1\), and the boundary
+non-degeneracy condition from
+Theorem~\ref{thm:weighted-boundary-transfer}(iii) holds, then
+\[
+  \lim_{m\to\infty}
+  -\frac{1}{m}\log \varepsilon_m(\mathsf{P};\mu)
+  = P_Y(\varphi)-P_\partial(\varphi).
+\]
+\end{corollary}
+
+\begin{proof}
+The formula for \(K\) is the standard normalization of a one-step
+potential by a Perron eigenvector.  The stated conjugacy relation
+\[
+  B = e^{-P_Y(\varphi)}D^{-1}\widetilde B_\varphi D
+\]
+is immediate from the definitions, hence
+\[
+  \rho(B)=e^{-P_Y(\varphi)}\rho(\widetilde B_\varphi)
+  = e^{P_\partial(\varphi)-P_Y(\varphi)}.
+\]
+The exponent identity now follows from
+Theorem~\ref{thm:weighted-boundary-transfer}(iii).
+\end{proof}
+
+\begin{remark}
+The same pressure-gap formula extends from one-step potentials to
+H\"older Gibbs states by passing to a sufficiently high block
+presentation and invoking the standard Ruelle--Perron--Frobenius theory;
+see \citet{Bowen2008,Ruelle1978,Walters1975GMeasures}.
+\end{remark}
+
+\subsection{First-entry residue events and escape rates}
+
+We now close the pressure-gap mechanism by identifying a natural class
+of target events for which the boundary matrix is precisely the killed
+transfer matrix of an open system.  Since any finite union of cylinders
+becomes a one-step Markov hole after a sufficiently high block
+presentation, there is no loss in working directly on a one-step shift
+over a finite alphabet \(A\); compare
+\citet{LindMarcus1995,Bowen2008,DemersWrightYoung2012}.
+
+\begin{theorem}[First-entry residue events and escape rates]
+\label{thm:first-entry-escape-rate}
+Let \(Y\subseteq A^{\NNzero}\) be a topologically mixing one-step
+subshift of finite type, and let \(\nu_\varphi\) be the fully supported
+equilibrium Markov measure of a one-step potential \(\varphi\).  Write
+\(\pi\) for the stationary vector and \(K=(K_{ij})_{i,j\in A}\) for the
+transition matrix.  Let \(M=(M_{ij})_{i,j\in A}\) be the adjacency
+matrix of \(Y\).  Let \(\mathcal H\subsetneq A\) be a non-empty proper
+subset, and set
+\[
+  H:=\bigcup_{h\in\mathcal H}[h],
+  \qquad
+  \mathcal S:=A\setminus \mathcal H.
+\]
+Let
+\[
+  Y_H:=\set{y\in Y:\sigma^n y\notin H\text{ for every }n\geq 0}
+\]
+be the survivor subshift, and assume that \(Y_H\) is topologically
+mixing.  Define the first entry time
+\[
+  \tau_H(y):=\inf\set{n\geq 0:\sigma^n y\in H}.
+\]
+Fix \(q\geq 2\) and a non-empty proper subset
+\(R\subsetneq \ZZ/q\ZZ\), and define
+\[
+  \mathsf{P}_R
+  := \set{y\in Y:
+      \tau_H(y)<\infty,\ 
+      \tau_H(y)\bmod q\in R }.
+\]
+
+For \(i\in\mathcal S\), let \(\PP_i\) be the Markov law on \(Y\)
+conditioned to start at state \(i\), and let
+\[
+  \tau_H^+
+  := \inf\set{n\geq 1:y_n\in\mathcal H}.
+\]
+For \(r\in\ZZ/q\ZZ\), define
+\[
+  p_{i,r}:=\PP_i\bigl(r+\tau_H^+\in R \bmod q\bigr),
+  \qquad
+  \beta_{i,r}:=\min\set{p_{i,r},1-p_{i,r}}.
+\]
+Assume the following residue non-degeneracy condition:
+for every \(i\in\mathcal S\) and \(r\in\ZZ/q\ZZ\), there exist
+admissible future paths starting at \(i\) whose first entry into
+\(\mathcal H\) occurs at residues both in \(R-r\) and in
+\((\ZZ/q\ZZ\setminus R)-r\).  Then there exists \(\theta>0\) such that
+\[
+  0<\theta\leq \beta_{i,r}\leq \frac12
+  \qquad
+  \text{for every } i\in\mathcal S,\ r\in\ZZ/q\ZZ.
+\]
+
+Define the killed matrix \(B_H\) on \(\mathcal S\) by
+\[
+  B_H(i,j):=K_{ij}\mathbf{1}_{\{j\in\mathcal S\}},
+  \qquad i,j\in\mathcal S,
+\]
+let \(u\in\RR^{\mathcal S}\) be given by
+\[
+  u_i:=\pi_i,
+\]
+and for \(r\in\ZZ/q\ZZ\) let \(b_r\in\RR^{\mathcal S}\) be the vector
+\[
+  b_r(i):=\beta_{i,r}.
+\]
+Then for every \(m\geq 1\),
+\[
+  \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = u^{\mathsf T}B_H^{m-1}b_{m-1\bmod q}.
+\]
+Moreover,
+\[
+  \theta\,\nu_\varphi(\tau_H\geq m)
+  \leq \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  \leq \frac12\,\nu_\varphi(\tau_H\geq m),
+\]
+where
+\[
+  \nu_\varphi(\tau_H\geq m)
+  = u^{\mathsf T}B_H^{m-1}\mathbf{1}.
+\]
+If \(\rho_H:=\rho(B_H)\), then
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = -\log\rho_H.
+\]
+Finally, if
+\[
+  L_{\varphi,H}(i,j):=M_{ij}e^{\varphi(i,j)}\mathbf{1}_{\{j\in\mathcal S\}},
+  \qquad i,j\in\mathcal S,
+\]
+then
+\[
+  -\log\rho_H
+  = P_Y(\varphi)-P_{Y_H}(\varphi).
+\]
+Thus the finite-observation exponent of \(\mathsf{P}_R\) coincides with
+the escape rate of the open system \((Y,\sigma,H)\).
+\end{theorem}
+
+\begin{proof}
+Let \(a=a_0\cdots a_{m-1}\in A^m\).  If \(a_t\in\mathcal H\) for some
+\(0\leq t\leq m-1\), then \(\tau_H\leq m-1\) on the cylinder \([a]\), so
+the truth value of \(\mathsf{P}_R\) is already decided on \([a]\), and
+\([a]\) contributes \(0\) to
+\(\varepsilon_m(\mathsf{P}_R;\nu_\varphi)\).
+
+Assume therefore that \(a_t\in\mathcal S\) for every
+\(0\leq t\leq m-1\).  By the Markov property, conditioned on \([a]\) the
+future depends on the prefix only through the terminal state
+\(a_{m-1}\).  Since the next possible hit time occurs after at least one
+additional step, the conditional probability of \(\mathsf{P}_R\) on
+\([a]\) is exactly \(p_{a_{m-1},\,m-1\bmod q}\).  Hence the Bayes factor
+on \([a]\) is \(\beta_{a_{m-1},\,m-1\bmod q}\).  The residue
+non-degeneracy hypothesis guarantees \(0<\beta_{i,r}\leq \tfrac12\), and
+since the state space \(\mathcal S\times \ZZ/q\ZZ\) is finite, the lower
+bound can be chosen uniformly.
+
+Thus the boundary cylinders for \(\mathsf{P}_R\) are exactly the
+length-\(m\) survivor words, and
+Proposition~\ref{prop:scan-error-cylinder} gives
+\[
+  \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = \sum_{\substack{a\in A^m\\ a_t\in\mathcal S\ \forall t<m}}
+      \nu_\varphi([a])\,
+      \beta_{a_{m-1},\,m-1\bmod q}.
+\]
+Since \(\nu_\varphi\) is Markov,
+\[
+  \nu_\varphi([a])
+  = \pi_{a_0}K_{a_0a_1}\cdots K_{a_{m-2}a_{m-1}},
+\]
+and summing over survivor words with a fixed terminal state gives
+\[
+  \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = u^{\mathsf T}B_H^{m-1}b_{m-1\bmod q}.
+\]
+The same path sum with terminal weight \(\mathbf{1}\) gives
+\[
+  \nu_\varphi(\tau_H\geq m)
+  = u^{\mathsf T}B_H^{m-1}\mathbf{1}.
+\]
+The two-sided comparison with survivor mass follows immediately from the
+uniform bounds on \(\beta_{i,r}\).
+
+Because \(Y_H\) is topologically mixing and \(\nu_\varphi\) has full
+support, the matrix \(B_H\) is primitive.  The Perron--Frobenius theorem
+therefore gives
+\[
+  u^{\mathsf T}B_H^{m-1}b_{m-1\bmod q}
+  = C_{m-1\bmod q}\rho_H^{m-1}+O(\vartheta^m)
+\]
+for some \(q\)-periodic family of positive constants
+\((C_r)_{r\in\ZZ/q\ZZ}\) and some \(0\leq \vartheta<\rho_H\).  Hence
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = -\log\rho_H.
+\]
+
+Let \(h>0\) be a Perron right eigenvector of the ambient transfer matrix
+\(L_\varphi(i,j):=M_{ij}e^{\varphi(i,j)}\).  The normalized transition
+matrix satisfies
+\[
+  K_{ij}
+  = M_{ij}e^{\varphi(i,j)-P_Y(\varphi)}\frac{h_j}{h_i}.
+\]
+If \(D\) denotes the diagonal matrix on \(\mathcal S\) with
+\(D_{ii}=h_i\), then
+\[
+  B_H=e^{-P_Y(\varphi)}D^{-1}L_{\varphi,H}D.
+\]
+Consequently
+\[
+  \rho_H
+  = e^{-P_Y(\varphi)}\rho(L_{\varphi,H}).
+\]
+Since \(Y_H\) is a topologically mixing one-step subshift, standard
+thermodynamic formalism identifies
+\(\log\rho(L_{\varphi,H})\) with \(P_{Y_H}(\varphi)\).  Therefore
+\[
+  -\log\rho_H
+  = P_Y(\varphi)-P_{Y_H}(\varphi).
+\]
+The escape-rate interpretation follows from the comparison with
+\(\nu_\varphi(\tau_H\geq m)\).
+\end{proof}
+
+\begin{corollary}[Survivor pressure recovery]
+\label{cor:survivor-pressure-recovery}
+Under the hypotheses of
+Theorem~\ref{thm:first-entry-escape-rate},
+\[
+  P_{Y_H}(\varphi)
+  = P_Y(\varphi)
+    + \lim_{m\to\infty}\frac1m
+      \log \varepsilon_m(\mathsf{P}_R;\nu_\varphi).
+\]
+In particular, for the measure of maximal entropy,
+\[
+  h_{\mathrm{top}}(Y_H)
+  = h_{\mathrm{top}}(Y)
+    + \lim_{m\to\infty}\frac1m
+      \log \varepsilon_m(\mathsf{P}_R;\nu_{\max}).
+\]
+\end{corollary}
+
+\begin{proof}
+This is a rearrangement of the pressure identity in
+Theorem~\ref{thm:first-entry-escape-rate}.
+\end{proof}
+
+\begin{proposition}[Doubling map and the Fibonacci escape law]
+\label{prop:doubling-fibonacci-escape}
+Let \(T(x)=2x\bmod 1\) on \([0,1)\), equipped with Lebesgue measure
+\(\Leb\), and let \(W=[1/2,1)\).  The binary itinerary of \(x\) gives
+the full one-sided two-shift with the Bernoulli \((1/2,1/2)\) measure.
+Let
+\[
+  H=[3/4,1),
+\]
+so that \(H\) corresponds to the cylinder \([11]\).  Define
+\[
+  \tau_H(x):=\inf\set{n\geq 0:T^n x\in H}
+\]
+and
+\[
+  \mathsf{P}_{\mathrm{even}}
+  := \set{x:\tau_H(x)<\infty,\ \tau_H(x)\equiv 0 \pmod 2}.
+\]
+If \((F_n)_{n\geq 0}\) denotes the Fibonacci sequence
+\(F_0=0\), \(F_1=1\), then for every \(m\geq 1\),
+\[
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \frac{F_{m+3}}{5\,2^m}.
+\]
+Moreover,
+\[
+  \Leb(\tau_H\geq m)=\frac{F_{m+3}}{2^{m+1}},
+  \qquad
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \frac25\,\Leb(\tau_H\geq m),
+\]
+and therefore
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \log\frac{2}{\varphi}
+  = \log 2-\log\varphi.
+\]
+Equivalently, the survivor entropy of the golden-mean subshift is
+recovered from finite-observation error by
+\[
+  h_{\mathrm{top}}(Y_H)
+  = \log\varphi
+  = \log 2
+    + \lim_{m\to\infty}\frac1m
+      \log \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb).
+\]
+\end{proposition}
+
+\begin{proof}
+In binary coding, \(\tau_H\) is the first index at which the block
+\(11\) appears.  A length-\(m\) prefix contributes to
+\(\varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)\) if and only if it
+contains no occurrence of \(11\) at positions \(0,\ldots,m-2\).  Let
+\begin{align*}
+  G_m^0
+  &:= \set{a\in\{0,1\}^m:
+           a \text{ avoids }11,\ a_{m-1}=0}, \\
+  G_m^1
+  &:= \set{a\in\{0,1\}^m:
+           a \text{ avoids }11,\ a_{m-1}=1}.
+\end{align*}
+The usual golden-mean recursion gives
+\[
+  \card{G_m^0}=F_{m+1},
+  \qquad
+  \card{G_m^1}=F_m.
+\]
+Every length-\(m\) cylinder has Lebesgue measure \(2^{-m}\).
+
+Let
+\begin{align*}
+  a
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of even length ending in }0), \\
+  b
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of even length ending in }1), \\
+  c
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of odd length ending in }0), \\
+  d
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of odd length ending in }1).
+\end{align*}
+Since the next binary digit is \(0\) or \(1\) with equal probability,
+\[
+  a=\frac12 c+\frac12 d,
+  \qquad
+  b=\frac12 c,
+\]
+\[
+  c=\frac12 a+\frac12 b,
+  \qquad
+  d=\frac12+\frac12 a.
+\]
+Solving gives
+\[
+  a=\frac35,\qquad b=\frac15,\qquad c=\frac25,\qquad d=\frac45.
+\]
+Hence the Bayes error on a safe prefix depends only on its terminal
+symbol:
+\[
+  \beta(a)=\frac25
+  \quad\text{on }G_m^0,
+  \qquad
+  \beta(a)=\frac15
+  \quad\text{on }G_m^1.
+\]
+Therefore
+\[
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = 2^{-m}\left(
+      \frac25\card{G_m^0}
+      + \frac15\card{G_m^1}
+    \right)
+  = 2^{-m}\left(
+      \frac25F_{m+1}
+      + \frac15F_m
+    \right).
+\]
+Using \(F_{m+3}=2F_{m+1}+F_m\), we obtain
+\[
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \frac{F_{m+3}}{5\,2^m}.
+\]
+
+The condition \(\tau_H\geq m\) is equivalent to saying that the first
+\(m+1\) binary digits avoid \(11\), so
+\[
+  \Leb(\tau_H\geq m)=\frac{F_{m+3}}{2^{m+1}}.
+\]
+This proves the exact factor \(\varepsilon_m=\frac25\Leb(\tau_H\geq m)\).
+Finally, \(F_{m+3}\sim \varphi^{m+3}/\sqrt5\), so
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \log\frac{2}{\varphi}.
+\]
+The survivor subshift is the golden-mean shift, whose topological
+entropy is \(\log\varphi\), and the last identity follows.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main-clarity}]
+Proposition~\ref{prop:scan-error-cylinder} gives the exact cylinder
+formula.  Theorem~\ref{thm:tanaka-stokes} gives the Tanaka identity.
+The general boundary estimate is
+Theorem~\ref{thm:clarity-boundary-dimension}.  The weighted finite-state
+refinements are supplied by
+Theorem~\ref{thm:weighted-boundary-transfer},
+Corollary~\ref{cor:weighted-boundary-pole},
+Corollary~\ref{cor:pressure-gap},
+Theorem~\ref{thm:first-entry-escape-rate},
+Corollary~\ref{cor:survivor-pressure-recovery},
+and Proposition~\ref{prop:doubling-fibonacci-escape}.
+\end{proof}

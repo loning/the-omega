@@ -1,0 +1,296 @@
+\section{Introduction}\label{sec:introduction}
+
+For a mixing subshift of finite type $(X_A^+,\sigma)$ with primitive
+adjacency matrix $A$, the dynamical $\zeta$-function
+\[
+  \zeta_A(z)
+  =\exp\!\left(\sum_{n\ge 1}\frac{\Tr(A^n)}{n}z^n\right)
+  =\det(I-zA)^{-1}
+\]
+is rational, with poles at the reciprocals of the non-zero eigenvalues
+of \(A\). The primitive orbit counts
+\[
+  p_n(A)=\frac{1}{n}\sum_{d\mid n}\mu(d)\Tr(A^{n/d})
+\]
+are recovered from the trace sequence by M\"obius inversion. These
+facts are classical. The present paper is concerned with finer
+information at the Perron pole \(z=\lambda^{-1}\), where
+\(\lambda=\rho(A)\) is the Perron root.
+
+After removing the Perron factor, one is left with two closely related
+objects: the Abel finite-part constant \(\log\MM(A)\) and the reduced
+determinant
+\[
+  C(A)=\det\nolimits'(I-A/\lambda)^{-1}.
+\]
+Our starting point is that these quantities interact naturally with the
+cyclic lifts \(A^{\langle q\rangle}=A\otimes P_q\) and with the values
+of the reduced spectral polynomial
+\[
+  F_A(t)=\frac{\det(I-tA/\lambda)}{1-t}
+\]
+at roots of unity. This leads to explicit formulas for the finite part,
+to reconstruction of the non-Perron spectrum from cyclic-lift data, and
+to arithmetic consequences for congruence classes and finite-group
+extensions.
+
+The paper has two main themes. The first is that the sequence of
+reduced determinants of cyclic lifts already contains the full reduced
+spectral polynomial. The second is that, for finite-group extensions,
+Peter--Weyl decomposition gives a twisted orbit-counting theory parallel
+to the root-of-unity decompositions in the abelian setting. The point
+is not the rationality of \(\zeta_A\), which is standard, but the
+systematic use of the finite part at the Perron pole as a spectral
+invariant.
+
+\subsection{Main results}
+
+Our first theorem summarises the finite-part and cyclic-lift results.
+
+\begin{theorem}\label{thm:intro-finite-part-fingerprint}
+Let \(M\) be a primitive non-negative matrix with Perron root
+\(\lambda=\rho(M)>1\), non-Perron eigenvalues
+\(\mu_2,\dots,\mu_d\), and primitive orbit counts \(p_n(M)\). Set
+\[
+  F_M(t):=\frac{\det(I-tM/\lambda)}{1-t}
+  =\prod_{j=2}^d\left(1-\frac{\mu_j}{\lambda}t\right),
+  \qquad
+  C(M):=\det\nolimits'(I-M/\lambda)^{-1}.
+\]
+Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item The Abel finite-part constant satisfies
+  \[
+    \log\MM(M)
+    =\log C(M)
+     +\sum_{n\ge 1}p_n(M)\bigl(\lambda^{-n}+\log(1-\lambda^{-n})\bigr).
+  \]
+  In particular, \(\log C(M)-\log\MM(M)\) is strictly positive and
+  admits explicit truncation bounds.
+
+  \item For the cyclic lifts \(M^{\langle q\rangle}=M\otimes P_q\),
+  \[
+    C(M^{\langle q\rangle})
+    =\frac{1}{q}\prod_{j=2}^d
+      \left(1-\left(\frac{\mu_j}{\lambda}\right)^q\right)^{-1},
+    \qquad q\ge 1.
+  \]
+  Equivalently,
+  \[
+    \Psi_q(M):=\log q+\log C(M^{\langle q\rangle})
+    =\sum_{m\ge 1}\frac{u_{qm}(M)}{m},
+    \qquad
+    u_n(M):=\sum_{j=2}^d\left(\frac{\mu_j}{\lambda}\right)^n.
+  \]
+
+  \item The sequence \(\{C(M^{\langle q\rangle})\}_{q\ge 1}\)
+  determines the reduced spectral polynomial \(F_M\) and hence the
+  non-Perron spectrum of \(M\) with algebraic multiplicity. Moreover,
+  \[
+    \limsup_{q\to\infty}\abs{\Psi_q(M)}^{1/q}
+    =\max_{2\le j\le d}\abs{\mu_j}/\lambda.
+  \]
+  If \(q\ge d\), then the values
+  \(\{F_M(\omega_q^j)\}_{0\le j\le q-1}\) already determine \(F_M\).
+\end{enumerate}
+\end{theorem}
+
+Several results in \Cref{sec:finite-part} refine this statement. For
+prime moduli,
+\Cref{thm:finite-part-dirichlet-character-inversion-prime} recovers the
+residue-class decomposition of the reduced power sums from one
+character table, together with \(C(M)\) and \(C(M^{\langle p\rangle})\).
+\Cref{cor:finite-part-near-rh-q-axis-envelope} and
+\Cref{thm:finite-part-single-layer-torsion-near-rh} give equivalent
+forms of the square-root bound for the reduced spectrum, one in terms
+of the growth of the cyclic-lift constants and one in terms of one
+root-of-unity layer. \Cref{thm:finite-part-boundary-multiplicity-qaxis-energy}
+recovers the multiplicity pattern on the boundary of the reduced
+spectrum from Cesaro averages, and
+\Cref{thm:finite-part-cyclic-lift-polylog-dirichlet-xi} associates to
+the discrepancy \(\Psi_q(M)-\log C(M)\) a Dirichlet series with residue
+\(-\log C(M)\) at \(s=1\). Finally,
+\Cref{cor:finite-part-torsion-table-galois-certificate} gives a
+rationality test for one root-of-unity layer, and
+\Cref{thm:finite-part-residue-drift-trichotomy} shows that, for
+exponentially growing families with subexponential state complexity,
+linear growth of \(\log C\) is incompatible with the square-root bound.
+
+Our second theorem concerns finite-group extensions. Let \(G\) be a
+finite group, let \(\tau:E_A\to G\) be an edge cocycle, and let
+\(\widetilde A\) be the adjacency matrix of the skew-product
+extension. For \(\varrho\in\Irr(G)\) write \(A_\varrho\) for the
+twisted transition matrix and \(\chi_\varrho\) for its character. For
+a class function \(\phi:G\to\CC\), define
+\[
+  T_{\phi,n}:=\sum_{x\in\operatorname{Fix}(\sigma^n)}\phi(\tau_n(x)),
+  \qquad
+  \mathcal L_\phi(z):=\sum_{n\ge 1}\frac{T_{\phi,n}}{n}z^n,
+\]
+and
+\[
+  \Pi_\phi(z):=\sum_{\gamma\in\cP}\phi(\tau(\gamma))z^{|\gamma|}.
+\]
+For a conjugacy class \(C\subset G\), set
+\[
+  \Delta_C(A):=\mathsf M_C(A)-\frac{|C|}{|G|}\mathsf M(A).
+\]
+For \(\varrho\in\Irr(G)\), write
+\[
+  \Pi_\varrho(z):=\sum_{\gamma\in\cP}\chi_\varrho(\tau(\gamma))z^{|\gamma|},
+\]
+and decompose the Adams transforms of the irreducible characters as
+\[
+  \psi^m\chi_\varrho=\sum_{\sigma\in\Irr(G)}a_{\varrho,\sigma}^{(m)}\chi_\sigma.
+\]
+
+\begin{theorem}\label{thm:intro-peter-weyl}
+In the above setting:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item The extension determinant factorises as
+  \[
+    \det(I-z\widetilde A)
+    =\prod_{\varrho\in\Irr(G)}\det(I-zA_\varrho)^{\dim\varrho}.
+  \]
+
+  \item For every class function \(\phi\) and every \(|z|<\lambda^{-1}\),
+  \[
+    \mathcal L_\phi(z)
+    =\sum_{\varrho\in\Irr(G)}
+      \widehat\phi(\varrho)\,
+      \log\det(I-zA_\varrho)^{-1},
+  \]
+  and
+  \[
+    \Pi_\phi(z)
+    =\sum_{m\ge 1}\frac{\mu(m)}{m}\,
+      \mathcal L_{\psi^m\phi}(z^m).
+  \]
+  Consequently, for every \(\varrho\in\Irr(G)\),
+  \[
+    \Pi_\varrho(z)
+    =\sum_{m\ge 1}\frac{\mu(m)}{m}
+      \sum_{\sigma\in\Irr(G)}
+        a_{\varrho,\sigma}^{(m)}
+        \log\det(I-z^mA_\sigma)^{-1},
+  \]
+
+  \item If \(p_{n,C}\) denotes the number of primitive orbits of length
+  \(n\) whose \(G\)-label lies in the conjugacy class \(C\subset G\),
+  then
+  \[
+    \sum_{n\ge 1}p_{n,C}z^n
+    =\frac{|C|}{|G|}\sum_{\varrho\in\Irr(G)}
+      \chi_\varrho(C^{-1})\,\Pi_\varrho(z).
+  \]
+  If
+  \[
+    \eta:=\max_{\varrho\neq\mathbf 1}\rho(A_\varrho)<\lambda,
+    \qquad
+    \Lambda_*:=\max\{\Lambda(A),\eta,\lambda^{1/2}\},
+  \]
+  then
+  \[
+    p_{n,C}
+    =\frac{|C|}{|G|}\frac{\lambda^n}{n}
+     +O\!\left(\frac{\Lambda_*^n}{n}\right),
+  \]
+  \[
+    \sum_{n\le N}\frac{p_{n,C}}{\lambda^n}
+    =\frac{|C|}{|G|}\log N+\mathsf M_C(A)+O(N^{-1}),
+  \]
+  with
+  \[
+    \mathsf M_C(A)
+    =\frac{|C|}{|G|}\mathsf M(A)
+     +\frac{|C|}{|G|}\sum_{\varrho\neq \mathbf 1}
+      \chi_\varrho(C^{-1})\,\Pi_\varrho(\lambda^{-1}).
+  \]
+  Moreover,
+  \[
+    \Pi_\varrho(\lambda^{-1})
+    =\sum_{C\subset G}\Delta_C(A)\chi_\varrho(C),
+    \qquad \varrho\neq \mathbf 1,
+  \]
+  and
+  \[
+    \sum_{C\subset G}\frac{|G|}{|C|}\abs{\Delta_C(A)}^2
+    =\sum_{\varrho\neq \mathbf 1}
+      \abs{\Pi_\varrho(\lambda^{-1})}^2.
+  \]
+
+  \item The primitive class profile is functorial under passage to
+  quotient groups: if \(q:G\twoheadrightarrow Q\) and
+  \(\bar\tau=q\circ\tau\), then pullback of class functions intertwines
+  both \(\mathcal L_\phi\) and \(\Pi_\phi\). Consequently the
+  abelianisation \(G_{\mathrm{ab}}\) gives the exact one-dimensional
+  shadow of the finite-group extension, while the higher-dimensional
+  values \(\Pi_\varrho(\lambda^{-1})\) measure the genuine non-abelian
+  defect. An explicit \(S_3\)-extension shows that a channel may have
+  vanishing periodic traces and still carry non-zero primitive bias.
+\end{enumerate}
+\end{theorem}
+
+The point of \Cref{sec:chebotarev} is that finite-group extensions are
+not merely a Peter--Weyl restatement of orbit counting. The
+class-function logarithms, the Adams operations, and the M\"obius
+inversion on primitive orbits combine to produce a non-abelian
+determinant calculus parallel to the root-of-unity reconstruction
+theory of \Cref{sec:finite-part}.
+
+\Cref{sec:shadows} closes this parallel into a theorem. It proves that
+the primitive class profile is functorial under passage to quotient
+groups, identifies the abelian shadow as the exact image under
+abelianisation, and isolates the higher-dimensional Peter--Weyl
+channels as the genuine non-abelian defect. The explicit \(S_3\)-model
+then shows that vanishing periodic traces do not imply vanishing
+primitive bias.
+
+\subsection{Relation with previous work}
+
+For shifts of finite type, the rationality of dynamical
+\(\zeta\)-functions goes back to Bowen--Lanford and Manning
+\cite{BowenLanford1970Zeta,Manning1971Axiom}. The operator-theoretic
+framework was developed by Ruelle and by Parry--Pollicott
+\cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta};
+see also \cite{LindMarcus1995,Kitchens1998} for general symbolic
+background. Twisted transfer operators and their role in orbit-counting
+problems are standard in thermodynamic formalism, and on the
+equidistribution side one should compare our orbit-splitting results
+with the Chebotarev-type theorems of Pollicott and Sharp
+\cite{PollicottSharp2007Chebotarev}. For graph coverings, the
+determinantal identities should be compared with Ihara--Bass theory and
+its weighted variants
+\cite{Bass1992Ihara,ChoeKwakParkSato2007Bartholdi,Sato2008WeightedBartholdiCoverings}.
+
+What seems to be new here is the systematic use of the finite part at
+the Perron pole as an invariant from which one can recover reduced
+spectral data. The cyclic-lift constants provide a natural arithmetic
+family attached to the reduced determinant, and the root-of-unity
+formulas show that one sufficiently large layer already determines the
+reduced spectral polynomial. On the non-abelian side, previous work
+studied orbit splitting, Chebotarev-type equidistribution, and the
+structural theory of finite-group extensions
+\cite{ParryPollicott1986Chebotarev,NooraniParry1992ChebotarevShifts,BoyleSchmieding2017FiniteGroupExtensions,Parry1999LivsicNonAbelian}.
+The new point here is different: primitive Peter--Weyl series are
+written directly in terms of twisted determinants by Adams--M\"obius
+inversion, and the conjugacy-class Mertens constants become exact
+non-abelian Fourier coordinates of the twisted primitive invariants.
+Accordingly, the last section is not another Chebotarev theorem in the
+equidistribution sense; its novelty lies in the primitive-orbit
+determinant calculus and in the explicit reconstruction of the twisted
+primitive data from class constants.
+
+\subsection{Organisation}
+
+\Cref{sec:preliminaries} fixes notation for primitive orbit counts,
+reduced determinants, cyclic lifts, and finite-group extensions. In
+\Cref{sec:finite-part} we prove the finite-part formula, the cyclic-lift
+identities, the reconstruction results for the reduced spectrum, and
+the Dirichlet-series consequences. \Cref{sec:chebotarev}
+develops the class-function and Adams--M\"obius theory for finite-group
+extensions, including explicit conjugacy-class Mertens constants and
+their non-abelian Fourier reconstruction. Finally,
+\Cref{sec:shadows} proves quotient functoriality, identifies the
+abelian shadow and the genuine non-abelian defect, and works out an
+explicit \(S_3\)-example.

@@ -1,0 +1,293 @@
+\section{Reflector geometry and visible entropy}\label{sec:ledger}
+
+The partition-difference formulas of the previous sections have an independent
+probabilistic consequence.  Finite-window stabilization induces a
+coarse-graining from raw words to visible words, and the associated
+fiber-uniform reflector \(K_m=Q_mP_m\) yields exact entropy and
+Kullback--Leibler decompositions.
+
+\begin{definition}[Visible divergence and visible metric]
+\label{def:visible-divergence}
+For \(\mu,\nu\in\Delta(\Omega_m)\), define
+\[
+  D_{\mathrm{vis},m}(\mu\|\nu)
+  :=
+  D_{\mathrm{KL}}(P_m\mu\|P_m\nu)
+\]
+and
+\[
+  \delta_{\mathrm{vis},m}(\mu,\nu)
+  :=
+  \frac12\sum_{x\in X_m}\bigl|(P_m\mu)(x)-(P_m\nu)(x)\bigr|.
+\]
+\end{definition}
+
+\begin{proposition}[Visible contraction]
+\label{prop:visible-contraction}
+For all \(\mu,\nu\in\Delta(\Omega_m)\),
+\[
+  D_{\mathrm{vis},m}(\mu\|\nu)\le D_{\mathrm{KL}}(\mu\|\nu)
+\]
+and
+\[
+  \delta_{\mathrm{vis},m}(\mu,\nu)
+  =
+  \frac12\sum_{\omega\in\Omega_m}
+  \bigl|(K_m\mu)(\omega)-(K_m\nu)(\omega)\bigr|.
+\]
+\end{proposition}
+
+\begin{proof}
+The KL inequality is the data-processing inequality for the map \(P_m\).  For
+the total-variation identity, write
+\[
+  \pi:=P_m\mu,
+  \qquad
+  \eta:=P_m\nu.
+\]
+Then \(K_m\mu=Q_m\pi\) and \(K_m\nu=Q_m\eta\).  Hence
+\begin{align*}
+  \frac12\sum_{\omega\in\Omega_m}
+  \bigl|(K_m\mu)(\omega)-(K_m\nu)(\omega)\bigr|
+  &=
+  \frac12\sum_{x\in X_m}
+  \sum_{\Fold_m(\omega)=x}
+  \left|\frac{\pi(x)}{d_m(x)}-\frac{\eta(x)}{d_m(x)}\right| \\
+  &=
+  \frac12\sum_{x\in X_m}\bigl|\pi(x)-\eta(x)\bigr| \\
+  &=
+  \delta_{\mathrm{vis},m}(\mu,\nu).
+\end{align*}
+\end{proof}
+
+\begin{theorem}[Fiberwise entropy decomposition]
+\label{thm:entropy-identity}
+Fix \(m\ge 1\), let \(\mu\in\Delta(\Omega_m)\), and write
+\[
+  \pi:=P_m\mu\in\Delta(X_m).
+\]
+Then
+\[
+  H(\mu)
+  =
+  H(\pi)+\EE_\pi[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|K_m\mu).
+\]
+\end{theorem}
+
+\begin{proof}
+By definition,
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\mu)
+  =
+  -H(\mu)-\sum_{\omega\in\Omega_m}\mu(\omega)\log (K_m\mu)(\omega).
+\]
+Since
+\[
+  (K_m\mu)(\omega)=\frac{\pi(\Fold_m(\omega))}{d_m(\Fold_m(\omega))},
+\]
+we obtain
+\begin{align*}
+  \sum_{\omega}\mu(\omega)\log (K_m\mu)(\omega)
+  &=
+  \sum_{\omega}\mu(\omega)\log\pi(\Fold_m(\omega)) \\
+  &\qquad
+  -\sum_{\omega}\mu(\omega)\log d_m(\Fold_m(\omega)).
+\end{align*}
+Grouping by fibers gives
+\[
+  \sum_{\omega}\mu(\omega)\log\pi(\Fold_m(\omega))
+  =
+  \sum_{x\in X_m}\pi(x)\log \pi(x)
+  =
+  -H(\pi),
+\]
+and similarly
+\[
+  \sum_{\omega}\mu(\omega)\log d_m(\Fold_m(\omega))
+  =
+  \sum_{x\in X_m}\pi(x)\log d_m(x)
+  =
+  \EE_\pi[\log d_m(X)].
+\]
+Substitute these identities into the definition of
+\(D_{\mathrm{KL}}(\mu\|K_m\mu)\).
+\end{proof}
+
+\begin{corollary}[Maximum entropy on a visible fiber]
+\label{cor:max-entropy-visible}
+Fix \(\pi\in\Delta(X_m)\).  Among all \(\mu\in\Delta(\Omega_m)\) such that
+\[
+  P_m\mu=\pi,
+\]
+the unique entropy maximizer is \(Q_m\pi\), and its entropy is
+\[
+  H(Q_m\pi)=H(\pi)+\EE_\pi[\log d_m(X)].
+\]
+\end{corollary}
+
+\begin{proof}
+If \(P_m\mu=\pi\), then \Cref{thm:entropy-identity} gives
+\[
+  H(\mu)
+  =
+  H(\pi)+\EE_\pi[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|Q_m\pi).
+\]
+The right-hand side is maximized exactly when
+\(\mu=Q_m\pi\).
+\end{proof}
+
+\begin{theorem}[Fiberwise KL decomposition]
+\label{thm:kl-pythagorean}
+For all \(\mu,\nu\in\Delta(\Omega_m)\),
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\nu)
+  =
+  D_{\mathrm{KL}}(\mu\|K_m\mu)+D_{\mathrm{vis},m}(\mu\|\nu).
+\]
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+  \pi:=P_m\mu,
+  \qquad
+  \eta:=P_m\nu.
+\]
+Since \(K_m\nu=Q_m\eta\),
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\nu)
+  =
+  -H(\mu)-\sum_{\omega}\mu(\omega)\log\frac{\eta(\Fold_m(\omega))}{d_m(\Fold_m(\omega))}.
+\]
+Grouping by fibers as in \Cref{thm:entropy-identity} yields
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\nu)
+  =
+  -H(\mu)-\sum_{x\in X_m}\pi(x)\log \eta(x)
+  +\EE_\pi[\log d_m(X)].
+\]
+Applying the same formula with \(\nu=\mu\) gives
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\mu)
+  =
+  -H(\mu)-\sum_{x\in X_m}\pi(x)\log \pi(x)
+  +\EE_\pi[\log d_m(X)].
+\]
+Subtracting these identities, we obtain
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\nu)-D_{\mathrm{KL}}(\mu\|K_m\mu)
+  =
+  \sum_{x\in X_m}\pi(x)\log \frac{\pi(x)}{\eta(x)}
+  =
+  D_{\mathrm{KL}}(\pi\|\eta).
+\]
+This is exactly \(D_{\mathrm{vis},m}(\mu\|\nu)\).
+\end{proof}
+
+\begin{corollary}[Information projection onto the visible model]
+\label{cor:i-projection}
+For every \(\mu\in\Delta(\Omega_m)\), the law \(K_m\mu\) is the unique minimizer
+of
+\[
+  \nu\longmapsto D_{\mathrm{KL}}(\mu\|\nu)
+\]
+over \(\nu\in\mathcal E_m\).
+\end{corollary}
+
+\begin{proof}
+Every \(\nu\in\mathcal E_m\) has the form \(K_m\eta\) for some
+\(\eta\in\Delta(\Omega_m)\) by \Cref{prop:reflector}.  Then
+\Cref{thm:kl-pythagorean} gives
+\[
+  D_{\mathrm{KL}}(\mu\|\nu)
+  =
+  D_{\mathrm{KL}}(\mu\|K_m\mu)+D_{\mathrm{vis},m}(\mu\|\eta),
+\]
+and the second term vanishes if and only if \(P_m\eta=P_m\mu\), equivalently
+\(\nu=K_m\mu\).
+\end{proof}
+
+\begin{definition}[Visible law under uniform input]
+\label{def:visible-law}
+Let \(u_{\Omega_m}\) be the uniform law on \(\Omega_m\), and define
+\[
+  p_m:=P_mu_{\Omega_m}\in\Delta(X_m).
+\]
+Then
+\[
+  p_m(x)=\frac{d_m(x)}{2^m}.
+\]
+\end{definition}
+
+\begin{theorem}[Collision entropy rate]
+\label{thm:collision-entropy-rate}
+For the visible law \(p_m\) of \Cref{def:visible-law},
+\[
+  \sum_{x\in X_m}p_m(x)^2=\frac{T_2(m)}{4^m}.
+\]
+Hence, with \(\rho\) and \(\lambda_-\) as in
+\Cref{thm:alternating-second-order},
+\[
+  \lim_{m\to\infty}
+  -\frac{1}{m}\log \sum_{x\in X_m}p_m(x)^2
+  =
+  2\log 2-\log \rho.
+\]
+More precisely,
+\[
+  \sum_{x\in X_m}p_m(x)^2
+  =
+  c_\rho\left(\frac{\rho}{4}\right)^m
+  +
+  c_-\left(\frac{\lambda_-}{4}\right)^m
+  +
+  O\left(\left(\frac{\lambda_+}{4}\right)^m\right),
+\]
+so the second-order correction is eventually alternating.
+\end{theorem}
+
+\begin{proof}
+By definition,
+\[
+  \sum_{x\in X_m}p_m(x)^2
+  =
+  \sum_{x\in X_m}\left(\frac{d_m(x)}{2^m}\right)^2
+  =
+  \frac{T_2(m)}{4^m}.
+\]
+Now apply \Cref{thm:alternating-second-order}.
+\end{proof}
+
+\begin{corollary}[R\'enyi-2 asymptotics]
+\label{cor:renyi2}
+Let
+\[
+  H_2(p_m):=-\log \sum_{x\in X_m}p_m(x)^2.
+\]
+Then
+\[
+  H_2(p_m)
+  =
+  m(2\log 2-\log \rho)-\log c_\rho
+  +
+  O\left(\left|\frac{\lambda_-}{\rho}\right|^m\right).
+\]
+After subtracting the affine term
+\(m(2\log 2-\log \rho)-\log c_\rho\), the remaining error is eventually
+alternating in sign.
+\end{corollary}
+
+\begin{proof}
+Factor the expansion of \Cref{thm:collision-entropy-rate} as
+\[
+  \sum_{x\in X_m}p_m(x)^2
+  =
+  c_\rho\left(\frac{\rho}{4}\right)^m
+  \left(
+    1+\frac{c_-}{c_\rho}\left(\frac{\lambda_-}{\rho}\right)^m
+    +O\left(\left(\frac{\lambda_+}{\rho}\right)^m\right)
+  \right).
+\]
+Taking logarithms yields the result, since
+\(|\lambda_-|>\lambda_+\) and \(\lambda_-<0\).
+\end{proof}

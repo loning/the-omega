@@ -1,0 +1,175 @@
+\section{Introduction}\label{sec:introduction}
+
+Zeckendorf's theorem identifies every positive integer with a unique Fibonacci
+expansion having no adjacent \(1\)'s \cite{Lekkerkerker1952,Zeckendorf1972}.
+The normalization of arbitrary Fibonacci representations, and its
+finite-automaton implementation, are likewise classical
+\cite{Frougny1992NumbersAutomata,Frougny1999OnlineAddition,
+ShallitShan2023,AhlbachUsatineFrougnyPippenger2013}.  We therefore regard the
+existence and computability of Zeckendorf normalization as input data.  The
+object of this paper is different: the exact fiber spectrum of finite-window
+Zeckendorf stabilization.
+
+Fix \(m\ge 1\).  Let
+\[
+  \Omega_m=\{0,1\}^m,
+  \qquad
+  X_m=\{x\in\Omega_m:\ x_ix_{i+1}=0\text{ for }1\le i<m\},
+\]
+and define
+\[
+  V_m(x)=\sum_{j=1}^m x_jF_{j+1},
+  \qquad
+  N_m(\omega)=\sum_{j=1}^m \omega_jF_{j+1}.
+\]
+Since \(V_m\) is a bijection from \(X_m\) onto \(\{0,\dots,F_{m+2}-1\}\), the
+correct finite-window fold map is
+\[
+  \Fold_m(\omega):=V_m^{-1}\bigl(N_m(\omega)\bmod F_{m+2}\bigr).
+\]
+Equivalently, \(\Fold_m(\omega)\) is obtained by taking the full Zeckendorf
+expansion of \(N_m(\omega)\) and retaining the first \(m\) visible digits.
+Write
+\[
+  d_m(x):=\card{\Fold_m^{-1}(x)},
+  \qquad
+  d_m^\#(r):=d_m(V_m^{-1}(r)).
+\]
+
+Two structural facts, proved in Sections~\ref{sec:preliminaries} and
+\ref{sec:residue-affine}, drive the whole paper.  First, the fibers of
+\(\Fold_m\) are exact residue classes modulo \(F_{m+2}\).  Second, there is an
+explicit affine permutation
+\[
+  \pi_m(r)\equiv F_{m+1}r+F_{m+1}-1 \pmod{F_{m+2}}
+\]
+such that \(d_m^\#(\pi_m(r))\) is the coefficient of \(z^r\) in
+\(\prod_{j=1}^m(1+z^{F_j})\).  The central point of the present paper is that
+this coefficient spectrum is not merely analogous to the classical Fibonacci
+partition function: it is exactly a Fibonacci-lag discrete derivative of it.
+
+\subsection{Main results}
+
+Following Chow and Slattery \cite{ChowSlattery2021}, let \(R(n)\) denote the
+number of partitions of \(n\) into distinct Fibonacci numbers, where the two
+unit weights \(F_1=F_2=1\) are not distinguished.  Define
+\[
+  R^{\mathrm{dbl}}(n):=R(n)+R(n-1),
+  \qquad
+  R(t):=0\quad (t<0).
+\]
+Then \(R^{\mathrm{dbl}}(n)\) is the indexed Fibonacci partition function in
+which the two unit weights are distinguished.
+
+\begin{theoremA}
+For every integer \(n\) with \(0\le n<F_{m+2}\),
+\[
+  d_m^\#(\pi_m(n))
+  =
+  R^{\mathrm{dbl}}(n)-R^{\mathrm{dbl}}(n-F_{m+1}).
+\]
+Equivalently,
+\[
+  d_m^\#(\pi_m(n))
+  =
+  R(n)+R(n-1)-R(n-F_{m+1})-R(n-F_{m+1}-1).
+\]
+\end{theoremA}
+
+\noindent
+Thus the finite-window fiber spectrum is exactly the Fibonacci-lag discrete
+derivative of the classical Fibonacci partition function.
+
+\begin{theoremB}
+For every integer \(q\ge 1\), the \(q\)-th collision moment
+\[
+  M_{q,m}:=\sum_{x\in X_m} d_m(x)^q
+\]
+satisfies
+\[
+  M_{q,m}
+  =
+  \sum_{n=0}^{F_{m+2}-1}
+  \bigl(R^{\mathrm{dbl}}(n)-R^{\mathrm{dbl}}(n-F_{m+1})\bigr)^q.
+\]
+Hence all collision moments are difference-power sums of the Fibonacci
+partition function.
+\end{theoremB}
+
+\begin{theoremC}
+Let
+\[
+  T_2(m):=
+  \sum_{n=0}^{F_{m+2}-1}
+  \bigl(R^{\mathrm{dbl}}(n)-R^{\mathrm{dbl}}(n-F_{m+1})\bigr)^2.
+\]
+Then \(T_2(m)=M_{2,m}\), and
+\[
+  T_2(1)=2,\qquad T_2(2)=6,\qquad T_2(3)=14.
+\]
+For every \(m\ge 4\),
+\[
+  T_2(m)=2T_2(m-1)+2T_2(m-2)-2T_2(m-3).
+\]
+Its characteristic polynomial is \(\lambda^3-2\lambda^2-2\lambda+2\), so the
+second-order term is eventually alternating.
+\end{theoremC}
+
+\begin{theoremD}
+Let \(K_m:=Q_mP_m\).  Then \(K_m\) is the fiber-uniform reflector onto the
+visible model, and for every pair of probability laws \(\mu,\nu\) on
+\(\Omega_m\),
+\[
+  D_{\mathrm{KL}}(\mu\|K_m\nu)
+  =
+  D_{\mathrm{KL}}(\mu\|K_m\mu)
+  +
+  D_{\mathrm{KL}}(P_m\mu\|P_m\nu).
+\]
+In particular,
+\[
+  H(\mu)=H(P_m\mu)+\EE_{P_m\mu}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|K_m\mu),
+\]
+so \(K_m\mu\) is the unique information projection of \(\mu\) onto the
+fiber-uniform visible model.
+\end{theoremD}
+
+\subsection{Relation to previous work}
+
+Theorem~A gives the paper its decisive connection to the existing literature.
+Chow and Slattery proved exact formulas for the Fibonacci partition function in
+terms of the Zeckendorf expansion of \(n\) \cite{ChowSlattery2021}.  Our
+Theorem~A shows that finite-window Zeckendorf fibers are not a merely related
+combinatorial object: they are precisely the Fibonacci-lag discrete derivative
+of the indexed partition function \(R^{\mathrm{dbl}}\).  Consequently their
+individual values inherit explicit closed formulas from Chow and Slattery
+without any new partition-theoretic reproof.
+
+Theorem~B then reinterprets every collision moment as a difference-power sum of
+the Fibonacci partition function.  This places our moments alongside the
+ordinary power sums studied by Sanna \cite{Sanna2025}.  In particular, our
+quadratic theorem is no longer an isolated fold-specific recurrence, but a new
+identity for the squared energy of a Fibonacci-lag partition derivative.
+
+This perspective also clarifies the relation with Chow and Jones
+\cite{ChowJones2024}.  They showed that the ordinary variance of the Fibonacci
+partition function is governed by the dominant root of
+\(\lambda^3-2\lambda^2-2\lambda+2\).  Our Theorem~C produces the same cubic in a
+different, exact finite-window setting and explains it structurally: the
+quadratic fold moment is the quadratic energy of a discrete derivative of the
+partition function.  Finally, work of Kempton \cite{Kempton2023} interprets the
+partition function through a cocycle over irrational rotation; combined with
+Theorem~A, this gives a natural dynamical reading of finite-window fiber
+fluctuations as return-time differences of the same cocycle.
+
+\subsection{Organization}
+
+Section~\ref{sec:preliminaries} fixes the finite-window fold map and its basic
+overflow structure.  Section~\ref{sec:residue-affine} proves the residue
+description, the affine transfer principle, and the partition-difference
+formula for individual fibers.  Section~\ref{sec:second-collision} rewrites all
+collision moments as difference-power sums and proves the cubic law in the
+quadratic case.  Section~\ref{sec:ledger} records the reflector geometry and
+entropy consequences as applications of the fiber formulas.
+Section~\ref{sec:conclusion} explains the scope of the present paper and the
+arithmetic questions left for later work.

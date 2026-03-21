@@ -1,5 +1,5 @@
 \paragraph{部分可逆尾量、二原子信息塌缩、乘法外置与条件正交的横向闭合}
-在预言机容量闭式、bin-fold 相对均匀基线的两点 \(f\)-散度极限、稳定地址半环的 PTIME 双向可解释性、一般 Ostrowski 数字层的规范化函子性、三轴 CRT 最小窗以及十次分歧/Lee--Yang 三次的 Chebotarev 乘法律已经建立之后，还可把部分可逆误差、信息几何塌缩、数字层局域性、三轴最小窗及跨指纹条件独立进一步压缩为下列六条结论。前两条把最优部分读出的全部损失严格还原为纤维超额尾量；中间三条分别把渐近 \(f\)-几何压缩到唯一二原子似然比测度、把 Zeckendorf/Ostrowski 层的局域可加性与乘法账本不可有限化严格分离，并指出三轴最小窗在最小层面即不可纯化；最后一条则表明十次线性因子指纹对 Lee--Yang 的符号/根/全分裂粗读出保持完全条件不变。
+在预言机容量闭式、bin-fold 相对均匀基线的两点 \(f\)-散度极限、稳定地址半环的 PTIME 双向可解释性、一般 Ostrowski 数字层的规范化函子性、三轴 CRT 最小窗以及十次分歧/Lee--Yang 三次的 Chebotarev 乘法律已经建立之后，还可把部分可逆误差、信息几何塌缩、数字层局域性、三轴最小窗及跨指纹条件独立进一步压缩为下列八条结论。前四条把最优部分读出的全部损失先后还原为纤维超额尾量、Neyman--Pearson 对偶与矩谱驱动的非渐近失败界；中间三条分别把渐近 \(f\)-几何压缩到唯一二原子似然比测度、把 Zeckendorf/Ostrowski 层的局域可加性与乘法账本不可有限化严格分离，并指出三轴最小窗在最小层面即不可纯化；最后一条则表明十次线性因子指纹对 Lee--Yang 的符号/根/全分裂粗读出保持完全条件不变。
 
 \begin{theorem}[最优部分可逆率的溢出恒等式]\label{thm:xi-time-part64b-optimal-partial-invertibility-overflow}
 沿用定理 \ref{thm:fold-oracle-capacity-closed-form} 的记号。记
@@ -104,6 +104,137 @@ M_m-2^B\le \varepsilon\,2^m,
 2^B\ge M_m-\varepsilon\,2^m.
 \]
 其余两条断言分别对应 \(\varepsilon=0\) 与 \(M_m>2^B\) 的特例。证毕。
+\end{proof}
+
+\begin{theorem}[预言机容量的 Neyman--Pearson 对偶：推前分布与稳定层均匀基线的精确差异表达]\label{thm:xi-time-part64b-oracle-capacity-neyman-pearson-duality}
+沿用定理 \ref{thm:fold-oracle-capacity-closed-form} 的记号。定义推前分布与稳定层均匀基线
+\[
+\mu_m(x):=\frac{d_m(x)}{2^m},
+\qquad
+u_m(x):=\frac{1}{|X_m|}
+\qquad (x\in X_m),
+\]
+并令阈值 \(T:=2^B\)。再定义差异泛函
+\[
+\mathfrak D_m(B):=
+\sup_{A\subseteq X_m}
+\Bigl(
+\mu_m(A)-2^{B-m}|X_m|\,u_m(A)
+\Bigr).
+\]
+则有严格恒等式
+\[
+\mathrm{Succ}_m(B)=1-\mathfrak D_m(B),
+\]
+并且上确界恰由阈值集
+\[
+A_B^\star:=\{x\in X_m:\ d_m(x)>2^B\}
+\]
+取得。
+\end{theorem}
+\begin{proof}
+由于
+\[
+|X_m|\,u_m(A)=|A|,
+\]
+故对任意 \(A\subseteq X_m\)，有
+\[
+\mu_m(A)-2^{B-m}|X_m|\,u_m(A)
+=
+\sum_{x\in A}\left(\frac{d_m(x)}{2^m}-\frac{2^B}{2^m}\right)
+=
+\frac{1}{2^m}\sum_{x\in A}\bigl(d_m(x)-2^B\bigr).
+\]
+上式在且仅在取遍所有正项时达到最大，因此
+\[
+\mathfrak D_m(B)
+=
+\frac{1}{2^m}
+\sum_{x:\,d_m(x)>2^B}\bigl(d_m(x)-2^B\bigr),
+\]
+且最大集正是 \(A_B^\star\)。
+
+另一方面，由定理 \ref{thm:xi-time-part64b-optimal-partial-invertibility-overflow} 的逐点恒等式
+\[
+\min(d,2^B)=d-(d-2^B)_+
+\]
+可得
+\[
+C_m(B)
+=
+\sum_{x\in X_m}\min\bigl(d_m(x),2^B\bigr)
+=
+2^m-\sum_{x\in X_m}\bigl(d_m(x)-2^B\bigr)_+.
+\]
+因此
+\[
+\mathfrak D_m(B)
+=
+\frac{2^m-C_m(B)}{2^m}
+=
+1-\mathrm{Succ}_m(B).
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[幂和诱导的非渐近失败率指数界与可计算预算下界]\label{thm:xi-time-part64b-power-sum-failure-bound-budget-lower}
+对任意 \(q>1\)，定义幂和
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q.
+\]
+则对任意实预算 \(B\in\mathbb R\) 都有失败率上界
+\[
+1-\mathrm{Succ}_m(B)
+\le
+\frac{S_q(m)}{2^m\,2^{(q-1)B}}.
+\]
+因此，若希望
+\[
+\mathrm{Succ}_m(B)\ge 1-\varepsilon
+\qquad (\varepsilon\in(0,1)),
+\]
+则充分条件为
+\[
+B\ge
+\frac{\log_2 S_q(m)-m-\log_2\varepsilon}{q-1}.
+\]
+对右端再对 \(q>1\) 取下确界，便得到完全由矩谱驱动的最强可计算预算下界。
+\end{theorem}
+\begin{proof}
+记
+\[
+T:=2^B.
+\]
+由定理 \ref{thm:xi-time-part64b-optimal-partial-invertibility-overflow}，
+\[
+2^m-C_m(B)=\sum_{x\in X_m}(d_m(x)-T)_+.
+\]
+对任意 \(d\ge 0\) 与 \(q>1\)，成立初等不等式
+\[
+(d-T)_+\le \frac{d^q}{T^{q-1}}.
+\]
+确实，若 \(d\le T\)，左端为 \(0\)；若 \(d>T\)，则
+\[
+d-T\le d\le d\left(\frac{d}{T}\right)^{q-1}=\frac{d^q}{T^{q-1}}.
+\]
+逐项求和即得
+\[
+2^m-C_m(B)
+\le
+\frac{1}{T^{q-1}}\sum_{x\in X_m}d_m(x)^q
+=
+\frac{S_q(m)}{2^{(q-1)B}}.
+\]
+两边同除以 \(2^m\)，便有
+\[
+1-\mathrm{Succ}_m(B)\le \frac{S_q(m)}{2^m\,2^{(q-1)B}}.
+\]
+若右端不超过 \(\varepsilon\)，则 \(\mathrm{Succ}_m(B)\ge 1-\varepsilon\)。对上式整理即得
+\[
+B\ge
+\frac{\log_2 S_q(m)-m-\log_2\varepsilon}{q-1}.
+\]
+证毕。
 \end{proof}
 
 \begin{theorem}[折叠信息几何的二点塌缩原理]\label{thm:xi-time-part64b-fold-information-geometry-two-point-collapse}

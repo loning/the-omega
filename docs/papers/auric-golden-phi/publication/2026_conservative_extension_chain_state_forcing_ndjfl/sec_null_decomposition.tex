@@ -1,0 +1,1578 @@
+\section{Local Objects, Structural Absence, and Gluing Obstructions}\label{sec:null-decomposition}
+
+We next distinguish admissible reference from objecthood. An admitted reference need not yet determine a global object, but it may still support local witnesses and compatible local families. This local-to-global gap is the source of the structural phenomena studied in the present section.
+
+Throughout the section we assume that refinement acts conservatively on the local structures: if $q\le p$, then admitted references, covers, and compatible local families at $q$ restrict functorially to those at $p$, and a visible value class already uniquely determined at $p$ is not split by further refinement.
+
+\subsection{References and local objects}
+
+Fix a family of referenceable sorts
+\[
+S_{\mathrm{ref}}\subseteq S.
+\]
+For each $s\in S_{\mathrm{ref}}$, the language contains a reference sort $\mathsf{Ref}_s$ and an admissibility predicate $\Adm_s(\cdot)$.
+
+\begin{definition}[Reference classes]\label{def:reference-classes}
+Let $p$ be a state and let $r,r'$ be reference terms of sort $\mathsf{Ref}_s$. Define
+\[
+r\equiv_p r'
+\quad:\Longleftrightarrow\quad
+M,p\Vdash (r=r').
+\]
+The set of admitted reference classes at $p$ is
+\[
+\mathcal{R}_s(p):=\{[r]_p\mid M,p\Vdash \Adm_s(r)\}.
+\]
+\end{definition}
+
+\begin{definition}[Local reference frame]\label{def:local-reference-frame}
+For a state $p$ and a referenceable sort $s$, a \emph{local reference frame} is a triple
+\[
+\mathcal{B}_{p,s}=\bigl(\mathcal{R}_s(p),\sqsubseteq_{p,s},\Cov_{p,s}\bigr),
+\]
+where $\sqsubseteq_{p,s}$ is a refinement relation on $\mathcal{R}_s(p)$ and $\Cov_{p,s}$ assigns to each $a\in\mathcal{R}_s(p)$ a collection of covering families
+\[
+\{a_i\to a\}_{i\in I},
+\qquad
+a_i\sqsubseteq_{p,s} a.
+\]
+We assume that every $a$ carries the trivial cover $\{a\to a\}$.
+\end{definition}
+
+\begin{definition}[Local object functor]\label{def:local-object-functor}
+A \emph{local object functor} on $(p,s)$ is a contravariant functor
+\[
+F_{p,s}:\mathcal{B}_{p,s}^{op}\to\mathsf{Set}.
+\]
+If $b\sqsubseteq_{p,s} a$, the induced restriction map is denoted by
+\[
+\res_b^a:F_{p,s}(a)\to F_{p,s}(b).
+\]
+\end{definition}
+
+\begin{definition}[Three existence levels]\label{def:existence-levels}
+Let $r:\mathsf{Ref}_s$ and assume $M,p\Vdash \Adm_s(r)$. Write $a=[r]_p$.
+\begin{enumerate}[label=(\roman*),nosep]
+\item $M,p\Vdash \LocSec_s(r)$ if there exists a cover $\{a_i\to a\}_{i\in I}\in\Cov_{p,s}(a)$ such that $F_{p,s}(a_i)\neq\varnothing$ for every $i\in I$.
+\item $M,p\Vdash \CompSec_s(r)$ if there exist a cover $\{a_i\to a\}_{i\in I}$ and sections $\sigma_i\in F_{p,s}(a_i)$ such that for every common refinement $c\sqsubseteq_{p,s} a_i,a_j$,
+\[
+\res_c^{a_i}(\sigma_i)=\res_c^{a_j}(\sigma_j).
+\]
+\item $M,p\Vdash \Sec_s(r)$ if $F_{p,s}(a)\neq\varnothing$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[Global sections yield compatible local sections]\label{prop:global-implies-compatible-local}
+If $M,p\Vdash \Sec_s(r)$, then
+\[
+M,p\Vdash \CompSec_s(r)
+\qquad\text{and}\qquad
+M,p\Vdash \LocSec_s(r).
+\]
+\end{proposition}
+
+\begin{proof}
+Let $a=[r]_p$ and choose $\sigma\in F_{p,s}(a)$. The trivial cover $\{a\to a\}$ is available by \Cref{def:local-reference-frame}. The singleton family $(\sigma)$ is therefore a compatible local family, so both compatible local sectionability and local sectionability follow immediately.
+\end{proof}
+
+\subsection{Sheafification and gluing failure}
+
+For fixed $(p,s)$, the local reference frame of \Cref{def:local-reference-frame} determines a site
+\[
+\mathcal{C}_{p,s}:=(\mathcal{B}_{p,s},\Cov_{p,s}),
+\]
+and the local object functor of \Cref{def:local-object-functor} determines a presheaf
+\[
+F_{p,s}\in\mathbf{PSh}(\mathcal{B}_{p,s}).
+\]
+Write
+\[
+a_{p,s}:\mathbf{PSh}(\mathcal{B}_{p,s})\to\mathbf{Sh}(\mathcal{C}_{p,s})
+\]
+for the associated sheafification functor.
+
+\begin{theorem}[Sheafification characterizes compatible local sectionability]\label{thm:sheafification-characterization}
+Let $r:\mathsf{Ref}_s$ be admitted at $p$, and write $a=[r]_p$. Then
+\[
+M,p\Vdash \CompSec_s(r)
+\quad\Longleftrightarrow\quad
+\bigl(a_{p,s}F_{p,s}\bigr)(a)\neq\varnothing.
+\]
+\end{theorem}
+
+\begin{proof}
+By the standard site-theoretic description of sheafification, a section of $a_{p,s}F_{p,s}$ at $a$ is represented by a matching family over some covering sieve of $a$, equivalently over some covering family of $a$ \cite[Chap.~III, \S2]{MacLaneMoerdijk1994}, \cite[Part~B2.2]{Johnstone2002}. In the present setting, such a matching family is exactly a compatible local family as in \Cref{def:existence-levels}(ii). Hence the sheafified fiber is nonempty exactly when $r$ is compatibly locally sectionable at $p$.
+\end{proof}
+
+\begin{corollary}[Sheaf condition at a reference]\label{cor:sheaf-local-to-global}
+If $F_{p,s}$ is already a sheaf at $a=[r]_p$, then
+\[
+M,p\Vdash \CompSec_s(r)
+\quad\Longleftrightarrow\quad
+M,p\Vdash \Sec_s(r).
+\]
+\end{corollary}
+
+\begin{proof}
+If $F_{p,s}$ is already a sheaf at $a$, then the unit $F_{p,s}\to a_{p,s}F_{p,s}$ is an isomorphism at $a$. The claim therefore follows from \Cref{thm:sheafification-characterization}.
+\end{proof}
+
+\begin{corollary}[Sheafification removes gluing failure]\label{cor:sheafification-removes-glue}
+Let $\Sec_s^{\sharp}(r)$ denote global sectionability computed with the sheafified local object functor $a_{p,s}F_{p,s}$. Then
+\[
+M,p\Vdash \CompSec_s(r)
+\quad\Longleftrightarrow\quad
+M,p\Vdash \Sec_s^{\sharp}(r).
+\]
+In particular, no admitted reference remains in gluing failure after sheafification.
+\end{corollary}
+
+\begin{proof}
+This is \Cref{thm:sheafification-characterization} rewritten for the sheaf $a_{p,s}F_{p,s}$. Once the presheaf has been replaced by a sheaf, compatible local existence and global existence coincide.
+\end{proof}
+
+\subsection{Realization prestacks and connected components}
+
+The presheaf $F_{p,s}$ records only the isomorphism classes of local realizations. To pass from compatible local families to gerbes and cohomology, one needs a groupoid-valued lift whose connected components recover $F_{p,s}$ after sheafification.
+
+\begin{definition}[Realization prestack and stackification]\label{def:realization-prestack}
+Fix an admitted reference $r:\mathsf{Ref}_s$ at a state $p$, and write
+\[
+a=[r]_p,
+\qquad
+\mathcal C_a:=\mathcal C_{p,s}/a.
+\]
+A \emph{realization prestack} for $r$ at $p$ is a category fibred in groupoids
+\[
+\mathfrak P_r\to \mathcal C_a
+\]
+such that:
+\begin{enumerate}[label=(\roman*),nosep]
+\item the presheaf of isomorphism classes
+\[
+\pi_0^{\mathrm{pre}}(\mathfrak P_r):U\longmapsto \Ob(\mathfrak P_r(U))/\!\cong
+\]
+is identified with the restriction of the local object functor,
+\[
+\pi_0^{\mathrm{pre}}(\mathfrak P_r)\cong F_{p,s}|_{\mathcal C_a};
+\]
+\item for every object $U$ of $\mathcal C_a$ and every $x\in \mathfrak P_r(U)$, the automorphism sheaf
+\[
+\underline{\mathrm{Aut}}(x)
+\]
+on $\mathcal C_a/U$ is functorially identified with the restriction of a fixed abelian sheaf $\Band$ on $\mathcal C_a$.
+\end{enumerate}
+Write
+\[
+\mathfrak L_r:=a(\mathfrak P_r)
+\]
+for the stackification of $\mathfrak P_r$ in groupoids \cite[Tag 02ZP]{StacksProject}.
+\end{definition}
+
+\begin{proposition}[Components of the stackification]\label{prop:stackification-components}
+In the setting of \Cref{def:realization-prestack}, there is a canonical isomorphism of sheaves on $\mathcal C_a$:
+\[
+\pi_0(\mathfrak L_r)\cong a_{p,s}F_{p,s}|_{\mathcal C_a}.
+\]
+\end{proposition}
+
+\begin{proof}
+By stackification, the morphism presheaves of $\mathfrak P_r$ are sheafified and every object of $\mathfrak L_r$ is locally in the essential image of $\mathfrak P_r\to \mathfrak L_r$ \cite[Tag 02ZP]{StacksProject}. Passing to isomorphism classes therefore shows that $\pi_0(\mathfrak L_r)$ is the sheafification of $\pi_0^{\mathrm{pre}}(\mathfrak P_r)$. Since stacks in setoids are precisely sheaves of sets \cite[Tag 042Y]{StacksProject}, we obtain
+\[
+\pi_0(\mathfrak L_r)\cong a\bigl(\pi_0^{\mathrm{pre}}(\mathfrak P_r)\bigr).
+\]
+Using \Cref{def:realization-prestack}(i), this becomes
+\[
+\pi_0(\mathfrak L_r)\cong a_{p,s}F_{p,s}|_{\mathcal C_a}.
+\qedhere
+\]
+\end{proof}
+
+\subsection{Visible value classes and typed readouts}
+
+\begin{definition}[Visible value classes]\label{def:visible-value-classes}
+Let $r:\mathsf{Ref}_s$ be admitted at $p$, and write $a=[r]_p$. A \emph{visible presentation} of a value at $r$ is a compatible local family
+\[
+\bigl(\{a_i\to a\}_{i\in I},(\sigma_i)_{i\in I}\bigr)
+\]
+as in \Cref{def:existence-levels}(ii). Two visible presentations are called \emph{value-equivalent} if after passage to a common refinement of their covers, the restricted local sections agree pointwise. A \emph{visible value class} is an equivalence class of visible presentations. The set of visible value classes of $r$ at $p$ is denoted by $\Vis_{p,s}(r)$.
+\end{definition}
+
+\begin{theorem}[Visible value classes as global connected components]\label{thm:visible-value-components}
+Assume that $r$ admits a realization prestack in the sense of \Cref{def:realization-prestack}. Then
+\[
+\Vis_{p,s}(r)\cong \bigl(a_{p,s}F_{p,s}\bigr)(a)\cong \pi_0(\mathfrak L_r)(a).
+\]
+\end{theorem}
+
+\begin{proof}
+By the standard description of sheafification on a site, a section of $a_{p,s}F_{p,s}$ at $a$ is represented by a matching family over a cover of $a$, modulo passage to common refinements. This is exactly the equivalence relation imposed in \Cref{def:visible-value-classes}. Hence
+\[
+\Vis_{p,s}(r)\cong \bigl(a_{p,s}F_{p,s}\bigr)(a).
+\]
+The second identification is \Cref{prop:stackification-components} evaluated at $a$.
+\end{proof}
+
+\begin{definition}[Typed readout]\label{def:typed-readout}
+For a reference $r:\mathsf{Ref}_s$ at a state $p$, define the typed readout
+\[
+\Read_{p,s}(r)
+\]
+by the following cases:
+\[
+\Read_{p,s}(r)=
+\begin{cases}
+\text{undefined}, & M,p\nVdash \Adm_s(r),\\[0.5ex]
+\Null, & M,p\Vdash \Adm_s(r)\ \text{and}\ \Vis_{p,s}(r)=\varnothing,\\[0.5ex]
+v, & \Vis_{p,s}(r)=\{v\},\\[0.5ex]
+\text{undefined}, & |\Vis_{p,s}(r)|>1.
+\end{cases}
+\]
+\end{definition}
+
+\begin{proposition}[Address before value]\label{prop:address-before-value}
+If
+\[
+\Read_{p,s}(r)=v
+\qquad\text{with}\qquad
+v\neq \Null,
+\]
+then
+\[
+M,p\Vdash \Adm_s(r)
+\qquad\text{and}\qquad
+M,p\Vdash \CompSec_s(r).
+\]
+\end{proposition}
+
+\begin{proof}
+By \Cref{def:typed-readout}, a non-null readout can occur only in the singleton case $\Vis_{p,s}(r)=\{v\}$. By \Cref{def:visible-value-classes}, every element of $\Vis_{p,s}(r)$ is represented by a compatible local family, so $M,p\Vdash \CompSec_s(r)$. Admissibility is built into the definition of $\Vis_{p,s}(r)$, since visible value classes are defined only for admitted references.
+\end{proof}
+
+\begin{corollary}[Non-null readout criterion]\label{cor:nonnull-readout-criterion}
+If
+\[
+M,p\Vdash \Adm_s(r)
+\qquad\text{and}\qquad
+\Vis_{p,s}(r)=\{v\},
+\]
+then
+\[
+\Read_{p,s}(r)=v.
+\]
+\end{corollary}
+
+\begin{proof}
+Immediate from \Cref{def:typed-readout}.
+\end{proof}
+
+\begin{proposition}[Refinement stability of defined readouts]\label{prop:typed-readout-persistence}
+Let $q\le p$, and suppose
+\[
+\Read_{p,s}(r)=v
+\qquad\text{with}\qquad
+v\neq \Null.
+\]
+Then
+\[
+\Read_{q,s}(r)=v.
+\]
+\end{proposition}
+
+\begin{proof}
+Since $v\neq\Null$, the readout at $p$ is represented by a unique visible value class. By the standing refinement hypothesis, compatible local families restrict functorially from $q$ to $p$, and a uniquely determined visible class at $p$ cannot split under further refinement. Hence the same class $v$ remains the unique visible class at $q$, so \Cref{def:typed-readout} gives $\Read_{q,s}(r)=v$.
+\end{proof}
+
+\subsection{Structural absence}
+
+\begin{definition}[Undefined, total, and null]\label{def:undef-total-null}
+For $r:\mathsf{Ref}_s$, define
+\[
+\Undef_s(r):=\neg\Adm_s(r),\qquad
+\Tot_s(r):=\Adm_s(r)\land \Sec_s(r),\qquad
+\Null_s(r):=\Adm_s(r)\land \neg\Sec_s(r).
+\]
+\end{definition}
+
+\begin{definition}[The three null modes]\label{def:null-failure-modes}
+For $r:\mathsf{Ref}_s$, define
+\[
+\Null^{\mathrm{loc}}_s(r):=\Adm_s(r)\land \neg\LocSec_s(r),
+\]
+\[
+\Null^{\mathrm{cmp}}_s(r):=\Adm_s(r)\land \LocSec_s(r)\land \neg\CompSec_s(r),
+\]
+\[
+\Null^{\mathrm{glue}}_s(r):=\Adm_s(r)\land \CompSec_s(r)\land \neg\Sec_s(r).
+\]
+\end{definition}
+
+\begin{proposition}[The three modes lie inside null]\label{prop:null-modes-imply-null}
+Each of $\Null^{\mathrm{loc}}_s(r)$, $\Null^{\mathrm{cmp}}_s(r)$, and $\Null^{\mathrm{glue}}_s(r)$ implies $\Null_s(r)$.
+\end{proposition}
+
+\begin{proof}
+The gluing case is immediate from \Cref{def:null-failure-modes}. In the local and compatibility cases, a global section would imply compatible local sectionability and local sectionability by \Cref{prop:global-implies-compatible-local}, contradicting the defining negations.
+\end{proof}
+
+\begin{proposition}[Mutual exclusivity of the null modes]\label{prop:null-modes-exclusive}
+No two distinct null modes can hold simultaneously for the same reference at the same state.
+\end{proposition}
+
+\begin{proof}
+The mode $\Null^{\mathrm{loc}}_s(r)$ contains $\neg\LocSec_s(r)$, while the other two contain $\LocSec_s(r)$. The mode $\Null^{\mathrm{cmp}}_s(r)$ contains $\neg\CompSec_s(r)$, while $\Null^{\mathrm{glue}}_s(r)$ contains $\CompSec_s(r)$.
+\end{proof}
+
+\begin{definition}[Decomposition decidability]\label{def:decomposition-decidability}
+We say that $p$ has \emph{decomposition decidability} for $r:\mathsf{Ref}_s$ if both $\LocSec_s(r)$ and $\CompSec_s(r)$ are decided at $p$.
+\end{definition}
+
+\begin{proposition}[Null trichotomy]\label{prop:null-trichotomy}
+If $p$ has decomposition decidability for $r:\mathsf{Ref}_s$, then
+\[
+M,p\Vdash \Null_s(r)
+\]
+if and only if exactly one of
+\[
+M,p\Vdash \Null^{\mathrm{loc}}_s(r),\qquad
+M,p\Vdash \Null^{\mathrm{cmp}}_s(r),\qquad
+M,p\Vdash \Null^{\mathrm{glue}}_s(r)
+\]
+holds.
+\end{proposition}
+
+\begin{proof}
+Assume $M,p\Vdash \Null_s(r)$. Then $r$ is admitted but not globally sectionable. Since $\LocSec_s(r)$ and $\CompSec_s(r)$ are decided at $p$, there are three cases: either local sectionability already fails, local sectionability holds but compatibility fails, or compatibility holds while global sectionability fails. These are exactly the three null modes. The converse follows from \Cref{prop:null-modes-imply-null}, and uniqueness is \Cref{prop:null-modes-exclusive}.
+\end{proof}
+
+\begin{theorem}[Classification after refinement]\label{thm:null-classification-under-refinement}
+Let $q\le p$ and suppose
+\[
+M,p\Vdash \Null_s(r).
+\]
+If $q$ has decomposition decidability for $r$, then exactly one null mode holds at $q$.
+\end{theorem}
+
+\begin{proof}
+By persistence of forcing, $M,q\Vdash \Null_s(r)$. The hypothesis gives decomposition decidability at $q$, so \Cref{prop:null-trichotomy} applies at the refined state $q$.
+\end{proof}
+
+\begin{proposition}[A finite model for the three absence modes]\label{prop:finite-three-mode-model}
+There exist a finite state $p$ and admitted references
+\[
+r_{\mathrm{loc}},\qquad r_{\mathrm{cmp}},\qquad r_{\mathrm{glue}}
+\]
+of one referenceable sort such that
+\[
+M,p\Vdash \Null^{\mathrm{loc}}_s(r_{\mathrm{loc}}),\qquad
+M,p\Vdash \Null^{\mathrm{cmp}}_s(r_{\mathrm{cmp}}),\qquad
+M,p\Vdash \Null^{\mathrm{glue}}_s(r_{\mathrm{glue}}).
+\]
+\end{proposition}
+
+\begin{proof}
+Take a single state $p$ and one referenceable sort $s$. Let the local reference frame be the disjoint union of three rooted components.
+
+For $r_{\mathrm{loc}}$, use one object $a_{\mathrm{loc}}$ with only the trivial cover and define
+\[
+F(a_{\mathrm{loc}})=\varnothing.
+\]
+Then local sectionability already fails, so $M,p\Vdash \Null^{\mathrm{loc}}_s(r_{\mathrm{loc}})$.
+
+For $r_{\mathrm{cmp}}$, use objects
+\[
+c_{\mathrm{cmp}}\sqsubseteq u_{\mathrm{cmp}}\sqsubseteq a_{\mathrm{cmp}},
+\qquad
+c_{\mathrm{cmp}}\sqsubseteq v_{\mathrm{cmp}}\sqsubseteq a_{\mathrm{cmp}},
+\]
+with nontrivial cover $\{u_{\mathrm{cmp}}\to a_{\mathrm{cmp}},v_{\mathrm{cmp}}\to a_{\mathrm{cmp}}\}$. Define
+\[
+F(u_{\mathrm{cmp}})=\{\sigma_u\},\quad
+F(v_{\mathrm{cmp}})=\{\sigma_v\},\quad
+F(c_{\mathrm{cmp}})=\{0,1\},\quad
+F(a_{\mathrm{cmp}})=\varnothing,
+\]
+and restrictions
+\[
+\res_{c_{\mathrm{cmp}}}^{u_{\mathrm{cmp}}}(\sigma_u)=0,
+\qquad
+\res_{c_{\mathrm{cmp}}}^{v_{\mathrm{cmp}}}(\sigma_v)=1.
+\]
+Local sections exist on the chosen cover, but the only available family is incompatible on the overlap. Hence $M,p\Vdash \Null^{\mathrm{cmp}}_s(r_{\mathrm{cmp}})$.
+
+For $r_{\mathrm{glue}}$, use objects
+\[
+c_{\mathrm{glue}}\sqsubseteq u_{\mathrm{glue}}\sqsubseteq a_{\mathrm{glue}},
+\qquad
+c_{\mathrm{glue}}\sqsubseteq v_{\mathrm{glue}}\sqsubseteq a_{\mathrm{glue}},
+\]
+with cover $\{u_{\mathrm{glue}}\to a_{\mathrm{glue}},v_{\mathrm{glue}}\to a_{\mathrm{glue}}\}$. Define
+\[
+F(u_{\mathrm{glue}})=F(v_{\mathrm{glue}})=F(c_{\mathrm{glue}})=\{*\},
+\qquad
+F(a_{\mathrm{glue}})=\varnothing,
+\]
+and let every restriction map be the identity on $\{*\}$. Then the chosen cover supports a compatible family, but there is no global section at $a_{\mathrm{glue}}$. Thus $M,p\Vdash \Null^{\mathrm{glue}}_s(r_{\mathrm{glue}})$.
+
+Finally, stipulate
+\[
+M,p\Vdash \Adm_s(r_{\mathrm{loc}})\land \Adm_s(r_{\mathrm{cmp}})\land \Adm_s(r_{\mathrm{glue}})
+\]
+and identify the three reference classes with $a_{\mathrm{loc}},a_{\mathrm{cmp}},a_{\mathrm{glue}}$ respectively.
+\end{proof}
+
+\subsection{Component gerbes and branched gluing obstructions}
+
+The stackification $\mathfrak L_r$ may have several global connected components over $a$. Cohomological obstruction theory therefore belongs, in general, not to a single gerbe attached to $r$, but to the component gerbes indexed by the visible value classes of $r$.
+
+\begin{definition}[Component gerbes and branch obstruction classes]\label{def:compatible-realization-stack}\label{def:cech-gluing-obstruction}
+Fix an admitted reference $r:\mathsf{Ref}_s$ at a state $p$, write
+\[
+a=[r]_p,
+\]
+and assume that $r$ admits a realization prestack $\mathfrak P_r$ with stackification $\mathfrak L_r$ and band $\Band$ as in \Cref{def:realization-prestack}. For a visible value class
+\[
+v\in \Vis_{p,s}(r)\cong \pi_0(\mathfrak L_r)(a),
+\]
+define the \emph{component substack}
+\[
+\mathfrak G_v(U):=\{x\in \mathfrak L_r(U)\mid [x]=v|_U\in \pi_0(\mathfrak L_r)(U)\}
+\]
+for each object $U$ of $\mathcal C_{p,s}/a$. When \Cref{thm:component-gerbe-decomposition} applies, $\mathfrak G_v$ is called the \emph{component gerbe} of the visible branch $v$.
+
+Assume moreover that, for every visible branch $v$, gerbe-adapted covers of $a$ satisfying the vanishing hypotheses of \Cref{thm:cech-bridge-compatible-realizations} form a cofinal family in $\Cov_{p,s}(a)$. Then the resulting filtered Cech class of the branch gerbe $\mathfrak G_v$ is denoted
+\[
+\omega_v\in \varinjlim_{\mathcal U}\Cech^2(\mathcal U,\Band)=:\Cech^2(\mathcal C_{p,s}/a,\Band)
+\]
+and called the \emph{branch obstruction class} of $v$.
+\end{definition}
+
+\begin{theorem}[Component gerbe decomposition]\label{thm:component-gerbe-decomposition}
+In the setting of \Cref{def:compatible-realization-stack}, each $\mathfrak G_v$ is a banded $\Band$-gerbe over $\mathcal C_{p,s}/a$, and there is an equivalence of stacks in groupoids
+\[
+\mathfrak L_r\simeq \coprod_{v\in \Vis_{p,s}(r)} \mathfrak G_v.
+\]
+\end{theorem}
+
+\begin{proof}
+Each $\mathfrak G_v$ is a full substack of the stack $\mathfrak L_r$, hence itself a stack in groupoids. Let $U$ be an object of $\mathcal C_{p,s}/a$. Because $v|_U$ is a section of the sheaf $\pi_0(\mathfrak L_r)$, there exists a cover $\{U_i\to U\}$ and objects
+\[
+x_i\in \mathfrak L_r(U_i)
+\]
+representing the section $v|_{U_i}$. Thus $(\mathfrak G_v)_{U_i}$ is nonempty. Now let $x,y\in \mathfrak G_v(U)$. Since $x$ and $y$ determine the same section of $\pi_0(\mathfrak L_r)(U)$, the definition of the sheaf of connected components implies that there exists a cover $\{U_i\to U\}$ such that
+\[
+x|_{U_i}\cong y|_{U_i}
+\]
+for every $i$. Hence $\mathfrak G_v$ is a gerbe \cite[Tag 06NY]{StacksProject}. The banding is inherited from $\mathfrak L_r$ because $\mathfrak G_v$ is a full substack and the automorphism sheaves are already identified with $\Band$.
+
+Every object of $\mathfrak L_r(U)$ determines a unique connected-component section in $\pi_0(\mathfrak L_r)(U)$, so it belongs to a unique $\mathfrak G_v(U)$. This gives the displayed decomposition of $\mathfrak L_r$ as a disjoint union of its component gerbes.
+\end{proof}
+
+\begin{theorem}[Constructing the Cech obstruction of a branch gerbe]\label{thm:cech-bridge-compatible-realizations}
+Assume that $\mathfrak G_v$ is a banded component gerbe with band $\Band$ in the sense of \Cref{def:compatible-realization-stack}. Let
+\[
+\mathcal U=\{a_i\to a\}_{i\in I}\in \Cov_{p,s}(a)
+\]
+be a cover whose Cech nerve exists in $\mathcal C_{p,s}/a$, and write
+\[
+U_{i_0\cdots i_n}
+\]
+for the corresponding simplices. Assume
+\[
+H^1(U_i,\Band)=0
+\qquad\text{and}\qquad
+H^1(U_{ij},\Band)=0
+\]
+for all $i,j\in I$. Choose objects
+\[
+x_i\in \mathfrak G_v(U_i).
+\]
+Then:
+\begin{enumerate}[label=(\roman*),nosep]
+\item for every pair $(i,j)$ there exists an isomorphism
+\[
+\phi_{ij}:x_i|_{U_{ij}}\xrightarrow{\sim} x_j|_{U_{ij}};
+\]
+\item on each triple overlap $U_{ijk}$, the element
+\[
+g_{ijk}:=\phi_{ik}^{-1}|_{U_{ijk}}\circ \phi_{jk}|_{U_{ijk}}\circ \phi_{ij}|_{U_{ijk}}
+\in \Band(U_{ijk})
+\]
+defines a Cech $2$-cocycle $g=(g_{ijk})\in \check Z^2(\mathcal U,\Band)$;
+\item the class $[g]\in \Cech^2(\mathcal U,\Band)$ depends only on the branch gerbe $\mathfrak G_v$ and the chosen cover: changing the local objects or the isomorphisms changes $g$ by a Cech coboundary;
+\item the class $[g]$ vanishes if and only if the branch gerbe $\mathfrak G_v$ is neutral over $a$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Because $\mathfrak G_v$ is a banded gerbe, the sheaf
+\[
+\mathrm{Isom}(x_i|_{U_{ij}},x_j|_{U_{ij}})
+\]
+is a $\Band|_{U_{ij}}$-torsor for every pair $(i,j)$. By the standard classification of torsors by $H^1$ \cite[Chap.~III]{MacLaneMoerdijk1994}, \cite[Sec.~11]{StacksProject}, the vanishing
+\[
+H^1(U_{ij},\Band)=0
+\]
+forces this torsor to be trivial. Hence global sections exist, which gives the isomorphisms $\phi_{ij}$ and proves \textup{(i)}.
+
+For \textup{(ii)}, the composite
+\[
+\phi_{ik}^{-1}|_{U_{ijk}}\circ \phi_{jk}|_{U_{ijk}}\circ \phi_{ij}|_{U_{ijk}}
+\]
+is an automorphism of $x_i|_{U_{ijk}}$, hence a section of $\Band(U_{ijk})$. The usual associativity calculation on quadruple overlaps shows that $(g_{ijk})$ satisfies the Cech cocycle identity \cite[Chap.~IV]{Giraud1971}, \cite[Sec.~11]{StacksProject}.
+
+For \textup{(iii)}, first change the $\phi_{ij}$ while keeping the objects $x_i$ fixed. Any other choice has the form
+\[
+\phi'_{ij}=\phi_{ij}\circ h_{ij}^{-1}
+\]
+for a $1$-cochain $h=(h_{ij})\in \check C^1(\mathcal U,\Band)$, and the corresponding cocycle is
+\[
+g'=(\delta h)\, g.
+\]
+Thus the Cech class is unchanged.
+
+Next change the local objects. If $x'_i\in \mathfrak G_v(U_i)$ is another choice, then
+\[
+\mathrm{Isom}(x_i,x'_i)
+\]
+is a $\Band|_{U_i}$-torsor. Since $H^1(U_i,\Band)=0$, this torsor is trivial, so we may choose an isomorphism
+\[
+\psi_i:x_i\xrightarrow{\sim} x'_i.
+\]
+Transporting the $\phi_{ij}$ across the $\psi_i$ shows that the cocycle attached to $(x'_i)$ differs from $g$ by a coboundary. Finally, passage to a refinement pulls the cocycle back along the refinement map, so the induced class is stable in the filtered Cech system.
+
+If the gerbe is neutral, choose a global object $x\in \mathfrak G_v(a)$. Then each
+\[
+\mathrm{Isom}(x|_{U_i},x_i)
+\]
+is a $\Band|_{U_i}$-torsor, hence trivial by $H^1(U_i,\Band)=0$. Choose isomorphisms
+\[
+\psi_i:x|_{U_i}\xrightarrow{\sim} x_i.
+\]
+With
+\[
+\phi_{ij}:=\psi_j|_{U_{ij}}\circ \psi_i^{-1}|_{U_{ij}},
+\]
+the resulting cocycle is identically zero. Thus neutrality implies $[g]=0$.
+
+Conversely, if $[g]=0$, choose a $1$-cochain $h=(h_{ij})$ with
+\[
+g=\delta h.
+\]
+Replacing $\phi_{ij}$ by
+\[
+\phi'_{ij}:=\phi_{ij}\circ h_{ij}^{-1},
+\]
+we obtain isomorphisms satisfying the exact cocycle condition on triple overlaps. Since $\mathfrak G_v$ is a stack, the descent datum $(x_i,\phi'_{ij})$ is effective and glues to a global object over $a$. Hence the gerbe is neutral.
+\end{proof}
+
+\begin{theorem}[Branched gerbe semantics of gluing-level absence]\label{thm:gerbe-null-semantics}
+Assume the hypotheses of \Cref{def:cech-gluing-obstruction}. Then, for the admitted reference $r:\mathsf{Ref}_s$ under consideration,
+\[
+M,p\Vdash \CompSec_s(r)
+\quad\Longleftrightarrow\quad
+\Vis_{p,s}(r)\neq\varnothing.
+\]
+Moreover,
+\[
+M,p\Vdash \Sec_s(r)
+\quad\Longleftrightarrow\quad
+\exists v\in \Vis_{p,s}(r)\ \text{such that}\ \mathfrak G_v\ \text{is neutral}.
+\]
+Consequently,
+\[
+M,p\Vdash \Null^{\mathrm{glue}}_s(r)
+\quad\Longleftrightarrow\quad
+\Vis_{p,s}(r)\neq\varnothing
+\ \text{and}\
+\forall v\in \Vis_{p,s}(r),\ \mathfrak G_v\ \text{is non-neutral}.
+\]
+If, in addition, the chosen cofinal family of gerbe-adapted covers computes derived cohomology in degree $2$, then the last condition is equivalent to
+\[
+\Vis_{p,s}(r)\neq\varnothing
+\ \text{and}\
+\omega_v\neq 0\ \text{for every}\ v\in \Vis_{p,s}(r).
+\]
+In particular, the single obstruction class picture is recovered precisely when $|\Vis_{p,s}(r)|=1$.
+\end{theorem}
+
+\begin{proof}
+The first equivalence is the combination of \Cref{thm:sheafification-characterization,thm:visible-value-components}. Indeed, compatible local sectionability is equivalent to the nonemptiness of $(a_{p,s}F_{p,s})(a)$, and this set is exactly $\Vis_{p,s}(r)$.
+
+If $x\in \mathfrak L_r(a)$ is a global object, then $x$ determines a visible value class
+\[
+v=[x]\in \pi_0(\mathfrak L_r)(a)\cong \Vis_{p,s}(r),
+\]
+and $x$ lies in the corresponding component gerbe $\mathfrak G_v(a)$. Hence global sectionability implies that some branch gerbe is neutral. Conversely, if $\mathfrak G_v$ is neutral for some visible branch $v$, then any global object of $\mathfrak G_v(a)$ is, after forgetting the branch label, a global object of $\mathfrak L_r(a)$, hence a global section of the realization stack. This proves the second equivalence.
+
+Since $r$ is admitted, the definition
+\[
+\Null^{\mathrm{glue}}_s(r):=\Adm_s(r)\land \CompSec_s(r)\land \neg\Sec_s(r)
+\]
+now yields the third equivalence immediately.
+
+For the final claim, if the chosen cofinal family computes derived cohomology in degree $2$, then \Cref{thm:cech-bridge-compatible-realizations}(iv) identifies the vanishing of each $\omega_v$ with neutrality of the corresponding component gerbe, while the comparison with derived $H^2$ is the standard banded-gerbe classification \cite[Chap.~IV]{Giraud1971}, \cite[Tag 06NY]{StacksProject}.
+\end{proof}
+
+\subsection{Visible quotients and the information cost of strictification}
+
+The previous subsection shows that a single admitted reference may carry several visible branches, each with its own component gerbe and obstruction class. We now fix one visible branch and analyze how much of its obstruction remains semantically visible without enlarging the state space. The answer is a canonical quotient determined by the actual obstruction values on that branch, together with an exact lower bound on the auxiliary information needed to restore full resolution. The aggregate interaction of all visible branches will be treated afterwards.
+
+\begin{definition}[Finite obstruction presentation]\label{def:finite-obstruction-presentation}
+Fix an admitted reference $r:\mathsf{Ref}_s$ at a state $p$, and assume:
+\begin{enumerate}[label=(\roman*),nosep]
+\item the hypotheses of \Cref{def:cech-gluing-obstruction} hold;
+\item a visible branch
+\[
+v\in \Vis_{p,s}(r)
+\]
+has been chosen;
+\item the associated branch gerbe $\mathfrak G_v$ is banded by a finite abelian group $A$,
+\item a finite covering family
+\[
+\mathcal U=\{a_i\to a\}_{i\in I},
+\qquad
+a=[r]_p,
+\]
+has been chosen together with a \v{C}ech $2$-cocycle
+\[
+\alpha=(\alpha_{ijk})\in Z^2(\mathcal U,A)
+\]
+representing the branch obstruction class $\omega_v$, where the indices $(i,j,k)$ range over the nonempty triple overlaps of $\mathcal U$.
+\end{enumerate}
+Define the \emph{obstruction subgroup}
+\[
+H_\alpha:=\langle \alpha_{ijk}\mid (i,j,k)\text{ ranges over the nonempty triple overlaps of }\mathcal U\rangle\le A,
+\]
+and the associated \emph{visible quotient}
+\[
+A_{\mathrm{vis}}:=A/H_\alpha.
+\]
+\end{definition}
+
+\begin{theorem}[Initial visible quotient of a gluing obstruction]\label{thm:initial-visible-quotient}
+In the setting of \Cref{def:finite-obstruction-presentation}, let
+\[
+\pi:A\twoheadrightarrow A_{\mathrm{vis}}
+\]
+be the canonical quotient map. Then:
+\begin{enumerate}[label=(\roman*),nosep]
+\item the pushed-forward cocycle $\pi_*(\alpha)$ is pointwise zero on every nonempty triple overlap;
+\item if $\varphi:A\to B$ is any homomorphism into an abelian group $B$ such that $\varphi(\alpha_{ijk})=0$ for every nonempty triple overlap, then there exists a unique homomorphism
+\[
+\bar\varphi:A_{\mathrm{vis}}\to B
+\]
+with $\varphi=\bar\varphi\circ\pi$.
+\end{enumerate}
+Hence $A_{\mathrm{vis}}$ is the initial coefficient quotient through which the chosen obstruction presentation becomes strictly trivial.
+\end{theorem}
+
+\begin{proof}
+By construction, every cocycle value $\alpha_{ijk}$ lies in the subgroup $H_\alpha$. Therefore $\pi(\alpha_{ijk})=0$ for every nonempty triple overlap, which proves (i).
+
+For (ii), the hypothesis $\varphi(\alpha_{ijk})=0$ on every nonempty triple overlap implies that every generator of $H_\alpha$ lies in $\ker\varphi$. Hence $H_\alpha\subseteq\ker\varphi$. By the universal property of the quotient by $H_\alpha$, there exists a unique homomorphism $\bar\varphi:A/H_\alpha\to B$ satisfying $\varphi=\bar\varphi\circ\pi$.
+\end{proof}
+
+\begin{theorem}[Definability barrier for character channels]\label{thm:character-definability-barrier}
+In the setting of \Cref{def:finite-obstruction-presentation}, let
+\[
+\widehat A:=\mathrm{Hom}(A,\mathbb T),
+\]
+where $\mathbb T\subseteq\mathbb C^\times$ is the unit circle, and define
+\[
+H_\alpha^\perp:=\{\chi\in\widehat A\mid \chi(h)=1\text{ for every }h\in H_\alpha\}.
+\]
+Call a character $\chi\in\widehat A$ \emph{globally admissible} for the obstruction presentation if
+\[
+\chi(\alpha_{ijk})=1
+\]
+for every nonempty triple overlap of $\mathcal U$. Then:
+\begin{enumerate}[label=(\roman*),nosep]
+\item a character $\chi\in\widehat A$ is globally admissible if and only if $\chi\in H_\alpha^\perp$;
+\item the quotient map $\pi:A\twoheadrightarrow A_{\mathrm{vis}}$ induces a natural isomorphism
+\[
+\widehat{A_{\mathrm{vis}}}\cong H_\alpha^\perp;
+\]
+\item consequently, every globally admissible character channel factors uniquely through $A_{\mathrm{vis}}$, while no character outside $H_\alpha^\perp$ can define a gauge-invariant global readout.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Since $H_\alpha$ is generated by the cocycle values $\alpha_{ijk}$, a character $\chi$ is trivial on $H_\alpha$ if and only if it is trivial on each generator $\alpha_{ijk}$. This proves (i).
+
+For (ii), the quotient map $\pi$ induces by precomposition an injective homomorphism
+\[
+\pi^*:\widehat{A_{\mathrm{vis}}}\hookrightarrow \widehat A.
+\]
+Its image consists exactly of the characters on $A$ that are trivial on $\ker\pi=H_\alpha$, namely $H_\alpha^\perp$. Thus $\pi^*$ identifies $\widehat{A_{\mathrm{vis}}}$ with $H_\alpha^\perp$.
+
+For (iii), a character-level readout can be gauge-invariant only if the corresponding character kills the obstruction multipliers on all triple overlaps, which is the condition in (i). By (ii), this is equivalent to factorization through $A_{\mathrm{vis}}$. If $\chi\notin H_\alpha^\perp$, then some obstruction value survives in the $\chi$-channel, so the resulting would-be readout remains path-dependent and cannot descend to a global observable.
+\end{proof}
+
+\begin{corollary}[The visible quotient is exactly the character-visible quotient]\label{cor:visible-quotient-character-separation}
+In the setting of \Cref{def:finite-obstruction-presentation}, for elements $x,y\in A$ the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $\pi(x)=\pi(y)$ in $A_{\mathrm{vis}}$;
+\item $\chi(x)=\chi(y)$ for every globally admissible character $\chi\in\widehat A$.
+\end{enumerate}
+Equivalently, $A_{\mathrm{vis}}$ is the quotient of $A$ obtained by identifying exactly those elements that cannot be separated by globally admissible character channels.
+\end{corollary}
+
+\begin{proof}
+Assume first that $\pi(x)=\pi(y)$. By \Cref{thm:character-definability-barrier}(ii), every globally admissible character $\chi$ factors as
+\[
+\chi=\bar\chi\circ\pi
+\]
+for a unique character $\bar\chi\in\widehat{A_{\mathrm{vis}}}$. Hence
+\[
+\chi(x)=\bar\chi(\pi(x))=\bar\chi(\pi(y))=\chi(y).
+\]
+
+Conversely, suppose $\pi(x)\neq\pi(y)$. Then
+\[
+g:=\pi(x)-\pi(y)\neq 0
+\]
+in the finite abelian group $A_{\mathrm{vis}}$. By the structure theorem for finite abelian groups \cite{DummitFoote2004}, there is an isomorphism
+\[
+A_{\mathrm{vis}}\cong \mathbb Z/n_1\mathbb Z\oplus\cdots\oplus \mathbb Z/n_t\mathbb Z
+\]
+under which the image of $g$ has some nonzero coordinate, say the $k$th. The coordinate character
+\[
+\psi(z_1,\dots,z_t):=\exp(2\pi i z_k/n_k)
+\]
+therefore satisfies $\psi(g)\neq 1$. By \Cref{thm:character-definability-barrier}(ii), the character
+\[
+\chi:=\psi\circ\pi
+\]
+is globally admissible. Since
+\[
+\chi(x)\chi(y)^{-1}=\psi(\pi(x)-\pi(y))=\psi(g)\neq 1,
+\]
+we have $\chi(x)\neq\chi(y)$, contradicting (ii). Thus $\pi(x)=\pi(y)$.
+\end{proof}
+
+\begin{definition}[Auxiliary strictification code]\label{def:auxiliary-strictification-code}
+In the setting of \Cref{def:finite-obstruction-presentation}, an \emph{auxiliary strictification code} consists of a finite set $R$ and an injective map
+\[
+\iota:A\hookrightarrow A_{\mathrm{vis}}\times R
+\]
+such that the first projection recovers the canonical quotient:
+\[
+\mathrm{pr}_1\circ\iota=\pi.
+\]
+Equivalently, the visible quotient is kept fixed, while the auxiliary register $R$ resolves the hidden information inside the fibers of $\pi$.
+\end{definition}
+
+\begin{theorem}[Minimal information cost of strictification]\label{thm:minimal-information-cost-of-strictification}
+In the setting of \Cref{def:auxiliary-strictification-code}, every auxiliary strictification code satisfies
+\[
+|R|\ge |H_\alpha|.
+\]
+Equivalently,
+\[
+\log_2 |R|\ge \log_2 |H_\alpha|.
+\]
+Moreover, this lower bound is sharp.
+\end{theorem}
+
+\begin{proof}
+Let $\bar a\in A_{\mathrm{vis}}$. The fiber $\pi^{-1}(\bar a)$ is a coset of $\ker\pi=H_\alpha$, hence has cardinality $|H_\alpha|$. Since $\iota$ is injective and $\mathrm{pr}_1\circ\iota=\pi$, the restriction of $\iota$ to $\pi^{-1}(\bar a)$ lands inside the slice $\{\bar a\}\times R$ and remains injective. Therefore
+\[
+|H_\alpha|=|\pi^{-1}(\bar a)|\le |\{\bar a\}\times R|=|R|.
+\]
+This proves the lower bound.
+
+To see that it is sharp, take $R:=H_\alpha$. Choose a set-theoretic section $s:A_{\mathrm{vis}}\to A$ of $\pi$. For each $x\in A$, the difference
+\[
+h(x):=x-s(\pi(x))
+\]
+lies in $H_\alpha$. Define
+\[
+\iota(x):=(\pi(x),h(x))\in A_{\mathrm{vis}}\times H_\alpha.
+\]
+Then $\mathrm{pr}_1\circ\iota=\pi$. If $\iota(x)=\iota(y)$, then $\pi(x)=\pi(y)$ and $h(x)=h(y)$, hence
+\[
+x=s(\pi(x))+h(x)=s(\pi(y))+h(y)=y.
+\]
+Thus $\iota$ is injective and $|R|=|H_\alpha|$.
+\end{proof}
+
+\begin{corollary}[Conservative recovery requires hidden-state budget]\label{cor:conservative-recovery-budget}
+For a finite obstruction presentation, no conservative enrichment that leaves the visible quotient unchanged can restore full $A$-resolution with fewer than $\log_2|H_\alpha|$ bits of auxiliary local state. In particular, the subgroup $H_\alpha$ measures the exact hidden-state budget of strictification for the chosen gluing obstruction.
+\end{corollary}
+
+\begin{proof}
+Any such enrichment induces an auxiliary strictification code in the sense of \Cref{def:auxiliary-strictification-code}. Apply \Cref{thm:minimal-information-cost-of-strictification}.
+\end{proof}
+
+\subsection{A worked finite example}
+
+\begin{example}[A one-bit hidden obstruction]\label{ex:one-bit-hidden-obstruction}
+Assume an admitted reference $r:\mathsf{Ref}_s$ together with a three-member cover
+\[
+\mathcal U=\{a_0,a_1,a_2\to a\},
+\qquad
+a=[r]_p,
+\]
+and let the band be the additive group
+\[
+A=\mathbb Z/4\mathbb Z.
+\]
+Suppose the chosen obstruction presentation is represented by a cocycle whose only nonzero value on a nonempty triple overlap is
+\[
+\alpha_{012}=2\in \mathbb Z/4\mathbb Z.
+\]
+Then
+\[
+H_\alpha=\langle 2\rangle=\{0,2\},
+\qquad
+A_{\mathrm{vis}}=A/H_\alpha\cong \mathbb Z/2\mathbb Z.
+\]
+
+Thus the visible quotient identifies $0$ with $2$ and identifies $1$ with $3$. By \Cref{thm:initial-visible-quotient}, this is the initial coefficient quotient through which the chosen obstruction presentation becomes trivial.
+
+For $m\in\mathbb Z/4\mathbb Z$, define a character
+\[
+\chi_m(x):=\exp(2\pi i mx/4).
+\]
+Then
+\[
+\chi_m(\alpha_{012})=\chi_m(2)=(-1)^m,
+\]
+so \Cref{thm:character-definability-barrier} implies that the globally admissible characters are exactly
+\[
+\chi_0
+\qquad\text{and}\qquad
+\chi_2.
+\]
+Hence the only surviving linear observation is parity: $\chi_2$ distinguishes the two cosets of $H_\alpha$, while the phase-sensitive channels $\chi_1$ and $\chi_3$ do not descend to global observables. By \Cref{cor:visible-quotient-character-separation}, the visible quotient is therefore exactly the quotient detected by all globally admissible character channels.
+
+Finally, \Cref{thm:minimal-information-cost-of-strictification} yields
+\[
+|R|\ge |H_\alpha|=2,
+\]
+so at least one auxiliary bit is required to recover the full $\mathbb Z/4\mathbb Z$-resolution while keeping the visible quotient fixed. This lower bound is attained by the code
+\[
+0\mapsto (\overline{0},0),\qquad
+2\mapsto (\overline{0},1),\qquad
+1\mapsto (\overline{1},0),\qquad
+3\mapsto (\overline{1},1),
+\]
+where $\overline{0},\overline{1}\in A_{\mathrm{vis}}\cong \mathbb Z/2\mathbb Z$ and the second component is a one-bit register. This is the smallest nontrivial instance in which visible information and hidden information separate.
+\end{example}
+
+\subsection{Homological evaluation and intrinsic visibility}
+
+The strict quotient $A_{\mathrm{vis}}=A/H_\alpha$ depends on a chosen cocycle representative. To isolate the part of the obstruction that belongs to the class itself, we now make the homological evaluation map primary. The intrinsic quotient will be defined from this map and only afterwards recovered through class-admissible character channels.
+
+\begin{definition}[Finite nerve presentation of the obstruction class]\label{def:finite-nerve-presentation}
+Fix an admitted reference $r:\mathsf{Ref}_s$ at a state $p$, and assume conditions \textup{(i)}--\textup{(iv)} of \Cref{def:finite-obstruction-presentation}. A \emph{finite nerve presentation} of the branch obstruction class consists of:
+\begin{enumerate}[label=(\roman*),nosep]
+\item a finite covering family
+\[
+\mathcal U=\{a_i\to a\}_{i\in I},
+\qquad
+a=[r]_p,
+\]
+whose Cech nerve $N(\mathcal U)$ is finite;
+\item a trivialization of the band on $\mathcal U$, so that the band may be viewed as a constant coefficient finite abelian group $A$ on $N(\mathcal U)$;
+\item the induced obstruction class
+\[
+\omega\in H^2(N(\mathcal U),A),
+\]
+obtained by identifying Cech cochains on $\mathcal U$ with simplicial cochains on the finite nerve and writing
+\[
+\omega:=\omega_v
+\]
+for the chosen visible branch.
+\end{enumerate}
+Write
+\[
+\eta_A:H^2(N(\mathcal U),A)\longrightarrow \mathrm{Hom}(H_2(N(\mathcal U),\mathbb Z),A)
+\]
+for the map in the universal coefficient exact sequence
+\[
+0\to \operatorname{Ext}^1(H_1(N(\mathcal U),\mathbb Z),A)\to H^2(N(\mathcal U),A)\xrightarrow{\eta_A}\mathrm{Hom}(H_2(N(\mathcal U),\mathbb Z),A)\to 0
+\]
+\cite[Sec.~3.1]{Hatcher2002}, and define the \emph{homological evaluation map}
+\[
+\mathrm{ev}_{\omega}:=\eta_A(\omega).
+\]
+\end{definition}
+
+\begin{definition}[Intrinsic visible quotient]\label{def:intrinsic-visible-quotient}
+In the setting of \Cref{def:finite-nerve-presentation}, define the \emph{intrinsic hidden subgroup}
+\[
+K_{\omega}:=\mathrm{Im}(\mathrm{ev}_{\omega})
+\]
+and the associated \emph{intrinsic visible quotient}
+\[
+A_{\mathrm{vis}}^{\omega}:=\operatorname{coker}(\mathrm{ev}_{\omega})=A/K_{\omega}.
+\]
+\end{definition}
+
+\begin{definition}[Class-admissible characters]\label{def:class-admissible-character}
+In the setting of \Cref{def:finite-nerve-presentation}, let
+\[
+X_{\omega}:=\{\chi\in\widehat A\mid \chi_*(\omega)=0\},
+\qquad
+\widehat A:=\mathrm{Hom}(A,\mathbb T).
+\]
+Elements of $X_{\omega}$ are called \emph{class-admissible} for $\omega$.
+\end{definition}
+
+\begin{theorem}[Character-theoretic detection of the intrinsic visible quotient]\label{thm:intrinsic-visible-quotient}
+In the setting of \Cref{def:class-admissible-character},
+\[
+X_{\omega}
+=
+\{\chi\in\widehat A\mid \chi\circ \mathrm{ev}_{\omega}=0\}
+=
+\mathrm{Ann}(K_{\omega}).
+\]
+Consequently,
+\[
+K_{\omega}
+=
+\bigcap_{\chi\in X_{\omega}}\ker\chi,
+\qquad
+A_{\mathrm{vis}}^{\omega}\cong A\Big/\!\bigcap_{\chi\in X_{\omega}}\ker\chi.
+\]
+\end{theorem}
+
+\begin{proof}
+For every character $\chi:A\to\mathbb T$, naturality of the universal coefficient sequence gives a commutative square
+\[
+\begin{CD}
+H^2(N(\mathcal U),A) @>\eta_A>> \mathrm{Hom}(H_2(N(\mathcal U),\mathbb Z),A) \\
+@V\chi_*VV @VV(\chi\circ -)V \\
+H^2(N(\mathcal U),\mathbb T) @>\eta_{\mathbb T}>> \mathrm{Hom}(H_2(N(\mathcal U),\mathbb Z),\mathbb T).
+\end{CD}
+\]
+Since $\mathbb T$ is divisible and hence injective in $\mathbf{Ab}$, one has
+\[
+\operatorname{Ext}^1(H_1(N(\mathcal U),\mathbb Z),\mathbb T)=0
+\]
+\cite[Sec.~2.3]{Weibel1994}. Thus $\eta_{\mathbb T}$ is an isomorphism by \Cref{def:finite-nerve-presentation}. Therefore
+\[
+\chi_*(\omega)=0
+\Longleftrightarrow
+\eta_{\mathbb T}(\chi_*(\omega))=0
+\Longleftrightarrow
+\chi\circ \eta_A(\omega)=0
+\Longleftrightarrow
+\chi\circ \mathrm{ev}_{\omega}=0.
+\]
+This proves the first displayed identity, and the second is simply the definition of the annihilator of a subgroup of $A$.
+
+Let $H:=K_{\omega}=\mathrm{Im}(\mathrm{ev}_{\omega})\le A$. By the first part of the proof, $X_{\omega}=\mathrm{Ann}(H)$. Finite abelian duality implies
+\[
+\bigcap_{\chi\in \mathrm{Ann}(H)}\ker\chi=H
+\]
+\cite[Chaps.~5, 12]{DummitFoote2004}. Hence
+\[
+K_{\omega}
+=
+\bigcap_{\chi\in X_{\omega}}\ker\chi.
+\]
+The final isomorphism follows immediately:
+\[
+A_{\mathrm{vis}}^{\omega}
+=
+A/K_{\omega}
+\cong
+A\Big/\!\bigcap_{\chi\in X_{\omega}}\ker\chi.
+\qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Character detection of the intrinsic visible quotient]\label{cor:intrinsic-character-detection}
+The quotient map
+\[
+\pi_{\omega}:A\twoheadrightarrow A_{\mathrm{vis}}^{\omega}
+\]
+induces a natural isomorphism
+\[
+\widehat{A_{\mathrm{vis}}^{\omega}}\cong X_{\omega}.
+\]
+For elements $x,y\in A$, one has
+\[
+\pi_{\omega}(x)=\pi_{\omega}(y)
+\quad\Longleftrightarrow\quad
+\chi(x)=\chi(y)\ \text{for every class-admissible }\chi.
+\]
+\end{corollary}
+
+\begin{proof}
+By \Cref{thm:intrinsic-visible-quotient},
+\[
+X_{\omega}=\mathrm{Ann}(K_{\omega})=K_{\omega}^{\perp}.
+\]
+Characters of $A_{\mathrm{vis}}^{\omega}=A/K_{\omega}$ are exactly the characters of $A$ that kill $K_{\omega}$, so precomposition with $\pi_{\omega}$ identifies $\widehat{A_{\mathrm{vis}}^{\omega}}$ with $X_{\omega}$. The separation statement follows from finite abelian duality applied to the finite group $A_{\mathrm{vis}}^{\omega}$ \cite[Chap.~5]{DummitFoote2004}.
+\end{proof}
+
+\begin{theorem}[Initiality among pure-extension quotients]\label{thm:intrinsic-pure-ext-initiality}
+Let
+\[
+q:A\twoheadrightarrow B
+\]
+be a surjective homomorphism onto a finite abelian group $B$. In the setting of \Cref{def:finite-nerve-presentation}, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item the pushed-forward class $q_*(\omega)\in H^2(N(\mathcal U),B)$ lies in the subgroup
+\[
+\operatorname{Ext}^1(H_1(N(\mathcal U),\mathbb Z),B);
+\]
+\item $\eta_B(q_*(\omega))=0$;
+\item $q\circ \mathrm{ev}_{\omega}=0$;
+\item $\mathrm{Im}(\mathrm{ev}_{\omega})\subseteq \ker q$;
+\item $q$ factors uniquely through
+\[
+\pi_{\omega}:A\twoheadrightarrow A_{\mathrm{vis}}^{\omega}.
+\]
+\end{enumerate}
+Hence $A_{\mathrm{vis}}^{\omega}$ is the initial coefficient quotient through which the $H_2$-visible part of the obstruction disappears, leaving only a pure $\operatorname{Ext}$-type remnant.
+\end{theorem}
+
+\begin{proof}
+The equivalence of \textup{(i)} and \textup{(ii)} is exactly the universal coefficient sequence for $B$ \cite[Sec.~3.1]{Hatcher2002}. Naturality gives
+\[
+\eta_B(q_*(\omega))=q\circ \eta_A(\omega)=q\circ \mathrm{ev}_{\omega},
+\]
+so \textup{(ii)} and \textup{(iii)} are equivalent. Conditions \textup{(iii)} and \textup{(iv)} are equivalent by definition of the image of a homomorphism. By \Cref{def:intrinsic-visible-quotient}, $\mathrm{Im}(\mathrm{ev}_{\omega})=K_{\omega}$, so \textup{(iv)} is equivalent to
+\[
+K_{\omega}\subseteq \ker q.
+\]
+By the universal property of the quotient by $K_{\omega}$, this is equivalent to unique factorization of $q$ through $\pi_{\omega}$, proving \textup{(v)}.
+\end{proof}
+
+\begin{corollary}[Class-trivializing initiality when $H_1$ vanishes]\label{cor:h1-vanishing-class-trivializing}
+Assume
+\[
+H_1(N(\mathcal U),\mathbb Z)=0.
+\]
+Then, for every surjective homomorphism $q:A\twoheadrightarrow B$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $q_*(\omega)=0$ in $H^2(N(\mathcal U),B)$;
+\item $q$ factors uniquely through
+\[
+\pi_{\omega}:A\twoheadrightarrow A_{\mathrm{vis}}^{\omega}.
+\]
+\end{enumerate}
+Hence, when $H_1(N(\mathcal U),\mathbb Z)=0$, the intrinsic visible quotient is initial among coefficient quotients that annihilate the obstruction class itself.
+\end{corollary}
+
+\begin{proof}
+If $H_1(N(\mathcal U),\mathbb Z)=0$, then
+\[
+\operatorname{Ext}^1(H_1(N(\mathcal U),\mathbb Z),B)=0
+\]
+for every abelian group $B$. Thus the pure-extension condition in \Cref{thm:intrinsic-pure-ext-initiality}(i) is equivalent to $q_*(\omega)=0$, and the conclusion follows.
+\end{proof}
+
+\begin{remark}[Canonical visibility without a canonical splitting]\label{rem:no-canonical-splitting}
+The quotient $A_{\mathrm{vis}}^{\omega}$ and the subgroup $K_{\omega}=\mathrm{Im}(\mathrm{ev}_{\omega})$ are canonical. By contrast, the universal coefficient sequence need not split canonically. Thus the theory isolates a canonical visible quotient and a canonical blind subgroup without requiring any noncanonical decomposition of $\omega$ into visible and invisible summands.
+\end{remark}
+
+\begin{corollary}[Comparison with strict visible quotients]\label{cor:strict-to-intrinsic-visible}
+Let $\alpha$ be any finite obstruction presentation of the class $\omega$. Then the intrinsic visible quotient
+\[
+A_{\mathrm{vis}}^{\omega}
+\]
+admits a canonical surjective homomorphism onto the strict visible quotient
+\[
+A/H_\alpha.
+\]
+Equivalently, every strict visible quotient is a quotient of the intrinsic visible quotient.
+\end{corollary}
+
+\begin{proof}
+Let $q:A\twoheadrightarrow A/H_\alpha$ be the canonical quotient. By \Cref{thm:initial-visible-quotient}, the quotient kills every cocycle value $\alpha_{ijk}$ pointwise, so the pushed-forward cocycle representative is zero. Hence $q_*(\omega)=0$, and in particular it lies in the $\operatorname{Ext}$-subgroup of $H^2(N(\mathcal U),A/H_\alpha)$. Apply \Cref{thm:intrinsic-pure-ext-initiality}.
+\end{proof}
+
+\begin{definition}[Chain-level evaluation of a presentation]\label{def:chain-level-evaluation}
+Let $\alpha\in Z^2(N(\mathcal U),A)$ be a finite obstruction presentation of the class $\omega$. Write
+\[
+C_2(N(\mathcal U),\mathbb Z)
+\]
+for the simplicial group of integral $2$-chains on the finite nerve. The \emph{chain-level evaluation map} of $\alpha$ is the homomorphism
+\[
+\widetilde\alpha:C_2(N(\mathcal U),\mathbb Z)\to A
+\]
+defined by linear extension from the oriented $2$-simplices:
+\[
+\widetilde\alpha\!\left(\sum_{\sigma} n_{\sigma}\sigma\right)
+:=
+\sum_{\sigma} n_{\sigma}\alpha(\sigma).
+\]
+\end{definition}
+
+\begin{proposition}[Strict visibility versus homological visibility]\label{prop:chain-vs-homological-visibility}
+In the setting of \Cref{def:chain-level-evaluation}, the following hold.
+\begin{enumerate}[label=(\roman*),nosep]
+\item $\widetilde\alpha$ vanishes on $2$-boundaries and therefore induces a homomorphism
+\[
+\overline\alpha:H_2(N(\mathcal U),\mathbb Z)\to A.
+\]
+\item The induced homomorphism $\overline\alpha$ is exactly the homological evaluation map $\mathrm{ev}_{\omega}$.
+\item The strict obstruction subgroup and the intrinsic hidden subgroup satisfy
+\[
+H_\alpha=\mathrm{Im}(\widetilde\alpha),
+\qquad
+K_{\omega}=\mathrm{Im}(\overline\alpha)=\widetilde\alpha(Z_2(N(\mathcal U),\mathbb Z)).
+\]
+\end{enumerate}
+Thus the gap between strict visibility and intrinsic visibility is exactly the gap between the image of the cocycle on all $2$-chains and its image on $2$-cycles.
+\end{proposition}
+
+\begin{proof}
+If $c\in C_3(N(\mathcal U),\mathbb Z)$, then
+\[
+\widetilde\alpha(\partial c)=(\delta\alpha)(c)=0
+\]
+because $\alpha$ is a cocycle. Hence $\widetilde\alpha$ vanishes on $B_2(N(\mathcal U),\mathbb Z)$ and induces a homomorphism
+\[
+\overline\alpha:H_2(N(\mathcal U),\mathbb Z)=Z_2/B_2\to A.
+\]
+This proves \textup{(i)}.
+
+By definition, the cohomology class of $\alpha$ is $\omega$, and evaluation of a cocycle on cycles is precisely the map in the universal coefficient theorem associated with that class. Therefore $\overline\alpha=\eta_A(\omega)=\mathrm{ev}_{\omega}$, which is \textup{(ii)}.
+
+For \textup{(iii)}, the image of $\widetilde\alpha$ is exactly the subgroup generated by the simplex values $\alpha_{ijk}$, hence it is $H_\alpha$ by \Cref{def:finite-obstruction-presentation}. The equality
+\[
+\mathrm{Im}(\overline\alpha)=\widetilde\alpha(Z_2(N(\mathcal U),\mathbb Z))
+\]
+is immediate from \textup{(i)}, and \Cref{def:intrinsic-visible-quotient} identifies this image with $K_{\omega}$.
+\end{proof}
+
+\begin{corollary}[Criterion for coincidence of strict and intrinsic visibility]\label{cor:strict-intrinsic-coincidence-criterion}
+Let $\alpha$ be a finite obstruction presentation of $\omega$. The following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $A/H_\alpha\cong A_{\mathrm{vis}}^{\omega}$;
+\item $H_\alpha=K_{\omega}$;
+\item $\widetilde\alpha(C_2(N(\mathcal U),\mathbb Z))=\widetilde\alpha(Z_2(N(\mathcal U),\mathbb Z))$.
+\end{enumerate}
+Equivalently, strict visibility agrees with intrinsic visibility exactly when every presentation-level visible value already arises from the evaluation of the cocycle on a genuine $2$-cycle.
+\end{corollary}
+
+\begin{proof}
+The equivalence of \textup{(i)} and \textup{(ii)} is immediate from the quotient descriptions
+\[
+A/H_\alpha
+\qquad\text{and}\qquad
+A_{\mathrm{vis}}^{\omega}=A/K_{\omega}.
+\]
+The equivalence of \textup{(ii)} and \textup{(iii)} is exactly \Cref{prop:chain-vs-homological-visibility}(iii).
+\end{proof}
+
+\begin{theorem}[Character-blind pure-extension obstructions]\label{thm:character-blind-obstructions}
+In the setting of \Cref{def:finite-nerve-presentation}, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $K_{\omega}=0$;
+\item $A_{\mathrm{vis}}^{\omega}=A$;
+\item $\mathrm{ev}_{\omega}=0$;
+\item $\omega$ lies in the subgroup
+\[
+\operatorname{Ext}^1(H_1(N(\mathcal U),\mathbb Z),A)\subseteq H^2(N(\mathcal U),A).
+\]
+\end{enumerate}
+If these conditions hold and $\omega\neq 0$, then the chosen branch gerbe $\mathfrak G_v$ is non-neutral, while every character of $A$ is class-admissible for that branch. In particular, if $|\Vis_{p,s}(r)|=1$, then
+\[
+M,p\Vdash \Null^{\mathrm{glue}}_s(r).
+\]
+\end{theorem}
+
+\begin{proof}
+By \Cref{def:intrinsic-visible-quotient},
+\[
+K_{\omega}=\mathrm{Im}(\mathrm{ev}_{\omega}),
+\]
+so \textup{(i)} and \textup{(iii)} are equivalent. Since $A_{\mathrm{vis}}^{\omega}=A/K_{\omega}$, conditions \textup{(i)} and \textup{(ii)} are equivalent. By the universal coefficient sequence, \textup{(iii)} holds exactly when $\omega\in\ker(\eta_A)$, and this kernel is the stated $\operatorname{Ext}$-subgroup. Hence all four conditions are equivalent.
+
+If they hold and $\omega\neq 0$, then \Cref{thm:cech-bridge-compatible-realizations}(iv) shows that the branch gerbe $\mathfrak G_v$ is non-neutral.
+On the other hand, $\mathrm{ev}_{\omega}=0$ implies
+\[
+\chi\circ \mathrm{ev}_{\omega}=0
+\]
+for every $\chi\in\widehat A$, so \Cref{thm:intrinsic-visible-quotient} shows that every character is class-admissible.
+\end{proof}
+
+\begin{corollary}[Automatic blindness when $H_2$ vanishes]\label{cor:h2-vanishing-blindness}
+Assume
+\[
+H_2(N(\mathcal U),\mathbb Z)=0.
+\]
+Then, for every obstruction class $\omega\in H^2(N(\mathcal U),A)$,
+\[
+\mathrm{ev}_{\omega}=0,
+\qquad
+K_{\omega}=0,
+\qquad
+A_{\mathrm{vis}}^{\omega}=A.
+\]
+Every nonzero branch obstruction class on such a nerve is therefore character-blind.
+\end{corollary}
+
+\begin{proof}
+If $H_2(N(\mathcal U),\mathbb Z)=0$, then
+\[
+\mathrm{Hom}(H_2(N(\mathcal U),\mathbb Z),A)=0,
+\]
+so $\mathrm{ev}_{\omega}=0$ for every $\omega$. Apply \Cref{thm:character-blind-obstructions}.
+\end{proof}
+
+\begin{corollary}[No character-blind obstructions when $H_1$ is free]\label{cor:h1-free-no-blindness}
+Assume that $H_1(N(\mathcal U),\mathbb Z)$ is free abelian. Then
+\[
+K_{\omega}=0
+\quad\Longleftrightarrow\quad
+\omega=0.
+\]
+Equivalently, every nonzero branch obstruction class has a nontrivial $H_2$-visible part. In particular, if $|\Vis_{p,s}(r)|=1$, every nontrivial gluing obstruction on such a nerve produces a proper intrinsic visible quotient.
+\end{corollary}
+
+\begin{proof}
+If $H_1(N(\mathcal U),\mathbb Z)$ is free abelian, then
+\[
+\operatorname{Ext}^1(H_1(N(\mathcal U),\mathbb Z),A)=0.
+\]
+Hence the universal coefficient map $\eta_A$ is injective. By \Cref{thm:character-blind-obstructions},
+\[
+K_{\omega}=0
+\quad\Longleftrightarrow\quad
+\mathrm{ev}_{\omega}=0
+\quad\Longleftrightarrow\quad
+\eta_A(\omega)=0.
+\]
+Injectivity of $\eta_A$ therefore gives $K_{\omega}=0$ if and only if $\omega=0$. If $\omega\neq 0$, then $K_{\omega}\neq 0$, so $A_{\mathrm{vis}}^{\omega}=A/K_{\omega}$ is a proper quotient of the finite group $A$.
+\end{proof}
+
+\begin{example}[A character-blind obstruction on an $\mathbb{R}P^2$-type nerve]\label{ex:rp2-character-blind}
+Let $\mathcal U$ be a finite cover whose Cech nerve is a finite triangulation of $\mathbb{R}P^2$, and take
+\[
+A=\mathbb Z/2\mathbb Z.
+\]
+Then
+\[
+H_2(\mathbb{R}P^2,\mathbb Z)=0,
+\qquad
+H_1(\mathbb{R}P^2,\mathbb Z)\cong \mathbb Z/2\mathbb Z
+\]
+\cite[Sec.~2.2]{Hatcher2002}. The universal coefficient sequence therefore yields
+\[
+H^2(\mathbb{R}P^2,\mathbb Z/2\mathbb Z)
+\cong
+\operatorname{Ext}^1(\mathbb Z/2\mathbb Z,\mathbb Z/2\mathbb Z)
+\cong
+\mathbb Z/2\mathbb Z
+\]
+\cite[Sec.~3.1]{Hatcher2002}. Let $\omega$ be the nonzero class. Then
+\[
+\mathrm{ev}_{\omega}=0,
+\qquad
+K_{\omega}=0,
+\qquad
+A_{\mathrm{vis}}^{\omega}=A,
+\]
+by \Cref{thm:character-blind-obstructions}. Thus no class-level quotient collapse occurs at all, yet the obstruction class is nonzero. Hence this branch is completely character-blind. If it is the unique visible branch of the admitted reference under consideration, then \Cref{thm:gerbe-null-semantics} yields a genuine gluing-level absence that is invisible to every character channel.
+\end{example}
+
+\begin{definition}[Intrinsic strictification code]\label{def:intrinsic-strictification-code}
+An \emph{intrinsic strictification code} for the obstruction class $\omega$ consists of a finite set $R$ and an injective map
+\[
+\iota_{\omega}:A\hookrightarrow A_{\mathrm{vis}}^{\omega}\times R
+\]
+such that
+\[
+\mathrm{pr}_1\circ\iota_{\omega}=\pi_{\omega}.
+\]
+\end{definition}
+
+\begin{corollary}[Intrinsic hidden-state lower bound]\label{cor:intrinsic-hidden-state-lower-bound}
+Every intrinsic strictification code satisfies
+\[
+|R|\ge |K_{\omega}|.
+\]
+Equivalently,
+\[
+\log_2|R|\ge \log_2|K_{\omega}|.
+\]
+This lower bound is sharp.
+\end{corollary}
+
+\begin{proof}
+By \Cref{def:intrinsic-visible-quotient}, the fibers of $\pi_{\omega}$ are exactly the cosets of $K_{\omega}$, so every fiber has cardinality $|K_{\omega}|$. The same fiber-counting argument as in \Cref{thm:minimal-information-cost-of-strictification} therefore shows that any injective code preserving the first projection must satisfy $|R|\ge |K_{\omega}|$.
+
+For sharpness, take $R:=K_{\omega}$ and choose a set-theoretic section $s_{\omega}:A_{\mathrm{vis}}^{\omega}\to A$ of $\pi_{\omega}$. Then
+\[
+\iota_{\omega}(x):=\bigl(\pi_{\omega}(x),x-s_{\omega}(\pi_{\omega}(x))\bigr)
+\]
+is injective.
+\end{proof}
+
+\begin{theorem}[Prime decomposition of intrinsic visibility and budget]\label{thm:intrinsic-prime-decomposition}
+Write the finite abelian group $A$ as a direct sum of its $p$-primary components:
+\[
+A=\bigoplus_p A_{(p)}.
+\]
+Let $\omega_p\in H^2(N(\mathcal U),A_{(p)})$ be the image of $\omega$ under the projection onto the $p$-primary summand. Then
+\[
+\mathrm{ev}_{\omega}=\bigoplus_p \mathrm{ev}_{\omega_p},
+\qquad
+K_{\omega}=\bigoplus_p K_{\omega,p},
+\qquad
+A_{\mathrm{vis}}^{\omega}\cong \bigoplus_p A_{(p)}/K_{\omega,p},
+\]
+where
+\[
+K_{\omega,p}:=\mathrm{Im}(\mathrm{ev}_{\omega_p}).
+\]
+Consequently,
+\[
+|K_{\omega}|=\prod_p |K_{\omega,p}|,
+\qquad
+\log_2|K_{\omega}|=\sum_p \log_2|K_{\omega,p}|.
+\]
+\end{theorem}
+
+\begin{proof}
+Both $H^2(N(\mathcal U),-)$ and $\mathrm{Hom}(H_2(N(\mathcal U),\mathbb Z),-)$ commute with finite direct sums, so the universal coefficient map is compatible with the primary decomposition of $A$. Hence
+\[
+\eta_A(\omega)=\bigoplus_p \eta_{A_{(p)}}(\omega_p),
+\]
+which is exactly the asserted decomposition of $\mathrm{ev}_{\omega}$.
+
+Taking images gives
+\[
+K_{\omega}
+=
+\mathrm{Im}(\mathrm{ev}_{\omega})
+=
+\bigoplus_p \mathrm{Im}(\mathrm{ev}_{\omega_p})
+=
+\bigoplus_p K_{\omega,p},
+\]
+by \Cref{def:intrinsic-visible-quotient}. The quotient decomposition follows immediately:
+\[
+A_{\mathrm{vis}}^{\omega}
+=
+A/K_{\omega}
+\cong
+\bigoplus_p A_{(p)}/K_{\omega,p}.
+\]
+Since finite direct sums correspond to products of cardinalities, the budget formula is immediate.
+\end{proof}
+
+\begin{corollary}[Intrinsic budget versus strict budget]\label{cor:strict-intrinsic-budget-comparison}
+For every finite obstruction presentation $\alpha$ of the class $\omega$,
+\[
+|K_{\omega}|\le |H_\alpha|,
+\qquad
+\log_2|K_{\omega}|\le \log_2|H_\alpha|.
+\]
+Hence the intrinsic hidden-state budget never exceeds the strict presentation-level budget. Equality holds if and only if the canonical surjection
+\[
+A_{\mathrm{vis}}^{\omega}\twoheadrightarrow A/H_\alpha
+\]
+is an isomorphism.
+\end{corollary}
+
+\begin{proof}
+By \Cref{cor:strict-to-intrinsic-visible}, there is a surjective homomorphism
+\[
+A_{\mathrm{vis}}^{\omega}=A/K_{\omega}\twoheadrightarrow A/H_\alpha.
+\]
+For finite groups this implies
+\[
+|A|/|K_{\omega}|\ge |A|/|H_\alpha|,
+\]
+hence $|K_{\omega}|\le |H_\alpha|$. The logarithmic inequality is immediate. Equality of cardinalities holds exactly when the displayed surjection is bijective.
+\end{proof}
+
+\begin{corollary}[Maximal collapse criterion]\label{cor:maximal-collapse}
+In the setting of \Cref{def:finite-nerve-presentation}, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $\mathrm{ev}_{\omega}:H_2(N(\mathcal U),\mathbb Z)\to A$ is surjective;
+\item $K_{\omega}=A$;
+\item $A_{\mathrm{vis}}^{\omega}=0$;
+\item the intrinsic strictification budget is maximal:
+\[
+\log_2|K_{\omega}|=\log_2|A|.
+\]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+By \Cref{def:intrinsic-visible-quotient}, $K_{\omega}=\mathrm{Im}(\mathrm{ev}_{\omega})$, so \textup{(i)} and \textup{(ii)} are equivalent. Condition \textup{(ii)} is equivalent to \textup{(iii)} by the definition of $A_{\mathrm{vis}}^{\omega}=A/K_{\omega}$. For finite groups, \textup{(ii)} is also equivalent to $|K_{\omega}|=|A|$, which is exactly \textup{(iv)} after taking $\log_2$.
+\end{proof}
+
+\subsection{Aggregating visibility across branches}
+
+The preceding results analyze one visible branch at a time. When an admitted reference carries several visible branches, there are two distinct ways of aggregating the branchwise visible data: one may allow the observer to know which branch has been reached, or one may require the same observation channel to remain admissible on every branch simultaneously. These two requirements lead to different quotients.
+
+\begin{definition}[Branchwise intrinsic data]\label{def:branchwise-intrinsic-data}
+Fix an admitted reference $r:\mathsf{Ref}_s$ at a state $p$, and assume:
+\begin{enumerate}[label=(\roman*),nosep]
+\item the hypotheses of \Cref{def:cech-gluing-obstruction} hold;
+\item the set $\Vis_{p,s}(r)$ is finite and nonempty;
+\item every component gerbe $\mathfrak G_v$ is banded by the same finite abelian group $A$ and admits a finite nerve presentation of its branch obstruction class $\omega_v$.
+\end{enumerate}
+For each visible branch $v\in \Vis_{p,s}(r)$, write
+\[
+K_v:=K_{\omega_v},
+\qquad
+A_{\mathrm{vis}}^v:=A_{\mathrm{vis}}^{\omega_v}=A/K_v,
+\qquad
+\pi_v:A\twoheadrightarrow A_{\mathrm{vis}}^v.
+\]
+\end{definition}
+
+\begin{theorem}[Branch-sensitive visible quotient]\label{thm:branch-sensitive-visible-quotient}
+In the setting of \Cref{def:branchwise-intrinsic-data}, consider the diagonal map
+\[
+\Delta_{\mathrm{br}}:A\longrightarrow \prod_{v\in \Vis_{p,s}(r)} A_{\mathrm{vis}}^v,
+\qquad
+x\longmapsto (\pi_v(x))_v.
+\]
+Then
+\[
+\ker(\Delta_{\mathrm{br}})=\bigcap_{v\in \Vis_{p,s}(r)} K_v.
+\]
+Consequently, the quotient
+\[
+A_{\mathrm{vis}}^{\mathrm{br}}(r):=A\Big/\bigcap_{v\in \Vis_{p,s}(r)} K_v
+\]
+is canonically isomorphic to $\mathrm{Im}(\Delta_{\mathrm{br}})$. It is the maximal quotient of $A$ that remains visible once the branch label itself is allowed as part of the semantic context.
+\end{theorem}
+
+\begin{proof}
+For $x\in A$ one has $\Delta_{\mathrm{br}}(x)=0$ if and only if $\pi_v(x)=0$ for every visible branch $v$, which is equivalent to $x\in K_v$ for every $v$. Hence
+\[
+\ker(\Delta_{\mathrm{br}})=\bigcap_{v\in \Vis_{p,s}(r)} K_v.
+\]
+The first isomorphism theorem therefore yields
+\[
+\mathrm{Im}(\Delta_{\mathrm{br}})
+\cong
+A\Big/\bigcap_{v\in \Vis_{p,s}(r)} K_v.
+\]
+The final interpretation is immediate: once the visible branch is known, two elements of $A$ remain semantically indistinguishable exactly when they are indistinguishable on every individual branch quotient.
+\end{proof}
+
+\begin{theorem}[Branch-uniform visible quotient]\label{thm:branch-uniform-visible-quotient}
+In the setting of \Cref{def:branchwise-intrinsic-data}, let
+\[
+X_v:=\{\chi\in \widehat A\mid \chi_*(\omega_v)=0\}
+\]
+for each visible branch $v$, and define the uniformly admissible characters by
+\[
+X^{\mathrm{unif}}(r):=\bigcap_{v\in \Vis_{p,s}(r)} X_v.
+\]
+Then
+\[
+X^{\mathrm{unif}}(r)=\mathrm{Ann}\Bigl(\sum_{v\in \Vis_{p,s}(r)} K_v\Bigr).
+\]
+Consequently, the quotient
+\[
+A_{\mathrm{vis}}^{\mathrm{unif}}(r):=A\Big/\sum_{v\in \Vis_{p,s}(r)} K_v
+\]
+is exactly the quotient detected by the characters that are admissible on every visible branch simultaneously.
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:intrinsic-visible-quotient}, one has
+\[
+X_v=\mathrm{Ann}(K_v)
+\]
+for every $v$. Therefore
+\[
+X^{\mathrm{unif}}(r)
+=
+\bigcap_{v\in \Vis_{p,s}(r)} \mathrm{Ann}(K_v)
+=
+\mathrm{Ann}\Bigl(\sum_{v\in \Vis_{p,s}(r)} K_v\Bigr),
+\]
+where the last identity is the standard annihilator formula for finite abelian groups \cite[Chap.~5]{DummitFoote2004}. Finite abelian duality then gives
+\[
+\bigcap_{\chi\in X^{\mathrm{unif}}(r)} \ker\chi
+=
+\sum_{v\in \Vis_{p,s}(r)} K_v.
+\]
+Hence the quotient detected by all uniformly admissible characters is precisely
+\[
+A\Big/\sum_{v\in \Vis_{p,s}(r)} K_v.
+\qedhere
+\]
+\end{proof}
+
+\begin{definition}[Branch-preserving strictification code]\label{def:branch-preserving-strictification-code}
+In the setting of \Cref{def:branchwise-intrinsic-data}, a \emph{branch-preserving strictification code} consists of a finite set $R$ and, for each visible branch $v\in \Vis_{p,s}(r)$, an injective map
+\[
+\iota_v:A\hookrightarrow A_{\mathrm{vis}}^v\times R
+\]
+such that
+\[
+\mathrm{pr}_1\circ \iota_v=\pi_v.
+\]
+\end{definition}
+
+\begin{theorem}[Multi-branch strictification budget]\label{thm:multi-branch-strictification-budget}
+Every branch-preserving strictification code satisfies
+\[
+|R|\ge \max_{v\in \Vis_{p,s}(r)} |K_v|.
+\]
+Equivalently,
+\[
+\log_2|R|\ge \max_{v\in \Vis_{p,s}(r)} \log_2|K_v|.
+\]
+This bound is sharp.
+\end{theorem}
+
+\begin{proof}
+Fix a visible branch $v$. Since $\mathrm{pr}_1\circ \iota_v=\pi_v$, every fiber of $\pi_v$ injects into $R$. By \Cref{def:intrinsic-visible-quotient}, every fiber of $\pi_v$ is a coset of $K_v$ and hence has cardinality $|K_v|$. Therefore $|R|\ge |K_v|$ for every $v$, which proves the lower bound.
+
+For sharpness, choose a finite set $R$ with
+\[
+|R|=\max_{v\in \Vis_{p,s}(r)} |K_v|.
+\]
+For each $v$, choose an injection
+\[
+j_v:K_v\hookrightarrow R
+\]
+and a set-theoretic section
+\[
+s_v:A_{\mathrm{vis}}^v\to A
+\]
+of $\pi_v$. Define
+\[
+\iota_v(x):=\bigl(\pi_v(x),j_v(x-s_v(\pi_v(x)))\bigr).
+\]
+Since $x-s_v(\pi_v(x))\in K_v$, the formula is well defined. If $\iota_v(x)=\iota_v(y)$, then $\pi_v(x)=\pi_v(y)$ and
+\[
+j_v(x-s_v(\pi_v(x)))=j_v(y-s_v(\pi_v(y))).
+\]
+Injectivity of $j_v$ gives $x=y$. Thus each $\iota_v$ is injective, so the bound is attained.
+\end{proof}
+
+\begin{corollary}[Single-branch reduction]\label{cor:single-branch-reduction}
+If
+\[
+\Vis_{p,s}(r)=\{v\},
+\]
+then
+\[
+A_{\mathrm{vis}}^{\mathrm{br}}(r)\cong A_{\mathrm{vis}}^{\mathrm{unif}}(r)\cong A_{\mathrm{vis}}^v
+\]
+and the optimal branch-preserving strictification budget is exactly $|K_v|$.
+\end{corollary}
+
+\begin{proof}
+If there is only one visible branch, then
+\[
+\bigcap_{u\in \Vis_{p,s}(r)} K_u
+=
+\sum_{u\in \Vis_{p,s}(r)} K_u
+=
+K_v.
+\]
+The quotient statements follow from \Cref{thm:branch-sensitive-visible-quotient,thm:branch-uniform-visible-quotient}, and the budget statement is \Cref{thm:multi-branch-strictification-budget}.
+\end{proof}

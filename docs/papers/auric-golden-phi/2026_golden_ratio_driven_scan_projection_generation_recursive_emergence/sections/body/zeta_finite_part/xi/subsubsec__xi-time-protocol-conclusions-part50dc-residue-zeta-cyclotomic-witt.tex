@@ -1,16 +1,46 @@
 为便于把前述凸压力链与长度同余类的 \(\zeta\)-接口对齐，下面把射影压力、periodic residue 生成函数以及 residue zeta 的 cyclotomic--Witt 分解整理为一组可直接调用的标准形式。
 
-\begin{theorem}[射影压力算子的 Perron 指数在实参数上对数凸]\label{thm:xi-time-part50dc-projective-pressure-perron-logconvex}
-沿用定义 \ref{def:pom-projective-transfer-operator} 的记号，并记
+\begin{theorem}[射影压力算子谱半径的单纯形凸性证书]\label{thm:xi-time-part50dc-projective-pressure-perron-logconvex}
+沿用定义 \ref{def:pom-projective-transfer-operator} 的记号。在单纯形
 \[
-\rho_{\mathrm{proj}}(q):=\rho(\mathcal L_q)
-\qquad (q\ge 1).
+\Delta:=\{w\in\mathbb R_{\ge 0}^{Q}:\ \langle \mathbf 1,w\rangle=1\}
+\]
+上，对每个输出符号 \(b\in A_{\mathrm{out}}\) 记
+\[
+g_b(w):=\langle \mathbf 1,B_bw\rangle,
+\qquad
+\Phi_b(w):=\frac{B_bw}{\langle \mathbf 1,B_bw\rangle}
+\quad \bigl(g_b(w)>0\bigr),
+\]
+并对任意实参数 \(q\ge 1\) 定义射影转移算子
+\[
+(\mathcal L_qf)(w):=
+\sum_{b\in A_{\mathrm{out}}}g_b(w)^q\,f(\Phi_b(w)),
+\]
+其中 \(g_b(w)=0\) 的项按 \(0\) 计。再记
+\[
+\lambda(q):=\rho_{\mathrm{proj}}(q):=\rho(\mathcal L_q).
 \]
 则函数
 \[
-q\longmapsto \log \rho_{\mathrm{proj}}(q)
+q\longmapsto \log \lambda(q)
 \]
-在 \([1,\infty)\) 上凸。等价地，对任意 \(q_0,q_1\ge 1\) 与 \(t\in[0,1]\)，都有
+在 \([1,\infty)\) 上凸。更精确地，对每个 \(n\ge 1\)，函数
+\[
+q\longmapsto \log \|\mathcal L_q^n\|_{\infty\to\infty}
+=
+\log \|\mathcal L_q^n\mathbf 1\|_\infty
+\]
+在 \([1,\infty)\) 上凸；从而对归一化连续压力
+\[
+\Lambda(t):=\log \lambda(t+1)-\log |A_{\mathrm{out}}|
+\qquad (t\ge 0),
+\]
+也有
+\[
+t\longmapsto \Lambda(t)
+\]
+在 \([0,\infty)\) 上凸。等价地，对任意 \(q_0,q_1\ge 1\) 与 \(t\in[0,1]\)，都有
 \[
 \rho_{\mathrm{proj}}\bigl((1-t)q_0+tq_1\bigr)
 \le
@@ -18,11 +48,87 @@ q\longmapsto \log \rho_{\mathrm{proj}}(q)
 \]
 \end{theorem}
 \begin{proof}
-定理 \ref{thm:xi-projective-pressure-path-holder-convexity} 已证明
+先证算子范数可由正锥元 \(\mathbf 1\) 实现。对任意 \(f\in C(\Delta)\) 与任意 \(w\in\Delta\)，有
 \[
-\Lambda(q):=\log\rho(\mathcal L_q)
+|(\mathcal L_qf)(w)|
+\le
+\sum_{b\in A_{\mathrm{out}}}g_b(w)^q\,\|f\|_\infty
+=
+(\mathcal L_q\mathbf 1)(w)\,\|f\|_\infty.
 \]
-在 \([1,\infty)\) 上凸。把 \(\Lambda\) 记作 \(\log\rho_{\mathrm{proj}}\) 即得第一条；指数化便得到等价的不等式。证毕。
+取上确界可得
+\[
+\|\mathcal L_qf\|_\infty\le \|\mathcal L_q\mathbf 1\|_\infty\,\|f\|_\infty,
+\]
+故
+\[
+\|\mathcal L_q\|_{\infty\to\infty}\le \|\mathcal L_q\mathbf 1\|_\infty.
+\]
+反向不等式由取 \(f=\mathbf 1\) 立即得到，因此
+\[
+\|\mathcal L_q\|_{\infty\to\infty}=\|\mathcal L_q\mathbf 1\|_\infty.
+\]
+对 \(\mathcal L_q^n\) 重复同一论证，便有
+\[
+\|\mathcal L_q^n\|_{\infty\to\infty}=\|\mathcal L_q^n\mathbf 1\|_\infty
+\qquad (n\ge 1).
+\]
+
+现固定 \(n\ge 1\)。对任意输出路径
+\[
+\beta=(b_1,\dots,b_n)\in A_{\mathrm{out}}^n
+\]
+与任意 \(w\in\Delta\)，递归定义
+\[
+w_0:=w,
+\qquad
+w_i:=\Phi_{b_i}(w_{i-1})
+\quad (1\le i\le n),
+\]
+并记路径权
+\[
+G_\beta(w):=\prod_{i=1}^{n}g_{b_i}(w_{i-1})\ge 0.
+\]
+反复展开 \(\mathcal L_q\) 得
+\[
+(\mathcal L_q^n\mathbf 1)(w)=\sum_{\beta\in A_{\mathrm{out}}^n}G_\beta(w)^q.
+\]
+若对某个 \(w\) 有全部 \(G_\beta(w)=0\)，则上式恒为 \(0\)，该点对上确界无贡献；否则在指标集
+\[
+I(w):=\{\beta\in A_{\mathrm{out}}^n:\ G_\beta(w)>0\}
+\]
+上有
+\[
+\log (\mathcal L_q^n\mathbf 1)(w)
+=
+\log\!\left(\sum_{\beta\in I(w)}e^{q\log G_\beta(w)}\right),
+\]
+这是有限个仿射函数 \(q\mapsto q\log G_\beta(w)\) 的 \(\log\)-sum-exp，因而关于 \(q\) 凸。对 \(w\) 取上确界仍保持凸性，于是
+\[
+q\longmapsto
+\log\|\mathcal L_q^n\mathbf 1\|_\infty
+=
+\log\|\mathcal L_q^n\|_{\infty\to\infty}
+\]
+在 \([1,\infty)\) 上凸。
+
+最后，由 Gelfand 公式，
+\[
+\log \lambda(q)
+=
+\log \rho(\mathcal L_q)
+=
+\lim_{n\to\infty}\frac{1}{n}\log\|\mathcal L_q^n\|_{\infty\to\infty}.
+\]
+右端是一列凸函数的点态极限，因此仍为凸函数。这就证明了
+\[
+q\longmapsto \log \lambda(q)
+\]
+在 \([1,\infty)\) 上凸。对
+\[
+\Lambda(t)=\log \lambda(t+1)-\log |A_{\mathrm{out}}|
+\]
+仅作平移与常数平移，故 \(t\mapsto \Lambda(t)\) 在 \([0,\infty)\) 上同样凸。最后将对数凸性指数化，即得所示谱半径不等式。证毕。
 \end{proof}
 
 \begin{corollary}[整数阶 moment-kernel 谱半径嵌入一条规范的凸包络曲线]\label{cor:xi-time-part50dc-moment-kernel-convex-envelope}

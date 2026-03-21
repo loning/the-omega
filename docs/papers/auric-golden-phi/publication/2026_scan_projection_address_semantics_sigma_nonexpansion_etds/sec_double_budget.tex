@@ -1,0 +1,332 @@
+% ------------------------------------------------------------------
+%  Section 6: Collision thresholds and hidden information
+% ------------------------------------------------------------------
+\section{Collision thresholds and hidden information}\label{sec:double-budget}
+
+We record two quantitative consequences of finite visible addressing.
+The first identifies the collision threshold at fixed resolution.  The
+second expresses the cost of removing collisions injectively as an exact
+hidden-information balance.
+
+\subsection{Poisson thresholds for collision failure}
+
+Fix a resolution \(m\geq 1\).  Let \((T_m,X_m)\) be a random pair,
+where \(T_m\) is the synchronization time and \(X_m\in A_m\) is the
+visible address available at resolution \(m\).  Let \(\lambda_m\) be the
+law of \(X_m\), and for \(r\geq 2\) define
+\[
+  S_r(m):=\sum_{a\in A_m}\lambda_m(a)^r.
+\]
+
+\begin{theorem}[Poisson threshold for collision failure]
+\label{thm:double-budget-poisson}
+Let \(n_m\in\NN\) and \(N_m\in\NN\).  Let
+\((T_m^{(i)},X_m^{(i)})_{1\leq i\leq N_m}\) be independent copies of
+\((T_m,X_m)\), and let \(\mathsf{Fail}_{m,n_m,N_m}\) be the event that
+some object has not synchronized by time \(n_m\) or that two objects
+with synchronization times at most \(n_m\) receive the same visible
+\(m\)-address.  Set
+\[
+  q_m:=\PP(T_m>n_m),
+  \qquad
+  \Lambda_m:=\binom{N_m}{2}S_2(m),
+\]
+and define the collision count
+\[
+  W_m:=\sum_{1\leq i<j\leq N_m}
+       \mathbf{1}_{\{X_m^{(i)}=X_m^{(j)}\}}.
+\]
+Then the following hold.
+\begin{enumerate}[label=(\roman*)]
+  \item If \(N_m q_m\to 0\) and \(\Lambda_m\to 0\), then
+    \[
+      \PP(\mathsf{Fail}_{m,n_m,N_m})\longrightarrow 0.
+    \]
+  \item If \(N_m q_m\to 0\), \(\Lambda_m\to\tau\in(0,\infty)\), and
+    \(N_m^3S_3(m)\to 0\), then
+    \[
+      W_m \Rightarrow \mathrm{Poisson}(\tau),
+      \qquad
+      \PP(\mathsf{Fail}_{m,n_m,N_m})\longrightarrow 1-e^{-\tau}.
+    \]
+  \item If \(N_m q_m\to 0\), \(\Lambda_m\to\infty\), and
+    \(N_m^3S_3(m)=o(\Lambda_m^2)\), then
+    \[
+      \PP(\mathsf{Fail}_{m,n_m,N_m})\longrightarrow 1.
+    \]
+\end{enumerate}
+In particular, the collision threshold lies on the scale
+\[
+  \binom{N_m}{2}S_2(m)\asymp 1,
+  \qquad\text{equivalently}\qquad
+  2\log N_m \asymp -\log S_2(m).
+\]
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  U_m:=\bigcup_{i=1}^{N_m}\{T_m^{(i)}>n_m\}
+\]
+be the event that some object has not synchronized by time \(n_m\).
+On \(U_m^c\), every object has synchronized, so
+\[
+  \mathsf{Fail}_{m,n_m,N_m}\cap U_m^c
+  = \{W_m\geq 1\}\cap U_m^c.
+\]
+Therefore
+\[
+  \bigl|
+    \PP(\mathsf{Fail}_{m,n_m,N_m})
+    - \PP(W_m\geq 1)
+  \bigr|
+  \leq \PP(U_m)
+  \leq N_m q_m.
+\]
+
+For part~(i), Markov's inequality gives
+\[
+  \PP(W_m\geq 1)\leq \EE[W_m]=\Lambda_m,
+\]
+so \(\PP(\mathsf{Fail}_{m,n_m,N_m})\to 0\).
+
+For part~(ii), index unordered pairs by
+\[
+  \mathcal{I}_m:=\set{\{i,j\}:1\leq i<j\leq N_m},
+  \qquad
+  I_\alpha:=\mathbf{1}_{\{X_m^{(i)}=X_m^{(j)}\}}
+  \quad (\alpha=\{i,j\}),
+\]
+so \(W_m=\sum_{\alpha\in\mathcal{I}_m}I_\alpha\).  Then
+\[
+  \EE[I_\alpha]=S_2(m),
+  \qquad
+  \EE[W_m]=\Lambda_m.
+\]
+If \(\alpha,\beta\in\mathcal{I}_m\) are disjoint, the corresponding
+indicators are independent.  If they share one index, then
+\[
+  \EE[I_\alpha I_\beta]=S_3(m).
+\]
+Using the usual dependency graph on pair-indicators, the Chen--Stein
+bound of \citet[Theorem~1]{ArratiaGoldsteinGordon1989} gives
+\[
+  d_{\mathrm{TV}}
+   \bigl(W_m,\mathrm{Poisson}(\Lambda_m)\bigr)
+  \leq \min\{1,\Lambda_m^{-1}\}(b_1+b_2),
+\]
+where
+\[
+  b_1=O\bigl(N_m^3S_2(m)^2\bigr),
+  \qquad
+  b_2=O\bigl(N_m^3S_3(m)\bigr).
+\]
+Since \(S_2(m)^2\leq S_3(m)\), the hypothesis
+\(N_m^3S_3(m)\to 0\) forces \(b_1+b_2\to 0\), and therefore
+\[
+  W_m \Rightarrow \mathrm{Poisson}(\tau).
+\]
+Hence
+\[
+  \PP(W_m\geq 1)\longrightarrow 1-e^{-\tau},
+\]
+and the same limit holds for \(\PP(\mathsf{Fail}_{m,n_m,N_m})\).
+
+For part~(iii), the same pair decomposition gives
+\[
+  \Var(W_m)
+  \leq \EE[W_m] + O\bigl(N_m^3S_3(m)\bigr)
+  = \Lambda_m + O\bigl(N_m^3S_3(m)\bigr).
+\]
+Thus
+\[
+  \frac{\Var(W_m)}{\Lambda_m^2}\longrightarrow 0.
+\]
+Chebyshev's inequality implies \(W_m/\Lambda_m\to 1\) in probability, so
+\[
+  \PP(W_m=0)\leq
+  \PP\!\left(\abs{W_m-\Lambda_m}\geq \frac{\Lambda_m}{2}\right)
+  \longrightarrow 0.
+\]
+Therefore \(\PP(W_m\geq 1)\to 1\), and the same is true for
+\(\PP(\mathsf{Fail}_{m,n_m,N_m})\).
+\end{proof}
+
+\begin{corollary}[Subcritical capacity region]
+\label{cor:capacity-region}
+Suppose that
+\[
+  q_m\leq C_m e^{-\gamma_m n_m}
+  \qquad\text{and}\qquad
+  S_2(m)=e^{-h_2m+o(m)}
+\]
+for some sequences \(C_m>0\), \(\gamma_m>0\), and some \(h_2>0\).
+Assume also that
+\[
+  \log C_m=o\bigl(\min\{\gamma_m n_m,m\}\bigr).
+\]
+Fix \(\eta\in(0,1)\).  If
+\[
+  \log N_m
+  \leq (1-\eta)\min\bigl\{\gamma_m n_m,\tfrac12 h_2m\bigr\}
+\]
+for all sufficiently large \(m\), then
+\[
+  \PP(\mathsf{Fail}_{m,n_m,N_m})\longrightarrow 0.
+\]
+\end{corollary}
+
+\begin{proof}
+The synchronization term satisfies
+\[
+  N_m q_m
+  \leq \exp\bigl(\log C_m+\log N_m-\gamma_m n_m\bigr)
+  \longrightarrow 0,
+\]
+and the collision term satisfies
+\[
+  \Lambda_m
+  = \exp\bigl(2\log N_m-h_2m+o(m)\bigr)
+  \longrightarrow 0.
+\]
+Apply part~(i) of Theorem~\ref{thm:double-budget-poisson}.
+\end{proof}
+
+\subsection{Entropy ledger for auxiliary registers}
+
+All entropies and divergences in this subsection are taken with natural
+logarithms.
+
+\begin{theorem}[Entropy ledger for finite refinements]
+\label{thm:entropy-ledger}
+Let \(f_m:\Sigma^m\to \mathcal{Y}_m\) be a map into a finite set.  Let \(U_m\) be
+any \(\Sigma^m\)-valued random variable with law \(u_m\), and define
+\[
+  Y_m:=f_m(U_m).
+\]
+For \(y\in \mathcal{Y}_m\), write
+\[
+  d_m(y):=\card{f_m^{-1}(y)},
+\]
+and define the fibre-uniform lift
+\[
+  \widetilde u_m(\omega)
+  := \frac{\PP(Y_m=f_m(\omega))}
+           {d_m(f_m(\omega))}.
+\]
+Then
+\[
+  H(U_m)
+  = H(Y_m)+\EE[\log d_m(Y_m)]-D(u_m\Vert \widetilde u_m),
+\]
+equivalently,
+\[
+  H(U_m\mid Y_m)
+  = \EE[\log d_m(Y_m)]-D(u_m\Vert \widetilde u_m)
+  \leq \EE[\log d_m(Y_m)].
+\]
+If \(r_m:\Sigma^m\to R_m\) is any map such that
+\[
+  \omega\longmapsto \bigl(f_m(\omega),r_m(\omega)\bigr)
+\]
+is injective, then
+\[
+  H(r_m(U_m)\mid Y_m)=H(U_m\mid Y_m).
+\]
+In particular,
+\[
+  H(U_m\mid Y_m)\leq \log\card{R_m}.
+\]
+\end{theorem}
+
+\begin{proof}
+Since \(Y_m=f_m(U_m)\), the fibre-uniform lift is a probability
+distribution on \(\Sigma^m\).  By definition,
+\begin{align*}
+  D(u_m\Vert \widetilde u_m)
+  &= \sum_{\omega\in\Sigma^m}
+      u_m(\omega)\log\frac{u_m(\omega)}{\widetilde u_m(\omega)} \\
+  &= -H(U_m)
+     - \sum_{\omega\in\Sigma^m}
+        u_m(\omega)\log \PP(Y_m=f_m(\omega)) \\
+  &\quad
+     + \sum_{\omega\in\Sigma^m}
+        u_m(\omega)\log d_m(f_m(\omega)).
+\end{align*}
+The second term is \(H(Y_m)\), and the third is
+\(\EE[\log d_m(Y_m)]\).  Rearranging gives the first identity, and the
+second follows after subtracting \(H(Y_m)\) from both sides.  The
+inequality comes from non-negativity of relative entropy.
+
+Assume now that \(\omega\mapsto(f_m(\omega),r_m(\omega))\) is injective.
+Then \(U_m\) is a measurable function of \((Y_m,r_m(U_m))\), so
+\[
+  H(U_m\mid Y_m,r_m(U_m))=0.
+\]
+Since \((Y_m,r_m(U_m))\) is also a measurable function of \(U_m\), we
+have
+\[
+  H(Y_m,r_m(U_m))=H(U_m).
+\]
+Therefore
+\[
+  H(r_m(U_m)\mid Y_m)
+  = H(Y_m,r_m(U_m))-H(Y_m)
+  = H(U_m)-H(Y_m)
+  = H(U_m\mid Y_m).
+\]
+Finally,
+\[
+  H(r_m(U_m)\mid Y_m)\leq H(r_m(U_m))\leq \log\card{R_m},
+\]
+which proves the last claim.
+\end{proof}
+
+\begin{corollary}[Register lower bound]
+\label{thm:register-lower-bound}
+Let \(f_m:\Sigma^m\to \mathcal{Y}_m\) be a map into a finite set, and set
+\[
+  D_m:=\max_{y\in \mathcal{Y}_m}\card{f_m^{-1}(y)}.
+\]
+If \(r_m:\Sigma^m\to R_m\) is any map such that
+\(\omega\mapsto(f_m(\omega),r_m(\omega))\) is injective, then
+\[
+  \card{R_m}\geq D_m.
+\]
+If, in addition, \(U_m\) is uniform on \(\Sigma^m\), then
+\[
+  \log_2\card{R_m}
+  \geq m-H_2(Y_m)\geq m-\log_2\card{\mathcal{Y}_m},
+\]
+where \(H_2(Y_m):=H(Y_m)/\log 2\).  In particular, if
+\(\card{\mathcal{Y}_m}\leq C\kappa^m\) for some \(C>0\) and \(\kappa<2\), then
+\[
+  \log_2\card{R_m}
+  \geq \left(\log_2\frac{2}{\kappa}\right)m-\log_2 C.
+\]
+\end{corollary}
+
+\begin{proof}
+Choose \(y_\ast\in \mathcal{Y}_m\) such that
+\(\card{f_m^{-1}(y_\ast)}=D_m\).  Injectivity of
+\(\omega\mapsto(f_m(\omega),r_m(\omega))\) forces \(r_m\) to be
+injective on \(f_m^{-1}(y_\ast)\), hence \(\card{R_m}\geq D_m\).
+
+If \(U_m\) is uniform on \(\Sigma^m\), then \(H(U_m)=m\log 2\).  Apply
+Theorem~\ref{thm:entropy-ledger} to obtain
+\[
+  \log\card{R_m}\geq H(U_m\mid Y_m)=m\log 2-H(Y_m).
+\]
+Divide by \(\log 2\) to get
+\[
+  \log_2\card{R_m}\geq m-H_2(Y_m).
+\]
+Since \(H_2(Y_m)\leq \log_2\card{Y_m}\), the remaining estimates follow.
+\end{proof}
+
+\begin{proof}[Proof of Theorems~\ref{thm:main-capacity} and \ref{thm:main-register}]
+Theorem~\ref{thm:main-capacity} is
+Theorem~\ref{thm:double-budget-poisson}, and
+Theorem~\ref{thm:main-register} is
+Theorem~\ref{thm:entropy-ledger}.
+\end{proof}
