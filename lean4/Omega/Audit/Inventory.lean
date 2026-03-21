@@ -47,6 +47,7 @@ def phaseOneTargets : List String :=
   , "finite defect telescope"
   , "golden-mean sofic presentation"
   , "SPG prefix cylinder layer"
+  , "SPG prefix ultrametric and clopen wrappers"
   , "SPG discrete scan error layer"
   , "SPG measure scan error layer"
   , "SPG prefix scan-error specialization layer"
@@ -54,7 +55,9 @@ def phaseOneTargets : List String :=
   , "frontier interfaces"
   , "frontier conditional wrappers"
   , "frontier SPG measure wrappers"
+  , "frontier observable scan-error wrappers"
   , "frontier fold/rewrite/defect wrappers"
+  , "frontier canonical certificate wrappers"
   , "rewrite/fold/scan-error certificates"
   , "source map bootstrap" ]
 

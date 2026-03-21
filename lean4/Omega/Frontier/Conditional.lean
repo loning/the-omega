@@ -1,5 +1,6 @@
 import Omega.Frontier.Certificates
 import Omega.Graph.Sofic
+import Omega.SPG.Clopen
 import Omega.SPG.ScanErrorMeasure
 
 namespace Omega.Frontier
@@ -55,6 +56,39 @@ theorem generatedDefectCertificate_valid (m : Nat) (h : FullGeneration m) (d : W
 theorem fullGeneration_certifies (m : Nat) (h : FullGeneration m) (d : Word m) :
     (generatedDefectCertificate m h d).Valid :=
   generatedDefectCertificate_valid m h d
+
+/-- Any concrete local defect claim carries a canonical valid certificate. -/
+theorem localDefect_hasCertificate (η : Word (m + 1)) :
+    LocalDefectCertificate.Valid { m := m, input := η, claimed := localDefect η } :=
+  rfl
+
+/-- Any concrete global defect claim carries a canonical valid certificate. -/
+theorem globalDefect_hasCertificate (m k : Nat) (ω : Word (m + k)) :
+    DefectCertificate.Valid
+      ({ m := m, k := k, input := ω
+       , claimed := globalDefect (Nat.le_add_right m k) ω } : DefectCertificate) :=
+  rfl
+
+/-- Any one-step rewrite witness is already a valid rewrite-step certificate. -/
+theorem rewriteStep_hasCertificate {a b : Rewrite.DigitCfg} (h : Rewrite.Step a b) :
+    RewriteStepCertificate.Valid { source := a, target := b } :=
+  h
+
+/-- Stable words yield canonical irreducibility certificates for their rewrite embeddings. -/
+theorem stableIrreducible_hasCertificate (x : X m) :
+    RewriteIrreducibleCertificate.Valid { source := Rewrite.iota x.1 } :=
+  Rewrite.irreducible_iota_of_stable x
+
+/-- Any folded image carries a canonical valid fold certificate. -/
+theorem fold_hasCertificate (w : Word m) :
+    FoldCertificate.Valid { m := m, input := w, claimed := Fold w } :=
+  rfl
+
+/-- Observable events carry canonical zero-scan certificates in the discrete model. -/
+theorem observableZeroScan_hasCertificate {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    ObservableZeroScanCertificate.Valid { μ := μ, obs := obs, event := A } :=
+  ObservableZeroScanCertificate.canonical μ obs A
 
 /-- The finite folding map is idempotent on arbitrary raw words. -/
 theorem fold_idempotent (w : Word m) :
@@ -155,6 +189,134 @@ theorem defect_telescope (m k : Nat) (ω : Word (m + k)) :
 theorem stableLanguage_sofic (w : Word m) :
     Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w ↔ No11 w :=
   Omega.Graph.acceptsWord_goldenMean_iff_no11 w
+
+/-- Stable syntax points are accepted by the explicit two-state golden-mean presentation. -/
+theorem stablePoint_sofic (x : X m) :
+    Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false x.1 :=
+  Omega.Graph.acceptsWord_of_stable x
+
+/-- Prefix balls are exactly the cylinders cut out by the corresponding finite address. -/
+theorem prefixBall_is_cylinder (x : SPG.OmegaInfinity) (m : Nat) :
+    SPG.prefixBall x m = SPG.cylinderWord (SPG.prefixWord x m) :=
+  SPG.prefixBall_eq_cylinderWord x m
+
+/-- Cylinders are closed balls for the prefix ultrametric. -/
+theorem cylinder_is_closedBall (w : Word m) :
+    SPG.cylinderWord w
+      = {x : SPG.OmegaInfinity | SPG.prefixDist x (SPG.extendWord w) ≤ (1 / 2 : ℝ) ^ m} :=
+  SPG.cylinderWord_eq_closedBall w
+
+/-- Prefix balls are closed balls for the prefix ultrametric. -/
+theorem prefixBall_is_closedBall (x : SPG.OmegaInfinity) (m : Nat) :
+    SPG.prefixBall x m = {y : SPG.OmegaInfinity | SPG.prefixDist y x ≤ (1 / 2 : ℝ) ^ m} :=
+  SPG.prefixBall_eq_closedBall x m
+
+/-- Finite-prefix events are clopen in the SPG symbolic topology. -/
+theorem prefixEvent_decidableClopen (A : Set (Word m)) :
+    IsClopen (SPG.fromWordSet A) :=
+  SPG.spg_decidableClopen A
+
+/-- Prefix-determined symbolic events are clopen. -/
+theorem prefixDetermined_clopen (s : Set SPG.OmegaInfinity) (m : Nat)
+    (hs : SPG.PrefixDetermined s m) :
+    IsClopen s :=
+  SPG.prefixDetermined_isClopen m hs
+
+/-- A symbolic event is prefix-determined exactly when it is cut out by some finite address set. -/
+theorem prefixDetermined_iff_fromWordSet (s : Set SPG.OmegaInfinity) (m : Nat) :
+    SPG.PrefixDetermined s m ↔ ∃ A : Set (Word m), s = SPG.fromWordSet A :=
+  SPG.prefixDetermined_iff_exists_fromWordSet s m
+
+/-- Observable events have empty discrete scan-error boundary. -/
+theorem observableEvent_boundaryEmpty_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    SPG.boundaryCells μ obs (SPG.observableEvent obs A) = ∅ :=
+  SPG.boundaryCells_observableEvent_eq_empty μ obs A
+
+/-- Observable events have zero discrete scan error. -/
+theorem observableEvent_zero_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    SPG.scanError μ obs (SPG.observableEvent obs A) = 0 :=
+  SPG.scanError_observableEvent_eq_zero μ obs A
+
+/-- The discrete scan-error profile admits the exact boundary-cell decomposition. -/
+theorem scanError_boundary_decomposition_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P
+      = Finset.sum (SPG.boundaryCells μ obs P) (fun b =>
+          min (SPG.cellEventMass μ obs P b) (SPG.cellComplMass μ obs P b)) :=
+  SPG.scanError_eq_sum_boundary μ obs P
+
+/-- The discrete scan-error profile is bounded by the total boundary-cell mass. -/
+theorem scanError_boundary_mass_bound_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P
+      ≤ Finset.sum (SPG.boundaryCells μ obs P) (fun b =>
+          SPG.cellMass μ obs b) :=
+  SPG.scanError_le_boundaryMass μ obs P
+
+/-- The discrete scan-error profile is bounded by a uniform cell-mass cap times boundary size. -/
+theorem scanError_boundary_card_bound_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) (κ : ENNReal)
+    (hκ : ∀ b, SPG.cellMass μ obs b ≤ κ) :
+    SPG.scanError μ obs P ≤ (SPG.boundaryCells μ obs P).card * κ :=
+  SPG.scanError_le_boundaryCard_mul μ obs P κ hκ
+
+/-- Observable events are observable-pure in the finite-observable measure model. -/
+theorem observableEvent_observablePure_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.ObservablePureMeasure μ obs (SPG.observableEvent obs A) :=
+  SPG.observablePureMeasure_observableEvent μ obs A
+
+/-- Observable events have empty boundary in the finite-observable measure model. -/
+theorem observableEvent_boundaryEmpty_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.boundaryCellsMeasure μ obs (SPG.observableEvent obs A) = ∅ :=
+  SPG.boundaryCellsMeasure_observableEvent_eq_empty μ obs A
+
+/-- Observable events have zero scan error in the finite-observable measure model. -/
+theorem observableEvent_zero_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.scanErrorMeasure μ obs (SPG.observableEvent obs A) = 0 :=
+  SPG.scanErrorMeasure_observableEvent_eq_zero μ obs A
+
+/-- The measure scan-error profile admits the exact boundary-cell decomposition. -/
+theorem scanError_measure_boundary_decomposition [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P
+      = Finset.sum (SPG.boundaryCellsMeasure μ obs P) (fun b =>
+          min (SPG.cellEventMeasure μ obs P b) (SPG.cellComplMeasure μ obs P b)) :=
+  SPG.scanErrorMeasure_eq_sum_boundary μ obs P
+
+/-- The measure scan-error profile is bounded by the total boundary-cell mass. -/
+theorem scanError_measure_boundary_mass_bound [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P
+      ≤ Finset.sum (SPG.boundaryCellsMeasure μ obs P) (fun b =>
+          SPG.cellMeasure μ obs b) :=
+  SPG.scanErrorMeasure_le_boundaryMass μ obs P
+
+/-- The measure scan-error profile is bounded by a uniform cell-mass cap times boundary size. -/
+theorem scanError_measure_boundary_card_bound [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (κ : ENNReal)
+    (hκ : ∀ b, SPG.cellMeasure μ obs b ≤ κ) :
+    SPG.scanErrorMeasure μ obs P ≤ (SPG.boundaryCellsMeasure μ obs P).card * κ :=
+  SPG.scanErrorMeasure_le_boundaryCard_mul μ obs P κ hκ
+
+/-- The general measure scan-error profile reduces to the discrete one on finite PMFs. -/
+theorem scanError_measure_discrete_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ.toMeasure obs P = SPG.scanError μ obs P :=
+  SPG.scanErrorMeasure_toMeasure_eq_scanError μ obs P
+
+/-- Observable events remain zero-error after passing from finite PMFs to measures. -/
+theorem observableEvent_zero_measure_discrete_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    SPG.scanErrorMeasure μ.toMeasure obs (SPG.observableEvent obs A) = 0 := by
+  rw [scanError_measure_discrete_bridge μ obs]
+  exact SPG.scanError_observableEvent_eq_zero μ obs A
 
 /-- Prefix events are pure for the discrete scan-error profile. -/
 theorem prefixEvent_pure_discrete (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
