@@ -1,6 +1,7 @@
 import Omega.Folding.StableSyntax
 import Omega.Folding.Zeckendorf
 import Omega.Folding.Fold
+import Omega.Folding.Fiber
 import Omega.Folding.InverseLimit
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
@@ -22,6 +23,8 @@ Run these commands manually during audit:
   #print axioms Omega.X.zeckIndices_isZeckendorfRep
   #print axioms Omega.X.stableValue_eq_sum_fib_zeckIndices
   #print axioms Omega.Fold_stable
+  #print axioms Omega.Fold_idempotent
+  #print axioms Omega.X.fiber_nonempty
   #print axioms Omega.X.inverseLimitEquiv
   #print axioms Omega.Rewrite.step_value
   #print axioms Omega.globalDefect_eq_defectChain
@@ -30,6 +33,7 @@ Run these commands manually during audit:
   #print axioms Omega.SPG.scanError_eq_sum_boundary
   #print axioms Omega.SPG.prefixScanError_eq_zero_of_prefixEvent
   #print axioms Omega.SPG.scanErrorMeasure_observableEvent_eq_zero
+  #print axioms Omega.SPG.scanErrorMeasure_eq_sum_boundary
   #print axioms Omega.SPG.scanErrorMeasure_toMeasure_eq_scanError
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
@@ -43,6 +47,8 @@ def coreAuditTargets : List String :=
   , "Omega.X.zeckIndices_isZeckendorfRep"
   , "Omega.X.stableValue_eq_sum_fib_zeckIndices"
   , "Omega.Fold_stable"
+  , "Omega.Fold_idempotent"
+  , "Omega.X.fiber_nonempty"
   , "Omega.X.inverseLimitEquiv"
   , "Omega.Rewrite.step_value"
   , "Omega.globalDefect_eq_defectChain"
@@ -51,6 +57,7 @@ def coreAuditTargets : List String :=
   , "Omega.SPG.scanError_eq_sum_boundary"
   , "Omega.SPG.prefixScanError_eq_zero_of_prefixEvent"
   , "Omega.SPG.scanErrorMeasure_observableEvent_eq_zero"
+  , "Omega.SPG.scanErrorMeasure_eq_sum_boundary"
   , "Omega.SPG.scanErrorMeasure_toMeasure_eq_scanError" ]
 
 end Omega.Audit

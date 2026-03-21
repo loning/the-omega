@@ -63,6 +63,55 @@ theorem scanErrorMeasure_observableEvent_eq_zero {α β : Type*} [MeasurableSpac
     · simp [hb]
     · simp [hb]
 
+/-- Observation cells where the event is not pure under a general measure. -/
+def boundaryCellsMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : Finset β :=
+  Finset.univ.filter fun b => cellEventMeasure μ obs P b ≠ 0 ∧ cellComplMeasure μ obs P b ≠ 0
+
+theorem scanErrorMeasure_eq_sum_boundary {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P
+      = Finset.sum (boundaryCellsMeasure μ obs P) (fun b =>
+          min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b)) := by
+  classical
+  unfold scanErrorMeasure boundaryCellsMeasure
+  rw [← Finset.sum_subset (Finset.subset_univ (boundaryCellsMeasure μ obs P)) (by
+    intro b _hb hbNotMem
+    simp only [boundaryCellsMeasure, Finset.mem_filter, Finset.mem_univ, true_and] at hbNotMem
+    simp only [not_and_or] at hbNotMem
+    rcases hbNotMem with hEvent | hCompl
+    · have hEvent' : cellEventMeasure μ obs P b = 0 := by simpa using hEvent
+      simp [hEvent']
+    · have hCompl' : cellComplMeasure μ obs P b = 0 := by simpa using hCompl
+      simp [hCompl'])]
+  simp [boundaryCellsMeasure]
+
+theorem scanErrorMeasure_le_boundaryMass {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P
+      ≤ Finset.sum (boundaryCellsMeasure μ obs P) (fun b => cellMeasure μ obs b) := by
+  rw [scanErrorMeasure_eq_sum_boundary]
+  refine Finset.sum_le_sum ?_
+  intro b _hb
+  exact (min_le_left _ _).trans <| by
+    unfold cellEventMeasure cellMeasure
+    exact MeasureTheory.measure_mono (by intro x hx; exact hx.2)
+
+theorem scanErrorMeasure_le_boundaryCard_mul {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (κ : ENNReal)
+    (hκ : ∀ b, cellMeasure μ obs b ≤ κ) :
+    scanErrorMeasure μ obs P ≤ (boundaryCellsMeasure μ obs P).card * κ := by
+  calc
+    scanErrorMeasure μ obs P
+        ≤ Finset.sum (boundaryCellsMeasure μ obs P) (fun b => cellMeasure μ obs b) :=
+          scanErrorMeasure_le_boundaryMass μ obs P
+    _ ≤ Finset.sum (boundaryCellsMeasure μ obs P) (fun _b => κ) := by
+      refine Finset.sum_le_sum ?_
+      intro b hb
+      exact hκ b
+    _ = (boundaryCellsMeasure μ obs P).card * κ := by
+      simp
+
 theorem cellEventMeasure_toMeasure_eq_cellEventMass {α β : Type*} [Fintype α] [MeasurableSpace α]
     [MeasurableSingletonClass α]
     (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :

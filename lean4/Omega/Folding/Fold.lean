@@ -198,6 +198,10 @@ def Fold (w : Word m) : X m :=
 @[simp] theorem Fold_stable (x : X m) : Fold x.1 = x := by
   simpa [Fold, stableValue] using X.ofNat_stableValue x
 
+/-- The finite folding map is idempotent. -/
+@[simp] theorem Fold_idempotent (w : Word m) : Fold (Fold w).1 = Fold w :=
+  Fold_stable (Fold w)
+
 /-- The finite folding map is surjective onto the stable syntax space. -/
 theorem Fold_surjective (m : Nat) : Function.Surjective (Fold (m := m)) := by
   intro x
