@@ -1,15 +1,16 @@
+import Mathlib.Data.Nat.Fib.Basic
+
 namespace Omega
 
-/-- The standard Fibonacci sequence with `fib 0 = 0` and `fib 1 = 1`. -/
-def fib : Nat → Nat
-  | 0 => 0
-  | 1 => 1
-  | n + 2 => fib (n + 1) + fib n
+/-- The project's canonical Fibonacci sequence is `Nat.fib`. -/
+abbrev fib : Nat → Nat := Nat.fib
 
-@[simp] theorem fib_zero : fib 0 = 0 := rfl
-@[simp] theorem fib_one : fib 1 = 1 := rfl
-@[simp] theorem fib_two : fib 2 = 1 := rfl
-@[simp] theorem fib_succ_succ (n : Nat) : fib (n + 2) = fib (n + 1) + fib n := rfl
+@[simp] theorem fib_zero : fib 0 = 0 := Nat.fib_zero
+@[simp] theorem fib_one : fib 1 = 1 := Nat.fib_one
+@[simp] theorem fib_two : fib 2 = 1 := Nat.fib_two
+
+@[simp] theorem fib_succ_succ (n : Nat) : fib (n + 2) = fib (n + 1) + fib n := by
+  simpa [add_comm] using (Nat.fib_add_two (n := n))
 
 /-- The paper's indexing convention, where `F₁ = F₂ = 1`, as a derived view. -/
 def paperFib (k : Nat) : Nat := fib (k + 1)
@@ -20,6 +21,7 @@ def paperFib (k : Nat) : Nat := fib (k + 1)
 
 theorem paperFib_recurrence (k : Nat) :
     paperFib (k + 2) = paperFib (k + 1) + paperFib k := by
-  simpa [paperFib, Nat.add_assoc] using fib_succ_succ (k + 1)
+  simpa [paperFib, Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using
+    (fib_succ_succ (k + 1))
 
 end Omega
