@@ -90,10 +90,91 @@ theorem observableZeroScan_hasCertificate {α β : Type*} [Fintype α] [Fintype 
     ObservableZeroScanCertificate.Valid { μ := μ, obs := obs, event := A } :=
   ObservableZeroScanCertificate.canonical μ obs A
 
+/-- Any discrete scan-error claim has a canonical exact-value certificate. -/
+theorem scanError_hasCertificate {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ScanErrorCertificate.Valid
+      ({ μ := μ, obs := obs, event := P
+       , claimed := SPG.scanError μ obs P } : ScanErrorCertificate α β) :=
+  rfl
+
+/-- Any prefix scan-error claim has a canonical exact-value certificate. -/
+theorem prefixScanError_hasCertificate {m n : Nat}
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    PrefixScanErrorCertificate.Valid
+      ({ m := m, n := n, h := h, μ := μ, event := P
+       , claimed := SPG.prefixScanError μ h P } : PrefixScanErrorCertificate) :=
+  rfl
+
+/-- Canonical full-generation certificates are sound. -/
+theorem generatedDefectCertificate_sound (m : Nat) (h : FullGeneration m) (d : Word m) :
+    globalDefect (Nat.le_add_right m (generatedDefectCertificate m h d).k)
+        (generatedDefectCertificate m h d).input
+      = d := by
+  simpa [generatedDefectCertificate_claimed] using
+    (generatedDefectCertificate m h d).sound (generatedDefectCertificate_valid m h d)
+
+/-- Canonical rewrite-step certificates preserve the represented value. -/
+theorem rewriteStep_certificate_value {a b : Rewrite.DigitCfg} (h : Rewrite.Step a b) :
+  Rewrite.value b = Rewrite.value a :=
+  RewriteStepCertificate.value_preserved { source := a, target := b } h
+
+/-- Canonical fold certificates are idempotent on their claimed stable image. -/
+theorem foldCertificate_idempotent (w : Word m) :
+    Fold (Fold w).1 = Fold w :=
+  FoldCertificate.idempotent { m := m, input := w, claimed := Fold w } (fold_hasCertificate w)
+
+/-- Canonical fold certificates place the source word inside the target fiber. -/
+theorem foldCertificate_inFiber (w : Word m) :
+    w ∈ X.fiber (Fold w) :=
+  FoldCertificate.inFiber { m := m, input := w, claimed := Fold w } (fold_hasCertificate w)
+
+/-- Canonical discrete observable-event zero-scan certificates are sound. -/
+theorem observableZeroScan_certificate_sound {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    SPG.scanError μ obs (SPG.observableEvent obs A) = 0 :=
+  ObservableZeroScanCertificate.sound { μ := μ, obs := obs, event := A }
+    (observableZeroScan_hasCertificate μ obs A)
+
+/-- Canonical prefix zero-scan certificates are sound. -/
+theorem prefixZeroScan_certificate_sound {m n : Nat}
+    (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixScanError μ h (SPG.prefixEvent h A) = 0 :=
+  PrefixZeroScanCertificate.sound { m := m, n := n, h := h, μ := μ, event := A }
+    (PrefixZeroScanCertificate.canonical μ h A)
+
+/-- Exact scan-error certificates are sound by construction. -/
+theorem scanError_certificate_sound {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P = SPG.scanError μ obs P :=
+  ScanErrorCertificate.sound
+    ({ μ := μ, obs := obs, event := P
+     , claimed := SPG.scanError μ obs P } : ScanErrorCertificate α β)
+    (scanError_hasCertificate μ obs P)
+
+/-- Exact prefix scan-error certificates are sound by construction. -/
+theorem prefixScanError_certificate_sound {m n : Nat}
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanError μ h P = SPG.prefixScanError μ h P :=
+  PrefixScanErrorCertificate.sound
+    ({ m := m, n := n, h := h, μ := μ, event := P
+     , claimed := SPG.prefixScanError μ h P } : PrefixScanErrorCertificate)
+    (prefixScanError_hasCertificate μ h P)
+
 /-- The finite folding map is idempotent on arbitrary raw words. -/
 theorem fold_idempotent (w : Word m) :
     Fold (Fold w).1 = Fold w :=
   Omega.Fold_idempotent w
+
+/-- Stable words are fixed points of the finite folding map. -/
+theorem fold_fixedOnStable (x : X m) :
+    Fold x.1 = x :=
+  Omega.Fold_stable x
+
+/-- The finite folding map is surjective onto the stable syntax space. -/
+theorem fold_surjective (m : Nat) :
+    Function.Surjective (Fold (m := m)) :=
+  Omega.Fold_surjective m
 
 /-- Every stable target has a nonempty finite fiber under `Fold`. -/
 theorem fold_fiber_nonempty (x : X m) :
@@ -109,6 +190,21 @@ theorem fold_fiber_rank_unrank (x : X m) (i : Fin (X.fiber x).card) :
 theorem fold_fiber_unrank_sound (x : X m) (i : Fin (X.fiber x).card) :
     Fold (X.unrankWord x i) = x :=
   X.Fold_unrankWord x i
+
+/-- Every stable target has a canonical chosen raw preimage. -/
+theorem fold_choosePreimage_sound (x : X m) :
+    Fold (X.choosePreimage x) = x :=
+  X.Fold_choosePreimage x
+
+/-- The canonical chosen raw preimage lies in the target fiber. -/
+theorem fold_choosePreimage_inFiber (x : X m) :
+    X.choosePreimage x ∈ X.fiber x :=
+  X.choosePreimage_mem_fiber x
+
+/-- Ranking a known preimage and unranking it recovers the original raw word. -/
+theorem fold_unrank_rankOfEq (x : X m) (w : Word m) (h : Fold w = x) :
+    X.unrankWord x (X.rankOfFoldEq x w h) = w :=
+  X.unrankWord_rankOfFoldEq x w h
 
 /-- Paper-facing order independence for finite folding windows. -/
 theorem fold_orderIndependent {m : Nat} (w : Word m) {b : Rewrite.DigitCfg}
@@ -142,6 +238,29 @@ theorem rewrite_locallyConfluent {a b c : Rewrite.DigitCfg}
     (hab : Rewrite.Step a b) (hac : Rewrite.Step a c) :
     Relation.Join (Relation.ReflTransGen Rewrite.Step) b c :=
   Rewrite.step_locallyConfluent hab hac
+
+/-- Rewrite descendants preserve the represented Fibonacci value. -/
+theorem rewrite_valueInvariant {a b : Rewrite.DigitCfg}
+    (hab : Relation.ReflTransGen Rewrite.Step a b) :
+    Rewrite.value b = Rewrite.value a :=
+  Rewrite.reflTransGen_value hab
+
+/-- Rewrite irreducibility is equivalent to being a stable digit configuration. -/
+theorem rewrite_irreducible_iff_stableCfg {a : Rewrite.DigitCfg} :
+    Rewrite.Irreducible a ↔ Rewrite.StableCfg a :=
+  Rewrite.irreducible_iff_stableCfg
+
+/-- Two irreducible configurations with the same represented value must agree. -/
+theorem rewrite_irreducible_sameValue_unique {a b : Rewrite.DigitCfg}
+    (hIrrA : Rewrite.Irreducible a) (hIrrB : Rewrite.Irreducible b)
+    (hVal : Rewrite.value a = Rewrite.value b) :
+    a = b :=
+  Rewrite.irreducible_eq_of_value_eq hIrrA hIrrB hVal
+
+/-- Folded stable embeddings are irreducible in the rewrite system. -/
+theorem rewrite_fold_irreducible (w : Word m) :
+    Rewrite.Irreducible (Rewrite.iota (Fold w).1) :=
+  Rewrite.irreducible_iota_Fold w
 
 /-- Any configuration admits an irreducible descendant under the rewrite relation. -/
 theorem rewrite_terminal_exists (a : Rewrite.DigitCfg) :
@@ -189,6 +308,23 @@ theorem defect_telescope (m k : Nat) (ω : Word (m + k)) :
 theorem stableLanguage_sofic (w : Word m) :
     Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w ↔ No11 w :=
   Omega.Graph.acceptsWord_goldenMean_iff_no11 w
+
+/-- Any `No11` word is accepted by the explicit two-state golden-mean graph. -/
+theorem stable_implies_sofic {w : Word m} (hNo11 : No11 w) :
+    Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w :=
+  Omega.Graph.acceptsWord_goldenMean_of_no11 hNo11
+
+/-- Any word accepted by the explicit two-state golden-mean graph is stable. -/
+theorem sofic_implies_stable {w : Word m}
+    (hAcc : Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w) :
+    No11 w :=
+  Omega.Graph.no11_of_acceptsWord_goldenMean hAcc
+
+/-- The stable length-`m` language equals the explicit golden-mean sofic language as a set. -/
+theorem stableLanguage_set_sofic (m : Nat) :
+    {w : Word m | No11 w}
+      = {w : Word m | Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w} :=
+  Omega.Graph.stableLanguage_eq_goldenMean m
 
 /-- Stable syntax points are accepted by the explicit two-state golden-mean presentation. -/
 theorem stablePoint_sofic (x : X m) :
@@ -262,6 +398,14 @@ theorem scanError_boundary_card_bound_discrete {α β : Type*} [Fintype α] [Fin
     SPG.scanError μ obs P ≤ (SPG.boundaryCells μ obs P).card * κ :=
   SPG.scanError_le_boundaryCard_mul μ obs P κ hκ
 
+/-- Empty discrete boundary forces zero scan error. -/
+theorem scanError_zero_of_boundaryEmpty_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α)
+    (hEmpty : SPG.boundaryCells μ obs P = ∅) :
+    SPG.scanError μ obs P = 0 := by
+  rw [scanError_boundary_decomposition_discrete, hEmpty]
+  simp
+
 /-- Observable events are observable-pure in the finite-observable measure model. -/
 theorem observableEvent_observablePure_measure [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
@@ -303,6 +447,15 @@ theorem scanError_measure_boundary_card_bound [MeasurableSpace α] [Fintype β]
     SPG.scanErrorMeasure μ obs P ≤ (SPG.boundaryCellsMeasure μ obs P).card * κ :=
   SPG.scanErrorMeasure_le_boundaryCard_mul μ obs P κ hκ
 
+/-- Empty boundary forces zero scan error in the finite-observable measure model. -/
+theorem scanError_zero_of_boundaryEmpty_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
+    (hEmpty : SPG.boundaryCellsMeasure μ obs P = ∅) :
+    SPG.scanErrorMeasure μ obs P = 0 := by
+  have hPure : SPG.ObservablePureMeasure μ obs P :=
+    (SPG.observablePureMeasure_iff_boundaryCellsMeasure_eq_empty μ obs P).2 hEmpty
+  exact SPG.scanErrorMeasure_eq_zero_of_observablePure μ obs P hPure
+
 /-- The general measure scan-error profile reduces to the discrete one on finite PMFs. -/
 theorem scanError_measure_discrete_bridge {α β : Type*} [Fintype α] [Fintype β]
     [MeasurableSpace α] [MeasurableSingletonClass α]
@@ -325,6 +478,23 @@ theorem prefixEvent_pure_discrete (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Wo
   exact ⟨SPG.prefixBoundaryCells_prefixEvent_eq_empty μ h A,
     SPG.prefixScanError_eq_zero_of_prefixEvent μ h A⟩
 
+/-- Prefix events have empty discrete boundary at every finite resolution. -/
+theorem prefixEvent_boundaryEmpty_discrete (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixBoundaryCells μ h (SPG.prefixEvent h A) = ∅ :=
+  SPG.prefixBoundaryCells_prefixEvent_eq_empty μ h A
+
+/-- Prefix events have zero discrete scan error at every finite resolution. -/
+theorem prefixEvent_zero_discrete (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixScanError μ h (SPG.prefixEvent h A) = 0 :=
+  SPG.prefixScanError_eq_zero_of_prefixEvent μ h A
+
+/-- Empty prefix boundary forces zero discrete prefix scan error. -/
+theorem prefixScanError_zero_of_boundaryEmpty_discrete (μ : PMF (Word n)) (h : m ≤ n)
+    (P : Set (Word n)) (hEmpty : SPG.prefixBoundaryCells μ h P = ∅) :
+    SPG.prefixScanError μ h P = 0 := by
+  rw [SPG.prefixScanError_eq_sum_boundary, hEmpty]
+  simp
+
 /-- Prefix events are pure for the finite-observable measure scan-error profile. -/
 theorem prefixEvent_pure_measure [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
@@ -332,6 +502,27 @@ theorem prefixEvent_pure_measure [MeasurableSpace (Word n)]
       SPG.prefixScanErrorMeasure μ h (SPG.prefixEvent h A) = 0 := by
   exact ⟨SPG.prefixBoundaryCellsMeasure_prefixEvent_eq_empty μ h A,
     SPG.prefixScanErrorMeasure_eq_zero_of_prefixEvent μ h A⟩
+
+/-- Prefix events have empty measure-theoretic boundary at every finite resolution. -/
+theorem prefixEvent_boundaryEmpty_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixBoundaryCellsMeasure μ h (SPG.prefixEvent h A) = ∅ :=
+  SPG.prefixBoundaryCellsMeasure_prefixEvent_eq_empty μ h A
+
+/-- Prefix events have zero measure scan error at every finite resolution. -/
+theorem prefixEvent_zero_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixScanErrorMeasure μ h (SPG.prefixEvent h A) = 0 :=
+  SPG.prefixScanErrorMeasure_eq_zero_of_prefixEvent μ h A
+
+/-- Empty prefix boundary forces zero measure prefix scan error. -/
+theorem prefixScanError_zero_of_boundaryEmpty_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n))
+    (hEmpty : SPG.prefixBoundaryCellsMeasure μ h P = ∅) :
+    SPG.prefixScanErrorMeasure μ h P = 0 := by
+  have hPure : SPG.ObservablePureMeasure μ (SPG.prefixObservation h) P :=
+    (SPG.observablePureMeasure_iff_boundaryCellsMeasure_eq_empty μ (SPG.prefixObservation h) P).2 hEmpty
+  exact SPG.prefixScanErrorMeasure_eq_zero_of_observablePure μ h P hPure
 
 /-- Prefix events are observable-pure in the measure scan-error model. -/
 theorem prefixEvent_observablePure_measure [MeasurableSpace (Word n)]

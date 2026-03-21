@@ -58,6 +58,8 @@ def phaseOneTargets : List String :=
   , "frontier observable scan-error wrappers"
   , "frontier fold/rewrite/defect wrappers"
   , "frontier canonical certificate wrappers"
+  , "frontier graph-language wrappers"
+  , "frontier boundary-empty zero-error wrappers"
   , "rewrite/fold/scan-error certificates"
   , "source map bootstrap" ]
 
