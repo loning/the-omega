@@ -1,5 +1,6 @@
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Data.Finsupp.Order
+import Mathlib.Data.Prod.Lex
 import Mathlib.Tactic
 import Omega.Folding.InverseLimit
 
@@ -178,6 +179,46 @@ noncomputable def iota : {m : Nat} → Word m → DigitCfg
 @[simp] theorem iota_snoc (w : Word m) (b : Bool) :
     iota (snoc w b) = if b then incDigit (iota w) m else iota w := by
   simp [iota, truncate_snoc, last_snoc]
+
+@[simp] theorem iota_apply_ge : ∀ {m : Nat} (w : Word m) {k : Nat}, m ≤ k → iota w k = 0
+  | 0, _w, _k, _hk => by simp [iota]
+  | m + 1, w, k, hk => by
+      have hmk : m ≤ k := Nat.le_trans (Nat.le_succ m) hk
+      have hne : k ≠ m := by omega
+      by_cases hLast : Omega.last w = true
+      · simp [iota, hLast, incDigit_apply_ne, hne, iota_apply_ge (truncate w) hmk]
+      · simp [iota, hLast, iota_apply_ge (truncate w) hmk]
+
+theorem iota_apply_lt : ∀ {m : Nat} (w : Word m) {k : Nat}, k < m →
+    iota w k = if get w k then 1 else 0
+  | 0, _w, _k, hk => by
+      cases Nat.not_lt_zero _ hk
+  | m + 1, w, k, hk => by
+      by_cases hkm : k < m
+      · have hne : k ≠ m := Nat.ne_of_lt hkm
+        by_cases hLast : Omega.last w = true
+        · rw [iota, if_pos hLast, incDigit_apply_ne (a := iota (truncate w)) (k := m) (j := k) hne]
+          rw [iota_apply_lt (truncate w) hkm, truncate_get_eq (w := w) (i := k) hkm]
+        · rw [iota, if_neg hLast, iota_apply_lt (truncate w) hkm, truncate_get_eq (w := w) (i := k) hkm]
+      · have hkEq : k = m := Nat.eq_of_lt_succ_of_not_lt hk hkm
+        rw [hkEq]
+        have hTailZero : iota (truncate w) m = 0 := iota_apply_ge (truncate w) (Nat.le_refl m)
+        cases hBit : w ⟨m, Nat.lt_succ_self m⟩ <;> simp [iota, Omega.last, hBit, hTailZero]
+
+theorem iota_pos_iff_get_true {m : Nat} (w : Word m) {k : Nat} :
+    0 < iota w k ↔ k < m ∧ get w k = true := by
+  constructor
+  · intro hk
+    by_cases hkm : k < m
+    · refine ⟨hkm, ?_⟩
+      rw [iota_apply_lt w hkm] at hk
+      cases hBit : get w k <;> simp [hBit] at hk ⊢
+    · have hge : m ≤ k := Nat.not_lt.mp hkm
+      rw [iota_apply_ge w hge] at hk
+      omega
+  · rintro ⟨hkm, hGet⟩
+    rw [iota_apply_lt w hkm, hGet]
+    norm_num
 
 @[simp] theorem value_iota : ∀ {m : Nat} (w : Word m), value (iota w) = weight w
   | 0, _w => by
@@ -401,6 +442,69 @@ def MeasureDrop (a b : DigitCfg) : Prop :=
     (mass b = mass a ∧ moment b < moment a) ∨
     (mass b = mass a ∧ moment b = moment a ∧ critical b < critical a)
 
+/-- The nested lexicographic rank used to prove strong termination. -/
+def rankLex (a : DigitCfg) : Nat ×ₗ (Nat ×ₗ Nat) :=
+  (toLex (mass a, (toLex (moment a, critical a) : Nat ×ₗ Nat)) : Nat ×ₗ (Nat ×ₗ Nat))
+
+/-- Configurations already in local normal form: binary digits with no adjacent positives. -/
+def StableCfg (a : DigitCfg) : Prop :=
+  (∀ k : Nat, a k ≤ 1) ∧ ∀ k : Nat, ¬ (0 < a k ∧ 0 < a (k + 1))
+
+/-- A configuration is irreducible when no local rewrite step applies. -/
+def Irreducible (a : DigitCfg) : Prop :=
+  ∀ ⦃b : DigitCfg⦄, ¬ Step a b
+
+theorem stableCfg_iota (x : X m) : StableCfg (iota x.1) := by
+  refine ⟨?_, ?_⟩
+  · intro k
+    by_cases hk : k < m
+    · rw [iota_apply_lt x.1 hk]
+      split <;> omega
+    · rw [iota_apply_ge x.1 (Nat.not_lt.mp hk)]
+      omega
+  · intro k hAdj
+    have hk : get x.1 k = true := (iota_pos_iff_get_true x.1).1 hAdj.1 |>.2
+    have hk1 : get x.1 (k + 1) = true := (iota_pos_iff_get_true x.1).1 hAdj.2 |>.2
+    exact x.2 k hk hk1
+
+theorem irreducible_of_stableCfg {a : DigitCfg} (ha : StableCfg a) : Irreducible a := by
+  intro b hStep
+  cases hStep with
+  | adj k hk hk1 =>
+      exact (ha.2 k) ⟨hk, hk1⟩
+  | dedupZero h0 =>
+      exact Nat.not_lt_of_ge (ha.1 0) h0
+  | dedupOne h1 =>
+      exact Nat.not_lt_of_ge (ha.1 1) h1
+  | dedupSucc k hk =>
+      exact Nat.not_lt_of_ge (ha.1 (k + 2)) hk
+
+theorem stableCfg_of_irreducible {a : DigitCfg} (ha : Irreducible a) : StableCfg a := by
+  refine ⟨?_, ?_⟩
+  · intro k
+    cases k with
+    | zero =>
+        by_contra hk
+        have hk' : 1 < a 0 := Nat.lt_of_not_ge hk
+        exact ha (Step.dedupZero a hk')
+    | succ k =>
+        cases k with
+        | zero =>
+            by_contra hk
+            have hk' : 1 < a 1 := Nat.lt_of_not_ge hk
+            exact ha (Step.dedupOne a hk')
+        | succ k =>
+            by_contra hk
+            have hk' : 1 < a (k + 2) := Nat.lt_of_not_ge hk
+            exact ha (Step.dedupSucc a k hk')
+  · intro k hAdj
+    exact ha (Step.adj a k hAdj.1 hAdj.2)
+
+theorem irreducible_iff_stableCfg {a : DigitCfg} : Irreducible a ↔ StableCfg a := by
+  constructor
+  · exact stableCfg_of_irreducible
+  · exact irreducible_of_stableCfg
+
 theorem step_measureDrop {a b : DigitCfg} (h : Step a b) : MeasureDrop a b := by
   cases h with
   | adj k hk hk1 =>
@@ -425,9 +529,50 @@ theorem step_measureDrop {a b : DigitCfg} (h : Step a b) : MeasureDrop a b := by
       have hMoment := moment_dedupSuccTarget_add a k hk
       refine ⟨?_, ?_⟩ <;> omega
 
+theorem step_rankLex {a b : DigitCfg} (h : Step a b) : rankLex b < rankLex a := by
+  rcases step_measureDrop h with hMass | hRest
+  · change
+      toLex (mass b, (toLex (moment b, critical b) : Nat ×ₗ Nat)) <
+        toLex (mass a, (toLex (moment a, critical a) : Nat ×ₗ Nat))
+    rw [Prod.Lex.toLex_lt_toLex]
+    exact Or.inl hMass
+  · change
+      toLex (mass b, (toLex (moment b, critical b) : Nat ×ₗ Nat)) <
+        toLex (mass a, (toLex (moment a, critical a) : Nat ×ₗ Nat))
+    rw [Prod.Lex.toLex_lt_toLex]
+    refine Or.inr ?_
+    rcases hRest with ⟨hMassEq, hMomentLt⟩ | ⟨hMassEq, hMomentEq, hCritLt⟩
+    · refine ⟨hMassEq, ?_⟩
+      change
+        toLex (moment b, critical b) < toLex (moment a, critical a)
+      rw [Prod.Lex.toLex_lt_toLex]
+      exact Or.inl hMomentLt
+    · refine ⟨hMassEq, ?_⟩
+      change
+        toLex (moment b, critical b) < toLex (moment a, critical a)
+      rw [Prod.Lex.toLex_lt_toLex]
+      exact Or.inr ⟨hMomentEq, hCritLt⟩
+
+theorem step_wellFounded : WellFounded (flip Step) :=
+  WellFounded.mono (InvImage.wf rankLex wellFounded_lt) (fun _ _ h => step_rankLex h)
+
+/-- The local rewrite relation is strongly terminating. -/
+theorem step_stronglyTerminating : WellFounded (flip Step) :=
+  step_wellFounded
+
 @[simp] theorem normalPrefix_step {a b : DigitCfg} (h : Step a b) :
     normalPrefix b m = normalPrefix a m := by
   simp [normalPrefix, step_value h]
+
+theorem irreducible_iota_of_stable (x : X m) : Irreducible (iota x.1) :=
+  irreducible_of_stableCfg (stableCfg_iota x)
+
+theorem irreducible_iota_normalPrefix (a : DigitCfg) (m : Nat) :
+    Irreducible (iota (normalPrefix a m).1) :=
+  irreducible_iota_of_stable (normalPrefix a m)
+
+@[simp] theorem irreducible_iota_Fold (w : Word m) : Irreducible (iota (Fold w).1) :=
+  irreducible_iota_of_stable (Fold w)
 
 end Rewrite
 

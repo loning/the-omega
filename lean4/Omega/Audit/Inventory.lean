@@ -41,12 +41,14 @@ def phaseOneTargets : List String :=
   , "finite Fold fiber interface"
   , "inverse-limit bridge"
   , "rewrite kernel"
+  , "rewrite strong termination"
   , "finite defect telescope"
   , "golden-mean sofic presentation"
   , "SPG prefix cylinder layer"
   , "SPG discrete scan error layer"
   , "SPG measure scan error layer"
   , "frontier interfaces"
+  , "rewrite/fold/scan-error certificates"
   , "source map bootstrap" ]
 
 end Omega.Audit
