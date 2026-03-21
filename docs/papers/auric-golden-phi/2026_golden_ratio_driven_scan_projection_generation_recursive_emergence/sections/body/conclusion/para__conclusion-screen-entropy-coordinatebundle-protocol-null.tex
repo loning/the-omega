@@ -340,4 +340,177 @@ y=f_S(x)
 故 \(f_S\) 为单射，存在仅依赖于可见综合征 \(y\) 的确定性逆译码，从而不再会出现由屏幕不足所导致的协议型 \(\mathsf{NULL}\)。于是第三条不能发生，得到其逆否命题。证毕。
 \end{proof}
 
+\begin{theorem}[线性屏幕实现中的 \texorpdfstring{$\mathsf{NULL}$}{NULL} 三分律塌缩]\label{thm:conclusion-screen-linear-readout-null-trichotomy-collapse}
+固定分辨率 \(m,n\)，并在 \(\FF_2\)-系数下考虑部分屏幕观测
+\[
+f_S:C_n(\mathcal Q_m;\FF_2)\longrightarrow \FF_2^{\,S},
+\qquad
+S\subseteq \overrightarrow{\mathcal F_m^{n-1}}.
+\]
+对任意可见数据 \(y\in \FF_2^{\,S}\)，定义三值读出
+\[
+\Read_S(y)\in \{\mathrm{Tot},\mathrm{ProtNULL},\mathrm{CollNULL}\}
+\]
+为
+\[
+\Read_S(y)=
+\begin{cases}
+\mathrm{Tot}, & f_S^{-1}(y)\ \text{为单点},\\
+\mathrm{ProtNULL}, & f_S^{-1}(y)=\varnothing,\\
+\mathrm{CollNULL}, & \#f_S^{-1}(y)\ge 2.
+\end{cases}
+\]
+则有严格分类：
+\[
+\Read_S(y)=\mathrm{ProtNULL}
+\iff
+y\notin \operatorname{im}f_S,
+\]
+\[
+\Read_S(y)=\mathrm{CollNULL}
+\iff
+y\in \operatorname{im}f_S
+\ \text{且}\
+\beta_n(\mathcal Q_m,A_{\neg S};\FF_2)>0,
+\]
+\[
+\Read_S(y)=\mathrm{Tot}
+\iff
+y\in \operatorname{im}f_S
+\ \text{且}\
+\beta_n(\mathcal Q_m,A_{\neg S};\FF_2)=0.
+\]
+并且在第二种情形中，
+\[
+\#f_S^{-1}(y)=2^{\beta_n(\mathcal Q_m,A_{\neg S};\FF_2)}.
+\]
+\end{theorem}
+
+\begin{proof}
+由线性代数，\(f_S^{-1}(y)=\varnothing\) 当且仅当 \(y\notin \operatorname{im}f_S\)，故第一条成立。
+
+若 \(y\in \operatorname{im}f_S\)，则纤维 \(f_S^{-1}(y)\) 是 \(\ker f_S\) 的一个仿射空间，因此
+\[
+\#f_S^{-1}(y)=2^{\dim_{\FF_2}\ker f_S}.
+\]
+而由本文前面已经反复使用的相对顶维同调刻画，
+\[
+\ker f_S\cong H_n(\mathcal Q_m,A_{\neg S};\FF_2),
+\]
+故
+\[
+\dim_{\FF_2}\ker f_S=\beta_n(\mathcal Q_m,A_{\neg S};\FF_2).
+\]
+于是，当该 Betti 数为零时，纤维为单点，读出为 \(\mathrm{Tot}\)；当其严格大于零时，纤维含至少两个点，读出为 \(\mathrm{CollNULL}\)。证毕。
+\end{proof}
+
+\begin{theorem}[延迟观测的几何决定时刻]\label{thm:conclusion-screen-delayed-observation-geometric-decision-time}
+在定理 \ref{thm:conclusion-screen-linear-readout-null-trichotomy-collapse} 的设定下，取一条单调屏幕链
+\[
+S_0\subseteq S_1\subseteq S_2\subseteq \cdots \subseteq \overrightarrow{\mathcal F_m^{n-1}}.
+\]
+对任意固定的隐藏顶维链 \(x\in C_n(\mathcal Q_m;\FF_2)\)，记
+\[
+y_t:=f_{S_t}(x).
+\]
+定义其决定时刻
+\[
+\tau:=\inf\{t\ge 0:\Read_{S_t}(y_t)=\mathrm{Tot}\}.
+\]
+则 \(\tau\) 与 \(x\) 无关，并且有显式公式
+\[
+\tau=\inf\{t\ge 0:\ c(\Gamma_{S_t})=1\}.
+\]
+更精确地，对一切 \(t\)：
+\begin{enumerate}
+  \item 若 \(t<\tau\)，则
+        \[
+        \Read_{S_t}(y_t)=\mathrm{CollNULL},
+        \qquad
+        \#f_{S_t}^{-1}(y_t)=2^{\,c(\Gamma_{S_t})-1};
+        \]
+  \item 若 \(t\ge \tau\)，则
+        \[
+        \Read_{S_t}(y_t)=\mathrm{Tot},
+        \qquad
+        f_{S_t}^{-1}(y_t)=\{x\};
+        \]
+  \item 一旦 \(t\ge \tau\)，则对所有 \(u\ge t\)，由 \(y_u\) 反演得到的唯一 bulk completion 仍为同一 \(x\)。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由于 \(y_t=f_{S_t}(x)\)，故 \(y_t\in \operatorname{im}f_{S_t}\) 对所有 \(t\) 恒成立；因此 \(\mathrm{ProtNULL}\) 在这条观测轨道上不会出现。
+
+由相对顶维同调核的闭式，
+\[
+\dim_{\FF_2}\ker f_{S_t}=c(\Gamma_{S_t})-1.
+\]
+再联用定理 \ref{thm:conclusion-screen-linear-readout-null-trichotomy-collapse}，可得
+\[
+\Read_{S_t}(y_t)=\mathrm{Tot}
+\iff
+\ker f_{S_t}=0
+\iff
+c(\Gamma_{S_t})=1.
+\]
+因此 \(\tau\) 只由屏幕几何决定，与具体的 \(x\) 无关；第一、第二条随即成立。
+
+又因 \(S_t\subseteq S_u\) 蕴含 \(f_{S_u}\) 是在 \(f_{S_t}\) 之上增加若干坐标而得，故
+\[
+\ker f_{S_u}\subseteq \ker f_{S_t}.
+\]
+于是当某个时刻 \(t\) 已有 \(\ker f_{S_t}=0\) 时，对一切 \(u\ge t\) 仍有 \(\ker f_{S_u}=0\)。这就说明后续观测不会改写已经唯一决定的 bulk completion，第三条得证。证毕。
+\end{proof}
+
+\begin{theorem}[精确二元审计的同调比特下界]\label{thm:conclusion-screen-exact-binary-audit-homological-bit-bound}
+沿用定理 \ref{thm:conclusion-screen-linear-readout-null-trichotomy-collapse} 的设定。记
+\[
+\beta:=\beta_n(\mathcal Q_m,A_{\neg S};\FF_2).
+\]
+称一个 \(b\)-比特审计补充为映射
+\[
+a:C_n(\mathcal Q_m;\FF_2)\longrightarrow \{0,1\}^b
+\]
+使得组合编码
+\[
+x\longmapsto \bigl(f_S(x),a(x)\bigr)
+\]
+为单射。则必有
+\[
+b\ge \beta.
+\]
+反之，存在恰好 \(b=\beta\) 的审计补充使上式单射。换言之，\(\beta\) 正是该屏幕上精确二元审计的最小比特成本。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-screen-linear-readout-null-trichotomy-collapse}，对任意 \(y\in \operatorname{im}f_S\)，纤维 \(f_S^{-1}(y)\) 的基数恒为 \(2^\beta\)。若 \((f_S,a)\) 为单射，则对任意固定 \(y\)，其限制
+\[
+a|_{f_S^{-1}(y)}:f_S^{-1}(y)\to \{0,1\}^b
+\]
+也必须为单射。故必有
+\[
+2^\beta\le 2^b,
+\]
+即 \(b\ge \beta\)。
+
+反过来，取 \(\ker f_S\) 的一组 \(\FF_2\)-基，并选择一补空间
+\[
+C_n(\mathcal Q_m;\FF_2)=\ker f_S\oplus W.
+\]
+任意 \(x\) 可唯一写成
+\[
+x=k+w,
+\qquad
+k\in \ker f_S,\ w\in W.
+\]
+定义 \(a(x)\) 为 \(k\) 在上述基下的坐标向量，则 \(a(x)\in \{0,1\}^{\beta}\)。若
+\[
+f_S(x)=f_S(x'),
+\qquad
+a(x)=a(x'),
+\]
+则 \(x-x'\in \ker f_S\)，且二者具有相同核坐标，故 \(x-x'=0\)，从而 \(x=x'\)。因此当 \(b=\beta\) 时该编码已经单射，下界可达。证毕。
+\end{proof}
+
 \endinput

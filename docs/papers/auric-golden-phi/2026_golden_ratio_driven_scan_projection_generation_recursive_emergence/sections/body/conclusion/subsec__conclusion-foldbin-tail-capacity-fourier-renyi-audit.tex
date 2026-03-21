@@ -333,7 +333,262 @@ H(\mu_6)
 因此把 \(\pi_{6,q}\) 按纤维大小聚合后，只需对三个能级分别按 \(8\cdot 2^q\)、\(4\cdot 3^q\)、\(9\cdot 4^q\) 归一化，即得到后三条闭式。证毕。
 \end{proof}
 
+\begin{theorem}[二阶碰撞核的最小线性复杂度]\label{thm:conclusion-foldbin-s2-minimal-linear-complexity-three}
+设
+\[
+S_2(m):=\sum_{w\in X_m}\bigl(d_m^{\mathrm{bin}}(w)\bigr)^2
+\qquad (m\ge 2).
+\]
+则其普通生成函数
+\[
+\mathcal G_2(z):=\sum_{m\ge 2}S_2(m)\,z^{m-2}
+\]
+满足
+\[
+\mathcal G_2(z)=\frac{6+2z-4z^2}{1-2z-2z^2+2z^3},
+\]
+并且序列 \(\{S_2(m)\}_{m\ge 2}\) 的最小线性复杂度恰为 \(3\)。特别地，它不可能由任何二阶常系数递推精确描述，也不可能由任何二维线性 realization 精确实现。
+\end{theorem}
+
+\begin{proof}
+本文前面已经给出三态碰撞核表示
+\[
+S_2(m)=2\,\mathbf 1^{\!T}A_2^{\,m-2}\mathbf 1,
+\qquad
+A_2=
+\begin{pmatrix}
+0&0&1\\
+0&1&1\\
+2&1&1
+\end{pmatrix},
+\]
+以及递推
+\[
+S_2(m)=2S_2(m-1)+2S_2(m-2)-2S_2(m-3)
+\qquad (m\ge 5),
+\]
+配以初值
+\[
+S_2(2)=6,\qquad S_2(3)=14,\qquad S_2(4)=36.
+\]
+把递推按普通生成函数求和，直接得到
+\[
+\bigl(1-2z-2z^2+2z^3\bigr)\mathcal G_2(z)=6+2z-4z^2,
+\]
+从而得出所示闭式，故线性复杂度至多为 \(3\)。
+
+反之，若其线性复杂度至多为 \(2\)，则所有 \(3\times 3\) Hankel 行列式都应消失。由上式递推可先算得
+\[
+S_2(5)=88,\qquad S_2(6)=220,
+\]
+于是
+\[
+\det
+\begin{pmatrix}
+6&14&36\\
+14&36&88\\
+36&88&220
+\end{pmatrix}
+=-16\neq 0.
+\]
+故该序列不可能由任何二阶线性递推生成，因而最小线性复杂度恰为 \(3\)。证毕。
+\end{proof}
+
+\begin{theorem}[三阶碰撞核的最小线性复杂度]\label{thm:conclusion-foldbin-s3-minimal-linear-complexity-three}
+设
+\[
+S_3(m):=\sum_{w\in X_m}\bigl(d_m^{\mathrm{bin}}(w)\bigr)^3
+\qquad (m\ge 2).
+\]
+则其普通生成函数
+\[
+\mathcal G_3(z):=\sum_{m\ge 2}S_3(m)\,z^{m-2}
+\]
+满足
+\[
+\mathcal G_3(z)=\frac{10+6z-4z^2}{1-2z-4z^2+2z^3},
+\]
+并且序列 \(\{S_3(m)\}_{m\ge 2}\) 的最小线性复杂度同样恰为 \(3\)。
+\end{theorem}
+
+\begin{proof}
+本文前面已经给出三态 realization
+\[
+S_3(m)=2u_3^{T}A_3^{\,m-2}v_3,
+\qquad
+A_3=
+\begin{pmatrix}
+0&2&2\\
+1&0&2\\
+0&1&2
+\end{pmatrix},
+\]
+并给出递推
+\[
+S_3(m)=2S_3(m-1)+4S_3(m-2)-2S_3(m-3)
+\qquad (m\ge 5),
+\]
+配以初值
+\[
+S_3(2)=10,\qquad S_3(3)=26,\qquad S_3(4)=88.
+\]
+由此按生成函数求和得
+\[
+\bigl(1-2z-4z^2+2z^3\bigr)\mathcal G_3(z)=10+6z-4z^2,
+\]
+故线性复杂度至多为 \(3\)。
+
+若线性复杂度至多为 \(2\)，则相应 \(3\times 3\) Hankel 行列式必须消失。由递推继续算得
+\[
+S_3(5)=260,\qquad S_3(6)=820,
+\]
+于是
+\[
+\det
+\begin{pmatrix}
+10&26&88\\
+26&88&260\\
+88&260&820
+\end{pmatrix}
+=-432\neq 0.
+\]
+故线性复杂度不能降到 \(2\)，从而恰为 \(3\)。证毕。
+\end{proof}
+
+\begin{corollary}[三体碰撞相对于二体碰撞的指数级次单形稀释]\label{cor:conclusion-foldbin-s3-vs-s2-threehalves-exponential-dilution}
+设 \(r_2\) 与 \(r_3\) 分别为多项式
+\[
+x^3-2x^2-2x+2,
+\qquad
+x^3-2x^2-4x+2
+\]
+的 Perron 根。则
+\[
+S_2(m)=\Theta(r_2^m),
+\qquad
+S_3(m)=\Theta(r_3^m),
+\]
+并且
+\[
+\lim_{m\to\infty}\frac1m\log\frac{S_3(m)}{S_2(m)^{3/2}}
+=
+\log r_3-\frac32\log r_2
+<0.
+\]
+数值上，
+\[
+r_2\approx 2.48119430409202,
+\qquad
+r_3\approx 3.086130197651,
+\]
+故
+\[
+\log r_3-\frac32\log r_2\approx -0.2361920849.
+\]
+因此，三体碰撞并不由二体碰撞经单一有效纤维尺度的幂律闭包产生，而是相对于 \(S_2(m)^{3/2}\) 出现严格的指数级稀释。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-foldbin-s2-minimal-linear-complexity-three} 与定理 \ref{thm:conclusion-foldbin-s3-minimal-linear-complexity-three} 背后的三态矩阵 realization 可知，相应状态矩阵皆为 primitive。于是由 Perron--Frobenius 定理，
+\[
+S_2(m)=\Theta(r_2^m),
+\qquad
+S_3(m)=\Theta(r_3^m).
+\]
+故
+\[
+\frac1m\log\frac{S_3(m)}{S_2(m)^{3/2}}
+\longrightarrow
+\log r_3-\frac32\log r_2.
+\]
+把上述 Perron 根数值代入即可得到严格负值。证毕。
+\end{proof}
+
+\begin{theorem}[固定有限 Fourier 审计的渐近失效]\label{thm:conclusion-foldbin-fixed-finite-fourier-audit-vanishing-share}
+设 \(K\subset \mathbb Z\setminus\{0\}\) 为任意固定有限频率集，并定义其所捕获的非平凡碰撞能量
+\[
+E_m(K):=\frac1{F_{m+2}}\sum_{k\in K}a_m(k)^2,
+\qquad
+a_m(k):=\frac{|\widehat d_m(k)|}{2^m}\in[0,1].
+\]
+则
+\[
+\frac{E_m(K)}{\,Col_m-\frac1{F_{m+2}}\,}\longrightarrow 0
+\qquad (m\to\infty).
+\]
+也就是说，任何固定有限个非平凡 Fourier 模所能审计到的碰撞缺口，最终都只占总缺口的零比例。
+\end{theorem}
+
+\begin{proof}
+由 \(0\le a_m(k)\le 1\) 立得
+\[
+0\le E_m(K)\le \frac{|K|}{F_{m+2}}.
+\]
+另一方面，本文前面已经给出 Parseval 型恒等式
+\[
+Col_m-\frac1{F_{m+2}}
+=
+\frac1{F_{m+2}}\sum_{k\ne 0}a_m(k)^2,
+\]
+并且还已证明
+\[
+F_{m+2}Col_m\to+\infty.
+\]
+因此
+\[
+F_{m+2}\Bigl(Col_m-\frac1{F_{m+2}}\Bigr)\to+\infty.
+\]
+于是
+\[
+0\le
+\frac{E_m(K)}{Col_m-\frac1{F_{m+2}}}
+\le
+\frac{|K|}{F_{m+2}\left(Col_m-\frac1{F_{m+2}}\right)}
+\longrightarrow 0.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[任何渐近充分的频谱证书都必须无界增宽]\label{cor:conclusion-foldbin-sufficient-spectral-certificate-must-widen}
+设 \(K_m\subset \mathbb Z\setminus\{0\}\) 为一列频率族。若存在常数 \(\eta>0\) 使
+\[
+\limsup_{m\to\infty}
+\frac{\frac1{F_{m+2}}\sum_{k\in K_m}a_m(k)^2}
+{Col_m-\frac1{F_{m+2}}}
+\ge \eta,
+\]
+则必有
+\[
+|K_m|
+\ge
+\eta\,F_{m+2}\Bigl(Col_m-\frac1{F_{m+2}}\Bigr)
+\]
+对无穷多个 \(m\) 成立，因而
+\[
+|K_m|\to\infty.
+\]
+\end{corollary}
+
+\begin{proof}
+由 \(a_m(k)^2\le 1\) 可得
+\[
+\frac1{F_{m+2}}\sum_{k\in K_m}a_m(k)^2
+\le \frac{|K_m|}{F_{m+2}}.
+\]
+若左端能在极限上捕获总缺口的比例至少为 \(\eta\)，便必须有
+\[
+\frac{|K_m|}{F_{m+2}}
+\ge
+\eta\Bigl(Col_m-\frac1{F_{m+2}}\Bigr)
+\]
+在无穷多个 \(m\) 上成立，整理即得所示下界。再结合
+\[
+F_{m+2}\Bigl(Col_m-\frac1{F_{m+2}}\Bigr)\to+\infty
+\]
+便得到 \(|K_m|\to\infty\)。证毕。
+\end{proof}
+
 \noindent
-以上结果把 bin-fold 口径下看似分散的四类对象压缩为同一条可审计链：尾和 admissibility 产生严格阈值阶梯，window-\(6\) 的有限窗容量因此塌缩为一条三段线性曲线并给出最优位预算的闭式基准，碰撞尺度的无界增长又迫使非平凡 Fourier 活跃模数无限增殖并排除 \(M^{-1/2}\) 自然尺度上的总变差均匀化，而同一三能级直方图则把全部 R\'enyi 熵、Shannon 熵与 escort 质量函数完全闭式化。由此，fold multiplicity 不再只是单一的组合计数对象，而同时表现为阈值账本、容量相图、频谱活化律与有限热力学单元。
+以上结果把 bin-fold 口径下看似分散的多类对象压缩为同一条可审计链：尾和 admissibility 产生严格阈值阶梯，window-\(6\) 的有限窗容量因此塌缩为一条三段线性曲线并给出最优位预算的闭式基准；二阶与三阶碰撞核又分别降到最小三态线性复杂度，却仍保持彼此严格不同的 Perron 指数，从而排除了任何单一有效纤维尺度的闭包解释；与此同时，碰撞缺口的总质量虽持续增长，任何固定有限 Fourier 频率族所能捕获的份额却趋于零，这迫使一切渐近充分的频谱证书都必须无界增宽；而同一三能级直方图最终还把全部 R\'enyi 熵、Shannon 熵与 escort 质量函数完全闭式化。由此，fold multiplicity 不再只是单一的组合计数对象，而同时表现为阈值账本、容量相图、最小碰撞核、频谱活化律与有限热力学单元。
 
 \endinput
