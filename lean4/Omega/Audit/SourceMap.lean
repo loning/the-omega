@@ -1,0 +1,57 @@
+namespace Omega.Audit
+
+inductive EntryStatus where
+  | planned
+  | formalized
+  | deferred
+  | frontier
+  deriving Repr, DecidableEq, Inhabited
+
+structure SourceMapEntry where
+  label : String
+  sourcePath : String
+  moduleName : String
+  leanName : String
+  phase : Nat
+  status : EntryStatus
+  deriving Repr, Inhabited
+
+def initialEntries : List SourceMapEntry :=
+  [ { label := "engine:no11-truncate"
+      sourcePath := "sections/body/folding/subsec__folding-map.tex"
+      moduleName := "Omega.Core.No11"
+      leanName := "Omega.no11_truncate"
+      phase := 0
+      status := .formalized }
+  , { label := "engine:x-restrict"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.StableSyntax"
+      leanName := "Omega.X.restrict"
+      phase := 0
+      status := .formalized }
+  , { label := "prop:folding-stable-syntax-terminal-recursion"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.StableSyntax"
+      leanName := "Omega.stableSyntax_terminalRecursion"
+      phase := 1
+      status := .planned }
+  , { label := "def:fold-word"
+      sourcePath := "sections/body/folding/subsec__folding-map.tex"
+      moduleName := "Omega.Folding"
+      leanName := "Omega.Fold"
+      phase := 3
+      status := .planned }
+  , { label := "thm:inverse-limit-golden"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimit"
+      leanName := "Omega.inverseLimit_equiv_XInfinity"
+      phase := 4
+      status := .planned }
+  , { label := "prop:spg-decidable-clopen"
+      sourcePath := "sections/body/spg/sec__spg.tex"
+      moduleName := "Omega.SPG.Clopen"
+      leanName := "Omega.spg_decidableClopen"
+      phase := 6
+      status := .planned } ]
+
+end Omega.Audit
