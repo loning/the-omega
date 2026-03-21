@@ -47,14 +47,39 @@ Run these commands manually during audit:
   #print axioms Omega.SPG.prefixScanError_eq_sum_boundary
   #print axioms Omega.SPG.prefixScanError_eq_zero_of_prefixEvent
   #print axioms Omega.SPG.scanErrorMeasure_observableEvent_eq_zero
+  #print axioms Omega.SPG.observablePureMeasure_iff_boundaryCellsMeasure_eq_empty
+  #print axioms Omega.SPG.scanErrorMeasure_eq_zero_of_observablePure
   #print axioms Omega.SPG.scanErrorMeasure_eq_sum_boundary
   #print axioms Omega.SPG.prefixScanErrorMeasure_eq_sum_boundary
   #print axioms Omega.SPG.prefixScanErrorMeasure_eq_zero_of_prefixEvent
   #print axioms Omega.SPG.scanErrorMeasure_toMeasure_eq_scanError
+  #print axioms Omega.SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError
   #print axioms Omega.Frontier.fullGeneration_certifies
+  #print axioms Omega.Frontier.fold_idempotent
+  #print axioms Omega.Frontier.fold_fiber_nonempty
+  #print axioms Omega.Frontier.fold_fiber_unrank_sound
   #print axioms Omega.Frontier.fold_orderIndependent
+  #print axioms Omega.Frontier.rewrite_stronglyTerminating
+  #print axioms Omega.Frontier.rewrite_confluent
+  #print axioms Omega.Frontier.rewrite_locallyConfluent
+  #print axioms Omega.Frontier.rewrite_terminal_exists
   #print axioms Omega.Frontier.prefixEvent_pure_discrete
   #print axioms Omega.Frontier.prefixEvent_pure_measure
+  #print axioms Omega.Frontier.rewrite_terminal_equals_fold
+  #print axioms Omega.Frontier.inverseLimitPresentation
+  #print axioms Omega.Frontier.localDefect_as_globalStep
+  #print axioms Omega.Frontier.globalDefect_recursive
+  #print axioms Omega.Frontier.defect_telescope
+  #print axioms Omega.Frontier.prefixEvent_observablePure_measure
+  #print axioms Omega.Frontier.observablePure_iff_boundaryEmpty_measure
+  #print axioms Omega.Frontier.prefixObservablePure_iff_boundaryEmpty_measure
+  #print axioms Omega.Frontier.prefixObservablePure_zero_measure
+  #print axioms Omega.Frontier.prefixScanError_measure_discrete_bridge
+  #print axioms Omega.Frontier.observablePure_zero_measure
+  #print axioms Omega.Frontier.prefixScanError_measure_boundary_decomposition
+  #print axioms Omega.Frontier.prefixScanError_measure_boundary_mass_bound
+  #print axioms Omega.Frontier.prefixScanError_measure_boundary_card_bound
+  #print axioms Omega.Frontier.prefixEvent_pure_measure_discrete_bridge
   #print axioms Omega.Frontier.RewriteStepCertificate.value_preserved
   #print axioms Omega.Frontier.FoldCertificate.idempotent
   #print axioms Omega.Frontier.PrefixZeroScanCertificate.canonical
@@ -93,14 +118,39 @@ def coreAuditTargets : List String :=
   , "Omega.SPG.prefixScanError_eq_sum_boundary"
   , "Omega.SPG.prefixScanError_eq_zero_of_prefixEvent"
   , "Omega.SPG.scanErrorMeasure_observableEvent_eq_zero"
+  , "Omega.SPG.observablePureMeasure_iff_boundaryCellsMeasure_eq_empty"
+  , "Omega.SPG.scanErrorMeasure_eq_zero_of_observablePure"
   , "Omega.SPG.scanErrorMeasure_eq_sum_boundary"
   , "Omega.SPG.prefixScanErrorMeasure_eq_sum_boundary"
   , "Omega.SPG.prefixScanErrorMeasure_eq_zero_of_prefixEvent"
   , "Omega.SPG.scanErrorMeasure_toMeasure_eq_scanError"
+  , "Omega.SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError"
   , "Omega.Frontier.fullGeneration_certifies"
+  , "Omega.Frontier.fold_idempotent"
+  , "Omega.Frontier.fold_fiber_nonempty"
+  , "Omega.Frontier.fold_fiber_unrank_sound"
   , "Omega.Frontier.fold_orderIndependent"
+  , "Omega.Frontier.rewrite_stronglyTerminating"
+  , "Omega.Frontier.rewrite_confluent"
+  , "Omega.Frontier.rewrite_locallyConfluent"
+  , "Omega.Frontier.rewrite_terminal_exists"
   , "Omega.Frontier.prefixEvent_pure_discrete"
   , "Omega.Frontier.prefixEvent_pure_measure"
+  , "Omega.Frontier.rewrite_terminal_equals_fold"
+  , "Omega.Frontier.inverseLimitPresentation"
+  , "Omega.Frontier.localDefect_as_globalStep"
+  , "Omega.Frontier.globalDefect_recursive"
+  , "Omega.Frontier.defect_telescope"
+  , "Omega.Frontier.prefixEvent_observablePure_measure"
+  , "Omega.Frontier.observablePure_iff_boundaryEmpty_measure"
+  , "Omega.Frontier.prefixObservablePure_iff_boundaryEmpty_measure"
+  , "Omega.Frontier.prefixObservablePure_zero_measure"
+  , "Omega.Frontier.prefixScanError_measure_discrete_bridge"
+  , "Omega.Frontier.observablePure_zero_measure"
+  , "Omega.Frontier.prefixScanError_measure_boundary_decomposition"
+  , "Omega.Frontier.prefixScanError_measure_boundary_mass_bound"
+  , "Omega.Frontier.prefixScanError_measure_boundary_card_bound"
+  , "Omega.Frontier.prefixEvent_pure_measure_discrete_bridge"
   , "Omega.Frontier.RewriteStepCertificate.value_preserved"
   , "Omega.Frontier.FoldCertificate.idempotent"
   , "Omega.Frontier.PrefixZeroScanCertificate.canonical" ]

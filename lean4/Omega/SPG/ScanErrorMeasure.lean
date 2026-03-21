@@ -28,6 +28,11 @@ def scanErrorMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : ENNReal :=
   ∑ b, min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b)
 
+/-- Purity of an event relative to a finite observable: every observation cell is all-in or all-out. -/
+def ObservablePureMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : Prop :=
+  ∀ b, cellEventMeasure μ obs P b = 0 ∨ cellComplMeasure μ obs P b = 0
+
 @[simp] theorem cellEventMeasure_observableEvent_of_mem {α β : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) (b : β) (hb : b ∈ A) :
     cellEventMeasure μ obs (observableEvent obs A) b = cellMeasure μ obs b := by
@@ -63,10 +68,63 @@ theorem scanErrorMeasure_observableEvent_eq_zero {α β : Type*} [MeasurableSpac
     · simp [hb]
     · simp [hb]
 
+theorem observablePureMeasure_observableEvent {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    ObservablePureMeasure μ obs (observableEvent obs A) := by
+  intro b
+  by_cases hb : b ∈ A
+  · right
+    simp [hb]
+  · left
+    simp [hb]
+
+theorem scanErrorMeasure_eq_zero_of_observablePure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
+    (hPure : ObservablePureMeasure μ obs P) :
+    scanErrorMeasure μ obs P = 0 := by
+  classical
+  unfold scanErrorMeasure
+  refine (Fintype.sum_eq_zero_iff_of_nonneg (f := fun b =>
+    min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b)) ?_).2 ?_
+  · intro b
+    exact bot_le
+  · funext b
+    rcases hPure b with hEvent | hCompl
+    · simp [hEvent]
+    · simp [hCompl]
+
 /-- Observation cells where the event is not pure under a general measure. -/
 def boundaryCellsMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : Finset β :=
   Finset.univ.filter fun b => cellEventMeasure μ obs P b ≠ 0 ∧ cellComplMeasure μ obs P b ≠ 0
+
+theorem observablePureMeasure_iff_boundaryCellsMeasure_eq_empty
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    ObservablePureMeasure μ obs P ↔ boundaryCellsMeasure μ obs P = ∅ := by
+  classical
+  constructor
+  · intro hPure
+    ext b
+    constructor
+    · intro hb
+      have h := hPure b
+      simp only [boundaryCellsMeasure, Finset.mem_filter, Finset.mem_univ, true_and] at hb
+      rcases h with hEvent | hCompl
+      · exact False.elim (hb.1 hEvent)
+      · exact False.elim (hb.2 hCompl)
+    · intro hb
+      cases hb
+  · intro hEmpty b
+    by_cases hEvent : cellEventMeasure μ obs P b = 0
+    · exact Or.inl hEvent
+    · right
+      by_contra hCompl
+      have hb : b ∈ boundaryCellsMeasure μ obs P := by
+        simp [boundaryCellsMeasure, hEvent, hCompl]
+      have hNotMem : b ∉ boundaryCellsMeasure μ obs P := by
+        simp [hEmpty]
+      exact hNotMem hb
 
 @[simp] theorem boundaryCellsMeasure_observableEvent_eq_empty
     {α β : Type*} [MeasurableSpace α] [Fintype β]
@@ -163,6 +221,17 @@ theorem prefixScanErrorMeasure_eq_zero_of_prefixEvent [MeasurableSpace (Word n)]
     prefixScanErrorMeasure μ h (prefixEvent h A) = 0 :=
   scanErrorMeasure_observableEvent_eq_zero μ (prefixObservation h) A
 
+theorem prefixObservablePureMeasure_prefixEvent [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    ObservablePureMeasure μ (prefixObservation h) (prefixEvent h A) :=
+  observablePureMeasure_observableEvent μ (prefixObservation h) A
+
+theorem prefixScanErrorMeasure_eq_zero_of_observablePure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n))
+    (hPure : ObservablePureMeasure μ (prefixObservation h) P) :
+    prefixScanErrorMeasure μ h P = 0 :=
+  scanErrorMeasure_eq_zero_of_observablePure μ (prefixObservation h) P hPure
+
 theorem cellEventMeasure_toMeasure_eq_cellEventMass {α β : Type*} [Fintype α] [MeasurableSpace α]
     [MeasurableSingletonClass α]
     (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
@@ -186,6 +255,12 @@ theorem scanErrorMeasure_toMeasure_eq_scanError {α β : Type*} [Fintype α] [Fi
     scanErrorMeasure μ.toMeasure obs P = scanError μ obs P := by
   simp [scanErrorMeasure, scanError, cellEventMeasure_toMeasure_eq_cellEventMass,
     cellComplMeasure_toMeasure_eq_cellComplMass]
+
+theorem prefixScanErrorMeasure_toMeasure_eq_prefixScanError {m n : Nat}
+    [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ.toMeasure h P = prefixScanError μ h P := by
+  exact scanErrorMeasure_toMeasure_eq_scanError μ (prefixObservation h) P
 
 end
 

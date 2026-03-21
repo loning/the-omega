@@ -50,8 +50,11 @@ def phaseOneTargets : List String :=
   , "SPG discrete scan error layer"
   , "SPG measure scan error layer"
   , "SPG prefix scan-error specialization layer"
+  , "SPG measure purity and PMF bridge"
   , "frontier interfaces"
   , "frontier conditional wrappers"
+  , "frontier SPG measure wrappers"
+  , "frontier fold/rewrite/defect wrappers"
   , "rewrite/fold/scan-error certificates"
   , "source map bootstrap" ]
 
