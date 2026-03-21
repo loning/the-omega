@@ -9,9 +9,13 @@ import Omega.Folding.Fold
 import Omega.Folding.InverseLimit
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
+import Omega.Graph.LabeledGraph
+import Omega.Graph.Sofic
 import Omega.SPG.Cylinder
 import Omega.SPG.PrefixMetric
 import Omega.SPG.Clopen
+import Omega.SPG.ScanErrorDiscrete
+import Omega.SPG.ScanErrorMeasure
 import Omega.Frontier.Assumptions
 import Omega.Frontier.Conditional
 import Omega.Frontier.Conjectures
