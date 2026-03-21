@@ -20,6 +20,10 @@ def phaseZeroArtifacts : List String :=
   , "Omega/SPG/Cylinder.lean"
   , "Omega/SPG/PrefixMetric.lean"
   , "Omega/SPG/Clopen.lean"
+  , "Omega/Frontier/Assumptions.lean"
+  , "Omega/Frontier/Conditional.lean"
+  , "Omega/Frontier/Conjectures.lean"
+  , "Omega/Frontier/Certificates.lean"
   , "Omega/Audit/SourceMap.lean" ]
 
 def phaseOneTargets : List String :=
@@ -33,6 +37,7 @@ def phaseOneTargets : List String :=
   , "rewrite kernel"
   , "finite defect telescope"
   , "SPG prefix cylinder layer"
+  , "frontier interfaces"
   , "source map bootstrap" ]
 
 end Omega.Audit

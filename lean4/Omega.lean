@@ -12,6 +12,10 @@ import Omega.Folding.Defect
 import Omega.SPG.Cylinder
 import Omega.SPG.PrefixMetric
 import Omega.SPG.Clopen
+import Omega.Frontier.Assumptions
+import Omega.Frontier.Conditional
+import Omega.Frontier.Conjectures
+import Omega.Frontier.Certificates
 import Omega.Audit.SourceMap
 import Omega.Audit.Inventory
 import Omega.Audit.NoAxiom
