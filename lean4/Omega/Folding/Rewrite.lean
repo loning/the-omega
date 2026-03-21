@@ -454,6 +454,18 @@ def StableCfg (a : DigitCfg) : Prop :=
 def Irreducible (a : DigitCfg) : Prop :=
   ∀ ⦃b : DigitCfg⦄, ¬ Step a b
 
+/-- Support bound used to compare finite normal forms inside a fixed window. -/
+def SupportedBelow (a : DigitCfg) (m : Nat) : Prop :=
+  ∀ k : Nat, m ≤ k → a k = 0
+
+/-- Read a stable binary word off a `{0,1}`-valued configuration supported below `m`. -/
+def wordOfStableCfg (a : DigitCfg) (m : Nat) : Word m :=
+  fun i => decide (0 < a i.1)
+
+@[simp] theorem get_wordOfStableCfg (a : DigitCfg) {i : Nat} (h : i < m) :
+    get (wordOfStableCfg a m) i = decide (0 < a i) := by
+  simp [wordOfStableCfg, get, h]
+
 theorem stableCfg_iota (x : X m) : StableCfg (iota x.1) := by
   refine ⟨?_, ?_⟩
   · intro k
@@ -466,6 +478,51 @@ theorem stableCfg_iota (x : X m) : StableCfg (iota x.1) := by
     have hk : get x.1 k = true := (iota_pos_iff_get_true x.1).1 hAdj.1 |>.2
     have hk1 : get x.1 (k + 1) = true := (iota_pos_iff_get_true x.1).1 hAdj.2 |>.2
     exact x.2 k hk hk1
+
+theorem supportedBelow_iota (w : Word m) : SupportedBelow (iota w) m := by
+  intro k hk
+  exact iota_apply_ge w hk
+
+theorem no11_wordOfStableCfg {a : DigitCfg} (ha : StableCfg a) (m : Nat) :
+    No11 (wordOfStableCfg a m) := by
+  intro i hi hi1
+  have h0 : 0 < a i := by
+    have hiLt : i < m := lt_of_get_eq_true hi
+    rw [get_wordOfStableCfg a hiLt] at hi
+    cases hDec : decide (0 < a i) with
+    | false => simp [hDec] at hi
+    | true =>
+        simpa using hDec
+  have h1 : 0 < a (i + 1) := by
+    have hi1Lt : i + 1 < m := lt_of_get_eq_true_succ hi1
+    rw [get_wordOfStableCfg a hi1Lt] at hi1
+    cases hDec : decide (0 < a (i + 1)) with
+    | false => simp [hDec] at hi1
+    | true =>
+        simpa using hDec
+  exact (ha.2 i) ⟨h0, h1⟩
+
+theorem iota_wordOfStableCfg_eq {a : DigitCfg} (ha : StableCfg a) (hSup : SupportedBelow a m) :
+    iota (wordOfStableCfg a m) = a := by
+  ext k
+  by_cases hk : k < m
+  · rw [iota_apply_lt (wordOfStableCfg a m) hk, get_wordOfStableCfg a hk]
+    by_cases hPos : 0 < a k
+    · have hLe : a k ≤ 1 := ha.1 k
+      have hEq : a k = 1 := by omega
+      simp [hEq]
+    · have hEq : a k = 0 := by omega
+      simp [hEq]
+  · have hk' : m ≤ k := Nat.not_lt.mp hk
+    rw [iota_apply_ge (wordOfStableCfg a m) hk', hSup k hk']
+
+/-- The stable point represented by a supported `{0,1}` configuration. -/
+def stablePoint {a : DigitCfg} (ha : StableCfg a) (m : Nat) : X m :=
+  ⟨wordOfStableCfg a m, no11_wordOfStableCfg ha m⟩
+
+@[simp] theorem stablePoint_iota_eq {a : DigitCfg} (ha : StableCfg a) (hSup : SupportedBelow a m) :
+    iota (stablePoint ha m).1 = a :=
+  iota_wordOfStableCfg_eq ha hSup
 
 theorem irreducible_of_stableCfg {a : DigitCfg} (ha : StableCfg a) : Irreducible a := by
   intro b hStep
@@ -573,6 +630,29 @@ theorem irreducible_iota_normalPrefix (a : DigitCfg) (m : Nat) :
 
 @[simp] theorem irreducible_iota_Fold (w : Word m) : Irreducible (iota (Fold w).1) :=
   irreducible_iota_of_stable (Fold w)
+
+theorem irreducible_supported_eq_iota_normalPrefix {a : DigitCfg}
+    (hIrr : Irreducible a) (hSup : SupportedBelow a m) :
+    a = iota (normalPrefix a m).1 := by
+  let x : X m := stablePoint ((irreducible_iff_stableCfg).1 hIrr) m
+  have hIota : iota x.1 = a := stablePoint_iota_eq ((irreducible_iff_stableCfg).1 hIrr) hSup
+  have hNorm : normalPrefix a m = x := by
+    calc
+      normalPrefix a m = normalPrefix (iota x.1) m := by simp [hIota]
+      _ = Fold x.1 := normalPrefix_iota_eq_Fold x.1
+      _ = x := Fold_stable x
+  calc
+    a = iota x.1 := hIota.symm
+    _ = iota (normalPrefix a m).1 := by rw [hNorm]
+
+theorem irreducible_eq_of_normalPrefix_eq {a b : DigitCfg}
+    (hIrrA : Irreducible a) (hIrrB : Irreducible b)
+    (hSupA : SupportedBelow a m) (hSupB : SupportedBelow b m)
+    (hNorm : normalPrefix a m = normalPrefix b m) :
+    a = b := by
+  rw [irreducible_supported_eq_iota_normalPrefix hIrrA hSupA,
+    irreducible_supported_eq_iota_normalPrefix hIrrB hSupB]
+  simp [hNorm]
 
 end Rewrite
 

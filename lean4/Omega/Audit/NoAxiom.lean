@@ -28,6 +28,8 @@ Run these commands manually during audit:
   #print axioms Omega.X.inverseLimitEquiv
   #print axioms Omega.Rewrite.step_value
   #print axioms Omega.Rewrite.step_stronglyTerminating
+  #print axioms Omega.Rewrite.irreducible_supported_eq_iota_normalPrefix
+  #print axioms Omega.Rewrite.irreducible_eq_of_normalPrefix_eq
   #print axioms Omega.globalDefect_eq_defectChain
   #print axioms Omega.Graph.acceptsWord_goldenMean_iff_no11
   #print axioms Omega.SPG.spg_decidableClopen
@@ -56,6 +58,8 @@ def coreAuditTargets : List String :=
   , "Omega.X.inverseLimitEquiv"
   , "Omega.Rewrite.step_value"
   , "Omega.Rewrite.step_stronglyTerminating"
+  , "Omega.Rewrite.irreducible_supported_eq_iota_normalPrefix"
+  , "Omega.Rewrite.irreducible_eq_of_normalPrefix_eq"
   , "Omega.globalDefect_eq_defectChain"
   , "Omega.Graph.acceptsWord_goldenMean_iff_no11"
   , "Omega.SPG.spg_decidableClopen"
