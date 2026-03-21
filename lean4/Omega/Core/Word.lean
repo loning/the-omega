@@ -60,7 +60,7 @@ theorem lt_of_get_eq_true_succ {w : Word m} {i : Nat} (h : get w (i + 1) = true)
   simp [snoc]
 
 @[simp] theorem last_snoc (w : Word m) (b : Bool) : last (snoc w b) = b := by
-  simpa [last] using snoc_last w b
+  simp [last, snoc]
 
 @[simp] theorem snoc_get_eq (w : Word m) (b : Bool) {i : Nat} (h : i < m) :
     get (snoc w b) i = get w i := by
