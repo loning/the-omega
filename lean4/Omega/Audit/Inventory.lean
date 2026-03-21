@@ -42,6 +42,7 @@ def phaseOneTargets : List String :=
   , "inverse-limit bridge"
   , "rewrite kernel"
   , "rewrite strong termination"
+  , "rewrite confluence via canonical terminal forms"
   , "finite defect telescope"
   , "golden-mean sofic presentation"
   , "SPG prefix cylinder layer"

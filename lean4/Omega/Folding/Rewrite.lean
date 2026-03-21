@@ -459,6 +459,10 @@ def Irreducible (a : DigitCfg) : Prop :=
 def SupportedBelow (a : DigitCfg) (m : Nat) : Prop :=
   ∀ k : Nat, m ≤ k → a k = 0
 
+/-- Canonical finite support bound of a digit configuration. -/
+def supportBound (a : DigitCfg) : Nat :=
+  a.support.sup id + 1
+
 /-- Read a stable binary word off a `{0,1}`-valued configuration supported below `m`. -/
 def wordOfStableCfg (a : DigitCfg) (m : Nat) : Word m :=
   fun i => decide (0 < a i.1)
@@ -466,6 +470,11 @@ def wordOfStableCfg (a : DigitCfg) (m : Nat) : Word m :=
 @[simp] theorem get_wordOfStableCfg (a : DigitCfg) {i : Nat} (h : i < m) :
     get (wordOfStableCfg a m) i = decide (0 < a i) := by
   simp [wordOfStableCfg, get, h]
+
+theorem supportedBelow_mono {a : DigitCfg} {m n : Nat}
+    (h : SupportedBelow a m) (hmn : m ≤ n) : SupportedBelow a n := by
+  intro k hk
+  exact h k (le_trans hmn hk)
 
 theorem stableCfg_iota (x : X m) : StableCfg (iota x.1) := by
   refine ⟨?_, ?_⟩
@@ -483,6 +492,16 @@ theorem stableCfg_iota (x : X m) : StableCfg (iota x.1) := by
 theorem supportedBelow_iota (w : Word m) : SupportedBelow (iota w) m := by
   intro k hk
   exact iota_apply_ge w hk
+
+theorem supportedBelow_supportBound (a : DigitCfg) : SupportedBelow a (supportBound a) := by
+  intro k hk
+  by_contra hk0
+  have hMem : k ∈ a.support := by
+    exact Finsupp.mem_support_iff.mpr hk0
+  have hLe : k ≤ a.support.sup id := by
+    exact Finset.le_sup (f := id) hMem
+  unfold supportBound at hk
+  omega
 
 theorem no11_wordOfStableCfg {a : DigitCfg} (ha : StableCfg a) (m : Nat) :
     No11 (wordOfStableCfg a m) := by
@@ -690,6 +709,60 @@ theorem irreducible_terminal_eq_fold {w : Word m} {b : DigitCfg}
       irreducible_reflTransGen_eq_iota_normalPrefix hab hIrr hSup
     _ = iota (Fold w).1 := by
       rw [normalPrefix_iota_eq_Fold]
+
+theorem reflTransGen_value {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
+    value b = value a := by
+  induction h with
+  | refl =>
+      rfl
+  | tail hab hStep ih =>
+      simpa [step_value hStep] using ih
+
+theorem irreducible_eq_of_value_eq {a b : DigitCfg}
+    (hIrrA : Irreducible a) (hIrrB : Irreducible b) (hVal : value a = value b) :
+    a = b := by
+  let m := max (supportBound a) (supportBound b)
+  have hSupA : SupportedBelow a m :=
+    supportedBelow_mono (supportedBelow_supportBound a) (Nat.le_max_left _ _)
+  have hSupB : SupportedBelow b m :=
+    supportedBelow_mono (supportedBelow_supportBound b) (Nat.le_max_right _ _)
+  have hNorm : normalPrefix a m = normalPrefix b m := by
+    simp [normalPrefix, hVal]
+  exact irreducible_eq_of_normalPrefix_eq hIrrA hIrrB hSupA hSupB hNorm
+
+theorem irreducible_terminal_unique_unbounded {a b c : DigitCfg}
+    (hab : Relation.ReflTransGen Step a b) (hac : Relation.ReflTransGen Step a c)
+    (hIrrB : Irreducible b) (hIrrC : Irreducible c) :
+    b = c := by
+  apply irreducible_eq_of_value_eq hIrrB hIrrC
+  calc
+    value b = value a := reflTransGen_value hab
+    _ = value c := (reflTransGen_value hac).symm
+
+theorem exists_irreducible_descendant (a : DigitCfg) :
+    ∃ b, Relation.ReflTransGen Step a b ∧ Irreducible b := by
+  let S : Set DigitCfg := {b | Relation.ReflTransGen Step a b}
+  have hne : S.Nonempty := ⟨a, Relation.ReflTransGen.refl⟩
+  obtain ⟨b, hbS, hmin⟩ := step_wellFounded.has_min S hne
+  refine ⟨b, hbS, ?_⟩
+  intro c hStep
+  have hcS : S c := Relation.ReflTransGen.tail hbS hStep
+  exact hmin c hcS hStep
+
+theorem step_confluent {a b c : DigitCfg}
+    (hab : Relation.ReflTransGen Step a b) (hac : Relation.ReflTransGen Step a c) :
+    Relation.Join (Relation.ReflTransGen Step) b c := by
+  obtain ⟨nb, hbn, hIrrB⟩ := exists_irreducible_descendant b
+  obtain ⟨nc, hcn, hIrrC⟩ := exists_irreducible_descendant c
+  have habn : Relation.ReflTransGen Step a nb := Relation.ReflTransGen.trans hab hbn
+  have hacn : Relation.ReflTransGen Step a nc := Relation.ReflTransGen.trans hac hcn
+  have hEq : nb = nc := irreducible_terminal_unique_unbounded habn hacn hIrrB hIrrC
+  refine ⟨nb, hbn, ?_⟩
+  simpa [hEq] using hcn
+
+theorem step_locallyConfluent {a b c : DigitCfg} (hab : Step a b) (hac : Step a c) :
+    Relation.Join (Relation.ReflTransGen Step) b c :=
+  step_confluent (Relation.ReflTransGen.single hab) (Relation.ReflTransGen.single hac)
 
 end Rewrite
 
