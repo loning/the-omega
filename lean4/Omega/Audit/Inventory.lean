@@ -57,9 +57,11 @@ def phaseOneTargets : List String :=
   , "frontier SPG measure wrappers"
   , "frontier observable scan-error wrappers"
   , "frontier fold/rewrite/defect wrappers"
+  , "frontier fold fiber normalization wrappers"
   , "frontier canonical certificate wrappers"
   , "frontier graph-language wrappers"
   , "frontier boundary-empty zero-error wrappers"
+  , "frontier measure zero-iff wrappers"
   , "rewrite/fold/scan-error certificates"
   , "source map bootstrap" ]
 

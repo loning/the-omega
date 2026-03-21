@@ -1,769 +1,422 @@
-# Lean4 无公理形式化实施方案（重构版）
+# Lean4 无公理形式化实施方案（2026-03-22 状态重建版）
 
 ## 1. 文档目的
 
-本文档给出
+本文档是
 `docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence`
-向 `lean4/` 迁移的最新实施方案。
+向 `lean4/` 迁移的现行执行计划。
 
-本次重构的核心变化只有一条：
+它不再描述“准备怎么开始”，而是描述：
 
-- 不再把 “重证 mathlib 已有基础定理” 当成项目目标
+- 当前已经形式化到哪里
+- 哪些结果已经稳定纳入 `lean4/`
+- 哪些结果仍未完成
+- 从现在起最合理的继续推进顺序
 
-项目目标不是机械翻译整篇论文，而是：
+本版文档以当前代码库真实状态为准，而不是早期骨架状态。
 
-- 复用 Lean4 + mathlib 的现成基础
-- 只形式化论文专用的离散核心对象与专用交换图
-- 保持项目无项目自定义公理
-- 为后续条件性结果、证书验证器和实验接口提供稳定基座
+## 2. 核心工程约束
 
-## 2. “无公理”的工程定义
+### 2.1 “无公理”的工程定义
 
-本项目中的“无公理”定义为：
+本项目中的“无公理”含义保持不变：
 
 - 不新增 `axiom`
-- 不新增用未证命题充当事实的 `constant`
-- 不把猜想、经验规律、实验结论写成无条件 `theorem`
-- 核心层定理可通过 `#print axioms` 审计，不依赖项目自定义事实
+- 不新增把未证命题伪装成事实的 `constant`
+- 不把猜想、实验规律、条件性结论写成无条件 `theorem`
+- 核心层结果可通过 `#print axioms` 审计
 
 允许使用：
 
 - Lean4 内核逻辑
 - mathlib 的既有定义、定理、类型类和战术
-- 条件性定理，即把假设显式写入参数
+- 条件性定理，即把假设显式放入参数
 
-不承诺：
+### 2.2 工作方式约束
 
-- 完全脱离 mathlib
-- 第一阶段覆盖概率、算子代数、Langlands、GRH 等高层内容
+从当前阶段开始，项目遵守以下推进规则：
 
-## 3. 当前工程基线
+- 只继续形式化论文中“能稳定收敛”的部分
+- 一旦某条线短时间内不能形成可编译定理，就退回到上一个全绿状态
+- 不把半成品证明留在主分支
+- 优先做“现有基线的自然延伸”，避免过早引入重型远层理论
 
-截至当前，`lean4/` 已经具备以下基线：
+## 3. 当前工程快照
 
-- `Lake + mathlib` 工程已初始化并可编译
-- 固定长度位词 `Word`
-- `No11`
-- 稳定语法子类型 `X m`
-- `restrict` / `appendFalse` / `appendTrue`
-- 基础权重函数和 `stableValue`
-- `Audit/SourceMap`、`Audit/Inventory`、`Audit/NoAxiom`
+截至本版文档生成时，`lean4/` 已达到以下状态：
 
-这意味着：
+- `Lake + mathlib` 工程稳定
+- `Omega.lean` 已接入所有当前稳定模块
+- `Audit/SourceMap.lean`、`Audit/Inventory.lean`、`Audit/NoAxiom.lean` 已形成真实索引
+- `cd lean4 && lake build` 可全量通过
 
-- 第 0 阶段已完成
-- 第 1 阶段已完成前半
-- 后续文档应聚焦于“如何避免重复形式化”
+当前工程已不再是“初始化阶段”，而是一个已经具备离散内核、重写系统、逆极限、缺陷代数、SPG 组合与测度层、显式 sofic 表示、以及前沿包装/证书接口的项目。
 
-## 4. 现成可复用清单
+## 4. 已完成工作总览
 
-这一节是新版文档的核心。凡在这里列出的对象，默认不从零重证，只做桥接、封装或适配。
+### 4.1 阶段状态总表
 
-### 4.1 可直接复用的 mathlib 成果
+| 阶段 | 内容 | 当前状态 |
+|---|---|---|
+| 0 | Lake / mathlib / 审计基线 | 已完成 |
+| 1 | `Word` / `No11` / `X m` / 计数递推 | 已完成 |
+| 2 | `Weight` / `Value` / Zeckendorf 桥接 | 已完成 |
+| 3 | `Rewrite` / `Fold` / fiber / rank-unrank | 已完成 |
+| 4 | inverse limit / defect / telescope | 已完成 |
+| 5 | cylinder / prefix metric / clopen | 已完成 |
+| 6 | 离散 scan error / 测度 scan error / prefix specialization | 已完成当前范围 |
+| 7 | 显式 golden-mean sofic 表示 | 已完成当前范围 |
+| 8 | assumptions / conditional / conjectures / certificates | 已完成当前范围 |
 
-#### A. Fibonacci 基础
+“已完成当前范围”表示：本阶段在实施文档中承诺的直接 Lean 可落地部分已经有稳定实现，但论文更远层的扩写仍可继续。
 
-mathlib 已提供：
+### 4.2 已完成模块清单
 
-- `Nat.fib`
-- Fibonacci 递推
-- 单调性
-- 常用恒等式
-
-来源：
-
-- `Mathlib/Data/Nat/Fib/Basic.lean`
-
-工程决策：
-
-- `Omega/Core/Fib.lean` 不再维护自制 Fibonacci 理论
-- 该模块只保留“论文编号约定 <-> `Nat.fib`”的桥接
-
-#### B. Zeckendorf 定理本体
-
-mathlib 已提供：
-
-- `List.IsZeckendorfRep`
-- `Nat.greatestFib`
-- `Nat.zeckendorf`
-- `Nat.zeckendorfEquiv`
-
-来源：
-
-- `Mathlib/Data/Nat/Fib/Zeckendorf.lean`
-
-工程决策：
-
-- 不再重证 “每个自然数有唯一 Zeckendorf 表示”
-- `Omega/Folding/Zeckendorf.lean` 只负责论文配置与 `Nat.zeckendorfEquiv` 的桥接
-
-#### C. 重写系统通用基础
-
-mathlib 已提供：
-
-- `Relation.TransGen`
-- `Relation.ReflTransGen`
-- `Relation.Join`
-- `Relation.church_rosser`
-
-来源：
-
-- `Mathlib/Logic/Relation.lean`
-
-工程决策：
-
-- 不再自造关系闭包理论
-- 我们只需为论文的单步重写 `Step` 证明局部条件和良基性
-
-#### D. clopen、零维、超度量 uniformity
-
-mathlib 已提供：
-
-- `IsClopen`
-- `Clopens`
-- ultrametric uniformity 的基础接口
-- clopen basis 结果
-
-来源：
-
-- `Mathlib/Topology/Defs/Basic.lean`
-- `Mathlib/Topology/Sets/Closeds.lean`
-- `Mathlib/Topology/UniformSpace/Ultra/Basic.lean`
-
-工程决策：
-
-- `SPG/Clopen.lean` 不再自己定义一套 clopen 抽象
-- 只把论文中的柱集和前缀球嵌入现有拓扑 API
-
-#### E. Cantor 空间基础
-
-mathlib 已提供：
-
-- Cantor set
-- Cantor set 与 `ℕ -> Bool` 的等价
-- Cantor 空间与其可数乘积的同胚
-
-来源：
-
-- `Mathlib/Topology/Instances/CantorSet.lean`
-
-工程决策：
-
-- 无穷二进制流空间的标准拓扑模型可直接复用
-- 我们只需证明论文的 `X_infty` 与该标准模型之间的专用对应
-
-#### F. 逆极限和兼容族的现成模板
-
-mathlib 已提供：
-
-- `DiscreteQuotient.eq_of_forall_proj_eq`
-- `DiscreteQuotient.exists_of_compat`
-- profinite 作为有限离散对象极限的现成构造
-
-来源：
-
-- `Mathlib/Topology/DiscreteQuotient.lean`
-- `Mathlib/Topology/Category/Profinite/AsLimit.lean`
-
-工程决策：
-
-- 不需要自己从零铺设“兼容族存在唯一元”的一般拓扑理论
-- 但论文里具体的 `X_infty = lim X_m` 仍需我们自己构造并证明
-
-#### G. 可测空间、乘积测度、条件概率基础
-
-mathlib 已提供：
-
-- `MeasurableSpace` 的 `Pi` / `Prod` / `Quotient` 构造
-- 乘积测度
-- 有限乘积积分
-- 条件概率和相关概率接口
-
-来源：
-
-- `Mathlib/MeasureTheory/MeasurableSpace/Constructions.lean`
-- `Mathlib/MeasureTheory/Measure/Prod.lean`
-- `Mathlib/MeasureTheory/Integral/Pi.lean`
-- `Mathlib/Dynamics/Ergodic/Extreme.lean`
-
-工程决策：
-
-- `SPG` 的测度层不从零建设 measure API
-- 后续只做论文事件、柱集和误差表达的接入
-
-### 4.2 只有基础设施可复用，不代表论文结果现成
-
-以下方向虽然 mathlib 有基础件，但论文结论本身并不现成：
-
-- continued fractions 的一般工具
-- category-theoretic limits
-- CStar 基础类型类
-- profinite / light profinite 的一般范畴结果
-
-工程决策：
-
-- 只在需要时局部接入
-- 不把这些大基础当作当前关键路径
-
-### 4.3 当前未发现现成替代的部分
-
-以下内容默认仍需项目自行形式化：
-
-- `X_m` 的论文专用编码
-- `No11` 与按位操作的专用引理
-- `|X_m| = Fibonacci` 针对当前编码的计数桥接
-- `Fold_m`
-- 论文专用局部 rewrite 规则
-- 值保持、终止、局部合流、合流、幂等、满射
-- 折叠感知 restriction 和相关交换图
-- 论文定义的局部缺陷 `kappa`、全局缺陷 `D`
-- 离散 Stokes 型望远镜恒等式
-- SPG 的柱集、前缀超度量、扫描误差分解
-- `Phi_m`、sofic 图像、右 Fischer cover
-- POM、GRH/Chebotarev、CMV、Peter-Weyl、Langlands 等前沿层
-
-## 5. 总体工程原则
-
-### 5.1 复用优先
-
-先问四个问题，再写任何新定义：
-
-1. mathlib 是否已有同义对象？
-2. 如果已有，论文是否只需要一个桥接层？
-3. 如果已有通用定理，论文是否只需验证专用前提？
-4. 如果只是命名不同，是否可以通过 wrapper 解决？
-
-只有四问之后仍无现成替代，才新增本项目定义。
-
-### 5.2 先关系，后函数
-
-对 `Fold_m` 的推进顺序固定为：
-
-1. 定义配置空间与值函数
-2. 定义单步重写 `Step`
-3. 证明值保持
-4. 证明终止和局部合流
-5. 借助现成闭包理论得到规范形唯一
-6. 再定义 `Fold_m`
-7. 再证明幂等、满射和交换图
-
-### 5.3 先有限，再无穷
-
-推进顺序固定为：
-
-- 先 `X m`
-- 再 `restrict`
-- 再兼容族
-- 最后 `X_infty`
-
-不直接从无穷流空间开工。
-
-### 5.4 先组合，再测度
-
-`SPG` 拆成三层：
-
-- 组合层：柱集、前缀决定性、前缀球、clopen
-- 离散误差层：有限分布上的误差公式
-- 测度层：一般乘积测度、条件概率、边界柱估计
-
-### 5.5 先验证器，再生成器
-
-实验相关对象拆分为：
-
-- Lean 中的证书验证器
-- 外部脚本中的证书生成器
-
-Lean 只证明验证器 sound，不负责黑箱搜索。
-
-## 6. 目标工程结构
-
-建议使用如下结构：
+当前稳定模块为：
 
 ```text
-lean4/
-  lakefile.lean
-  lean-toolchain
-  Omega.lean
-  IMPLEMENTATION_PLAN.md
-  Omega/
-    Core/
-      Fib.lean            -- 只做 Nat.fib 编号桥接
-      Word.lean
-      No11.lean
-      Prefix.lean
-      XOR.lean
-    Folding/
-      StableSyntax.lean
-      Weight.lean
-      Value.lean
-      Zeckendorf.lean     -- 只做桥接，不重证 theorem 本体
-      Rewrite.lean
-      Fold.lean
-      Fiber.lean
-      InverseLimit.lean
-      Defect.lean
-    SPG/
-      Cylinder.lean
-      PrefixMetric.lean
-      Clopen.lean
-      ScanErrorDiscrete.lean
-      ScanErrorMeasure.lean
-    Graph/
-      LabeledGraph.lean
-      Sofic.lean
-    Frontier/
-      Assumptions.lean
-      Conditional.lean
-      Conjectures.lean
-      Certificates.lean
-    Audit/
-      NoAxiom.lean
-      Inventory.lean
-      SourceMap.lean
+Omega/Core/Fib.lean
+Omega/Core/Word.lean
+Omega/Core/No11.lean
+Omega/Folding/StableSyntax.lean
+Omega/Folding/Weight.lean
+Omega/Folding/Value.lean
+Omega/Folding/Zeckendorf.lean
+Omega/Folding/Fold.lean
+Omega/Folding/Fiber.lean
+Omega/Folding/InverseLimit.lean
+Omega/Folding/Rewrite.lean
+Omega/Folding/Defect.lean
+Omega/Graph/LabeledGraph.lean
+Omega/Graph/Sofic.lean
+Omega/SPG/Cylinder.lean
+Omega/SPG/PrefixMetric.lean
+Omega/SPG/Clopen.lean
+Omega/SPG/ScanErrorDiscrete.lean
+Omega/SPG/ScanErrorMeasure.lean
+Omega/Frontier/Assumptions.lean
+Omega/Frontier/Conditional.lean
+Omega/Frontier/Conjectures.lean
+Omega/Frontier/Certificates.lean
+Omega/Audit/SourceMap.lean
+Omega/Audit/Inventory.lean
+Omega/Audit/NoAxiom.lean
 ```
 
-## 7. 模块职责
+### 4.3 已完成结果族
 
-### 7.1 `Omega.Core`
+#### A. 有限稳定语法核心
 
-职责：
+已完成：
 
-- 固定长度位词
-- 截断、拼接、末位、前缀
+- 固定长度位词 `Word`
+- 截断、拼接、末位与访问
 - `No11`
-- 论文编号与 `Nat.fib` 的桥接
+- 稳定语法空间 `X m`
+- `restrict` / `appendFalse` / `appendTrue`
+- `|X m| = Fibonacci` 的当前编码桥接
 
-禁止：
+#### B. Zeckendorf 与值函数
 
-- 在 `Core` 中重证 Fibonacci 主体理论
-- 在 `Core` 中引入拓扑和测度层
+已完成：
 
-### 7.2 `Omega.Folding`
+- `weight`
+- `stableValue`
+- 稳定词到 `List.IsZeckendorfRep` 的桥接
+- `Nat.zeckendorf` 回到稳定词的构造
+- 与 mathlib `Nat.zeckendorfEquiv` 的项目级桥接
 
-职责：
+#### C. `Fold`、重写系统与正规形主线
 
-- `X m`
-- Fibonacci 加权值
-- 与 `Nat.zeckendorfEquiv` 的桥接
-- 专用重写系统
-- `Fold_m`
-- 纤维、rank/unrank
-- 具体逆系统
-- 缺陷与望远镜恒等式
+已完成：
 
-### 7.3 `Omega.SPG`
+- `DigitCfg`
+- `Step`
+- 值保持
+- 强终止
+- 局部合流
+- 全局合流
+- 终端不可约存在
+- 终端不可约唯一
+- `Fold` 与终端正规形的桥接
+- `Fold` 幂等
+- `Fold` 满射
 
-职责：
+当前 `Rewrite` 线已经不只是“局部规则”，而是具备正式可编译的终止与合流闭环。
 
-- 柱集
-- 前缀球
-- 前缀超度量
+#### D. fiber 与 rank/unrank
+
+已完成：
+
+- `X.fiber`
+- `fiber_nonempty`
+- `choosePreimage`
+- `FiberElem`
+- `rank` / `unrank`
+- `unrankWord`
+- `Fold_unrankWord`
+- `rankOfFoldEq`
+
+也就是说，有限 fiber 不仅存在，而且已经具备有限枚举接口。
+
+#### E. inverse limit 与 defect
+
+已完成：
+
+- 具体兼容族 `CompatibleFamily`
+- `XInfinity`
+- `inverseLimitEquiv`
+- `localDefect`
+- `globalDefect`
+- defect 递归关系
+- 离散 telescope / Stokes 型恒等式
+
+#### F. `SPG` 组合层
+
+已完成：
+
+- cylinder
+- prefix determined events
+- prefix ultrametric
+- ball / cylinder correspondence
 - clopen 表达
-- 有限前缀决定性
-- 扫描误差的离散与测度版本
 
-### 7.4 `Omega.Graph`
+#### G. `SPG` 离散与测度扫描误差
 
-职责：
+已完成：
 
-- 为 `Phi_m`、sofic 图像和自动机接口做准备
+- 离散 `scanError`
+- 边界分解
+- 边界质量/边界基数上界
+- prefix observable 专门化
+- 一般测度版 `scanErrorMeasure`
+- `ObservablePureMeasure`
+- “纯性 ↔ 边界为空”
+- “纯性 ⇒ 扫描误差为零”
+- PMF 与 measure 的桥接
 
-### 7.5 `Omega.Frontier`
+#### H. graph / sofic
 
-职责：
+已完成：
 
-- 条件性结果
-- 猜想声明
-- 证书接口
+- 显式标记图接口
+- two-state golden-mean graph
+- stable language 与该显式 sofic 表示的双向对应
 
-规则：
+#### I. frontier / certificates
 
-- 允许 `theorem ... (h : Assumption) : ...`
-- 不允许把假设藏成全局事实
+已完成：
 
-### 7.6 `Omega.Audit`
+- assumptions 层骨架
+- conditional theorem 包装层
+- conjectures 作为 `Prop` 接口
+- defect / rewrite / fold / scan-error 证书验证器
+- 多条直接贴论文语义的 conditional wrappers
 
-职责：
+## 5. 现成可复用与已复用边界
 
-- `#print axioms` 审计
-- theorem inventory
-- 论文 label 到 Lean 名称的稳定映射
+以下内容已经确认复用，不再从零重证：
 
-## 8. 数据表示与桥接策略
+- `Nat.fib`
+- `Nat.zeckendorf`
+- `Nat.zeckendorfEquiv`
+- `List.IsZeckendorfRep`
+- `Relation.ReflTransGen`
+- `Relation.Join`
+- `Relation.church_rosser` 相关通用 machinery
+- `IsClopen`
+- Cantor 空间与超度量基础
+- `MeasurableSpace` 与 `Measure` 基础
+- `PMF.toMeasure`
 
-### 8.1 固定位词
+因此，后续继续工作时，原则保持不变：
 
-统一表示为：
+- mathlib 已有 theorem 本体，只做桥接和专用包装
+- 论文专用对象与专用交换图，继续由项目自行证明
 
-```lean
-abbrev Word (m : Nat) := Fin m -> Bool
-```
+## 6. 当前剩余工作
+
+### 6.1 当前最值得继续推进的部分
+
+从当前工程状态看，下一阶段最自然的增量不再是基础离散内核，而是：
+
+1. 更强的 `SPG` 测度表达
+2. 更多贴论文叙述的 `Frontier/Conditional` 定理
+3. 在不引入重型远层理论的前提下，向论文后半段继续推进
+
+### 6.2 仍未完成的主块
+
+以下内容仍然没有稳定落地：
+
+#### A. 更强的 `SPG` 条件期望 / Tanaka-Stokes 叙述
+
+当前已有：
+
+- boundary decomposition
+- purity
+- zero-error criteria
+- PMF/measure bridge
+
+仍缺：
+
+- 更接近论文后段的条件期望型表达
+- 若论文需要的 martingale / Tanaka-Stokes 形式
+- 更强的测度级结构化重述
+
+#### B. 更远层的 frontier 条件定理
+
+当前 `Frontier/Conditional.lean` 已经能包装大量核心结果，但仍偏“当前基线的直接重述”。
+
+仍缺：
+
+- 更靠近论文后半段组织方式的条件定理簇
+- 更系统的 assumptions-to-results 映射
+- 更明确的“哪一组假设推出哪一层结果”的编排
+
+#### C. 论文远层主题
+
+以下方向仍然基本未开始，且默认应视为下一阶段探索对象，而不是当前已经完成的内容：
+
+- `POM`
+- `CMV`
+- `Peter-Weyl`
+- `Langlands`
+- 任何依赖明显更重分析/代数/表示论 machinery 的章节
+
+这些部分不应在没有稳定短路径的情况下强行进入主线。
+
+## 7. 当前推荐推进顺序
+
+从现在起，推荐顺序改为：
+
+1. 继续扩 `Frontier/Conditional.lean`
+2. 继续扩 `SPG/ScanErrorMeasure.lean`
+3. 继续补能直接贴论文措辞的 certificates wrappers
+4. 只在前三项没有短路径时，才进入更远层章节
 
 理由：
 
-- `truncate` 自然
-- 局部模式判断直接
-- 有利于 `get`、`snoc`、前缀操作
+- 当前内核已经足够稳定
+- 当前最容易高产的是“用现有内核重述论文结果”
+- 远层主题一旦进入，失败风险和维护成本都明显更高
 
-### 8.2 稳定语法
+## 8. 当前阶段的模块职责
 
-使用子类型：
+### 8.1 `Omega.Folding`
 
-```lean
-def No11 (w : Word m) : Prop := ...
-def X (m : Nat) := { w : Word m // No11 w }
-```
+当前职责已经从“建基础”升级为：
 
-### 8.3 Fibonacci 编号
+- 维护离散规范形主线
+- 提供 `Fold` / `Rewrite` / `Fiber` / `Defect` 的稳定接口
+- 为 `Frontier` 提供可重述的核心 theorem
 
-统一工程约定：
+后续原则：
 
-- 数值层一律以 `Nat.fib` 为准
-- 论文的 `F_1 = F_2 = 1` 记法通过单独桥接处理
+- 除非论文明确需要新的离散对象，否则不要继续在 `Folding` 层大规模增设新基础对象
 
-这意味着：
+### 8.2 `Omega.SPG`
 
-- 后续不再扩充自制递推定理库
-- `Omega.paperFib` 只应是薄别名
+当前职责：
 
-### 8.4 Zeckendorf 桥接
+- 维护组合层
+- 维护离散扫描误差层
+- 维护一般测度扫描误差层
+- 继续向条件期望型表达扩展
 
-`Folding/Zeckendorf.lean` 的任务不是证明 Zeckendorf theorem，而是证明：
+后续应优先扩在这个模块，而不是直接跳到更远的条件层。
 
-- 论文合法位词如何转为 `List.IsZeckendorfRep`
-- `Nat.zeckendorf` 如何回到论文合法位词
-- 两套取值函数一致
+### 8.3 `Omega.Graph`
 
-### 8.5 逆极限策略
+当前职责：
 
-对当前项目，优先采用“具体兼容族”方式，而不是一开始重型范畴化。
+- 提供显式 sofic 接口
+- 为论文中的语言/图像叙述提供桥接
 
-优先顺序：
+后续只在有明确论文对应对象时继续扩。
 
-1. 先定义 `restrict`
-2. 定义兼容族
-3. 证明唯一决定无限对象
-4. 必要时再与 `DiscreteQuotient` / `Profinite` 的一般理论对接
+### 8.4 `Omega.Frontier`
 
-## 9. 分阶段计划
+当前职责：
 
-### 阶段 0：项目引导与审计框架
+- assumptions
+- conditional wrappers
+- conjectures
+- certificates
 
-状态：
+当前项目最有产出的继续方向之一就是这个目录。
 
-- 已完成
+## 9. 延期与非目标
 
-交付：
+以下事项仍然明确延期：
 
-- `Lake + mathlib`
-- `Audit/NoAxiom.lean`
-- `Audit/SourceMap.lean`
-- `lake build`
+- 为了一个具体远层 theorem 先铺一整套重型 category theory
+- 为了一个条件定理先从零建设完整算子代数层
+- 在没有收敛路径时硬推 `POM` / `CMV` / `Peter-Weyl` / `Langlands`
+- 把猜想或实验现象塞进核心层作为既证结论
 
-### 阶段 1：有限词与稳定语法核心
+## 10. 质量闸门
 
-目标：
+后续每一轮推进仍必须满足：
 
-- 完成 `Word`
-- 完成 `No11`
-- 完成 `X m`
-- 完成 `restrict` / `appendFalse` / `appendTrue`
+- `cd lean4 && lake build` 全量通过
+- 不留下 `admit`
+- 不留下未接线半成品模块
+- `Audit/SourceMap.lean` 与 `Audit/NoAxiom.lean` 同步更新
+- 新 theorem 若属于核心层或稳定前沿接口，应进入审计清单
 
-必须证明：
+## 11. 当前 backlog 重排
 
-- `X m` 的良定义
-- 末位分解
-- restriction 的良定义
-- `X (m + 1)` 的递推分解
-- `|X m| = paperFib m` 的计数桥接
+### 11.1 已闭环 backlog
 
-复用：
+以下大项已可视为闭环：
 
-- `Fintype`
-- `Fin`
-- `Nat.fib`
+1. `X m` 有限稳定语法主线
+2. Zeckendorf 桥接
+3. `Fold` 主线
+4. `Rewrite` 的终止/合流/正规形唯一
+5. fiber 与 rank/unrank
+6. inverse limit
+7. defect telescope
+8. `SPG` 组合层
+9. `SPG` 离散扫描误差
+10. `SPG` 测度扫描误差当前范围
+11. 显式 golden-mean sofic 表示
+12. frontier 当前范围下的 assumptions / conditional / conjectures / certificates
 
-不做：
+### 11.2 当前活跃 backlog
 
-- 重证一般 Fibonacci 理论
+从现在起的活跃 backlog 是：
 
-### 阶段 2：权重与 Zeckendorf 桥接
+1. `SPG` 条件期望 / Tanaka-Stokes 型表达
+2. 更强的 prefix-measure conditional wrappers
+3. 更多论文后半段对应的 conditional theorem
+4. 在不引入重型理论的前提下，寻找下一批可稳定落 Lean 的远层结果
 
-目标：
+## 12. 直接执行顺序
 
-- 完成 `Weight.lean`
-- 完成 `Value.lean`
-- 完成 `Zeckendorf.lean`
+如果现在继续推进，建议严格按下列顺序：
 
-必须证明：
+1. 先从 `SPG/ScanErrorMeasure.lean` 找下一批稳定 theorem
+2. 再把它们包装到 `Frontier/Conditional.lean`
+3. 再同步 `Audit/*`
+4. 每一轮都先验收 `lake build`
+5. 只有当 `SPG` 和 `Conditional` 两线都没有短路径时，才评估是否进入论文更远层
 
-- 权重函数的定义与递推
-- 稳定词取值函数
-- 稳定词到 `List.IsZeckendorfRep` 的转换
-- `Nat.zeckendorf` 回到稳定词的构造
-- 两套表示和值的一致性
+## 13. 结论
 
-复用：
+本项目已经从“是否能建起无公理 Lean 基线”转入“如何持续吸收原论文结果”的阶段。
 
-- `Nat.zeckendorf`
-- `Nat.zeckendorfEquiv`
+当前最重要的事实不是“还没做什么”，而是：
 
-不做：
+- 离散核心已经稳定
+- 重写与正规形主线已经稳定
+- `SPG` 的组合与当前测度层已经稳定
+- `Frontier` 包装层已经开始成为论文叙述的真实接口层
 
-- 重证存在唯一性 theorem 本体
+因此，下一阶段不应重回基础层反复打磨，而应围绕：
 
-### 阶段 3：局部重写与 `Fold_m`
+- `SPG` 更强测度表达
+- `Frontier/Conditional` 更强论文式包装
+- 远层章节中最容易收敛的下一批结果
 
-目标：
-
-- 完成 `Rewrite.lean`
-- 完成 `Fold.lean`
-
-必须证明：
-
-- 单步重写值保持
-- 强终止
-- 局部合流
-- 由现成闭包理论得到合流
-- 正规形唯一
-- `Fold_m` 与正规形一致
-- `Fold_m` 幂等
-- `Fold_m` 满射
-
-复用：
-
-- `Relation.TransGen`
-- `Relation.ReflTransGen`
-- `Relation.church_rosser`
-
-### 阶段 4：多尺度一致性与缺陷代数
-
-目标：
-
-- 完成 `InverseLimit.lean`
-- 完成 `Defect.lean`
-
-必须证明：
-
-- `restrict` 的函子性
-- 具体兼容族的存在唯一性
-- 论文中的折叠感知交换图
-- 局部缺陷 `kappa`
-- 全局缺陷 `D`
-- 离散 Stokes 型望远镜恒等式
-
-复用：
-
-- `DiscreteQuotient.exists_of_compat`
-- profinite / limit 现成模板，仅在需要时接入
-
-### 阶段 5：SPG 组合层
-
-目标：
-
-- 完成 `Cylinder.lean`
-- 完成 `PrefixMetric.lean`
-- 完成 `Clopen.lean`
-
-必须证明：
-
-- 柱集定义
-- 柱集与前缀球对应
-- 有限前缀决定性
-- clopen 表达
-
-复用：
-
-- `IsClopen`
-- `Clopens`
-- Cantor 空间现成拓扑基础
-- ultrametric uniformity 基础
-
-### 阶段 6：SPG 离散误差层与测度接入
-
-目标：
-
-- 完成 `ScanErrorDiscrete.lean`
-- 视情况增加 `ScanErrorMeasure.lean`
-
-必须证明：
-
-- 有限分布上的扫描误差
-- 柱分解公式
-- 单调性和零误差判据
-- 必要时接入一般乘积测度版本
-
-复用：
-
-- `MeasurableSpace` `Pi` / `Prod`
-- product measure
-- 条件概率基础
-
-### 阶段 7：图像、sofic 与自动机
-
-目标：
-
-- 完成 `Graph/LabeledGraph.lean`
-- 完成 `Graph/Sofic.lean`
-
-说明：
-
-- 本阶段目前没有本地现成库可直接代替
-- 只有前六阶段稳定后才进入
-
-### 阶段 8：条件性与证书层
-
-目标：
-
-- `Assumptions`
-- `Conditional`
-- `Conjectures`
-- `Certificates`
-
-说明：
-
-- POM、GRH/Chebotarev、实验结果全部放在此层
-
-## 10. 明确不再做的事情
-
-以下事项从新版计划中明确移除：
-
-- 自己重证 `Nat.fib` 的一般理论
-- 自己重证 Zeckendorf theorem 本体
-- 为了一个具体结论先铺一整套 category theory limits
-- 在核心层提前引入完整测度论或算子代数
-- 把前沿叙述层伪装成已证核心定理
-
-## 11. 第一批必须闭环的 theorem backlog
-
-新版 backlog 聚焦于“论文专用不可替代内容”：
-
-1. `X m` 对截断封闭
-2. `X (m + 1)` 的末位递推分解
-3. `|X m| = paperFib m`
-4. 稳定词权重递推
-5. 稳定词表示到 `List.IsZeckendorfRep` 的桥接
-6. `Nat.zeckendorf` 到稳定词的回译
-7. 两套表示的值一致
-8. 单步重写值保持
-9. 重写系统强终止
-10. 重写系统局部合流
-11. 重写系统合流
-12. 正规形唯一
-13. `Fold_m` 幂等
-14. `Fold_m` 满射
-15. `restrict` 的函子性
-16. 具体兼容族存在唯一元
-17. 折叠感知 restriction 交换图
-18. 局部缺陷与全局缺陷定义
-19. 离散 Stokes 型望远镜恒等式
-20. 柱集与前缀球对应
-21. 有限前缀决定性的 clopen 表达
-22. 有限分布上的扫描误差分解
-
-## 12. 质量闸门
-
-每个阶段结束前必须满足：
-
-- `lake build` 全量通过
-- 核心层无 `admit`
-- 核心定理可做 `#print axioms`
-- theorem 名称与 `SourceMap` 一致
-- 小规模例子可由 `#eval` 或 `native_decide` 验证
-- 文档明确标记“复用项”和“项目自证项”
-
-## 13. 命名与映射规范
-
-### 13.1 模块命名
-
-使用英文稳定模块名，例如：
-
-- `Omega.Folding.StableSyntax`
-- `Omega.Folding.Zeckendorf`
-- `Omega.Folding.Rewrite`
-- `Omega.SPG.PrefixMetric`
-
-### 13.2 theorem 命名
-
-采用 “对象 + 结论” 风格，例如：
-
-- `stableSyntax_card`
-- `zeckendorfBridge_sound`
-- `fold_rewrite_confluent`
-- `fold_idempotent`
-- `defect_telescope`
-
-### 13.3 SourceMap 状态
-
-建议状态值：
-
-- `planned`
-- `bridged`
-- `formalized`
-- `blocked`
-- `deferred`
-- `frontier`
-
-其中：
-
-- `bridged` 表示 theorem 本体来自 mathlib，本项目只完成桥接
-
-## 14. 风险清单
-
-### 风险 1：继续重复造轮子
-
-应对：
-
-- 开工前先查 mathlib
-- 未确认缺失前不新增基础定义
-
-### 风险 2：论文编号与 mathlib 编号漂移
-
-应对：
-
-- 一律以 `Nat.fib` 为数值真源
-- 论文编号只保留桥接层
-
-### 风险 3：把通用 machinery 当成论文结果
-
-应对：
-
-- 文档中明确区分 “通用基础” 和 “论文专用结论”
-
-### 风险 4：过早范畴化
-
-应对：
-
-- 先做具体逆系统
-- 只有需要复用一般极限理论时再接入
-
-### 风险 5：过早测度化
-
-应对：
-
-- 先完成组合层和离散误差层
-- 测度层延后
-
-## 15. 下一步的直接执行顺序
-
-从当前状态继续推进时，顺序应为：
-
-1. 把 `Omega/Core/Fib.lean` 改成 `Nat.fib` 的薄桥接
-2. 完成 `X m` 的计数递推和 `|X m| = paperFib m`
-3. 新建 `Folding/Zeckendorf.lean`，只做桥接层
-4. 进入 `Rewrite.lean`
-5. 再进入 `Fold.lean`
-6. 然后做 `InverseLimit.lean` 与 `Defect.lean`
-7. 最后做 `SPG` 组合层
-
-严禁倒序推进。
-
-## 16. 结论
-
-新版实施方案的核心思想是：
-
-- mathlib 已有的，直接复用
-- 论文专用的，集中火力证明
-- 通用基础和专用结论严格分层
-
-这样推进后，`lean4/` 项目会形成一个小而硬的无公理核心，而不是继续在 Fibonacci、Zeckendorf、一般闭包理论这些已现成的基础轮子上消耗时间。
+持续推进。

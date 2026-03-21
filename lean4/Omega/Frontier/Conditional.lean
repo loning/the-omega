@@ -536,12 +536,37 @@ theorem observablePure_iff_boundaryEmpty_measure [MeasurableSpace α] [Fintype �
     SPG.ObservablePureMeasure μ obs P ↔ SPG.boundaryCellsMeasure μ obs P = ∅ :=
   SPG.observablePureMeasure_iff_boundaryCellsMeasure_eq_empty μ obs P
 
+/-- Zero scan error is equivalent to observable purity in the finite-observable measure model. -/
+theorem scanError_zero_iff_observablePure_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P = 0 ↔ SPG.ObservablePureMeasure μ obs P :=
+  SPG.scanErrorMeasure_eq_zero_iff_observablePure μ obs P
+
+/-- Zero scan error is equivalent to having empty boundary in the finite-observable measure model. -/
+theorem scanError_zero_iff_boundaryEmpty_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P = 0 ↔ SPG.boundaryCellsMeasure μ obs P = ∅ :=
+  SPG.scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty μ obs P
+
 /-- Prefix-observable purity is equivalent to an empty prefix boundary. -/
 theorem prefixObservablePure_iff_boundaryEmpty_measure [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     SPG.ObservablePureMeasure μ (SPG.prefixObservation h) P
       ↔ SPG.prefixBoundaryCellsMeasure μ h P = ∅ :=
   SPG.observablePureMeasure_iff_boundaryCellsMeasure_eq_empty μ (SPG.prefixObservation h) P
+
+/-- Zero prefix scan error is equivalent to prefix-observable purity in the measure model. -/
+theorem prefixScanError_zero_iff_observablePure_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanErrorMeasure μ h P = 0
+      ↔ SPG.ObservablePureMeasure μ (SPG.prefixObservation h) P :=
+  SPG.prefixScanErrorMeasure_eq_zero_iff_observablePure μ h P
+
+/-- Zero prefix scan error is equivalent to having empty prefix boundary in the measure model. -/
+theorem prefixScanError_zero_iff_boundaryEmpty_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanErrorMeasure μ h P = 0 ↔ SPG.prefixBoundaryCellsMeasure μ h P = ∅ :=
+  SPG.prefixScanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty μ h P
 
 /-- Observable purity forces zero prefix scan error in the measure model. -/
 theorem prefixObservablePure_zero_measure [MeasurableSpace (Word n)]
@@ -587,6 +612,20 @@ theorem prefixScanError_measure_discrete_bridge [MeasurableSpace (Word n)]
     (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     SPG.prefixScanErrorMeasure μ.toMeasure h P = SPG.prefixScanError μ h P :=
   SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError μ h P
+
+/-- Boundary cells commute with the PMF-to-measure bridge for finite observables. -/
+theorem boundaryCells_measure_discrete_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.boundaryCellsMeasure μ.toMeasure obs P = SPG.boundaryCells μ obs P :=
+  SPG.boundaryCellsMeasure_toMeasure_eq_boundaryCells μ obs P
+
+/-- Prefix boundary cells commute with the PMF-to-measure bridge. -/
+theorem prefixBoundaryCells_measure_discrete_bridge [MeasurableSpace (Word n)]
+    [MeasurableSingletonClass (Word n)]
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixBoundaryCellsMeasure μ.toMeasure h P = SPG.prefixBoundaryCells μ h P :=
+  SPG.prefixBoundaryCellsMeasure_toMeasure_eq_prefixBoundaryCells μ h P
 
 /-- Pure prefix events remain zero-error after passing from PMFs to measures. -/
 theorem prefixEvent_pure_measure_discrete_bridge [MeasurableSpace (Word n)]

@@ -126,6 +126,54 @@ theorem observablePureMeasure_iff_boundaryCellsMeasure_eq_empty
         simp [hEmpty]
       exact hNotMem hb
 
+theorem boundaryCellsMeasure_eq_empty_of_scanErrorMeasure_eq_zero
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
+    (hZero : scanErrorMeasure μ obs P = 0) :
+    boundaryCellsMeasure μ obs P = ∅ := by
+  classical
+  by_contra hNotEmpty
+  obtain ⟨b, hb⟩ := Finset.nonempty_iff_ne_empty.mpr hNotEmpty
+  have hTerms := (Fintype.sum_eq_zero_iff_of_nonneg (f := fun b =>
+    min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b)) (by
+      intro b
+      exact bot_le)).1 (by simpa [scanErrorMeasure] using hZero)
+  have hTermZero : min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b) = 0 := by
+    simpa using congrFun hTerms b
+  have hb' : cellEventMeasure μ obs P b ≠ 0 ∧ cellComplMeasure μ obs P b ≠ 0 := by
+    simpa [boundaryCellsMeasure] using hb
+  have hPosEvent : 0 < cellEventMeasure μ obs P b :=
+    pos_iff_ne_zero.mpr hb'.1
+  have hPosCompl : 0 < cellComplMeasure μ obs P b :=
+    pos_iff_ne_zero.mpr hb'.2
+  have hPosMin : 0 < min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b) :=
+    lt_min hPosEvent hPosCompl
+  rw [hTermZero] at hPosMin
+  exact lt_irrefl _ hPosMin
+
+theorem observablePureMeasure_of_scanErrorMeasure_eq_zero
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
+    (hZero : scanErrorMeasure μ obs P = 0) :
+    ObservablePureMeasure μ obs P :=
+  (observablePureMeasure_iff_boundaryCellsMeasure_eq_empty μ obs P).2
+    (boundaryCellsMeasure_eq_empty_of_scanErrorMeasure_eq_zero μ obs P hZero)
+
+theorem scanErrorMeasure_eq_zero_iff_observablePure
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P = 0 ↔ ObservablePureMeasure μ obs P := by
+  constructor
+  · exact observablePureMeasure_of_scanErrorMeasure_eq_zero μ obs P
+  · exact scanErrorMeasure_eq_zero_of_observablePure μ obs P
+
+theorem scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P = 0 ↔ boundaryCellsMeasure μ obs P = ∅ := by
+  rw [scanErrorMeasure_eq_zero_iff_observablePure,
+    observablePureMeasure_iff_boundaryCellsMeasure_eq_empty]
+
 @[simp] theorem boundaryCellsMeasure_observableEvent_eq_empty
     {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
@@ -232,6 +280,28 @@ theorem prefixScanErrorMeasure_eq_zero_of_observablePure [MeasurableSpace (Word 
     prefixScanErrorMeasure μ h P = 0 :=
   scanErrorMeasure_eq_zero_of_observablePure μ (prefixObservation h) P hPure
 
+theorem prefixBoundaryCellsMeasure_eq_empty_of_scanErrorMeasure_eq_zero [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n))
+    (hZero : prefixScanErrorMeasure μ h P = 0) :
+    prefixBoundaryCellsMeasure μ h P = ∅ :=
+  boundaryCellsMeasure_eq_empty_of_scanErrorMeasure_eq_zero μ (prefixObservation h) P hZero
+
+theorem prefixObservablePureMeasure_of_scanErrorMeasure_eq_zero [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n))
+    (hZero : prefixScanErrorMeasure μ h P = 0) :
+    ObservablePureMeasure μ (prefixObservation h) P :=
+  observablePureMeasure_of_scanErrorMeasure_eq_zero μ (prefixObservation h) P hZero
+
+theorem prefixScanErrorMeasure_eq_zero_iff_observablePure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P = 0 ↔ ObservablePureMeasure μ (prefixObservation h) P :=
+  scanErrorMeasure_eq_zero_iff_observablePure μ (prefixObservation h) P
+
+theorem prefixScanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P = 0 ↔ prefixBoundaryCellsMeasure μ h P = ∅ :=
+  scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty μ (prefixObservation h) P
+
 theorem cellEventMeasure_toMeasure_eq_cellEventMass {α β : Type*} [Fintype α] [MeasurableSpace α]
     [MeasurableSingletonClass α]
     (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
@@ -256,11 +326,25 @@ theorem scanErrorMeasure_toMeasure_eq_scanError {α β : Type*} [Fintype α] [Fi
   simp [scanErrorMeasure, scanError, cellEventMeasure_toMeasure_eq_cellEventMass,
     cellComplMeasure_toMeasure_eq_cellComplMass]
 
+theorem boundaryCellsMeasure_toMeasure_eq_boundaryCells {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α] (μ : PMF α) (obs : α → β) (P : Set α) :
+    boundaryCellsMeasure μ.toMeasure obs P = boundaryCells μ obs P := by
+  classical
+  ext b
+  simp [boundaryCellsMeasure, boundaryCells, cellEventMeasure_toMeasure_eq_cellEventMass,
+    cellComplMeasure_toMeasure_eq_cellComplMass]
+
 theorem prefixScanErrorMeasure_toMeasure_eq_prefixScanError {m n : Nat}
     [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
     (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixScanErrorMeasure μ.toMeasure h P = prefixScanError μ h P := by
   exact scanErrorMeasure_toMeasure_eq_scanError μ (prefixObservation h) P
+
+theorem prefixBoundaryCellsMeasure_toMeasure_eq_prefixBoundaryCells {m n : Nat}
+    [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixBoundaryCellsMeasure μ.toMeasure h P = prefixBoundaryCells μ h P := by
+  exact boundaryCellsMeasure_toMeasure_eq_boundaryCells μ (prefixObservation h) P
 
 end
 
