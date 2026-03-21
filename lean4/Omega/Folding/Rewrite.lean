@@ -1,6 +1,7 @@
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Data.Finsupp.Order
 import Mathlib.Data.Prod.Lex
+import Mathlib.Logic.Relation
 import Mathlib.Tactic
 import Omega.Folding.InverseLimit
 
@@ -653,6 +654,42 @@ theorem irreducible_eq_of_normalPrefix_eq {a b : DigitCfg}
   rw [irreducible_supported_eq_iota_normalPrefix hIrrA hSupA,
     irreducible_supported_eq_iota_normalPrefix hIrrB hSupB]
   simp [hNorm]
+
+theorem reflTransGen_normalPrefix {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
+    normalPrefix b m = normalPrefix a m := by
+  induction h with
+  | refl =>
+      rfl
+  | tail hab hStep ih =>
+      simpa [normalPrefix_step hStep] using ih
+
+theorem irreducible_reflTransGen_eq_iota_normalPrefix {a b : DigitCfg}
+    (hab : Relation.ReflTransGen Step a b)
+    (hIrr : Irreducible b) (hSup : SupportedBelow b m) :
+    b = iota (normalPrefix a m).1 := by
+  calc
+    b = iota (normalPrefix b m).1 :=
+      irreducible_supported_eq_iota_normalPrefix hIrr hSup
+    _ = iota (normalPrefix a m).1 := by
+      rw [reflTransGen_normalPrefix hab]
+
+theorem irreducible_terminal_unique {a b c : DigitCfg}
+    (hab : Relation.ReflTransGen Step a b) (hac : Relation.ReflTransGen Step a c)
+    (hIrrB : Irreducible b) (hIrrC : Irreducible c)
+    (hSupB : SupportedBelow b m) (hSupC : SupportedBelow c m) :
+    b = c := by
+  rw [irreducible_reflTransGen_eq_iota_normalPrefix hab hIrrB hSupB,
+    irreducible_reflTransGen_eq_iota_normalPrefix hac hIrrC hSupC]
+
+theorem irreducible_terminal_eq_fold {w : Word m} {b : DigitCfg}
+    (hab : Relation.ReflTransGen Step (iota w) b)
+    (hIrr : Irreducible b) (hSup : SupportedBelow b m) :
+    b = iota (Fold w).1 := by
+  calc
+    b = iota (normalPrefix (iota w) m).1 :=
+      irreducible_reflTransGen_eq_iota_normalPrefix hab hIrr hSup
+    _ = iota (Fold w).1 := by
+      rw [normalPrefix_iota_eq_Fold]
 
 end Rewrite
 
