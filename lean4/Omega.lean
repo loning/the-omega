@@ -7,6 +7,11 @@ import Omega.Folding.Value
 import Omega.Folding.Zeckendorf
 import Omega.Folding.Fold
 import Omega.Folding.InverseLimit
+import Omega.Folding.Rewrite
+import Omega.Folding.Defect
+import Omega.SPG.Cylinder
+import Omega.SPG.PrefixMetric
+import Omega.SPG.Clopen
 import Omega.Audit.SourceMap
 import Omega.Audit.Inventory
 import Omega.Audit.NoAxiom

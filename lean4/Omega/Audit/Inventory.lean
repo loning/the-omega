@@ -15,6 +15,11 @@ def phaseZeroArtifacts : List String :=
   , "Omega/Folding/Zeckendorf.lean"
   , "Omega/Folding/Fold.lean"
   , "Omega/Folding/InverseLimit.lean"
+  , "Omega/Folding/Rewrite.lean"
+  , "Omega/Folding/Defect.lean"
+  , "Omega/SPG/Cylinder.lean"
+  , "Omega/SPG/PrefixMetric.lean"
+  , "Omega/SPG/Clopen.lean"
   , "Omega/Audit/SourceMap.lean" ]
 
 def phaseOneTargets : List String :=
@@ -25,6 +30,9 @@ def phaseOneTargets : List String :=
   , "Zeckendorf bridge"
   , "finite Fold interface"
   , "inverse-limit bridge"
+  , "rewrite kernel"
+  , "finite defect telescope"
+  , "SPG prefix cylinder layer"
   , "source map bootstrap" ]
 
 end Omega.Audit
