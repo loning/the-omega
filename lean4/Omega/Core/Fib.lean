@@ -19,9 +19,13 @@ def paperFib (k : Nat) : Nat := fib (k + 1)
 @[simp] theorem paperFib_one : paperFib 1 = 1 := rfl
 @[simp] theorem paperFib_two : paperFib 2 = 2 := rfl
 
+set_option linter.unnecessarySimpa false in
 theorem paperFib_recurrence (k : Nat) :
     paperFib (k + 2) = paperFib (k + 1) + paperFib k := by
-  simpa [paperFib, Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using
-    (fib_succ_succ (k + 1))
+  unfold paperFib
+  have hIndex : (k + 2) + 1 = (k + 1) + 2 := by
+    simpa [Nat.add_assoc] using (Nat.add_right_comm k 2 1)
+  rw [hIndex]
+  exact fib_succ_succ (k + 1)
 
 end Omega

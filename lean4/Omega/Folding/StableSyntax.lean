@@ -110,7 +110,7 @@ instance : Unique (X 0) where
     exact False.elim (Nat.not_lt_zero _ i.isLt)
 
 @[simp] theorem card_zero : Fintype.card (X 0) = 1 := by
-  simpa using (Fintype.card_unique (α := X 0))
+  exact Fintype.card_unique (α := X 0)
 
 @[simp] theorem endsInZero_zero (x : X 0) : EndsInZero x := by
   simp [EndsInZero, Omega.get]
@@ -136,7 +136,7 @@ theorem restrict_endsInZero_of_last_true (x : X (m + 1)) (hLast : Omega.last x.1
   dsimp [EndsInZero]
   cases m with
   | zero =>
-      simp [restrict, Omega.get]
+      simp [Omega.get]
   | succ n =>
       have hLast' : get x.1 (n + 1) = true := by
         simpa [Omega.last, Omega.get] using hLast
@@ -183,7 +183,7 @@ noncomputable def endsInOrEquivSum (m : Nat) :
         rcases hx with hZero' | hOne
         · exact False.elim (hZero hZero')
         · exact hOne
-      simp [hZero, hOne]
+      simp [hZero]
   right_inv x := by
     classical
     cases x with
@@ -194,7 +194,7 @@ noncomputable def endsInOrEquivSum (m : Nat) :
         have hZero : ¬ EndsInZero x.1 := by
           intro hx
           exact endsInZero_not_endsInOne x.1 hx x.2
-        simp [hZero, x.2]
+        simp [hZero]
 
 noncomputable def appendFalseEquivLastFalse (m : Nat) :
     X m ≃ {x : X (m + 1) // Omega.last x.1 = false} where
@@ -268,8 +268,8 @@ theorem card_recurrence (m : Nat) :
     _ = 2 := by norm_num
 
 theorem card_eq_paperFib_succ : ∀ m : Nat, Fintype.card (X m) = paperFib (m + 1)
-  | 0 => by simp [card_zero]
-  | 1 => by simpa using card_one
+  | 0 => by simp
+  | 1 => by exact card_one
   | m + 2 => by
       rw [card_recurrence, card_eq_paperFib_succ (m + 1), card_eq_paperFib_succ m]
       simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using

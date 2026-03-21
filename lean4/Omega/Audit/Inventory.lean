@@ -10,12 +10,17 @@ def phaseZeroArtifacts : List String :=
   , "Omega/Core/Word.lean"
   , "Omega/Core/No11.lean"
   , "Omega/Folding/StableSyntax.lean"
+  , "Omega/Folding/Weight.lean"
+  , "Omega/Folding/Value.lean"
+  , "Omega/Folding/Zeckendorf.lean"
   , "Omega/Audit/SourceMap.lean" ]
 
 def phaseOneTargets : List String :=
   [ "stable syntax"
   , "prefix closure"
   , "Fibonacci backbone"
+  , "stable cardinality recurrence"
+  , "Zeckendorf bridge"
   , "source map bootstrap" ]
 
 end Omega.Audit
