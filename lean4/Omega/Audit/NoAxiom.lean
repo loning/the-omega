@@ -9,6 +9,7 @@ import Omega.Graph.Sofic
 import Omega.SPG.Clopen
 import Omega.SPG.ScanErrorDiscrete
 import Omega.SPG.ScanErrorMeasure
+import Omega.Frontier.Conditional
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -25,6 +26,8 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_stable
   #print axioms Omega.Fold_idempotent
   #print axioms Omega.X.fiber_nonempty
+  #print axioms Omega.X.rank_unrank
+  #print axioms Omega.X.Fold_unrankWord
   #print axioms Omega.X.inverseLimitEquiv
   #print axioms Omega.Rewrite.step_value
   #print axioms Omega.Rewrite.step_stronglyTerminating
@@ -41,10 +44,17 @@ Run these commands manually during audit:
   #print axioms Omega.Graph.acceptsWord_goldenMean_iff_no11
   #print axioms Omega.SPG.spg_decidableClopen
   #print axioms Omega.SPG.scanError_eq_sum_boundary
+  #print axioms Omega.SPG.prefixScanError_eq_sum_boundary
   #print axioms Omega.SPG.prefixScanError_eq_zero_of_prefixEvent
   #print axioms Omega.SPG.scanErrorMeasure_observableEvent_eq_zero
   #print axioms Omega.SPG.scanErrorMeasure_eq_sum_boundary
+  #print axioms Omega.SPG.prefixScanErrorMeasure_eq_sum_boundary
+  #print axioms Omega.SPG.prefixScanErrorMeasure_eq_zero_of_prefixEvent
   #print axioms Omega.SPG.scanErrorMeasure_toMeasure_eq_scanError
+  #print axioms Omega.Frontier.fullGeneration_certifies
+  #print axioms Omega.Frontier.fold_orderIndependent
+  #print axioms Omega.Frontier.prefixEvent_pure_discrete
+  #print axioms Omega.Frontier.prefixEvent_pure_measure
   #print axioms Omega.Frontier.RewriteStepCertificate.value_preserved
   #print axioms Omega.Frontier.FoldCertificate.idempotent
   #print axioms Omega.Frontier.PrefixZeroScanCertificate.canonical
@@ -62,6 +72,8 @@ def coreAuditTargets : List String :=
   , "Omega.Fold_stable"
   , "Omega.Fold_idempotent"
   , "Omega.X.fiber_nonempty"
+  , "Omega.X.rank_unrank"
+  , "Omega.X.Fold_unrankWord"
   , "Omega.X.inverseLimitEquiv"
   , "Omega.Rewrite.step_value"
   , "Omega.Rewrite.step_stronglyTerminating"
@@ -78,10 +90,17 @@ def coreAuditTargets : List String :=
   , "Omega.Graph.acceptsWord_goldenMean_iff_no11"
   , "Omega.SPG.spg_decidableClopen"
   , "Omega.SPG.scanError_eq_sum_boundary"
+  , "Omega.SPG.prefixScanError_eq_sum_boundary"
   , "Omega.SPG.prefixScanError_eq_zero_of_prefixEvent"
   , "Omega.SPG.scanErrorMeasure_observableEvent_eq_zero"
   , "Omega.SPG.scanErrorMeasure_eq_sum_boundary"
+  , "Omega.SPG.prefixScanErrorMeasure_eq_sum_boundary"
+  , "Omega.SPG.prefixScanErrorMeasure_eq_zero_of_prefixEvent"
   , "Omega.SPG.scanErrorMeasure_toMeasure_eq_scanError"
+  , "Omega.Frontier.fullGeneration_certifies"
+  , "Omega.Frontier.fold_orderIndependent"
+  , "Omega.Frontier.prefixEvent_pure_discrete"
+  , "Omega.Frontier.prefixEvent_pure_measure"
   , "Omega.Frontier.RewriteStepCertificate.value_preserved"
   , "Omega.Frontier.FoldCertificate.idempotent"
   , "Omega.Frontier.PrefixZeroScanCertificate.canonical" ]

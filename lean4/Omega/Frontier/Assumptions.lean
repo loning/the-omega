@@ -16,4 +16,12 @@ structure UniformGap where
 def DefectBudget (m : Nat) : Prop :=
   ∀ k : Nat, ∃ C : Nat, C ≤ m + k
 
+/-- Global full-generation hypothesis across all finite resolutions. -/
+def GlobalFullGeneration : Prop :=
+  ∀ m : Nat, FullGeneration m
+
+/-- Global coarse defect-budget hypothesis across all finite resolutions. -/
+def GlobalDefectBudget : Prop :=
+  ∀ m : Nat, DefectBudget m
+
 end Omega.Frontier

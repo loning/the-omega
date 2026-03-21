@@ -161,6 +161,15 @@ def boundaryCells {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) : Finset β :=
   Finset.univ.filter fun b => cellEventMass μ obs P b ≠ 0 ∧ cellComplMass μ obs P b ≠ 0
 
+@[simp] theorem boundaryCells_observableEvent_eq_empty {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    boundaryCells μ obs (observableEvent obs A) = ∅ := by
+  classical
+  ext b
+  by_cases hA : b ∈ A
+  · simp [boundaryCells, hA]
+  · simp [boundaryCells, hA]
+
 theorem scanError_eq_sum_boundary {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     scanError μ obs P
@@ -212,6 +221,34 @@ def prefixEvent {m n : Nat} (h : m ≤ n) (A : Set (Word m)) : Set (Word n) :=
 /-- Discrete scan error for the prefix observable. -/
 def prefixScanError (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) : ENNReal :=
   scanError μ (prefixObservation h) P
+
+/-- Boundary cells for the prefix observable at resolution `m`. -/
+def prefixBoundaryCells (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) : Finset (Word m) :=
+  boundaryCells μ (prefixObservation h) P
+
+theorem prefixScanError_eq_sum_boundary (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanError μ h P
+      = Finset.sum (prefixBoundaryCells μ h P) (fun b =>
+          min (cellEventMass μ (prefixObservation h) P b)
+            (cellComplMass μ (prefixObservation h) P b)) := by
+  exact scanError_eq_sum_boundary μ (prefixObservation h) P
+
+theorem prefixScanError_le_boundaryMass (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanError μ h P
+      ≤ Finset.sum (prefixBoundaryCells μ h P) (fun b =>
+          cellMass μ (prefixObservation h) b) := by
+  exact scanError_le_boundaryMass μ (prefixObservation h) P
+
+theorem prefixScanError_le_boundaryCard_mul (μ : PMF (Word n)) (h : m ≤ n)
+    (P : Set (Word n)) (κ : ENNReal)
+    (hκ : ∀ b, cellMass μ (prefixObservation h) b ≤ κ) :
+    prefixScanError μ h P ≤ (prefixBoundaryCells μ h P).card * κ := by
+  exact scanError_le_boundaryCard_mul μ (prefixObservation h) P κ hκ
+
+@[simp] theorem prefixBoundaryCells_prefixEvent_eq_empty
+    (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    prefixBoundaryCells μ h (prefixEvent h A) = ∅ := by
+  exact boundaryCells_observableEvent_eq_empty μ (prefixObservation h) A
 
 theorem prefixScanError_eq_zero_of_prefixEvent (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
     prefixScanError μ h (prefixEvent h A) = 0 :=

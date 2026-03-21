@@ -68,6 +68,16 @@ def boundaryCellsMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : Finset β :=
   Finset.univ.filter fun b => cellEventMeasure μ obs P b ≠ 0 ∧ cellComplMeasure μ obs P b ≠ 0
 
+@[simp] theorem boundaryCellsMeasure_observableEvent_eq_empty
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    boundaryCellsMeasure μ obs (observableEvent obs A) = ∅ := by
+  classical
+  ext b
+  by_cases hA : b ∈ A
+  · simp [boundaryCellsMeasure, hA]
+  · simp [boundaryCellsMeasure, hA]
+
 theorem scanErrorMeasure_eq_sum_boundary {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     scanErrorMeasure μ obs P
@@ -111,6 +121,47 @@ theorem scanErrorMeasure_le_boundaryCard_mul {α β : Type*} [MeasurableSpace α
       exact hκ b
     _ = (boundaryCellsMeasure μ obs P).card * κ := by
       simp
+
+/-- Prefix scan error for a general measure on finite words. -/
+def prefixScanErrorMeasure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) : ENNReal :=
+  scanErrorMeasure μ (prefixObservation h) P
+
+/-- Prefix boundary cells for a general measure on finite words. -/
+def prefixBoundaryCellsMeasure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) : Finset (Word m) :=
+  boundaryCellsMeasure μ (prefixObservation h) P
+
+theorem prefixScanErrorMeasure_eq_sum_boundary [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P
+      = Finset.sum (prefixBoundaryCellsMeasure μ h P) (fun b =>
+          min (cellEventMeasure μ (prefixObservation h) P b)
+            (cellComplMeasure μ (prefixObservation h) P b)) := by
+  exact scanErrorMeasure_eq_sum_boundary μ (prefixObservation h) P
+
+theorem prefixScanErrorMeasure_le_boundaryMass [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P
+      ≤ Finset.sum (prefixBoundaryCellsMeasure μ h P) (fun b =>
+          cellMeasure μ (prefixObservation h) b) := by
+  exact scanErrorMeasure_le_boundaryMass μ (prefixObservation h) P
+
+theorem prefixScanErrorMeasure_le_boundaryCard_mul [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) (κ : ENNReal)
+    (hκ : ∀ b, cellMeasure μ (prefixObservation h) b ≤ κ) :
+    prefixScanErrorMeasure μ h P ≤ (prefixBoundaryCellsMeasure μ h P).card * κ := by
+  exact scanErrorMeasure_le_boundaryCard_mul μ (prefixObservation h) P κ hκ
+
+@[simp] theorem prefixBoundaryCellsMeasure_prefixEvent_eq_empty [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    prefixBoundaryCellsMeasure μ h (prefixEvent h A) = ∅ := by
+  exact boundaryCellsMeasure_observableEvent_eq_empty μ (prefixObservation h) A
+
+theorem prefixScanErrorMeasure_eq_zero_of_prefixEvent [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    prefixScanErrorMeasure μ h (prefixEvent h A) = 0 :=
+  scanErrorMeasure_observableEvent_eq_zero μ (prefixObservation h) A
 
 theorem cellEventMeasure_toMeasure_eq_cellEventMass {α β : Type*} [Fintype α] [MeasurableSpace α]
     [MeasurableSingletonClass α]

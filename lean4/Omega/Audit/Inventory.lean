@@ -39,6 +39,7 @@ def phaseOneTargets : List String :=
   , "Zeckendorf bridge"
   , "finite Fold interface"
   , "finite Fold fiber interface"
+  , "finite Fold fiber rank/unrank interface"
   , "inverse-limit bridge"
   , "rewrite kernel"
   , "rewrite strong termination"
@@ -48,7 +49,9 @@ def phaseOneTargets : List String :=
   , "SPG prefix cylinder layer"
   , "SPG discrete scan error layer"
   , "SPG measure scan error layer"
+  , "SPG prefix scan-error specialization layer"
   , "frontier interfaces"
+  , "frontier conditional wrappers"
   , "rewrite/fold/scan-error certificates"
   , "source map bootstrap" ]
 
