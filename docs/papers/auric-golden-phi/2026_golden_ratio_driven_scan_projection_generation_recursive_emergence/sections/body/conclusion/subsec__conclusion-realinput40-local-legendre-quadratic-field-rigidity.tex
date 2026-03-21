@@ -68,7 +68,154 @@ I(\mu_0+\delta)
 同一定理还给出了 \(\sigma^2,\kappa_3,\kappa_4\) 的闭式；将其代入上式，便得到所示数值展开。证毕。
 \end{proof}
 
+\begin{theorem}[规范差的三次 mod-Gaussian 极限定理]\label{thm:conclusion-realinput40-gauge-difference-modgaussian-cubic}
+设 \(G_m\) 为均匀基线下的规范差，并记其压力函数为
+\[
+P_G(\theta)=\lim_{m\to\infty}\frac1m\log \EE[e^{\theta G_m}].
+\]
+再记
+\[
+\kappa_1:=P_G'(0)=\frac49,
+\qquad
+\kappa_2:=P_G''(0)=\frac{118}{243},
+\qquad
+\kappa_3:=P_G^{(3)}(0)=-\frac{1174}{2187}.
+\]
+定义缩放变量
+\[
+Y_m:=\frac{G_m-\kappa_1 m}{m^{1/3}},
+\qquad
+t_m:=\kappa_2 m^{1/3}.
+\]
+则存在 \(\varepsilon>0\)，使得在复平面圆盘 \(|z|<\varepsilon\) 的任意紧子集上，局部一致地成立
+\[
+\lim_{m\to\infty}
+\exp\!\left(-\frac{t_mz^2}{2}\right)\EE[e^{zY_m}]
+=
+\exp\!\left(\frac{\kappa_3}{6}z^3\right).
+\]
+换言之，\((Y_m)\) 在参数 \((t_m)\) 下满足三次极限函数
+\[
+\psi(z)=\exp\!\left(\frac{\kappa_3}{6}z^3\right)
+\]
+的 mod-Gaussian 收敛。
+\end{theorem}
+\begin{proof}
+由规范差压力的有限状态谱表示，存在 \(\varepsilon>0\)、常数 \(c>0\) 及在 \(|\theta|<\varepsilon\) 上解析的函数 \(a(\theta)\)（满足 \(a(0)=1\)），使得
+\[
+\EE[e^{\theta G_m}]
+=
+a(\theta)e^{mP_G(\theta)}+O(e^{-cm})
+\]
+局部一致成立。于是
+\[
+\log \EE[e^{\theta G_m}]
+=
+mP_G(\theta)+\log a(\theta)+o(1).
+\]
+又因 \(a\) 在零点解析且 \(a(0)=1\)，故
+\[
+\log a(\theta)=O(\theta)
+\qquad (\theta\to 0).
+\]
+
+取
+\[
+\theta=zm^{-1/3}.
+\]
+则
+\[
+\log \EE[e^{zY_m}]
+=
+\log \EE[e^{\theta G_m}]-\kappa_1 zm^{2/3}
+=
+m\bigl(P_G(\theta)-\kappa_1\theta\bigr)+O(m^{-1/3})+o(1).
+\]
+把 \(P_G\) 在零点 Taylor 展开为
+\[
+P_G(\theta)-\kappa_1\theta
+=
+\frac{\kappa_2}{2}\theta^2+\frac{\kappa_3}{6}\theta^3+O(\theta^4),
+\]
+乘以 \(m\) 并代入 \(\theta=zm^{-1/3}\)，得
+\[
+\log \EE[e^{zY_m}]
+=
+\frac{\kappa_2}{2}z^2m^{1/3}+\frac{\kappa_3}{6}z^3+O(m^{-1/3}).
+\]
+因此
+\[
+\log\!\left(
+e^{-t_mz^2/2}\EE[e^{zY_m}]
+\right)
+=
+\frac{\kappa_3}{6}z^3+O(m^{-1/3}),
+\]
+局部一致收敛到 \(\frac{\kappa_3}{6}z^3\)。指数化即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[规范差高阶累积量的振荡符号律]\label{thm:conclusion-realinput40-gauge-difference-cumulant-sign-oscillation}
+设
+\[
+\kappa_r^{(G)}:=P_G^{(r)}(0)
+\qquad (r\ge 1).
+\]
+并设 \(P_G\) 的最近奇点由一对共轭平方根分支点
+\[
+\theta_*=Re^{i\phi},
+\qquad
+\overline{\theta_*}=Re^{-i\phi},
+\qquad
+R>0,\ \phi\in(0,\pi)
+\]
+给出。则存在常数 \(A>0\)、\(\delta\in\RR\)，使得
+\[
+\kappa_r^{(G)}
+=
+A\,r!\,R^{-r}r^{-3/2}\cos(r\phi+\delta)+O\!\bigl(r!\,R^{-r}r^{-5/2}\bigr)
+\qquad (r\to\infty).
+\]
+从而：
+\begin{enumerate}
+  \item \((\kappa_r^{(G)})_{r\ge 1}\) 发生无穷多次符号翻转；
+  \item \(((-1)^r\kappa_r^{(G)})_{r\ge 1}\) 亦发生无穷多次符号翻转；
+  \item 因而该累积量序列既非最终正、亦非最终负，也不具有固定奇偶交替的尾部符号律。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由最近奇点的平方根型局部展开，\(P_G\) 在 \(\theta_*\) 与 \(\overline{\theta_*}\) 的邻域内可写为
+\[
+P_G(\theta)
+=
+h(\theta)
++B\left(1-\frac{\theta}{\theta_*}\right)^{1/2}
++\overline{B}\left(1-\frac{\theta}{\overline{\theta_*}}\right)^{1/2},
+\]
+其中 \(h\) 在 \(|\theta|<R+\eta\) 内全纯，且 \(B\neq 0\)。对该代数分支应用 Darboux--Flajolet 型奇点传递定理，得到
+\[
+\frac{\kappa_r^{(G)}}{r!}
+=
+C\,\theta_*^{-r}r^{-3/2}
++\overline{C}\,\overline{\theta_*}^{-r}r^{-3/2}
++O(R^{-r}r^{-5/2})
+\]
+其中 \(C\neq 0\)。写
+\[
+C=|C|e^{i\delta},
+\]
+便得
+\[
+\kappa_r^{(G)}
+=
+2|C|\,r!\,R^{-r}r^{-3/2}\cos(r\phi+\delta)
++O(r!\,R^{-r}r^{-5/2}),
+\]
+即题述公式，其中 \(A=2|C|\)。
+
+由于 \(0<\phi<\pi\)，步长 \(\phi\) 既不等于 \(0\) 也不等于 \(\pi\) 的整数倍。若 \(\phi/\pi\) 有理，则序列 \((r\phi+\delta \bmod 2\pi)\) 为有限周期轨道；该轨道不可能全部落在某一固定半圆内，故余弦值取正与取负皆无穷多次。若 \(\phi/\pi\) 无理，则该轨道在圆周上稠密，结论更显然。对 \(((-1)^r\kappa_r^{(G)})\) 只需把相位替换为 \(\phi+\pi\)，同样得到无穷振荡。证毕。
+\end{proof}
+
 \noindent
-因此，实输入 \(40\) 状态核的局部 Cram\'er 几何不仅具有右尾更昂贵的非对称性，而且其整个解析胚都被 \(\QQ(\sqrt5)\) 严格锁定；大偏差的局部曲率、偏斜与四阶陡峭性不再只是数值现象，而成为可由同一二次数域统一审计的代数对象。
+因此，实输入 \(40\) 状态核的局部 Cram\'er 几何不仅具有右尾更昂贵的非对称性，而且其整个解析胚都被 \(\QQ(\sqrt5)\) 严格锁定；在规范差方向，同一有限状态压力又进一步给出一个三次 mod-Gaussian 极限函数，并把最近共轭平方根分支点的几何直接转译为高阶累积量的无穷振荡符号律。于是，局部大偏差胚、有限尺度偏斜修正与高阶统计尾部的振荡结构在本文语言中不再分属不同层次，而被同一条代数谱曲线统一控制。
 
 \endinput
