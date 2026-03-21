@@ -5,6 +5,8 @@ import Omega.Folding.StableSyntax
 import Omega.Folding.Weight
 import Omega.Folding.Value
 import Omega.Folding.Zeckendorf
+import Omega.Folding.Fold
+import Omega.Folding.InverseLimit
 import Omega.Audit.SourceMap
 import Omega.Audit.Inventory
 import Omega.Audit.NoAxiom

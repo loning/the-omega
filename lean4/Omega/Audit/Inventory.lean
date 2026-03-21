@@ -13,6 +13,8 @@ def phaseZeroArtifacts : List String :=
   , "Omega/Folding/Weight.lean"
   , "Omega/Folding/Value.lean"
   , "Omega/Folding/Zeckendorf.lean"
+  , "Omega/Folding/Fold.lean"
+  , "Omega/Folding/InverseLimit.lean"
   , "Omega/Audit/SourceMap.lean" ]
 
 def phaseOneTargets : List String :=
@@ -21,6 +23,8 @@ def phaseOneTargets : List String :=
   , "Fibonacci backbone"
   , "stable cardinality recurrence"
   , "Zeckendorf bridge"
+  , "finite Fold interface"
+  , "inverse-limit bridge"
   , "source map bootstrap" ]
 
 end Omega.Audit
