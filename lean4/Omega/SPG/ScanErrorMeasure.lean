@@ -435,6 +435,73 @@ theorem prefixScanErrorMeasure_le_min [MeasurableSpace (Word n)]
         (∑ b, cellComplMeasure μ (prefixObservation h) P b) :=
   scanErrorMeasure_le_min μ (prefixObservation h) P
 
+/-- Boundary cylinder count: the cardinality of non-pure observation cells (paper Definition 3.5). -/
+def boundaryCylinderCount {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : ℕ :=
+  (boundaryCellsMeasure μ obs P).card
+
+/-- Prefix boundary cylinder count at resolution m (paper N_m(∂P)). -/
+def prefixBoundaryCylinderCount [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) : ℕ :=
+  (prefixBoundaryCellsMeasure μ h P).card
+
+theorem boundaryCylinderCount_eq_zero_iff_observablePure
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    boundaryCylinderCount μ obs P = 0 ↔ ObservablePureMeasure μ obs P := by
+  rw [boundaryCylinderCount, Finset.card_eq_zero,
+    ← observablePureMeasure_iff_boundaryCellsMeasure_eq_empty]
+
+theorem scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P = 0 ↔ boundaryCylinderCount μ obs P = 0 := by
+  rw [scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty,
+    boundaryCylinderCount, Finset.card_eq_zero]
+
+theorem boundaryCylinderCount_observableEvent_eq_zero
+    {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    boundaryCylinderCount μ obs (observableEvent obs A) = 0 :=
+  (boundaryCylinderCount_eq_zero_iff_observablePure μ obs _).mpr
+    (observablePureMeasure_observableEvent μ obs A)
+
+theorem prefixBoundaryCylinderCount_eq_zero_iff_observablePure
+    [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixBoundaryCylinderCount μ h P = 0
+      ↔ ObservablePureMeasure μ (prefixObservation h) P := by
+  unfold prefixBoundaryCylinderCount prefixBoundaryCellsMeasure
+  rw [Finset.card_eq_zero,
+    ← observablePureMeasure_iff_boundaryCellsMeasure_eq_empty]
+
+theorem prefixScanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
+    [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P = 0 ↔ prefixBoundaryCylinderCount μ h P = 0 := by
+  unfold prefixBoundaryCylinderCount prefixBoundaryCellsMeasure prefixScanErrorMeasure
+  rw [scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty, Finset.card_eq_zero]
+
+theorem prefixBoundaryCylinderCount_prefixEvent_eq_zero
+    [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    prefixBoundaryCylinderCount μ h (prefixEvent h A) = 0 :=
+  (prefixBoundaryCylinderCount_eq_zero_iff_observablePure μ h _).mpr
+    (prefixObservablePureMeasure_prefixEvent μ h A)
+
+theorem boundaryCylinderCount_toMeasure_eq {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    boundaryCylinderCount μ.toMeasure obs P = (boundaryCells μ obs P).card := by
+  simp [boundaryCylinderCount, boundaryCellsMeasure_toMeasure_eq_boundaryCells]
+
+theorem prefixBoundaryCylinderCount_toMeasure_eq {m n : Nat}
+    [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixBoundaryCylinderCount μ.toMeasure h P = (prefixBoundaryCells μ h P).card := by
+  simp [prefixBoundaryCylinderCount,
+    prefixBoundaryCellsMeasure_toMeasure_eq_prefixBoundaryCells]
+
 end
 
 end Omega.SPG

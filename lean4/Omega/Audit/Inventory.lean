@@ -71,6 +71,13 @@ def phaseOneTargets : List String :=
   , "frontier complement and trivial event wrappers"
   , "SPG observation refinement monotonicity"
   , "SPG prefix scan error monotonicity"
-  , "SPG algebraic sum-min inequality" ]
+  , "SPG algebraic sum-min inequality"
+  , "SPG boundary cylinder count"
+  , "SPG boundary cylinder count PMF bridge"
+  , "frontier stable syntax cardinality wrappers"
+  , "frontier Zeckendorf bridge wrappers"
+  , "frontier fiber cardinality wrapper"
+  , "frontier boundary cylinder count wrappers"
+  , "frontier measure monotonicity via PMF bridge" ]
 
 end Omega.Audit

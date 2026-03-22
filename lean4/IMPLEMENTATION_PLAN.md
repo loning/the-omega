@@ -265,22 +265,36 @@ Omega/Audit/NoAxiom.lean
 - 观测细化单调性 (`scanError_antitone_of_refines`)
 - 前缀扫描误差单调性 (`prefixScanError_antitone`: m₁ ≤ m₂ → SE(m₂) ≤ SE(m₁))
 - 单元质量纤维分解 (`cellEventMass_refines_sum`, `cellComplMass_refines_sum`)
+- 边界柱计数 `boundaryCylinderCount` / `prefixBoundaryCylinderCount` (论文 Definition 3.5 N_m(∂P))
+- 边界柱计数 ↔ 可观测纯性等价 (`boundaryCylinderCount_eq_zero_iff_observablePure`)
+- 扫描误差为零 ↔ 边界柱计数为零 (`scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero`)
+- 边界柱计数 PMF 桥接 (`boundaryCylinderCount_toMeasure_eq`)
+- 测度级观测细化单调性（经 PMF 桥接）(`scanError_measure_antitone_via_bridge`)
+- 测度级前缀扫描误差单调性（经 PMF 桥接）(`prefixScanError_measure_antitone_via_bridge`)
 
 仍缺：
 
 - 更接近论文后段的条件期望型表达
 - 若论文需要的 martingale / Tanaka-Stokes 形式
-- 更强的测度级结构化重述
+- 更强的测度级结构化重述（条件概率因式分解形式）
 
 #### B. 更远层的 frontier 条件定理
 
 当前 `Frontier/Conditional.lean` 已经能包装大量核心结果，但仍偏“当前基线的直接重述”。
 
+新增：
+
+- 论文 Section 4 稳定语法基数包装 (`stableSyntax_card_eq_fibonacci`, `stableSyntax_card_recurrence`)
+- 论文 Section 4 Zeckendorf 桥接包装 (`stableWord_zeckendorf_valid`, `stableValue_eq_fibonacci_weighted_sum`)
+- 论文 Section 4 fiber 基数包装 (`fold_fiber_card_pos`)
+- 论文 Definition 3.5 边界柱计数条件层包装（完整的 zero-iff 链、PMF 桥接、observable event 消失）
+- 测度级观测细化单调性条件层包装（经 PMF 桥接）
+
 仍缺：
 
 - 更靠近论文后半段组织方式的条件定理簇
 - 更系统的 assumptions-to-results 映射
-- 更明确的“哪一组假设推出哪一层结果”的编排
+- 更明确的”哪一组假设推出哪一层结果”的编排
 
 #### C. 论文远层主题
 

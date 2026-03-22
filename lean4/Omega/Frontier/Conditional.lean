@@ -797,6 +797,118 @@ theorem scanError_measure_bayes_bound [MeasurableSpace α] [Fintype β]
         (∑ b, SPG.cellEventMeasure μ obs P b) (∑ b, SPG.cellComplMeasure μ obs P b) :=
   SPG.scanErrorMeasure_le_min μ obs P
 
+/-! ### Paper Section 4: Stable Syntax Cardinality & Zeckendorf Bridge -/
+
+/-- |X_m| = paperFib(m+1) = F_{m+2} (paper Proposition 4.1: Fibonacci cardinality). -/
+theorem stableSyntax_card_eq_fibonacci (m : Nat) :
+    Fintype.card (X m) = paperFib (m + 1) :=
+  X.card_eq_paperFib_succ m
+
+/-- |X_{m+2}| = |X_{m+1}| + |X_m| (paper Proposition 4.1: Fibonacci recurrence). -/
+theorem stableSyntax_card_recurrence (m : Nat) :
+    Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) :=
+  X.card_recurrence m
+
+/-- Active positions of a stable word form a Zeckendorf representation (paper Theorem 4.1). -/
+theorem stableWord_zeckendorf_valid (x : X m) :
+    (X.zeckIndices x).IsZeckendorfRep :=
+  X.zeckIndices_isZeckendorfRep x
+
+/-- The stable value equals the Fibonacci-weighted sum at active positions (paper Theorem 4.1). -/
+theorem stableValue_eq_fibonacci_weighted_sum (x : X m) :
+    stableValue x = ((X.zeckIndices x).map Nat.fib).sum :=
+  X.stableValue_eq_sum_fib_zeckIndices x
+
+/-- The Zeckendorf encoding of a stable word sums to its stable value. -/
+theorem stableValue_eq_zeckRep_sum (x : X m) :
+    ((X.zeckRep x).1.map fib).sum = stableValue x :=
+  X.sum_fib_zeckRep x
+
+/-- Every stable target has a positive fiber cardinality under Fold. -/
+theorem fold_fiber_card_pos (x : X m) :
+    0 < (X.fiber x).card :=
+  X.fiber_card_pos x
+
+/-! ### Paper Section 3 / Definition 3.5: Boundary Cylinder Count -/
+
+/-- Boundary cylinder count equals zero iff the event is observable-pure (measure, paper Corollary 3.1). -/
+theorem boundaryCylinderCount_zero_iff_pure_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.boundaryCylinderCount μ obs P = 0 ↔ SPG.ObservablePureMeasure μ obs P :=
+  SPG.boundaryCylinderCount_eq_zero_iff_observablePure μ obs P
+
+/-- Zero scan error iff zero boundary cylinder count (measure, paper Corollary 3.1). -/
+theorem scanError_zero_iff_boundaryCylinderCount_zero_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P = 0 ↔ SPG.boundaryCylinderCount μ obs P = 0 :=
+  SPG.scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero μ obs P
+
+/-- Observable-event boundary cylinder count vanishes for any measure. -/
+theorem boundaryCylinderCount_observableEvent_zero [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.boundaryCylinderCount μ obs (SPG.observableEvent obs A) = 0 :=
+  SPG.boundaryCylinderCount_observableEvent_eq_zero μ obs A
+
+/-- Prefix event boundary cylinder count vanishes for any measure. -/
+theorem prefixBoundaryCylinderCount_prefixEvent_zero [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixBoundaryCylinderCount μ h (SPG.prefixEvent h A) = 0 :=
+  SPG.prefixBoundaryCylinderCount_prefixEvent_eq_zero μ h A
+
+/-- Prefix boundary cylinder count equals zero iff the event is observable-pure (measure). -/
+theorem prefixBoundaryCylinderCount_zero_iff_pure_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixBoundaryCylinderCount μ h P = 0
+      ↔ SPG.ObservablePureMeasure μ (SPG.prefixObservation h) P :=
+  SPG.prefixBoundaryCylinderCount_eq_zero_iff_observablePure μ h P
+
+/-- Zero prefix scan error iff zero prefix boundary cylinder count (measure). -/
+theorem prefixScanError_zero_iff_boundaryCylinderCount_zero_measure
+    [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanErrorMeasure μ h P = 0 ↔ SPG.prefixBoundaryCylinderCount μ h P = 0 :=
+  SPG.prefixScanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero μ h P
+
+/-- Boundary cylinder count commutes with the PMF-to-measure bridge. -/
+theorem boundaryCylinderCount_measure_discrete_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.boundaryCylinderCount μ.toMeasure obs P = (SPG.boundaryCells μ obs P).card :=
+  SPG.boundaryCylinderCount_toMeasure_eq μ obs P
+
+/-- Prefix boundary cylinder count commutes with the PMF-to-measure bridge. -/
+theorem prefixBoundaryCylinderCount_measure_discrete_bridge
+    [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixBoundaryCylinderCount μ.toMeasure h P
+      = (SPG.prefixBoundaryCells μ h P).card :=
+  SPG.prefixBoundaryCylinderCount_toMeasure_eq μ h P
+
+/-! ### Measure Monotonicity via PMF Bridge (paper Corollary 3.1) -/
+
+/-- Scan error monotonicity under observation refinement, measure version via PMF bridge. -/
+theorem scanError_measure_antitone_via_bridge
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (P : Set α) :
+    SPG.scanErrorMeasure μ.toMeasure obs₂ P ≤ SPG.scanErrorMeasure μ.toMeasure obs₁ P := by
+  rw [SPG.scanErrorMeasure_toMeasure_eq_scanError,
+    SPG.scanErrorMeasure_toMeasure_eq_scanError]
+  exact SPG.scanError_antitone_of_refines μ obs₁ obs₂ f hRef P
+
+/-- Prefix scan error under measure is monotonically non-increasing for PMF-lifted measures
+    (paper Corollary 3.1: clarity monotonicity). -/
+theorem prefixScanError_measure_antitone_via_bridge {m₁ m₂ n : Nat}
+    [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
+    (μ : PMF (Word n)) (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂)
+    (P : Set (Word n)) :
+    SPG.prefixScanErrorMeasure μ.toMeasure h₂ P
+      ≤ SPG.prefixScanErrorMeasure μ.toMeasure h₁ P := by
+  rw [SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError,
+    SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError]
+  exact SPG.prefixScanError_antitone μ h₁ h₂ hm P
+
 end
 
 end Omega.Frontier

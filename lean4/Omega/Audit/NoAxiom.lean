@@ -197,6 +197,31 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.cellComplMass_partition
   #print axioms Omega.Frontier.scanError_bayes_bound
   #print axioms Omega.Frontier.scanError_measure_bayes_bound
+  #print axioms Omega.SPG.boundaryCylinderCount_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
+  #print axioms Omega.SPG.boundaryCylinderCount_observableEvent_eq_zero
+  #print axioms Omega.SPG.boundaryCylinderCount_toMeasure_eq
+  #print axioms Omega.SPG.prefixBoundaryCylinderCount_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.prefixScanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
+  #print axioms Omega.SPG.prefixBoundaryCylinderCount_prefixEvent_eq_zero
+  #print axioms Omega.SPG.prefixBoundaryCylinderCount_toMeasure_eq
+  #print axioms Omega.Frontier.stableSyntax_card_eq_fibonacci
+  #print axioms Omega.Frontier.stableSyntax_card_recurrence
+  #print axioms Omega.Frontier.stableWord_zeckendorf_valid
+  #print axioms Omega.Frontier.stableValue_eq_fibonacci_weighted_sum
+  #print axioms Omega.Frontier.stableValue_eq_zeckRep_sum
+  -- Note: above has type ((zeckRep x).1.map fib).sum = stableValue x
+  #print axioms Omega.Frontier.fold_fiber_card_pos
+  #print axioms Omega.Frontier.boundaryCylinderCount_zero_iff_pure_measure
+  #print axioms Omega.Frontier.scanError_zero_iff_boundaryCylinderCount_zero_measure
+  #print axioms Omega.Frontier.boundaryCylinderCount_observableEvent_zero
+  #print axioms Omega.Frontier.prefixBoundaryCylinderCount_prefixEvent_zero
+  #print axioms Omega.Frontier.prefixBoundaryCylinderCount_zero_iff_pure_measure
+  #print axioms Omega.Frontier.prefixScanError_zero_iff_boundaryCylinderCount_zero_measure
+  #print axioms Omega.Frontier.boundaryCylinderCount_measure_discrete_bridge
+  #print axioms Omega.Frontier.prefixBoundaryCylinderCount_measure_discrete_bridge
+  #print axioms Omega.Frontier.scanError_measure_antitone_via_bridge
+  #print axioms Omega.Frontier.prefixScanError_measure_antitone_via_bridge
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -380,6 +405,30 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.cellEventMass_partition"
   , "Omega.Frontier.cellComplMass_partition"
   , "Omega.Frontier.scanError_bayes_bound"
-  , "Omega.Frontier.scanError_measure_bayes_bound" ]
+  , "Omega.Frontier.scanError_measure_bayes_bound"
+  , "Omega.SPG.boundaryCylinderCount_eq_zero_iff_observablePure"
+  , "Omega.SPG.scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero"
+  , "Omega.SPG.boundaryCylinderCount_observableEvent_eq_zero"
+  , "Omega.SPG.boundaryCylinderCount_toMeasure_eq"
+  , "Omega.SPG.prefixBoundaryCylinderCount_eq_zero_iff_observablePure"
+  , "Omega.SPG.prefixScanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero"
+  , "Omega.SPG.prefixBoundaryCylinderCount_prefixEvent_eq_zero"
+  , "Omega.SPG.prefixBoundaryCylinderCount_toMeasure_eq"
+  , "Omega.Frontier.stableSyntax_card_eq_fibonacci"
+  , "Omega.Frontier.stableSyntax_card_recurrence"
+  , "Omega.Frontier.stableWord_zeckendorf_valid"
+  , "Omega.Frontier.stableValue_eq_fibonacci_weighted_sum"
+  , "Omega.Frontier.stableValue_eq_zeckRep_sum"
+  , "Omega.Frontier.fold_fiber_card_pos"
+  , "Omega.Frontier.boundaryCylinderCount_zero_iff_pure_measure"
+  , "Omega.Frontier.scanError_zero_iff_boundaryCylinderCount_zero_measure"
+  , "Omega.Frontier.boundaryCylinderCount_observableEvent_zero"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_prefixEvent_zero"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_zero_iff_pure_measure"
+  , "Omega.Frontier.prefixScanError_zero_iff_boundaryCylinderCount_zero_measure"
+  , "Omega.Frontier.boundaryCylinderCount_measure_discrete_bridge"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_measure_discrete_bridge"
+  , "Omega.Frontier.scanError_measure_antitone_via_bridge"
+  , "Omega.Frontier.prefixScanError_measure_antitone_via_bridge" ]
 
 end Omega.Audit
