@@ -1034,6 +1034,18 @@ theorem modularProject_preserves_zero :
     modularProject (stableZero (m := m + 1)) = stableZero :=
   modularProject_zero
 
+/-- stableSub value is stableAdd of x and neg y values. -/
+theorem stableValue_sub_eq (x y : X m) :
+    stableValue (stableSub x y) = stableValue (stableAdd x (stableNeg y)) := rfl
+
+/-- Fiber multiplicity is always positive (named). -/
+theorem fiber_always_positive (x : X m) : 0 < fiberMultiplicity x :=
+  fiberMultiplicity_pos x
+
+/-- The stable ring has exactly F_{m+2} elements (named). -/
+theorem ring_cardinality (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
+  X.card_eq_paperFib_succ m
+
 end
 
 end X
