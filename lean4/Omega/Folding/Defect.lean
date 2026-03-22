@@ -289,4 +289,15 @@ theorem truncate_xorWord (a b : Word (m + 1)) :
     truncate (xorWord a b) = xorWord (truncate a) (truncate b) := by
   funext i; rfl
 
+/-- The defect is symmetric in the xor sense: xor with itself vanishes. -/
+theorem localDefect_xor_localDefect (η : Word (m + 1)) :
+    xorWord (localDefect η) (localDefect η) = zeroWord m :=
+  xorWord_self (localDefect η)
+
+/-- Global defect is self-cancelling under xor. -/
+theorem globalDefect_xor_self (h : m ≤ n) (ω : Word n) :
+    xorWord (globalDefect h ω) (globalDefect h ω) = zeroWord m :=
+  xorWord_self (globalDefect h ω)
+
+
 end Omega

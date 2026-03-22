@@ -1581,6 +1581,29 @@ theorem scanError_le_total_cell_mass {α β : Type*} [Fintype α] [Fintype β]
     SPG.scanError μ obs P ≤ ∑ b, SPG.cellMass μ obs b :=
   SPG.scanError_le_sum_cellMass μ obs P
 
+/-! ### Paper SPG Section: Clopen & Topological Structure -/
+
+/-- Cylinder sets are clopen. -/
+theorem cylinder_is_clopen (w : Word m) : IsClopen (SPG.cylinderWord w) :=
+  SPG.isClopen_cylinderWord w
+
+/-- Clopen intersection of fromWordSets. -/
+theorem fromWordSet_inter_clopen (A B : Set (Word m)) :
+    IsClopen (SPG.fromWordSet A ∩ SPG.fromWordSet B) :=
+  SPG.isClopen_fromWordSet_inter A B
+
+/-! ### Paper Defect Section: Defect Self-Cancellation -/
+
+/-- Local defect xor'd with itself vanishes. -/
+theorem localDefect_self_cancel (η : Word (m + 1)) :
+    xorWord (localDefect η) (localDefect η) = zeroWord m :=
+  localDefect_xor_localDefect η
+
+/-- Global defect xor'd with itself vanishes. -/
+theorem globalDefect_self_cancel (h : m ≤ n) (ω : Word n) :
+    xorWord (globalDefect h ω) (globalDefect h ω) = zeroWord m :=
+  globalDefect_xor_self h ω
+
 end
 
 end Omega.Frontier

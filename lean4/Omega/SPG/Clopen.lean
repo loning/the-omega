@@ -31,4 +31,19 @@ theorem prefixDetermined_isClopen {s : Set OmegaInfinity} (m : Nat)
 theorem spg_decidableClopen (A : Set (Word m)) : IsClopen (fromWordSet A) :=
   isClopen_fromWordSet A
 
+/-- Cylinder sets are clopen. -/
+theorem isClopen_cylinderWord (w : Word m) : IsClopen (cylinderWord w) := by
+  have := isClopen_fromWordSet {w}
+  rwa [show fromWordSet ({w} : Set (Word m)) = cylinderWord w from by ext x; simp [fromWordSet]] at this
+
+/-- The intersection of two clopen fromWordSets is a clopen fromWordSet. -/
+theorem isClopen_fromWordSet_inter (A B : Set (Word m)) :
+    IsClopen (fromWordSet A ∩ fromWordSet B) := by
+  rw [← fromWordSet_inter]; exact isClopen_fromWordSet (A ∩ B)
+
+/-- The union of two clopen fromWordSets is a clopen fromWordSet. -/
+theorem isClopen_fromWordSet_union (A B : Set (Word m)) :
+    IsClopen (fromWordSet A ∪ fromWordSet B) := by
+  rw [← fromWordSet_union]; exact isClopen_fromWordSet (A ∪ B)
+
 end Omega.SPG
