@@ -744,6 +744,26 @@ theorem cellEventMeasure_mono {α β : Type*} [MeasurableSpace α]
   unfold cellEventMeasure
   exact MeasureTheory.measure_mono (Set.inter_subset_inter_left _ h)
 
+/-- Scan error at the empty event is zero (measure). Already proved as scanErrorMeasure_empty,
+    this is a named alias for the Frontier layer. -/
+theorem scanErrorMeasure_at_empty {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs ∅ = 0 :=
+  scanErrorMeasure_empty μ obs
+
+/-- Scan error at the full event is zero (measure). -/
+theorem scanErrorMeasure_at_univ {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs Set.univ = 0 :=
+  scanErrorMeasure_univ μ obs
+
+/-- Cell complement measure is monotone in the reverse direction of event containment. -/
+theorem cellComplMeasure_anti {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) {P Q : Set α} (h : P ⊆ Q) (b : β) :
+    cellComplMeasure μ obs Q b ≤ cellComplMeasure μ obs P b := by
+  unfold cellComplMeasure
+  exact MeasureTheory.measure_mono (Set.diff_subset_diff_right h)
+
 end
 
 end Omega.SPG

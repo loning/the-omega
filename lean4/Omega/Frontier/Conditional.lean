@@ -1410,6 +1410,35 @@ theorem XInfinity_uniqueness {a b : X.XInfinity} (h : ∀ m, X.prefixWord a m = 
 theorem zeckIndices_bounded (x : X m) : (X.zeckIndices x).length ≤ m :=
   X.zeckIndices_length_le x
 
+/-! ### Paper SPG Section: Boundary Cell & Scan Error Structure -/
+
+/-- Boundary cell count is bounded by the total number of observation cells. -/
+theorem boundaryCells_count_bounded {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    (SPG.boundaryCells μ obs P).card ≤ Fintype.card β :=
+  SPG.boundaryCells_card_le μ obs P
+
+/-- Observable events from coarser observables have at most the same error under finer observables. -/
+theorem observable_event_refined_monotone {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (A : Set β) :
+    SPG.scanError μ obs₂ (SPG.observableEvent obs₁ A) ≤
+      SPG.scanError μ obs₁ (SPG.observableEvent obs₁ A) :=
+  SPG.scanError_observableEvent_refines_zero μ obs₁ obs₂ f hRef A
+
+/-- Cell complement measure is anti-monotone in event containment. -/
+theorem cellComplMeasure_antimonotone [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) {P Q : Set α} (h : P ⊆ Q) (b : β) :
+    SPG.cellComplMeasure μ obs Q b ≤ SPG.cellComplMeasure μ obs P b :=
+  SPG.cellComplMeasure_anti μ obs h b
+
+/-! ### Paper Defect Section: xor-truncation compatibility -/
+
+/-- Truncation distributes over xor of words. -/
+theorem truncate_distributes_xor (a b : Word (m + 1)) :
+    truncate (xorWord a b) = xorWord (truncate a) (truncate b) :=
+  truncate_xorWord a b
+
 end
 
 end Omega.Frontier
