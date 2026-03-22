@@ -541,6 +541,87 @@ theorem stableValue_isomorphism_summary (m : Nat) :
    (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩),
    stableValue_range m⟩
 
+/-- |X 1| = 2. -/
+theorem card_X_one : Fintype.card (X 1) = 2 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 2| = 3. -/
+theorem card_X_two : Fintype.card (X 2) = 3 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 3| = 5. -/
+theorem card_X_three : Fintype.card (X 3) = 5 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 4| = 8. -/
+theorem card_X_four : Fintype.card (X 4) = 8 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 5| = 13. -/
+theorem card_X_five : Fintype.card (X 5) = 13 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- The stable value of stableOne is 1 for m ≥ 1. -/
+theorem stableValue_stableOne_of_ge_one (hm : 1 ≤ m) :
+    stableValue (stableOne (m := m)) = 1 :=
+  stableValue_ofNat_lt 1 (paperFib_gt_one hm)
+
+/-- |X 6| = 21. -/
+theorem card_X_six : Fintype.card (X 6) = 21 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 7| = 34. -/
+theorem card_X_seven : Fintype.card (X 7) = 34 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- stableAdd with stableNeg of y gives stableSub x y. -/
+theorem stableAdd_neg_eq_sub (x y : X m) :
+    stableAdd x (stableNeg y) = stableSub x y :=
+  rfl
+
+/-- Double negation: -(-x) = x. Proved via the additive inverse uniqueness. -/
+theorem stableNeg_neg_eq (x : X m) :
+    stableNeg (stableNeg x) = x := by
+  -- -(-x) + (-x) = 0 and x + (-x) = 0
+  -- Both are left inverses of (-x), so they must be equal.
+  have h1 := stableAdd_stableNeg (stableNeg x)
+  have h2 := stableNeg_stableAdd x
+  -- h1 : (-x) + (-(-x)) = 0, but we need -(-x) + (-x) = 0
+  rw [stableAdd_comm] at h1
+  -- So (-(-x)) + (-x) = 0 and x + (-x) = 0
+  -- (-(-x)) = x by left cancellation of (-x):
+  -- (-(-x)) + (-x) = x + (-x) → -(-x) = x
+  have h3 := stableAdd_stableNeg x
+  exact stableAdd_right_cancel (h1.trans h3.symm)
+
+/-- Negation is an involution for stableAdd: equivalent via cancellation. -/
+theorem stableNeg_add_cancel (x y : X m) :
+    stableAdd (stableNeg x) (stableAdd x y) = y := by
+  rw [← stableAdd_assoc, stableNeg_stableAdd, stableAdd_zero_left]
+
+/-- Negation distributes to subtraction: (x - y) = x + (-y) (definitional). -/
+theorem stableSub_eq_add_neg (x y : X m) : stableSub x y = stableAdd x (stableNeg y) := rfl
+
+/-- |X 8| = 55. -/
+theorem card_X_eight : Fintype.card (X 8) = 55 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 9| = 89. -/
+theorem card_X_nine : Fintype.card (X 9) = 89 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 10| = 144. -/
+theorem card_X_ten : Fintype.card (X 10) = 144 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- stableAdd with stableNeg on left cancels (named variant). -/
+theorem stableNeg_add_self (x : X m) : stableAdd (stableNeg x) x = stableZero :=
+  stableNeg_stableAdd x
+
+/-- stableAdd with self negation on right cancels (named variant). -/
+theorem stableAdd_self_neg (x : X m) : stableAdd x (stableNeg x) = stableZero :=
+  stableAdd_stableNeg x
+
 end
 
 end X

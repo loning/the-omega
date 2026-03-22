@@ -1651,6 +1651,143 @@ theorem stableValue_ring_isomorphism (m : Nat) :
     Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
   X.stableValue_isomorphism_summary m
 
+/-! ### Paper Section 4: Concrete Cardinalities -/
+
+/-- |X_1| = 2. -/
+theorem card_stable_one : Fintype.card (X 1) = 2 := X.card_X_one
+/-- |X_2| = 3. -/
+theorem card_stable_two : Fintype.card (X 2) = 3 := X.card_X_two
+/-- |X_3| = 5. -/
+theorem card_stable_three : Fintype.card (X 3) = 5 := X.card_X_three
+/-- |X_4| = 8. -/
+theorem card_stable_four : Fintype.card (X 4) = 8 := X.card_X_four
+/-- |X_5| = 13. -/
+theorem card_stable_five : Fintype.card (X 5) = 13 := X.card_X_five
+
+/-! ### Paper Section 4: Weight Structure -/
+
+/-- Weight decomposes by last bit: false preserves, true adds F_{m+1}. -/
+theorem weight_last_false {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = false) :
+    weight w = weight (truncate w) :=
+  weight_of_lastFalse h
+
+/-- Weight is positive when the last bit is true. -/
+theorem weight_positive_of_true {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = true) :
+    0 < weight w :=
+  weight_pos_of_bit_true h
+
+/-! ### Paper Section 6: stableOne Value -/
+
+/-- stableOne has value 1 for m ≥ 1 (multiplicative unit). -/
+theorem stableOne_value (hm : 1 ≤ m) :
+    stableValue (X.stableOne (m := m)) = 1 :=
+  X.stableValue_stableOne_of_ge_one hm
+
+/-! ### Paper SPG Section: Identity Observation Bound -/
+
+/-- The identity observation achieves the Bayes-optimal bound. -/
+theorem identity_observation_bayes {α : Type*} [Fintype α]
+    (μ : PMF α) (P : Set α) :
+    SPG.scanError μ id P ≤ min (SPG.setMass μ P) (SPG.setMass μ Pᶜ) :=
+  SPG.scanError_id_eq_min_setMass μ P
+
+/-- Scan error vanishes for the empty event. -/
+theorem scanError_vanishes_empty {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    SPG.scanError μ obs ∅ = 0 :=
+  SPG.scanError_empty_event μ obs
+
+/-- Scan error vanishes for the full event. -/
+theorem scanError_vanishes_full {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    SPG.scanError μ obs Set.univ = 0 :=
+  SPG.scanError_full_event μ obs
+
+/-! ### Paper Section 6: Double Negation & Additional Cardinalities -/
+
+/-- Double negation: -(-x) = x (involution property). -/
+theorem stableNeg_involution (x : X m) : X.stableNeg (X.stableNeg x) = x :=
+  X.stableNeg_neg_eq x
+
+/-- |X_6| = 21. -/
+theorem card_stable_six : Fintype.card (X 6) = 21 := X.card_X_six
+/-- |X_7| = 34. -/
+theorem card_stable_seven : Fintype.card (X 7) = 34 := X.card_X_seven
+
+/-! ### Paper SPG: Boundary Cells for Trivial Events -/
+
+/-- Empty boundary for empty event (discrete). -/
+theorem boundaryCells_vanish_empty {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) : SPG.boundaryCells μ obs ∅ = ∅ :=
+  SPG.boundaryCells_empty_event μ obs
+
+/-- Empty boundary for full event (discrete). -/
+theorem boundaryCells_vanish_full {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) : SPG.boundaryCells μ obs Set.univ = ∅ :=
+  SPG.boundaryCells_full_event μ obs
+
+/-- Observable purity for observable events (measure). -/
+theorem observable_events_are_pure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.ObservablePureMeasure μ obs (SPG.observableEvent obs A) :=
+  SPG.observablePureMeasure_of_observable μ obs A
+
+/-! ### Paper Section 4: Higher Cardinalities & Group Laws -/
+
+/-- |X_8| = 55. -/
+theorem card_stable_eight : Fintype.card (X 8) = 55 := X.card_X_eight
+/-- |X_9| = 89. -/
+theorem card_stable_nine : Fintype.card (X 9) = 89 := X.card_X_nine
+/-- |X_10| = 144. -/
+theorem card_stable_ten : Fintype.card (X 10) = 144 := X.card_X_ten
+
+/-- Negation-add cancellation: (-x) + (x + y) = y. -/
+theorem neg_add_cancellation (x y : X m) :
+    X.stableAdd (X.stableNeg x) (X.stableAdd x y) = y :=
+  X.stableNeg_add_cancel x y
+
+/-- Subtraction is addition with negation (definitional). -/
+theorem sub_is_add_neg (x y : X m) :
+    X.stableSub x y = X.stableAdd x (X.stableNeg y) :=
+  X.stableSub_eq_add_neg x y
+
+/-! ### Paper SPG: Cell Partition Named Variants -/
+
+/-- Cell event + complement = total (discrete, named). -/
+theorem cell_partition_discrete {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    SPG.cellEventMass μ obs P b + SPG.cellComplMass μ obs P b = SPG.cellMass μ obs b :=
+  SPG.cell_partition μ obs P b
+
+/-- Scan error is complement-invariant (discrete, named). -/
+theorem scanError_complement_invariant {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs Pᶜ = SPG.scanError μ obs P :=
+  SPG.scanError_compl μ obs P
+
+/-- Scan error is complement-invariant (measure, named). -/
+theorem scanError_measure_complement_invariant [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs Pᶜ = SPG.scanErrorMeasure μ obs P :=
+  SPG.scanErrorMeasure_complement μ obs P
+
+/-- Cell partition (measure, named). -/
+theorem cell_partition_measure_named [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
+    (hP : MeasurableSet P) :
+    SPG.cellEventMeasure μ obs P b + SPG.cellComplMeasure μ obs P b = SPG.cellMeasure μ obs b :=
+  SPG.cell_partition_measure μ obs P b hP
+
+/-! ### Paper Section 6: Additional Group Laws -/
+
+/-- (-x) + x = 0 (named). -/
+theorem neg_plus_self_zero (x : X m) : X.stableAdd (X.stableNeg x) x = X.stableZero :=
+  X.stableNeg_add_self x
+
+/-- x + (-x) = 0 (named). -/
+theorem self_plus_neg_zero (x : X m) : X.stableAdd x (X.stableNeg x) = X.stableZero :=
+  X.stableAdd_self_neg x
+
 end
 
 end Omega.Frontier

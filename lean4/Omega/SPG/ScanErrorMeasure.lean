@@ -807,6 +807,43 @@ theorem scanErrorMeasure_zero_measure {α β : Type*} [MeasurableSpace α] [Fint
     scanErrorMeasure 0 obs P = 0 := by
   simp [scanErrorMeasure, cellEventMeasure, cellComplMeasure]
 
+/-- Observable purity is preserved by observable events (measure). -/
+theorem observablePureMeasure_of_observable {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    ObservablePureMeasure μ obs (observableEvent obs A) :=
+  observablePureMeasure_observableEvent μ obs A
+
+/-- Cell event measure is zero for the empty event. -/
+@[simp] theorem cellEventMeasure_empty_event {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellEventMeasure μ obs ∅ b = 0 :=
+  cellEventMeasure_empty μ obs b
+
+/-- Cell complement measure is zero for the full event. -/
+@[simp] theorem cellComplMeasure_full_event {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellComplMeasure μ obs Set.univ b = 0 :=
+  cellComplMeasure_univ μ obs b
+
+/-- Scan error of complement equals scan error of original (measure, named). -/
+theorem scanErrorMeasure_complement {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs Pᶜ = scanErrorMeasure μ obs P :=
+  scanErrorMeasure_compl μ obs P
+
+/-- Boundary cells of complement equal those of original (measure, named). -/
+theorem boundaryCellsMeasure_complement {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    boundaryCellsMeasure μ obs Pᶜ = boundaryCellsMeasure μ obs P :=
+  boundaryCellsMeasure_compl μ obs P
+
+/-- Cell event + cell complement = total cell (measure, named). -/
+theorem cell_partition_measure {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
+    (hP : MeasurableSet P) :
+    cellEventMeasure μ obs P b + cellComplMeasure μ obs P b = cellMeasure μ obs b :=
+  cellEventMeasure_add_cellComplMeasure_eq_cellMeasure μ obs P b hP
+
 end
 
 end Omega.SPG
