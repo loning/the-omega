@@ -920,6 +920,18 @@ theorem cellEventMass_eq_preimage {α β : Type*} [Fintype α]
     cellEventMass μ obs P b = setMass μ (P ∩ obs ⁻¹' {b}) := by
   simp [cellEventMass, observableCell_eq_preimage]
 
+/-- Boundary cells for complement are the same as for the original (named). -/
+theorem boundary_cells_symmetric {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    (boundaryCells μ obs Pᶜ).card = (boundaryCells μ obs P).card := by
+  rw [boundaryCells_compl]
+
+/-- Observable purity is equivalent to zero boundary (named). -/
+theorem pure_iff_zero_boundary {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ObservablePure μ obs P ↔ boundaryCells μ obs P = ∅ :=
+  observablePure_iff_boundaryCells_eq_empty μ obs P
+
 end
 
 end Omega.SPG

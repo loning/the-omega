@@ -2451,6 +2451,37 @@ theorem restrict_distributes_xor (h : m ≤ n) (a b : Word n) :
     restrictWord h (xorWord a b) = xorWord (restrictWord h a) (restrictWord h b) :=
   restrictWord_xorWord h a b
 
+/-! #### Fibonacci Primality & Field Resolutions -/
+
+/-- X_1 ≅ F_2 is a field (F_2 = 2 prime). -/
+theorem X1_is_field : Nat.Prime (paperFib 2) := X.F2_is_prime
+
+/-- X_5 ≅ F_6 is a field (F_6 = 13 prime). -/
+theorem X5_is_field : Nat.Prime (paperFib 6) := X.F6_is_prime
+
+/-- X_9 ≅ F_10 is a field (F_10 = 89 prime). -/
+theorem X9_is_field : Nat.Prime (paperFib 10) := X.F10_is_prime
+
+/-- The 5 Fibonacci primes in F_2..F_11: 2, 3, 5, 13, 89. -/
+theorem fibonacci_primes_census :
+    Nat.Prime (paperFib 2) ∧ Nat.Prime (paperFib 3) ∧ Nat.Prime (paperFib 4) ∧
+    Nat.Prime (paperFib 6) ∧ Nat.Prime (paperFib 10) :=
+  X.fibonacci_prime_list
+
+/-! #### Purity & Boundary Equivalence -/
+
+/-- Purity ↔ empty boundary (discrete, named). -/
+theorem purity_iff_boundary {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.ObservablePure μ obs P ↔ SPG.boundaryCells μ obs P = ∅ :=
+  SPG.pure_iff_zero_boundary μ obs P
+
+/-- Boundary count is complement-symmetric (discrete, named). -/
+theorem boundary_count_symmetric {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    (SPG.boundaryCells μ obs Pᶜ).card = (SPG.boundaryCells μ obs P).card :=
+  SPG.boundary_cells_symmetric μ obs P
+
 end
 
 end Omega.Frontier
