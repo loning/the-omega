@@ -864,5 +864,13 @@ theorem fiber_decomposition_complete (m : Nat) :
     (∑ x : X m, (fiber x).card = 2 ^ m) :=
   ⟨word_in_unique_fiber, fiber_card_pos, fiber_card_sum_eq_pow m⟩
 
+/-- stableSub cancels on the right: (x + y) - y = x. -/
+theorem add_sub_cancel_right (x y : X m) : stableSub (stableAdd x y) y = x :=
+  stableSub_stableAdd_cancel x y
+
+/-- stableSub followed by add recovers: (x - y) + y = x. -/
+theorem sub_add_recover (x y : X m) : stableAdd (stableSub x y) y = x :=
+  stableSub_add_cancel x y
+
 end
 
