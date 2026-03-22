@@ -2482,6 +2482,29 @@ theorem boundary_count_symmetric {α β : Type*} [Fintype α] [Fintype β]
     (SPG.boundaryCells μ obs Pᶜ).card = (SPG.boundaryCells μ obs P).card :=
   SPG.boundary_cells_symmetric μ obs P
 
+/-! #### Fibonacci Composite Census -/
+
+/-- The 5 composite Fibonacci values in F_2..F_11: 8, 21, 34, 55, 144. -/
+theorem fibonacci_composites :
+    ¬ Nat.Prime (paperFib 5) ∧ ¬ Nat.Prime (paperFib 7) ∧
+    ¬ Nat.Prime (paperFib 8) ∧ ¬ Nat.Prime (paperFib 9) ∧
+    ¬ Nat.Prime (paperFib 11) :=
+  X.fibonacci_composite_list
+
+/-! #### Prefix Event Purity (Measure) -/
+
+/-- Prefix events are pure for the prefix observation (measure). -/
+theorem prefix_event_pure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.ObservablePureMeasure μ (SPG.prefixObservation h) (SPG.prefixEvent h A) :=
+  SPG.prefixEvent_is_pure μ h A
+
+/-- Prefix scan error at own resolution vanishes (measure). -/
+theorem prefix_error_vanishes_at_own [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.prefixScanErrorMeasure μ h (SPG.prefixEvent h A) = 0 :=
+  SPG.prefixScanErrorMeasure_at_own_resolution μ h A
+
 end
 
 end Omega.Frontier
