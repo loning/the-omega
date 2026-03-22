@@ -1369,6 +1369,23 @@ theorem rewrite_mass_chain_nonincreasing {a b : Rewrite.DigitCfg}
     Rewrite.mass b ≤ Rewrite.mass a :=
   Rewrite.reflTransGen_mass_le h
 
+/-! ### Paper Section 4: Weight & Append Structure -/
+
+/-- Weight is preserved under appending false (extending by zero bit). -/
+theorem weight_preserved_appendFalse (x : X m) :
+    weight (X.appendFalse x).1 = weight x.1 :=
+  weight_appendFalse x
+
+/-- Weight increases by paperFib(m+1) under appending true. -/
+theorem weight_increases_appendTrue (x : X m) (hLast : get x.1 (m - 1) = false) :
+    weight (X.appendTrue x hLast).1 = weight x.1 + paperFib (m + 1) :=
+  weight_appendTrue x hLast
+
+/-- The constant observation has a single cell covering everything. -/
+theorem constant_observation_cell (c : β) :
+    SPG.observableCell (fun _ : α => c) c = Set.univ :=
+  SPG.observableCell_const_eq_univ c
+
 end
 
 end Omega.Frontier
