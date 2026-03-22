@@ -190,4 +190,47 @@ theorem fromWordSet_mono {A B : Set (Word m)} (h : A ⊆ B) :
 @[simp] theorem fromWordSet_univ : fromWordSet (Set.univ : Set (Word m)) = Set.univ := by
   ext x; simp [fromWordSet]
 
+/-- The prefix σ-algebra at depth m: the collection of prefix-determined sets. -/
+def prefixAlgebra (m : Nat) : Set (Set OmegaInfinity) :=
+  {s | PrefixDetermined s m}
+
+/-- The prefix σ-algebra chain is monotone: coarser depth ⊆ finer algebra.
+    Sets determined at depth m are also determined at depth n ≥ m. -/
+theorem prefixAlgebra_monotone {m n : Nat} (h : m ≤ n) :
+    prefixAlgebra m ⊆ prefixAlgebra n := by
+  intro s hs
+  exact prefixDetermined_of_le h hs
+
+/-- The prefix σ-algebra at depth 0 contains only ∅ and univ. -/
+theorem prefixAlgebra_zero_trivial :
+    prefixAlgebra 0 = {∅, Set.univ} := by
+  ext s
+  simp [prefixAlgebra]
+  exact prefixDetermined_zero_iff s
+
+/-- Empty set is in every prefix algebra. -/
+theorem empty_mem_prefixAlgebra (m : Nat) : ∅ ∈ prefixAlgebra m :=
+  prefixDetermined_empty m
+
+/-- Universal set is in every prefix algebra. -/
+theorem univ_mem_prefixAlgebra (m : Nat) : Set.univ ∈ prefixAlgebra m :=
+  prefixDetermined_univ m
+
+/-- The prefix algebra is closed under complement. -/
+theorem prefixAlgebra_compl_closed {s : Set OmegaInfinity} {m : Nat}
+    (hs : s ∈ prefixAlgebra m) : sᶜ ∈ prefixAlgebra m :=
+  prefixDetermined_compl hs
+
+/-- The prefix algebra is closed under intersection. -/
+theorem prefixAlgebra_inter_closed {s t : Set OmegaInfinity} {m : Nat}
+    (hs : s ∈ prefixAlgebra m) (ht : t ∈ prefixAlgebra m) :
+    s ∩ t ∈ prefixAlgebra m :=
+  prefixDetermined_inter hs ht
+
+/-- The prefix algebra is closed under union. -/
+theorem prefixAlgebra_union_closed {s t : Set OmegaInfinity} {m : Nat}
+    (hs : s ∈ prefixAlgebra m) (ht : t ∈ prefixAlgebra m) :
+    s ∪ t ∈ prefixAlgebra m :=
+  prefixDetermined_union hs ht
+
 end Omega.SPG

@@ -705,6 +705,22 @@ theorem ringIsoCert_injective (m : Nat) :
     Function.Injective (stableValue (m := m)) :=
   (ringIsoCert m).injective
 
+/-- Partition X_m into even-value and odd-value elements. -/
+noncomputable def evenElements (m : Nat) : Finset (X m) := by
+  classical
+  exact Finset.univ.filter (fun x => stableValue x % 2 = 0)
+
+/-- Partition X_m into odd-value elements. -/
+noncomputable def oddElements (m : Nat) : Finset (X m) := by
+  classical
+  exact Finset.univ.filter (fun x => stableValue x % 2 = 1)
+
+/-- Even and odd elements partition X_m (disjointness). -/
+theorem even_odd_disjoint (m : Nat) :
+    Disjoint (evenElements m) (oddElements m) := by
+  classical
+  exact Finset.disjoint_filter.2 (fun x _ h1 h2 => by omega)
+
 end
 
 end X

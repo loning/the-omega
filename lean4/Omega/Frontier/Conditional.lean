@@ -1997,6 +1997,42 @@ theorem zeckendorf_determines_value {x y : X m}
     (h : X.zeckIndices x = X.zeckIndices y) : stableValue x = stableValue y :=
   X.stableValue_eq_of_zeckIndices_eq h
 
+/-! ### Plan 8: Even/Odd Fiber Partition -/
+
+/-- Even and odd value elements of X_m are disjoint. -/
+theorem even_odd_elements_disjoint (m : Nat) :
+    Disjoint (X.evenElements m) (X.oddElements m) :=
+  X.even_odd_disjoint m
+
+/-! ### Plan 24: Prefix σ-Algebra Chain -/
+
+/-- The prefix algebra is monotone: determined at m ⇒ determined at n ≥ m. -/
+theorem prefix_algebra_monotone {m n : Nat} (h : m ≤ n) :
+    SPG.prefixAlgebra m ⊆ SPG.prefixAlgebra n :=
+  SPG.prefixAlgebra_monotone h
+
+/-- The prefix algebra at depth 0 is trivial: {∅, univ}. -/
+theorem prefix_algebra_trivial_at_zero :
+    SPG.prefixAlgebra 0 = {∅, Set.univ} :=
+  SPG.prefixAlgebra_zero_trivial
+
+/-- The prefix algebra is a Boolean algebra (complement closed). -/
+theorem prefix_algebra_complement_closed {s : Set SPG.OmegaInfinity} {m : Nat}
+    (hs : s ∈ SPG.prefixAlgebra m) : sᶜ ∈ SPG.prefixAlgebra m :=
+  SPG.prefixAlgebra_compl_closed hs
+
+/-- The prefix algebra is a Boolean algebra (intersection closed). -/
+theorem prefix_algebra_inter_closed {s t : Set SPG.OmegaInfinity} {m : Nat}
+    (hs : s ∈ SPG.prefixAlgebra m) (ht : t ∈ SPG.prefixAlgebra m) :
+    s ∩ t ∈ SPG.prefixAlgebra m :=
+  SPG.prefixAlgebra_inter_closed hs ht
+
+/-- The prefix algebra is a Boolean algebra (union closed). -/
+theorem prefix_algebra_union_closed {s t : Set SPG.OmegaInfinity} {m : Nat}
+    (hs : s ∈ SPG.prefixAlgebra m) (ht : t ∈ SPG.prefixAlgebra m) :
+    s ∪ t ∈ SPG.prefixAlgebra m :=
+  SPG.prefixAlgebra_union_closed hs ht
+
 end
 
 end Omega.Frontier
