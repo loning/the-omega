@@ -844,6 +844,34 @@ theorem cell_partition_measure {α β : Type*} [MeasurableSpace α]
     cellEventMeasure μ obs P b + cellComplMeasure μ obs P b = cellMeasure μ obs b :=
   cellEventMeasure_add_cellComplMeasure_eq_cellMeasure μ obs P b hP
 
+/-- Scan error under a general finite measure is bounded by min of event and complement
+    cell sums (Bayes bound for general measures, Plan 17/18). -/
+theorem scanErrorMeasure_bayes_general {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P ≤ min
+        (∑ b, cellEventMeasure μ obs P b) (∑ b, cellComplMeasure μ obs P b) :=
+  scanErrorMeasure_le_min μ obs P
+
+/-- Scan error is bounded by the event measure (with measurability). -/
+theorem scanErrorMeasure_le_event_measure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    scanErrorMeasure μ obs P ≤ μ P := by
+  calc scanErrorMeasure μ obs P
+      ≤ ∑ b, cellEventMeasure μ obs P b := scanErrorMeasure_le_cellEventSum μ obs P
+    _ = μ P := cellEventMeasure_sum μ obs hObs P hP
+
+/-- Scan error is bounded by the complement measure (with measurability). -/
+theorem scanErrorMeasure_le_compl_measure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    scanErrorMeasure μ obs P ≤ μ Pᶜ := by
+  calc scanErrorMeasure μ obs P
+      ≤ ∑ b, cellComplMeasure μ obs P b := scanErrorMeasure_le_cellComplSum μ obs P
+    _ = μ Pᶜ := cellComplMeasure_sum μ obs hObs P hP
+
 end
 
 end Omega.SPG

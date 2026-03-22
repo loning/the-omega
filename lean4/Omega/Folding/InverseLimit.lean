@@ -153,6 +153,26 @@ theorem CompatibleFamily.ext {F G : CompatibleFamily} (h : ∀ m, F.seq m = G.se
   subst this
   rfl
 
+/-- The prefix word at resolution m is determined by the first m bits. -/
+theorem prefixWord_apply (a : XInfinity) (m : Nat) (i : Fin m) :
+    (prefixWord a m).1 i = a.1 i.1 := rfl
+
+/-- Two infinite stable words agree on all prefixes iff they are equal (extensionality, named). -/
+theorem XInfinity_eq_iff (a b : XInfinity) :
+    a = b ↔ ∀ m, prefixWord a m = prefixWord b m :=
+  ⟨fun h => by rw [h]; intro _; rfl, XInfinity_ext⟩
+
+/-- The inverse limit is a concrete realization of the projective limit
+    of the system (X_m, restrict). -/
+theorem inverseLimitEquiv_left_inv (F : CompatibleFamily) :
+    toFamily (ofFamily F) = F :=
+  toFamily_ofFamily F
+
+/-- The inverse limit is a concrete realization of the projective limit. -/
+theorem inverseLimitEquiv_right_inv (a : XInfinity) :
+    ofFamily (toFamily a) = a :=
+  ofFamily_toFamily a
+
 end X
 
 end Omega

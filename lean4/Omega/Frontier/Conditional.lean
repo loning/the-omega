@@ -2059,6 +2059,41 @@ theorem stable_is_sofic (x : X m) :
     Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false x.1 :=
   Omega.Graph.stable_word_is_accepted x
 
+/-! ### Plans 17/18: Measure-Level Scan Error Bounds -/
+
+/-- Scan error ≤ event measure (with measurability). -/
+theorem scanError_measure_le_event [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    SPG.scanErrorMeasure μ obs P ≤ μ P :=
+  SPG.scanErrorMeasure_le_event_measure μ obs hObs P hP
+
+/-- Scan error ≤ complement measure (with measurability). -/
+theorem scanError_measure_le_complement [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    SPG.scanErrorMeasure μ obs P ≤ μ Pᶜ :=
+  SPG.scanErrorMeasure_le_compl_measure μ obs hObs P hP
+
+/-! ### Plan 23: Inverse Limit Structure -/
+
+/-- Infinite stable words are determined by their prefix sequence. -/
+theorem inverse_limit_extensionality (a b : X.XInfinity) :
+    a = b ↔ ∀ m, X.prefixWord a m = X.prefixWord b m :=
+  X.XInfinity_eq_iff a b
+
+/-- The inverse limit equivalence round-trips (left). -/
+theorem inverse_limit_round_left (F : X.CompatibleFamily) :
+    X.toFamily (X.ofFamily F) = F :=
+  X.inverseLimitEquiv_left_inv F
+
+/-- The inverse limit equivalence round-trips (right). -/
+theorem inverse_limit_round_right (a : X.XInfinity) :
+    X.ofFamily (X.toFamily a) = a :=
+  X.inverseLimitEquiv_right_inv a
+
 end
 
 end Omega.Frontier
