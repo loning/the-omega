@@ -1732,6 +1732,25 @@ theorem observable_events_are_pure [MeasurableSpace α] [Fintype β]
     SPG.ObservablePureMeasure μ obs (SPG.observableEvent obs A) :=
   SPG.observablePureMeasure_of_observable μ obs A
 
+/-! ### Paper Section 4: Higher Cardinalities & Group Laws -/
+
+/-- |X_8| = 55. -/
+theorem card_stable_eight : Fintype.card (X 8) = 55 := X.card_X_eight
+/-- |X_9| = 89. -/
+theorem card_stable_nine : Fintype.card (X 9) = 89 := X.card_X_nine
+/-- |X_10| = 144. -/
+theorem card_stable_ten : Fintype.card (X 10) = 144 := X.card_X_ten
+
+/-- Negation-add cancellation: (-x) + (x + y) = y. -/
+theorem neg_add_cancellation (x y : X m) :
+    X.stableAdd (X.stableNeg x) (X.stableAdd x y) = y :=
+  X.stableNeg_add_cancel x y
+
+/-- Subtraction is addition with negation (definitional). -/
+theorem sub_is_add_neg (x y : X m) :
+    X.stableSub x y = X.stableAdd x (X.stableNeg y) :=
+  X.stableSub_eq_add_neg x y
+
 end
 
 end Omega.Frontier

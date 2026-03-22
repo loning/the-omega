@@ -594,6 +594,26 @@ theorem stableNeg_neg_eq (x : X m) :
   have h3 := stableAdd_stableNeg x
   exact stableAdd_right_cancel (h1.trans h3.symm)
 
+/-- Negation is an involution for stableAdd: equivalent via cancellation. -/
+theorem stableNeg_add_cancel (x y : X m) :
+    stableAdd (stableNeg x) (stableAdd x y) = y := by
+  rw [← stableAdd_assoc, stableNeg_stableAdd, stableAdd_zero_left]
+
+/-- Negation distributes to subtraction: (x - y) = x + (-y) (definitional). -/
+theorem stableSub_eq_add_neg (x y : X m) : stableSub x y = stableAdd x (stableNeg y) := rfl
+
+/-- |X 8| = 55. -/
+theorem card_X_eight : Fintype.card (X 8) = 55 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 9| = 89. -/
+theorem card_X_nine : Fintype.card (X 9) = 89 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 10| = 144. -/
+theorem card_X_ten : Fintype.card (X 10) = 144 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
 end
 
 end X
