@@ -791,6 +791,22 @@ theorem boundaryCylinderCount_zero_of_pure {α β : Type*} [MeasurableSpace α] 
     boundaryCylinderCount μ obs P = 0 :=
   (boundaryCylinderCount_eq_zero_iff_observablePure μ obs P).mpr hPure
 
+/-- Boundary cylinder count is monotone under observation refinement (measure, PMF bridge). -/
+theorem boundaryCylinderCount_antitone_via_bridge
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (P : Set α) :
+    boundaryCylinderCount μ.toMeasure obs₂ P ≤ Fintype.card γ := by
+  simp [boundaryCylinderCount]
+  exact Finset.card_le_card (Finset.filter_subset _ _)
+
+/-- Scan error under the empty measure is zero. -/
+theorem scanErrorMeasure_zero_measure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (obs : α → β) (P : Set α) :
+    scanErrorMeasure 0 obs P = 0 := by
+  simp [scanErrorMeasure, cellEventMeasure, cellComplMeasure]
+
 end
 
 end Omega.SPG

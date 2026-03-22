@@ -97,4 +97,12 @@ theorem carryIndicator_one_of_ge (x y : X (m + 1))
     carryIndicator x y = 1 := by
   simp [carryIndicator, h]
 
+/-- stableValue of the empty word is 0. -/
+@[simp] theorem stableValue_empty : stableValue (X.empty : X 0) = 0 := by
+  simp [stableValue, weight]
+
+/-- stableValue is nonneg (trivially, since it's a Nat). -/
+theorem stableValue_nonneg (x : X m) : 0 ≤ stableValue x :=
+  Nat.zero_le _
+
 end Omega

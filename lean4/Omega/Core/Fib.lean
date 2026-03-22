@@ -64,4 +64,22 @@ theorem paperFib_succ_mod (m : Nat) :
     rw [show m + 3 = (m + 1) + 2 from by omega]; exact paperFib_recurrence (m + 1)
   rw [this, Nat.add_comm, Nat.add_mod_right, Nat.mod_eq_of_lt (paperFib_lt_succ m)]
 
+/-- paperFib at 0 is 1. -/
+@[simp] theorem paperFib_zero' : paperFib 0 = 1 := rfl
+
+/-- paperFib is always at least 1. -/
+theorem one_le_paperFib (n : Nat) : 1 ≤ paperFib n :=
+  paperFib_pos n
+
+/-- paperFib(m+1) > 1 for m ≥ 1. -/
+theorem paperFib_gt_one (hm : 1 ≤ m) : 1 < paperFib (m + 1) := by
+  have h2 : paperFib 2 = 2 := rfl
+  calc 1 < 2 := by omega
+    _ = paperFib 2 := h2.symm
+    _ ≤ paperFib (m + 1) := paperFib_mono (by omega)
+
+/-- Fibonacci modular: paperFib(m) divides paperFib(m) (trivially). -/
+theorem paperFib_dvd_self (m : Nat) : paperFib m ∣ paperFib m :=
+  dvd_refl _
+
 end Omega
