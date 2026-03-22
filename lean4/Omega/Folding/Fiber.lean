@@ -801,6 +801,16 @@ theorem stableValue_appendTrue' (x : X m) (h : get x.1 (m - 1) = false) :
     stableValue (X.appendTrue x h) = stableValue x + paperFib (m + 1) :=
   stableValue_appendTrue x h
 
+/-- The stable value of the zero element at any resolution. -/
+theorem stableValue_zero_eq : stableValue (stableZero (m := m)) = 0 :=
+  stableValue_stableZero
+
+/-- Fiber partition is complete: every word is in exactly one fiber. -/
+theorem word_in_unique_fiber (w : Word m) :
+    ∃! x : X m, w ∈ fiber x := by
+  classical
+  exact ⟨Fold w, mem_fiber_Fold w, fun y hy => (mem_fiber.1 hy).symm⟩
+
 end
 
 end X

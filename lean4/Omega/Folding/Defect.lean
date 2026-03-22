@@ -329,4 +329,20 @@ theorem xorWord_left_cancel {a b c : Word m} (h : xorWord a b = xorWord a c) : b
   simp only [← xorWord_assoc, xorWord_self, xorWord_zero_left] at this
   exact this
 
+/-- xorWord is right-cancellative. -/
+theorem xorWord_right_cancel {a b c : Word m} (h : xorWord b a = xorWord c a) : b = c := by
+  have := congr_arg (fun w => xorWord w a) h
+  simp only [xorWord_xor_cancel_right] at this
+  exact this
+
+/-- The local defect is determined by the truncation and the Fold result. -/
+theorem localDefect_determined (η : Word (m + 1)) :
+    localDefect η = xorWord (Fold (truncate η)).1 (X.restrict (Fold η)).1 :=
+  rfl
+
+/-- The global defect is determined by the restriction and the Fold result. -/
+theorem globalDefect_determined (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = xorWord (Fold (restrictWord h ω)).1 (X.restrictLE h (Fold ω)).1 :=
+  rfl
+
 end Omega
