@@ -932,6 +932,21 @@ theorem stableMul_no_zero_divisor_of_prime (hPrime : Nat.Prime (paperFib (m + 1)
   · exact hValX (Nat.eq_zero_of_dvd_of_lt hDvdX (stableValue_lt_paperFib_succ x))
   · exact hValY (Nat.eq_zero_of_dvd_of_lt hDvdY (stableValue_lt_paperFib_succ y))
 
+/-- Concrete: F_3 = 3 is prime, so X_2 ≅ F_3 is a field. -/
+theorem X2_is_integral_domain : Nat.Prime (paperFib 3) := by decide
+
+/-- Concrete: F_5 = 8 is NOT prime (2^3). -/
+theorem F5_not_prime : ¬ Nat.Prime (paperFib 5) := by decide
+
+/-- Concrete: F_7 = 21 is NOT prime (3 × 7). -/
+theorem F7_not_prime : ¬ Nat.Prime (paperFib 7) := by decide
+
+/-- Concrete: F_11 = 144 is NOT prime (2^4 × 3^2). -/
+theorem F11_not_prime : ¬ Nat.Prime (paperFib 11) := by decide
+
+/-- Concrete: F_4 = 5 is prime. -/
+theorem F4_is_prime : Nat.Prime (paperFib 4) := by decide
+
 end
 
 end X
