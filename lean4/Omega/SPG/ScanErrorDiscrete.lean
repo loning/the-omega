@@ -932,6 +932,17 @@ theorem pure_iff_zero_boundary {α β : Type*} [Fintype α] [Fintype β]
     ObservablePure μ obs P ↔ boundaryCells μ obs P = ∅ :=
   observablePure_iff_boundaryCells_eq_empty μ obs P
 
+/-- Scan error bounded by total mass (trivially ≤ 1 for PMF). -/
+theorem scanError_le_one {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P ≤ 1 := by
+  calc scanError μ obs P
+      ≤ min (setMass μ P) (setMass μ Pᶜ) := scanError_le_min_setMass μ obs P
+    _ ≤ setMass μ P := min_le_left _ _
+    _ ≤ setMass μ Set.univ := setMass_mono μ (Set.subset_univ _)
+    _ ≤ ∑ x, (μ x : ENNReal) := by simp [setMass, Set.indicator_univ]
+    _ = 1 := PMF_sum_coe_eq_one μ
+
 end
 
 end Omega.SPG

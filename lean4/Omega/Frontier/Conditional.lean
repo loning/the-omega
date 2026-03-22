@@ -2541,6 +2541,14 @@ theorem fromWordSet_complement_clopen (A : Set (Word m)) :
     IsClopen (SPG.fromWordSet Aᶜ) :=
   SPG.fromWordSet_compl_is_clopen A
 
+/-! #### Scan Error Global Bound -/
+
+/-- Scan error is always ≤ 1 for a PMF. -/
+theorem scan_error_le_one {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P ≤ 1 :=
+  SPG.scanError_le_one μ obs P
+
 end
 
 end Omega.Frontier
