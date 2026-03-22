@@ -980,6 +980,26 @@ theorem stableValue_lt_pow (x : X m) : stableValue x < 2 ^ m := by
   exact Nat.lt_of_lt_of_le (stableValue_lt_paperFib_succ x) (paperFib_le_pow m)
 
 
+/-- stableValue determines ofNat on valid inputs. -/
+theorem ofNat_of_stableValue (x : X m) :
+    X.ofNat m (stableValue x) = x :=
+  X.ofNat_stableValue x
+
+/-- Fold composed with stableValue gives back the original value. -/
+theorem Fold_stableValue_roundtrip (x : X m) :
+    stableValue (Fold x.1) = stableValue x := by
+  rw [Fold_stable]
+
+/-- stableAdd preserves the bound: if both < F, sum mod F < F. -/
+theorem stableAdd_value_bound (x y : X m) :
+    stableValue (stableAdd x y) < paperFib (m + 1) :=
+  stableValue_lt_paperFib_succ _
+
+/-- stableMul preserves the bound. -/
+theorem stableMul_value_bound (x y : X m) :
+    stableValue (stableMul x y) < paperFib (m + 1) :=
+  stableValue_lt_paperFib_succ _
+
 end
 
 end X
