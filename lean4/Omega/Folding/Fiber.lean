@@ -739,6 +739,24 @@ theorem modularProject_surjective (m : Nat) :
   rw [stableValue_modularProject, stableValue_restrict_appendFalse,
     Nat.mod_eq_of_lt (stableValue_lt_paperFib_succ y)]
 
+/-- The stable semiring has a well-defined characteristic: paperFib(m+1). -/
+theorem stableAdd_characteristic (x : X m) :
+    (Finset.range (paperFib (m + 1))).sum (fun _ => stableValue x) % paperFib (m + 1) = 0 := by
+  simp [Finset.sum_const, Nat.mul_mod_right]
+
+/-- stableAdd is idempotent on zero: 0 + 0 = 0. -/
+theorem stableAdd_zero_zero : stableAdd (stableZero (m := m)) stableZero = stableZero :=
+  stableAdd_zero_left stableZero
+
+/-- stableMul is idempotent on zero: 0 * 0 = 0. -/
+theorem stableMul_zero_zero : stableMul (stableZero (m := m)) stableZero = stableZero :=
+  stableMul_zero_left stableZero
+
+/-- stableMul is idempotent on one (when F_{m+2} > 1): 1 * 1 = 1. -/
+theorem stableMul_one_one (hm : 1 < paperFib (m + 1)) :
+    stableMul (stableOne (m := m)) stableOne = stableOne := by
+  exact stableMul_one_left hm stableOne
+
 end
 
 end X

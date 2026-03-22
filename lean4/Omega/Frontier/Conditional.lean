@@ -2154,6 +2154,37 @@ theorem defect_chain_recursion (m k : Nat) (ω : Word (m + k + 1)) :
         (defectChain m k (truncate ω)) :=
   defectChain_succ m k ω
 
+/-! ### Measure Min Bound & Boundary Count -/
+
+/-- Scan error ≤ min(μ(P), μ(Pᶜ)) with measurability. -/
+theorem scan_error_measure_min_bound [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    SPG.scanErrorMeasure μ obs P ≤ min (μ P) (μ Pᶜ) :=
+  SPG.scanErrorMeasure_le_min_event_compl μ obs hObs P hP
+
+/-- Observable events have zero boundary count (measure, named). -/
+theorem boundary_zero_for_observable [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.boundaryCylinderCount μ obs (SPG.observableEvent obs A) = 0 :=
+  SPG.boundaryCylinderCount_observable_zero μ obs A
+
+/-! ### Ring Idempotents -/
+
+/-- 0 + 0 = 0 in the stable ring. -/
+theorem zero_plus_zero : X.stableAdd (X.stableZero (m := m)) X.stableZero = X.stableZero :=
+  X.stableAdd_zero_zero
+
+/-- 0 * 0 = 0 in the stable ring. -/
+theorem zero_times_zero : X.stableMul (X.stableZero (m := m)) X.stableZero = X.stableZero :=
+  X.stableMul_zero_zero
+
+/-- 1 * 1 = 1 in the stable ring (for m ≥ 1). -/
+theorem one_times_one (hm : 1 < paperFib (m + 1)) :
+    X.stableMul (X.stableOne (m := m)) X.stableOne = X.stableOne :=
+  X.stableMul_one_one hm
+
 end
 
 end Omega.Frontier

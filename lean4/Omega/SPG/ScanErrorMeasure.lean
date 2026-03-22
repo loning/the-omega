@@ -872,6 +872,27 @@ theorem scanErrorMeasure_le_compl_measure {α β : Type*} [MeasurableSpace α] [
       ≤ ∑ b, cellComplMeasure μ obs P b := scanErrorMeasure_le_cellComplSum μ obs P
     _ = μ Pᶜ := cellComplMeasure_sum μ obs hObs P hP
 
+/-- Scan error bounded by min of event and complement measures (with measurability). -/
+theorem scanErrorMeasure_le_min_event_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    scanErrorMeasure μ obs P ≤ min (μ P) (μ Pᶜ) :=
+  le_min (scanErrorMeasure_le_event_measure μ obs hObs P hP)
+    (scanErrorMeasure_le_compl_measure μ obs hObs P hP)
+
+/-- Scan error is non-negative (trivially for ENNReal). -/
+theorem scanErrorMeasure_nonneg {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    0 ≤ scanErrorMeasure μ obs P :=
+  bot_le
+
+/-- Observable events have zero boundary count (measure, named). -/
+theorem boundaryCylinderCount_observable_zero {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    boundaryCylinderCount μ obs (observableEvent obs A) = 0 :=
+  boundaryCylinderCount_observableEvent_eq_zero μ obs A
+
 end
 
 end Omega.SPG
