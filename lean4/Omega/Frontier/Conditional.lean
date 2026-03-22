@@ -934,6 +934,25 @@ theorem prefixScanError_measure_antitone_via_bridge {m₁ m₂ n : Nat}
     SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError]
   exact SPG.prefixScanError_antitone μ h₁ h₂ hm P
 
+/-! ### Paper Proposition 3.x: Bayes Half-Bound -/
+
+/-- Event mass + complement mass = total PMF mass (discrete partition). -/
+theorem setMass_partition_discrete {α β : Type*} [Fintype α]
+    (μ : PMF α) (P : Set α) :
+    SPG.setMass μ P + SPG.setMass μ Pᶜ = ∑ x, (μ x : ENNReal) :=
+  SPG.setMass_add_setMass_compl μ P
+
+/-- Total PMF mass over a Fintype is 1. -/
+theorem PMF_total_mass_one {α : Type*} [Fintype α] (μ : PMF α) :
+    ∑ x, (μ x : ENNReal) = 1 :=
+  SPG.PMF_sum_coe_eq_one μ
+
+/-- Scan error is bounded by 1/2 for any PMF: 2 · ε ≤ 1 (paper Bayes optimality bound). -/
+theorem scanError_bayes_half_bound {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    2 * SPG.scanError μ obs P ≤ 1 :=
+  SPG.two_mul_scanError_le_one μ obs P
+
 /-! ### Paper Theorem 6.1: Stable Value Bound & Arithmetic -/
 
 /-- Stable values are strictly bounded by the Fibonacci cardinality (paper Theorem 6.1). -/

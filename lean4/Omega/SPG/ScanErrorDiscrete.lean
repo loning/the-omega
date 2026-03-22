@@ -593,6 +593,27 @@ theorem setMass_add_setMass_compl {α : Type*} [Fintype α] (μ : PMF α) (P : S
   · simp [Set.indicator, hx]
   · simp [Set.indicator, hx]
 
+/-- Total probability mass of a PMF over a Fintype is 1. -/
+theorem PMF_sum_coe_eq_one {α : Type*} [Fintype α] (μ : PMF α) :
+    ∑ x, (μ x : ENNReal) = 1 := by
+  have h := μ.tsum_coe
+  rw [ENNReal.tsum_eq_iSup_sum] at h
+  exact le_antisymm
+    (by rw [← h]; exact le_iSup (fun s : Finset α => ∑ a ∈ s, (μ a : ENNReal)) Finset.univ)
+    (by rw [← h]; exact iSup_le fun s => Finset.sum_le_sum_of_subset (Finset.subset_univ s))
+
+/-- Scan error is at most half for a PMF: 2 · ε(P; μ) ≤ 1. -/
+theorem two_mul_scanError_le_one {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    2 * scanError μ obs P ≤ 1 := by
+  calc 2 * scanError μ obs P
+      ≤ 2 * min (setMass μ P) (setMass μ Pᶜ) := by
+        exact mul_le_mul_of_nonneg_left (scanError_le_min_setMass μ obs P) (by norm_num)
+    _ = min (setMass μ P) (setMass μ Pᶜ) + min (setMass μ P) (setMass μ Pᶜ) := two_mul _
+    _ ≤ setMass μ P + setMass μ Pᶜ := add_le_add (min_le_left _ _) (min_le_right _ _)
+    _ = ∑ x, (μ x : ENNReal) := setMass_add_setMass_compl μ P
+    _ = 1 := PMF_sum_coe_eq_one μ
+
 end
 
 end Omega.SPG
