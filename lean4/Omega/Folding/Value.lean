@@ -59,4 +59,20 @@ theorem stableValue_lt_paperFib_succ : ∀ {m : Nat}, (x : X m) → stableValue 
         (paperFib_le_succ (n + 1))
 
 
+/-- The stable value decomposes as: restrict's value + last bit contribution. -/
+theorem stableValue_eq_restrict_add_last (x : X (m + 1)) :
+    stableValue x = stableValue (X.restrict x) +
+      (if x.1 ⟨m, Nat.lt_succ_self m⟩ = true then paperFib (m + 1) else 0) := by
+  simp [stableValue, weight, X.restrict]
+
+/-- The stable value of restrict x is at most stableValue x. -/
+theorem stableValue_restrict_le (x : X (m + 1)) :
+    stableValue (X.restrict x) ≤ stableValue x := by
+  rw [stableValue_eq_restrict_add_last]
+  exact Nat.le_add_right _ _
+
+/-- The carry indicator for stable addition at resolution m+1. -/
+def carryIndicator (x y : X (m + 1)) : Nat :=
+  if stableValue x + stableValue y ≥ paperFib (m + 2) then 1 else 0
+
 end Omega

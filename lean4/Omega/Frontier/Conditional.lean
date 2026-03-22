@@ -1386,6 +1386,30 @@ theorem constant_observation_cell (c : β) :
     SPG.observableCell (fun _ : α => c) c = Set.univ :=
   SPG.observableCell_const_eq_univ c
 
+/-! ### Paper POM Section: Carry Defect Structure -/
+
+/-- stableValue decomposes as restrict value + last bit contribution. -/
+theorem stableValue_last_bit_decomposition (x : X (m + 1)) :
+    stableValue x = stableValue (X.restrict x) +
+      (if x.1 ⟨m, Nat.lt_succ_self m⟩ = true then paperFib (m + 1) else 0) :=
+  stableValue_eq_restrict_add_last x
+
+/-- The carry indicator is bounded by 1. -/
+theorem carry_indicator_bounded (x y : X (m + 1)) :
+    carryIndicator x y ≤ 1 :=
+  X.carryIndicator_le_one x y
+
+/-! ### Paper InverseLimit: Extensionality -/
+
+/-- Infinite stable words are uniquely determined by their prefixes. -/
+theorem XInfinity_uniqueness {a b : X.XInfinity} (h : ∀ m, X.prefixWord a m = X.prefixWord b m) :
+    a = b :=
+  X.XInfinity_ext h
+
+/-- Zeckendorf indices have length at most m. -/
+theorem zeckIndices_bounded (x : X m) : (X.zeckIndices x).length ≤ m :=
+  X.zeckIndices_length_le x
+
 end
 
 end Omega.Frontier

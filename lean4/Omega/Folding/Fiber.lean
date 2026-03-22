@@ -372,6 +372,23 @@ theorem stableValue_mul_mod (x y : X m) :
       (stableValue x * stableValue y) % paperFib (m + 1) := by
   rw [stableValue_stableMul, Nat.mod_mod_of_dvd _ (dvd_refl _)]
 
+/-- The carry element at resolution m: χ^car_m = ofNat m (fib(m+2)). -/
+noncomputable def carryElement (m : Nat) : X m :=
+  X.ofNat m (Nat.fib (m + 2))
+
+/-- The carry element value: stableValue(χ^car_m) = fib(m+2) mod F_{m+2}.
+    Note: fib(m+2) = paperFib(m+1), so this wraps to fib(m+2) when < F_{m+2},
+    which holds for m ≥ 1 since fib(m+2) < fib(m+3) = paperFib(m+2). -/
+theorem stableValue_carryElement (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
+    stableValue (carryElement m) = Nat.fib (m + 2) :=
+  stableValue_ofNat_lt _ hm
+
+/-- The carry indicator is 0 or 1. -/
+theorem carryIndicator_le_one (x y : X (m + 1)) :
+    carryIndicator x y ≤ 1 := by
+  unfold carryIndicator
+  split <;> omega
+
 end
 
 end X
