@@ -863,6 +863,15 @@ theorem stableAdd_bijective (x : X m) : Function.Bijective (stableAdd x) :=
   ⟨stableAdd_injective_right x,
    fun y => ⟨stableSub y x, by rw [stableAdd_comm]; exact stableSub_add_cancel y x⟩⟩
 
+
+/-- stableSub with zero on the right: x - 0 = x. -/
+theorem stableSub_zero (x : X m) : stableSub x stableZero = x := by
+  rw [stableSub, stableNeg_zero, stableAdd_zero_right]
+
+/-- stableSub with zero on the left: 0 - x = -x. -/
+theorem zero_stableSub (x : X m) : stableSub stableZero x = stableNeg x := by
+  rw [stableSub, stableAdd_zero_left]
+
 end
 
 end X
