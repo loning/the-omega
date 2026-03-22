@@ -1868,6 +1868,34 @@ theorem stable_language_is_sofic (m : Nat) :
       {w : Word m | Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w} :=
   Omega.Graph.stableLanguage_eq_goldenMean m
 
+/-! ### Paper Section 3: Observation Refinement & Half-Bound Summary -/
+
+/-- Finer observation ⇒ lower scan error (discrete, summary). -/
+theorem observation_refinement_reduces_error
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (P : Set α) :
+    SPG.scanError μ obs₂ P ≤ SPG.scanError μ obs₁ P :=
+  SPG.scanError_antitone_of_refines μ obs₁ obs₂ f hRef P
+
+/-- Prefix scan error monotonically decreases with resolution (discrete, summary). -/
+theorem prefix_resolution_decreases_error {m₁ m₂ n : Nat}
+    (μ : PMF (Word n)) (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂)
+    (P : Set (Word n)) :
+    SPG.prefixScanError μ h₂ P ≤ SPG.prefixScanError μ h₁ P :=
+  SPG.prefixScanError_antitone μ h₁ h₂ hm P
+
+/-- Discrete Bayes half-bound: 2ε ≤ 1 for any PMF. -/
+theorem discrete_bayes_half_bound {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    2 * SPG.scanError μ obs P ≤ 1 :=
+  SPG.two_mul_scanError_le_one μ obs P
+
+/-- Prefix scan error complement invariance (discrete, summary). -/
+theorem prefix_complement_invariance (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanError μ h Pᶜ = SPG.prefixScanError μ h P :=
+  SPG.prefixScanError_compl μ h P
+
 end
 
 end Omega.Frontier
