@@ -941,6 +941,18 @@ theorem scanError_measure_full {α β : Type*} [MeasurableSpace α] [Fintype β]
     scanErrorMeasure μ obs Set.univ = 0 :=
   scanErrorMeasure_univ μ obs
 
+/-- Observable event as preimage (measure version). -/
+theorem observableEvent_eq_preimage_measure {α β : Type*} (obs : α → β) (A : Set β) :
+    observableEvent obs A = obs ⁻¹' A := by
+  ext x; simp [observableEvent, Set.mem_preimage]
+
+/-- Cell event measure depends only on the intersection with the cell. -/
+theorem cellEventMeasure_depends_on_inter {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) {P Q : Set α} (b : β)
+    (h : P ∩ observableCell obs b = Q ∩ observableCell obs b) :
+    cellEventMeasure μ obs P b = cellEventMeasure μ obs Q b := by
+  simp [cellEventMeasure, h]
+
 end
 
 end Omega.SPG
