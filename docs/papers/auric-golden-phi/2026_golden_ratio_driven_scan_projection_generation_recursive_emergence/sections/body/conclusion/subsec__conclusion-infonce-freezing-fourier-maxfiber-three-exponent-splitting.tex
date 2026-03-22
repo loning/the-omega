@@ -1,0 +1,265 @@
+\subsection{有限负样本容量核、冻结统计指数与最大纤维分裂}\label{subsec:conclusion-infonce-freezing-fourier-maxfiber-three-exponent-splitting}
+沿用小节 \ref{subsec:conclusion-capacity-majorization-infonce-complexity-separation}、小节 \ref{subsec:conclusion-escort-capacity-gauge-supermean-bernstein-mellin}、小节 \ref{subsec:conclusion-renyi-effective-support-circlephase-dirichlet-obstruction}、小节 \ref{subsec:conclusion-foldbin-tail-capacity-fourier-renyi-audit}、小节 \ref{subsec:conclusion-golden-resonance-cartwright-finite-contact} 与小节 \ref{subsec:conclusion-maxfiber-freezing-capacity-entropy-separation} 的记号。前述链条已经分别给出了 Bayes 最优有限负样本损失的矩展开、冻结相 escort 熵的全阶塌缩、二阶有效支撑的零密度塌缩、非平凡 Fourier 缺口的无界增宽，以及 Fibonacci 上包络与真实最大纤维之间的有限接触律。把这些接口并置后，还可继续抽出如下几条后继后果。
+
+\begin{theorem}[有限负样本最优对比损失的容量缺口核表示]\label{thm:conclusion-infonce-capacity-gap-kernel-representation}
+对固定分辨率 \(m\) 与整数 \(K\ge 2\)，记
+\[
+\mathcal L_{K,m}^\star:=\inf_s \mathcal L_{K,m}(s),
+\qquad
+S_q(m):=\sum_{x\in X_m}d_m(x)^q,
+\]
+\[
+\mathcal C_m^{\mathrm{cont}}(T):=\sum_{x\in X_m}\min(d_m(x),T),
+\qquad
+R_m(T):=2^m-\mathcal C_m^{\mathrm{cont}}(T)=\sum_{x\in X_m}(d_m(x)-T)_+.
+\]
+再定义显式核
+\[
+\Psi_{K,m}(T):=
+\sum_{q=2}^{K}\beta_{K,q}\,q(q-1)\,2^{-qm}T^{q-2},
+\]
+其中 \(\beta_{K,q}\) 为命题 \ref{prop:op-algebra-fold-infonce-finiteK-moment-formula} 中的系数。则有严格恒等式
+\[
+\mathcal L_{K,m}^\star
+=
+\int_0^\infty \Psi_{K,m}(T)\,R_m(T)\,\dd T.
+\]
+因而对固定 \(m\) 而言，整个有限负样本塔 \(\{\mathcal L_{K,m}^\star\}_{K\ge 2}\) 对 fold 的依赖完全经由连续容量缺口 \(R_m\) 实现。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:op-algebra-fold-infonce-finiteK-moment-formula}，
+\[
+\mathcal L_{K,m}^\star
+=
+\sum_{q=2}^{K}\beta_{K,q}\,c_q(m),
+\qquad
+c_q(m)=\frac{S_q(m)}{2^{qm}}.
+\]
+再由命题 \ref{prop:fold-moment-mellin-stieltjes} 的实阶写法，
+\[
+S_q(m)=q(q-1)\int_0^\infty T^{q-2}R_m(T)\,\dd T
+\qquad (q>1).
+\]
+因此
+\[
+\mathcal L_{K,m}^\star
+=
+\sum_{q=2}^{K}\beta_{K,q}\,q(q-1)\,2^{-qm}
+\int_0^\infty T^{q-2}R_m(T)\,\dd T.
+\]
+交换有限求和与积分，便得到
+\[
+\mathcal L_{K,m}^\star
+=
+\int_0^\infty
+\left(
+\sum_{q=2}^{K}\beta_{K,q}\,q(q-1)\,2^{-qm}T^{q-2}
+\right)R_m(T)\,\dd T
+=
+\int_0^\infty \Psi_{K,m}(T)\,R_m(T)\,\dd T.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[大负样本极限中的可见熵互补律]\label{cor:conclusion-infonce-large-k-visible-entropy-complement}
+对每个固定 \(m\)，有
+\[
+\lim_{K\to\infty}\bigl(\log K-\mathcal L_{K,m}^\star\bigr)
+=
+H(\mu_m)
+=
+m\log 2-\kappa_m,
+\]
+其中
+\[
+\mu_m(x):=\frac{d_m(x)}{2^m},
+\qquad
+\kappa_m:=2^{-m}\sum_{x\in X_m}d_m(x)\log d_m(x).
+\]
+进一步，
+\[
+\lim_{K\to\infty}\bigl(\log K-\mathcal L_{K,m}^\star\bigr)
+=
+m\log 2-g_m-1+O\!\left(m\left(\frac{\varphi}{2}\right)^m\right).
+\]
+\end{corollary}
+
+\begin{proof}
+由推论 \ref{cor:op-algebra-fold-infonce-mi-limit}，
+\[
+\lim_{K\to\infty}\bigl(\log K-\mathcal L_{K,m}^\star\bigr)=H(X),
+\]
+其中 \(X\) 的分布正是 \(\mu_m\)。于是
+\[
+H(\mu_m)
+=
+-\sum_{x\in X_m}\frac{d_m(x)}{2^m}\log\frac{d_m(x)}{2^m}
+=
+m\log 2-\frac1{2^m}\sum_{x\in X_m}d_m(x)\log d_m(x)
+=
+m\log 2-\kappa_m.
+\]
+再由定理 \ref{thm:xi-fold-kappa-gauge-first-order-constants}，
+\[
+g_m=\kappa_m-1+O\!\left(m\left(\frac{\varphi}{2}\right)^m\right),
+\]
+代回即得第二式。证毕。
+\end{proof}
+
+\begin{corollary}[非平凡 Fourier 模态数的无界增殖]\label{cor:conclusion-fourier-active-mode-count-diverges}
+记
+\[
+M_m:=F_{m+2},
+\qquad
+N_m^{\mathrm{nz}}
+:=
+\#\Bigl\{
+k\in \ZZ/(M_m\ZZ)\setminus\{0\}:\ \widehat d_m(k)\neq 0
+\Bigr\}.
+\]
+则有下界
+\[
+N_m^{\mathrm{nz}}\ge M_m\,\mathsf{Col}_m-1,
+\]
+其中
+\[
+\mathsf{Col}_m:=\sum_{r\in \ZZ/(M_m\ZZ)}p_m(r)^2,
+\qquad
+p_m(r):=\frac{d_m(r)}{2^m}.
+\]
+特别地，
+\[
+N_m^{\mathrm{nz}}\longrightarrow +\infty.
+\]
+\end{corollary}
+
+\begin{proof}
+记
+\[
+Z_m:=\Bigl\{
+k\in \ZZ/(M_m\ZZ)\setminus\{0\}:\ \widehat d_m(k)=0
+\Bigr\}.
+\]
+由正文关于 Fourier 缺口的计数不等式，
+\[
+\mathsf{Col}_m-\frac1{M_m}
+\le
+\frac{M_m-1-|Z_m|}{M_m}.
+\]
+而
+\[
+N_m^{\mathrm{nz}}=M_m-1-|Z_m|,
+\]
+故
+\[
+N_m^{\mathrm{nz}}\ge M_m\,\mathsf{Col}_m-1.
+\]
+另一方面，定理 \ref{thm:conclusion-renyi2-effective-support-zero-density-collapse} 已证明
+\[
+M_m\,\mathsf{Col}_m\to+\infty.
+\]
+代回便得 \(N_m^{\mathrm{nz}}\to+\infty\)。证毕。
+\end{proof}
+
+\begin{proposition}[Fibonacci 组合上界的最终严格失效]\label{prop:conclusion-foldbin-fibonacci-envelope-eventual-strict-failure}
+记
+\[
+d_{\max}^{\mathrm{bin}}(m):=\max_{x\in X_m}d_m(x),
+\qquad
+E_m:=F_{K(m)-m+2},
+\]
+其中 \(K(m)\) 由
+\[
+F_{K(m)+1}\le 2^m-1<F_{K(m)+2}
+\]
+唯一确定。则存在 \(m_0\)，使得对所有 \(m\ge m_0\) 都有
+\[
+d_{\max}^{\mathrm{bin}}(m)\le E_m-1.
+\]
+等价地，最大纤维在充分大尺度上不再达到无约束 Fibonacci 组合上界。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-foldbin-fibonacci-upper-envelope-finite-contact}，
+\[
+d_{\max}^{\mathrm{bin}}(m)\le E_m
+\]
+对全部 \(m\ge 1\) 成立，且等号
+\[
+d_{\max}^{\mathrm{bin}}(m)=E_m
+\]
+只在有限多个 \(m\) 上出现。故存在 \(m_0\)，使得当 \(m\ge m_0\) 时总有
+\[
+d_{\max}^{\mathrm{bin}}(m)<E_m.
+\]
+由于两者均为整数，遂得
+\[
+d_{\max}^{\mathrm{bin}}(m)\le E_m-1
+\qquad (m\ge m_0).
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[冻结相中的统计指数与可逆指数分裂]\label{thm:conclusion-frozen-phase-statistical-inversion-exponent-splitting}
+设
+\[
+\alpha_\ast^{(2)}<\alpha_\ast,
+\qquad
+a_{\mathrm c}:=\frac{\log\varphi-g_\ast}{\alpha_\ast-\alpha_\ast^{(2)}},
+\]
+并对 \(a>a_{\mathrm c}\) 定义 escort 分布
+\[
+\pi_{m,a}(x):=\frac{d_m(x)^a}{S_a(m)},
+\qquad
+S_a(m):=\sum_{x\in X_m}d_m(x)^a.
+\]
+对 \(1\le \theta\le \infty\)，定义
+\[
+\mathfrak h_\theta(a):=\lim_{m\to\infty}\frac1m H_\theta(\pi_{m,a}),
+\]
+并记
+\[
+\beta_{\mathrm{inv}}(a)
+:=
+\inf\Bigl\{
+\beta\ge 0:\ \exists\,B_m=\beta m+o(m)\ \text{使}\ 
+\mathrm{Succ}^{\mathrm{esc}}_{m,a}(B_m)\to 1
+\Bigr\}.
+\]
+则有
+\[
+\mathfrak h_\theta(a)=g_\ast
+\qquad (1\le \theta\le \infty),
+\]
+以及
+\[
+\beta_{\mathrm{inv}}(a)=\frac{\alpha_\ast}{\log 2}.
+\]
+因而在整个冻结相上存在与 \(a\) 与 \(\theta\) 无关的刚性差
+\[
+(\log 2)\,\beta_{\mathrm{inv}}(a)-\mathfrak h_\theta(a)=\alpha_\ast-g_\ast.
+\]
+换言之，冻结相中的全部平衡统计指数都塌缩为 \(g_\ast\)，而精确可逆恢复的临界线性位率则独立地锁定在 \(\alpha_\ast/\log 2\)。
+\end{theorem}
+
+\begin{proof}
+对任意 \(1\le \theta\le \infty\)，由定理 \ref{thm:conclusion-escort-renyi-all-orders-renormalized-threshold} 可知：当 \(a>a_{\mathrm c}\) 时，由于此时 \(a_{\mathrm c}(\theta)=a_{\mathrm c}\)，有
+\[
+\mathfrak h_\theta(a)=g_\ast.
+\]
+另一方面，结论 \ref{con:xi-terminal-fixed-freezing-two-exponent-separation} 已给出
+\[
+\beta_{\mathrm{inv}}(a)=\frac{\alpha_\ast}{\log 2}.
+\]
+两式相减即得
+\[
+(\log 2)\,\beta_{\mathrm{inv}}(a)-\mathfrak h_\theta(a)=\alpha_\ast-g_\ast.
+\]
+证毕。
+\end{proof}
+
+\noindent
+以上链条把有限负样本容量核、冻结相 escort 统计、二阶有效支撑塌缩、非平凡 Fourier 活化与最大纤维有限接触统一压缩到三种彼此不再可互代的指数之上：\(\mathcal L_{K,m}^\star\) 的整个有限 \(K\) 塔只经由容量缺口 \(R_m\) 进入；冻结相内全部 \(\theta\ge 1\) 的统计熵率整层塌缩为 \(g_\ast\)；而可逆侧的临界线性位率则由 \(\alpha_\ast/\log 2\) 单独控制。于是，容量几何、基态简并与最大纤维规模在冻结 regime 中形成三条严格分离而又闭合接驳的资源轴。
+
+\endinput
