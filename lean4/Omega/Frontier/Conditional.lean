@@ -2033,6 +2033,32 @@ theorem prefix_algebra_union_closed {s t : Set SPG.OmegaInfinity} {m : Nat}
     s ∪ t ∈ SPG.prefixAlgebra m :=
   SPG.prefixAlgebra_union_closed hs ht
 
+/-! ### Plan 15: Scan Error Supermartingale -/
+
+/-- Prefix scan error is a supermartingale in resolution. -/
+theorem scan_error_supermartingale (μ : PMF (Word n))
+    (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂) (P : Set (Word n)) :
+    SPG.prefixScanError μ h₂ P ≤ SPG.prefixScanError μ h₁ P :=
+  SPG.prefixScanError_supermartingale μ h₁ h₂ hm P
+
+/-- One-step decrease: resolution m+1 error ≤ resolution m error. -/
+theorem scan_error_step_decrease (μ : PMF (Word n))
+    (h₁ : m ≤ n) (h₂ : m + 1 ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanError μ h₂ P ≤ SPG.prefixScanError μ h₁ P :=
+  SPG.prefixScanError_step μ h₁ h₂ P
+
+/-! ### Plan 22: Sofic Language Completeness -/
+
+/-- Golden-mean accepts exactly No11 words (bidirectional). -/
+theorem sofic_language_iff (w : Word m) :
+    Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w ↔ No11 w :=
+  Omega.Graph.goldenMean_language_complete m w
+
+/-- Stable words are always accepted by the golden-mean presentation. -/
+theorem stable_is_sofic (x : X m) :
+    Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false x.1 :=
+  Omega.Graph.stable_word_is_accepted x
+
 end
 
 end Omega.Frontier

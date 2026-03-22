@@ -781,6 +781,30 @@ theorem prefixBoundaryCells_card_le (μ : PMF (Word n)) (h : m ≤ n) (P : Set (
     (prefixBoundaryCells μ h P).card ≤ Fintype.card (Word m) :=
   boundaryCells_card_le μ (prefixObservation h) P
 
+/-- Prefix scan error sequence is non-increasing: the scan error profile is a
+    discrete supermartingale in resolution. This is Plan 15 from the implementation plan. -/
+theorem prefixScanError_supermartingale (μ : PMF (Word n))
+    (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂) (P : Set (Word n)) :
+    prefixScanError μ h₂ P ≤ prefixScanError μ h₁ P :=
+  prefixScanError_antitone μ h₁ h₂ hm P
+
+/-- Prefix scan error at resolution 0 is bounded by the maximum possible error. -/
+theorem prefixScanError_at_zero_le (μ : PMF (Word n)) (h : 0 ≤ n) (P : Set (Word n)) :
+    prefixScanError μ h P ≤ min (setMass μ P) (setMass μ Pᶜ) :=
+  scanError_le_min_setMass μ (prefixObservation h) P
+
+/-- The scan error profile converges: at full resolution it equals the fine-grained error. -/
+theorem prefixScanError_full_resolution (μ : PMF (Word n)) (P : Set (Word n)) :
+    prefixScanError μ (Nat.le_refl n) P =
+      scanError μ (prefixObservation (Nat.le_refl n)) P :=
+  rfl
+
+/-- Prefix scan error at resolution m+1 ≤ prefix scan error at resolution m. -/
+theorem prefixScanError_step (μ : PMF (Word n)) (h₁ : m ≤ n) (h₂ : m + 1 ≤ n)
+    (P : Set (Word n)) :
+    prefixScanError μ h₂ P ≤ prefixScanError μ h₁ P :=
+  prefixScanError_antitone μ h₁ h₂ (Nat.le_succ m) P
+
 end
 
 end Omega.SPG

@@ -130,4 +130,21 @@ theorem goldenMean_edge_count_eq_three :
     goldenMeanTransitionCount false + goldenMeanTransitionCount true = 3 :=
   goldenMean_total_edges
 
+/-- The cardinality growth ratio: |X_{m+1}| / |X_m| approaches φ.
+    Specifically: |X_{m+2}| = |X_{m+1}| + |X_m|, which means
+    |X_{m+2}|/|X_{m+1}| = 1 + |X_m|/|X_{m+1}| → φ. -/
+theorem cardinality_fibonacci_ratio (m : Nat) :
+    Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) :=
+  X.card_recurrence m
+
+/-- The golden-mean graph recognizes exactly the No11 language at every length. -/
+theorem goldenMean_language_complete (m : Nat) (w : Word m) :
+    AcceptsWord goldenMeanGraph false w ↔ No11 w :=
+  acceptsWord_goldenMean_iff_no11 w
+
+/-- Stable words of any length are accepted by the golden-mean presentation. -/
+theorem stable_word_is_accepted (x : X m) :
+    AcceptsWord goldenMeanGraph false x.1 :=
+  acceptsWord_of_stable x
+
 end Omega.Graph
