@@ -1619,6 +1619,38 @@ theorem scanError_cell_local {α β : Type*} [Fintype α] [Fintype β]
 theorem cylinder_clopen (w : Word m) : IsClopen (SPG.cylinderWord w) :=
   SPG.isClopen_cylinderWord w
 
+/-! ### Paper Section 6: Cancellation & Isomorphism Summary -/
+
+/-- Left cancellation for stable addition. -/
+theorem stableAdd_left_cancel_wrapper {x y z : X m}
+    (h : X.stableAdd x y = X.stableAdd x z) : y = z :=
+  X.stableAdd_left_cancel h
+
+/-- Right cancellation for stable addition. -/
+theorem stableAdd_right_cancel_wrapper {x y z : X m}
+    (h : X.stableAdd y x = X.stableAdd z x) : y = z :=
+  X.stableAdd_right_cancel h
+
+/-- Subtraction followed by addition recovers the original: (x - y) + y = x. -/
+theorem stableSub_then_add (x y : X m) :
+    X.stableAdd (X.stableSub x y) y = x :=
+  X.stableSub_add_cancel x y
+
+/-- Self-subtraction gives zero. -/
+theorem stableSub_self_eq_zero (x : X m) : X.stableSub x x = X.stableZero :=
+  X.stableSub_self x
+
+/-- stableValue is a complete ring isomorphism to ℤ/F_{m+2}ℤ
+    (additive hom + multiplicative hom + injective + surjective). -/
+theorem stableValue_ring_isomorphism (m : Nat) :
+    (∀ x y : X m, stableValue (X.stableAdd x y) =
+      (stableValue x + stableValue y) % paperFib (m + 1)) ∧
+    (∀ x y : X m, stableValue (X.stableMul x y) =
+      (stableValue x * stableValue y) % paperFib (m + 1)) ∧
+    Function.Injective (stableValue (m := m)) ∧
+    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
+  X.stableValue_isomorphism_summary m
+
 end
 
 end Omega.Frontier

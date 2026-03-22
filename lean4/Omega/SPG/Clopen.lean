@@ -46,4 +46,15 @@ theorem isClopen_fromWordSet_union (A B : Set (Word m)) :
     IsClopen (fromWordSet A ∪ fromWordSet B) := by
   rw [← fromWordSet_union]; exact isClopen_fromWordSet (A ∪ B)
 
+/-- The complement of a fromWordSet is clopen. -/
+theorem isClopen_fromWordSet_compl (A : Set (Word m)) :
+    IsClopen (fromWordSet A)ᶜ := by
+  rw [fromWordSet_compl]; exact isClopen_fromWordSet Aᶜ
+
+/-- Finite intersections of cylinders are clopen. -/
+theorem isClopen_finite_inter_cylinders {S : Finset (Word m)}
+    (A : Set (Word m)) (hA : A = ↑S) :
+    IsClopen (fromWordSet A) :=
+  isClopen_fromWordSet A
+
 end Omega.SPG
