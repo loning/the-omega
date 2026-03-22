@@ -40,4 +40,28 @@ theorem paperFib_le_succ (k : Nat) : paperFib k ≤ paperFib (k + 1) :=
 theorem paperFib_le_add_right (k l : Nat) : paperFib k ≤ paperFib (k + l) :=
   paperFib_mono (Nat.le_add_right k l)
 
+/-- paperFib(m+1) + paperFib(m) = paperFib(m+2) (Fibonacci recurrence, symmetric form). -/
+theorem paperFib_add (m : Nat) : paperFib (m + 1) + paperFib m = paperFib (m + 2) := by
+  have := paperFib_recurrence m; omega
+
+/-- paperFib(m+2) - paperFib(m+1) = paperFib(m) (Fibonacci subtraction). -/
+theorem paperFib_sub (m : Nat) : paperFib (m + 2) - paperFib (m + 1) = paperFib m := by
+  have := paperFib_recurrence m; omega
+
+/-- F_{m+1} + F_m ≡ 0 (mod F_{m+2}) (carry modular identity). -/
+theorem paperFib_mod_sum (m : Nat) :
+    (paperFib (m + 1) + paperFib m) % paperFib (m + 2) = 0 := by
+  rw [paperFib_add, Nat.mod_self]
+
+/-- F_{m+1} < F_{m+2} for all m. -/
+theorem paperFib_lt_succ (m : Nat) : paperFib (m + 1) < paperFib (m + 2) := by
+  have := paperFib_recurrence m; have := paperFib_pos m; omega
+
+/-- F_{m+3} mod F_{m+2} = F_{m+1} (resolution-crossing identity). -/
+theorem paperFib_succ_mod (m : Nat) :
+    paperFib (m + 3) % paperFib (m + 2) = paperFib (m + 1) := by
+  have : paperFib (m + 3) = paperFib (m + 2) + paperFib (m + 1) := by
+    rw [show m + 3 = (m + 1) + 2 from by omega]; exact paperFib_recurrence (m + 1)
+  rw [this, Nat.add_comm, Nat.add_mod_right, Nat.mod_eq_of_lt (paperFib_lt_succ m)]
+
 end Omega
