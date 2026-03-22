@@ -247,4 +247,25 @@ theorem not_localCurvature_iff_fold_commutes (η : Word (m + 1)) :
     ¬ localCurvature η ↔ Fold (truncate η) = X.restrict (Fold η) := by
   rw [localCurvature, not_not, localDefect_eq_zero_iff_fold_commutes]
 
+/-- The defect chain vanishes when the input is stable (stable words have zero defect). -/
+theorem defectChain_stable (m k : Nat) (x : X (m + k)) :
+    defectChain m k x.1 = globalDefect (Nat.le_add_right m k) x.1 := by
+  exact (globalDefect_eq_defectChain m k x.1).symm
+
+/-- Global defect of a stable word at any resolution difference gives the xor difference. -/
+theorem globalDefect_stable_eq_xor (h : m ≤ n) (x : X n) :
+    globalDefect h x.1 = xorWord (Fold (restrictWord h x.1)).1 (X.restrictLE h x).1 := by
+  simp [globalDefect]
+
+/-- The zero-length defect chain is always zero. -/
+@[simp] theorem defectChain_zero (m : Nat) (ω : Word (m + 0)) :
+    defectChain m 0 ω = zeroWord m :=
+  rfl
+
+/-- The one-step defect chain equals the projected local defect xored with zero. -/
+theorem defectChain_one (m : Nat) (ω : Word (m + 1)) :
+    defectChain m 1 ω = xorWord (restrictWord (Nat.le_add_right m 0) (localDefect ω))
+      (zeroWord m) := by
+  unfold defectChain; rfl
+
 end Omega

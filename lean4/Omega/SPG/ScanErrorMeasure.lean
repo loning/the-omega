@@ -702,6 +702,41 @@ theorem scanErrorMeasure_antitone_of_refines {α β γ : Type*}
         rw [cellEventMeasure_refines_sum_measure μ obs₁ obs₂ f hRef hObs₂ Pᶜ hP.compl b,
           cellEventMeasure_compl]
 
+/-- Prefix scan error is monotonically non-increasing in resolution (direct measure version).
+    This requires measurability of the prefix observation. -/
+theorem prefixScanErrorMeasure_antitone_direct {m₁ m₂ n : Nat}
+    [MeasurableSpace (Word n)]
+    [MeasurableSpace (Word m₂)] [MeasurableSingletonClass (Word m₂)]
+    (μ : MeasureTheory.Measure (Word n))
+    (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂)
+    (hObs : Measurable (prefixObservation h₂))
+    (P : Set (Word n)) (hP : MeasurableSet P) :
+    prefixScanErrorMeasure μ h₂ P ≤ prefixScanErrorMeasure μ h₁ P :=
+  scanErrorMeasure_antitone_of_refines μ (prefixObservation h₁) (prefixObservation h₂)
+    (restrictWord hm) (fun w => (restrictWord_comp hm h₂ w).symm) hObs P hP
+
+/-- Scan error under a probability measure is bounded by 1/2 (with measurability). -/
+theorem scanErrorMeasure_le_half {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) [MeasureTheory.IsProbabilityMeasure μ]
+    (obs : α → β) (hObs : Measurable obs) (P : Set α) (hP : MeasurableSet P) :
+    2 * scanErrorMeasure μ obs P ≤ 1 := by
+  have hBound := scanErrorMeasure_le_min μ obs P
+  have hEventSum := cellEventMeasure_sum μ obs hObs P hP
+  have hComplSum := cellComplMeasure_sum μ obs hObs P hP
+  calc 2 * scanErrorMeasure μ obs P
+      ≤ 2 * min (∑ b, cellEventMeasure μ obs P b) (∑ b, cellComplMeasure μ obs P b) := by
+        exact mul_le_mul_of_nonneg_left hBound (by norm_num)
+    _ = min (∑ b, cellEventMeasure μ obs P b) (∑ b, cellComplMeasure μ obs P b) +
+        min (∑ b, cellEventMeasure μ obs P b) (∑ b, cellComplMeasure μ obs P b) := two_mul _
+    _ ≤ (∑ b, cellEventMeasure μ obs P b) + (∑ b, cellComplMeasure μ obs P b) :=
+        add_le_add (min_le_left _ _) (min_le_right _ _)
+    _ = μ P + μ Pᶜ := by rw [hEventSum, hComplSum]
+    _ = μ Set.univ := by
+        rw [← MeasureTheory.measure_inter_add_diff Set.univ hP]
+        simp [Set.univ_inter, Set.diff_eq, Set.univ_inter]
+    _ = 1 := MeasureTheory.IsProbabilityMeasure.measure_univ
+
 end
 
 end Omega.SPG

@@ -1242,6 +1242,41 @@ theorem scanError_le_compl_mass {α β : Type*} [Fintype α] [Fintype β]
     SPG.scanError μ obs P ≤ SPG.setMass μ Pᶜ :=
   SPG.scanError_le_setMass_compl μ obs P
 
+/-! ### Paper Corollary 3.1: Measure Prefix Monotonicity & Probability Half-Bound -/
+
+/-- Prefix scan error is monotonically non-increasing (direct measure version). -/
+theorem prefixScanError_measure_antitone_direct {m₁ m₂ n : Nat}
+    [MeasurableSpace (Word n)]
+    [MeasurableSpace (Word m₂)] [MeasurableSingletonClass (Word m₂)]
+    (μ : MeasureTheory.Measure (Word n))
+    (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂)
+    (hObs : Measurable (SPG.prefixObservation h₂))
+    (P : Set (Word n)) (hP : MeasurableSet P) :
+    SPG.prefixScanErrorMeasure μ h₂ P ≤ SPG.prefixScanErrorMeasure μ h₁ P :=
+  SPG.prefixScanErrorMeasure_antitone_direct μ h₁ h₂ hm hObs P hP
+
+/-- Scan error under a probability measure is bounded by 1/2 (measure version). -/
+theorem scanError_measure_half_bound [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) [MeasureTheory.IsProbabilityMeasure μ]
+    (obs : α → β) (hObs : Measurable obs) (P : Set α) (hP : MeasurableSet P) :
+    2 * SPG.scanErrorMeasure μ obs P ≤ 1 :=
+  SPG.scanErrorMeasure_le_half μ obs hObs P hP
+
+/-! ### Paper Theorem 6.1: stableValue Range Characterization -/
+
+/-- The range of stableValue is exactly {0,...,F_{m+2}-1}. -/
+theorem stableValue_range_eq (m : Nat) :
+    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
+  X.stableValue_range m
+
+/-! ### Paper Defect Section: Defect Chain Structure -/
+
+/-- The defect chain connects to the global defect. -/
+theorem defectChain_is_globalDefect (m k : Nat) (x : X (m + k)) :
+    defectChain m k x.1 = globalDefect (Nat.le_add_right m k) x.1 :=
+  defectChain_stable m k x
+
 end
 
 end Omega.Frontier

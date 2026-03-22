@@ -308,6 +308,25 @@ theorem stableMul_stableAdd_left (x y z : X m) :
   congr 1
   rw [Nat.mul_mod_right', Nat.add_mod', Nat.mul_add]
 
+/-- The range of stableValue is exactly {0, ..., paperFib(m+1)-1}. -/
+theorem stableValue_range (m : Nat) :
+    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} := by
+  ext n
+  constructor
+  · rintro ⟨x, rfl⟩
+    exact stableValue_lt_paperFib_succ x
+  · intro hn
+    exact ⟨X.ofNat m n, stableValue_ofNat_lt n hn⟩
+
+/-- X.ofNat m restricted to valid indices is the inverse of stableValue. -/
+theorem ofNat_stableValue_eq (x : X m) : X.ofNat m (stableValue x) = x :=
+  X.ofNat_stableValue x
+
+/-- stableValue followed by ofNat is the identity for values in range. -/
+theorem stableValue_ofNat_roundtrip (n : Nat) (hn : n < paperFib (m + 1)) :
+    stableValue (X.ofNat m n) = n :=
+  stableValue_ofNat_lt n hn
+
 end
 
 end X
