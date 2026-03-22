@@ -2505,6 +2505,42 @@ theorem prefix_error_vanishes_at_own [MeasurableSpace (Word n)]
     SPG.prefixScanErrorMeasure μ h (SPG.prefixEvent h A) = 0 :=
   SPG.prefixScanErrorMeasure_at_own_resolution μ h A
 
+/-! #### Value Round-Trips & Bounds -/
+
+/-- ofNat(stableValue(x)) = x (round-trip, named). -/
+theorem value_ofNat_roundtrip (x : X m) : X.ofNat m (stableValue x) = x :=
+  X.ofNat_of_stableValue x
+
+/-- stableValue(Fold(x.1)) = stableValue(x) (Fold-value roundtrip). -/
+theorem fold_value_roundtrip (x : X m) : stableValue (Fold x.1) = stableValue x :=
+  X.Fold_stableValue_roundtrip x
+
+/-- Arithmetic operations preserve the Fibonacci bound. -/
+theorem add_preserves_bound (x y : X m) : stableValue (X.stableAdd x y) < paperFib (m + 1) :=
+  X.stableAdd_value_bound x y
+
+/-- Multiplication preserves the Fibonacci bound. -/
+theorem mul_preserves_bound (x y : X m) : stableValue (X.stableMul x y) < paperFib (m + 1) :=
+  X.stableMul_value_bound x y
+
+/-- stableValue is strictly less than 2^m. -/
+theorem value_lt_two_pow (x : X m) : stableValue x < 2 ^ m :=
+  X.stableValue_lt_pow x
+
+/-! #### Inverse Limit Bijectivity -/
+
+/-- The inverse limit map ofFamily is bijective. -/
+theorem inverse_limit_bijective :
+    Function.Bijective (X.ofFamily : X.CompatibleFamily → X.XInfinity) :=
+  X.CompatibleFamily_complete
+
+/-! #### Clopen Topology -/
+
+/-- The complement of a fromWordSet is clopen. -/
+theorem fromWordSet_complement_clopen (A : Set (Word m)) :
+    IsClopen (SPG.fromWordSet Aᶜ) :=
+  SPG.fromWordSet_compl_is_clopen A
+
 end
 
 end Omega.Frontier
