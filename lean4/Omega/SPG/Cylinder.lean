@@ -233,4 +233,9 @@ theorem prefixAlgebra_union_closed {s t : Set OmegaInfinity} {m : Nat}
     s ∪ t ∈ prefixAlgebra m :=
   prefixDetermined_union hs ht
 
+/-- Every fromWordSet is in the prefix algebra at the corresponding depth. -/
+theorem fromWordSet_in_prefixAlgebra (A : Set (Word m)) :
+    fromWordSet A ∈ prefixAlgebra m :=
+  prefixDetermined_fromWordSet A
+
 end Omega.SPG

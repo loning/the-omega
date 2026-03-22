@@ -40,4 +40,10 @@ theorem weight_pos_of_bit_true {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self 
   rw [weight_of_lastTrue h]
   exact Nat.lt_of_lt_of_le (paperFib_pos (m + 1)) (Nat.le_add_left _ _)
 
+/-- Weight of a length-1 word is 0 or paperFib(1) = 1. -/
+theorem weight_word_one (w : Word 1) :
+    weight w = if w ⟨0, Nat.zero_lt_one⟩ then 1 else 0 := by
+  simp [weight, paperFib]
+
+
 end Omega
