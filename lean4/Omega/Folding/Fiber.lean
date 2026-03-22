@@ -496,6 +496,21 @@ theorem fiber_disjoint {x y : X m} (hne : x ≠ y) :
 theorem fiber_card_ge_one (x : X m) : 1 ≤ (fiber x).card :=
   fiber_card_pos x
 
+/-- Subtraction and addition cancel: (x - y) + y = x. -/
+theorem stableSub_add_cancel (x y : X m) :
+    stableAdd (stableSub x y) y = x := by
+  rw [stableSub, stableAdd_assoc, stableNeg_stableAdd, stableAdd_zero_right]
+
+/-- Stable subtraction value: stableValue(x - y) = (sv_x - sv_y) mod F. -/
+theorem stableValue_stableSub (x y : X m) :
+    stableValue (stableSub x y) =
+      (stableValue x + (paperFib (m + 1) - stableValue y)) % paperFib (m + 1) := by
+  simp [stableSub, stableValue_stableAdd, stableValue_stableNeg]
+
+/-- Subtraction is the inverse of addition on the left: x - x = 0. -/
+theorem stableSub_self (x : X m) : stableSub x x = stableZero := by
+  simp [stableSub, stableAdd_stableNeg]
+
 end
 
 end X
