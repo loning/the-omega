@@ -1,178 +1,165 @@
 \subsection{数学实例化模板：哪些对象代入后才可能产生“物理型时空”}\label{subsec:physical-spacetime-skeleton-instantiation-template}
 
-前几小节已经把物理型时空从 forcing 骨架内部逐步导出出来：观察者被还原为状态纤维，空间被还原为共同支撑、局部比较与区域共识，时间被还原为决定包络增长的投影，因果被还原为可容许精化链的偏序闭包，资源被还原为这些精化链上的方向化长度，而谱则被理解为闭环精化的边界不变量。到这里，一个更根本的问题便自然出现：究竟哪些数学对象，在被代入这套骨架之后，才有资格生成物理型时空？
+沿 \S\ref{subsec:cdim-cech-projective-phase-interference} 与 \S\ref{subsec:cdim-sync-causal-holonomy-spacetime} 的口径，量子结构已被压回到局部--全局粘接失配在统计表示层上的后果，而时空结构则被压回到同步、传播与闭路 residual 在几何表示层上的组织。
+这条导出链本身并不选定唯一的后端对象；若在此处直接把某种具体表示写成起始设定，便会把表示选择误写成新的公理。
+因此，本小节不再推进新的物理主张，而只回答一个技术问题：什么样的数学数据，才足以承载上述骨架；以及，一旦这些数据已经到位，哪些现有模块可以充当其离散后台、量子后台与时空后台。
 
-这个问题的答案不能是任何足够复杂的结构都可以，因为前面各小节已经隐含给出了反例：一个裸集合没有局部性，一个单纯拓扑空间没有决定包络，一个纯群作用没有时间箭头，一个孤立范畴没有资源几何，一个单独的算子半群没有观察者纤维，一个纯数值系统没有区域共识。换言之，本章导出的物理型时空并不是某一种单一对象的别名，而是一类复合实例模板的输出：只有当一个对象同时提供局部状态、限制、拼接、更新、观察、资源与闭环可读性时，它才可能在本章意义下产生物理型时空。
+\subsubsection{可接受实例化的数据接口}
 
-因此，本小节的目标不是再引入一个新的对象类，而是给出一个实例化模板：任何数学对象若能被装配进这个模板，并满足若干最小条件，就会自动诱导出前几小节所建立的观察者—区域—时间—因果—资源—谱骨架；反之，若缺失其中任一关键部件，它就不能被读成物理型时空，最多只能提供其中一部分影子结构。
-
-\subsubsection{物理型时空的实例化数据}
-
-首先给出最小的数据模板。称一个九元组
+\begin{definition}[物理型实例化]\label{def:physical-spacetime-acceptable-instantiation}
+称一组数据
 \[
 \mathfrak I=
-(\mathcal U,\operatorname{Cov},\mathcal S,\rho,\mathcal O,\mathcal A,\mathcal T,\mathcal R,\mathcal K)
+\bigl(
+\mathcal X,\mathcal U,\mathrm{Read},\mathsf{NULL},
+\mathcal G,\mathcal O,\mathbb E,
+\mathcal R,\tau,d,
+A,\Omega,\{\mathcal U_h\}_{h\downarrow 0}
+\bigr)
 \]
-为一个时空实例化数据，若满足以下解释：
+为一个\textbf{物理型实例化}，若其中：
 \begin{enumerate}
-  \item \(\mathcal U\) 是区域系统，\(\operatorname{Cov}\) 是其覆盖结构；
-  \item \(\mathcal S(U)\) 是区域 \(U\) 上的局部状态、局部证书或局部表示空间；
-  \item \(\rho^U_V:\mathcal S(U)\to \mathcal S(V)\) 是限制映射；
-  \item \(\mathcal O\) 是观察族，用于把局部状态投影到可比较或可判定数据上；
-  \item \(\mathcal A\) 是允许更新的原子动作族；
-  \item \(\mathcal T\) 是更新生成的动态结构，例如半群、范畴、偏序或带分支更新图；
-  \item \(\mathcal R\) 是资源赋值，用于给每一步更新、每一次同步、每一次拼接赋代价；
-  \item \(\mathcal K\) 是闭环或谱接口，用于从时间迹或重返结构抽取谱不变量。
+  \item \((\mathcal X,\mathcal U)\) 给出局部状态与覆盖体系；
+  \item \(\mathrm{Read}\) 与 \(\mathsf{NULL}\) 给出局部可读性与失败见证；
+  \item \(\mathcal G\) 给出局部重叠上的过渡数据、粘接差或等价的规范残差；
+  \item \((\mathcal O,\mathbb E)\) 给出可观测量代数与条件期望，使局部读出能够推送到全局统计；
+  \item \((\mathcal R,\tau,d)\) 给出资源账本、同步延迟与空间代价，使局部比较能够几何化；
+  \item \(A\) 与 \(\Omega\) 给出离散联络及其曲率证书；
+  \item \(\{\mathcal U_h\}_{h\downarrow 0}\) 给出细化族，使离散对象能够谈论连续极限。
+\end{enumerate}
+若这些数据还满足下列相容性条件：
+\begin{enumerate}
+  \item 局部读出在重叠上可比较；
+  \item 全局化失败有可审计的 \v{C}ech 型障碍证书；
+  \item 条件期望与 coarse-graining 相容；
+  \item \(\tau\) 与 \(d\) 对允许链次可加；
+  \item \(\Omega\) 满足离散 Bianchi 型关系；
+  \item 细化极限与前述结构兼容，
+\end{enumerate}
+则称 \(\mathfrak I\) 为一个\textbf{可接受实例化}。
+\end{definition}
+
+\begin{proposition}[实例化准则]\label{prop:physical-spacetime-instantiation-criterion}
+任一可接受实例化 \(\mathfrak I\) 都足以承载本文前述骨架构造。
+特别地，它同时给出：
+\begin{enumerate}
+  \item 局部可读而全局受阻的 \v{C}ech 障碍；
+  \item 可见态的射影类与干涉项候选；
+  \item 由同步延迟与空间代价定义的传播上界 \(c_*\)；
+  \item 由离散曲率在细化极限中导出的连续曲率候选。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\S\ref{subsec:physical-spacetime-skeleton-local-global-obstruction} 与 \S\ref{subsec:cdim-cech-projective-phase-interference} 只要求局部读出、重叠比较、可见投影与障碍证书；
+\S\ref{subsec:cdim-sync-causal-holonomy-spacetime} 进一步要求同步延迟、空间代价、离散联络与细化族。
+定义 \ref{def:physical-spacetime-acceptable-instantiation} 的数据恰好覆盖了这些输入。
+因此，前述构造均可在 \(\mathfrak I\) 上逐项实现。
+\end{proof}
+
+上述命题的作用不是再给出一类新对象，而是明确：真正被固定的是接口，而不是具体表示。
+只要接口被满足，后端可以变化；相反，若后端试图越过接口自行引入“额外物理内容”，它就不再是实例化，而是另起公理。
+
+\subsubsection{离散后台：局部截面、\texorpdfstring{$\mathsf{NULL}$}{NULL} 与离散联络}
+最基础的后端是离散后台。
+它承担三件不可替代的职责：给出局部读出，记录全局化失败，并把复合失配组织为曲率证书。
+只要这三件事完成，\S\ref{subsec:physical-spacetime-skeleton-local-global-obstruction} 与 \S\ref{subsec:cdim-sync-causal-holonomy-spacetime} 中的相位残差、holonomy 与曲率候选就已经在离散层面全部出现。
+
+从结构上看，一个离散后台至少应当提供：
+\begin{enumerate}
+  \item 局部对象及其重叠关系；
+  \item 局部 lift 或局部截面；
+  \item 粘接失败的证书，尤其是 \v{C}ech 型二阶障碍；
+  \item 定义在基本 \(2\)-胞腔或最小闭路上的复合缺陷。
 \end{enumerate}
 
-在这一模板中，没有哪一个分量可以单独被称为时空；时空不是其中之一，而是它们共同满足某些条件后所涌现出的二阶结构。换言之，时空不是输入，而是输出。
+在这一层上，\(\mathsf{NULL}\) 也应被完全重写。
+它不再只是“没有输出”的技术标志，而是“局部可读对象在给定覆盖下无法被全局化”的可审计见证。
+于是，\(\mathsf{NULL}\)、\v{C}ech 障碍与异常证书不再是彼此独立的失败语言，而变成同一局部--全局失配机制在不同分辨率下的三种表述。
 
-为了使 \(\mathfrak I\) 真正产生前几小节的骨架，还必须满足一组最小条件。
-
-\subsubsection{七条最小条件}
-
-\paragraph{（I）局部性条件}
-\((\mathcal U,\operatorname{Cov})\) 必须构成一个区域—覆盖系统。也就是说，必须存在局部—整体的语义区分，不能只给出一个全局对象。若没有覆盖与限制，便没有共同支撑、没有区域共识，也就没有空间的最小涌现。
-
-\paragraph{（II）预层/层条件}
-赋值
+离散联络在这里同样不需要被预设为连续纤维丛上的光滑联络。
+只要存在沿重叠边的平行移动数据 \(A\)，以及定义在 \(2\)-胞腔上的复合残差
 \[
-U\longmapsto \mathcal S(U)
+\Omega:=-\delta A,
 \]
-连同限制映射 \(\rho^U_V\) 至少应构成一个预层；若要得到真正的区域共识与整体重构，则必须进一步满足层条件：兼容局部数据可唯一拼接为整体数据。若只满足预层而不满足层，则可以讨论局部可读，但不能保证全局对象存在；这正对应上一小节的 Čech 障碍与规范差现象。
+就已经足以谈论离散 holonomy、离散 Bianchi 关系以及“曲率是闭路复合的首个不可消去项”这一核心思想。
+连续几何不是离散曲率的前提，而只是它在细化极限中的可能表示。
 
-\paragraph{（III）观察分离条件}
-必须存在一族观察投影
-\[
-\pi_i^U:\mathcal S(U)\to \mathcal E_i(U),\qquad i\in I,
-\]
-或等价地，一族不可区分关系 \(\approx_i^U\)，使得局部状态可被观察者纤维化。若所有局部状态在观测上完全不可分，则无法定义信息视界，也无法从状态中导出观察者。因此，观察者不是额外对象，而是局部状态在观测投影下的等价类结构。
+\subsubsection{量子后台：扭曲谱、核化与射影表示}
+量子后台的职责与离散后台不同。
+它不需要重新提供局部--全局障碍，而需要把该障碍在可见统计层上的后果实现出来。
+换言之，它的任务是把相对过渡类、射影态类与干涉型修正，落实为某种可计算、可比较、可正化的表示。
 
-\paragraph{（IV）精化与更新条件}
-必须存在一个更细关系 \(\sqsubseteq\) 或某种等价结构，使局部状态能够被部分排序；并且原子动作 \(\alpha\in\mathcal A\) 的更新必须满足
-\[
-q\in \operatorname{Upd}_\alpha(p)\Longrightarrow q\sqsubseteq p.
-\]
-也就是说，更新的本质是精化，而不是任意跳跃。若更新不带来可比较的精化链，则无法从中导出时间箭头，也无法区分新决定与状态替换。
-
-\paragraph{（V）决定包络单调性条件}
-必须存在某个可观测静态片段 \(\mathcal O_{\mathrm{stat}}\)，并定义相应的决定包络
-\[
-\operatorname{Dec}_{\mathcal O}(p),
-\]
-使得精化满足
-\[
-q\sqsubseteq p
-\Longrightarrow
-\operatorname{Dec}_{\mathcal O}(p)\subseteq \operatorname{Dec}_{\mathcal O}(q).
-\]
-这是时间涌现的关键：若决定包络不单调，则无法把时间解释成已决定静态理论的扩张投影。
-
-\paragraph{（VI）资源可加条件}
-必须存在资源函数，对每一步可容许更新赋值
-\[
-\mathsf c_\alpha(p\to q)\in [0,+\infty],
-\]
-并使有限链代价可加。否则，前面资源几何就无从建立；没有资源几何，时间、因果与空间就都只剩下纯顺序关系，而不会具有物理上关键的代价、可实现性与稳定性意义。
-
-\paragraph{（VII）闭环可读条件}
-必须存在某种把时间重返、循环更新、primitive 模式或相关迹压缩成谱数据的接口。具体形式可以是：一个传播算子 \(\mathsf T\)；一个区域传播核 \(\mathsf G\)；一族时间相关函数 \(\mathcal G_{f,g}(z)\)；一个 zeta 生成元；或更一般的闭环计数函子。若完全没有闭环或谱接口，则本章前面关于谱是闭环精化的边界不变量的结论无法实例化，因而也不能称之为完整的物理型时空，只能算作一个局部逻辑系统。
-
-\subsubsection{物理型时空的充分实例化定理}
-
-在以上条件下，可以把什么叫做产生物理型时空写成一个统一定理。
-
-\paragraph{定理（物理型时空的实例化定理）}
-设 \(\mathfrak I\) 是一组时空实例化数据，并满足上述七条条件。则由 \(\mathfrak I\) 可构造出一个物理型时空骨架
-\[
-\mathfrak S(\mathfrak I)=
-(\mathcal O_{\mathrm{obs}},
-\mathcal X_{\mathrm{em}},
-T_{\mathrm{em}},
-\preceq_c,
-d_{\mathcal R},
-\mathrm{Spec}),
-\]
-其中：
+一个足够的量子后台，至少应满足三条原则：
 \begin{enumerate}
-  \item \(\mathcal O_{\mathrm{obs}}\) 是由观察投影诱导的观察者纤维系统；
-  \item \(\mathcal X_{\mathrm{em}}\) 是由共同支撑、局部比较与区域共识诱导的最小空间区域系统；
-  \item \(T_{\mathrm{em}}\) 是由决定包络增长诱导的时间投影；
-  \item \(\preceq_c\) 是由可容许精化链生成的因果偏序；
-  \item \(d_{\mathcal R}\) 是由资源赋值生成的方向化准度规；
-  \item \(\mathrm{Spec}\) 是由闭环接口诱导的谱—zeta—primitive 边界不变量。
-\end{enumerate}
-换言之，任何满足七条条件的对象，都不是表示一个时空，而是生成一个时空骨架。
-
-\paragraph{说明}
-该定理的重要点在于生成二字。它表明：本章所谓物理型时空不是某一类特殊对象，例如流形、图、自动机、算子代数或群作用的专有属性，而是许多不同对象在满足同一组结构条件后，共同导出的一个高层不变量。其证明也并不额外引入新机制，而只是把前面各小节已经构造出的观察者、区域、时间、因果、资源与谱结构逐项收集，并验证它们都可由 \(\mathfrak I\) 的七条条件统一诱导出来。也就是说，本章并不在意起点是离散、连续、代数、组合、范畴还是算子；本章只在意这些起点能否在局部—观测—精化—资源—谱五层上被统一装配。
-
-\subsubsection{哪些对象不能直接产生物理型时空}
-
-为了避免误解，还需要反过来说明：许多常见对象单独拿来其实并不够。
-
-\paragraph{（1）仅有集合或拓扑空间不够}
-一个裸集合没有局部比较与精化链；一个单纯拓扑空间虽然有开集，但若没有局部状态、限制映射与拼接规则，就无法产生对象层 forcing，更不可能导出观察者或时间。
-
-\paragraph{（2）仅有偏序不够}
-一个偏序集可以提供先后，但若没有观测与决定包络，它不能区分时间推进与形式更细；若没有支撑与覆盖，它也不能产生空间。
-
-\paragraph{（3）仅有图或自动机不够}
-图或自动机可以给出更新与循环，但若没有区域支撑与局部观测，它们只提供时间或谱的一半，而不能给出真正的空间涌现。
-
-\paragraph{（4）仅有层不够}
-层结构能够处理局部—整体拼接，但若没有更新与资源，它只能提供空间的静态骨架，不能导出时间、因果与代价。
-
-\paragraph{（5）仅有算子半群不够}
-算子半群能给出时间演化和谱，但若没有状态纤维、局部区域与共识结构，它更接近一套全局动力系统，而不是本章意义下的物理型时空。
-
-这些负例非常重要，因为它们说明：物理型时空不是任何单个数学对象的自然别名，而是一个多层模板的综合输出。
-
-\subsubsection{哪些对象适合代入模板}
-
-与上述负例对应，下面几类对象最适合作为本章模板的输入。
-
-\paragraph{（A）站点/层 + 更新系统}
-若给定一个站点 \((\mathcal U,\operatorname{Cov})\)、其上的状态预层或状态层 \(\mathcal S\)，再给定局部更新与限制相容，则这是最标准的输入类型。它天然适合第 \ref{sec:recursive-addressing} 节的地址—局部截面—\(\mathsf{NULL}\) 结构。
-
-\paragraph{（B）符号动力系统 + 局部观察投影}
-若给定一个子移位、SFT 或可归一化词系统，再给定局部窗读出与 primitive/zeta 接口，则它非常适合代入时间—空间交换与谱层，特别适合第 \ref{sec:pom} 节与小节 \ref{subsec:physical-spacetime-skeleton-time-space-exchange} 的读法。
-
-\paragraph{（C）重写系统 + 规范横截面}
-若给定一个值保持重写系统、一个规范形选择算子以及局部可比接口，则它适合代入第 \ref{sec:emergent-arithmetic} 节值层与本章时间箭头、资源几何的框架。因为时间等于规范化的单调推进在这一类对象中最容易显现。
-
-\paragraph{（D）算子系统/传播核 + 区域分解}
-若给定传播算子 \(\mathsf T\) 及其区域分块 \(\mathsf G\)，并且局部观测足以重建 resolvent 或热核，则这类对象特别适合作为小节 \ref{subsec:physical-spacetime-skeleton-time-space-exchange} 的时间—空间交换模板。
-
-\paragraph{（E）账本/寄存器扩张系统}
-若对象额外携带附加坐标、素数寄存器、守恒账本或残差方向，但主可见层由投影决定，则它们正是保守扩张的自然例子，适合放到第 \ref{sec:emergent-arithmetic} 节外置账本与本章资源几何中理解。
-
-因此，不同数学对象并非平等地像时空，而是只在它们进入这一模板之后，才在更高层同构地生成同类骨架。
-
-\subsubsection{一个最简可检查清单}
-
-为了让后文实际操作更方便，可以把实例化模板压缩成一张检查表。对任意候选对象 \(\mathcal M\)，只要依次问：
-\begin{enumerate}
-  \item 有没有局部区域系统 \((\mathcal U,\operatorname{Cov})\)；
-  \item 有没有局部状态或局部证书空间 \(\mathcal S(U)\)；
-  \item 有没有限制与拼接；
-  \item 有没有观测投影或不可区分关系；
-  \item 有没有可容许精化或更新链；
-  \item 有没有决定包络的单调性；
-  \item 有没有资源代价函数；
-  \item 有没有闭环或谱接口。
+  \item 它能够把相对过渡类编码为可见相位、谱相位或等价的扭曲参数；
+  \item 它能够给出一个对 coarse-graining 稳定的正核或半正核；
+  \item 它允许把可见统计写成该后端表示上的正二次型或等价对象。
 \end{enumerate}
 
-若前四项都没有，则它甚至不是局部逻辑对象；若前六项有而后两项没有，则它最多生成逻辑型时空，还不能生成物理型时空；只有八项齐备时，它才真正满足本章意义下的物理型时空模板。
+满足这些条件的后端可以有多种形式：扭曲行列式、单位根谱模态、有限秩核化、再现核空间，乃至更抽象的射影表示空间，都属于同一接口族。
+因此，与其先验地说“量子态就是 Hilbert 空间向量”，不如说：
+\[
+\text{量子后台必须把局部相对过渡类的可见投影，组织成一个足以承载射影态类和干涉项的正表示。}
+\]
+Hilbert 化若成立，也只是一个后验结果：它说明上述射影态类与平方型读出在某个实例化中恰好落到了 Hilbert 型表示上，而不是说 Hilbert 空间先于粘接结构存在。
 
-这一检查表的好处是：后文任何具体技术对象，只要按这八项去对照，就能立刻判断它处在扩张链的什么层级上。这样，全文的各种对象就不会再显得彼此平行，而会自然落位。
+\begin{proposition}[核化充分模板]\label{prop:physical-spacetime-kernelization-template}
+设一个量子后台为每个可见态类 \([\ell]\) 赋予一个核表示
+\[
+K([\ell_1],[\ell_2]),
+\]
+并满足：
+\begin{enumerate}
+  \item \(K\) 对局部规范选择不敏感；
+  \item \(K\) 对 coarse-graining 稳定；
+  \item \(K\) 在张量复合下保持正性与封闭性；
+  \item 交叉项仅由相对过渡类决定。
+\end{enumerate}
+则 \S\ref{subsec:cdim-cech-projective-phase-interference} 中的干涉项与平方型读出目标，都可被重写为该核表示上的正二次型一致性问题。
+\end{proposition}
+\begin{proof}
+在核表示下，自交项给出各态类的可见权重，交叉项由非对角核值提供。
+局部规范不变性与 coarse-graining 稳定性保证这些量只依赖于态类而不依赖于代表元。
+因此，干涉修正与平方型读出可统一降为：该正核是否唯一决定可见统计的一致性问题。
+\end{proof}
+
+\subsubsection{时空后台：资源几何、传播锥与尺度极限}
+时空后台的职责也与量子后台不同。
+它要做的不是提供统计读法，而是把同步延迟、空间代价与闭路残差在尺度上组织成时间、空间、因果与曲率的表示。
+
+一个足够的时空后台至少需要三类对象。
+第一类，是几何化的比较量，例如同步延迟 \(\tau\)、空间代价 \(d\)、共同支撑或共同 forcing 的比较结构；这些量给出 \S\ref{subsec:cdim-sync-causal-holonomy-spacetime} 中的时间、空间与因果前序。
+第二类，是细化尺度上的离散联络与离散曲率 \((A_h,\Omega_h)\)；它们给出传播锥边界与曲率候选的离散来源。
+第三类，是控制连续极限的稳定性条件，例如统一有界性、弱紧性、次可加性以及观察者变换下的协变控制；没有这些条件，时空只能停留在离散草图，而不能过渡到连续骨架。
+
+应当强调的是，时空后台不必从一开始就表现为光滑流形。
+资源几何、在线延迟、时间--空间交换、prime-register 或 solenoid 型全局因子，都可以被看作这一后台中的不同层。
+它们各自负责不同职责：局部比较层负责因果结构，资源层负责传播上界，全局紧化层负责 holonomy 的拓扑残余，而细化极限才负责把离散曲率压成连续曲率候选。
+
+\begin{proposition}[连续极限的充分模板]\label{prop:physical-spacetime-continuum-limit-template}
+设
+\[
+\{(\tau_h,d_h,A_h,\Omega_h)\}_{h\downarrow 0}
+\]
+是一族时空后台数据，并满足：
+\begin{enumerate}
+  \item \(\tau_h\) 与 \(d_h\) 对允许链次可加，且在紧集上统一受控；
+  \item 面积归一化后的离散曲率场 \(\Omega_h/|\sigma_h|\) 在基本 \(2\)-胞腔上统一有界或弱紧；
+  \item 观察者变换在每个尺度上保持这些量的等价类；
+  \item 细化映射与局部--全局障碍相容。
+\end{enumerate}
+则存在子列使传播锥候选与归一化离散曲率候选在弱意义下收敛到连续极限对象。
+\end{proposition}
+\begin{proof}
+前两条提供紧性，第三条保证极限对象不依赖于局部表示选择，第四条保证极限过程不破坏障碍与 holonomy 的来源。
+因此可在弱拓扑下抽取子列极限，并把其解释为连续因果锥候选与连续曲率候选。
+\end{proof}
 
 \subsubsection{本节结论}
+本小节并未引入任何新的物理对象；它只把“什么样的后端足以承载前述抽象骨架”说明清楚。
+离散后台负责局部可读、全局受阻与曲率证书；量子后台负责射影态类、相位与干涉的正表示；时空后台负责同步、传播、因果与连续极限。
+三者并不彼此独立，而是同一抽象接口在不同表示层上的分工。
 
-本小节最终回答了哪些对象代入后才可能产生物理型时空这个问题。答案不是某一类特殊对象，而是：任何对象，只要它能提供局部区域、局部状态、限制与拼接、观察投影、可容许精化、决定包络单调性、资源代价和闭环谱接口，就有资格生成本章意义下的物理型时空。
+因此，本小节真正固定下来的不是某一种特定后端，而是实例化接口本身。
+后文任何更具体的谱表示、核表示或几何极限表示，只能被当作这组接口的后端实现，而不能再回填为新的起始公理。
 
-反过来，若缺少这些条件中的关键部分，它顶多生成局部逻辑、局部时间、局部空间或局部谱中的某一部分，而不能生成完整骨架。
-
-于是，本小节真正完成的是：把前面小节 \ref{subsec:physical-spacetime-skeleton-observer-fiber} 到小节 \ref{subsec:physical-spacetime-skeleton-local-global-obstruction} 逐节导出的观察者、空间、时间、因果、资源与谱，再次反过来压缩成一个实例化模板。这样，第 \ref{sec:physical-spacetime-skeleton} 节就不只是解释性章节，而成为一个真正的实例筛选器：它告诉读者，什么样的数学对象值得被看成物理型时空的候选，什么样的对象又还差哪些层次。
-
-到这里，第 \ref{sec:physical-spacetime-skeleton} 节已经只差最后一步：把前面所有推导压缩成一条总链，明确写出从第 \ref{sec:logic-expansion-chain} 节统一上位逻辑到本章物理骨架的全程路线图。
