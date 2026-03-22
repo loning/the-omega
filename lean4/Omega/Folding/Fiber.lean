@@ -777,6 +777,20 @@ theorem stableValue_is_bijection (m : Nat) :
     Function.Bijective (stableValueFin (m := m)) :=
   stableValueFin_bijective m
 
+/-- The Fold map factors through stableValue: Fold w = ofNat m (weight w). -/
+theorem Fold_eq_ofNat_weight (w : Word m) :
+    Fold w = X.ofNat m (weight w) := rfl
+
+/-- Two words with the same weight fold to the same stable word. -/
+theorem Fold_eq_of_weight_eq {w₁ w₂ : Word m} (h : weight w₁ = weight w₂) :
+    Fold w₁ = Fold w₂ := by
+  simp [Fold, h]
+
+/-- The stable value of appendFalse equals that of the original. -/
+theorem stableValue_appendFalse' (x : X m) :
+    stableValue (X.appendFalse x) = stableValue x :=
+  stableValue_restrict_appendFalse x
+
 end
 
 end X
