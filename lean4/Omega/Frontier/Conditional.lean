@@ -1896,6 +1896,17 @@ theorem prefix_complement_invariance (μ : PMF (Word n)) (h : m ≤ n) (P : Set 
     SPG.prefixScanError μ h Pᶜ = SPG.prefixScanError μ h P :=
   SPG.prefixScanError_compl μ h P
 
+/-! ### Paper Section 6: Maximal Element & Non-triviality -/
+
+/-- The negation of 1 gives the maximal element F_{m+2} - 1. -/
+theorem neg_one_is_maximal (hm : 1 ≤ m) :
+    stableValue (X.stableNeg (X.stableOne (m := m))) = paperFib (m + 1) - 1 :=
+  X.stableValue_neg_one hm
+
+/-- For m ≥ 1, the multiplicative identity is distinct from the additive identity. -/
+theorem one_ne_zero_stable (hm : 1 ≤ m) : X.stableOne (m := m) ≠ X.stableZero :=
+  X.stableOne_ne_stableZero hm
+
 end
 
 end Omega.Frontier

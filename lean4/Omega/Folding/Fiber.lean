@@ -622,6 +622,19 @@ theorem stableNeg_add_self (x : X m) : stableAdd (stableNeg x) x = stableZero :=
 theorem stableAdd_self_neg (x : X m) : stableAdd x (stableNeg x) = stableZero :=
   stableAdd_stableNeg x
 
+/-- stableNeg of stableOne gives the maximal element (F_{m+2} - 1). -/
+theorem stableValue_neg_one (hm : 1 ≤ m) :
+    stableValue (stableNeg (stableOne (m := m))) = paperFib (m + 1) - 1 := by
+  rw [stableValue_stableNeg, stableValue_stableOne_of_ge_one hm,
+    Nat.mod_eq_of_lt (by have := paperFib_pos (m + 1); omega)]
+
+/-- For m ≥ 1, stableOne is not stableZero. -/
+theorem stableOne_ne_stableZero (hm : 1 ≤ m) : stableOne (m := m) ≠ stableZero := by
+  intro h
+  have h1 := stableValue_stableOne_of_ge_one hm
+  have h0 := stableValue_stableZero (m := m)
+  rw [h] at h1; omega
+
 end
 
 end X
