@@ -1604,6 +1604,21 @@ theorem globalDefect_self_cancel (h : m ≤ n) (ω : Word n) :
     xorWord (globalDefect h ω) (globalDefect h ω) = zeroWord m :=
   globalDefect_xor_self h ω
 
+/-! ### Paper SPG Section: Scan Error Cell-Locality -/
+
+/-- Scan error depends only on cell-level intersections (discrete). -/
+theorem scanError_cell_local {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) {P Q : Set α}
+    (h : ∀ b, P ∩ SPG.observableCell obs b = Q ∩ SPG.observableCell obs b) :
+    SPG.scanError μ obs P = SPG.scanError μ obs Q :=
+  SPG.scanError_eq_of_cells_eq μ obs h
+
+/-! ### Paper SPG Section: Clopen Cylinder -/
+
+/-- Individual cylinder sets are clopen in the product topology. -/
+theorem cylinder_clopen (w : Word m) : IsClopen (SPG.cylinderWord w) :=
+  SPG.isClopen_cylinderWord w
+
 end
 
 end Omega.Frontier

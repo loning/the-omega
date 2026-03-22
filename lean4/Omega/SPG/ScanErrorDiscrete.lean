@@ -676,6 +676,40 @@ theorem scanError_le_sum_cellMass {α β : Type*} [Fintype α] [Fintype β]
     _ ≤ ∑ b, cellMass μ obs b :=
         Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
 
+/-- The cell event mass of P equals that of Q when P and Q agree on cell b. -/
+theorem cellEventMass_eq_of_inter_eq {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) {P Q : Set α} (b : β)
+    (h : P ∩ observableCell obs b = Q ∩ observableCell obs b) :
+    cellEventMass μ obs P b = cellEventMass μ obs Q b := by
+  simp [cellEventMass, h]
+
+/-- Scan error only depends on how the event intersects each observation cell. -/
+theorem scanError_eq_of_cells_eq {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) {P Q : Set α}
+    (h : ∀ b, P ∩ observableCell obs b = Q ∩ observableCell obs b) :
+    scanError μ obs P = scanError μ obs Q := by
+  unfold scanError
+  refine Finset.sum_congr rfl (fun b _ => ?_)
+  have hEvent := cellEventMass_eq_of_inter_eq μ obs b (h b)
+  have hDiff : ∀ b, observableCell obs b \ P = observableCell obs b \ Q := by
+    intro b'
+    ext x
+    simp only [Set.mem_diff, observableCell, Set.mem_setOf_eq]
+    constructor
+    · intro ⟨hx, hnP⟩
+      refine ⟨hx, fun hQ => hnP ?_⟩
+      have : x ∈ Q ∩ observableCell obs b' := ⟨hQ, hx⟩
+      rw [← h b'] at this
+      exact this.1
+    · intro ⟨hx, hnQ⟩
+      refine ⟨hx, fun hP => hnQ ?_⟩
+      have : x ∈ P ∩ observableCell obs b' := ⟨hP, hx⟩
+      rw [h b'] at this
+      exact this.1
+  have hCompl : cellComplMass μ obs P b = cellComplMass μ obs Q b := by
+    simp [cellComplMass, hDiff b]
+  rw [hEvent, hCompl]
+
 end
 
 end Omega.SPG
