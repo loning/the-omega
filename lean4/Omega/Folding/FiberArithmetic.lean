@@ -853,5 +853,16 @@ theorem fiber_always_positive (x : X m) : 0 < fiberMultiplicity x :=
 theorem ring_cardinality (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
   X.card_eq_paperFib_succ m
 
+/-- Fold preserves No11 (stable output). -/
+theorem Fold_output_is_stable (w : Word m) : No11 (Fold w).1 :=
+  Fold_maps_to_stable w
+
+/-- The fiber partition is a complete disjoint decomposition. -/
+theorem fiber_decomposition_complete (m : Nat) :
+    (∀ w : Word m, ∃! x : X m, w ∈ fiber x) ∧
+    (∀ x : X m, 0 < (fiber x).card) ∧
+    (∑ x : X m, (fiber x).card = 2 ^ m) :=
+  ⟨word_in_unique_fiber, fiber_card_pos, fiber_card_sum_eq_pow m⟩
+
 end
 
