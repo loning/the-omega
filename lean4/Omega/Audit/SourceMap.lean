@@ -1624,7 +1624,7 @@ def initialEntries : List SourceMapEntry :=
   --                                       → X.fiberMultiplicity_le_max    (line:27)
   --                                       → X.maxFiberMultiplicity_pos    (line:31)
   --                                       → X.maxFiberMultiplicity_le_add (line:271)
-  -- cor:pom-D-rec (base values D_0..D_9) → X.maxFiberMultiplicity_zero..nine (lines:108-117)
+  -- cor:pom-D-rec (base values D_0..D_10) → X.maxFiberMultiplicity_zero..ten (lines:108-118)
   -- 辅助引理: restrict_ofNat (line:6), restrict_Fold_snoc_false (line:9),
   --           snoc_truncate_last (line:119), weight_lt_paperFib (line:126),
   --           weight_expand (line:139), ofNat_add_paperFib (line:151),
@@ -1718,6 +1718,12 @@ def initialEntries : List SourceMapEntry :=
       sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
       moduleName := "Omega.Folding.MaxFiber"
       leanName := "Omega.X.maxFiberMultiplicity_nine"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-ten"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_ten"
       phase := 12
       status := .formalized }
   -- Phase 13: ModularTower (Plan 4)

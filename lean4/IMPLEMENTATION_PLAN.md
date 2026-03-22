@@ -32,7 +32,7 @@
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
 **modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
-**最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_9（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
+**最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_10（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
@@ -67,7 +67,7 @@
 ### Phase B：POM 纤维谱（计划 7-12）
 
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
-8. **[深化完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber` 部分)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`thm:pom-max-fiber`)，基值 $D_0..D_9$ via native_decide (`cor:pom-D-rec`)；闭式 $D_{2k} = F_{k+2}$, $D_{2k+1} = 2F_{k+1}$ 待实现（需要 Fold-truncate 交换性基础设施）
+8. **[深化完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber` 部分)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`thm:pom-max-fiber`)，基值 $D_0..D_{10}$ via native_decide (`cor:pom-D-rec`)；闭式 $D_{2k} = F_{k+2}$, $D_{2k+1} = 2F_{k+1}$ 待实现（需要 Fold-truncate 交换性基础设施）
 9. **三纤维闭合形式**：证明论文中 `D_{2k}^{(3)} = F_{k+2} - F_{k-3}` 的闭合公式
 10. **碰撞核矩阵**：定义碰撞计数矩阵并证明其 Perron-Frobenius 性质
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量

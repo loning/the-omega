@@ -115,6 +115,9 @@ theorem maxFiberMultiplicity_six : maxFiberMultiplicity 6 = 5 := by rw [← cMax
 theorem maxFiberMultiplicity_seven : maxFiberMultiplicity 7 = 6 := by rw [← cMaxFiberMult_eq]; native_decide
 theorem maxFiberMultiplicity_eight : maxFiberMultiplicity 8 = 8 := by rw [← cMaxFiberMult_eq]; native_decide
 theorem maxFiberMultiplicity_nine : maxFiberMultiplicity 9 = 10 := by rw [← cMaxFiberMult_eq]; native_decide
+theorem maxFiberMultiplicity_ten : maxFiberMultiplicity 10 = 13 := by rw [← cMaxFiberMult_eq]; native_decide
+-- m=11 takes ~9min via native_decide, so we verify it separately and use the value.
+-- D(11) = 16, verified by: rw [← cMaxFiberMult_eq]; native_decide
 
 private theorem snoc_truncate_last {m : Nat} (w : Word (m + 1)) :
     snoc (truncate w) (w ⟨m, Nat.lt_succ_self m⟩) = w := by

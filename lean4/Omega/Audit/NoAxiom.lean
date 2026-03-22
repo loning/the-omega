@@ -280,6 +280,7 @@ Run these commands manually during audit:
   #print axioms Omega.X.maxFiberMultiplicity_seven
   #print axioms Omega.X.maxFiberMultiplicity_eight
   #print axioms Omega.X.maxFiberMultiplicity_nine
+  #print axioms Omega.X.maxFiberMultiplicity_ten
   -- ModularTower (Plan 4): thm:pom-modular-tower
   #print axioms Omega.X.modularProject_eq_restrict
   #print axioms Omega.X.modularProject_stableAdd_carry
