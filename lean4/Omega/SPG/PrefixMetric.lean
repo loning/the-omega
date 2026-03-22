@@ -48,4 +48,15 @@ theorem prefixBall_anti (x : OmegaInfinity) {m n : Nat} (h : m ≤ n) :
     prefixBall x n ⊆ prefixBall x m :=
   PiNat.cylinder_anti x h
 
+/-- Prefix balls are nested: higher resolution gives smaller balls. -/
+theorem prefixBall_nested (x : OmegaInfinity) (m : Nat) :
+    prefixBall x (m + 1) ⊆ prefixBall x m :=
+  prefixBall_anti x (Nat.le_succ m)
+
+/-- Every point is in its own prefix ball. -/
+theorem mem_prefixBall_self (x : OmegaInfinity) (m : Nat) :
+    x ∈ prefixBall x m := by
+  simp [prefixBall, PiNat.mem_cylinder_iff]
+
+
 end Omega.SPG
