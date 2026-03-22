@@ -2549,6 +2549,32 @@ theorem scan_error_le_one {α β : Type*} [Fintype α] [Fintype β]
     SPG.scanError μ obs P ≤ 1 :=
   SPG.scanError_le_one μ obs P
 
+/-! #### Higher Cardinalities & Primality -/
+
+/-- |X_11| = 233. -/
+theorem card_stable_eleven : Fintype.card (X 11) = 233 := X.card_X_eleven
+
+/-- |X_12| = 377. -/
+theorem card_stable_twelve : Fintype.card (X 12) = 377 := X.card_X_twelve
+
+/-- |X_13| = 610. -/
+theorem card_stable_thirteen : Fintype.card (X 13) = 610 := X.card_X_thirteen
+
+/-- F_12 = 233 is prime (X_11 is a field). -/
+theorem X11_is_field : Nat.Prime (paperFib 12) := X.F12_is_prime
+
+/-! #### Carry Element & Modular Projection -/
+
+/-- Carry element value when in range. -/
+theorem carry_element_val (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
+    stableValue (X.carryElement m) = Nat.fib (m + 2) :=
+  X.carryElement_value hm
+
+/-- Modular projection preserves zero. -/
+theorem modular_preserves_zero :
+    X.modularProject (X.stableZero (m := m + 1)) = X.stableZero :=
+  X.modularProject_preserves_zero
+
 end
 
 end Omega.Frontier

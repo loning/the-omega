@@ -1017,6 +1017,23 @@ theorem card_X_eleven : Fintype.card (X 11) = 233 := by
 theorem card_X_twelve : Fintype.card (X 12) = 377 := by
   rw [X.card_eq_paperFib_succ]; rfl
 
+/-- F_12 = 233 is prime. -/
+theorem F12_is_prime : Nat.Prime (paperFib 12) := by native_decide
+
+/-- |X_13| = 610. -/
+theorem card_X_thirteen : Fintype.card (X 13) = 610 := by
+  rw [X.card_eq_paperFib_succ]; native_decide
+
+/-- The carry element value when in range. -/
+theorem carryElement_value (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
+    stableValue (carryElement m) = Nat.fib (m + 2) :=
+  stableValue_carryElement hm
+
+/-- modularProject preserves the zero element. -/
+theorem modularProject_preserves_zero :
+    modularProject (stableZero (m := m + 1)) = stableZero :=
+  modularProject_zero
+
 end
 
 end X
