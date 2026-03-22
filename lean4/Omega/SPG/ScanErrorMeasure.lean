@@ -893,6 +893,24 @@ theorem boundaryCylinderCount_observable_zero {α β : Type*} [MeasurableSpace �
     boundaryCylinderCount μ obs (observableEvent obs A) = 0 :=
   boundaryCylinderCount_observableEvent_eq_zero μ obs A
 
+/-- Scan error is zero for an empty measure. -/
+theorem scanErrorMeasure_zero {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (obs : α → β) (P : Set α) :
+    scanErrorMeasure 0 obs P = 0 :=
+  scanErrorMeasure_zero_measure obs P
+
+/-- Cell event measure at the empty event is zero (named). -/
+theorem cellEventMeasure_at_empty {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellEventMeasure μ obs ∅ b = 0 :=
+  cellEventMeasure_empty μ obs b
+
+/-- Cell complement measure at the full event is zero (named). -/
+theorem cellComplMeasure_at_full {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellComplMeasure μ obs Set.univ b = 0 :=
+  cellComplMeasure_univ μ obs b
+
 end
 
 end Omega.SPG

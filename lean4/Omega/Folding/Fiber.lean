@@ -791,6 +791,16 @@ theorem stableValue_appendFalse' (x : X m) :
     stableValue (X.appendFalse x) = stableValue x :=
   stableValue_restrict_appendFalse x
 
+/-- stableAdd with itself equals stableMul by 2 (named). -/
+theorem double_is_two_mul (x : X m) (hm : 2 < paperFib (m + 1)) :
+    stableAdd x x = stableMul (X.ofNat m 2) x :=
+  stableAdd_self_eq_stableMul_two x hm
+
+/-- The stable value of the appendTrue extension. -/
+theorem stableValue_appendTrue' (x : X m) (h : get x.1 (m - 1) = false) :
+    stableValue (X.appendTrue x h) = stableValue x + paperFib (m + 1) :=
+  stableValue_appendTrue x h
+
 end
 
 end X
