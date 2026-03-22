@@ -12,6 +12,7 @@ import Omega.Folding.CarryDefect
 import Omega.Folding.InverseLimit
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
+import Omega.Folding.ModularTower
 import Omega.Graph.LabeledGraph
 import Omega.Graph.Sofic
 import Omega.SPG.Cylinder
