@@ -660,6 +660,22 @@ theorem scanError_observableEvent_refines_zero {α β γ : Type*} [Fintype α] [
     (boundaryCells μ obs (observableEvent obs A)).card = 0 := by
   rw [boundaryCells_observableEvent_eq_empty, Finset.card_empty]
 
+/-- Cell event mass is monotone in event containment (discrete). -/
+theorem cellEventMass_mono {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) {P Q : Set α} (h : P ⊆ Q) (b : β) :
+    cellEventMass μ obs P b ≤ cellEventMass μ obs Q b :=
+  setMass_mono μ (Set.inter_subset_inter_left _ h)
+
+/-- Scan error is bounded by twice any individual cell's min(event, complement) mass. -/
+theorem scanError_le_sum_cellMass {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P ≤ ∑ b, cellMass μ obs b := by
+  calc scanError μ obs P
+      ≤ Finset.sum (boundaryCells μ obs P) (fun b => cellMass μ obs b) :=
+        scanError_le_boundaryMass μ obs P
+    _ ≤ ∑ b, cellMass μ obs b :=
+        Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
+
 end
 
 end Omega.SPG

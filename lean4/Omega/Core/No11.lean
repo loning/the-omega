@@ -52,4 +52,12 @@ def No11 (w : Word m) : Prop :=
     rw [hLast] at hiLast
     cases hiLast
 
+/-- The all-false word satisfies No11. -/
+theorem no11_allFalse : No11 (fun _ : Fin m => false) := by
+  intro i hi
+  simp only [get, dite_eq_ite] at hi
+  split at hi
+  · simp at hi
+  · simp at hi
+
 end Omega
