@@ -1,7 +1,7 @@
 ---
 name: lean4-analyst
 description: "Lean4形式化分析师：读论文LaTeX+现有Lean4代码，生成精确形式化规格"
-model: sonnet
+model: opus
 subagent_type: Plan
 ---
 
