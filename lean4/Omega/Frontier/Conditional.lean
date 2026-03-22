@@ -1528,6 +1528,39 @@ theorem stableNeg_value (x : X m) :
     stableValue (X.stableNeg x) = (paperFib (m + 1) - stableValue x) % paperFib (m + 1) :=
   X.stableValue_stableNeg x
 
+/-! ### Paper Section 6: Ring Structure Characterization -/
+
+/-- stableValue characterizes equality of stable words. -/
+theorem stableValue_characterizes_equality (x y : X m) :
+    x = y ↔ stableValue x = stableValue y :=
+  X.stableValue_eq_iff x y
+
+/-- Right distributivity of multiplication over addition. -/
+theorem stableMul_distributes_right (x y z : X m) :
+    X.stableMul (X.stableAdd y z) x = X.stableAdd (X.stableMul y x) (X.stableMul z x) :=
+  X.stableMul_stableAdd_right x y z
+
+/-! ### Paper SPG Section: Scan Error Bounds -/
+
+/-- Scan error ≤ sum of cell event measures. -/
+theorem scanError_measure_le_event_sum [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P ≤ ∑ b, SPG.cellEventMeasure μ obs P b :=
+  SPG.scanErrorMeasure_le_cellEventSum μ obs P
+
+/-- Scan error ≤ sum of cell complement measures. -/
+theorem scanError_measure_le_compl_sum [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P ≤ ∑ b, SPG.cellComplMeasure μ obs P b :=
+  SPG.scanErrorMeasure_le_cellComplSum μ obs P
+
+/-- Observable purity implies zero boundary count (measure). -/
+theorem pure_implies_zero_boundary [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
+    (hPure : SPG.ObservablePureMeasure μ obs P) :
+    SPG.boundaryCylinderCount μ obs P = 0 :=
+  SPG.boundaryCylinderCount_zero_of_pure μ obs P hPure
+
 end
 
 end Omega.Frontier

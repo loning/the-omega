@@ -457,6 +457,21 @@ theorem stableSub_stableAdd_cancel (x y : X m) :
     stableSub (stableAdd x y) y = x := by
   simp only [stableSub, stableAdd_assoc, stableAdd_stableNeg, stableAdd_zero_right]
 
+/-- Stable multiplication by stableZero on the right annihilates. -/
+theorem stableValue_stableMul_zero (x : X m) :
+    stableValue (stableMul x stableZero) = 0 := by
+  rw [stableValue_stableMul, stableValue_stableZero, Nat.mul_zero, Nat.zero_mod]
+
+/-- stableAdd distributes over stableMul on the right. -/
+theorem stableMul_stableAdd_right (x y z : X m) :
+    stableMul (stableAdd y z) x = stableAdd (stableMul y x) (stableMul z x) := by
+  rw [stableMul_comm, stableMul_stableAdd_left, stableMul_comm y, stableMul_comm z]
+
+/-- The stable value map characterizes equality: two stable words are equal iff
+    they have the same value. -/
+theorem stableValue_eq_iff (x y : X m) : x = y ↔ stableValue x = stableValue y :=
+  ⟨fun h => congrArg _ h, eq_of_stableValue_eq⟩
+
 end
 
 end X

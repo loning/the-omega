@@ -764,6 +764,33 @@ theorem cellComplMeasure_anti {α β : Type*} [MeasurableSpace α]
   unfold cellComplMeasure
   exact MeasureTheory.measure_mono (Set.diff_subset_diff_right h)
 
+/-- Scan error is zero for the full space (measure). -/
+theorem scanErrorMeasure_of_univ_eq_zero {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs Set.univ = 0 :=
+  scanErrorMeasure_univ μ obs
+
+/-- Scan error is bounded by the sum of cell event measures. -/
+theorem scanErrorMeasure_le_cellEventSum {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P ≤ ∑ b, cellEventMeasure μ obs P b := by
+  unfold scanErrorMeasure
+  exact Finset.sum_le_sum (fun b _ => min_le_left _ _)
+
+/-- Scan error is bounded by the sum of cell complement measures. -/
+theorem scanErrorMeasure_le_cellComplSum {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P ≤ ∑ b, cellComplMeasure μ obs P b := by
+  unfold scanErrorMeasure
+  exact Finset.sum_le_sum (fun b _ => min_le_right _ _)
+
+/-- Observable purity implies zero boundary count (measure, direct). -/
+theorem boundaryCylinderCount_zero_of_pure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
+    (hPure : ObservablePureMeasure μ obs P) :
+    boundaryCylinderCount μ obs P = 0 :=
+  (boundaryCylinderCount_eq_zero_iff_observablePure μ obs P).mpr hPure
+
 end
 
 end Omega.SPG
