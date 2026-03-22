@@ -1936,6 +1936,30 @@ theorem paperFib_divisibility {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
     paperFib m ∣ paperFib n :=
   paperFib_dvd_of_succ_dvd h
 
+/-! ### Plan 7: Fiber Multiplicity Structure -/
+
+/-- Total fiber multiplicity at resolution 0 is 1. -/
+theorem fiber_total_at_zero : ∑ x : X 0, X.fiberMultiplicity x = 1 :=
+  X.fiberMultiplicity_unique_at_zero
+
+/-- Total fiber multiplicity at any resolution is 2^m. -/
+theorem fiber_total_is_power (m : Nat) : ∑ x : X m, X.fiberMultiplicity x = 2 ^ m :=
+  X.fiberMultiplicity_total m
+
+/-! ### Plan 13: Scan Error Combinatorial Bounds -/
+
+/-- Scan error bounded by boundary count × max cell mass. -/
+theorem scanError_boundary_combinatorial {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) (κ : ENNReal)
+    (hκ : ∀ b, SPG.cellMass μ obs b ≤ κ) :
+    SPG.scanError μ obs P ≤ (SPG.boundaryCells μ obs P).card * κ :=
+  SPG.scanError_combinatorial_bound μ obs P κ hκ
+
+/-- Prefix boundary cell count bounded by word space size. -/
+theorem prefix_boundary_bounded (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    (SPG.prefixBoundaryCells μ h P).card ≤ Fintype.card (Word m) :=
+  SPG.prefixBoundaryCells_card_le μ h P
+
 end
 
 end Omega.Frontier

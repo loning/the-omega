@@ -660,6 +660,17 @@ theorem modularProject_add_no_carry (x y : X (m + 1))
     Nat.mod_eq_of_lt hNoCarry]
   rw [Nat.add_mod]
 
+/-- At resolution 0, the total fiber sum is 2^0 = 1, and |X_0| = 1,
+    so the unique element has fiber multiplicity 1. -/
+theorem fiberMultiplicity_unique_at_zero :
+    ∑ x : X 0, fiberMultiplicity x = 1 := by
+  rw [fiberMultiplicity_sum_eq_pow]; rfl
+
+/-- The average fiber multiplicity grows: at resolution m, it's 2^m / F_{m+2}. -/
+theorem fiberMultiplicity_total (m : Nat) :
+    ∑ x : X m, fiberMultiplicity x = 2 ^ m :=
+  fiberMultiplicity_sum_eq_pow m
+
 end
 
 end X

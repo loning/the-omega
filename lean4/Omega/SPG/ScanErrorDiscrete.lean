@@ -769,6 +769,18 @@ theorem cell_partition {α β : Type*} [Fintype α]
     cellEventMass μ obs P b + cellComplMass μ obs P b = cellMass μ obs b :=
   cellEventMass_add_cellComplMass_eq_cellMass μ obs P b
 
+/-- Scan error bounded by boundary count × max cell mass (named). -/
+theorem scanError_combinatorial_bound {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) (κ : ENNReal)
+    (hκ : ∀ b, cellMass μ obs b ≤ κ) :
+    scanError μ obs P ≤ (boundaryCells μ obs P).card * κ :=
+  scanError_le_boundaryCard_mul μ obs P κ hκ
+
+/-- Boundary cell count at resolution m is bounded by Fintype.card (Word m). -/
+theorem prefixBoundaryCells_card_le (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    (prefixBoundaryCells μ h P).card ≤ Fintype.card (Word m) :=
+  boundaryCells_card_le μ (prefixObservation h) P
+
 end
 
 end Omega.SPG
