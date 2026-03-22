@@ -2416,6 +2416,23 @@ theorem modular_project_mul_no_carry (x y : X (m + 1))
       X.stableMul (X.modularProject x) (X.modularProject y) :=
   X.modularProject_mul_no_carry x y h
 
+/-! #### Plan 2: Integral Domain & Prime Field -/
+
+/-- When F_{m+2} is prime, X_m is an integral domain (no zero divisors). -/
+theorem integral_domain_when_prime (hPrime : Nat.Prime (paperFib (m + 1)))
+    {x y : X m} (hx : x ≠ X.stableZero) (hy : y ≠ X.stableZero) :
+    X.stableMul x y ≠ X.stableZero :=
+  X.stableMul_no_zero_divisor_of_prime hPrime hx hy
+
+/-! #### Cell-Local Measure Dependence -/
+
+/-- Cell event measure depends only on intersection with cell (measure). -/
+theorem cell_event_local [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) {P Q : Set α} (b : β)
+    (h : P ∩ SPG.observableCell obs b = Q ∩ SPG.observableCell obs b) :
+    SPG.cellEventMeasure μ obs P b = SPG.cellEventMeasure μ obs Q b :=
+  SPG.cellEventMeasure_depends_on_inter μ obs b h
+
 end
 
 end Omega.Frontier
