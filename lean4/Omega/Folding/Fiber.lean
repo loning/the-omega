@@ -910,6 +910,28 @@ theorem modularProject_mul_no_carry (x y : X (m + 1))
   rw [stableValue_modularProject, stableValue_stableMul, stableValue_stableMul,
     stableValue_modularProject, stableValue_modularProject, Nat.mod_eq_of_lt h, Nat.mul_mod]
 
+/-- stableMul by one on the right is the identity (when F > 1). -/
+theorem stableMul_one_right' (hm : 1 < paperFib (m + 1)) (x : X m) :
+    stableMul x stableOne = x := by
+  rw [stableMul_comm]; exact stableMul_one_left hm x
+
+/-- The stable ring has no zero divisors when paperFib(m+1) is prime. -/
+theorem stableMul_no_zero_divisor_of_prime (hPrime : Nat.Prime (paperFib (m + 1)))
+    {x y : X m} (hx : x ≠ stableZero) (hy : y ≠ stableZero) :
+    stableMul x y ≠ stableZero := by
+  intro hxy
+  have hValX : stableValue x ≠ 0 := by
+    intro h; exact hx (eq_of_stableValue_eq (h.trans stableValue_stableZero.symm))
+  have hValY : stableValue y ≠ 0 := by
+    intro h; exact hy (eq_of_stableValue_eq (h.trans stableValue_stableZero.symm))
+  have hMul := congr_arg stableValue hxy
+  rw [stableValue_stableMul, stableValue_stableZero] at hMul
+  have hDvd : paperFib (m + 1) ∣ stableValue x * stableValue y :=
+    Nat.dvd_of_mod_eq_zero hMul
+  rcases hPrime.dvd_mul.mp hDvd with hDvdX | hDvdY
+  · exact hValX (Nat.eq_zero_of_dvd_of_lt hDvdX (stableValue_lt_paperFib_succ x))
+  · exact hValY (Nat.eq_zero_of_dvd_of_lt hDvdY (stableValue_lt_paperFib_succ y))
+
 end
 
 end X
