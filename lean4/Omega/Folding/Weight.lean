@@ -19,4 +19,9 @@ def weight : {m : Nat} → Word m → Nat
     weight (X.appendFalse x).1 = weight x.1 := by
   simp [X.appendFalse, weight_snoc]
 
+@[simp] theorem weight_appendTrue (x : X m) (hLast : get x.1 (m - 1) = false) :
+    weight (X.appendTrue x hLast).1 = weight x.1 + paperFib (m + 1) := by
+  simp [X.appendTrue, weight_snoc]
+
+
 end Omega

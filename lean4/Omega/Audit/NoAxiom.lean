@@ -144,6 +144,89 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.RewriteStepCertificate.value_preserved
   #print axioms Omega.Frontier.FoldCertificate.idempotent
   #print axioms Omega.Frontier.PrefixZeroScanCertificate.canonical
+  #print axioms Omega.SPG.ObservablePure
+  #print axioms Omega.SPG.observablePure_iff_boundaryCells_eq_empty
+  #print axioms Omega.SPG.scanError_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.scanError_eq_zero_iff_boundaryCells_eq_empty
+  #print axioms Omega.SPG.scanError_compl
+  #print axioms Omega.SPG.scanError_empty
+  #print axioms Omega.SPG.scanError_univ
+  #print axioms Omega.SPG.scanErrorMeasure_compl
+  #print axioms Omega.SPG.scanErrorMeasure_empty
+  #print axioms Omega.SPG.scanErrorMeasure_univ
+  #print axioms Omega.Frontier.scanError_compl_discrete
+  #print axioms Omega.Frontier.scanError_empty_discrete
+  #print axioms Omega.Frontier.scanError_univ_discrete
+  #print axioms Omega.Frontier.observableEvent_observablePure_discrete
+  #print axioms Omega.Frontier.observablePure_iff_boundaryEmpty_discrete
+  #print axioms Omega.Frontier.scanError_zero_iff_observablePure_discrete
+  #print axioms Omega.Frontier.scanError_zero_iff_boundaryEmpty_discrete
+  #print axioms Omega.Frontier.scanError_compl_measure
+  #print axioms Omega.Frontier.scanError_empty_measure
+  #print axioms Omega.Frontier.scanError_univ_measure
+  #print axioms Omega.SPG.prefixScanError_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.prefixScanError_eq_zero_iff_boundaryCells_eq_empty
+  #print axioms Omega.SPG.prefixScanError_compl
+  #print axioms Omega.SPG.prefixScanError_empty
+  #print axioms Omega.SPG.prefixScanError_univ
+  #print axioms Omega.SPG.observablePureMeasure_toMeasure_iff_observablePure
+  #print axioms Omega.SPG.prefixScanErrorMeasure_compl
+  #print axioms Omega.SPG.prefixScanErrorMeasure_empty
+  #print axioms Omega.SPG.prefixScanErrorMeasure_univ
+  #print axioms Omega.SPG.sum_min_le_min_sum
+  #print axioms Omega.Frontier.prefixEvent_observablePure_discrete
+  #print axioms Omega.Frontier.prefixScanError_zero_iff_observablePure_discrete
+  #print axioms Omega.Frontier.prefixScanError_zero_iff_boundaryEmpty_discrete
+  #print axioms Omega.Frontier.prefixScanError_compl_discrete
+  #print axioms Omega.Frontier.prefixScanError_empty_discrete
+  #print axioms Omega.Frontier.prefixScanError_univ_discrete
+  #print axioms Omega.Frontier.observablePure_measure_discrete_bridge
+  #print axioms Omega.Frontier.prefixScanError_compl_measure
+  #print axioms Omega.Frontier.prefixScanError_empty_measure
+  #print axioms Omega.Frontier.prefixScanError_univ_measure
+  #print axioms Omega.SPG.scanError_antitone_of_refines
+  #print axioms Omega.SPG.prefixScanError_antitone
+  #print axioms Omega.Frontier.scanError_antitone_of_refines
+  #print axioms Omega.Frontier.prefixScanError_antitone
+  #print axioms Omega.SPG.cellEventMass_sum_eq_setMass
+  #print axioms Omega.SPG.cellComplMass_sum_eq_setMass_compl
+  #print axioms Omega.SPG.cellMass_sum_eq_setMass_univ
+  #print axioms Omega.SPG.scanError_le_min_setMass
+  #print axioms Omega.SPG.scanErrorMeasure_le_min
+  #print axioms Omega.Frontier.cellEventMass_partition
+  #print axioms Omega.Frontier.cellComplMass_partition
+  #print axioms Omega.Frontier.scanError_bayes_bound
+  #print axioms Omega.Frontier.scanError_measure_bayes_bound
+  #print axioms Omega.SPG.boundaryCylinderCount_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
+  #print axioms Omega.SPG.boundaryCylinderCount_observableEvent_eq_zero
+  #print axioms Omega.SPG.boundaryCylinderCount_toMeasure_eq
+  #print axioms Omega.SPG.prefixBoundaryCylinderCount_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.prefixScanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
+  #print axioms Omega.SPG.prefixBoundaryCylinderCount_prefixEvent_eq_zero
+  #print axioms Omega.SPG.prefixBoundaryCylinderCount_toMeasure_eq
+  #print axioms Omega.Frontier.stableSyntax_card_eq_fibonacci
+  #print axioms Omega.Frontier.stableSyntax_card_recurrence
+  #print axioms Omega.Frontier.stableWord_zeckendorf_valid
+  #print axioms Omega.Frontier.stableValue_eq_fibonacci_weighted_sum
+  #print axioms Omega.Frontier.stableValue_eq_zeckRep_sum
+  -- Note: above has type ((zeckRep x).1.map fib).sum = stableValue x
+  #print axioms Omega.Frontier.fold_fiber_card_pos
+  #print axioms Omega.Frontier.boundaryCylinderCount_zero_iff_pure_measure
+  #print axioms Omega.Frontier.scanError_zero_iff_boundaryCylinderCount_zero_measure
+  #print axioms Omega.Frontier.boundaryCylinderCount_observableEvent_zero
+  #print axioms Omega.Frontier.prefixBoundaryCylinderCount_prefixEvent_zero
+  #print axioms Omega.Frontier.prefixBoundaryCylinderCount_zero_iff_pure_measure
+  #print axioms Omega.Frontier.prefixScanError_zero_iff_boundaryCylinderCount_zero_measure
+  #print axioms Omega.Frontier.boundaryCylinderCount_measure_discrete_bridge
+  #print axioms Omega.Frontier.prefixBoundaryCylinderCount_measure_discrete_bridge
+  #print axioms Omega.Frontier.scanError_measure_antitone_via_bridge
+  #print axioms Omega.Frontier.prefixScanError_measure_antitone_via_bridge
+  #print axioms Omega.SPG.cellEventMass_add_cellComplMass_eq_cellMass
+  #print axioms Omega.Frontier.stableValue_injective
+  #print axioms Omega.Frontier.stableValue_ofNat_roundtrip
+  #print axioms Omega.Frontier.fold_ofNat_roundtrip
+  #print axioms Omega.Frontier.cellEventMass_add_cellComplMass_partition
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -275,6 +358,156 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.prefixEvent_pure_measure_discrete_bridge"
   , "Omega.Frontier.RewriteStepCertificate.value_preserved"
   , "Omega.Frontier.FoldCertificate.idempotent"
-  , "Omega.Frontier.PrefixZeroScanCertificate.canonical" ]
+  , "Omega.Frontier.PrefixZeroScanCertificate.canonical"
+  , "Omega.SPG.scanError_compl"
+  , "Omega.SPG.scanError_empty"
+  , "Omega.SPG.scanError_univ"
+  , "Omega.SPG.observablePure_iff_boundaryCells_eq_empty"
+  , "Omega.SPG.scanError_eq_zero_iff_observablePure"
+  , "Omega.SPG.scanError_eq_zero_iff_boundaryCells_eq_empty"
+  , "Omega.SPG.scanErrorMeasure_compl"
+  , "Omega.SPG.scanErrorMeasure_empty"
+  , "Omega.SPG.scanErrorMeasure_univ"
+  , "Omega.Frontier.scanError_compl_discrete"
+  , "Omega.Frontier.scanError_empty_discrete"
+  , "Omega.Frontier.scanError_univ_discrete"
+  , "Omega.Frontier.observableEvent_observablePure_discrete"
+  , "Omega.Frontier.observablePure_iff_boundaryEmpty_discrete"
+  , "Omega.Frontier.scanError_zero_iff_observablePure_discrete"
+  , "Omega.Frontier.scanError_zero_iff_boundaryEmpty_discrete"
+  , "Omega.Frontier.scanError_compl_measure"
+  , "Omega.Frontier.scanError_empty_measure"
+  , "Omega.Frontier.scanError_univ_measure"
+  , "Omega.SPG.prefixScanError_eq_zero_iff_observablePure"
+  , "Omega.SPG.prefixScanError_eq_zero_iff_boundaryCells_eq_empty"
+  , "Omega.SPG.prefixScanError_compl"
+  , "Omega.SPG.prefixScanError_empty"
+  , "Omega.SPG.prefixScanError_univ"
+  , "Omega.SPG.observablePureMeasure_toMeasure_iff_observablePure"
+  , "Omega.SPG.prefixScanErrorMeasure_compl"
+  , "Omega.SPG.prefixScanErrorMeasure_empty"
+  , "Omega.SPG.prefixScanErrorMeasure_univ"
+  , "Omega.SPG.sum_min_le_min_sum"
+  , "Omega.Frontier.prefixEvent_observablePure_discrete"
+  , "Omega.Frontier.prefixScanError_zero_iff_observablePure_discrete"
+  , "Omega.Frontier.prefixScanError_zero_iff_boundaryEmpty_discrete"
+  , "Omega.Frontier.prefixScanError_compl_discrete"
+  , "Omega.Frontier.prefixScanError_empty_discrete"
+  , "Omega.Frontier.prefixScanError_univ_discrete"
+  , "Omega.Frontier.observablePure_measure_discrete_bridge"
+  , "Omega.Frontier.prefixScanError_compl_measure"
+  , "Omega.Frontier.prefixScanError_empty_measure"
+  , "Omega.Frontier.prefixScanError_univ_measure"
+  , "Omega.SPG.scanError_antitone_of_refines"
+  , "Omega.SPG.prefixScanError_antitone"
+  , "Omega.Frontier.scanError_antitone_of_refines"
+  , "Omega.Frontier.prefixScanError_antitone"
+  , "Omega.SPG.cellEventMass_sum_eq_setMass"
+  , "Omega.SPG.cellComplMass_sum_eq_setMass_compl"
+  , "Omega.SPG.cellMass_sum_eq_setMass_univ"
+  , "Omega.SPG.scanError_le_min_setMass"
+  , "Omega.SPG.scanErrorMeasure_le_min"
+  , "Omega.Frontier.cellEventMass_partition"
+  , "Omega.Frontier.cellComplMass_partition"
+  , "Omega.Frontier.scanError_bayes_bound"
+  , "Omega.Frontier.scanError_measure_bayes_bound"
+  , "Omega.SPG.boundaryCylinderCount_eq_zero_iff_observablePure"
+  , "Omega.SPG.scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero"
+  , "Omega.SPG.boundaryCylinderCount_observableEvent_eq_zero"
+  , "Omega.SPG.boundaryCylinderCount_toMeasure_eq"
+  , "Omega.SPG.prefixBoundaryCylinderCount_eq_zero_iff_observablePure"
+  , "Omega.SPG.prefixScanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero"
+  , "Omega.SPG.prefixBoundaryCylinderCount_prefixEvent_eq_zero"
+  , "Omega.SPG.prefixBoundaryCylinderCount_toMeasure_eq"
+  , "Omega.Frontier.stableSyntax_card_eq_fibonacci"
+  , "Omega.Frontier.stableSyntax_card_recurrence"
+  , "Omega.Frontier.stableWord_zeckendorf_valid"
+  , "Omega.Frontier.stableValue_eq_fibonacci_weighted_sum"
+  , "Omega.Frontier.stableValue_eq_zeckRep_sum"
+  , "Omega.Frontier.fold_fiber_card_pos"
+  , "Omega.Frontier.boundaryCylinderCount_zero_iff_pure_measure"
+  , "Omega.Frontier.scanError_zero_iff_boundaryCylinderCount_zero_measure"
+  , "Omega.Frontier.boundaryCylinderCount_observableEvent_zero"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_prefixEvent_zero"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_zero_iff_pure_measure"
+  , "Omega.Frontier.prefixScanError_zero_iff_boundaryCylinderCount_zero_measure"
+  , "Omega.Frontier.boundaryCylinderCount_measure_discrete_bridge"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_measure_discrete_bridge"
+  , "Omega.Frontier.scanError_measure_antitone_via_bridge"
+  , "Omega.Frontier.prefixScanError_measure_antitone_via_bridge"
+  , "Omega.SPG.cellEventMass_add_cellComplMass_eq_cellMass"
+  , "Omega.Frontier.stableValue_injective"
+  , "Omega.Frontier.stableValue_ofNat_roundtrip"
+  , "Omega.Frontier.fold_ofNat_roundtrip"
+  , "Omega.Frontier.cellEventMass_add_cellComplMass_partition"
+  -- Stable value bound & arithmetic
+  , "Omega.stableValue_lt_paperFib_succ"
+  , "Omega.X.stableValueFin"
+  , "Omega.X.stableValueFin_injective"
+  , "Omega.X.stableAdd"
+  , "Omega.X.stableAdd_comm"
+  , "Omega.Frontier.stableValue_bounded"
+  , "Omega.Frontier.stableAdd_commutative"
+  -- Fibonacci infrastructure
+  , "Omega.paperFib_pos"
+  , "Omega.paperFib_mono"
+  , "Omega.paperFib_le_succ"
+  , "Omega.paperFib_le_add_right"
+  -- Fiber partition & word cardinality
+  , "Omega.X.Word_card"
+  , "Omega.X.fiber_card_sum"
+  , "Omega.X.fiber_card_sum_eq_pow"
+  , "Omega.Frontier.word_card"
+  , "Omega.Frontier.fiber_card_partition"
+  , "Omega.Frontier.fiber_card_partition_pow"
+  -- Phase 9: complement symmetry & cell-level measure bounds
+  , "Omega.SPG.observablePure_compl"
+  , "Omega.SPG.boundaryCells_compl"
+  , "Omega.SPG.prefixBoundaryCells_compl"
+  , "Omega.SPG.cellEventMeasure_le_cellMeasure"
+  , "Omega.SPG.cellComplMeasure_le_cellMeasure"
+  , "Omega.SPG.cellEventMeasure_add_cellComplMeasure_eq_cellMeasure"
+  , "Omega.SPG.observablePureMeasure_compl"
+  , "Omega.SPG.boundaryCellsMeasure_compl"
+  , "Omega.SPG.boundaryCylinderCount_compl"
+  , "Omega.SPG.prefixBoundaryCellsMeasure_compl"
+  , "Omega.SPG.prefixBoundaryCylinderCount_compl"
+  , "Omega.Frontier.observablePure_compl_symmetric_discrete"
+  , "Omega.Frontier.boundaryCells_compl_symmetric_discrete"
+  , "Omega.Frontier.prefixBoundaryCells_compl_symmetric_discrete"
+  , "Omega.Frontier.observablePure_compl_symmetric_measure"
+  , "Omega.Frontier.boundaryCells_compl_symmetric_measure"
+  , "Omega.Frontier.boundaryCylinderCount_compl_symmetric_measure"
+  , "Omega.Frontier.prefixBoundaryCells_compl_symmetric_measure"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_compl_symmetric_measure"
+  , "Omega.Frontier.cellEventMeasure_le_cell"
+  , "Omega.Frontier.cellComplMeasure_le_cell"
+  , "Omega.Frontier.cellPartition_identity_measure"
+  -- Plans 2-6: stable arithmetic, measure monotonicity, fiber multiplicity
+  , "Omega.X.stableValue_ofNat_lt"
+  , "Omega.X.stableValue_ofNat_mod"
+  , "Omega.X.stableZero"
+  , "Omega.X.stableValue_stableZero"
+  , "Omega.X.stableAdd_zero_left"
+  , "Omega.X.stableAdd_zero_right"
+  , "Omega.X.stableAdd_assoc"
+  , "Omega.X.fiberMultiplicity"
+  , "Omega.X.fiberMultiplicity_pos"
+  , "Omega.X.fiberMultiplicity_sum_eq_pow"
+  , "Omega.SPG.PMF_sum_coe_eq_one"
+  , "Omega.SPG.two_mul_scanError_le_one"
+  , "Omega.SPG.setMass_add_setMass_compl"
+  , "Omega.SPG.observableCell_measurableSet"
+  , "Omega.SPG.observableCell_pairwiseDisjoint"
+  , "Omega.SPG.observableCell_iUnion"
+  , "Omega.SPG.cellEventMeasure_sum"
+  , "Omega.SPG.cellComplMeasure_sum"
+  , "Omega.SPG.cellMeasure_sum"
+  , "Omega.SPG.cellEventMeasure_refines_sum_measure"
+  , "Omega.SPG.scanErrorMeasure_antitone_of_refines"
+  , "Omega.Frontier.scanError_bayes_half_bound"
+  , "Omega.Frontier.scanError_measure_antitone_direct"
+  , "Omega.Frontier.fiberMultiplicity_positive"
+  , "Omega.Frontier.fiberMultiplicity_sum" ]
 
 end Omega.Audit

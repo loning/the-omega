@@ -203,4 +203,99 @@ theorem globalDefect_eq_defectChain (m k : Nat) (ω : Word (m + k)) :
         _ = defectChain m (k + 1) ω := by
               rfl
 
+/-- Two words are equal iff their xor is the zero word. -/
+theorem xorWord_eq_zero_iff {a b : Word m} :
+    xorWord a b = zeroWord m ↔ a = b := by
+  constructor
+  · intro h
+    funext i
+    have hi := congr_fun h i
+    simp [xorWord, zeroWord] at hi
+    cases ha : a i <;> cases hb : b i <;> simp_all
+  · intro h
+    subst h
+    exact xorWord_self a
+
+/-- Local defect vanishes iff Fold commutes with truncation/restriction at the raw word level. -/
+theorem localDefect_eq_zero_iff (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔
+      (Fold (truncate η)).1 = (X.restrict (Fold η)).1 := by
+  exact xorWord_eq_zero_iff
+
+/-- Local defect vanishes iff Fold commutes with restriction at the stable level. -/
+theorem localDefect_eq_zero_iff_fold_commutes (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔
+      Fold (truncate η) = X.restrict (Fold η) := by
+  rw [localDefect_eq_zero_iff]
+  exact ⟨fun h => Subtype.ext h, fun h => congr_arg Subtype.val h⟩
+
+/-- Global defect vanishes iff Fold commutes with restriction across all scales. -/
+theorem globalDefect_eq_zero_iff (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = zeroWord m ↔
+      Fold (restrictWord h ω) = X.restrictLE h (Fold ω) := by
+  rw [globalDefect]
+  exact ⟨fun h => Subtype.ext (xorWord_eq_zero_iff.mp h),
+    fun h => xorWord_eq_zero_iff.mpr (congr_arg Subtype.val h)⟩
+
+/-- Zero local defect implies the nonzero defect indicator is false. -/
+theorem localCurvature_iff_defect_ne_zero (η : Word (m + 1)) :
+    localCurvature η ↔ localDefect η ≠ zeroWord m :=
+  Iff.rfl
+
+/-- Non-curvature (zero defect) implies Fold-restriction commutativity. -/
+theorem not_localCurvature_iff_fold_commutes (η : Word (m + 1)) :
+    ¬ localCurvature η ↔ Fold (truncate η) = X.restrict (Fold η) := by
+  rw [localCurvature, not_not, localDefect_eq_zero_iff_fold_commutes]
+
+/-- The defect chain vanishes when the input is stable (stable words have zero defect). -/
+theorem defectChain_stable (m k : Nat) (x : X (m + k)) :
+    defectChain m k x.1 = globalDefect (Nat.le_add_right m k) x.1 := by
+  exact (globalDefect_eq_defectChain m k x.1).symm
+
+/-- Global defect of a stable word at any resolution difference gives the xor difference. -/
+theorem globalDefect_stable_eq_xor (h : m ≤ n) (x : X n) :
+    globalDefect h x.1 = xorWord (Fold (restrictWord h x.1)).1 (X.restrictLE h x).1 := by
+  simp [globalDefect]
+
+/-- The zero-length defect chain is always zero. -/
+@[simp] theorem defectChain_zero (m : Nat) (ω : Word (m + 0)) :
+    defectChain m 0 ω = zeroWord m :=
+  rfl
+
+/-- The one-step defect chain equals the projected local defect xored with zero. -/
+theorem defectChain_one (m : Nat) (ω : Word (m + 1)) :
+    defectChain m 1 ω = xorWord (restrictWord (Nat.le_add_right m 0) (localDefect ω))
+      (zeroWord m) := by
+  unfold defectChain; rfl
+
+/-- Stable words have zero global defect iff Fold commutes with restriction on stable words. -/
+theorem globalDefect_stable_word (h : m ≤ n) (x : X n) :
+    globalDefect h x.1 = zeroWord m ↔
+      Fold (restrictWord h x.1) = X.restrictLE h (Fold x.1) := by
+  exact globalDefect_eq_zero_iff h x.1
+
+/-- The global defect at the identity resolution is always zero. -/
+@[simp] theorem globalDefect_id (ω : Word m) :
+    globalDefect (Nat.le_refl m) ω = zeroWord m :=
+  globalDefect_refl ω
+
+/-- Defect at adjacent resolutions is the local defect. -/
+theorem globalDefect_succ (η : Word (m + 1)) :
+    globalDefect (Nat.le_succ m) η = localDefect η := by
+  exact (localDefect_eq_globalDefect η).symm
+
+/-- The xor of two words has weight bounded by the sum of weights. -/
+theorem weight_xorWord_le (a b : Word m) :
+    weight (xorWord a b) ≤ weight a + weight b := by
+  induction m with
+  | zero => simp [weight]
+  | succ n ih =>
+    simp only [weight, xorWord]
+    have h_trunc : weight (truncate (xorWord a b)) ≤ weight (truncate a) + weight (truncate b) := by
+      have : truncate (xorWord a b) = xorWord (truncate a) (truncate b) := by
+        funext i; rfl
+      rw [this]; exact ih (truncate a) (truncate b)
+    cases ha : a ⟨n, Nat.lt_succ_self n⟩ <;> cases hb : b ⟨n, Nat.lt_succ_self n⟩ <;>
+      simp [ha, hb, xorWord, Bool.xor] <;> omega
+
 end Omega

@@ -76,4 +76,30 @@ theorem acceptsWord_of_stable (x : Omega.X m) :
     AcceptsWord goldenMeanGraph false x.1 :=
   acceptsWord_goldenMean_of_no11 x.2
 
+/-- The golden-mean graph admits edge (false, false, false): state 0 → emit 0 → state 0. -/
+theorem goldenMean_edge_ff : goldenMeanGraph.edge false false false := by
+  simp [goldenMeanGraph]
+
+/-- The golden-mean graph admits edge (false, true, true): state 0 → emit 1 → state 1. -/
+theorem goldenMean_edge_ft : goldenMeanGraph.edge false true true := by
+  simp [goldenMeanGraph]
+
+/-- The golden-mean graph admits edge (true, false, false): state 1 → emit 0 → state 0. -/
+theorem goldenMean_edge_tf : goldenMeanGraph.edge true false false := by
+  simp [goldenMeanGraph]
+
+/-- The golden-mean graph forbids edge (true, true, _): state 1 → emit 1 is forbidden. -/
+theorem goldenMean_no_edge_tt (q' : Bool) : ¬ goldenMeanGraph.edge true true q' := by
+  simp [goldenMeanGraph]
+
+/-- The golden-mean transfer rule: from state false, both bits are valid. -/
+theorem goldenMean_transfer_false (b : Bool) :
+    goldenMeanGraph.edge false b b := by
+  cases b <;> simp [goldenMeanGraph]
+
+/-- The golden-mean transfer rule: from state true, only bit false is valid. -/
+theorem goldenMean_transfer_true_false :
+    goldenMeanGraph.edge true false false := goldenMean_edge_tf
+
+
 end Omega.Graph

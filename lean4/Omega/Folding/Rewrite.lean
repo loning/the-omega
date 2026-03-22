@@ -437,6 +437,18 @@ theorem step_value {a b : DigitCfg} (h : Step a b) : value b = value a := by
   | dedupSucc k hk =>
       exact value_dedupSuccTarget a k hk
 
+/-- Each rewrite step does not increase the mass. -/
+theorem step_mass_le {a b : DigitCfg} (h : Step a b) : mass b ≤ mass a := by
+  cases h with
+  | adj k hk hk1 =>
+    have := mass_adjTarget_add a k hk hk1; omega
+  | dedupZero h0 =>
+    have := mass_dedupZeroTarget_add a h0; omega
+  | dedupOne h1 =>
+    exact le_of_eq (mass_dedupOneTarget a h1)
+  | dedupSucc k hk =>
+    exact le_of_eq (mass_dedupSuccTarget a k hk)
+
 /-- Lexicographic decrease relation used for termination bookkeeping. -/
 def MeasureDrop (a b : DigitCfg) : Prop :=
   mass b < mass a ∨
@@ -709,6 +721,13 @@ theorem irreducible_terminal_eq_fold {w : Word m} {b : DigitCfg}
       irreducible_reflTransGen_eq_iota_normalPrefix hab hIrr hSup
     _ = iota (Fold w).1 := by
       rw [normalPrefix_iota_eq_Fold]
+
+/-- Mass is non-increasing along rewrite chains. -/
+theorem reflTransGen_mass_le {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
+    mass b ≤ mass a := by
+  induction h with
+  | refl => exact le_refl _
+  | tail hab hStep ih => exact le_trans (step_mass_le hStep) ih
 
 theorem reflTransGen_value {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
     value b = value a := by

@@ -28,4 +28,16 @@ theorem paperFib_recurrence (k : Nat) :
   rw [hIndex]
   exact fib_succ_succ (k + 1)
 
+theorem paperFib_pos (n : Nat) : 0 < paperFib n := by
+  simp [paperFib, Nat.fib_pos]
+
+theorem paperFib_mono {m n : Nat} (h : m ≤ n) : paperFib m ≤ paperFib n :=
+  Nat.fib_mono (Nat.succ_le_succ h)
+
+theorem paperFib_le_succ (k : Nat) : paperFib k ≤ paperFib (k + 1) :=
+  paperFib_mono (Nat.le_succ k)
+
+theorem paperFib_le_add_right (k l : Nat) : paperFib k ≤ paperFib (k + l) :=
+  paperFib_mono (Nat.le_add_right k l)
+
 end Omega

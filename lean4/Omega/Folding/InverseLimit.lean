@@ -136,6 +136,23 @@ def inverseLimitEquiv : CompatibleFamily ≃ XInfinity where
   left_inv := toFamily_ofFamily
   right_inv := ofFamily_toFamily
 
+/-- Infinite stable words are uniquely determined by their finite prefixes. -/
+theorem XInfinity_ext {a b : XInfinity} (h : ∀ m, prefixWord a m = prefixWord b m) :
+    a = b := by
+  apply Subtype.ext
+  funext i
+  have := congr_arg (fun x => x.1 ⟨i, Nat.lt_succ_self i⟩) (h (i + 1))
+  simpa [prefixWord] using this
+
+/-- Compatible families are uniquely determined by their sequence. -/
+theorem CompatibleFamily.ext {F G : CompatibleFamily} (h : ∀ m, F.seq m = G.seq m) :
+    F = G := by
+  have : F.seq = G.seq := funext h
+  rcases F with ⟨seqF, compatF⟩
+  rcases G with ⟨seqG, compatG⟩
+  subst this
+  rfl
+
 end X
 
 end Omega

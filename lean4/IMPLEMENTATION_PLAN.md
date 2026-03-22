@@ -67,6 +67,7 @@
 | 6 | 离散 scan error / 测度 scan error / prefix specialization | 已完成当前范围 |
 | 7 | 显式 golden-mean sofic 表示 | 已完成当前范围 |
 | 8 | assumptions / conditional / conjectures / certificates | 已完成当前范围 |
+| 9 | 补全对称性 / 单元界 / fiber 分割 / Word 基数 | 已完成当前范围 |
 
 “已完成当前范围”表示：本阶段在实施文档中承诺的直接 Lean 可落地部分已经有稳定实现，但论文更远层的扩写仍可继续。
 
@@ -213,6 +214,26 @@ Omega/Audit/NoAxiom.lean
 - defect / rewrite / fold / scan-error 证书验证器
 - 多条直接贴论文语义的 conditional wrappers
 
+#### J. Phase 9: 补全对称性 / 单元界 / fiber 分割
+
+已完成：
+
+- `Word_card`: |Word m| = 2^m
+- `fiber_card_sum`: ∑_x |fiber(x)| = |Word m| (fiber 分割恒等式)
+- `fiber_card_sum_eq_pow`: ∑_x |fiber(x)| = 2^m
+- 离散 observable purity 补对称: `observablePure_compl`
+- 离散 boundary cells 补对称: `boundaryCells_compl`
+- 离散 prefix boundary cells 补对称: `prefixBoundaryCells_compl`
+- 测度 cell event mass 单调界: `cellEventMeasure_le_cellMeasure`
+- 测度 cell complement mass 单调界: `cellComplMeasure_le_cellMeasure`
+- 测度 cell 分割恒等式 (MeasurableSet): `cellEventMeasure_add_cellComplMeasure_eq_cellMeasure`
+- 测度 observable purity 补对称: `observablePureMeasure_compl`
+- 测度 boundary cells 补对称: `boundaryCellsMeasure_compl`
+- 测度 boundary cylinder count 补对称: `boundaryCylinderCount_compl`
+- 测度 prefix boundary cells 补对称: `prefixBoundaryCellsMeasure_compl`
+- 测度 prefix boundary cylinder count 补对称: `prefixBoundaryCylinderCount_compl`
+- 全部上述结果的 `Frontier/Conditional` 论文接口包装
+
 ## 5. 现成可复用与已复用边界
 
 以下内容已经确认复用，不再从零重证：
@@ -253,25 +274,48 @@ Omega/Audit/NoAxiom.lean
 当前已有：
 
 - boundary decomposition
-- purity
-- zero-error criteria
+- purity (discrete `ObservablePure` + measure `ObservablePureMeasure`)
+- zero-error criteria (discrete + measure, both directions)
+- zero-iff-pure 等价 (discrete + measure)
+- zero-iff-boundary-empty 等价 (discrete + measure)
+- complement symmetry (`scanError_compl` + `scanErrorMeasure_compl`)
+- trivial event zero-error (`scanError_empty/univ` + `scanErrorMeasure_empty/univ`)
 - PMF/measure bridge
+- PMF/measure purity bridge (`observablePureMeasure_toMeasure_iff_observablePure`)
+- 代数不等式 `sum_min_le_min_sum` (∑ min ≤ min ∑)
+- 观测细化单调性 (`scanError_antitone_of_refines`)
+- 前缀扫描误差单调性 (`prefixScanError_antitone`: m₁ ≤ m₂ → SE(m₂) ≤ SE(m₁))
+- 单元质量纤维分解 (`cellEventMass_refines_sum`, `cellComplMass_refines_sum`)
+- 边界柱计数 `boundaryCylinderCount` / `prefixBoundaryCylinderCount` (论文 Definition 3.5 N_m(∂P))
+- 边界柱计数 ↔ 可观测纯性等价 (`boundaryCylinderCount_eq_zero_iff_observablePure`)
+- 扫描误差为零 ↔ 边界柱计数为零 (`scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero`)
+- 边界柱计数 PMF 桥接 (`boundaryCylinderCount_toMeasure_eq`)
+- 测度级观测细化单调性（经 PMF 桥接）(`scanError_measure_antitone_via_bridge`)
+- 测度级前缀扫描误差单调性（经 PMF 桥接）(`prefixScanError_measure_antitone_via_bridge`)
 
 仍缺：
 
 - 更接近论文后段的条件期望型表达
 - 若论文需要的 martingale / Tanaka-Stokes 形式
-- 更强的测度级结构化重述
+- 更强的测度级结构化重述（条件概率因式分解形式）
 
 #### B. 更远层的 frontier 条件定理
 
 当前 `Frontier/Conditional.lean` 已经能包装大量核心结果，但仍偏“当前基线的直接重述”。
 
+新增：
+
+- 论文 Section 4 稳定语法基数包装 (`stableSyntax_card_eq_fibonacci`, `stableSyntax_card_recurrence`)
+- 论文 Section 4 Zeckendorf 桥接包装 (`stableWord_zeckendorf_valid`, `stableValue_eq_fibonacci_weighted_sum`)
+- 论文 Section 4 fiber 基数包装 (`fold_fiber_card_pos`)
+- 论文 Definition 3.5 边界柱计数条件层包装（完整的 zero-iff 链、PMF 桥接、observable event 消失）
+- 测度级观测细化单调性条件层包装（经 PMF 桥接）
+
 仍缺：
 
 - 更靠近论文后半段组织方式的条件定理簇
 - 更系统的 assumptions-to-results 映射
-- 更明确的“哪一组假设推出哪一层结果”的编排
+- 更明确的”哪一组假设推出哪一层结果”的编排
 
 #### C. 论文远层主题
 
@@ -383,40 +427,178 @@ Omega/Audit/NoAxiom.lean
 11. 显式 golden-mean sofic 表示
 12. frontier 当前范围下的 assumptions / conditional / conjectures / certificates
 
-### 11.2 当前活跃 backlog
+### 11.2 已闭环新增 (Phase 9–10)
 
-从现在起的活跃 backlog 是：
+13. Word 基数 `Word_card`: |Word m| = 2^m
+14. fiber 分割 `fiber_card_sum`: Σ|fiber(x)| = |Word m|
+15. fiber 基数等式 `fiber_card_sum_eq_pow`: Σ|fiber(x)| = 2^m
+16. 离散/测度补对称（purity, boundary cells, boundary cylinder count, prefix 版本）
+17. 测度 cell 单调界（cellEventMeasure ≤ cellMeasure, cellComplMeasure ≤ cellMeasure）
+18. 测度 cell 分割恒等式（MeasurableSet 条件下 event + compl = total）
+19. stableValue Fibonacci 界 `stableValue_lt_paperFib_succ`
+20. stableValueFin 与 stableValueFin_injective
+21. 稳定加法定义与交换律 `stableAdd`, `stableAdd_comm`
+22. Fibonacci 基础设施（paperFib_pos, paperFib_mono, paperFib_le_succ 等）
+23. 离散质量分割 `setMass_add_setMass_compl`
 
-1. `SPG` 条件期望 / Tanaka-Stokes 型表达
-2. 更强的 prefix-measure conditional wrappers
-3. 更多论文后半段对应的 conditional theorem
-4. 在不引入重型理论的前提下，寻找下一批可稳定落 Lean 的远层结果
+### 11.3 当前活跃 backlog：12 条未来计划
+
+以下 12 条为按优先级排列的下一步具体工作，每条均应在单轮内完成并通过 `lake build`。
+
+#### 计划 1：PMF 总质量与 Bayes 半界 ✅ 已完成
+
+#### 计划 2：stableValue 满射性与 ofNat 逆 ✅ 已完成
+
+#### 计划 3：稳定加法代数结构 ✅ 已完成
+
+#### 计划 4：直接测度级观测细化单调性 ✅ 已完成
+
+#### 计划 5：测度 cell 质量求和恒等式 ✅ 已完成
+
+#### 计划 6：POM fiber 乘数定义与分割 ✅ 已完成
+
+#### 计划 7：stable 值等价与 Fin 同构 ✅ 已完成
+
+#### 计划 8：golden-mean 邻接计数与 Fibonacci 递推验证 → 延期（需 Matrix 库）
+
+- 定义 `goldenMeanAdjCount : Bool → Bool → Nat`（2×2 邻接计数函数）
+- 证明行和给出 X m 的基数递推 |X(m+2)| = |X(m+1)| + |X(m)|（已有 `card_recurrence`）
+- 证明邻接计数满足无 11 约束
+- 对应论文 subsec__folding-fibonacci-stable-syntax
+
+#### 计划 9：Rewrite 质量单调性 → 延期（需深入 Rewrite 步结构分析）
+
+- 证明每一步 Rewrite.Step 不增加 rankLex（已有 `step_rankLex`）
+- 证明 `mass` 在 adj/dedupZero 步中严格下降
+- 证明 `moment` 在 dedup 步中严格下降（mass 不变时）
+- 对应论文 Fold Section 的终止分析
+
+#### 计划 10：scanError 对称差界 → 延期（需测度论对称差基础设施）
+
+- 证明 `scanError μ obs P ≤ scanError μ obs Q + μ(P △ Q)`（对称差不等式）
+  需要 MeasurableSet + Measurable obs
+- 建立 scan error 作为事件度量的连续性
+- 对应论文 SPG Section 的稳定性分析
+
+#### 计划 11：Defect 零条件 ✅ 已完成
+
+- 证明 `localDefect η = 0 ↔ Fold(truncate η) = restrict(Fold η)`
+  （零缺陷等价于 Fold 与 restrict 可交换）
+- 证明全零 defect 等价于 Fold 的精确可交换性
+- 对应论文 Defect Section 的基本刻画
+
+#### 计划 12：prefix 事件嵌套性 ✅ 已完成
+
+- 证明 `prefixDetermined s m → prefixDetermined s (m + k)`
+  （前缀确定性对更粗分辨率封闭）
+- 证明 `prefixEvent h₁ A ⊆ prefixEvent h₂ B` 条件的刻画
+- 对应论文 sec__recursive-addressing 中的前缀单调性
+
+### 11.4 第二批活跃 backlog：10 条新计划
+
+#### 计划 13：稳定乘法与 Fibonacci 环 ✅ 已完成
+
+- 定义 `stableMul (x y : X m) : X m := X.ofNat m ((stableValue x * stableValue y) % paperFib(m+1))`
+- 证明乘法分配律 `stableMul x (stableAdd y z) = stableAdd (stableMul x y) (stableMul x z)`
+- 证明乘法结合律与交换律
+- X_m 在 stableAdd + stableMul 下构成交换环
+- 对应论文 Section 6 有限稳定算术
+
+#### 计划 14：fiber 乘数对称性 ✅ 已完成
+
+- 证明 `fiberMultiplicity x` 仅依赖于 `stableValue x`（即值相同 → 乘数相同）
+- 定义 `fiberMultiplicityByValue n : Nat`
+- 证明乘数与 Zeckendorf 表示的位模式关系
+- 对应论文 POM Section 中 fiber 谱的值依赖性
+
+#### 计划 15：直接测度级前缀扫描误差单调性 ✅ 已完成
+
+- 证明 `prefixScanErrorMeasure_antitone`（直接测度版，非 PMF 桥接）
+- 使用 `scanErrorMeasure_antitone_of_refines` + `restrictWord` 的可测性
+- 对应论文 Corollary 3.1 的前缀特化
+
+#### 计划 16：概率测度下的扫描误差半界 ✅ 已完成
+
+- 证明 `scanErrorMeasure μ obs P ≤ 1/2`（当 μ 为概率测度，obs 可测，P 可测）
+- 使用 cellEventMeasure_sum + cellComplMeasure_sum + IsProbabilityMeasure
+- 对应论文 Proposition 3.x Bayes 最优界的测度推广
+
+#### 计划 17：cylinder 集的测度性
+
+- 证明 `MeasurableSet (fromWordSet A)` 在 Product topology 下
+- 证明 `PrefixDetermined s m → MeasurableSet s`
+- 建立 SPG 拓扑与可测结构的桥接
+- 对应论文 SPG Section 的拓扑-测度桥接
+
+#### 计划 18：Fold 保持 restrictWord
+
+- 证明 `restrictWord h (Fold w).1 = (Fold (restrictWord h' w)).1`
+  （在适当条件下 Fold 与 restrictWord 可交换——或给出不可交换的 defect 表达）
+- 统一 Fold-restriction 交互的完整图景
+- 对应论文 Defect Section 的核心交换图
+
+#### 计划 19：Zeckendorf 表示的显式枚举 ✅ 已完成
+
+- 证明 stableValue 的值域恰好是 {0, ..., paperFib(m+1)-1}
+- 建立从 Fin(paperFib(m+1)) 到 X m 的显式构造性等价
+- 证明 X.ofNat 在范围内是 stableValue 的精确逆
+- 对应论文 Theorem 4.1 / Theorem 6.1 的完整刻画
+
+#### 计划 20：Defect 链的代数性质 ✅ 已完成
+
+- 证明 `defectChain` 的 xor 线性性
+- 证明 defectChain 在稳定词下消失
+- 证明 defectChain 的加法分解
+- 对应论文 Defect Section 的离散 Stokes 恒等式性质
+
+#### 计划 21：扫描误差概率界 ✅ 已完成
+
+- 证明 `scanError μ obs P ≤ setMass μ P`（事件概率是误差上界）
+- 证明 `scanError μ obs P ≤ setMass μ Pᶜ`（补事件概率是误差上界）
+- 这是 `scanError_le_min_setMass` 的单侧版本
+- 对应论文 Proposition 3.x 的基本界
+
+#### 计划 22：稳定词的逐位刻画 ✅ 已完成
+
+- 证明 `get (X.ofNat m n).1 i = true ↔ i + 2 ∈ Nat.zeckendorf n`（已有 `get_ofNat_eq_true_iff`）
+- 将此包装为 Conditional 层的论文接口
+- 证明 stableValue 与位模式的完整双向刻画
+- 对应论文 Theorem 4.1 Zeckendorf 编码核心结论
 
 ## 12. 直接执行顺序
 
 如果现在继续推进，建议严格按下列顺序：
 
-1. 先从 `SPG/ScanErrorMeasure.lean` 找下一批稳定 theorem
-2. 再把它们包装到 `Frontier/Conditional.lean`
-3. 再同步 `Audit/*`
+1. 先执行计划 13（稳定乘法）和计划 21（扫描误差单侧界）——最简单
+2. 再执行计划 19（Zeckendorf 显式枚举）和计划 22（逐位刻画包装）
+3. 再执行计划 14-16（fiber 对称性、前缀单调性、概率半界）
 4. 每一轮都先验收 `lake build`
-5. 只有当 `SPG` 和 `Conditional` 两线都没有短路径时，才评估是否进入论文更远层
+5. 计划 17-20 可按可行性灵活调整
 
 ## 13. 结论
 
-本项目已经从“是否能建起无公理 Lean 基线”转入“如何持续吸收原论文结果”的阶段。
+本项目已经从”是否能建起无公理 Lean 基线”转入”如何持续吸收原论文结果”的阶段。
 
-当前最重要的事实不是“还没做什么”，而是：
+当前阶段的关键进展：
 
-- 离散核心已经稳定
-- 重写与正规形主线已经稳定
-- `SPG` 的组合与当前测度层已经稳定
-- `Frontier` 包装层已经开始成为论文叙述的真实接口层
+- 离散核心已经稳定（Word, No11, X_m, Fold, Rewrite, Fiber, Defect, InverseLimit）
+- 重写与正规形主线已经稳定（终止、合流、唯一性闭环）
+- `SPG` 的组合与当前测度层已经稳定（含补对称性、cell 界、分割恒等式）
+- `Frontier` 包装层已经成为论文叙述的真实接口层
+- **新增**：stableValue Fibonacci 界与稳定加法为有限算术打开入口
+- **新增**：fiber 分割恒等式 Σ|fiber(x)| = 2^m 建立纤维组合基线
 
-因此，下一阶段不应重回基础层反复打磨，而应围绕：
+已完成计划 1-7, 11-16, 19-22（共 19 条）。延期计划 8, 9, 10, 17, 18。
 
-- `SPG` 更强测度表达
-- `Frontier/Conditional` 更强论文式包装
-- 远层章节中最容易收敛的下一批结果
-
-持续推进。
+当前项目形式化覆盖范围总结：
+- **离散核心**：Word, No11, X_m, Fold, Rewrite, Fiber, Defect, InverseLimit（完整闭环）
+- **Zeckendorf 与值**：weight, stableValue, zeckIndices, ofNat, 值界, 双射性（完整闭环）
+- **稳定算术**：stableAdd（交换群）, stableMul（交换半环）, stableZero, stableOne
+- **SPG 组合层**：cylinder, prefix metric, clopen, prefix determination 代数（完整闭环）
+- **SPG 扫描误差**：离散 + 测度双版本, 补对称性, cell 界, 分割恒等式, Bayes 半界
+- **SPG 观测细化**：离散 + 直接测度版本, 前缀单调性
+- **fiber 结构**：partition sum = 2^m, multiplicity 定义, 值索引
+- **defect 结构**：零条件 ↔ Fold 可交换, globalDefect 等价, 链代数
+- **sofic 表示**：golden-mean graph ↔ No11（完整闭环）
+- **Frontier 接口**：~120+ 条论文接口包装定理
+- **审计层**：SourceMap, Inventory, NoAxiom 持续同步

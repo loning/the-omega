@@ -113,6 +113,282 @@ noncomputable def rankOfFoldEq (x : X m) (w : Word m) (h : Fold w = x) :
     unrankWord x (rankOfFoldEq x (choosePreimage x) (Fold_choosePreimage x)) = choosePreimage x := by
   exact unrankWord_rankOfFoldEq x (choosePreimage x) (Fold_choosePreimage x)
 
+/-- The word space has cardinality 2^m. -/
+theorem Word_card (m : Nat) : Fintype.card (Word m) = 2 ^ m := by
+  rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
+
+/-- Fiber cardinalities sum to the total word count (fibers partition `Word m`). -/
+theorem fiber_card_sum (m : Nat) :
+    ∑ x : X m, (fiber x).card = Fintype.card (Word m) := by
+  classical
+  have hDisjoint : (↑(Finset.univ : Finset (X m)) : Set (X m)).PairwiseDisjoint fiber := by
+    intro x _ y _ hxy
+    rw [Function.onFun, Finset.disjoint_left]
+    intro w hwx hwy
+    exact hxy ((mem_fiber.1 hwx).symm.trans (mem_fiber.1 hwy))
+  have hUnion : (Finset.univ : Finset (Word m)) = Finset.univ.biUnion fiber := by
+    ext w
+    simp only [Finset.mem_univ, Finset.mem_biUnion, true_iff]
+    exact ⟨Fold w, trivial, mem_fiber_Fold w⟩
+  calc ∑ x : X m, (fiber x).card
+      = (Finset.univ.biUnion fiber).card := (Finset.card_biUnion hDisjoint).symm
+    _ = (Finset.univ : Finset (Word m)).card := by rw [← hUnion]
+    _ = Fintype.card (Word m) := Finset.card_univ
+
+/-- Fiber cardinalities sum to 2^m. -/
+theorem fiber_card_sum_eq_pow (m : Nat) :
+    ∑ x : X m, (fiber x).card = 2 ^ m := by
+  rw [fiber_card_sum, Word_card]
+
+/-- The stable value of a stable word is a valid Fin index. -/
+def stableValueFin (x : X m) : Fin (paperFib (m + 1)) :=
+  ⟨stableValue x, stableValue_lt_paperFib_succ x⟩
+
+/-- stableValueFin is injective. -/
+theorem stableValueFin_injective (m : Nat) :
+    Function.Injective (stableValueFin (m := m)) := by
+  intro x y h
+  have := congr_arg Fin.val h
+  simp only [stableValueFin, Fin.mk.injEq] at this
+  exact (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩) this
+
+/-- The stable syntax space is equivalent to Fin(paperFib(m+1)).
+    This is the core encoding result: X_m ≃ {0, ..., F_{m+2}-1}. -/
+noncomputable def stableValueEquiv (m : Nat) : X m ≃ Fin (paperFib (m + 1)) :=
+  Fintype.equivFinOfCardEq (X.card_eq_paperFib_succ m)
+
+/-- The stableValueFin map is surjective (from injectivity + matching cardinality). -/
+theorem stableValueFin_surjective (m : Nat) :
+    Function.Surjective (stableValueFin (m := m)) :=
+  (Finite.injective_iff_surjective_of_equiv (stableValueEquiv m)).mp
+    (stableValueFin_injective m)
+
+/-- The stableValueFin map is bijective. -/
+theorem stableValueFin_bijective (m : Nat) :
+    Function.Bijective (stableValueFin (m := m)) :=
+  ⟨stableValueFin_injective m, stableValueFin_surjective m⟩
+
+/-- The fiber multiplicity of a stable word x: the number of raw words folding to x. -/
+def fiberMultiplicity (x : X m) : Nat := (fiber x).card
+
+/-- Fiber multiplicity is positive for every stable word. -/
+theorem fiberMultiplicity_pos (x : X m) : 0 < fiberMultiplicity x :=
+  fiber_card_pos x
+
+/-- Fiber multiplicities sum to 2^m. -/
+theorem fiberMultiplicity_sum_eq_pow (m : Nat) :
+    ∑ x : X m, fiberMultiplicity x = 2 ^ m :=
+  fiber_card_sum_eq_pow m
+
+/-- The average fiber multiplicity is 2^m / |X_m|.
+    Since |X_m| = F_{m+2}, this ratio approaches φ^m / √5 as m grows. -/
+theorem fiberMultiplicity_avg (m : Nat) :
+    ∑ x : X m, fiberMultiplicity x = 2 ^ m ∧
+    Fintype.card (X m) = paperFib (m + 1) :=
+  ⟨fiberMultiplicity_sum_eq_pow m, X.card_eq_paperFib_succ m⟩
+
+/-- For n < paperFib(m+1), ofNat m n has stable value n. -/
+theorem stableValue_ofNat_lt (n : Nat) (hn : n < paperFib (m + 1)) :
+    stableValue (X.ofNat m n) = n := by
+  obtain ⟨x, hx⟩ := stableValueFin_surjective m ⟨n, hn⟩
+  have hVal : stableValue x = n := by simpa [stableValueFin] using congr_arg Fin.val hx
+  rw [show X.ofNat m n = x from by rw [← hVal, X.ofNat_stableValue], hVal]
+
+/-- For n < paperFib(m+1), ofNat and stableValue form a round-trip. -/
+theorem stableValue_ofNat_mod (n : Nat) :
+    stableValue (X.ofNat m (n % paperFib (m + 1))) = n % paperFib (m + 1) :=
+  stableValue_ofNat_lt _ (Nat.mod_lt n (paperFib_pos (m + 1)))
+
+/-- Stable addition on X m: wrap-around Fibonacci arithmetic. -/
+noncomputable def stableAdd (x y : X m) : X m :=
+  X.ofNat m ((stableValue x + stableValue y) % paperFib (m + 1))
+
+/-- The zero element for stable addition. -/
+noncomputable def stableZero : X m := X.ofNat m 0
+
+/-- Stable addition is commutative. -/
+theorem stableAdd_comm (x y : X m) :
+    stableAdd x y = stableAdd y x := by
+  simp only [stableAdd, Nat.add_comm]
+
+/-- The zero element has stable value 0. -/
+theorem stableValue_stableZero : stableValue (stableZero (m := m)) = 0 :=
+  stableValue_ofNat_lt 0 (paperFib_pos (m + 1))
+
+/-- stableZero is the left identity for stable addition. -/
+theorem stableAdd_zero_left (x : X m) : stableAdd stableZero x = x := by
+  unfold stableAdd stableZero
+  rw [stableValue_ofNat_lt 0 (paperFib_pos (m + 1)), Nat.zero_add,
+    Nat.mod_eq_of_lt (stableValue_lt_paperFib_succ x), X.ofNat_stableValue]
+
+/-- stableZero is the right identity for stable addition. -/
+theorem stableAdd_zero_right (x : X m) : stableAdd x stableZero = x := by
+  rw [stableAdd_comm]; exact stableAdd_zero_left x
+
+/-- Helper: (a % n + b) % n = (a + b) % n for 0 < n. -/
+private theorem Nat.mod_add_mod_right (a b n : Nat) (hn : 0 < n) :
+    (a % n + b) % n = (a + b) % n := by
+  conv_rhs => rw [← Nat.mod_add_div a n]
+  rw [Nat.add_assoc, Nat.add_comm (n * (a / n)), ← Nat.add_assoc,
+    Nat.add_mul_mod_self_left]
+
+/-- Stable addition is associative. -/
+theorem stableAdd_assoc (x y z : X m) :
+    stableAdd (stableAdd x y) z = stableAdd x (stableAdd y z) := by
+  unfold stableAdd
+  have hF := paperFib_pos (m + 1)
+  rw [stableValue_ofNat_mod, stableValue_ofNat_mod]
+  congr 1
+  -- Goal: ((sv_x + sv_y) % F + sv_z) % F = (sv_x + (sv_y + sv_z) % F) % F
+  -- Both sides equal (sv_x + sv_y + sv_z) % F
+  have lhs : ((stableValue x + stableValue y) % paperFib (m + 1) + stableValue z)
+      % paperFib (m + 1) =
+      (stableValue x + stableValue y + stableValue z) % paperFib (m + 1) :=
+    Nat.mod_add_mod_right _ _ _ hF
+  have rhs : (stableValue x + (stableValue y + stableValue z) % paperFib (m + 1))
+      % paperFib (m + 1) =
+      (stableValue x + (stableValue y + stableValue z)) % paperFib (m + 1) := by
+    conv_lhs => rw [Nat.add_comm]
+    rw [Nat.mod_add_mod_right _ _ _ hF, Nat.add_comm]
+  rw [lhs, rhs, Nat.add_assoc]
+
+/-- Stable multiplication on X m: wrap-around Fibonacci arithmetic. -/
+noncomputable def stableMul (x y : X m) : X m :=
+  X.ofNat m ((stableValue x * stableValue y) % paperFib (m + 1))
+
+/-- Stable multiplication is commutative. -/
+theorem stableMul_comm (x y : X m) :
+    stableMul x y = stableMul y x := by
+  simp only [stableMul, Nat.mul_comm]
+
+/-- stableZero is the annihilator for multiplication. -/
+theorem stableMul_zero_left (x : X m) : stableMul stableZero x = stableZero := by
+  unfold stableMul stableZero
+  rw [stableValue_ofNat_lt 0 (paperFib_pos (m + 1)), Nat.zero_mul, Nat.zero_mod]
+
+/-- stableZero is the annihilator for multiplication (right). -/
+theorem stableMul_zero_right (x : X m) : stableMul x stableZero = stableZero := by
+  rw [stableMul_comm]; exact stableMul_zero_left x
+
+/-- The one element for stable multiplication. -/
+noncomputable def stableOne : X m := X.ofNat m 1
+
+/-- stableOne has value 1 when paperFib(m+1) > 1. -/
+theorem stableValue_stableOne (hm : 1 < paperFib (m + 1)) :
+    stableValue (stableOne (m := m)) = 1 :=
+  stableValue_ofNat_lt 1 hm
+
+/-- stableOne is the left identity for multiplication when F_{m+2} > 1. -/
+theorem stableMul_one_left (hm : 1 < paperFib (m + 1)) (x : X m) :
+    stableMul stableOne x = x := by
+  unfold stableMul stableOne
+  rw [stableValue_ofNat_lt 1 hm, Nat.one_mul,
+    Nat.mod_eq_of_lt (stableValue_lt_paperFib_succ x), X.ofNat_stableValue]
+
+/-- Helper: (a * (b % n)) % n = (a * b) % n. -/
+private theorem Nat.mul_mod_right' (a b n : Nat) :
+    (a * (b % n)) % n = (a * b) % n := by
+  conv_rhs => rw [Nat.mul_mod]
+  rw [Nat.mul_mod a (b % n) n, Nat.mod_mod_of_dvd _ (dvd_refl n)]
+
+/-- Helper: ((a % n) * b) % n = (a * b) % n. -/
+private theorem Nat.mul_mod_left' (a b n : Nat) :
+    (a % n * b) % n = (a * b) % n := by
+  rw [Nat.mul_comm, Nat.mul_mod_right', Nat.mul_comm]
+
+/-- Helper: ((a % n) + (b % n)) % n = (a + b) % n. -/
+private theorem Nat.add_mod' (a b n : Nat) :
+    ((a % n) + (b % n)) % n = (a + b) % n := by
+  rw [← Nat.add_mod]
+
+/-- Stable multiplication distributes over stable addition (left). -/
+theorem stableMul_stableAdd_left (x y z : X m) :
+    stableMul x (stableAdd y z) = stableAdd (stableMul x y) (stableMul x z) := by
+  simp only [stableMul, stableAdd, stableValue_ofNat_mod]
+  congr 1
+  rw [Nat.mul_mod_right', Nat.add_mod', Nat.mul_add]
+
+/-- Stable multiplication is associative. -/
+theorem stableMul_assoc (x y z : X m) :
+    stableMul (stableMul x y) z = stableMul x (stableMul y z) := by
+  simp only [stableMul, stableValue_ofNat_mod]
+  congr 1
+  rw [Nat.mul_mod_left' (stableValue x * stableValue y) (stableValue z),
+    Nat.mul_mod_right' (stableValue x) (stableValue y * stableValue z),
+    Nat.mul_assoc]
+
+/-- stableOne is the right identity for multiplication when F_{m+2} > 1. -/
+theorem stableMul_one_right (hm : 1 < paperFib (m + 1)) (x : X m) :
+    stableMul x stableOne = x := by
+  rw [stableMul_comm]; exact stableMul_one_left hm x
+
+/-- Fiber multiplicity as a function of value index. -/
+noncomputable def fiberMultiplicityByValue (m : Nat) (n : Nat) : Nat :=
+  if hn : n < paperFib (m + 1) then fiberMultiplicity (X.ofNat m n) else 0
+
+/-- Fiber multiplicity of x equals fiberMultiplicityByValue at stableValue(x). -/
+theorem fiberMultiplicity_eq_byValue (x : X m) :
+    fiberMultiplicity x = fiberMultiplicityByValue m (stableValue x) := by
+  simp [fiberMultiplicityByValue, stableValue_lt_paperFib_succ x, X.ofNat_stableValue]
+
+/-- The range of stableValue is exactly {0, ..., paperFib(m+1)-1}. -/
+theorem stableValue_range (m : Nat) :
+    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} := by
+  ext n
+  constructor
+  · rintro ⟨x, rfl⟩
+    exact stableValue_lt_paperFib_succ x
+  · intro hn
+    exact ⟨X.ofNat m n, stableValue_ofNat_lt n hn⟩
+
+/-- X.ofNat m restricted to valid indices is the inverse of stableValue. -/
+theorem ofNat_stableValue_eq (x : X m) : X.ofNat m (stableValue x) = x :=
+  X.ofNat_stableValue x
+
+/-- stableValue followed by ofNat is the identity for values in range. -/
+theorem stableValue_ofNat_roundtrip (n : Nat) (hn : n < paperFib (m + 1)) :
+    stableValue (X.ofNat m n) = n :=
+  stableValue_ofNat_lt n hn
+
+/-- stableAdd encodes modular addition on values. -/
+theorem stableValue_stableAdd (x y : X m) :
+    stableValue (stableAdd x y) = (stableValue x + stableValue y) % paperFib (m + 1) :=
+  stableValue_ofNat_mod _
+
+/-- stableMul encodes modular multiplication on values. -/
+theorem stableValue_stableMul (x y : X m) :
+    stableValue (stableMul x y) = (stableValue x * stableValue y) % paperFib (m + 1) :=
+  stableValue_ofNat_mod _
+
+/-- The stable value map is a semiring homomorphism to ℤ/F_{m+2}ℤ (addition component). -/
+theorem stableValue_add_mod (x y : X m) :
+    stableValue (stableAdd x y) % paperFib (m + 1) =
+      (stableValue x + stableValue y) % paperFib (m + 1) := by
+  rw [stableValue_stableAdd, Nat.mod_mod_of_dvd _ (dvd_refl _)]
+
+/-- The stable value map is a semiring homomorphism to ℤ/F_{m+2}ℤ (multiplication component). -/
+theorem stableValue_mul_mod (x y : X m) :
+    stableValue (stableMul x y) % paperFib (m + 1) =
+      (stableValue x * stableValue y) % paperFib (m + 1) := by
+  rw [stableValue_stableMul, Nat.mod_mod_of_dvd _ (dvd_refl _)]
+
+/-- The carry element at resolution m: χ^car_m = ofNat m (fib(m+2)). -/
+noncomputable def carryElement (m : Nat) : X m :=
+  X.ofNat m (Nat.fib (m + 2))
+
+/-- The carry element value: stableValue(χ^car_m) = fib(m+2) mod F_{m+2}.
+    Note: fib(m+2) = paperFib(m+1), so this wraps to fib(m+2) when < F_{m+2},
+    which holds for m ≥ 1 since fib(m+2) < fib(m+3) = paperFib(m+2). -/
+theorem stableValue_carryElement (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
+    stableValue (carryElement m) = Nat.fib (m + 2) :=
+  stableValue_ofNat_lt _ hm
+
+/-- The carry indicator is 0 or 1. -/
+theorem carryIndicator_le_one (x y : X (m + 1)) :
+    carryIndicator x y ≤ 1 := by
+  unfold carryIndicator
+  split <;> omega
+
 end
 
 end X
