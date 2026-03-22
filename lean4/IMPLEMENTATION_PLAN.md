@@ -459,50 +459,121 @@ Omega/Audit/NoAxiom.lean
 
 #### 计划 7：stable 值等价与 Fin 同构 ✅ 已完成
 
-#### 计划 8：golden-mean 邻接计数与 Fibonacci 递推验证
+#### 计划 8：golden-mean 邻接计数与 Fibonacci 递推验证 → 延期（需 Matrix 库）
 
 - 定义 `goldenMeanAdjCount : Bool → Bool → Nat`（2×2 邻接计数函数）
 - 证明行和给出 X m 的基数递推 |X(m+2)| = |X(m+1)| + |X(m)|（已有 `card_recurrence`）
 - 证明邻接计数满足无 11 约束
 - 对应论文 subsec__folding-fibonacci-stable-syntax
 
-#### 计划 9：Rewrite 质量单调性
+#### 计划 9：Rewrite 质量单调性 → 延期（需深入 Rewrite 步结构分析）
 
 - 证明每一步 Rewrite.Step 不增加 rankLex（已有 `step_rankLex`）
 - 证明 `mass` 在 adj/dedupZero 步中严格下降
 - 证明 `moment` 在 dedup 步中严格下降（mass 不变时）
 - 对应论文 Fold Section 的终止分析
 
-#### 计划 10：scanError 对称差界
+#### 计划 10：scanError 对称差界 → 延期（需测度论对称差基础设施）
 
 - 证明 `scanError μ obs P ≤ scanError μ obs Q + μ(P △ Q)`（对称差不等式）
   需要 MeasurableSet + Measurable obs
 - 建立 scan error 作为事件度量的连续性
 - 对应论文 SPG Section 的稳定性分析
 
-#### 计划 11：Defect 零条件
+#### 计划 11：Defect 零条件 ✅ 已完成
 
 - 证明 `localDefect η = 0 ↔ Fold(truncate η) = restrict(Fold η)`
   （零缺陷等价于 Fold 与 restrict 可交换）
 - 证明全零 defect 等价于 Fold 的精确可交换性
 - 对应论文 Defect Section 的基本刻画
 
-#### 计划 12：prefix 事件嵌套性
+#### 计划 12：prefix 事件嵌套性 ✅ 已完成
 
 - 证明 `prefixDetermined s m → prefixDetermined s (m + k)`
   （前缀确定性对更粗分辨率封闭）
 - 证明 `prefixEvent h₁ A ⊆ prefixEvent h₂ B` 条件的刻画
 - 对应论文 sec__recursive-addressing 中的前缀单调性
 
+### 11.4 第二批活跃 backlog：10 条新计划
+
+#### 计划 13：稳定乘法与 Fibonacci 环
+
+- 定义 `stableMul (x y : X m) : X m := X.ofNat m ((stableValue x * stableValue y) % paperFib(m+1))`
+- 证明乘法分配律 `stableMul x (stableAdd y z) = stableAdd (stableMul x y) (stableMul x z)`
+- 证明乘法结合律与交换律
+- X_m 在 stableAdd + stableMul 下构成交换环
+- 对应论文 Section 6 有限稳定算术
+
+#### 计划 14：fiber 乘数对称性
+
+- 证明 `fiberMultiplicity x` 仅依赖于 `stableValue x`（即值相同 → 乘数相同）
+- 定义 `fiberMultiplicityByValue n : Nat`
+- 证明乘数与 Zeckendorf 表示的位模式关系
+- 对应论文 POM Section 中 fiber 谱的值依赖性
+
+#### 计划 15：直接测度级前缀扫描误差单调性
+
+- 证明 `prefixScanErrorMeasure_antitone`（直接测度版，非 PMF 桥接）
+- 使用 `scanErrorMeasure_antitone_of_refines` + `restrictWord` 的可测性
+- 对应论文 Corollary 3.1 的前缀特化
+
+#### 计划 16：概率测度下的扫描误差半界
+
+- 证明 `scanErrorMeasure μ obs P ≤ 1/2`（当 μ 为概率测度，obs 可测，P 可测）
+- 使用 cellEventMeasure_sum + cellComplMeasure_sum + IsProbabilityMeasure
+- 对应论文 Proposition 3.x Bayes 最优界的测度推广
+
+#### 计划 17：cylinder 集的测度性
+
+- 证明 `MeasurableSet (fromWordSet A)` 在 Product topology 下
+- 证明 `PrefixDetermined s m → MeasurableSet s`
+- 建立 SPG 拓扑与可测结构的桥接
+- 对应论文 SPG Section 的拓扑-测度桥接
+
+#### 计划 18：Fold 保持 restrictWord
+
+- 证明 `restrictWord h (Fold w).1 = (Fold (restrictWord h' w)).1`
+  （在适当条件下 Fold 与 restrictWord 可交换——或给出不可交换的 defect 表达）
+- 统一 Fold-restriction 交互的完整图景
+- 对应论文 Defect Section 的核心交换图
+
+#### 计划 19：Zeckendorf 表示的显式枚举
+
+- 证明 stableValue 的值域恰好是 {0, ..., paperFib(m+1)-1}
+- 建立从 Fin(paperFib(m+1)) 到 X m 的显式构造性等价
+- 证明 X.ofNat 在范围内是 stableValue 的精确逆
+- 对应论文 Theorem 4.1 / Theorem 6.1 的完整刻画
+
+#### 计划 20：Defect 链的代数性质
+
+- 证明 `defectChain` 的 xor 线性性
+- 证明 defectChain 在稳定词下消失
+- 证明 defectChain 的加法分解
+- 对应论文 Defect Section 的离散 Stokes 恒等式性质
+
+#### 计划 21：扫描误差概率界
+
+- 证明 `scanError μ obs P ≤ setMass μ P`（事件概率是误差上界）
+- 证明 `scanError μ obs P ≤ setMass μ Pᶜ`（补事件概率是误差上界）
+- 这是 `scanError_le_min_setMass` 的单侧版本
+- 对应论文 Proposition 3.x 的基本界
+
+#### 计划 22：稳定词的逐位刻画
+
+- 证明 `get (X.ofNat m n).1 i = true ↔ i + 2 ∈ Nat.zeckendorf n`（已有 `get_ofNat_eq_true_iff`）
+- 将此包装为 Conditional 层的论文接口
+- 证明 stableValue 与位模式的完整双向刻画
+- 对应论文 Theorem 4.1 Zeckendorf 编码核心结论
+
 ## 12. 直接执行顺序
 
 如果现在继续推进，建议严格按下列顺序：
 
-1. 先执行计划 1（PMF 总质量与 Bayes 半界）和计划 2（stableValue 满射性）
-2. 再执行计划 3（稳定加法代数结构）和计划 7（Fin 同构）
-3. 再执行计划 4-5（测度级单调性与求和恒等式）
+1. 先执行计划 13（稳定乘法）和计划 21（扫描误差单侧界）——最简单
+2. 再执行计划 19（Zeckendorf 显式枚举）和计划 22（逐位刻画包装）
+3. 再执行计划 14-16（fiber 对称性、前缀单调性、概率半界）
 4. 每一轮都先验收 `lake build`
-5. 计划 6-12 可按可行性灵活调整顺序
+5. 计划 17-20 可按可行性灵活调整
 
 ## 13. 结论
 

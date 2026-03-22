@@ -252,6 +252,62 @@ theorem stableAdd_assoc (x y z : X m) :
     rw [Nat.mod_add_mod_right _ _ _ hF, Nat.add_comm]
   rw [lhs, rhs, Nat.add_assoc]
 
+/-- Stable multiplication on X m: wrap-around Fibonacci arithmetic. -/
+noncomputable def stableMul (x y : X m) : X m :=
+  X.ofNat m ((stableValue x * stableValue y) % paperFib (m + 1))
+
+/-- Stable multiplication is commutative. -/
+theorem stableMul_comm (x y : X m) :
+    stableMul x y = stableMul y x := by
+  simp only [stableMul, Nat.mul_comm]
+
+/-- stableZero is the annihilator for multiplication. -/
+theorem stableMul_zero_left (x : X m) : stableMul stableZero x = stableZero := by
+  unfold stableMul stableZero
+  rw [stableValue_ofNat_lt 0 (paperFib_pos (m + 1)), Nat.zero_mul, Nat.zero_mod]
+
+/-- stableZero is the annihilator for multiplication (right). -/
+theorem stableMul_zero_right (x : X m) : stableMul x stableZero = stableZero := by
+  rw [stableMul_comm]; exact stableMul_zero_left x
+
+/-- The one element for stable multiplication. -/
+noncomputable def stableOne : X m := X.ofNat m 1
+
+/-- stableOne has value 1 when paperFib(m+1) > 1. -/
+theorem stableValue_stableOne (hm : 1 < paperFib (m + 1)) :
+    stableValue (stableOne (m := m)) = 1 :=
+  stableValue_ofNat_lt 1 hm
+
+/-- stableOne is the left identity for multiplication when F_{m+2} > 1. -/
+theorem stableMul_one_left (hm : 1 < paperFib (m + 1)) (x : X m) :
+    stableMul stableOne x = x := by
+  unfold stableMul stableOne
+  rw [stableValue_ofNat_lt 1 hm, Nat.one_mul,
+    Nat.mod_eq_of_lt (stableValue_lt_paperFib_succ x), X.ofNat_stableValue]
+
+/-- Helper: (a * (b % n)) % n = (a * b) % n. -/
+private theorem Nat.mul_mod_right' (a b n : Nat) :
+    (a * (b % n)) % n = (a * b) % n := by
+  conv_rhs => rw [Nat.mul_mod]
+  rw [Nat.mul_mod a (b % n) n, Nat.mod_mod_of_dvd _ (dvd_refl n)]
+
+/-- Helper: ((a % n) * b) % n = (a * b) % n. -/
+private theorem Nat.mul_mod_left' (a b n : Nat) :
+    (a % n * b) % n = (a * b) % n := by
+  rw [Nat.mul_comm, Nat.mul_mod_right', Nat.mul_comm]
+
+/-- Helper: ((a % n) + (b % n)) % n = (a + b) % n. -/
+private theorem Nat.add_mod' (a b n : Nat) :
+    ((a % n) + (b % n)) % n = (a + b) % n := by
+  rw [← Nat.add_mod]
+
+/-- Stable multiplication distributes over stable addition (left). -/
+theorem stableMul_stableAdd_left (x y z : X m) :
+    stableMul x (stableAdd y z) = stableAdd (stableMul x y) (stableMul x z) := by
+  simp only [stableMul, stableAdd, stableValue_ofNat_mod]
+  congr 1
+  rw [Nat.mul_mod_right', Nat.add_mod', Nat.mul_add]
+
 end
 
 end X

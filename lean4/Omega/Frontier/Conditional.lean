@@ -1195,6 +1195,53 @@ theorem prefixDetermined_compl_closure {s : Set SPG.OmegaInfinity} {m : Nat}
     (hs : SPG.PrefixDetermined s m) : SPG.PrefixDetermined sᶜ m :=
   SPG.prefixDetermined_compl hs
 
+/-! ### Paper Section 6: Stable Multiplication & Ring Structure -/
+
+/-- Stable multiplication is commutative. -/
+theorem stableMul_commutative (x y : X m) :
+    X.stableMul x y = X.stableMul y x :=
+  X.stableMul_comm x y
+
+/-- Stable multiplication distributes over stable addition. -/
+theorem stableMul_distributes_left (x y z : X m) :
+    X.stableMul x (X.stableAdd y z) = X.stableAdd (X.stableMul x y) (X.stableMul x z) :=
+  X.stableMul_stableAdd_left x y z
+
+/-- stableZero annihilates under multiplication. -/
+theorem stableMul_zero (x : X m) : X.stableMul X.stableZero x = X.stableZero :=
+  X.stableMul_zero_left x
+
+/-- stableOne is the multiplicative identity (when F_{m+2} > 1). -/
+theorem stableMul_one (hm : 1 < paperFib (m + 1)) (x : X m) :
+    X.stableMul X.stableOne x = x :=
+  X.stableMul_one_left hm x
+
+/-! ### Paper Theorem 4.1: Zeckendorf Bit Characterization -/
+
+/-- The bit pattern of X.ofNat m n is given by the Zeckendorf representation (paper Theorem 4.1). -/
+theorem zeckendorf_bit_characterization (n : Nat) {i : Nat} (h : i < m) :
+    get (X.ofNat m n).1 i = true ↔ i + 2 ∈ Nat.zeckendorf n :=
+  X.get_ofNat_eq_true_iff h
+
+/-- Active positions of a stable word form a valid Zeckendorf representation. -/
+theorem stable_zeckendorf_valid_wrapper (x : X m) :
+    (X.zeckIndices x).IsZeckendorfRep :=
+  X.zeckIndices_isZeckendorfRep x
+
+/-! ### Paper Proposition 3.x: Scan Error Single-Sided Bounds -/
+
+/-- Scan error is bounded by the event mass (discrete). -/
+theorem scanError_le_event_mass {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P ≤ SPG.setMass μ P :=
+  SPG.scanError_le_setMass μ obs P
+
+/-- Scan error is bounded by the complement mass (discrete). -/
+theorem scanError_le_compl_mass {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P ≤ SPG.setMass μ Pᶜ :=
+  SPG.scanError_le_setMass_compl μ obs P
+
 end
 
 end Omega.Frontier

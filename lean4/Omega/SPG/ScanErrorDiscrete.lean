@@ -614,6 +614,22 @@ theorem two_mul_scanError_le_one {α β : Type*} [Fintype α] [Fintype β]
     _ = ∑ x, (μ x : ENNReal) := setMass_add_setMass_compl μ P
     _ = 1 := PMF_sum_coe_eq_one μ
 
+/-- Scan error is bounded by the event mass alone (single-sided bound). -/
+theorem scanError_le_setMass {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P ≤ setMass μ P := by
+  calc scanError μ obs P
+      ≤ min (setMass μ P) (setMass μ Pᶜ) := scanError_le_min_setMass μ obs P
+    _ ≤ setMass μ P := min_le_left _ _
+
+/-- Scan error is bounded by the complement mass alone (single-sided bound). -/
+theorem scanError_le_setMass_compl {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P ≤ setMass μ Pᶜ := by
+  calc scanError μ obs P
+      ≤ min (setMass μ P) (setMass μ Pᶜ) := scanError_le_min_setMass μ obs P
+    _ ≤ setMass μ Pᶜ := min_le_right _ _
+
 end
 
 end Omega.SPG
