@@ -405,6 +405,58 @@ theorem restrict_stableAdd_of_no_carry (x y : X (m + 1))
   rw [← stableValue_restrict_mod (stableAdd x y), hSV, Nat.add_mod,
     hModX, hModY, ← Nat.add_mod]
 
+/-- Fold is the identity on the underlying word of a stable element. -/
+theorem Fold_val_stable (x : X m) : (Fold x.1).1 = x.1 := by
+  exact congrArg Subtype.val (Fold_stable x)
+
+/-- Two stable words with the same stableValue are equal. -/
+theorem eq_of_stableValue_eq {x y : X m} (h : stableValue x = stableValue y) : x = y :=
+  stableValueFin_injective m (by simp [stableValueFin, h])
+
+/-- stableAdd with the same element doubled: x ⊕ x = ofNat(2 * stableValue x mod F). -/
+theorem stableAdd_self (x : X m) :
+    stableAdd x x = X.ofNat m ((2 * stableValue x) % paperFib (m + 1)) := by
+  simp [stableAdd, two_mul]
+
+/-- Negation in the stable semiring: the additive inverse. -/
+noncomputable def stableNeg (x : X m) : X m :=
+  X.ofNat m ((paperFib (m + 1) - stableValue x) % paperFib (m + 1))
+
+/-- stableNeg gives the additive inverse: x + neg(x) = 0. -/
+theorem stableAdd_stableNeg (x : X m) :
+    stableAdd x (stableNeg x) = stableZero := by
+  apply eq_of_stableValue_eq
+  simp only [stableValue_stableAdd, stableNeg, stableValue_ofNat_mod, stableValue_stableZero]
+  have hLt := stableValue_lt_paperFib_succ x
+  rw [Nat.add_mod, Nat.mod_mod_of_dvd _ (dvd_refl _), ← Nat.add_mod]
+  rw [show stableValue x + (paperFib (m + 1) - stableValue x) = paperFib (m + 1) from by omega]
+  simp [Nat.mod_self]
+
+/-- stableNeg gives the right additive inverse: neg(x) + x = 0. -/
+theorem stableNeg_stableAdd (x : X m) :
+    stableAdd (stableNeg x) x = stableZero := by
+  rw [stableAdd_comm]; exact stableAdd_stableNeg x
+
+/-- stableNeg of zero is zero. -/
+theorem stableNeg_zero : stableNeg (stableZero (m := m)) = stableZero := by
+  apply eq_of_stableValue_eq
+  simp only [stableNeg, stableValue_ofNat_mod, stableZero]
+  rw [stableValue_ofNat_lt 0 (paperFib_pos (m + 1)), Nat.sub_zero, Nat.mod_self]
+
+/-- stableValue of the negation. -/
+theorem stableValue_stableNeg (x : X m) :
+    stableValue (stableNeg x) = (paperFib (m + 1) - stableValue x) % paperFib (m + 1) :=
+  stableValue_ofNat_mod _
+
+/-- Stable subtraction: x - y := x + neg(y). -/
+noncomputable def stableSub (x y : X m) : X m :=
+  stableAdd x (stableNeg y)
+
+/-- stableSub is a left inverse of stableAdd: (x + y) - y = x. -/
+theorem stableSub_stableAdd_cancel (x y : X m) :
+    stableSub (stableAdd x y) y = x := by
+  simp only [stableSub, stableAdd_assoc, stableAdd_stableNeg, stableAdd_zero_right]
+
 end
 
 end X

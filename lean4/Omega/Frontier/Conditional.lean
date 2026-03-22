@@ -1468,6 +1468,35 @@ theorem restrict_stableAdd_no_carry (x y : X (m + 1))
       (stableValue (X.restrict x) + stableValue (X.restrict y)) % paperFib (m + 1) :=
   X.restrict_stableAdd_of_no_carry x y h
 
+/-! ### Paper Section 6: Complete Abelian Group Structure -/
+
+/-- X_m forms an abelian group: additive inverse exists. -/
+theorem stableAdd_inverse (x : X m) :
+    X.stableAdd x (X.stableNeg x) = X.stableZero :=
+  X.stableAdd_stableNeg x
+
+/-- Negation is a right inverse. -/
+theorem stableNeg_right_inverse (x : X m) :
+    X.stableAdd (X.stableNeg x) x = X.stableZero :=
+  X.stableNeg_stableAdd x
+
+/-- Negation of zero is zero. -/
+theorem stableNeg_of_zero : X.stableNeg (X.stableZero (m := m)) = X.stableZero :=
+  X.stableNeg_zero
+
+/-- Stable subtraction cancels addition: (x + y) - y = x. -/
+theorem stableSub_cancel (x y : X m) :
+    X.stableSub (X.stableAdd x y) y = x :=
+  X.stableSub_stableAdd_cancel x y
+
+/-- Two stable words with equal values are identical. -/
+theorem stableWord_eq_of_value_eq {x y : X m} (h : stableValue x = stableValue y) : x = y :=
+  X.eq_of_stableValue_eq h
+
+/-- Fold is the identity on the underlying word of a stable element. -/
+theorem fold_val_identity (x : X m) : (Fold x.1).1 = x.1 :=
+  X.Fold_val_stable x
+
 end
 
 end Omega.Frontier
