@@ -766,6 +766,17 @@ theorem stableAdd_self_eq_stableMul_two (x : X m) (hm : 2 < paperFib (m + 1)) :
   ring_nf
 
 
+/-- The stable ring at resolution 1 has exactly 2 elements: X_1 ≅ ℤ/2ℤ. -/
+theorem card_X1_eq_two : Fintype.card (X 1) = 2 := card_X_one
+
+/-- The stable ring at resolution 2 has exactly 3 elements: X_2 ≅ ℤ/3ℤ. -/
+theorem card_X2_eq_three : Fintype.card (X 2) = 3 := card_X_two
+
+/-- stableValue is a bijection at every resolution (complete bijectivity). -/
+theorem stableValue_is_bijection (m : Nat) :
+    Function.Bijective (stableValueFin (m := m)) :=
+  stableValueFin_bijective m
+
 end
 
 end X
