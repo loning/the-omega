@@ -266,6 +266,234 @@ c\Vdash^{\forall}_{K,U}\varphi
 
 因此，观察者在本章中不是形而上的主体，而只是 forcing 状态的索引纤维。forcing 的中心始终是状态，而不是某个被特权化的“我”。
 
+\paragraph{选择谱与选择型自由意志}
+一旦观察者只被理解为状态纤维，而内部更新又始终停留在同一纤维中，最自然的新问题就不再是“系统是否已经为观察者选定了某个实际分支”，而是：在给定状态处，不同内部动作究竟能够把未来送入多少种 genuinely 不同的 forcing 类型。由此可以把自由意志问题改写为一个纯结构问题：在不引入额外对称破缺数据时，系统本身是否已经导出了一个非平凡的选择谱。
+
+\begin{definition}[选择型自由意志结构]\label{def:logic-expansion-choice-spectrum-structure}
+设 \(\mathbb{L}^{\mathrm{OST}}\) 为一个观察者时空逻辑系统，\(i\in I\)，且 \(p\in P_i\)。定义可用内部动作集
+\[
+\operatorname{En}_i(p)
+:=
+\{\alpha\in \mathsf{Act}_i^{\mathrm{int}}:\ \mathrm{Upd}_\alpha(p)\neq\varnothing\},
+\]
+以及一步后继集
+\[
+\operatorname{Succ}_i(p)
+:=
+\bigcup_{\alpha\in \operatorname{En}_i(p)}\mathrm{Upd}_\alpha(p)
+\subseteq P_i.
+\]
+
+在 \(\operatorname{Succ}_i(p)\) 上定义未来等价关系
+\[
+q\sim_i r
+\quad:\Longleftrightarrow\quad
+\forall \varphi,\ \bigl(q\Vdash_i\varphi \iff r\Vdash_i\varphi\bigr),
+\]
+其中 \(\varphi\) 遍历对象层 forcing 语言中的全部公式。由此定义一步未来商集
+\[
+\mathfrak W_i^{(1)}(p):=\operatorname{Succ}_i(p)/{\sim_i}.
+\]
+
+再定义选择对应
+\[
+\Gamma_i(p):\operatorname{En}_i(p)\to \mathcal P\bigl(\mathfrak W_i^{(1)}(p)\bigr),
+\qquad
+\Gamma_i(p)(\alpha):=
+\{[q]_{\sim_i}:\ q\in \mathrm{Upd}_\alpha(p)\}.
+\]
+
+对 \(\alpha,\beta\in \operatorname{En}_i(p)\)，定义动作等价
+\[
+\alpha\approx_{i,p}\beta
+\quad:\Longleftrightarrow\quad
+\Gamma_i(p)(\alpha)=\Gamma_i(p)(\beta),
+\]
+并令
+\[
+\mathfrak C_i(p):=\operatorname{En}_i(p)/{\approx_{i,p}}.
+\]
+
+称
+\[
+\mathfrak F_i^{\mathrm{sel}}(p)
+:=
+\bigl(\operatorname{En}_i(p),\mathfrak W_i^{(1)}(p),\Gamma_i(p)\bigr)
+\]
+为观察者 \(i\) 在状态 \(p\) 处的选择型自由意志结构；若
+\[
+|\mathfrak C_i(p)|\ge 2,
+\]
+则称观察者 \(i\) 在 \(p\) 处具有选择型自由意志。
+\end{definition}
+
+\begin{theorem}[良定义]\label{thm:logic-expansion-choice-spectrum-well-defined}
+对任意观察者时空逻辑系统、任意 \(i\in I\) 与任意 \(p\in P_i\)，结构
+\[
+\mathfrak F_i^{\mathrm{sel}}(p)
+\]
+良定义。因而 \(\mathfrak C_i(p)\) 以及“在 \(p\) 处具有选择型自由意志”这一性质也都良定义。
+\end{theorem}
+
+\begin{proof}
+由定义 \ref{def:logic-expansion-internal-update}，若 \(\alpha\in \mathsf{Act}_i^{\mathrm{int}}\) 且 \(q\in \mathrm{Upd}_\alpha(p)\)，则 \(q\in P_i\) 且 \(q\le p\)。因此
+\[
+\mathrm{Upd}_\alpha(p)\subseteq P_i,
+\qquad
+\operatorname{Succ}_i(p)\subseteq P_i.
+\]
+
+关系 \(\sim_i\) 在 \(\operatorname{Succ}_i(p)\) 上显然自反与对称；其传递性则来自双向 forcing 等价的传递性，故 \(\sim_i\) 的确是等价关系，因此商集 \(\mathfrak W_i^{(1)}(p)\) 存在。
+
+再者，对任意 \(\alpha\in \operatorname{En}_i(p)\)，因为 \(\mathrm{Upd}_\alpha(p)\subseteq \operatorname{Succ}_i(p)\)，故
+\[
+\Gamma_i(p)(\alpha)\subseteq \mathfrak W_i^{(1)}(p),
+\]
+从而 \(\Gamma_i(p)\) 的值域确实落在 \(\mathcal P(\mathfrak W_i^{(1)}(p))\) 中。
+
+最后，\(\approx_{i,p}\) 由 \(\Gamma_i(p)\) 的值相等定义，自反、对称与传递都显然成立，因此 \(\mathfrak C_i(p)\) 作为商集存在。由此全部对象均良定义。
+\end{proof}
+
+\begin{proposition}[选择谱的标准形]\label{prop:logic-expansion-choice-spectrum-standard-form}
+记
+\[
+\Xi_i(p):=
+\{\Gamma_i(p)(\alpha):\ \alpha\in \operatorname{En}_i(p)\}
+\subseteq \mathcal P\bigl(\mathfrak W_i^{(1)}(p)\bigr).
+\]
+则有自然双射
+\[
+\mathfrak C_i(p)\cong \Xi_i(p),
+\qquad
+[\alpha]_{\approx_{i,p}}\longmapsto \Gamma_i(p)(\alpha).
+\]
+特别地，观察者 \(i\) 在 \(p\) 处具有选择型自由意志，当且仅当
+\[
+|\Xi_i(p)|\ge 2.
+\]
+\end{proposition}
+
+\begin{proof}
+映射
+\[
+[\alpha]_{\approx_{i,p}}\longmapsto \Gamma_i(p)(\alpha)
+\]
+是良定义的，因为 \(\alpha\approx_{i,p}\beta\) 当且仅当两者的 \(\Gamma_i(p)\)-值相同。它显然满射到 \(\Xi_i(p)\)，也显然单射，故为双射。最后一条只是把
+\[
+|\mathfrak C_i(p)|\ge 2
+\]
+经由该双射改写成 \(|\Xi_i(p)|\ge 2\)。
+\end{proof}
+
+\begin{corollary}[一步判据]\label{cor:logic-expansion-choice-spectrum-one-step-criterion}
+若存在 \(\alpha,\beta\in \operatorname{En}_i(p)\) 使
+\[
+\Gamma_i(p)(\alpha)\neq \Gamma_i(p)(\beta),
+\]
+则观察者 \(i\) 在 \(p\) 处具有选择型自由意志。反之，若对所有 \(\alpha,\beta\in \operatorname{En}_i(p)\) 都有
+\[
+\Gamma_i(p)(\alpha)=\Gamma_i(p)(\beta),
+\]
+则观察者 \(i\) 在 \(p\) 处不具有选择型自由意志。
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:logic-expansion-choice-spectrum-standard-form}，
+\[
+|\mathfrak C_i(p)|=|\Xi_i(p)|.
+\]
+而 \(\Xi_i(p)\) 正是全部 \(\Gamma_i(p)(\alpha)\) 的像集，故结论立即成立。
+\end{proof}
+
+\begin{theorem}[观察者对称性下的不变性]\label{thm:logic-expansion-choice-spectrum-symmetry-invariance}
+若观察者时空逻辑系统满足观察者对称性，\(\sigma:I\to I\) 为任意双射，\(\widehat{\sigma}:P\to P\) 为定义 \ref{def:logic-expansion-observer-symmetry} 中与之对应的状态自同构，则对任意 \(p\in P_i\)，存在自然双射
+\[
+\mathfrak W_i^{(1)}(p)\cong \mathfrak W_{\sigma(i)}^{(1)}(\widehat{\sigma}(p)),
+\]
+并进一步诱导
+\[
+\Xi_i(p)\cong \Xi_{\sigma(i)}(\widehat{\sigma}(p)),
+\qquad
+\mathfrak C_i(p)\cong \mathfrak C_{\sigma(i)}(\widehat{\sigma}(p)).
+\]
+特别地，观察者 \(i\) 在 \(p\) 处具有选择型自由意志，当且仅当观察者 \(\sigma(i)\) 在 \(\widehat{\sigma}(p)\) 处具有选择型自由意志。
+\end{theorem}
+
+\begin{proof}
+由定义 \ref{def:logic-expansion-observer-symmetry}，\(\widehat{\sigma}\) 保持内部更新与 forcing。故若 \(q\in \operatorname{Succ}_i(p)\)，则 \(\widehat{\sigma}(q)\in \operatorname{Succ}_{\sigma(i)}(\widehat{\sigma}(p))\)。同时，对任意 \(q,r\in \operatorname{Succ}_i(p)\)，有
+\[
+q\sim_i r
+\iff
+\forall \varphi,\ \bigl(q\Vdash_i\varphi \iff r\Vdash_i\varphi\bigr)
+\iff
+\forall \varphi,\ \bigl(\widehat{\sigma}(q)\Vdash_{\sigma(i)}\varphi \iff \widehat{\sigma}(r)\Vdash_{\sigma(i)}\varphi\bigr)
+\iff
+\widehat{\sigma}(q)\sim_{\sigma(i)}\widehat{\sigma}(r).
+\]
+因此 \(\widehat{\sigma}\) 在未来商集上下降为双射
+\[
+[q]_{\sim_i}\longmapsto [\widehat{\sigma}(q)]_{\sim_{\sigma(i)}}.
+\]
+
+再由 \(\widehat{\sigma}\) 对内部更新结构的保持性，每个由某个 \(\alpha\in \operatorname{En}_i(p)\) 产生的未来像集合 \(\Gamma_i(p)(\alpha)\)，都会被送到 \(\Xi_{\sigma(i)}(\widehat{\sigma}(p))\) 中的某个元素；对 \(\widehat{\sigma}^{-1}\) 同理，故诱导出
+\[
+\Xi_i(p)\cong \Xi_{\sigma(i)}(\widehat{\sigma}(p)).
+\]
+结合命题 \ref{prop:logic-expansion-choice-spectrum-standard-form} 中 \(\mathfrak C_i(p)\cong \Xi_i(p)\) 与 \(\mathfrak C_{\sigma(i)}(\widehat{\sigma}(p))\cong \Xi_{\sigma(i)}(\widehat{\sigma}(p))\)，即得
+\[
+\mathfrak C_i(p)\cong \mathfrak C_{\sigma(i)}(\widehat{\sigma}(p)).
+\]
+最后一句只依赖这些集合的基数是否至少为 \(2\)，故结论成立。
+\end{proof}
+
+\begin{theorem}[局部对称下单值选择器的定义障碍]\label{thm:logic-expansion-choice-spectrum-no-definable-selector}
+设 \(p\in P_i\)。若存在两个不同的选择类
+\[
+A,B\in \mathfrak C_i(p),
+\qquad
+A\neq B,
+\]
+以及一个保持原有观察者时空逻辑结构的自同构 \(\tau:P\to P\)，满足
+\begin{enumerate}
+  \item \(\tau(p)=p\)；
+  \item \(\tau\) 保持细化、forcing、内部更新、通信、事件定位与区域支撑；
+  \item \(\tau\) 在 \(\mathfrak C_i(p)\) 上交换 \(A\) 与 \(B\)。
+\end{enumerate}
+则不存在一个仅由原有观察者时空逻辑结构与参数 \(p\) 纯定义出来的单值选择器
+\[
+\operatorname{Ch}_i(p)\in \mathfrak C_i(p)
+\]
+能够在 \(A\) 与 \(B\) 之间唯一选出一个。
+\end{theorem}
+
+\begin{proof}
+反设存在这样的纯定义单值选择器 \(\operatorname{Ch}_i(p)\)。由于它只依赖于原有观察者时空逻辑结构并以 \(p\) 为参数定义，任何固定 \(p\) 的结构自同构都必须保持其取值不变，因此
+\[
+\tau(\operatorname{Ch}_i(p))=\operatorname{Ch}_i(p).
+\]
+但 \(\tau\) 在 \(\mathfrak C_i(p)\) 上交换 \(A\) 与 \(B\)。于是若 \(\operatorname{Ch}_i(p)=A\)，则上式迫使
+\[
+\tau(\operatorname{Ch}_i(p))=B\neq A,
+\]
+矛盾；若 \(\operatorname{Ch}_i(p)=B\)，同理得到矛盾。故不存在这样的单值选择器。
+\end{proof}
+
+\begin{corollary}[无额外对称破缺下的定义极限]\label{cor:logic-expansion-choice-spectrum-definability-limit}
+在不向观察者时空逻辑系统加入任何额外公理或对称破缺数据时，能够从原有结构中稳定导出的最大对象，是定义 \ref{def:logic-expansion-choice-spectrum-structure} 中的选择型自由意志结构
+\[
+\mathfrak F_i^{\mathrm{sel}}(p)
+\]
+及其等价的选择谱
+\[
+\mathfrak C_i(p),
+\]
+而非一个普遍存在的单值实际选择算子。只有当原有结构本身已经唯一刻画出某一选择类，或者额外加入偏好、优先级、历史记忆、随机源、效用泛函等打破局部对称性的结构时，单值选择器才可能出现。
+\end{corollary}
+
+\begin{proof}
+命题 \ref{prop:logic-expansion-choice-spectrum-standard-form} 表明，原有结构总能导出不同未来像集合组成的选择谱。另一方面，定理 \ref{thm:logic-expansion-choice-spectrum-no-definable-selector} 说明：只要局部对称仍然交换不同选择类，纯定义的单值选择器就不可能存在。因此，在不额外打破对称的前提下，可稳定保留的最大对象只能是选择谱本身，而不能进一步压缩为单值既成选择。
+\end{proof}
+
 \paragraph{统一系统}
 至此，可以把本章前面所有结构汇总为最终系统。
 
