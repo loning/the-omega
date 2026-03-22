@@ -148,4 +148,46 @@ theorem prefixDetermined_inter_resolutions {s : Set OmegaInfinity} {t : Set Omeg
     (prefixDetermined_of_le (le_max_left _ _) hs)
     (prefixDetermined_of_le (le_max_right _ _) ht)
 
+/-- Prefix-determined sets at depth 0 are either empty or universal. -/
+theorem prefixDetermined_zero_iff (s : Set OmegaInfinity) :
+    PrefixDetermined s 0 ↔ s = ∅ ∨ s = Set.univ := by
+  constructor
+  · intro h
+    by_cases hs : s = ∅
+    · exact Or.inl hs
+    · right
+      ext x
+      constructor
+      · intro _; exact trivial
+      · intro _
+        obtain ⟨y, hy⟩ := Set.nonempty_iff_ne_empty.mpr hs
+        exact (h (by funext i; exact Fin.elim0 i)).2 hy
+  · intro h
+    rcases h with rfl | rfl
+    · exact prefixDetermined_empty 0
+    · exact prefixDetermined_univ 0
+
+/-- fromWordSet distributes over intersection. -/
+theorem fromWordSet_inter (A B : Set (Word m)) :
+    fromWordSet (A ∩ B) = fromWordSet A ∩ fromWordSet B := by
+  ext x; simp [fromWordSet]
+
+/-- fromWordSet distributes over union. -/
+theorem fromWordSet_union (A B : Set (Word m)) :
+    fromWordSet (A ∪ B) = fromWordSet A ∪ fromWordSet B := by
+  ext x; simp [fromWordSet]
+
+/-- fromWordSet preserves subset. -/
+theorem fromWordSet_mono {A B : Set (Word m)} (h : A ⊆ B) :
+    fromWordSet A ⊆ fromWordSet B := by
+  intro x hx; exact h hx
+
+/-- The empty word set gives the empty cylinder set. -/
+@[simp] theorem fromWordSet_empty : fromWordSet (∅ : Set (Word m)) = ∅ := by
+  ext x; simp [fromWordSet]
+
+/-- The universal word set gives the universal cylinder set. -/
+@[simp] theorem fromWordSet_univ : fromWordSet (Set.univ : Set (Word m)) = Set.univ := by
+  ext x; simp [fromWordSet]
+
 end Omega.SPG

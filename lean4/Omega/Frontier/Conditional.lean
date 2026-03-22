@@ -1497,6 +1497,37 @@ theorem stableWord_eq_of_value_eq {x y : X m} (h : stableValue x = stableValue y
 theorem fold_val_identity (x : X m) : (Fold x.1).1 = x.1 :=
   X.Fold_val_stable x
 
+/-! ### Paper SPG Section: fromWordSet Algebra -/
+
+/-- fromWordSet distributes over intersection. -/
+theorem fromWordSet_inter (A B : Set (Word m)) :
+    SPG.fromWordSet (A ∩ B) = SPG.fromWordSet A ∩ SPG.fromWordSet B :=
+  SPG.fromWordSet_inter A B
+
+/-- fromWordSet distributes over union. -/
+theorem fromWordSet_union (A B : Set (Word m)) :
+    SPG.fromWordSet (A ∪ B) = SPG.fromWordSet A ∪ SPG.fromWordSet B :=
+  SPG.fromWordSet_union A B
+
+/-- Prefix-determined sets at depth 0 are trivial (empty or universal). -/
+theorem prefixDetermined_zero_trivial (s : Set SPG.OmegaInfinity) :
+    SPG.PrefixDetermined s 0 ↔ s = ∅ ∨ s = Set.univ :=
+  SPG.prefixDetermined_zero_iff s
+
+/-! ### Paper Fold Section: Rewrite Irreducibility Equivalence -/
+
+/-- A digit configuration is irreducible iff it is stable (binary, no adjacent positives). -/
+theorem rewrite_irreducible_iff_stable {a : Rewrite.DigitCfg} :
+    Rewrite.Irreducible a ↔ Rewrite.StableCfg a :=
+  Rewrite.irreducible_iff_stableCfg
+
+/-! ### Paper Section 6: Negation Value -/
+
+/-- The value of the additive inverse. -/
+theorem stableNeg_value (x : X m) :
+    stableValue (X.stableNeg x) = (paperFib (m + 1) - stableValue x) % paperFib (m + 1) :=
+  X.stableValue_stableNeg x
+
 end
 
 end Omega.Frontier
