@@ -183,6 +183,15 @@ theorem CompatibleFamily.bit_determines (F : CompatibleFamily) (m : Nat) :
     F.bit m = Omega.last (F.seq (m + 1)).1 :=
   rfl
 
+/-- The No11Inf property is preserved by the inverse limit construction. -/
+theorem No11Inf_ofFamily (F : CompatibleFamily) : No11Inf (ofFamily F).1 :=
+  (ofFamily F).2
+
+/-- Compatible families form a complete description of infinite stable words. -/
+theorem CompatibleFamily_complete :
+    Function.Bijective (ofFamily : CompatibleFamily → XInfinity) :=
+  inverseLimitEquiv.bijective
+
 end X
 
 end Omega

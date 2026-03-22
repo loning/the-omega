@@ -57,4 +57,14 @@ theorem isClopen_finite_inter_cylinders {S : Finset (Word m)}
     IsClopen (fromWordSet A) :=
   isClopen_fromWordSet A
 
+/-- The complement of a clopen fromWordSet is also a clopen fromWordSet. -/
+theorem fromWordSet_compl_is_clopen (A : Set (Word m)) :
+    IsClopen (fromWordSet Aᶜ) :=
+  isClopen_fromWordSet Aᶜ
+
+/-- Empty set is clopen (as fromWordSet of empty). -/
+theorem isClopen_empty_spg : IsClopen (∅ : Set OmegaInfinity) := by
+  rw [show (∅ : Set OmegaInfinity) = fromWordSet (∅ : Set (Word 0)) from by simp]
+  exact isClopen_fromWordSet ∅
+
 end Omega.SPG
