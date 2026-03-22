@@ -1106,6 +1106,31 @@ theorem cellPartition_identity_measure [MeasurableSpace α]
     SPG.cellEventMeasure μ obs P b + SPG.cellComplMeasure μ obs P b = SPG.cellMeasure μ obs b :=
   SPG.cellEventMeasure_add_cellComplMeasure_eq_cellMeasure μ obs P b hP
 
+/-! ### Paper Proposition 3.2: Measure Cell Mass Sum Identities -/
+
+/-- Cell event measures sum to the event measure (with measurability). -/
+theorem cellEventMeasure_sum_eq_event [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    ∑ b, SPG.cellEventMeasure μ obs P b = μ P :=
+  SPG.cellEventMeasure_sum μ obs hObs P hP
+
+/-- Cell complement measures sum to the complement measure (with measurability). -/
+theorem cellComplMeasure_sum_eq_compl [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    ∑ b, SPG.cellComplMeasure μ obs P b = μ Pᶜ :=
+  SPG.cellComplMeasure_sum μ obs hObs P hP
+
+/-- Cell total measures sum to the total measure (with measurability). -/
+theorem cellMeasure_sum_eq_total [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs) :
+    ∑ b, SPG.cellMeasure μ obs b = μ Set.univ :=
+  SPG.cellMeasure_sum μ obs hObs
+
 end
 
 end Omega.Frontier

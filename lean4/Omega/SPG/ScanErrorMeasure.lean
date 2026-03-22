@@ -573,6 +573,62 @@ theorem prefixBoundaryCylinderCount_compl [MeasurableSpace (Word n)]
     prefixBoundaryCylinderCount μ h Pᶜ = prefixBoundaryCylinderCount μ h P := by
   simp only [prefixBoundaryCylinderCount, prefixBoundaryCellsMeasure_compl]
 
+/-- Observable cells are measurable when the observation is measurable. -/
+theorem observableCell_measurableSet {α β : Type*} [MeasurableSpace α]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (obs : α → β) (hObs : Measurable obs) (b : β) :
+    MeasurableSet (observableCell obs b) :=
+  hObs (MeasurableSet.singleton b)
+
+/-- Observable cells are pairwise disjoint. -/
+theorem observableCell_pairwiseDisjoint {α β : Type*} [Fintype β] (obs : α → β) :
+    Set.PairwiseDisjoint (↑(Finset.univ : Finset β)) (observableCell obs) := by
+  intro b₁ _ b₂ _ hne
+  rw [Function.onFun, Set.disjoint_left]
+  intro x hx₁ hx₂
+  exact hne (hx₁.symm.trans hx₂)
+
+/-- The union of all observable cells covers the entire space. -/
+theorem observableCell_iUnion {α β : Type*} [Fintype β] (obs : α → β) :
+    (⋃ b ∈ (Finset.univ : Finset β), observableCell obs b) = Set.univ := by
+  ext x
+  simp [observableCell]
+
+/-- Cell event measures sum to the event measure (with measurability hypotheses). -/
+theorem cellEventMeasure_sum {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    ∑ b, cellEventMeasure μ obs P b = μ P := by
+  have hCell := fun b => observableCell_measurableSet obs hObs b
+  have hUnion : P = ⋃ b ∈ (Finset.univ : Finset β), P ∩ observableCell obs b := by
+    rw [← Set.inter_iUnion₂, observableCell_iUnion, Set.inter_univ]
+  have hDisj : Set.PairwiseDisjoint (↑(Finset.univ : Finset β))
+      (fun b => P ∩ observableCell obs b) := by
+    exact (observableCell_pairwiseDisjoint obs).mono (fun _b => Set.inter_subset_right)
+  conv_rhs => rw [hUnion]
+  rw [MeasureTheory.measure_biUnion_finset hDisj (fun b _ => hP.inter (hCell b))]
+  simp [cellEventMeasure]
+
+/-- Cell complement measures sum to the complement measure (with measurability hypotheses). -/
+theorem cellComplMeasure_sum {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    ∑ b, cellComplMeasure μ obs P b = μ Pᶜ := by
+  simp_rw [← cellEventMeasure_compl]
+  exact cellEventMeasure_sum μ obs hObs Pᶜ hP.compl
+
+/-- Cell total measures sum to the total measure (with measurability hypotheses). -/
+theorem cellMeasure_sum {α β : Type*} [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs) :
+    ∑ b, cellMeasure μ obs b = μ Set.univ := by
+  have : ∀ b, cellMeasure μ obs b = cellEventMeasure μ obs Set.univ b := by
+    intro b; simp [cellMeasure, cellEventMeasure, Set.univ_inter]
+  simp_rw [this]
+  exact cellEventMeasure_sum μ obs hObs Set.univ MeasurableSet.univ
+
 end
 
 end Omega.SPG
