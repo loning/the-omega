@@ -339,7 +339,118 @@ F_d+O\!\bigl(\tau(d)\varphi^{d/2}\bigr),
 证毕。
 \end{proof}
 
+\begin{theorem}[Fibonacci 深度包的 Möbius 乘积公式]\label{thm:conclusion-fibadic-cyclotomic-packet-mobius-product}
+对 \(d\ge 2\)，设 \(\Pi_d(X)\) 为深度 \(d\) 的 cyclotomic 包多项式。则在 \(\ZZ[X]\) 中成立精确恒等式
+\[
+\Pi_d(X)=\prod_{e\mid d}\bigl(X^{F_e}-1\bigr)^{\mu(d/e)}.
+\]
+此外，
+\[
+\Pi_1(X)=X-1.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-fibadic-cyclotomic-packet-decomposition}，对每个 \(d\ge 1\) 都有
+\[
+X^{F_d}-1=\prod_{e\mid d}\Pi_e(X).
+\]
+将其视作整除格上的乘法卷积关系。由于 \(\ZZ[X]\) 的分式域乘法群为交换群，可在除数格上对该乘积关系施行 Möbius 反演，得到
+\[
+\Pi_d(X)=\prod_{e\mid d}\bigl(X^{F_e}-1\bigr)^{\mu(d/e)}.
+\]
+当 \(d=1\) 时，唯一深度为 \(1\) 的特征只对应平凡包，故
+\[
+\Pi_1(X)=X-1.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[深度包在 \texorpdfstring{$X=1$}{X=1} 处的 \texorpdfstring{$p$}{p}-进内容公式]\label{thm:conclusion-fibadic-cyclotomic-packet-padic-content}
+对每个 \(d\ge 2\)，有
+\[
+\Pi_d(1)=\prod_{e\mid d}F_e^{\mu(d/e)}\in \NN.
+\]
+更精确地，记
+\[
+m_p(d):=\sum_{e\mid d}\mu(d/e)\,v_p(F_e),
+\]
+则
+\[
+\Pi_d(1)=\prod_p p^{\,m_p(d)},
+\]
+并且
+\[
+m_p(d)=\#\{k\ge 1:\ z(p^k)=d\},
+\]
+其中 \(z(p^k)\) 为素幂 \(p^k\) 的 Fibonacci 出现阶。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-fibadic-cyclotomic-packet-mobius-product}，
+\[
+\Pi_d(X)=\prod_{e\mid d}(X^{F_e}-1)^{\mu(d/e)}.
+\]
+当 \(d\ge 2\) 时，
+\[
+\sum_{e\mid d}\mu(d/e)=0.
+\]
+因此令 \(X\to 1\)，并用局部展开
+\[
+X^{F_e}-1=F_e(X-1)+O\bigl((X-1)^2\bigr),
+\]
+得到全部 \((X-1)\)-因子严格抵消，从而
+\[
+\Pi_d(1)=\prod_{e\mid d}F_e^{\mu(d/e)}.
+\]
+对两边取 \(p\)-进赋值即得
+\[
+v_p(\Pi_d(1))
+=
+\sum_{e\mid d}\mu(d/e)\,v_p(F_e)
+=
+m_p(d).
+\]
+
+再证计数公式。对任意 \(e\)，有
+\[
+v_p(F_e)=\#\{k\ge 1:\ p^k\mid F_e\}.
+\]
+而 \(p^k\mid F_e\) 当且仅当 \(z(p^k)\mid e\)，故
+\[
+v_p(F_e)
+=
+\sum_{f\mid e}\#\{k\ge 1:\ z(p^k)=f\}.
+\]
+在整除格上再次施行 Möbius 反演，即得
+\[
+m_p(d)=\#\{k\ge 1:\ z(p^k)=d\}.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[深度包在 \texorpdfstring{$X=1$}{X=1} 处检测真正的新素幂频率]\label{cor:conclusion-fibadic-cyclotomic-packet-detects-new-prime-power}
+对每个 \(d\ge 2\)，成立等价关系
+\[
+\Pi_d(1)>1
+\iff
+\exists\,p^k\ \text{使}\ z(p^k)=d.
+\]
+因此，深度 \(d\) 是否携带真正新的素幂频率，可由单一整数 \(\Pi_d(1)\) 直接判定。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-fibadic-cyclotomic-packet-padic-content}，
+\[
+\Pi_d(1)=\prod_p p^{\,m_p(d)},
+\qquad
+m_p(d)=\#\{k\ge 1:\ z(p^k)=d\}.
+\]
+故 \(\Pi_d(1)>1\) 当且仅当存在某个素数 \(p\) 使 \(m_p(d)>0\)，等价于存在某个素幂 \(p^k\) 满足 \(z(p^k)=d\)。证毕。
+\end{proof}
+
 \paragraph{Fibonacci 新谐波的统一读法}
-定理 \ref{thm:conclusion-fibadic-visible-depth-mobius-count} 至定理 \ref{thm:conclusion-fibadic-cyclotomic-packet-decomposition} 说明：在 \(\widehat X_F\cong \widehat{\ZZ}\) 的全局塌缩之后，Fibonacci 深度过滤并未消失，而是在调和分析层保留了一条完全可分类的新生谱链。有限层可见谐波总数 \(F_d\) 经 Möbius 反演拆分为精确深度计数 \(a_d\)，后者在 Fourier 侧给出正交新空间 \(\mathcal N_d\)，并在 Koopman 平移下进一步压缩为按首次可见深度分组的 cyclotomic 包 \(\Pi_d\)。因此，Fibonacci 地址塔的谐波结构并非由旧层残余主导；相反，在深度 \(d\) 的有限谱中，渐近上几乎全部模态都属于当层第一次出现的新生谐波。
+定理 \ref{thm:conclusion-fibadic-visible-depth-mobius-count} 至定理 \ref{thm:conclusion-fibadic-cyclotomic-packet-padic-content} 说明：在 \(\widehat X_F\cong \widehat{\ZZ}\) 的全局塌缩之后，Fibonacci 深度过滤并未消失，而是在调和分析层保留了一条完全可分类的新生谱链。有限层可见谐波总数 \(F_d\) 经 Möbius 反演拆分为精确深度计数 \(a_d\)，后者在 Fourier 侧给出正交新空间 \(\mathcal N_d\)，并在 Koopman 平移下进一步压缩为按首次可见深度分组的 cyclotomic 包 \(\Pi_d\)。更进一步，在 \(X=1\) 处的取值
+\[
+\Pi_d(1)=\prod_{e\mid d}F_e^{\mu(d/e)}
+\]
+又把这些新包直接联到各素幂的 Fibonacci 出现阶：其 \(p\)-进赋值恰计数满足 \(z(p^k)=d\) 的素幂层数。因此，Fibonacci 地址塔的谐波结构并非由旧层残余主导；相反，在深度 \(d\) 的有限谱中，渐近上几乎全部模态都属于当层第一次出现的新生谐波，而这些新生包是否携带真正新的素幂频率，也已可由单一整数 \(\Pi_d(1)\) 直接读出。
 
 \endinput
