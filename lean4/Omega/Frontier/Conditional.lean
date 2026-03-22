@@ -973,6 +973,20 @@ theorem stableAdd_commutative (x y : X m) :
     X.stableAdd x y = X.stableAdd y x :=
   X.stableAdd_comm x y
 
+/-- The stable syntax space is equivalent to Fin(F_{m+2}) as a finite type. -/
+noncomputable def stableValueEquiv_wrapper (m : Nat) : X m ≃ Fin (paperFib (m + 1)) :=
+  X.stableValueEquiv m
+
+/-- The stableValue map into Fin is surjective (paper Theorem 6.1 surjectivity). -/
+theorem stableValueFin_surjective_wrapper (m : Nat) :
+    Function.Surjective (X.stableValueFin (m := m)) :=
+  X.stableValueFin_surjective m
+
+/-- The stableValue map into Fin is bijective (paper Theorem 6.1 bijectivity). -/
+theorem stableValueFin_bijective_wrapper (m : Nat) :
+    Function.Bijective (X.stableValueFin (m := m)) :=
+  X.stableValueFin_bijective m
+
 /-! ### Paper Theorem 4.2: Fiber Partition -/
 
 /-- The word space has cardinality 2^m. -/

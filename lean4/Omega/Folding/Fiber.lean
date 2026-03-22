@@ -152,6 +152,22 @@ theorem stableValueFin_injective (m : Nat) :
   simp only [stableValueFin, Fin.mk.injEq] at this
   exact (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩) this
 
+/-- The stable syntax space is equivalent to Fin(paperFib(m+1)).
+    This is the core encoding result: X_m ≃ {0, ..., F_{m+2}-1}. -/
+noncomputable def stableValueEquiv (m : Nat) : X m ≃ Fin (paperFib (m + 1)) :=
+  Fintype.equivFinOfCardEq (X.card_eq_paperFib_succ m)
+
+/-- The stableValueFin map is surjective (from injectivity + matching cardinality). -/
+theorem stableValueFin_surjective (m : Nat) :
+    Function.Surjective (stableValueFin (m := m)) :=
+  (Finite.injective_iff_surjective_of_equiv (stableValueEquiv m)).mp
+    (stableValueFin_injective m)
+
+/-- The stableValueFin map is bijective. -/
+theorem stableValueFin_bijective (m : Nat) :
+    Function.Bijective (stableValueFin (m := m)) :=
+  ⟨stableValueFin_injective m, stableValueFin_surjective m⟩
+
 /-- Stable addition on X m: wrap-around Fibonacci arithmetic. -/
 noncomputable def stableAdd (x y : X m) : X m :=
   X.ofNat m ((stableValue x + stableValue y) % paperFib (m + 1))
