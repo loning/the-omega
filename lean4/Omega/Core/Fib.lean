@@ -82,4 +82,14 @@ theorem paperFib_gt_one (hm : 1 ≤ m) : 1 < paperFib (m + 1) := by
 theorem paperFib_dvd_self (m : Nat) : paperFib m ∣ paperFib m :=
   dvd_refl _
 
+/-- Fibonacci divisibility: F_m divides F_n whenever m divides n. -/
+theorem fib_dvd_of_dvd (m n : Nat) (h : m ∣ n) : Nat.fib m ∣ Nat.fib n :=
+  Nat.fib_dvd m n h
+
+/-- paperFib divisibility: paperFib(m) divides paperFib(n) when (m+1) divides (n+1). -/
+theorem paperFib_dvd_of_succ_dvd {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
+    paperFib m ∣ paperFib n := by
+  unfold paperFib
+  exact Nat.fib_dvd (m + 1) (n + 1) h
+
 end Omega

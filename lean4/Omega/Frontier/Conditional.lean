@@ -1907,6 +1907,35 @@ theorem neg_one_is_maximal (hm : 1 ≤ m) :
 theorem one_ne_zero_stable (hm : 1 ≤ m) : X.stableOne (m := m) ≠ X.stableZero :=
   X.stableOne_ne_stableZero hm
 
+/-! ### Plan 4: Modular Projection Tower -/
+
+/-- The modular projection from X_{m+1} to X_m via Fibonacci modulus. -/
+noncomputable def modular_projection (x : X (m + 1)) : X m :=
+  X.modularProject x
+
+/-- Modular projection maps zero to zero. -/
+theorem modular_projection_zero :
+    X.modularProject (X.stableZero (m := m + 1)) = X.stableZero :=
+  X.modularProject_zero
+
+/-- Modular projection preserves addition when no carry occurs. -/
+theorem modular_projection_add_no_carry (x y : X (m + 1))
+    (h : stableValue x + stableValue y < paperFib (m + 2)) :
+    X.modularProject (X.stableAdd x y) =
+      X.stableAdd (X.modularProject x) (X.modularProject y) :=
+  X.modularProject_add_no_carry x y h
+
+/-! ### Plan 5: Fibonacci Divisibility -/
+
+/-- Fibonacci divisibility: F_m | F_n when m | n. -/
+theorem fibonacci_divisibility {m n : Nat} (h : m ∣ n) : Nat.fib m ∣ Nat.fib n :=
+  fib_dvd_of_dvd m n h
+
+/-- paperFib divisibility when successor indices divide. -/
+theorem paperFib_divisibility {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
+    paperFib m ∣ paperFib n :=
+  paperFib_dvd_of_succ_dvd h
+
 end
 
 end Omega.Frontier

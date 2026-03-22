@@ -635,6 +635,31 @@ theorem stableOne_ne_stableZero (hm : 1 ≤ m) : stableOne (m := m) ≠ stableZe
   have h0 := stableValue_stableZero (m := m)
   rw [h] at h1; omega
 
+/-- The modular reduction map: project a value from X_{m+1} to X_m via Fibonacci modulus. -/
+noncomputable def modularProject (x : X (m + 1)) : X m :=
+  X.ofNat m (stableValue x % paperFib (m + 1))
+
+/-- The modular projection agrees with restriction on stable value. -/
+theorem stableValue_modularProject (x : X (m + 1)) :
+    stableValue (modularProject x) = stableValue x % paperFib (m + 1) := by
+  unfold modularProject
+  exact stableValue_ofNat_lt _ (Nat.mod_lt _ (paperFib_pos (m + 1)))
+
+/-- The modular projection maps zero to zero. -/
+theorem modularProject_zero : modularProject (stableZero (m := m + 1)) = stableZero := by
+  apply eq_of_stableValue_eq
+  rw [stableValue_modularProject, stableValue_stableZero, Nat.zero_mod, stableValue_stableZero]
+
+/-- When carry is zero, the modular projection preserves addition exactly. -/
+theorem modularProject_add_no_carry (x y : X (m + 1))
+    (hNoCarry : stableValue x + stableValue y < paperFib (m + 2)) :
+    modularProject (stableAdd x y) = stableAdd (modularProject x) (modularProject y) := by
+  apply eq_of_stableValue_eq
+  rw [stableValue_modularProject, stableValue_stableAdd, stableValue_stableAdd,
+    stableValue_modularProject, stableValue_modularProject,
+    Nat.mod_eq_of_lt hNoCarry]
+  rw [Nat.add_mod]
+
 end
 
 end X
