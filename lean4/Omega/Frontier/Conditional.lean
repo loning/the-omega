@@ -1960,6 +1960,28 @@ theorem prefix_boundary_bounded (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word
     (SPG.prefixBoundaryCells μ h P).card ≤ Fintype.card (Word m) :=
   SPG.prefixBoundaryCells_card_le μ h P
 
+/-! ### Plan 6: Ring Isomorphism Certificate -/
+
+/-- The ring isomorphism certificate for X_m ≅ ℤ/F_{m+2}ℤ. -/
+noncomputable def ring_isomorphism_certificate (m : Nat) : X.RingIsomorphismCertificate m :=
+  X.ringIsoCert m
+
+/-! ### Plan 19: Transfer Matrix & Characteristic Polynomial -/
+
+/-- The golden-mean graph transition count from each state. -/
+theorem goldenMean_transition_false :
+    Omega.Graph.goldenMeanTransitionCount false = 2 := rfl
+
+/-- The golden-mean graph transition count from state true. -/
+theorem goldenMean_transition_true :
+    Omega.Graph.goldenMeanTransitionCount true = 1 := rfl
+
+/-- The cardinality recurrence IS the characteristic polynomial relation:
+    |X_{m+2}| = |X_{m+1}| + |X_m| corresponds to x² = x + 1 (eigenvalue φ). -/
+theorem characteristic_polynomial_witness (m : Nat) :
+    Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) :=
+  Omega.Graph.goldenMean_characteristic_recurrence m
+
 end
 
 end Omega.Frontier

@@ -671,6 +671,31 @@ theorem fiberMultiplicity_total (m : Nat) :
     ∑ x : X m, fiberMultiplicity x = 2 ^ m :=
   fiberMultiplicity_sum_eq_pow m
 
+/-- The ring structure on X_m: stableValue is an isomorphism to ℤ/F_{m+2}ℤ.
+    Certificate: add hom + mul hom + injective + surjective + neg hom. -/
+structure RingIsomorphismCertificate (m : Nat) where
+  add_hom : ∀ x y : X m, stableValue (stableAdd x y) =
+    (stableValue x + stableValue y) % paperFib (m + 1)
+  mul_hom : ∀ x y : X m, stableValue (stableMul x y) =
+    (stableValue x * stableValue y) % paperFib (m + 1)
+  neg_hom : ∀ x : X m, stableValue (stableNeg x) =
+    (paperFib (m + 1) - stableValue x) % paperFib (m + 1)
+  injective : Function.Injective (stableValue (m := m))
+  range_eq : Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)}
+
+/-- The canonical ring isomorphism certificate for X_m. -/
+noncomputable def ringIsoCert (m : Nat) : RingIsomorphismCertificate m where
+  add_hom := stableValue_stableAdd
+  mul_hom := stableValue_stableMul
+  neg_hom := stableValue_stableNeg
+  injective := (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩)
+  range_eq := stableValue_range m
+
+/-- The ring isomorphism certificate witnesses injectivity. -/
+theorem ringIsoCert_injective (m : Nat) :
+    Function.Injective (stableValue (m := m)) :=
+  (ringIsoCert m).injective
+
 end
 
 end X
