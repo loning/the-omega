@@ -71,8 +71,30 @@ theorem stableValue_restrict_le (x : X (m + 1)) :
   rw [stableValue_eq_restrict_add_last]
   exact Nat.le_add_right _ _
 
+/-- The stable value of restrict x equals stableValue x modulo paperFib(m+1). -/
+theorem stableValue_restrict_mod (x : X (m + 1)) :
+    stableValue x % paperFib (m + 1) = stableValue (X.restrict x) % paperFib (m + 1) := by
+  rw [stableValue_eq_restrict_add_last x]
+  by_cases hLast : x.1 ⟨m, Nat.lt_succ_self m⟩ = true
+  · simp only [hLast, ite_true, Nat.add_mod, Nat.mod_self, Nat.add_zero, Nat.mod_mod]
+  · have hFalse : x.1 ⟨m, Nat.lt_succ_self m⟩ = false := by
+      cases h : x.1 ⟨m, _⟩ <;> simp_all
+    simp only [hFalse, Bool.false_eq_true, ite_false, Nat.add_zero]
+
 /-- The carry indicator for stable addition at resolution m+1. -/
 def carryIndicator (x y : X (m + 1)) : Nat :=
   if stableValue x + stableValue y ≥ paperFib (m + 2) then 1 else 0
+
+/-- The carry indicator is zero when the sum is below the threshold. -/
+theorem carryIndicator_zero_of_lt (x y : X (m + 1))
+    (h : stableValue x + stableValue y < paperFib (m + 2)) :
+    carryIndicator x y = 0 := by
+  simp [carryIndicator, not_le.mpr h]
+
+/-- The carry indicator is one when the sum reaches the threshold. -/
+theorem carryIndicator_one_of_ge (x y : X (m + 1))
+    (h : stableValue x + stableValue y ≥ paperFib (m + 2)) :
+    carryIndicator x y = 1 := by
+  simp [carryIndicator, h]
 
 end Omega

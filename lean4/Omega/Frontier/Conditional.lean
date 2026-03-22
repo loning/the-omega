@@ -1439,6 +1439,25 @@ theorem truncate_distributes_xor (a b : Word (m + 1)) :
     truncate (xorWord a b) = xorWord (truncate a) (truncate b) :=
   truncate_xorWord a b
 
+/-! ### Paper POM Section: Value-Restriction Modular Arithmetic -/
+
+/-- stableValue(restrict x) ≡ stableValue(x) mod F_{m+2} (paper POM modular identity). -/
+theorem stableValue_restrict_modular (x : X (m + 1)) :
+    stableValue x % paperFib (m + 1) = stableValue (X.restrict x) % paperFib (m + 1) :=
+  stableValue_restrict_mod x
+
+/-- Carry indicator is zero when sum is below threshold. -/
+theorem carry_zero_below_threshold (x y : X (m + 1))
+    (h : stableValue x + stableValue y < paperFib (m + 2)) :
+    carryIndicator x y = 0 :=
+  carryIndicator_zero_of_lt x y h
+
+/-- Carry indicator is one when sum reaches threshold. -/
+theorem carry_one_above_threshold (x y : X (m + 1))
+    (h : stableValue x + stableValue y ≥ paperFib (m + 2)) :
+    carryIndicator x y = 1 :=
+  carryIndicator_one_of_ge x y h
+
 end
 
 end Omega.Frontier
