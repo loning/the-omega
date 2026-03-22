@@ -2371,6 +2371,25 @@ theorem zero_sub (x : X m) : X.stableSub X.stableZero x = X.stableNeg x :=
 theorem neg_involutive : Function.Involutive (X.stableNeg (m := m)) :=
   X.stableNeg_involutive
 
+/-! #### Growth Bounds & Prefix Scan Error -/
+
+/-- F_{m+2} ≤ 2^m: Fibonacci is subexponential. -/
+theorem fibonacci_subexponential (m : Nat) : paperFib (m + 1) ≤ 2 ^ m :=
+  X.paperFib_le_pow m
+
+/-- |X_m| ≤ 2^m: stable words are a fraction of all words. -/
+theorem stable_words_bounded (m : Nat) : Fintype.card (X m) ≤ 2 ^ m :=
+  X.stable_card_le_pow m
+
+/-- Prefix scan error is bounded by 1/2 at any resolution. -/
+theorem prefix_error_half_bound (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    2 * SPG.prefixScanError μ h P ≤ 1 :=
+  SPG.prefixScanError_le_half μ h P
+
+/-- Fold output is always a stable (No11) word. -/
+theorem fold_output_stable (w : Word m) : No11 (Fold w).1 :=
+  X.Fold_maps_to_stable w
+
 end
 
 end Omega.Frontier
