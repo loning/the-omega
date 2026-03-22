@@ -896,6 +896,20 @@ theorem stable_card_le_pow (m : Nat) :
     Fintype.card (X m) ≤ 2 ^ m := by
   rw [← Word_card]; exact stable_le_all_words m
 
+/-- Average fiber multiplicity: (∑ mult) / |X_m| = 2^m / F_{m+2}. -/
+theorem avg_fiber_numerator_denominator (m : Nat) :
+    (∑ x : X m, fiberMultiplicity x) = 2 ^ m ∧
+    Fintype.card (X m) = paperFib (m + 1) :=
+  ⟨fiberMultiplicity_sum_eq_pow m, X.card_eq_paperFib_succ m⟩
+
+/-- The modular projection preserves multiplication (no-carry case). -/
+theorem modularProject_mul_no_carry (x y : X (m + 1))
+    (h : stableValue x * stableValue y < paperFib (m + 2)) :
+    modularProject (stableMul x y) = stableMul (modularProject x) (modularProject y) := by
+  apply eq_of_stableValue_eq
+  rw [stableValue_modularProject, stableValue_stableMul, stableValue_stableMul,
+    stableValue_modularProject, stableValue_modularProject, Nat.mod_eq_of_lt h, Nat.mul_mod]
+
 end
 
 end X
