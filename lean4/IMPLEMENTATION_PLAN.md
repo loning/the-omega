@@ -496,7 +496,7 @@ Omega/Audit/NoAxiom.lean
 
 ### 11.4 第二批活跃 backlog：10 条新计划
 
-#### 计划 13：稳定乘法与 Fibonacci 环
+#### 计划 13：稳定乘法与 Fibonacci 环 ✅ 已完成
 
 - 定义 `stableMul (x y : X m) : X m := X.ofNat m ((stableValue x * stableValue y) % paperFib(m+1))`
 - 证明乘法分配律 `stableMul x (stableAdd y z) = stableAdd (stableMul x y) (stableMul x z)`
@@ -504,20 +504,20 @@ Omega/Audit/NoAxiom.lean
 - X_m 在 stableAdd + stableMul 下构成交换环
 - 对应论文 Section 6 有限稳定算术
 
-#### 计划 14：fiber 乘数对称性
+#### 计划 14：fiber 乘数对称性 ✅ 已完成
 
 - 证明 `fiberMultiplicity x` 仅依赖于 `stableValue x`（即值相同 → 乘数相同）
 - 定义 `fiberMultiplicityByValue n : Nat`
 - 证明乘数与 Zeckendorf 表示的位模式关系
 - 对应论文 POM Section 中 fiber 谱的值依赖性
 
-#### 计划 15：直接测度级前缀扫描误差单调性
+#### 计划 15：直接测度级前缀扫描误差单调性 ✅ 已完成
 
 - 证明 `prefixScanErrorMeasure_antitone`（直接测度版，非 PMF 桥接）
 - 使用 `scanErrorMeasure_antitone_of_refines` + `restrictWord` 的可测性
 - 对应论文 Corollary 3.1 的前缀特化
 
-#### 计划 16：概率测度下的扫描误差半界
+#### 计划 16：概率测度下的扫描误差半界 ✅ 已完成
 
 - 证明 `scanErrorMeasure μ obs P ≤ 1/2`（当 μ 为概率测度，obs 可测，P 可测）
 - 使用 cellEventMeasure_sum + cellComplMeasure_sum + IsProbabilityMeasure
@@ -537,28 +537,28 @@ Omega/Audit/NoAxiom.lean
 - 统一 Fold-restriction 交互的完整图景
 - 对应论文 Defect Section 的核心交换图
 
-#### 计划 19：Zeckendorf 表示的显式枚举
+#### 计划 19：Zeckendorf 表示的显式枚举 ✅ 已完成
 
 - 证明 stableValue 的值域恰好是 {0, ..., paperFib(m+1)-1}
 - 建立从 Fin(paperFib(m+1)) 到 X m 的显式构造性等价
 - 证明 X.ofNat 在范围内是 stableValue 的精确逆
 - 对应论文 Theorem 4.1 / Theorem 6.1 的完整刻画
 
-#### 计划 20：Defect 链的代数性质
+#### 计划 20：Defect 链的代数性质 ✅ 已完成
 
 - 证明 `defectChain` 的 xor 线性性
 - 证明 defectChain 在稳定词下消失
 - 证明 defectChain 的加法分解
 - 对应论文 Defect Section 的离散 Stokes 恒等式性质
 
-#### 计划 21：扫描误差概率界
+#### 计划 21：扫描误差概率界 ✅ 已完成
 
 - 证明 `scanError μ obs P ≤ setMass μ P`（事件概率是误差上界）
 - 证明 `scanError μ obs P ≤ setMass μ Pᶜ`（补事件概率是误差上界）
 - 这是 `scanError_le_min_setMass` 的单侧版本
 - 对应论文 Proposition 3.x 的基本界
 
-#### 计划 22：稳定词的逐位刻画
+#### 计划 22：稳定词的逐位刻画 ✅ 已完成
 
 - 证明 `get (X.ofNat m n).1 i = true ↔ i + 2 ∈ Nat.zeckendorf n`（已有 `get_ofNat_eq_true_iff`）
 - 将此包装为 Conditional 层的论文接口

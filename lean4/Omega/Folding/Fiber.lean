@@ -308,6 +308,15 @@ theorem stableMul_stableAdd_left (x y z : X m) :
   congr 1
   rw [Nat.mul_mod_right', Nat.add_mod', Nat.mul_add]
 
+/-- Fiber multiplicity as a function of value index. -/
+noncomputable def fiberMultiplicityByValue (m : Nat) (n : Nat) : Nat :=
+  if hn : n < paperFib (m + 1) then fiberMultiplicity (X.ofNat m n) else 0
+
+/-- Fiber multiplicity of x equals fiberMultiplicityByValue at stableValue(x). -/
+theorem fiberMultiplicity_eq_byValue (x : X m) :
+    fiberMultiplicity x = fiberMultiplicityByValue m (stableValue x) := by
+  simp [fiberMultiplicityByValue, stableValue_lt_paperFib_succ x, X.ofNat_stableValue]
+
 /-- The range of stableValue is exactly {0, ..., paperFib(m+1)-1}. -/
 theorem stableValue_range (m : Nat) :
     Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} := by
