@@ -747,6 +747,28 @@ theorem scanError_inter_observableEvent {α β : Type*} [Fintype α] [Fintype β
   rw [← scanError_eq_zero_iff_boundaryCells_eq_empty]
   exact scanError_univ μ obs
 
+/-- Boundary cells for complement equal boundary cells for the original (named). -/
+theorem boundaryCells_complement_eq {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    boundaryCells μ obs Pᶜ = boundaryCells μ obs P :=
+  boundaryCells_compl μ obs P
+
+/-- Prefix scan error at resolution 0 is bounded by the Bayes bound. -/
+theorem prefixScanError_zero_resolution (μ : PMF (Word n)) (h : 0 ≤ n) (P : Set (Word n)) :
+    prefixScanError μ h P ≤ min (setMass μ P) (setMass μ Pᶜ) := by
+  exact le_trans (scanError_le_min_setMass μ _ P) le_rfl
+
+/-- Cell masses are nonneg (trivially for ENNReal). -/
+theorem cellMass_nonneg {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (b : β) : 0 ≤ cellMass μ obs b :=
+  bot_le
+
+/-- Cell event mass + cell complement mass partition (named). -/
+theorem cell_partition {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    cellEventMass μ obs P b + cellComplMass μ obs P b = cellMass μ obs b :=
+  cellEventMass_add_cellComplMass_eq_cellMass μ obs P b
+
 end
 
 end Omega.SPG

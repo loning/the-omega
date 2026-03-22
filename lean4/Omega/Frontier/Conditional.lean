@@ -1751,6 +1751,43 @@ theorem sub_is_add_neg (x y : X m) :
     X.stableSub x y = X.stableAdd x (X.stableNeg y) :=
   X.stableSub_eq_add_neg x y
 
+/-! ### Paper SPG: Cell Partition Named Variants -/
+
+/-- Cell event + complement = total (discrete, named). -/
+theorem cell_partition_discrete {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    SPG.cellEventMass μ obs P b + SPG.cellComplMass μ obs P b = SPG.cellMass μ obs b :=
+  SPG.cell_partition μ obs P b
+
+/-- Scan error is complement-invariant (discrete, named). -/
+theorem scanError_complement_invariant {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs Pᶜ = SPG.scanError μ obs P :=
+  SPG.scanError_compl μ obs P
+
+/-- Scan error is complement-invariant (measure, named). -/
+theorem scanError_measure_complement_invariant [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs Pᶜ = SPG.scanErrorMeasure μ obs P :=
+  SPG.scanErrorMeasure_complement μ obs P
+
+/-- Cell partition (measure, named). -/
+theorem cell_partition_measure_named [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
+    (hP : MeasurableSet P) :
+    SPG.cellEventMeasure μ obs P b + SPG.cellComplMeasure μ obs P b = SPG.cellMeasure μ obs b :=
+  SPG.cell_partition_measure μ obs P b hP
+
+/-! ### Paper Section 6: Additional Group Laws -/
+
+/-- (-x) + x = 0 (named). -/
+theorem neg_plus_self_zero (x : X m) : X.stableAdd (X.stableNeg x) x = X.stableZero :=
+  X.stableNeg_add_self x
+
+/-- x + (-x) = 0 (named). -/
+theorem self_plus_neg_zero (x : X m) : X.stableAdd x (X.stableNeg x) = X.stableZero :=
+  X.stableAdd_self_neg x
+
 end
 
 end Omega.Frontier

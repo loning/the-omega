@@ -825,6 +825,25 @@ theorem observablePureMeasure_of_observable {α β : Type*} [MeasurableSpace α]
     cellComplMeasure μ obs Set.univ b = 0 :=
   cellComplMeasure_univ μ obs b
 
+/-- Scan error of complement equals scan error of original (measure, named). -/
+theorem scanErrorMeasure_complement {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs Pᶜ = scanErrorMeasure μ obs P :=
+  scanErrorMeasure_compl μ obs P
+
+/-- Boundary cells of complement equal those of original (measure, named). -/
+theorem boundaryCellsMeasure_complement {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    boundaryCellsMeasure μ obs Pᶜ = boundaryCellsMeasure μ obs P :=
+  boundaryCellsMeasure_compl μ obs P
+
+/-- Cell event + cell complement = total cell (measure, named). -/
+theorem cell_partition_measure {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
+    (hP : MeasurableSet P) :
+    cellEventMeasure μ obs P b + cellComplMeasure μ obs P b = cellMeasure μ obs b :=
+  cellEventMeasure_add_cellComplMeasure_eq_cellMeasure μ obs P b hP
+
 end
 
 end Omega.SPG

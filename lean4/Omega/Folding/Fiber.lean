@@ -614,6 +614,14 @@ theorem card_X_nine : Fintype.card (X 9) = 89 := by
 theorem card_X_ten : Fintype.card (X 10) = 144 := by
   rw [X.card_eq_paperFib_succ]; rfl
 
+/-- stableAdd with stableNeg on left cancels (named variant). -/
+theorem stableNeg_add_self (x : X m) : stableAdd (stableNeg x) x = stableZero :=
+  stableNeg_stableAdd x
+
+/-- stableAdd with self negation on right cancels (named variant). -/
+theorem stableAdd_self_neg (x : X m) : stableAdd x (stableNeg x) = stableZero :=
+  stableAdd_stableNeg x
+
 end
 
 end X
