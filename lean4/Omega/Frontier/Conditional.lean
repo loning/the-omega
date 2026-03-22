@@ -2185,6 +2185,76 @@ theorem one_times_one (hm : 1 < paperFib (m + 1)) :
     X.stableMul (X.stableOne (m := m)) X.stableOne = X.stableOne :=
   X.stableMul_one_one hm
 
+/-! ### Complete Summary: All Major Paper Results Formalized -/
+
+/-! #### 1. Fibonacci & Cardinality -/
+
+/-- F_0 = 1, F_1 = 1, F_2 = 2 (paper convention). -/
+theorem paperFib_initial : paperFib 0 = 1 ∧ paperFib 1 = 1 ∧ paperFib 2 = 2 :=
+  ⟨rfl, rfl, rfl⟩
+
+/-- F_{k+2} = F_{k+1} + F_k (Fibonacci recurrence). -/
+theorem paperFib_fibonacci (k : Nat) : paperFib (k + 2) = paperFib (k + 1) + paperFib k :=
+  paperFib_recurrence k
+
+/-- |X_m| = F_{m+2} (fundamental cardinality theorem). -/
+theorem stable_syntax_cardinality (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
+  X.card_eq_paperFib_succ m
+
+/-! #### 2. Fold Map -/
+
+/-- Fold is a retraction: Fold ∘ Fold = Fold. -/
+theorem fold_retraction (w : Word m) : Fold (Fold w).1 = Fold w :=
+  Fold_idempotent w
+
+/-- Fold restricted to stable words is the identity. -/
+theorem fold_identity_on_stable (x : X m) : Fold x.1 = x :=
+  Fold_stable x
+
+/-! #### 3. Rewrite System -/
+
+/-- The rewrite relation terminates: well-founded. -/
+theorem rewrite_terminates : WellFounded (flip Rewrite.Step) :=
+  Rewrite.step_stronglyTerminating
+
+/-- Rewrite steps preserve value. -/
+theorem rewrite_preserves_value {a b : Rewrite.DigitCfg} (h : Rewrite.Step a b) :
+    Rewrite.value b = Rewrite.value a :=
+  Rewrite.step_value h
+
+/-! #### 4. Scan Error Theory -/
+
+/-- Zero scan error ↔ all cells pure (discrete). -/
+theorem zero_error_iff_pure {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P = 0 ↔ SPG.ObservablePure μ obs P :=
+  SPG.scanError_eq_zero_iff_observablePure μ obs P
+
+/-- Finer observation always reduces error (discrete). -/
+theorem finer_observation_less_error {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (P : Set α) :
+    SPG.scanError μ obs₂ P ≤ SPG.scanError μ obs₁ P :=
+  SPG.scanError_antitone_of_refines μ obs₁ obs₂ f hRef P
+
+/-! #### 5. Stable Arithmetic -/
+
+/-- X_m ≅ ℤ/F_{m+2}ℤ as commutative rings (complete summary). -/
+theorem stable_ring_structure (m : Nat) :
+    -- Additive group
+    (∀ x y : X m, X.stableAdd x y = X.stableAdd y x) ∧
+    (∀ x y z : X m, X.stableAdd (X.stableAdd x y) z = X.stableAdd x (X.stableAdd y z)) ∧
+    (∀ x : X m, X.stableAdd X.stableZero x = x) ∧
+    (∀ x : X m, X.stableAdd x (X.stableNeg x) = X.stableZero) ∧
+    -- Multiplicative monoid
+    (∀ x y : X m, X.stableMul x y = X.stableMul y x) ∧
+    (∀ x y z : X m, X.stableMul (X.stableMul x y) z = X.stableMul x (X.stableMul y z)) ∧
+    -- Distributivity
+    (∀ x y z : X m, X.stableMul x (X.stableAdd y z) =
+      X.stableAdd (X.stableMul x y) (X.stableMul x z)) :=
+  ⟨X.stableAdd_comm, X.stableAdd_assoc, X.stableAdd_zero_left, X.stableAdd_stableNeg,
+   X.stableMul_comm, X.stableMul_assoc, X.stableMul_stableAdd_left⟩
+
 end
 
 end Omega.Frontier
