@@ -502,6 +502,77 @@ theorem prefixBoundaryCylinderCount_toMeasure_eq {m n : Nat}
   simp [prefixBoundaryCylinderCount,
     prefixBoundaryCellsMeasure_toMeasure_eq_prefixBoundaryCells]
 
+/-- Cell event mass is bounded by cell total mass (measure monotonicity). -/
+theorem cellEventMeasure_le_cellMeasure {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
+    cellEventMeasure μ obs P b ≤ cellMeasure μ obs b := by
+  unfold cellEventMeasure cellMeasure
+  exact MeasureTheory.measure_mono Set.inter_subset_right
+
+/-- Cell complement mass is bounded by cell total mass (measure monotonicity). -/
+theorem cellComplMeasure_le_cellMeasure {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
+    cellComplMeasure μ obs P b ≤ cellMeasure μ obs b := by
+  unfold cellComplMeasure cellMeasure
+  exact MeasureTheory.measure_mono Set.diff_subset
+
+/-- Cell partition identity under a measurable event: μ(P ∩ C) + μ(C \ P) = μ(C).
+    This is the measure-theoretic analogue of `cellEventMass_add_cellComplMass_eq_cellMass`. -/
+theorem cellEventMeasure_add_cellComplMeasure_eq_cellMeasure {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
+    (hP : MeasurableSet P) :
+    cellEventMeasure μ obs P b + cellComplMeasure μ obs P b = cellMeasure μ obs b := by
+  unfold cellEventMeasure cellComplMeasure cellMeasure
+  rw [Set.inter_comm P (observableCell obs b)]
+  exact MeasureTheory.measure_inter_add_diff _ hP
+
+/-- Observable purity is symmetric under complement of the event (measure). -/
+theorem observablePureMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    ObservablePureMeasure μ obs Pᶜ ↔ ObservablePureMeasure μ obs P := by
+  constructor <;> intro h b <;> specialize h b
+  · rw [cellEventMeasure_compl, cellComplMeasure_compl] at h
+    rcases h with h | h
+    · exact Or.inr h
+    · exact Or.inl h
+  · rw [cellEventMeasure_compl, cellComplMeasure_compl]
+    rcases h with h | h
+    · exact Or.inr h
+    · exact Or.inl h
+
+/-- Boundary cells are the same for the event and its complement (measure). -/
+theorem boundaryCellsMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    boundaryCellsMeasure μ obs Pᶜ = boundaryCellsMeasure μ obs P := by
+  ext b
+  constructor
+  · intro hb
+    simp only [boundaryCellsMeasure, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢
+    rw [cellEventMeasure_compl, cellComplMeasure_compl] at hb
+    exact ⟨hb.2, hb.1⟩
+  · intro hb
+    simp only [boundaryCellsMeasure, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢
+    rw [cellEventMeasure_compl, cellComplMeasure_compl]
+    exact ⟨hb.2, hb.1⟩
+
+/-- Boundary cylinder count is the same for the event and its complement (measure). -/
+theorem boundaryCylinderCount_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    boundaryCylinderCount μ obs Pᶜ = boundaryCylinderCount μ obs P := by
+  simp only [boundaryCylinderCount, boundaryCellsMeasure_compl]
+
+/-- Prefix boundary cells are the same for the event and its complement (measure). -/
+theorem prefixBoundaryCellsMeasure_compl [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixBoundaryCellsMeasure μ h Pᶜ = prefixBoundaryCellsMeasure μ h P :=
+  boundaryCellsMeasure_compl μ (prefixObservation h) P
+
+/-- Prefix boundary cylinder count is the same for the event and its complement (measure). -/
+theorem prefixBoundaryCylinderCount_compl [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixBoundaryCylinderCount μ h Pᶜ = prefixBoundaryCylinderCount μ h P := by
+  simp only [prefixBoundaryCylinderCount, prefixBoundaryCellsMeasure_compl]
+
 end
 
 end Omega.SPG

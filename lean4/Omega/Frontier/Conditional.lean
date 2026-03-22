@@ -934,6 +934,96 @@ theorem prefixScanError_measure_antitone_via_bridge {m₁ m₂ n : Nat}
     SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError]
   exact SPG.prefixScanError_antitone μ h₁ h₂ hm P
 
+/-! ### Paper Theorem 4.2: Fiber Partition -/
+
+/-- The word space has cardinality 2^m. -/
+theorem word_card (m : Nat) : Fintype.card (Word m) = 2 ^ m :=
+  X.Word_card m
+
+/-- Fiber cardinalities sum to the total word count (paper Theorem 4.2: fibers partition). -/
+theorem fiber_card_partition (m : Nat) :
+    ∑ x : X m, (X.fiber x).card = Fintype.card (Word m) :=
+  X.fiber_card_sum m
+
+/-- Fiber cardinalities sum to 2^m. -/
+theorem fiber_card_partition_pow (m : Nat) :
+    ∑ x : X m, (X.fiber x).card = 2 ^ m :=
+  X.fiber_card_sum_eq_pow m
+
+/-! ### Paper Proposition 3.x: Complement Symmetry -/
+
+/-- Discrete observable purity is symmetric under complement of the event. -/
+theorem observablePure_compl_symmetric_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.ObservablePure μ obs Pᶜ ↔ SPG.ObservablePure μ obs P :=
+  SPG.observablePure_compl μ obs P
+
+/-- Discrete boundary cells are the same for the event and its complement. -/
+theorem boundaryCells_compl_symmetric_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.boundaryCells μ obs Pᶜ = SPG.boundaryCells μ obs P :=
+  SPG.boundaryCells_compl μ obs P
+
+/-- Discrete prefix boundary cells are the same for the event and its complement. -/
+theorem prefixBoundaryCells_compl_symmetric_discrete
+    (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixBoundaryCells μ h Pᶜ = SPG.prefixBoundaryCells μ h P :=
+  SPG.prefixBoundaryCells_compl μ h P
+
+/-- Measure observable purity is symmetric under complement of the event. -/
+theorem observablePure_compl_symmetric_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.ObservablePureMeasure μ obs Pᶜ ↔ SPG.ObservablePureMeasure μ obs P :=
+  SPG.observablePureMeasure_compl μ obs P
+
+/-- Measure boundary cells are the same for the event and its complement. -/
+theorem boundaryCells_compl_symmetric_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.boundaryCellsMeasure μ obs Pᶜ = SPG.boundaryCellsMeasure μ obs P :=
+  SPG.boundaryCellsMeasure_compl μ obs P
+
+/-- Measure boundary cylinder count is the same for the event and its complement. -/
+theorem boundaryCylinderCount_compl_symmetric_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.boundaryCylinderCount μ obs Pᶜ = SPG.boundaryCylinderCount μ obs P :=
+  SPG.boundaryCylinderCount_compl μ obs P
+
+/-- Measure prefix boundary cells are the same for the event and its complement. -/
+theorem prefixBoundaryCells_compl_symmetric_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixBoundaryCellsMeasure μ h Pᶜ = SPG.prefixBoundaryCellsMeasure μ h P :=
+  SPG.prefixBoundaryCellsMeasure_compl μ h P
+
+/-- Measure prefix boundary cylinder count is the same for the event and its complement. -/
+theorem prefixBoundaryCylinderCount_compl_symmetric_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixBoundaryCylinderCount μ h Pᶜ = SPG.prefixBoundaryCylinderCount μ h P :=
+  SPG.prefixBoundaryCylinderCount_compl μ h P
+
+/-! ### Paper Proposition 3.2: Cell-Level Bounds (measure) -/
+
+/-- Cell event mass is bounded by cell total mass (measure). -/
+theorem cellEventMeasure_le_cell [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
+    SPG.cellEventMeasure μ obs P b ≤ SPG.cellMeasure μ obs b :=
+  SPG.cellEventMeasure_le_cellMeasure μ obs P b
+
+/-- Cell complement mass is bounded by cell total mass (measure). -/
+theorem cellComplMeasure_le_cell [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
+    SPG.cellComplMeasure μ obs P b ≤ SPG.cellMeasure μ obs b :=
+  SPG.cellComplMeasure_le_cellMeasure μ obs P b
+
+/-! ### Paper Proposition 3.2: Cell Partition Identity (measure, with measurability) -/
+
+/-- Cell event mass + cell complement mass = total cell mass under a measurable event
+    (measure-theoretic analogue of the discrete partition identity). -/
+theorem cellPartition_identity_measure [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
+    (hP : MeasurableSet P) :
+    SPG.cellEventMeasure μ obs P b + SPG.cellComplMeasure μ obs P b = SPG.cellMeasure μ obs b :=
+  SPG.cellEventMeasure_add_cellComplMeasure_eq_cellMeasure μ obs P b hP
+
 end
 
 end Omega.Frontier

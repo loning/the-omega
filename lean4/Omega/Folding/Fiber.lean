@@ -113,6 +113,33 @@ noncomputable def rankOfFoldEq (x : X m) (w : Word m) (h : Fold w = x) :
     unrankWord x (rankOfFoldEq x (choosePreimage x) (Fold_choosePreimage x)) = choosePreimage x := by
   exact unrankWord_rankOfFoldEq x (choosePreimage x) (Fold_choosePreimage x)
 
+/-- The word space has cardinality 2^m. -/
+theorem Word_card (m : Nat) : Fintype.card (Word m) = 2 ^ m := by
+  rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
+
+/-- Fiber cardinalities sum to the total word count (fibers partition `Word m`). -/
+theorem fiber_card_sum (m : Nat) :
+    ∑ x : X m, (fiber x).card = Fintype.card (Word m) := by
+  classical
+  have hDisjoint : (↑(Finset.univ : Finset (X m)) : Set (X m)).PairwiseDisjoint fiber := by
+    intro x _ y _ hxy
+    rw [Function.onFun, Finset.disjoint_left]
+    intro w hwx hwy
+    exact hxy ((mem_fiber.1 hwx).symm.trans (mem_fiber.1 hwy))
+  have hUnion : (Finset.univ : Finset (Word m)) = Finset.univ.biUnion fiber := by
+    ext w
+    simp only [Finset.mem_univ, Finset.mem_biUnion, true_iff]
+    exact ⟨Fold w, trivial, mem_fiber_Fold w⟩
+  calc ∑ x : X m, (fiber x).card
+      = (Finset.univ.biUnion fiber).card := (Finset.card_biUnion hDisjoint).symm
+    _ = (Finset.univ : Finset (Word m)).card := by rw [← hUnion]
+    _ = Fintype.card (Word m) := Finset.card_univ
+
+/-- Fiber cardinalities sum to 2^m. -/
+theorem fiber_card_sum_eq_pow (m : Nat) :
+    ∑ x : X m, (fiber x).card = 2 ^ m := by
+  rw [fiber_card_sum, Word_card]
+
 end
 
 end X

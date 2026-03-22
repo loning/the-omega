@@ -439,6 +439,36 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.stableValue_injective"
   , "Omega.Frontier.stableValue_ofNat_roundtrip"
   , "Omega.Frontier.fold_ofNat_roundtrip"
-  , "Omega.Frontier.cellEventMass_add_cellComplMass_partition" ]
+  , "Omega.Frontier.cellEventMass_add_cellComplMass_partition"
+  -- Fiber partition & word cardinality
+  , "Omega.X.Word_card"
+  , "Omega.X.fiber_card_sum"
+  , "Omega.X.fiber_card_sum_eq_pow"
+  , "Omega.Frontier.word_card"
+  , "Omega.Frontier.fiber_card_partition"
+  , "Omega.Frontier.fiber_card_partition_pow"
+  -- Phase 9: complement symmetry & cell-level measure bounds
+  , "Omega.SPG.observablePure_compl"
+  , "Omega.SPG.boundaryCells_compl"
+  , "Omega.SPG.prefixBoundaryCells_compl"
+  , "Omega.SPG.cellEventMeasure_le_cellMeasure"
+  , "Omega.SPG.cellComplMeasure_le_cellMeasure"
+  , "Omega.SPG.cellEventMeasure_add_cellComplMeasure_eq_cellMeasure"
+  , "Omega.SPG.observablePureMeasure_compl"
+  , "Omega.SPG.boundaryCellsMeasure_compl"
+  , "Omega.SPG.boundaryCylinderCount_compl"
+  , "Omega.SPG.prefixBoundaryCellsMeasure_compl"
+  , "Omega.SPG.prefixBoundaryCylinderCount_compl"
+  , "Omega.Frontier.observablePure_compl_symmetric_discrete"
+  , "Omega.Frontier.boundaryCells_compl_symmetric_discrete"
+  , "Omega.Frontier.prefixBoundaryCells_compl_symmetric_discrete"
+  , "Omega.Frontier.observablePure_compl_symmetric_measure"
+  , "Omega.Frontier.boundaryCells_compl_symmetric_measure"
+  , "Omega.Frontier.boundaryCylinderCount_compl_symmetric_measure"
+  , "Omega.Frontier.prefixBoundaryCells_compl_symmetric_measure"
+  , "Omega.Frontier.prefixBoundaryCylinderCount_compl_symmetric_measure"
+  , "Omega.Frontier.cellEventMeasure_le_cell"
+  , "Omega.Frontier.cellComplMeasure_le_cell"
+  , "Omega.Frontier.cellPartition_identity_measure" ]
 
 end Omega.Audit

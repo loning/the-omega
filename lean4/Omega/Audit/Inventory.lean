@@ -82,6 +82,22 @@ def phaseOneTargets : List String :=
   , "SPG cell partition identity"
   , "frontier stable value injectivity"
   , "frontier stable value round-trip"
-  , "frontier cell partition wrapper" ]
+  , "frontier cell partition wrapper"
+  , "word cardinality 2^m"
+  , "fiber partition sum = |Word m|"
+  , "fiber partition sum = 2^m"
+  , "frontier fiber partition wrappers"
+  , "SPG discrete observable purity complement symmetry"
+  , "SPG discrete boundary cells complement symmetry"
+  , "SPG discrete prefix boundary cells complement symmetry"
+  , "SPG measure cell event mass monotonicity"
+  , "SPG measure cell complement mass monotonicity"
+  , "SPG measure cell partition identity"
+  , "SPG measure observable purity complement symmetry"
+  , "SPG measure boundary cells complement symmetry"
+  , "SPG measure boundary cylinder count complement symmetry"
+  , "SPG measure prefix boundary cells complement symmetry"
+  , "SPG measure prefix boundary cylinder count complement symmetry"
+  , "frontier complement symmetry wrappers (discrete + measure)" ]
 
 end Omega.Audit

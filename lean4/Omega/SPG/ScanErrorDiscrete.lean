@@ -549,6 +549,40 @@ theorem scanError_le_min_setMass {α β : Type*} [Fintype α] [Fintype β]
     _ = min (setMass μ P) (setMass μ Pᶜ) := by
         rw [cellEventMass_sum_eq_setMass, cellComplMass_sum_eq_setMass_compl]
 
+/-- Observable purity is symmetric under complement of the event (discrete). -/
+theorem observablePure_compl {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ObservablePure μ obs Pᶜ ↔ ObservablePure μ obs P := by
+  constructor <;> intro h b <;> specialize h b
+  · rw [cellEventMass_compl, cellComplMass_compl] at h
+    rcases h with h | h
+    · exact Or.inr h
+    · exact Or.inl h
+  · rw [cellEventMass_compl, cellComplMass_compl]
+    rcases h with h | h
+    · exact Or.inr h
+    · exact Or.inl h
+
+/-- Boundary cells are the same for the event and its complement (discrete). -/
+theorem boundaryCells_compl {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    boundaryCells μ obs Pᶜ = boundaryCells μ obs P := by
+  ext b
+  constructor
+  · intro hb
+    simp only [boundaryCells, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢
+    rw [cellEventMass_compl, cellComplMass_compl] at hb
+    exact ⟨hb.2, hb.1⟩
+  · intro hb
+    simp only [boundaryCells, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢
+    rw [cellEventMass_compl, cellComplMass_compl]
+    exact ⟨hb.2, hb.1⟩
+
+/-- Prefix boundary cells are the same for the event and its complement (discrete). -/
+theorem prefixBoundaryCells_compl (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixBoundaryCells μ h Pᶜ = prefixBoundaryCells μ h P :=
+  boundaryCells_compl μ (prefixObservation h) P
+
 end
 
 end Omega.SPG

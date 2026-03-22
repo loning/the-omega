@@ -67,6 +67,7 @@
 | 6 | 离散 scan error / 测度 scan error / prefix specialization | 已完成当前范围 |
 | 7 | 显式 golden-mean sofic 表示 | 已完成当前范围 |
 | 8 | assumptions / conditional / conjectures / certificates | 已完成当前范围 |
+| 9 | 补全对称性 / 单元界 / fiber 分割 / Word 基数 | 已完成当前范围 |
 
 “已完成当前范围”表示：本阶段在实施文档中承诺的直接 Lean 可落地部分已经有稳定实现，但论文更远层的扩写仍可继续。
 
@@ -212,6 +213,26 @@ Omega/Audit/NoAxiom.lean
 - conjectures 作为 `Prop` 接口
 - defect / rewrite / fold / scan-error 证书验证器
 - 多条直接贴论文语义的 conditional wrappers
+
+#### J. Phase 9: 补全对称性 / 单元界 / fiber 分割
+
+已完成：
+
+- `Word_card`: |Word m| = 2^m
+- `fiber_card_sum`: ∑_x |fiber(x)| = |Word m| (fiber 分割恒等式)
+- `fiber_card_sum_eq_pow`: ∑_x |fiber(x)| = 2^m
+- 离散 observable purity 补对称: `observablePure_compl`
+- 离散 boundary cells 补对称: `boundaryCells_compl`
+- 离散 prefix boundary cells 补对称: `prefixBoundaryCells_compl`
+- 测度 cell event mass 单调界: `cellEventMeasure_le_cellMeasure`
+- 测度 cell complement mass 单调界: `cellComplMeasure_le_cellMeasure`
+- 测度 cell 分割恒等式 (MeasurableSet): `cellEventMeasure_add_cellComplMeasure_eq_cellMeasure`
+- 测度 observable purity 补对称: `observablePureMeasure_compl`
+- 测度 boundary cells 补对称: `boundaryCellsMeasure_compl`
+- 测度 boundary cylinder count 补对称: `boundaryCylinderCount_compl`
+- 测度 prefix boundary cells 补对称: `prefixBoundaryCellsMeasure_compl`
+- 测度 prefix boundary cylinder count 补对称: `prefixBoundaryCylinderCount_compl`
+- 全部上述结果的 `Frontier/Conditional` 论文接口包装
 
 ## 5. 现成可复用与已复用边界
 
