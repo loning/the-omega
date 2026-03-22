@@ -953,6 +953,18 @@ theorem cellEventMeasure_depends_on_inter {α β : Type*} [MeasurableSpace α]
     cellEventMeasure μ obs P b = cellEventMeasure μ obs Q b := by
   simp [cellEventMeasure, h]
 
+/-- Prefix scan error at own resolution is zero (measure). -/
+theorem prefixScanErrorMeasure_at_own_resolution [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    prefixScanErrorMeasure μ h (prefixEvent h A) = 0 :=
+  prefixScanErrorMeasure_eq_zero_of_prefixEvent μ h A
+
+/-- Observable purity for prefix events (measure, named). -/
+theorem prefixEvent_is_pure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    ObservablePureMeasure μ (prefixObservation h) (prefixEvent h A) :=
+  prefixObservablePureMeasure_prefixEvent μ h A
+
 end
 
 end Omega.SPG

@@ -965,6 +965,16 @@ theorem fibonacci_prime_list :
     Nat.Prime (paperFib 6) ∧ Nat.Prime (paperFib 10) :=
   ⟨F2_is_prime, X2_is_integral_domain, F4_is_prime, F6_is_prime, F10_is_prime⟩
 
+/-- F_9 = 55 is NOT prime (5 × 11). -/
+theorem F9_not_prime : ¬ Nat.Prime (paperFib 9) := by decide
+
+/-- The Fibonacci composite values in F_2..F_11: F_5=8, F_7=21, F_8=34, F_9=55, F_11=144. -/
+theorem fibonacci_composite_list :
+    ¬ Nat.Prime (paperFib 5) ∧ ¬ Nat.Prime (paperFib 7) ∧
+    ¬ Nat.Prime (paperFib 8) ∧ ¬ Nat.Prime (paperFib 9) ∧
+    ¬ Nat.Prime (paperFib 11) :=
+  ⟨F5_not_prime, F7_not_prime, F8_not_prime, F9_not_prime, F11_not_prime⟩
+
 end
 
 end X
