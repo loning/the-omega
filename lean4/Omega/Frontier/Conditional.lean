@@ -1788,6 +1788,86 @@ theorem neg_plus_self_zero (x : X m) : X.stableAdd (X.stableNeg x) x = X.stableZ
 theorem self_plus_neg_zero (x : X m) : X.stableAdd x (X.stableNeg x) = X.stableZero :=
   X.stableAdd_self_neg x
 
+/-! ### Paper Fold Section: Fold Properties Summary -/
+
+/-- Fold is idempotent on raw words (named). -/
+theorem fold_is_idempotent (w : Word m) : Fold (Fold w).1 = Fold w :=
+  Fold_idempotent w
+
+/-- Fold fixes stable words (named). -/
+theorem fold_fixes_stable (x : X m) : Fold x.1 = x :=
+  Fold_stable x
+
+/-- Fold is surjective onto X_m (named). -/
+theorem fold_is_surjective : Function.Surjective (Fold (m := m)) :=
+  Fold_surjective m
+
+/-- Every stable word is in its own fiber (named). -/
+theorem stable_word_in_fiber (x : X m) : x.1 ∈ X.fiber x :=
+  X.self_in_own_fiber x
+
+/-! ### Paper Section 4: Fibonacci Cardinality Summary -/
+
+/-- The Fibonacci cardinality sequence: |X_m| = F_{m+2}. -/
+theorem fibonacci_cardinality (m : Nat) :
+    Fintype.card (X m) = paperFib (m + 1) :=
+  X.card_eq_paperFib_succ m
+
+/-- The Fibonacci recurrence for cardinalities: |X_{m+2}| = |X_{m+1}| + |X_m|. -/
+theorem fibonacci_cardinality_recurrence (m : Nat) :
+    Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) :=
+  X.card_recurrence m
+
+/-! ### Paper Inverse Limit: Summary -/
+
+/-- The inverse limit equivalence: CompatibleFamily ≃ XInfinity. -/
+noncomputable def inverse_limit_equiv : X.CompatibleFamily ≃ X.XInfinity :=
+  X.inverseLimitEquiv
+
+/-- The inverse limit left inverse. -/
+theorem inverse_limit_left (F : X.CompatibleFamily) :
+    X.toFamily (X.ofFamily F) = F :=
+  X.toFamily_ofFamily F
+
+/-- The inverse limit right inverse. -/
+theorem inverse_limit_right (a : X.XInfinity) :
+    X.ofFamily (X.toFamily a) = a :=
+  X.ofFamily_toFamily a
+
+/-! ### Paper SPG Section: Scan Error Summary -/
+
+/-- Scan error vanishes for observable events (discrete, summary). -/
+theorem scan_error_vanishes_observable {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    SPG.scanError μ obs (SPG.observableEvent obs A) = 0 :=
+  SPG.scanError_observableEvent_eq_zero μ obs A
+
+/-- Scan error vanishes for observable events (measure, summary). -/
+theorem scan_error_measure_vanishes_observable [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.scanErrorMeasure μ obs (SPG.observableEvent obs A) = 0 :=
+  SPG.scanErrorMeasure_observableEvent_eq_zero μ obs A
+
+/-- Zero scan error ↔ observable purity (discrete, summary). -/
+theorem scan_error_zero_iff_pure_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P = 0 ↔ SPG.ObservablePure μ obs P :=
+  SPG.scanError_eq_zero_iff_observablePure μ obs P
+
+/-- Zero scan error ↔ observable purity (measure, summary). -/
+theorem scan_error_zero_iff_pure_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P = 0 ↔ SPG.ObservablePureMeasure μ obs P :=
+  SPG.scanErrorMeasure_eq_zero_iff_observablePure μ obs P
+
+/-! ### Paper Graph Section: Sofic Summary -/
+
+/-- The stable language equals the golden-mean sofic language (summary). -/
+theorem stable_language_is_sofic (m : Nat) :
+    {w : Word m | No11 w} =
+      {w : Word m | Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w} :=
+  Omega.Graph.stableLanguage_eq_goldenMean m
+
 end
 
 end Omega.Frontier
