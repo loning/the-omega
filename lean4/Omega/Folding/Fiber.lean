@@ -168,6 +168,25 @@ theorem stableValueFin_bijective (m : Nat) :
     Function.Bijective (stableValueFin (m := m)) :=
   ⟨stableValueFin_injective m, stableValueFin_surjective m⟩
 
+/-- The fiber multiplicity of a stable word x: the number of raw words folding to x. -/
+def fiberMultiplicity (x : X m) : Nat := (fiber x).card
+
+/-- Fiber multiplicity is positive for every stable word. -/
+theorem fiberMultiplicity_pos (x : X m) : 0 < fiberMultiplicity x :=
+  fiber_card_pos x
+
+/-- Fiber multiplicities sum to 2^m. -/
+theorem fiberMultiplicity_sum_eq_pow (m : Nat) :
+    ∑ x : X m, fiberMultiplicity x = 2 ^ m :=
+  fiber_card_sum_eq_pow m
+
+/-- The average fiber multiplicity is 2^m / |X_m|.
+    Since |X_m| = F_{m+2}, this ratio approaches φ^m / √5 as m grows. -/
+theorem fiberMultiplicity_avg (m : Nat) :
+    ∑ x : X m, fiberMultiplicity x = 2 ^ m ∧
+    Fintype.card (X m) = paperFib (m + 1) :=
+  ⟨fiberMultiplicity_sum_eq_pow m, X.card_eq_paperFib_succ m⟩
+
 /-- For n < paperFib(m+1), ofNat m n has stable value n. -/
 theorem stableValue_ofNat_lt (n : Nat) (hn : n < paperFib (m + 1)) :
     stableValue (X.ofNat m n) = n := by

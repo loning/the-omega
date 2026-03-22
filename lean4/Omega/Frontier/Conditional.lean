@@ -1106,6 +1106,28 @@ theorem cellPartition_identity_measure [MeasurableSpace α]
     SPG.cellEventMeasure μ obs P b + SPG.cellComplMeasure μ obs P b = SPG.cellMeasure μ obs b :=
   SPG.cellEventMeasure_add_cellComplMeasure_eq_cellMeasure μ obs P b hP
 
+/-! ### Paper Corollary 3.1: Direct Measure Observation Refinement Monotonicity -/
+
+/-- Observation refinement reduces scan error (direct measure version, paper Corollary 3.1). -/
+theorem scanError_measure_antitone_direct [MeasurableSpace α] [Fintype β] [Fintype γ]
+    [MeasurableSpace γ] [MeasurableSingletonClass γ] [DecidableEq β]
+    (μ : MeasureTheory.Measure α) (obs₁ : α → β) (obs₂ : α → γ)
+    (f : γ → β) (hRef : ∀ x, obs₁ x = f (obs₂ x))
+    (hObs₂ : Measurable obs₂) (P : Set α) (hP : MeasurableSet P) :
+    SPG.scanErrorMeasure μ obs₂ P ≤ SPG.scanErrorMeasure μ obs₁ P :=
+  SPG.scanErrorMeasure_antitone_of_refines μ obs₁ obs₂ f hRef hObs₂ P hP
+
+/-! ### Paper Section POM: Fiber Multiplicity -/
+
+/-- Fiber multiplicity: number of raw words folding to a given stable word. -/
+theorem fiberMultiplicity_positive (x : X m) : 0 < X.fiberMultiplicity x :=
+  X.fiberMultiplicity_pos x
+
+/-- Fiber multiplicities sum to 2^m (paper POM fiber partition). -/
+theorem fiberMultiplicity_sum (m : Nat) :
+    ∑ x : X m, X.fiberMultiplicity x = 2 ^ m :=
+  X.fiberMultiplicity_sum_eq_pow m
+
 /-! ### Paper Proposition 3.2: Measure Cell Mass Sum Identities -/
 
 /-- Cell event measures sum to the event measure (with measurability). -/

@@ -629,6 +629,79 @@ theorem cellMeasure_sum {α β : Type*} [MeasurableSpace α] [Fintype β]
   simp_rw [this]
   exact cellEventMeasure_sum μ obs hObs Set.univ MeasurableSet.univ
 
+/-- Cell event measure decomposes along a refined observation (measure version).
+    If obs₁ = f ∘ obs₂ and obs₂ is measurable, then
+    ∑_{c : f(c)=b} μ(P ∩ C_c) = μ(P ∩ C_b). -/
+theorem cellEventMeasure_refines_sum_measure {α β γ : Type*}
+    [MeasurableSpace α] [Fintype γ] [DecidableEq β]
+    [MeasurableSpace γ] [MeasurableSingletonClass γ]
+    (μ : MeasureTheory.Measure α) (obs₁ : α → β) (obs₂ : α → γ)
+    (f : γ → β) (hRef : ∀ a, obs₁ a = f (obs₂ a))
+    (hObs₂ : Measurable obs₂)
+    (P : Set α) (hP : MeasurableSet P) (b : β) :
+    (Finset.univ.filter (fun c => f c = b)).sum
+      (fun c => cellEventMeasure μ obs₂ P c) =
+      cellEventMeasure μ obs₁ P b := by
+  simp only [cellEventMeasure]
+  -- P ∩ C_b^{obs₁} = ⋃_{c:f(c)=b} (P ∩ C_c^{obs₂})
+  have hUnion : P ∩ observableCell obs₁ b =
+      ⋃ c ∈ Finset.univ.filter (fun c => f c = b), P ∩ observableCell obs₂ c := by
+    ext x
+    simp only [observableCell, Set.mem_inter_iff, Set.mem_setOf_eq,
+      Set.mem_iUnion, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro ⟨hxP, hxObs⟩
+      exact ⟨obs₂ x, ⟨by rw [← hRef x, hxObs], hxP, rfl⟩⟩
+    · intro ⟨c, hfc, hxP, hxObs₂⟩
+      exact ⟨hxP, by rw [hRef x, hxObs₂, hfc]⟩
+  rw [hUnion]
+  -- The pieces are pairwise disjoint and measurable
+  have hDisj : Set.PairwiseDisjoint
+      (↑(Finset.univ.filter (fun c => f c = b) : Finset γ))
+      (fun c => P ∩ observableCell obs₂ c) := by
+    exact ((observableCell_pairwiseDisjoint obs₂).subset
+      (by simp [Finset.coe_filter, Set.subset_univ])).mono
+        (fun _c => Set.inter_subset_right)
+  have hMeas : ∀ c ∈ Finset.univ.filter (fun c => f c = b),
+      MeasurableSet (P ∩ observableCell obs₂ c) := by
+    intro c _; exact hP.inter (observableCell_measurableSet obs₂ hObs₂ c)
+  exact (MeasureTheory.measure_biUnion_finset hDisj hMeas).symm
+
+/-- Observation refinement reduces scan error (direct measure version with measurability). -/
+theorem scanErrorMeasure_antitone_of_refines {α β γ : Type*}
+    [MeasurableSpace α] [Fintype β] [Fintype γ]
+    [MeasurableSpace γ] [MeasurableSingletonClass γ] [DecidableEq β]
+    (μ : MeasureTheory.Measure α) (obs₁ : α → β) (obs₂ : α → γ)
+    (f : γ → β) (hRef : ∀ x, obs₁ x = f (obs₂ x))
+    (hObs₂ : Measurable obs₂) (P : Set α) (hP : MeasurableSet P) :
+    scanErrorMeasure μ obs₂ P ≤ scanErrorMeasure μ obs₁ P := by
+  classical
+  let filt := fun b => Finset.univ.filter (fun c => f c = b)
+  let g := fun c => min (cellEventMeasure μ obs₂ P c) (cellComplMeasure μ obs₂ P c)
+  suffices hKey : ∀ b : β,
+      (filt b).sum g ≤ min (cellEventMeasure μ obs₁ P b) (cellComplMeasure μ obs₁ P b) by
+    show (∑ c, g c) ≤ ∑ b, min (cellEventMeasure μ obs₁ P b) (cellComplMeasure μ obs₁ P b)
+    have hFib : ∑ c, g c = ∑ b, (filt b).sum g := by
+      symm
+      rw [← Finset.sum_biUnion]
+      · refine Finset.sum_congr ?_ (fun _ _ => rfl)
+        ext c; simp [filt, Finset.mem_biUnion, Finset.mem_filter]
+      · intro b₁ _ b₂ _ hne
+        exact Finset.disjoint_filter.2 (fun c _ h₁ h₂ => hne (h₁.symm.trans h₂))
+    rw [hFib]
+    exact Finset.sum_le_sum (fun b _ => hKey b)
+  intro b
+  calc (filt b).sum g
+      ≤ min ((filt b).sum (fun c => cellEventMeasure μ obs₂ P c))
+          ((filt b).sum (fun c => cellComplMeasure μ obs₂ P c)) :=
+        le_min (Finset.sum_le_sum (fun i _ => min_le_left _ _))
+          (Finset.sum_le_sum (fun i _ => min_le_right _ _))
+    _ = min (cellEventMeasure μ obs₁ P b) (cellComplMeasure μ obs₁ P b) := by
+        rw [cellEventMeasure_refines_sum_measure μ obs₁ obs₂ f hRef hObs₂ P hP b]
+        simp_rw [← cellEventMeasure_compl]
+        rw [cellEventMeasure_refines_sum_measure μ obs₁ obs₂ f hRef hObs₂ Pᶜ hP.compl b,
+          cellEventMeasure_compl]
+
 end
 
 end Omega.SPG
