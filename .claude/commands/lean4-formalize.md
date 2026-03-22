@@ -92,7 +92,29 @@ Agent(
 
 3. **停下来，等待 formalizer 回复。不做任何其他操作。**
 
-4. 收到 formalizer 结果后路由：
+4. **如果 formalizer 报告技术阻塞**（API 不匹配、tactic 选择困难、数学路线疑问等）：
+   - 先转发问题给 analyst 获取数学层面的指导
+   - 如果问题是 Lean4 API/语法层面的，**按需 spawn codex-consultant**：
+
+   ```
+   Agent(
+     name = "codex-consultant",
+     subagent_type = "lean4-codex-consultant",
+     team_name = "lean4-formalization",
+     description = "Codex技术顾问（按需）",
+     prompt = "你是 lean4-formalization 团队的 Codex 技术顾问。请用 Codex 分析以下技术问题并给出具体的 Lean4 代码建议：
+
+     [formalizer 的具体技术问题]
+
+     项目路径：/Users/auric/alltheory/the-omega/lean4/
+     完成后将建议通过 SendMessage 发回 team lead。"
+   )
+   ```
+
+   - 收到 codex-consultant 建议后，转发给 formalizer，然后 shutdown codex-consultant
+   - 等待 formalizer 继续迭代
+
+5. 收到 formalizer 结果后路由：
    - 成功 → 标记任务完成，进入 Phase 3
    - 失败 → 记录失败原因，回到 Phase 0+1（发消息让 analyst 选下一个目标）
 
@@ -195,6 +217,7 @@ Agent(
 | formalizer | lean4-formalizer | **持久** | 团队启动时 spawn，修复循环中复用上下文 |
 | reviewer | lean4-reviewer | 按需 | Phase 3 spawn，审核完 shutdown |
 | codex-reviewer | lean4-codex-reviewer | 按需 | Phase 3 spawn，审核完 shutdown |
+| codex-consultant | lean4-codex-reviewer | 按需 | Phase 2 阻塞时 spawn，咨询完 shutdown |
 | registrar | lean4-registrar | 按需 | Phase 4 spawn，登记完 shutdown |
 
 ## 上下文传递规则
@@ -202,9 +225,10 @@ Agent(
 持久 teammate 保留对话上下文，传递方式：
 
 1. **analyst → formalizer**：team lead 通过 SendMessage 将 analyst 的规格原样转发给 formalizer
-2. **formalizer → reviewers**：team lead 在 spawn reviewer 时将 formalizer 结果嵌入初始 prompt（按需角色无历史上下文）
-3. **审核 FAIL → formalizer 修复**：team lead 通过 SendMessage 发送修复指令（formalizer 已有原始规格，只需增量指令）
-4. **审核 PASS → registrar**：team lead 在 spawn registrar 时将结果嵌入初始 prompt
+2. **formalizer 阻塞 → analyst/codex-consultant**：team lead 转发技术问题给 analyst（数学层面）或 spawn codex-consultant（API/语法层面），收到建议后转发给 formalizer
+3. **formalizer → reviewers**：team lead 在 spawn reviewer 时将 formalizer 结果嵌入初始 prompt（按需角色无历史上下文）
+4. **审核 FAIL → formalizer 修复**：team lead 通过 SendMessage 发送修复指令（formalizer 已有原始规格，只需增量指令）
+5. **审核 PASS → registrar**：team lead 在 spawn registrar 时将结果嵌入初始 prompt
 
 ## 论文勘误记录
 
