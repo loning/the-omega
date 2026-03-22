@@ -850,6 +850,19 @@ theorem stableMul_annihilates_left (x : X m) :
     stableMul stableZero x = stableZero :=
   stableMul_zero_left x
 
+/-- stableAdd is injective in its second argument (fixed first). -/
+theorem stableAdd_injective_right (x : X m) : Function.Injective (stableAdd x) :=
+  fun _ _ h => stableAdd_left_cancel h
+
+/-- stableAdd is injective in its first argument (fixed second). -/
+theorem stableAdd_injective_left (y : X m) : Function.Injective (fun x => stableAdd x y) :=
+  fun _ _ h => stableAdd_right_cancel h
+
+/-- The stableAdd group action on X_m is free: x + · is a bijection for each x. -/
+theorem stableAdd_bijective (x : X m) : Function.Bijective (stableAdd x) :=
+  ⟨stableAdd_injective_right x,
+   fun y => ⟨stableSub y x, by rw [stableAdd_comm]; exact stableSub_add_cancel y x⟩⟩
+
 end
 
 end X
