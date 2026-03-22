@@ -1664,6 +1664,45 @@ theorem card_stable_four : Fintype.card (X 4) = 8 := X.card_X_four
 /-- |X_5| = 13. -/
 theorem card_stable_five : Fintype.card (X 5) = 13 := X.card_X_five
 
+/-! ### Paper Section 4: Weight Structure -/
+
+/-- Weight decomposes by last bit: false preserves, true adds F_{m+1}. -/
+theorem weight_last_false {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = false) :
+    weight w = weight (truncate w) :=
+  weight_of_lastFalse h
+
+/-- Weight is positive when the last bit is true. -/
+theorem weight_positive_of_true {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = true) :
+    0 < weight w :=
+  weight_pos_of_bit_true h
+
+/-! ### Paper Section 6: stableOne Value -/
+
+/-- stableOne has value 1 for m ≥ 1 (multiplicative unit). -/
+theorem stableOne_value (hm : 1 ≤ m) :
+    stableValue (X.stableOne (m := m)) = 1 :=
+  X.stableValue_stableOne_of_ge_one hm
+
+/-! ### Paper SPG Section: Identity Observation Bound -/
+
+/-- The identity observation achieves the Bayes-optimal bound. -/
+theorem identity_observation_bayes {α : Type*} [Fintype α]
+    (μ : PMF α) (P : Set α) :
+    SPG.scanError μ id P ≤ min (SPG.setMass μ P) (SPG.setMass μ Pᶜ) :=
+  SPG.scanError_id_eq_min_setMass μ P
+
+/-- Scan error vanishes for the empty event. -/
+theorem scanError_vanishes_empty {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    SPG.scanError μ obs ∅ = 0 :=
+  SPG.scanError_empty_event μ obs
+
+/-- Scan error vanishes for the full event. -/
+theorem scanError_vanishes_full {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    SPG.scanError μ obs Set.univ = 0 :=
+  SPG.scanError_full_event μ obs
+
 end
 
 end Omega.Frontier

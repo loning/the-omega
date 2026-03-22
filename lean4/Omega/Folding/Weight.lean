@@ -24,4 +24,20 @@ def weight : {m : Nat} → Word m → Nat
   simp [X.appendTrue, weight_snoc]
 
 
+/-- Weight of a stable word ending in false equals weight of its restriction. -/
+theorem weight_of_lastFalse {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = false) :
+    weight w = weight (truncate w) := by
+  simp [weight, h]
+
+/-- Weight of a stable word ending in true equals weight of restriction + paperFib(m+1). -/
+theorem weight_of_lastTrue {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = true) :
+    weight w = weight (truncate w) + paperFib (m + 1) := by
+  simp [weight, h]
+
+/-- Weight is monotone: adding a true bit increases weight. -/
+theorem weight_pos_of_bit_true {w : Word (m + 1)} (h : w ⟨m, Nat.lt_succ_self m⟩ = true) :
+    0 < weight w := by
+  rw [weight_of_lastTrue h]
+  exact Nat.lt_of_lt_of_le (paperFib_pos (m + 1)) (Nat.le_add_left _ _)
+
 end Omega
