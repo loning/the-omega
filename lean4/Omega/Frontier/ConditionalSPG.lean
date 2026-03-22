@@ -1,4 +1,5 @@
 import Omega.Frontier.Conditional
+import Omega.Folding.FiberArithmetic
 
 namespace Omega.Frontier
 

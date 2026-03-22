@@ -7,6 +7,7 @@ import Omega.Folding.Value
 import Omega.Folding.Zeckendorf
 import Omega.Folding.Fold
 import Omega.Folding.Fiber
+import Omega.Folding.FiberArithmetic
 import Omega.Folding.InverseLimit
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
