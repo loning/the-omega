@@ -2319,6 +2319,39 @@ theorem global_defect_characterizes (h : m ≤ n) (ω : Word n) :
 theorem xor_left_cancel {a b c : Word m} (h : xorWord a b = xorWord a c) : b = c :=
   xorWord_left_cancel h
 
+/-! #### Negation Properties -/
+
+/-- Negation is injective in the stable ring. -/
+theorem stable_neg_injective : Function.Injective (X.stableNeg (m := m)) :=
+  X.stableNeg_injective
+
+/-- Negation is surjective in the stable ring. -/
+theorem stable_neg_surjective : Function.Surjective (X.stableNeg (m := m)) :=
+  X.stableNeg_surjective
+
+/-- Negation is bijective in the stable ring. -/
+theorem stable_neg_bijective : Function.Bijective (X.stableNeg (m := m)) :=
+  X.stableNeg_bijective
+
+/-! #### Scan Error & Boundary Summary -/
+
+/-- Zero error ↔ zero boundary count (measure). -/
+theorem zero_error_iff_zero_boundary [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P = 0 ↔ SPG.boundaryCylinderCount μ obs P = 0 :=
+  SPG.scanError_zero_iff_boundary_zero μ obs P
+
+/-! #### Fiber Unique Decomposition -/
+
+/-- Every word belongs to exactly one Fold fiber (unique decomposition). -/
+theorem unique_fiber_decomposition (w : Word m) :
+    ∃! x : X m, w ∈ X.fiber x :=
+  X.word_in_unique_fiber w
+
+/-- Fold maps to a unique stable target. -/
+theorem fold_unique (w : Word m) : ∃! x : X m, Fold w = x :=
+  X.Fold_unique_target w
+
 end
 
 end Omega.Frontier
