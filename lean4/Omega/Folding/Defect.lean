@@ -355,4 +355,19 @@ theorem globalDefect_identity_zero (ω : Word m) :
     globalDefect (Nat.le_refl m) ω = zeroWord m :=
   globalDefect_refl ω
 
+/-- xorWord is associative (named). -/
+theorem xorWord_is_associative (a b c : Word m) :
+    xorWord (xorWord a b) c = xorWord a (xorWord b c) :=
+  xorWord_assoc a b c
+
+/-- xorWord is commutative (named). -/
+theorem xorWord_is_commutative (a b : Word m) :
+    xorWord a b = xorWord b a :=
+  xorWord_comm a b
+
+/-- zeroWord is the identity for xor. -/
+theorem xorWord_zero_id (a : Word m) :
+    xorWord a (zeroWord m) = a :=
+  xorWord_zero_right a
+
 end Omega

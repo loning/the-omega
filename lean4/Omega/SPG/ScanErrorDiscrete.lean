@@ -943,6 +943,17 @@ theorem scanError_le_one {α β : Type*} [Fintype α] [Fintype β]
     _ ≤ ∑ x, (μ x : ENNReal) := by simp [setMass, Set.indicator_univ]
     _ = 1 := PMF_sum_coe_eq_one μ
 
+/-- Prefix scan error is bounded by 1 (global bound). -/
+theorem prefixScanError_le_one (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanError μ h P ≤ 1 :=
+  scanError_le_one μ (prefixObservation h) P
+
+/-- Cell mass total equals the set mass of univ. -/
+theorem cellMass_total {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    ∑ b, cellMass μ obs b = setMass μ Set.univ :=
+  cellMass_sum_eq_setMass_univ μ obs
+
 end
 
 end Omega.SPG
