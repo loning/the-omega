@@ -222,6 +222,11 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.prefixBoundaryCylinderCount_measure_discrete_bridge
   #print axioms Omega.Frontier.scanError_measure_antitone_via_bridge
   #print axioms Omega.Frontier.prefixScanError_measure_antitone_via_bridge
+  #print axioms Omega.SPG.cellEventMass_add_cellComplMass_eq_cellMass
+  #print axioms Omega.Frontier.stableValue_injective
+  #print axioms Omega.Frontier.stableValue_ofNat_roundtrip
+  #print axioms Omega.Frontier.fold_ofNat_roundtrip
+  #print axioms Omega.Frontier.cellEventMass_add_cellComplMass_partition
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -429,6 +434,11 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.boundaryCylinderCount_measure_discrete_bridge"
   , "Omega.Frontier.prefixBoundaryCylinderCount_measure_discrete_bridge"
   , "Omega.Frontier.scanError_measure_antitone_via_bridge"
-  , "Omega.Frontier.prefixScanError_measure_antitone_via_bridge" ]
+  , "Omega.Frontier.prefixScanError_measure_antitone_via_bridge"
+  , "Omega.SPG.cellEventMass_add_cellComplMass_eq_cellMass"
+  , "Omega.Frontier.stableValue_injective"
+  , "Omega.Frontier.stableValue_ofNat_roundtrip"
+  , "Omega.Frontier.fold_ofNat_roundtrip"
+  , "Omega.Frontier.cellEventMass_add_cellComplMass_partition" ]
 
 end Omega.Audit

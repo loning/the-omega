@@ -829,6 +829,23 @@ theorem fold_fiber_card_pos (x : X m) :
     0 < (X.fiber x).card :=
   X.fiber_card_pos x
 
+/-! ### Paper Section 6: Stable Value & Modular Arithmetic -/
+
+/-- The stable value map is injective: distinct stable words have distinct values (paper Theorem 6.1). -/
+theorem stableValue_injective (m : Nat) :
+    Function.Injective (stableValue (m := m)) :=
+  Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩
+
+/-- Constructing a stable word from its value recovers the original word (paper Theorem 6.1). -/
+theorem stableValue_ofNat_roundtrip (x : X m) :
+    X.ofNat m (stableValue x) = x :=
+  X.ofNat_stableValue x
+
+/-- Fold followed by ofNat recovers the fold: ofNat m (stableValue (Fold w)) = Fold w. -/
+theorem fold_ofNat_roundtrip (w : Word m) :
+    X.ofNat m (stableValue (Fold w)) = Fold w :=
+  X.ofNat_stableValue (Fold w)
+
 /-! ### Paper Section 3 / Definition 3.5: Boundary Cylinder Count -/
 
 /-- Boundary cylinder count equals zero iff the event is observable-pure (measure, paper Corollary 3.1). -/
@@ -883,6 +900,14 @@ theorem prefixBoundaryCylinderCount_measure_discrete_bridge
     SPG.prefixBoundaryCylinderCount μ.toMeasure h P
       = (SPG.prefixBoundaryCells μ h P).card :=
   SPG.prefixBoundaryCylinderCount_toMeasure_eq μ h P
+
+/-! ### Paper Section 3: Cell Partition Identity -/
+
+/-- Cell event mass plus complement mass equals total cell mass (paper Proposition 3.2 partition). -/
+theorem cellEventMass_add_cellComplMass_partition {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    SPG.cellEventMass μ obs P b + SPG.cellComplMass μ obs P b = SPG.cellMass μ obs b :=
+  SPG.cellEventMass_add_cellComplMass_eq_cellMass μ obs P b
 
 /-! ### Measure Monotonicity via PMF Bridge (paper Corollary 3.1) -/
 

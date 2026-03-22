@@ -78,6 +78,10 @@ def phaseOneTargets : List String :=
   , "frontier Zeckendorf bridge wrappers"
   , "frontier fiber cardinality wrapper"
   , "frontier boundary cylinder count wrappers"
-  , "frontier measure monotonicity via PMF bridge" ]
+  , "frontier measure monotonicity via PMF bridge"
+  , "SPG cell partition identity"
+  , "frontier stable value injectivity"
+  , "frontier stable value round-trip"
+  , "frontier cell partition wrapper" ]
 
 end Omega.Audit

@@ -64,6 +64,16 @@ theorem cellComplMass_le_cellMass {α β : Type*} [Fintype α]
     cellComplMass μ obs P b ≤ cellMass μ obs b :=
   setMass_mono μ (by intro x hx; exact hx.1)
 
+/-- Cell event mass plus cell complement mass equals cell total mass (partition identity). -/
+theorem cellEventMass_add_cellComplMass_eq_cellMass {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    cellEventMass μ obs P b + cellComplMass μ obs P b = cellMass μ obs b := by
+  simp only [cellEventMass, cellComplMass, cellMass, setMass]
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun x _ => ?_)
+  simp only [Set.indicator_apply, Set.mem_inter_iff, observableCell, Set.mem_setOf_eq]
+  by_cases hx_C : obs x = b <;> by_cases hx_P : x ∈ P <;> simp [hx_C, hx_P]
+
 theorem observableEvent_inter_cell {α β : Type*} (obs : α → β) (A : Set β) (b : β)
     (hb : b ∈ A) :
     observableEvent obs A ∩ observableCell obs b = observableCell obs b := by
