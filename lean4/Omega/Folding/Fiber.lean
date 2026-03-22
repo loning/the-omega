@@ -1000,6 +1000,23 @@ theorem stableMul_value_bound (x y : X m) :
     stableValue (stableMul x y) < paperFib (m + 1) :=
   stableValue_lt_paperFib_succ _
 
+/-- stableNeg of stableOne gives the maximal nonzero element. -/
+theorem neg_one_value (hm : 1 ≤ m) :
+    stableValue (stableNeg (stableOne (m := m))) = paperFib (m + 1) - 1 :=
+  stableValue_neg_one hm
+
+/-- The stable ring cardinality matches the Fibonacci number. -/
+theorem stable_ring_order (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
+  X.card_eq_paperFib_succ m
+
+/-- Concrete: |X_11| = 233. -/
+theorem card_X_eleven : Fintype.card (X 11) = 233 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- Concrete: |X_12| = 377. -/
+theorem card_X_twelve : Fintype.card (X 12) = 377 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
 end
 
 end X
