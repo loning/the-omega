@@ -2433,6 +2433,24 @@ theorem cell_event_local [MeasurableSpace α]
     SPG.cellEventMeasure μ obs P b = SPG.cellEventMeasure μ obs Q b :=
   SPG.cellEventMeasure_depends_on_inter μ obs b h
 
+/-! #### Plan 2: Concrete Prime Fields -/
+
+/-- X_2 ≅ F_3 is a field (F_3 = 3 is prime). -/
+theorem X2_is_field : Nat.Prime (paperFib 3) := X.X2_is_integral_domain
+
+/-- X_3 ≅ F_5 is a field (F_5 = 5 is prime). -/
+theorem X3_is_field : Nat.Prime (paperFib 4) := X.F4_is_prime
+
+/-- X_4 ≅ ℤ/8ℤ is NOT a field (F_5 = 8 not prime). -/
+theorem X4_not_field : ¬ Nat.Prime (paperFib 5) := X.F5_not_prime
+
+/-! #### xor-Restrict Exchange -/
+
+/-- Restriction distributes over xor (named). -/
+theorem restrict_distributes_xor (h : m ≤ n) (a b : Word n) :
+    restrictWord h (xorWord a b) = xorWord (restrictWord h a) (restrictWord h b) :=
+  restrictWord_xorWord h a b
+
 end
 
 end Omega.Frontier
