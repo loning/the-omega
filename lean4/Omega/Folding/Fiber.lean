@@ -168,14 +168,70 @@ theorem stableValueFin_bijective (m : Nat) :
     Function.Bijective (stableValueFin (m := m)) :=
   ⟨stableValueFin_injective m, stableValueFin_surjective m⟩
 
+/-- For n < paperFib(m+1), ofNat m n has stable value n. -/
+theorem stableValue_ofNat_lt (n : Nat) (hn : n < paperFib (m + 1)) :
+    stableValue (X.ofNat m n) = n := by
+  obtain ⟨x, hx⟩ := stableValueFin_surjective m ⟨n, hn⟩
+  have hVal : stableValue x = n := by simpa [stableValueFin] using congr_arg Fin.val hx
+  rw [show X.ofNat m n = x from by rw [← hVal, X.ofNat_stableValue], hVal]
+
+/-- For n < paperFib(m+1), ofNat and stableValue form a round-trip. -/
+theorem stableValue_ofNat_mod (n : Nat) :
+    stableValue (X.ofNat m (n % paperFib (m + 1))) = n % paperFib (m + 1) :=
+  stableValue_ofNat_lt _ (Nat.mod_lt n (paperFib_pos (m + 1)))
+
 /-- Stable addition on X m: wrap-around Fibonacci arithmetic. -/
 noncomputable def stableAdd (x y : X m) : X m :=
   X.ofNat m ((stableValue x + stableValue y) % paperFib (m + 1))
+
+/-- The zero element for stable addition. -/
+noncomputable def stableZero : X m := X.ofNat m 0
 
 /-- Stable addition is commutative. -/
 theorem stableAdd_comm (x y : X m) :
     stableAdd x y = stableAdd y x := by
   simp only [stableAdd, Nat.add_comm]
+
+/-- The zero element has stable value 0. -/
+theorem stableValue_stableZero : stableValue (stableZero (m := m)) = 0 :=
+  stableValue_ofNat_lt 0 (paperFib_pos (m + 1))
+
+/-- stableZero is the left identity for stable addition. -/
+theorem stableAdd_zero_left (x : X m) : stableAdd stableZero x = x := by
+  unfold stableAdd stableZero
+  rw [stableValue_ofNat_lt 0 (paperFib_pos (m + 1)), Nat.zero_add,
+    Nat.mod_eq_of_lt (stableValue_lt_paperFib_succ x), X.ofNat_stableValue]
+
+/-- stableZero is the right identity for stable addition. -/
+theorem stableAdd_zero_right (x : X m) : stableAdd x stableZero = x := by
+  rw [stableAdd_comm]; exact stableAdd_zero_left x
+
+/-- Helper: (a % n + b) % n = (a + b) % n for 0 < n. -/
+private theorem Nat.mod_add_mod_right (a b n : Nat) (hn : 0 < n) :
+    (a % n + b) % n = (a + b) % n := by
+  conv_rhs => rw [← Nat.mod_add_div a n]
+  rw [Nat.add_assoc, Nat.add_comm (n * (a / n)), ← Nat.add_assoc,
+    Nat.add_mul_mod_self_left]
+
+/-- Stable addition is associative. -/
+theorem stableAdd_assoc (x y z : X m) :
+    stableAdd (stableAdd x y) z = stableAdd x (stableAdd y z) := by
+  unfold stableAdd
+  have hF := paperFib_pos (m + 1)
+  rw [stableValue_ofNat_mod, stableValue_ofNat_mod]
+  congr 1
+  -- Goal: ((sv_x + sv_y) % F + sv_z) % F = (sv_x + (sv_y + sv_z) % F) % F
+  -- Both sides equal (sv_x + sv_y + sv_z) % F
+  have lhs : ((stableValue x + stableValue y) % paperFib (m + 1) + stableValue z)
+      % paperFib (m + 1) =
+      (stableValue x + stableValue y + stableValue z) % paperFib (m + 1) :=
+    Nat.mod_add_mod_right _ _ _ hF
+  have rhs : (stableValue x + (stableValue y + stableValue z) % paperFib (m + 1))
+      % paperFib (m + 1) =
+      (stableValue x + (stableValue y + stableValue z)) % paperFib (m + 1) := by
+    conv_lhs => rw [Nat.add_comm]
+    rw [Nat.mod_add_mod_right _ _ _ hF, Nat.add_comm]
+  rw [lhs, rhs, Nat.add_assoc]
 
 end
 

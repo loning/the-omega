@@ -973,6 +973,35 @@ theorem stableAdd_commutative (x y : X m) :
     X.stableAdd x y = X.stableAdd y x :=
   X.stableAdd_comm x y
 
+/-- For n < F_{m+2}, X.ofNat m n has stable value n (paper Theorem 6.1 inverse). -/
+theorem stableValue_ofNat_inverse {m : Nat} (n : Nat) (hn : n < paperFib (m + 1)) :
+    stableValue (X.ofNat m n) = n :=
+  X.stableValue_ofNat_lt n hn
+
+/-- Stable value of ofNat respects modular reduction. -/
+theorem stableValue_ofNat_mod_wrapper {m : Nat} (n : Nat) :
+    stableValue (X.ofNat m (n % paperFib (m + 1))) = n % paperFib (m + 1) :=
+  X.stableValue_ofNat_mod n
+
+/-- stableZero has value 0. -/
+theorem stableZero_value : stableValue (X.stableZero (m := m)) = 0 :=
+  X.stableValue_stableZero
+
+/-- Stable addition has a left identity. -/
+theorem stableAdd_left_identity (x : X m) :
+    X.stableAdd X.stableZero x = x :=
+  X.stableAdd_zero_left x
+
+/-- Stable addition has a right identity. -/
+theorem stableAdd_right_identity (x : X m) :
+    X.stableAdd x X.stableZero = x :=
+  X.stableAdd_zero_right x
+
+/-- Stable addition is associative (paper Section 6 emergent arithmetic). -/
+theorem stableAdd_associative (x y z : X m) :
+    X.stableAdd (X.stableAdd x y) z = X.stableAdd x (X.stableAdd y z) :=
+  X.stableAdd_assoc x y z
+
 /-- The stable syntax space is equivalent to Fin(F_{m+2}) as a finite type. -/
 noncomputable def stableValueEquiv_wrapper (m : Nat) : X m ≃ Fin (paperFib (m + 1)) :=
   X.stableValueEquiv m
