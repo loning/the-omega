@@ -440,6 +440,19 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.stableValue_ofNat_roundtrip"
   , "Omega.Frontier.fold_ofNat_roundtrip"
   , "Omega.Frontier.cellEventMass_add_cellComplMass_partition"
+  -- Stable value bound & arithmetic
+  , "Omega.stableValue_lt_paperFib_succ"
+  , "Omega.X.stableValueFin"
+  , "Omega.X.stableValueFin_injective"
+  , "Omega.X.stableAdd"
+  , "Omega.X.stableAdd_comm"
+  , "Omega.Frontier.stableValue_bounded"
+  , "Omega.Frontier.stableAdd_commutative"
+  -- Fibonacci infrastructure
+  , "Omega.paperFib_pos"
+  , "Omega.paperFib_mono"
+  , "Omega.paperFib_le_succ"
+  , "Omega.paperFib_le_add_right"
   -- Fiber partition & word cardinality
   , "Omega.X.Word_card"
   , "Omega.X.fiber_card_sum"

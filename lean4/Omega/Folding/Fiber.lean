@@ -140,6 +140,27 @@ theorem fiber_card_sum_eq_pow (m : Nat) :
     ∑ x : X m, (fiber x).card = 2 ^ m := by
   rw [fiber_card_sum, Word_card]
 
+/-- The stable value of a stable word is a valid Fin index. -/
+def stableValueFin (x : X m) : Fin (paperFib (m + 1)) :=
+  ⟨stableValue x, stableValue_lt_paperFib_succ x⟩
+
+/-- stableValueFin is injective. -/
+theorem stableValueFin_injective (m : Nat) :
+    Function.Injective (stableValueFin (m := m)) := by
+  intro x y h
+  have := congr_arg Fin.val h
+  simp only [stableValueFin, Fin.mk.injEq] at this
+  exact (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩) this
+
+/-- Stable addition on X m: wrap-around Fibonacci arithmetic. -/
+noncomputable def stableAdd (x y : X m) : X m :=
+  X.ofNat m ((stableValue x + stableValue y) % paperFib (m + 1))
+
+/-- Stable addition is commutative. -/
+theorem stableAdd_comm (x y : X m) :
+    stableAdd x y = stableAdd y x := by
+  simp only [stableAdd, Nat.add_comm]
+
 end
 
 end X

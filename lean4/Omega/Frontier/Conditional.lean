@@ -934,6 +934,26 @@ theorem prefixScanError_measure_antitone_via_bridge {m₁ m₂ n : Nat}
     SPG.prefixScanErrorMeasure_toMeasure_eq_prefixScanError]
   exact SPG.prefixScanError_antitone μ h₁ h₂ hm P
 
+/-! ### Paper Theorem 6.1: Stable Value Bound & Arithmetic -/
+
+/-- Stable values are strictly bounded by the Fibonacci cardinality (paper Theorem 6.1). -/
+theorem stableValue_bounded (x : X m) : stableValue x < paperFib (m + 1) :=
+  stableValue_lt_paperFib_succ x
+
+/-- Stable values can be viewed as Fin-indexed values (paper Theorem 6.1). -/
+theorem stableValue_as_fin (x : X m) :
+    (X.stableValueFin x).val = stableValue x := rfl
+
+/-- The stable value Fin map is injective. -/
+theorem stableValueFin_injective_wrapper (m : Nat) :
+    Function.Injective (X.stableValueFin (m := m)) :=
+  X.stableValueFin_injective m
+
+/-- Stable addition is commutative (paper Proposition 6.x). -/
+theorem stableAdd_commutative (x y : X m) :
+    X.stableAdd x y = X.stableAdd y x :=
+  X.stableAdd_comm x y
+
 /-! ### Paper Theorem 4.2: Fiber Partition -/
 
 /-- The word space has cardinality 2^m. -/
