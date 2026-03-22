@@ -888,6 +888,17 @@ theorem compl_mass_le_cell {α β : Type*} [Fintype α]
     cellComplMass μ obs P b ≤ cellMass μ obs b :=
   cellComplMass_le_cellMass μ obs P b
 
+/-- Prefix scan error is always ≤ 1/2 (Bayes bound at any resolution). -/
+theorem prefixScanError_le_half (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    2 * prefixScanError μ h P ≤ 1 :=
+  two_mul_scanError_le_one μ (prefixObservation h) P
+
+/-- Scan error for the identity observation on a two-element type. -/
+theorem scanError_id_bound {α : Type*} [Fintype α]
+    (μ : PMF α) (P : Set α) :
+    scanError μ id P ≤ min (setMass μ P) (setMass μ Pᶜ) :=
+  scanError_le_min_setMass μ id P
+
 end
 
 end Omega.SPG

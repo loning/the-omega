@@ -872,6 +872,20 @@ theorem stableSub_zero (x : X m) : stableSub x stableZero = x := by
 theorem zero_stableSub (x : X m) : stableSub stableZero x = stableNeg x := by
   rw [stableSub, stableAdd_zero_left]
 
+/-- Fiber multiplicity of the zero element equals the number of words with weight 0. -/
+theorem fiberMultiplicity_stableZero :
+    fiberMultiplicity (stableZero (m := m)) ≥ 1 :=
+  fiberMultiplicity_pos stableZero
+
+/-- The Fold map is an endomorphism of Word m (in the sense that Fold : Word m → X m). -/
+theorem Fold_maps_to_stable (w : Word m) : No11 (Fold w).1 :=
+  (Fold w).2
+
+/-- Stable words are bounded by all words: |X_m| ≤ |Word m| = 2^m. -/
+theorem stable_le_all_words (m : Nat) :
+    Fintype.card (X m) ≤ Fintype.card (Word m) :=
+  Fintype.card_le_of_injective (fun x => x.1) Subtype.val_injective
+
 end
 
 end X
