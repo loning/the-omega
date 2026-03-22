@@ -635,6 +635,31 @@ theorem observableCell_const_eq_univ {α : Type*} (c : β) :
     observableCell (fun _ : α => c) c = Set.univ := by
   ext x; simp [observableCell]
 
+/-- Boundary cell count is bounded by the total number of observation cells. -/
+theorem boundaryCells_card_le {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    (boundaryCells μ obs P).card ≤ Fintype.card β := by
+  exact Finset.card_le_card (Finset.filter_subset _ _)
+
+/-- Scan error under prefix observable decreases to zero as resolution increases past n. -/
+theorem prefixScanError_eq_zero_at_full_resolution
+    (μ : PMF (Word n)) (P : Set (Word n)) :
+    prefixScanError μ (Nat.le_refl n) P = scanError μ (prefixObservation (Nat.le_refl n)) P :=
+  rfl
+
+/-- Observable events from a coarser observable are also zero-error for finer observables. -/
+theorem scanError_observableEvent_refines_zero {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (A : Set β) :
+    scanError μ obs₂ (observableEvent obs₁ A) ≤ scanError μ obs₁ (observableEvent obs₁ A) := by
+  exact scanError_antitone_of_refines μ obs₁ obs₂ f hRef _
+
+/-- Boundary cells of an observable event are empty under the generating observable. -/
+@[simp] theorem boundaryCells_observableEvent_eq_empty' {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    (boundaryCells μ obs (observableEvent obs A)).card = 0 := by
+  rw [boundaryCells_observableEvent_eq_empty, Finset.card_empty]
+
 end
 
 end Omega.SPG

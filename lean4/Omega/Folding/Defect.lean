@@ -284,4 +284,18 @@ theorem globalDefect_succ (η : Word (m + 1)) :
     globalDefect (Nat.le_succ m) η = localDefect η := by
   exact (localDefect_eq_globalDefect η).symm
 
+/-- The xor of two words has weight bounded by the sum of weights. -/
+theorem weight_xorWord_le (a b : Word m) :
+    weight (xorWord a b) ≤ weight a + weight b := by
+  induction m with
+  | zero => simp [weight]
+  | succ n ih =>
+    simp only [weight, xorWord]
+    have h_trunc : weight (truncate (xorWord a b)) ≤ weight (truncate a) + weight (truncate b) := by
+      have : truncate (xorWord a b) = xorWord (truncate a) (truncate b) := by
+        funext i; rfl
+      rw [this]; exact ih (truncate a) (truncate b)
+    cases ha : a ⟨n, Nat.lt_succ_self n⟩ <;> cases hb : b ⟨n, Nat.lt_succ_self n⟩ <;>
+      simp [ha, hb, xorWord, Bool.xor] <;> omega
+
 end Omega
