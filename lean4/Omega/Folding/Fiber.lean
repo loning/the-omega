@@ -820,6 +820,14 @@ theorem stableAdd_zero_both :
     stableAdd (stableZero (m := m)) stableZero = stableZero :=
   stableAdd_zero_zero
 
+/-- Fold is monotone in the sense that it maps to a unique stable target. -/
+theorem Fold_unique_target (w : Word m) : ∃! x : X m, Fold w = x :=
+  ⟨Fold w, rfl, fun _ h => h.symm⟩
+
+/-- stableNeg is its own inverse: stableNeg ∘ stableNeg = id. -/
+theorem stableNeg_involutive : Function.Involutive (stableNeg (m := m)) :=
+  stableNeg_neg_eq
+
 end
 
 end X

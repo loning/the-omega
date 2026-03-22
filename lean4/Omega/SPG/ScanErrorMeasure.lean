@@ -911,6 +911,24 @@ theorem cellComplMeasure_at_full {α β : Type*} [MeasurableSpace α]
     cellComplMeasure μ obs Set.univ b = 0 :=
   cellComplMeasure_univ μ obs b
 
+/-- Scan error vanishes for observable events under any measure. -/
+theorem scanErrorMeasure_observable_vanishes {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    scanErrorMeasure μ obs (observableEvent obs A) = 0 :=
+  scanErrorMeasure_observableEvent_eq_zero μ obs A
+
+/-- Boundary cell count for observable events is zero. -/
+theorem boundaryCylinderCount_observable_vanishes {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    boundaryCylinderCount μ obs (observableEvent obs A) = 0 :=
+  boundaryCylinderCount_observableEvent_eq_zero μ obs A
+
+/-- Scan error is zero iff boundary cylinder count is zero. -/
+theorem scanError_zero_iff_boundary_zero {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P = 0 ↔ boundaryCylinderCount μ obs P = 0 :=
+  scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero μ obs P
+
 end
 
 end Omega.SPG
