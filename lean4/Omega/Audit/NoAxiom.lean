@@ -238,6 +238,16 @@ Run these commands manually during audit:
   #print axioms Omega.X.carryElement_m5_value
   #print axioms Omega.X.carryElement_m7_value
   #print axioms Omega.X.carryElement_ne_zero
+  -- FiberFusion (Plan 7): lem:pom-fib-fusion-submultiplicativity
+  #print axioms Omega.X.fib_fusion
+  #print axioms Omega.X.fib_prod_lt_fib_fusion
+  #print axioms Omega.X.fib_fusion_lt_fib_sum
+  #print axioms Omega.X.fib_prod_lt_fib_sum
+  -- FiberFusion (Plan 7): cor:pom-fib-component-fusion-gain
+  #print axioms Omega.X.fib_component_fusion_lt
+  #print axioms Omega.X.fib_component_fusion_gain
+  #print axioms Omega.X.fib_component_fusion_gain_lower
+  #print axioms Omega.X.fib_component_fusion_gain_ge
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -529,6 +539,15 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.scanError_bayes_half_bound"
   , "Omega.Frontier.scanError_measure_antitone_direct"
   , "Omega.Frontier.fiberMultiplicity_positive"
-  , "Omega.Frontier.fiberMultiplicity_sum" ]
+  , "Omega.Frontier.fiberMultiplicity_sum"
+  -- FiberFusion (Plan 7)
+  , "Omega.X.fib_fusion"
+  , "Omega.X.fib_prod_lt_fib_fusion"
+  , "Omega.X.fib_fusion_lt_fib_sum"
+  , "Omega.X.fib_prod_lt_fib_sum"
+  , "Omega.X.fib_component_fusion_lt"
+  , "Omega.X.fib_component_fusion_gain"
+  , "Omega.X.fib_component_fusion_gain_lower"
+  , "Omega.X.fib_component_fusion_gain_ge" ]
 
 end Omega.Audit

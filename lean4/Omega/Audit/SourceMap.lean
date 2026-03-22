@@ -1561,6 +1561,62 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.CarryDefect"
       leanName := "Omega.X.carryElement_ne_zero"
       phase := 10
+      status := .formalized }
+  -- Phase 11: FiberFusion (Plan 7)
+  -- lem:pom-fib-fusion-submultiplicativity → fib_fusion, fib_prod_lt_fib_fusion,
+  --   fib_fusion_lt_fib_sum, fib_prod_lt_fib_sum (Omega/Folding/FiberFusion.lean)
+  -- 状态: 已形式化, 审核通过 2026-03-22
+  , { label := "lem:pom-fib-fusion-submultiplicativity"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_fusion"
+      phase := 11
+      status := .formalized }
+  , { label := "lem:pom-fib-fusion-submultiplicativity-prod-lt-fusion"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_prod_lt_fib_fusion"
+      phase := 11
+      status := .formalized }
+  , { label := "lem:pom-fib-fusion-submultiplicativity-fusion-lt-sum"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_fusion_lt_fib_sum"
+      phase := 11
+      status := .formalized }
+  , { label := "lem:pom-fib-fusion-submultiplicativity-prod-lt-sum"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_prod_lt_fib_sum"
+      phase := 11
+      status := .formalized }
+  -- cor:pom-fib-component-fusion-gain → fib_component_fusion_lt,
+  --   fib_component_fusion_gain, fib_component_fusion_gain_lower,
+  --   fib_component_fusion_gain_ge (Omega/Folding/FiberFusion.lean)
+  -- 状态: 已形式化, 审核通过 2026-03-22
+  , { label := "cor:pom-fib-component-fusion-gain"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_component_fusion_lt"
+      phase := 11
+      status := .formalized }
+  , { label := "cor:pom-fib-component-fusion-gain-bound"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_component_fusion_gain"
+      phase := 11
+      status := .formalized }
+  , { label := "cor:pom-fib-component-fusion-gain-lower"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_component_fusion_gain_lower"
+      phase := 11
+      status := .formalized }
+  , { label := "cor:pom-fib-component-fusion-gain-ge"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberFusion"
+      leanName := "Omega.X.fib_component_fusion_gain_ge"
+      phase := 11
       status := .formalized } ]
 
 end Omega.Audit
