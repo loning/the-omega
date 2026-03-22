@@ -864,6 +864,30 @@ theorem pure_event_zero {α β : Type*} [Fintype α] [Fintype β]
     scanError μ obs P = scanError μ obs ∅ := by
   rw [scanError_eq_zero_of_observablePure μ obs P h, scanError_empty]
 
+/-- The scan error of a prefix event at its own resolution is zero. -/
+theorem prefixScanError_at_own_resolution (μ : PMF (Word n)) (h : m ≤ n)
+    (A : Set (Word m)) :
+    prefixScanError μ h (prefixEvent h A) = 0 :=
+  prefixScanError_eq_zero_of_prefixEvent μ h A
+
+/-- Prefix boundary cells at own resolution are empty. -/
+theorem prefixBoundary_at_own_resolution (μ : PMF (Word n)) (h : m ≤ n)
+    (A : Set (Word m)) :
+    prefixBoundaryCells μ h (prefixEvent h A) = ∅ :=
+  prefixBoundaryCells_prefixEvent_eq_empty μ h A
+
+/-- Cell event mass is bounded by the total cell mass (named). -/
+theorem event_mass_le_cell {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    cellEventMass μ obs P b ≤ cellMass μ obs b :=
+  cellEventMass_le_cellMass μ obs P b
+
+/-- Cell complement mass is bounded by the total cell mass (named). -/
+theorem compl_mass_le_cell {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    cellComplMass μ obs P b ≤ cellMass μ obs b :=
+  cellComplMass_le_cellMass μ obs P b
+
 end
 
 end Omega.SPG
