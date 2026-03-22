@@ -899,6 +899,27 @@ theorem scanError_id_bound {α : Type*} [Fintype α]
     scanError μ id P ≤ min (setMass μ P) (setMass μ Pᶜ) :=
   scanError_le_min_setMass μ id P
 
+/-- Observable event is determined by the observation values in the set. -/
+theorem observableEvent_eq_preimage {α β : Type*} (obs : α → β) (A : Set β) :
+    observableEvent obs A = obs ⁻¹' A := by
+  ext x; simp [observableEvent, Set.mem_preimage]
+
+/-- Observable cells are preimages of singletons. -/
+theorem observableCell_eq_preimage {α β : Type*} (obs : α → β) (b : β) :
+    observableCell obs b = obs ⁻¹' {b} := by
+  ext x; simp [observableCell, Set.mem_preimage]
+
+/-- Observable cells partition the space: every element is in exactly one cell. -/
+theorem observableCell_covers {α β : Type*} (obs : α → β) (x : α) :
+    x ∈ observableCell obs (obs x) := by
+  simp [observableCell]
+
+/-- Cell event mass of P in cell b counts exactly the elements in P ∩ obs⁻¹{b}. -/
+theorem cellEventMass_eq_preimage {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
+    cellEventMass μ obs P b = setMass μ (P ∩ obs ⁻¹' {b}) := by
+  simp [cellEventMass, observableCell_eq_preimage]
+
 end
 
 end Omega.SPG
