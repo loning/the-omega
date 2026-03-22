@@ -947,6 +947,24 @@ theorem F11_not_prime : ¬ Nat.Prime (paperFib 11) := by decide
 /-- Concrete: F_4 = 5 is prime. -/
 theorem F4_is_prime : Nat.Prime (paperFib 4) := by decide
 
+/-- Concrete: F_2 = 2 is prime. -/
+theorem F2_is_prime : Nat.Prime (paperFib 2) := by decide
+
+/-- F_6 = 13 is prime. -/
+theorem F6_is_prime : Nat.Prime (paperFib 6) := by decide
+
+/-- F_8 = 34 is NOT prime. -/
+theorem F8_not_prime : ¬ Nat.Prime (paperFib 8) := by decide
+
+/-- F_10 = 89 is prime. -/
+theorem F10_is_prime : Nat.Prime (paperFib 10) := by decide
+
+/-- The Fibonacci primes in the first 11 values: F_2=2, F_3=3, F_4=5, F_6=13, F_10=89. -/
+theorem fibonacci_prime_list :
+    Nat.Prime (paperFib 2) ∧ Nat.Prime (paperFib 3) ∧ Nat.Prime (paperFib 4) ∧
+    Nat.Prime (paperFib 6) ∧ Nat.Prime (paperFib 10) :=
+  ⟨F2_is_prime, X2_is_integral_domain, F4_is_prime, F6_is_prime, F10_is_prime⟩
+
 end
 
 end X
