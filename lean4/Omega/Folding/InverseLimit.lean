@@ -173,6 +173,16 @@ theorem inverseLimitEquiv_right_inv (a : XInfinity) :
     ofFamily (toFamily a) = a :=
   ofFamily_toFamily a
 
+/-- The prefix word at resolution 0 is the unique X_0 element. -/
+theorem prefixWord_zero (a : XInfinity) :
+    prefixWord a 0 = X.empty :=
+  Unique.eq_default _
+
+/-- Compatible families are determined by their bit sequences. -/
+theorem CompatibleFamily.bit_determines (F : CompatibleFamily) (m : Nat) :
+    F.bit m = Omega.last (F.seq (m + 1)).1 :=
+  rfl
+
 end X
 
 end Omega

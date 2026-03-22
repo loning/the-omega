@@ -845,6 +845,25 @@ theorem error_complement_symmetry {α β : Type*} [Fintype α] [Fintype β]
     scanError μ obs Pᶜ = scanError μ obs P :=
   scanError_compl μ obs P
 
+/-- Scan error decomposes as sum over all cells. -/
+theorem scanError_is_cell_sum {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P = ∑ b, min (cellEventMass μ obs P b) (cellComplMass μ obs P b) :=
+  rfl
+
+/-- The boundary cell set for Pᶜ equals that for P (named). -/
+theorem boundary_complement {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    boundaryCells μ obs Pᶜ = boundaryCells μ obs P :=
+  boundaryCells_compl μ obs P
+
+/-- Observable pure events have the same error as the zero event. -/
+theorem pure_event_zero {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α)
+    (h : ObservablePure μ obs P) :
+    scanError μ obs P = scanError μ obs ∅ := by
+  rw [scanError_eq_zero_of_observablePure μ obs P h, scanError_empty]
+
 end
 
 end Omega.SPG
