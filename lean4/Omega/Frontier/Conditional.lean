@@ -2575,6 +2575,21 @@ theorem modular_preserves_zero :
     X.modularProject (X.stableZero (m := m + 1)) = X.stableZero :=
   X.modularProject_preserves_zero
 
+/-! #### Ring Order & Neg-One -/
+
+/-- The ring order (number of elements) is F_{m+2}. -/
+theorem ring_has_fibonacci_order (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
+  X.stable_ring_order m
+
+/-- -1 has value F_{m+2} - 1 (maximal element). -/
+theorem neg_one_is_maximal_element (hm : 1 ≤ m) :
+    stableValue (X.stableNeg (X.stableOne (m := m))) = paperFib (m + 1) - 1 :=
+  X.neg_one_value hm
+
+/-- stableValue < 2^m (exponential bound). -/
+theorem value_exponential_bound (x : X m) : stableValue x < 2 ^ m :=
+  X.stableValue_lt_pow x
+
 end
 
 end Omega.Frontier
