@@ -929,6 +929,18 @@ theorem scanError_zero_iff_boundary_zero {α β : Type*} [MeasurableSpace α] [F
     scanErrorMeasure μ obs P = 0 ↔ boundaryCylinderCount μ obs P = 0 :=
   scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero μ obs P
 
+/-- Scan error for the empty event is zero (measure, named). -/
+theorem scanError_measure_empty {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs ∅ = 0 :=
+  scanErrorMeasure_empty μ obs
+
+/-- Scan error for the full event is zero (measure, named). -/
+theorem scanError_measure_full {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs Set.univ = 0 :=
+  scanErrorMeasure_univ μ obs
+
 end
 
 end Omega.SPG

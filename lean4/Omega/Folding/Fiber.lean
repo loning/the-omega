@@ -886,6 +886,16 @@ theorem stable_le_all_words (m : Nat) :
     Fintype.card (X m) ≤ Fintype.card (Word m) :=
   Fintype.card_le_of_injective (fun x => x.1) Subtype.val_injective
 
+/-- F_{m+2} ≤ 2^m (Fibonacci growth bound). -/
+theorem paperFib_le_pow (m : Nat) : paperFib (m + 1) ≤ 2 ^ m := by
+  rw [← X.card_eq_paperFib_succ, ← Word_card]
+  exact stable_le_all_words m
+
+/-- |X_m| ≤ 2^m (combining cardinality and word space size). -/
+theorem stable_card_le_pow (m : Nat) :
+    Fintype.card (X m) ≤ 2 ^ m := by
+  rw [← Word_card]; exact stable_le_all_words m
+
 end
 
 end X
