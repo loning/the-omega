@@ -2590,6 +2590,41 @@ theorem neg_one_is_maximal_element (hm : 1 ≤ m) :
 theorem value_exponential_bound (x : X m) : stableValue x < 2 ^ m :=
   X.stableValue_lt_pow x
 
+/-! #### xor Group Structure -/
+
+/-- xor is associative. -/
+theorem xor_associative (a b c : Word m) :
+    xorWord (xorWord a b) c = xorWord a (xorWord b c) :=
+  xorWord_is_associative a b c
+
+/-- xor is commutative. -/
+theorem xor_commutative (a b : Word m) :
+    xorWord a b = xorWord b a :=
+  xorWord_is_commutative a b
+
+/-- Zero is the xor identity. -/
+theorem xor_identity (a : Word m) :
+    xorWord a (zeroWord m) = a :=
+  xorWord_zero_id a
+
+/-- xor is self-inverse. -/
+theorem xor_self_inverse (a : Word m) :
+    xorWord a a = zeroWord m :=
+  xorWord_self a
+
+/-! #### Prefix Error Bounds -/
+
+/-- Prefix error ≤ 1 (global bound). -/
+theorem prefix_error_le_one (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanError μ h P ≤ 1 :=
+  SPG.prefixScanError_le_one μ h P
+
+/-- Cell mass total equals setMass(univ). -/
+theorem cell_mass_total {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    ∑ b, SPG.cellMass μ obs b = SPG.setMass μ Set.univ :=
+  SPG.cellMass_total μ obs
+
 end
 
 end Omega.Frontier
