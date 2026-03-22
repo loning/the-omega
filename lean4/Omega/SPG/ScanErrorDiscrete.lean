@@ -954,6 +954,18 @@ theorem cellMass_total {α β : Type*} [Fintype α] [Fintype β]
     ∑ b, cellMass μ obs b = setMass μ Set.univ :=
   cellMass_sum_eq_setMass_univ μ obs
 
+/-- Prefix scan error at full resolution n equals the scan error at identity observation. -/
+theorem prefixScanError_full (μ : PMF (Word n)) (P : Set (Word n)) :
+    prefixScanError μ (Nat.le_refl n) P = scanError μ (prefixObservation (Nat.le_refl n)) P :=
+  rfl
+
+/-- Observable event at the coarser observation is pure at the finer observation. -/
+theorem observableEvent_pure_at_finer {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (A : Set β) :
+    scanError μ obs₂ (observableEvent obs₁ A) ≤ scanError μ obs₁ (observableEvent obs₁ A) :=
+  scanError_antitone_of_refines μ obs₁ obs₂ f hRef _
+
 end
 
 end Omega.SPG

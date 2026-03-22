@@ -119,4 +119,10 @@ theorem paperFib_dvd_of_succ_dvd {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
 /-- F_11 = 144. -/
 @[simp] theorem paperFib_eleven : paperFib 11 = 144 := rfl
 
+/-- F_12 = 233. -/
+@[simp] theorem paperFib_twelve : paperFib 12 = 233 := by native_decide
+
+/-- F_13 = 377. -/
+@[simp] theorem paperFib_thirteen : paperFib 13 = 377 := by native_decide
+
 end Omega
