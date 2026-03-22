@@ -975,6 +975,11 @@ theorem fibonacci_composite_list :
     ¬ Nat.Prime (paperFib 11) :=
   ⟨F5_not_prime, F7_not_prime, F8_not_prime, F9_not_prime, F11_not_prime⟩
 
+/-- stableValue is strictly less than 2^m (combining bounds). -/
+theorem stableValue_lt_pow (x : X m) : stableValue x < 2 ^ m := by
+  exact Nat.lt_of_lt_of_le (stableValue_lt_paperFib_succ x) (paperFib_le_pow m)
+
+
 end
 
 end X
