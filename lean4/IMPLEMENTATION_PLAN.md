@@ -445,83 +445,54 @@ Omega/Audit/NoAxiom.lean
 
 以下 12 条为按优先级排列的下一步具体工作，每条均应在单轮内完成并通过 `lake build`。
 
-#### 计划 1：PMF 总质量与 Bayes 半界
+#### 计划 1：PMF 总质量与 Bayes 半界 ✅ 已完成
 
-- 证明 `∑ x, (μ x : ENNReal) = 1`（使用 `PMF.tsum_coe` 与 `tsum_fintype`）
-- 证明 `two_mul_scanError_le_one`：2 · ε(P; μ) ≤ 1
-- 对应论文 Proposition 3.x Bayes 最优界
+#### 计划 2：stableValue 满射性与 ofNat 逆 ✅ 已完成
 
-#### 计划 2：stableValue 满射性与 ofNat 逆
+#### 计划 3：稳定加法代数结构 ✅ 已完成
 
-- 证明 `stableValue (X.ofNat m n) = n` 当 `n < paperFib(m+1)`
-- 建立 stableValue 与 Fin(paperFib(m+1)) 的等价
-- 对应论文 Theorem 6.1 双射性
+#### 计划 4：直接测度级观测细化单调性 ✅ 已完成
 
-#### 计划 3：稳定加法代数结构
+#### 计划 5：测度 cell 质量求和恒等式 ✅ 已完成
 
-- 证明 `stableAdd_assoc`（结合律）
-- 证明 `stableAdd_zero_left` / `stableAdd_zero_right`（零元）
-- 证明 `stableAdd_cancel`（消去律，若成立）
-- 对应论文 Section 6 有限稳定算术
+#### 计划 6：POM fiber 乘数定义与分割 ✅ 已完成
 
-#### 计划 4：直接测度级观测细化单调性
+#### 计划 7：stable 值等价与 Fin 同构 ✅ 已完成
 
-- 添加 `Measurable obs₂` 和 `MeasurableSet P` 假设
-- 证明 `scanErrorMeasure_antitone_of_refines`（直接测度版，非 PMF 桥接）
-- 证明 `prefixScanErrorMeasure_antitone`（前缀版本）
-- 对应论文 Corollary 3.1
+#### 计划 8：golden-mean 邻接计数与 Fibonacci 递推验证
 
-#### 计划 5：测度 cell 质量求和恒等式
+- 定义 `goldenMeanAdjCount : Bool → Bool → Nat`（2×2 邻接计数函数）
+- 证明行和给出 X m 的基数递推 |X(m+2)| = |X(m+1)| + |X(m)|（已有 `card_recurrence`）
+- 证明邻接计数满足无 11 约束
+- 对应论文 subsec__folding-fibonacci-stable-syntax
 
-- 证明 `cellEventMeasure_sum_eq_measure_event`（MeasurableSet + Measurable obs 假设下）
-- 证明 `cellComplMeasure_sum_eq_measure_compl`
-- 证明 `cellMeasure_sum_eq_measure_univ`
-- 对应论文 Proposition 3.2 分割恒等式的测度推广
+#### 计划 9：Rewrite 质量单调性
 
-#### 计划 6：POM fiber 乘数显式公式
+- 证明每一步 Rewrite.Step 不增加 rankLex（已有 `step_rankLex`）
+- 证明 `mass` 在 adj/dedupZero 步中严格下降
+- 证明 `moment` 在 dedup 步中严格下降（mass 不变时）
+- 对应论文 Fold Section 的终止分析
 
-- 定义 `fiberMultiplicity x : Nat := (X.fiber x).card`
-- 证明 fiber 乘数与 Zeckendorf 表示的关系
-- 证明 fiber 乘数对称/递推关系（若论文有明确结论）
-- 对应论文 POM Section fiber 谱
+#### 计划 10：scanError 对称差界
 
-#### 计划 7：stable 值等价与 Fin 同构
+- 证明 `scanError μ obs P ≤ scanError μ obs Q + μ(P △ Q)`（对称差不等式）
+  需要 MeasurableSet + Measurable obs
+- 建立 scan error 作为事件度量的连续性
+- 对应论文 SPG Section 的稳定性分析
 
-- 构造 `stableValueEquiv : X m ≃ Fin (paperFib (m + 1))`（使用 stableValue 界 + 注入性 + 基数）
-- 使用 `Fintype.equivFinOfCardEq`
-- 对应论文 Theorem 4.1 / Theorem 6.1 核心编码结论
+#### 计划 11：Defect 零条件
 
-#### 计划 8：golden-mean 转移矩阵与特征值
+- 证明 `localDefect η = 0 ↔ Fold(truncate η) = restrict(Fold η)`
+  （零缺陷等价于 Fold 与 restrict 可交换）
+- 证明全零 defect 等价于 Fold 的精确可交换性
+- 对应论文 Defect Section 的基本刻画
 
-- 定义 `transferMatrix : Matrix (Fin 2) (Fin 2) ℕ`
-- 证明其特征多项式为 `x² - x - 1`
-- 证明 Perron-Frobenius 维度为 φ
-- 对应论文 subsec__folding-fibonacci-stable-syntax 中的 fusion ring 结论
+#### 计划 12：prefix 事件嵌套性
 
-#### 计划 9：Rewrite 步数上界
-
-- 证明从任意 `DigitCfg` 出发到达不可约终端的 Rewrite 步数的显式上界
-- 证明 `moment` 或 `mass` 在每一步严格下降
-- 对应论文 Fold Section 的终止复杂度分析
-
-#### 计划 10：scan error 子模性 / 格结构
-
-- 证明 `scanError μ obs (P ∩ Q) + scanError μ obs (P ∪ Q) ≤ scanError μ obs P + scanError μ obs Q`
-  （子模性，若成立——需验证）
-- 或证明等价的格单调性结论
-- 对应论文 SPG Section 的误差格结构
-
-#### 计划 11：Defect 的 Fibonacci 周期性
-
-- 证明 `localDefect` 在特定 Fibonacci 分辨率下的周期性或重现性
-- 建立 defect 与 Zeckendorf 进位的联系
-- 对应论文 Defect Section 的递推关系
-
-#### 计划 12：前缀 σ-代数非扩张
-
-- 定义 `prefixSigmaAlgebra m` 作为前缀可测集
-- 证明 `prefixSigmaAlgebra (m+1) ⊆ prefixSigmaAlgebra m`（非扩张 / 单调递减）
-- 对应论文 sec__recursive-addressing 中的 Proposition
+- 证明 `prefixDetermined s m → prefixDetermined s (m + k)`
+  （前缀确定性对更粗分辨率封闭）
+- 证明 `prefixEvent h₁ A ⊆ prefixEvent h₂ B` 条件的刻画
+- 对应论文 sec__recursive-addressing 中的前缀单调性
 
 ## 12. 直接执行顺序
 

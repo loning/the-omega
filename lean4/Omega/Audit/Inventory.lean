@@ -102,6 +102,14 @@ def phaseOneTargets : List String :=
   , "SPG measure boundary cylinder count complement symmetry"
   , "SPG measure prefix boundary cells complement symmetry"
   , "SPG measure prefix boundary cylinder count complement symmetry"
-  , "frontier complement symmetry wrappers (discrete + measure)" ]
+  , "frontier complement symmetry wrappers (discrete + measure)"
+  , "stableValue ofNat inverse and modular round-trip"
+  , "stable addition monoid structure (zero, comm, assoc)"
+  , "fiber multiplicity definition and partition sum"
+  , "PMF total mass identity and Bayes half-bound"
+  , "measure observable cell infrastructure (measurable, disjoint, cover)"
+  , "measure cell mass sum identities"
+  , "direct measure observation refinement monotonicity"
+  , "frontier wrappers for plans 1-7" ]
 
 end Omega.Audit

@@ -1153,6 +1153,48 @@ theorem cellMeasure_sum_eq_total [MeasurableSpace α] [Fintype β]
     ∑ b, SPG.cellMeasure μ obs b = μ Set.univ :=
   SPG.cellMeasure_sum μ obs hObs
 
+/-! ### Paper Defect Section: Zero Defect Characterization -/
+
+/-- Local defect vanishes iff Fold commutes with restriction (paper Defect characterization). -/
+theorem localDefect_zero_iff_fold_commutes (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔ Fold (truncate η) = X.restrict (Fold η) :=
+  localDefect_eq_zero_iff_fold_commutes η
+
+/-- Global defect vanishes iff Fold commutes with restriction across resolutions. -/
+theorem globalDefect_zero_iff (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = zeroWord m ↔
+      Fold (restrictWord h ω) = X.restrictLE h (Fold ω) :=
+  globalDefect_eq_zero_iff h ω
+
+/-- Non-curvature is equivalent to Fold-restriction commutativity. -/
+theorem non_curvature_iff_commutes (η : Word (m + 1)) :
+    ¬ localCurvature η ↔ Fold (truncate η) = X.restrict (Fold η) :=
+  not_localCurvature_iff_fold_commutes η
+
+/-! ### Paper Recursive Addressing: Prefix Determination -/
+
+/-- Prefix determination is monotone in depth (paper prefix non-expansion). -/
+theorem prefixDetermined_monotone {s : Set SPG.OmegaInfinity} {m n : Nat}
+    (h : m ≤ n) (hs : SPG.PrefixDetermined s m) : SPG.PrefixDetermined s n :=
+  SPG.prefixDetermined_of_le h hs
+
+/-- Prefix-determined sets form a Boolean algebra (intersection). -/
+theorem prefixDetermined_inter_closure {s t : Set SPG.OmegaInfinity} {m : Nat}
+    (hs : SPG.PrefixDetermined s m) (ht : SPG.PrefixDetermined t m) :
+    SPG.PrefixDetermined (s ∩ t) m :=
+  SPG.prefixDetermined_inter hs ht
+
+/-- Prefix-determined sets form a Boolean algebra (union). -/
+theorem prefixDetermined_union_closure {s t : Set SPG.OmegaInfinity} {m : Nat}
+    (hs : SPG.PrefixDetermined s m) (ht : SPG.PrefixDetermined t m) :
+    SPG.PrefixDetermined (s ∪ t) m :=
+  SPG.prefixDetermined_union hs ht
+
+/-- Prefix-determined sets form a Boolean algebra (complement). -/
+theorem prefixDetermined_compl_closure {s : Set SPG.OmegaInfinity} {m : Nat}
+    (hs : SPG.PrefixDetermined s m) : SPG.PrefixDetermined sᶜ m :=
+  SPG.prefixDetermined_compl hs
+
 end
 
 end Omega.Frontier

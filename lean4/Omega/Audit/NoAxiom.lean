@@ -482,6 +482,32 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.prefixBoundaryCylinderCount_compl_symmetric_measure"
   , "Omega.Frontier.cellEventMeasure_le_cell"
   , "Omega.Frontier.cellComplMeasure_le_cell"
-  , "Omega.Frontier.cellPartition_identity_measure" ]
+  , "Omega.Frontier.cellPartition_identity_measure"
+  -- Plans 2-6: stable arithmetic, measure monotonicity, fiber multiplicity
+  , "Omega.X.stableValue_ofNat_lt"
+  , "Omega.X.stableValue_ofNat_mod"
+  , "Omega.X.stableZero"
+  , "Omega.X.stableValue_stableZero"
+  , "Omega.X.stableAdd_zero_left"
+  , "Omega.X.stableAdd_zero_right"
+  , "Omega.X.stableAdd_assoc"
+  , "Omega.X.fiberMultiplicity"
+  , "Omega.X.fiberMultiplicity_pos"
+  , "Omega.X.fiberMultiplicity_sum_eq_pow"
+  , "Omega.SPG.PMF_sum_coe_eq_one"
+  , "Omega.SPG.two_mul_scanError_le_one"
+  , "Omega.SPG.setMass_add_setMass_compl"
+  , "Omega.SPG.observableCell_measurableSet"
+  , "Omega.SPG.observableCell_pairwiseDisjoint"
+  , "Omega.SPG.observableCell_iUnion"
+  , "Omega.SPG.cellEventMeasure_sum"
+  , "Omega.SPG.cellComplMeasure_sum"
+  , "Omega.SPG.cellMeasure_sum"
+  , "Omega.SPG.cellEventMeasure_refines_sum_measure"
+  , "Omega.SPG.scanErrorMeasure_antitone_of_refines"
+  , "Omega.Frontier.scanError_bayes_half_bound"
+  , "Omega.Frontier.scanError_measure_antitone_direct"
+  , "Omega.Frontier.fiberMultiplicity_positive"
+  , "Omega.Frontier.fiberMultiplicity_sum" ]
 
 end Omega.Audit

@@ -91,4 +91,41 @@ theorem prefixDetermined_iff_exists_fromWordSet (s : Set OmegaInfinity) (m : Nat
   · rintro ⟨A, rfl⟩
     exact prefixDetermined_fromWordSet A
 
+/-- Prefix determination is monotone: if determined at depth m, also at depth m+k. -/
+theorem prefixDetermined_of_le {s : Set OmegaInfinity} {m n : Nat}
+    (h : m ≤ n) (hs : PrefixDetermined s m) : PrefixDetermined s n := by
+  intro x y hxy
+  have hPrefix : prefixWord x m = prefixWord y m := by
+    funext i
+    have := congr_fun hxy ⟨i.1, Nat.lt_of_lt_of_le i.2 h⟩
+    exact this
+  exact hs hPrefix
+
+/-- Empty set is prefix-determined at every depth. -/
+theorem prefixDetermined_empty (m : Nat) : PrefixDetermined ∅ m :=
+  fun _x _y _h => ⟨False.elim, False.elim⟩
+
+/-- Universal set is prefix-determined at every depth. -/
+theorem prefixDetermined_univ (m : Nat) : PrefixDetermined Set.univ m :=
+  fun _x _y _h => ⟨fun _ => trivial, fun _ => trivial⟩
+
+/-- Complement of a prefix-determined set is prefix-determined. -/
+theorem prefixDetermined_compl {s : Set OmegaInfinity} {m : Nat}
+    (hs : PrefixDetermined s m) : PrefixDetermined sᶜ m :=
+  fun _x _y h => ⟨fun hx hy => hx ((hs h).2 hy), fun hx hy => hx ((hs h).1 hy)⟩
+
+/-- Intersection of prefix-determined sets is prefix-determined. -/
+theorem prefixDetermined_inter {s t : Set OmegaInfinity} {m : Nat}
+    (hs : PrefixDetermined s m) (ht : PrefixDetermined t m) :
+    PrefixDetermined (s ∩ t) m :=
+  fun _x _y h => ⟨fun ⟨hxs, hxt⟩ => ⟨(hs h).1 hxs, (ht h).1 hxt⟩,
+    fun ⟨hys, hyt⟩ => ⟨(hs h).2 hys, (ht h).2 hyt⟩⟩
+
+/-- Union of prefix-determined sets is prefix-determined. -/
+theorem prefixDetermined_union {s t : Set OmegaInfinity} {m : Nat}
+    (hs : PrefixDetermined s m) (ht : PrefixDetermined t m) :
+    PrefixDetermined (s ∪ t) m :=
+  fun _x _y h => ⟨fun hx => hx.elim (fun h' => Or.inl ((hs h).1 h')) (fun h' => Or.inr ((ht h).1 h')),
+    fun hy => hy.elim (fun h' => Or.inl ((hs h).2 h')) (fun h' => Or.inr ((ht h).2 h'))⟩
+
 end Omega.SPG

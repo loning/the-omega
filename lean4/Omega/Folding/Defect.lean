@@ -203,4 +203,48 @@ theorem globalDefect_eq_defectChain (m k : Nat) (ω : Word (m + k)) :
         _ = defectChain m (k + 1) ω := by
               rfl
 
+/-- Two words are equal iff their xor is the zero word. -/
+theorem xorWord_eq_zero_iff {a b : Word m} :
+    xorWord a b = zeroWord m ↔ a = b := by
+  constructor
+  · intro h
+    funext i
+    have hi := congr_fun h i
+    simp [xorWord, zeroWord] at hi
+    cases ha : a i <;> cases hb : b i <;> simp_all
+  · intro h
+    subst h
+    exact xorWord_self a
+
+/-- Local defect vanishes iff Fold commutes with truncation/restriction at the raw word level. -/
+theorem localDefect_eq_zero_iff (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔
+      (Fold (truncate η)).1 = (X.restrict (Fold η)).1 := by
+  exact xorWord_eq_zero_iff
+
+/-- Local defect vanishes iff Fold commutes with restriction at the stable level. -/
+theorem localDefect_eq_zero_iff_fold_commutes (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔
+      Fold (truncate η) = X.restrict (Fold η) := by
+  rw [localDefect_eq_zero_iff]
+  exact ⟨fun h => Subtype.ext h, fun h => congr_arg Subtype.val h⟩
+
+/-- Global defect vanishes iff Fold commutes with restriction across all scales. -/
+theorem globalDefect_eq_zero_iff (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = zeroWord m ↔
+      Fold (restrictWord h ω) = X.restrictLE h (Fold ω) := by
+  rw [globalDefect]
+  exact ⟨fun h => Subtype.ext (xorWord_eq_zero_iff.mp h),
+    fun h => xorWord_eq_zero_iff.mpr (congr_arg Subtype.val h)⟩
+
+/-- Zero local defect implies the nonzero defect indicator is false. -/
+theorem localCurvature_iff_defect_ne_zero (η : Word (m + 1)) :
+    localCurvature η ↔ localDefect η ≠ zeroWord m :=
+  Iff.rfl
+
+/-- Non-curvature (zero defect) implies Fold-restriction commutativity. -/
+theorem not_localCurvature_iff_fold_commutes (η : Word (m + 1)) :
+    ¬ localCurvature η ↔ Fold (truncate η) = X.restrict (Fold η) := by
+  rw [localCurvature, not_not, localDefect_eq_zero_iff_fold_commutes]
+
 end Omega
