@@ -10,6 +10,7 @@ import Omega.SPG.Clopen
 import Omega.SPG.ScanErrorDiscrete
 import Omega.SPG.ScanErrorMeasure
 import Omega.Frontier.Conditional
+import Omega.Folding.CarryDefect
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -227,6 +228,16 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.stableValue_ofNat_roundtrip
   #print axioms Omega.Frontier.fold_ofNat_roundtrip
   #print axioms Omega.Frontier.cellEventMass_add_cellComplMass_partition
+  -- Carry Defect (Plan 3)
+  #print axioms Omega.X.paperFib_add_fib_eq
+  #print axioms Omega.X.fib_sub_eq
+  #print axioms Omega.X.fib_lt_paperFib_succ
+  #print axioms Omega.X.stableValue_restrict_stableAdd_carry
+  #print axioms Omega.X.restrict_stableAdd_carry_defect
+  #print axioms Omega.X.carryElement_m6_value
+  #print axioms Omega.X.carryElement_m5_value
+  #print axioms Omega.X.carryElement_m7_value
+  #print axioms Omega.X.carryElement_ne_zero
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -440,6 +451,16 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.stableValue_ofNat_roundtrip"
   , "Omega.Frontier.fold_ofNat_roundtrip"
   , "Omega.Frontier.cellEventMass_add_cellComplMass_partition"
+  -- Carry Defect (Plan 3)
+  , "Omega.X.paperFib_add_fib_eq"
+  , "Omega.X.fib_sub_eq"
+  , "Omega.X.fib_lt_paperFib_succ"
+  , "Omega.X.stableValue_restrict_stableAdd_carry"
+  , "Omega.X.restrict_stableAdd_carry_defect"
+  , "Omega.X.carryElement_m6_value"
+  , "Omega.X.carryElement_m5_value"
+  , "Omega.X.carryElement_m7_value"
+  , "Omega.X.carryElement_ne_zero"
   -- Stable value bound & arithmetic
   , "Omega.stableValue_lt_paperFib_succ"
   , "Omega.X.stableValueFin"

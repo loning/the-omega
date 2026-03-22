@@ -474,10 +474,10 @@ theorem X11_is_field : Nat.Prime (paperFib 12) := X.F12_is_prime
 
 /-! #### Carry Element & Modular Projection -/
 
-/-- Carry element value when in range. -/
-theorem carry_element_val (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
-    stableValue (X.carryElement m) = Nat.fib (m + 2) :=
-  X.carryElement_value hm
+/-- Carry element value: stableValue(χ^car_m) = Nat.fib m. -/
+theorem carry_element_val :
+    stableValue (X.carryElement m) = Nat.fib m :=
+  X.carryElement_value
 
 /-- Modular projection preserves zero. -/
 theorem modular_preserves_zero :

@@ -179,16 +179,20 @@ theorem stableValue_mul_mod (x y : X m) :
       (stableValue x * stableValue y) % paperFib (m + 1) := by
   rw [stableValue_stableMul, Nat.mod_mod_of_dvd _ (dvd_refl _)]
 
-/-- The carry element at resolution m: χ^car_m = ofNat m (fib(m+2)). -/
+/-- The carry element at resolution m: χ^car_m = s_m(F_m) = ofNat m (Nat.fib m).
+    Paper notation: χ^car_m is the unique element carrying the carry defect. -/
 noncomputable def carryElement (m : Nat) : X m :=
-  X.ofNat m (Nat.fib (m + 2))
+  X.ofNat m (Nat.fib m)
 
-/-- The carry element value: stableValue(χ^car_m) = fib(m+2) mod F_{m+2}.
-    Note: fib(m+2) = paperFib(m+1), so this wraps to fib(m+2) when < F_{m+2},
-    which holds for m ≥ 1 since fib(m+2) < fib(m+3) = paperFib(m+2). -/
-theorem stableValue_carryElement (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
-    stableValue (carryElement m) = Nat.fib (m + 2) :=
-  stableValue_ofNat_lt _ hm
+/-- The carry element value: stableValue(χ^car_m) = Nat.fib m.
+    This holds because Nat.fib m < paperFib(m+1) = Nat.fib(m+2) for all m. -/
+theorem stableValue_carryElement :
+    stableValue (carryElement m) = Nat.fib m :=
+  stableValue_ofNat_lt _ (by
+    show Nat.fib m < Nat.fib (m + 2)
+    have h : Nat.fib (m + 2) = Nat.fib m + Nat.fib (m + 1) := Nat.fib_add_two
+    have hpos : 0 < Nat.fib (m + 1) := Nat.fib_pos.mpr (by omega)
+    omega)
 
 /-- The carry indicator is 0 or 1. -/
 theorem carryIndicator_le_one (x y : X (m + 1)) :
@@ -831,10 +835,10 @@ theorem F12_is_prime : Nat.Prime (paperFib 12) := by native_decide
 theorem card_X_thirteen : Fintype.card (X 13) = 610 := by
   rw [X.card_eq_paperFib_succ]; native_decide
 
-/-- The carry element value when in range. -/
-theorem carryElement_value (hm : Nat.fib (m + 2) < paperFib (m + 1)) :
-    stableValue (carryElement m) = Nat.fib (m + 2) :=
-  stableValue_carryElement hm
+/-- The carry element value (named variant). -/
+theorem carryElement_value :
+    stableValue (carryElement m) = Nat.fib m :=
+  stableValue_carryElement
 
 /-- modularProject preserves the zero element. -/
 theorem modularProject_preserves_zero :
