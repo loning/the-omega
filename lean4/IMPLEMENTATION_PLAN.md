@@ -427,40 +427,123 @@ Omega/Audit/NoAxiom.lean
 11. 显式 golden-mean sofic 表示
 12. frontier 当前范围下的 assumptions / conditional / conjectures / certificates
 
-### 11.2 当前活跃 backlog
+### 11.2 已闭环新增 (Phase 9–10)
 
-从现在起的活跃 backlog 是：
+13. Word 基数 `Word_card`: |Word m| = 2^m
+14. fiber 分割 `fiber_card_sum`: Σ|fiber(x)| = |Word m|
+15. fiber 基数等式 `fiber_card_sum_eq_pow`: Σ|fiber(x)| = 2^m
+16. 离散/测度补对称（purity, boundary cells, boundary cylinder count, prefix 版本）
+17. 测度 cell 单调界（cellEventMeasure ≤ cellMeasure, cellComplMeasure ≤ cellMeasure）
+18. 测度 cell 分割恒等式（MeasurableSet 条件下 event + compl = total）
+19. stableValue Fibonacci 界 `stableValue_lt_paperFib_succ`
+20. stableValueFin 与 stableValueFin_injective
+21. 稳定加法定义与交换律 `stableAdd`, `stableAdd_comm`
+22. Fibonacci 基础设施（paperFib_pos, paperFib_mono, paperFib_le_succ 等）
+23. 离散质量分割 `setMass_add_setMass_compl`
 
-1. `SPG` 条件期望 / Tanaka-Stokes 型表达
-2. 更强的 prefix-measure conditional wrappers
-3. 更多论文后半段对应的 conditional theorem
-4. 在不引入重型理论的前提下，寻找下一批可稳定落 Lean 的远层结果
+### 11.3 当前活跃 backlog：12 条未来计划
+
+以下 12 条为按优先级排列的下一步具体工作，每条均应在单轮内完成并通过 `lake build`。
+
+#### 计划 1：PMF 总质量与 Bayes 半界
+
+- 证明 `∑ x, (μ x : ENNReal) = 1`（使用 `PMF.tsum_coe` 与 `tsum_fintype`）
+- 证明 `two_mul_scanError_le_one`：2 · ε(P; μ) ≤ 1
+- 对应论文 Proposition 3.x Bayes 最优界
+
+#### 计划 2：stableValue 满射性与 ofNat 逆
+
+- 证明 `stableValue (X.ofNat m n) = n` 当 `n < paperFib(m+1)`
+- 建立 stableValue 与 Fin(paperFib(m+1)) 的等价
+- 对应论文 Theorem 6.1 双射性
+
+#### 计划 3：稳定加法代数结构
+
+- 证明 `stableAdd_assoc`（结合律）
+- 证明 `stableAdd_zero_left` / `stableAdd_zero_right`（零元）
+- 证明 `stableAdd_cancel`（消去律，若成立）
+- 对应论文 Section 6 有限稳定算术
+
+#### 计划 4：直接测度级观测细化单调性
+
+- 添加 `Measurable obs₂` 和 `MeasurableSet P` 假设
+- 证明 `scanErrorMeasure_antitone_of_refines`（直接测度版，非 PMF 桥接）
+- 证明 `prefixScanErrorMeasure_antitone`（前缀版本）
+- 对应论文 Corollary 3.1
+
+#### 计划 5：测度 cell 质量求和恒等式
+
+- 证明 `cellEventMeasure_sum_eq_measure_event`（MeasurableSet + Measurable obs 假设下）
+- 证明 `cellComplMeasure_sum_eq_measure_compl`
+- 证明 `cellMeasure_sum_eq_measure_univ`
+- 对应论文 Proposition 3.2 分割恒等式的测度推广
+
+#### 计划 6：POM fiber 乘数显式公式
+
+- 定义 `fiberMultiplicity x : Nat := (X.fiber x).card`
+- 证明 fiber 乘数与 Zeckendorf 表示的关系
+- 证明 fiber 乘数对称/递推关系（若论文有明确结论）
+- 对应论文 POM Section fiber 谱
+
+#### 计划 7：stable 值等价与 Fin 同构
+
+- 构造 `stableValueEquiv : X m ≃ Fin (paperFib (m + 1))`（使用 stableValue 界 + 注入性 + 基数）
+- 使用 `Fintype.equivFinOfCardEq`
+- 对应论文 Theorem 4.1 / Theorem 6.1 核心编码结论
+
+#### 计划 8：golden-mean 转移矩阵与特征值
+
+- 定义 `transferMatrix : Matrix (Fin 2) (Fin 2) ℕ`
+- 证明其特征多项式为 `x² - x - 1`
+- 证明 Perron-Frobenius 维度为 φ
+- 对应论文 subsec__folding-fibonacci-stable-syntax 中的 fusion ring 结论
+
+#### 计划 9：Rewrite 步数上界
+
+- 证明从任意 `DigitCfg` 出发到达不可约终端的 Rewrite 步数的显式上界
+- 证明 `moment` 或 `mass` 在每一步严格下降
+- 对应论文 Fold Section 的终止复杂度分析
+
+#### 计划 10：scan error 子模性 / 格结构
+
+- 证明 `scanError μ obs (P ∩ Q) + scanError μ obs (P ∪ Q) ≤ scanError μ obs P + scanError μ obs Q`
+  （子模性，若成立——需验证）
+- 或证明等价的格单调性结论
+- 对应论文 SPG Section 的误差格结构
+
+#### 计划 11：Defect 的 Fibonacci 周期性
+
+- 证明 `localDefect` 在特定 Fibonacci 分辨率下的周期性或重现性
+- 建立 defect 与 Zeckendorf 进位的联系
+- 对应论文 Defect Section 的递推关系
+
+#### 计划 12：前缀 σ-代数非扩张
+
+- 定义 `prefixSigmaAlgebra m` 作为前缀可测集
+- 证明 `prefixSigmaAlgebra (m+1) ⊆ prefixSigmaAlgebra m`（非扩张 / 单调递减）
+- 对应论文 sec__recursive-addressing 中的 Proposition
 
 ## 12. 直接执行顺序
 
 如果现在继续推进，建议严格按下列顺序：
 
-1. 先从 `SPG/ScanErrorMeasure.lean` 找下一批稳定 theorem
-2. 再把它们包装到 `Frontier/Conditional.lean`
-3. 再同步 `Audit/*`
+1. 先执行计划 1（PMF 总质量与 Bayes 半界）和计划 2（stableValue 满射性）
+2. 再执行计划 3（稳定加法代数结构）和计划 7（Fin 同构）
+3. 再执行计划 4-5（测度级单调性与求和恒等式）
 4. 每一轮都先验收 `lake build`
-5. 只有当 `SPG` 和 `Conditional` 两线都没有短路径时，才评估是否进入论文更远层
+5. 计划 6-12 可按可行性灵活调整顺序
 
 ## 13. 结论
 
-本项目已经从“是否能建起无公理 Lean 基线”转入“如何持续吸收原论文结果”的阶段。
+本项目已经从”是否能建起无公理 Lean 基线”转入”如何持续吸收原论文结果”的阶段。
 
-当前最重要的事实不是“还没做什么”，而是：
+当前阶段的关键进展：
 
-- 离散核心已经稳定
-- 重写与正规形主线已经稳定
-- `SPG` 的组合与当前测度层已经稳定
-- `Frontier` 包装层已经开始成为论文叙述的真实接口层
+- 离散核心已经稳定（Word, No11, X_m, Fold, Rewrite, Fiber, Defect, InverseLimit）
+- 重写与正规形主线已经稳定（终止、合流、唯一性闭环）
+- `SPG` 的组合与当前测度层已经稳定（含补对称性、cell 界、分割恒等式）
+- `Frontier` 包装层已经成为论文叙述的真实接口层
+- **新增**：stableValue Fibonacci 界与稳定加法为有限算术打开入口
+- **新增**：fiber 分割恒等式 Σ|fiber(x)| = 2^m 建立纤维组合基线
 
-因此，下一阶段不应重回基础层反复打磨，而应围绕：
-
-- `SPG` 更强测度表达
-- `Frontier/Conditional` 更强论文式包装
-- 远层章节中最容易收敛的下一批结果
-
-持续推进。
+下一阶段应围绕 12 条具体计划持续推进。
