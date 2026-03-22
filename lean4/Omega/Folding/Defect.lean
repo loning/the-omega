@@ -300,4 +300,16 @@ theorem globalDefect_xor_self (h : m ≤ n) (ω : Word n) :
   xorWord_self (globalDefect h ω)
 
 
+/-- The xor word operation is involutive: xor(xor(a,b),b) = a. -/
+theorem xorWord_xor_cancel_right (a b : Word m) :
+    xorWord (xorWord a b) b = a := by
+  funext i; simp only [xorWord]; cases a i <;> cases b i <;> rfl
+
+/-- Defect chain at k+1 unfolds to local defect xor'd with the chain at k. -/
+theorem defectChain_succ (m k : Nat) (ω : Word (m + k + 1)) :
+    defectChain m (k + 1) ω =
+      xorWord (restrictWord (Nat.le_add_right m k) (localDefect ω))
+        (defectChain m k (truncate ω)) :=
+  rfl
+
 end Omega

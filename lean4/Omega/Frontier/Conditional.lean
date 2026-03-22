@@ -2125,6 +2125,35 @@ theorem scan_error_le_compl [MeasurableSpace α] [Fintype β]
     SPG.scanErrorMeasure μ obs P ≤ μ Pᶜ :=
   SPG.scanErrorMeasure_le_compl_measure μ obs hObs P hP
 
+/-! ### Scan Error Cell-Level Properties -/
+
+/-- When all cells are pure, scan error vanishes. -/
+theorem all_pure_zero_error {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α)
+    (h : ∀ b, SPG.cellEventMass μ obs P b = 0 ∨ SPG.cellComplMass μ obs P b = 0) :
+    SPG.scanError μ obs P = 0 :=
+  SPG.scanError_zero_of_all_pure μ obs P h
+
+/-- Cell event mass equals full cell mass for members of the observable set. -/
+theorem cell_mass_for_member {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (A : Set β) (b : β) (hb : b ∈ A) :
+    SPG.cellEventMass μ obs (SPG.observableEvent obs A) b = SPG.cellMass μ obs b :=
+  SPG.cellEventMass_of_mem_observableEvent μ obs A b hb
+
+/-! ### Defect Chain Recursion -/
+
+/-- The xor operation is involutive: (a ⊕ b) ⊕ b = a. -/
+theorem xor_involution (a b : Word m) :
+    xorWord (xorWord a b) b = a :=
+  xorWord_xor_cancel_right a b
+
+/-- Defect chain unfolds recursively: chain(k+1) = localDefect ⊕ chain(k). -/
+theorem defect_chain_recursion (m k : Nat) (ω : Word (m + k + 1)) :
+    defectChain m (k + 1) ω =
+      xorWord (restrictWord (Nat.le_add_right m k) (localDefect ω))
+        (defectChain m k (truncate ω)) :=
+  defectChain_succ m k ω
+
 end
 
 end Omega.Frontier

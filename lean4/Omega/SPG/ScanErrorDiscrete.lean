@@ -805,6 +805,34 @@ theorem prefixScanError_step (μ : PMF (Word n)) (h₁ : m ≤ n) (h₂ : m + 1 
     prefixScanError μ h₂ P ≤ prefixScanError μ h₁ P :=
   prefixScanError_antitone μ h₁ h₂ (Nat.le_succ m) P
 
+/-- Observable purity of a singleton cell: if all mass is in P or all is outside. -/
+theorem observablePure_singleton {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) (b : β)
+    (h : cellEventMass μ obs P b = 0 ∨ cellComplMass μ obs P b = 0) :
+    min (cellEventMass μ obs P b) (cellComplMass μ obs P b) = 0 := by
+  rcases h with h | h
+  · simp [h]
+  · simp [h]
+
+/-- When all cells are pure, scan error is zero. -/
+theorem scanError_zero_of_all_pure {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α)
+    (h : ∀ b, cellEventMass μ obs P b = 0 ∨ cellComplMass μ obs P b = 0) :
+    scanError μ obs P = 0 :=
+  scanError_eq_zero_of_observablePure μ obs P h
+
+/-- Cell event mass for an observable event where b ∈ A is the full cell mass. -/
+theorem cellEventMass_of_mem_observableEvent {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (A : Set β) (b : β) (hb : b ∈ A) :
+    cellEventMass μ obs (observableEvent obs A) b = cellMass μ obs b :=
+  cellEventMass_observableEvent_of_mem μ obs A b hb
+
+/-- Cell event mass for an observable event where b ∉ A is zero. -/
+theorem cellEventMass_of_not_mem_observableEvent {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (A : Set β) (b : β) (hb : b ∉ A) :
+    cellEventMass μ obs (observableEvent obs A) b = 0 :=
+  cellEventMass_observableEvent_of_not_mem μ obs A b hb
+
 end
 
 end Omega.SPG
