@@ -828,6 +828,28 @@ theorem Fold_unique_target (w : Word m) : ∃! x : X m, Fold w = x :=
 theorem stableNeg_involutive : Function.Involutive (stableNeg (m := m)) :=
   stableNeg_neg_eq
 
+/-- stableNeg is injective. -/
+theorem stableNeg_injective : Function.Injective (stableNeg (m := m)) :=
+  stableNeg_involutive.injective
+
+/-- stableNeg is surjective. -/
+theorem stableNeg_surjective : Function.Surjective (stableNeg (m := m)) :=
+  stableNeg_involutive.surjective
+
+/-- stableNeg is bijective. -/
+theorem stableNeg_bijective : Function.Bijective (stableNeg (m := m)) :=
+  stableNeg_involutive.bijective
+
+/-- stableMul by zero annihilates on the right (named). -/
+theorem stableMul_annihilates_right (x : X m) :
+    stableMul x stableZero = stableZero :=
+  stableMul_zero_right x
+
+/-- stableMul by zero annihilates on the left (named). -/
+theorem stableMul_annihilates_left (x : X m) :
+    stableMul stableZero x = stableZero :=
+  stableMul_zero_left x
+
 end
 
 end X
