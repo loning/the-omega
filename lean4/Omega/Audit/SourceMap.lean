@@ -1648,6 +1648,86 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.MaxFiber"
       leanName := "Omega.X.maxFiberMultiplicity_pos"
       phase := 12
+      status := .formalized }
+  -- Phase 13: ModularTower (Plan 4)
+  -- thm:pom-modular-tower → modularProject_eq_restrict, modularProject_stableAdd_carry,
+  --   stableValue_modularProject_stableMul, stableValue_restrict_stableMul,
+  --   restrict_comp_restrict, tower_compatible, restrict_tower_transitivity,
+  --   modularProject_stableZero, stableValue_modularProject_stableAdd_carry,
+  --   stableValue_modularProject_compose, carryIndicator_comm,
+  --   modularProject_tower_surjective (Omega/Folding/ModularTower.lean)
+  -- 状态: 已形式化, 审核通过 2026-03-22
+  , { label := "thm:pom-modular-project-eq-restrict"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.modularProject_eq_restrict"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-modular-project-carry-defect"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.modularProject_stableAdd_carry"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-modular-project-mul-value"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.stableValue_modularProject_stableMul"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-restrict-mul-value"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.stableValue_restrict_stableMul"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-restrict-comp-restrict"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_comp_restrict"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-tower-compatible"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.tower_compatible"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-restrict-tower-transitivity"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_tower_transitivity"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-modular-project-zero"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.modularProject_stableZero"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-modular-project-add-carry-value"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.stableValue_modularProject_stableAdd_carry"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-modular-project-compose-value"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.stableValue_modularProject_compose"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-carry-indicator-comm"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.carryIndicator_comm"
+      phase := 13
+      status := .formalized }
+  , { label := "thm:pom-modular-tower-surjective"
+      sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.modularProject_tower_surjective"
+      phase := 13
       status := .formalized } ]
 
 end Omega.Audit

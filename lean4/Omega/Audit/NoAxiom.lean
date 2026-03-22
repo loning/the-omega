@@ -11,6 +11,7 @@ import Omega.SPG.ScanErrorDiscrete
 import Omega.SPG.ScanErrorMeasure
 import Omega.Frontier.Conditional
 import Omega.Folding.CarryDefect
+import Omega.Folding.ModularTower
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -248,6 +249,24 @@ Run these commands manually during audit:
   #print axioms Omega.X.fib_component_fusion_gain
   #print axioms Omega.X.fib_component_fusion_gain_lower
   #print axioms Omega.X.fib_component_fusion_gain_ge
+  -- MaxFiber (Plan 8 partial): def:pom-top-fiber-spectrum, thm:pom-max-fiber (partial)
+  #print axioms Omega.X.maxFiberMultiplicity
+  #print axioms Omega.X.maxFiberMultiplicity_achieved
+  #print axioms Omega.X.fiberMultiplicity_le_max
+  #print axioms Omega.X.maxFiberMultiplicity_pos
+  -- ModularTower (Plan 4): thm:pom-modular-tower
+  #print axioms Omega.X.modularProject_eq_restrict
+  #print axioms Omega.X.modularProject_stableAdd_carry
+  #print axioms Omega.X.stableValue_modularProject_stableMul
+  #print axioms Omega.X.stableValue_restrict_stableMul
+  #print axioms Omega.X.restrict_comp_restrict
+  #print axioms Omega.X.tower_compatible
+  #print axioms Omega.X.restrict_tower_transitivity
+  #print axioms Omega.X.modularProject_stableZero
+  #print axioms Omega.X.stableValue_modularProject_stableAdd_carry
+  #print axioms Omega.X.stableValue_modularProject_compose
+  #print axioms Omega.X.carryIndicator_comm
+  #print axioms Omega.X.modularProject_tower_surjective
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

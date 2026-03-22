@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~11,643 |
-| 定理/定义数 | 1,019 |
+| 总行数 | ~11,766 |
+| 定理/定义数 | 1,031 |
 | 论文接口包装 | 312 |
 | 文件数 | 28 |
 | 公理数 | 0 |
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, CarryDefect, FiberFusion) | 12 | ~274 | 92% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, CarryDefect, FiberFusion, ModularTower) | 13 | ~286 | 95% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic) | 2 | ~16 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -30,6 +30,7 @@
 **SPG 扫描误差**：离散 + 测度双版本, Bayes 半界, 观测细化单调性, 补对称性
 **fiber 结构**：分割和 = 2^m, multiplicity, 不相交性
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
+**modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性；闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
@@ -42,13 +43,13 @@
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 9 | 90% | 中 |
-| 新生算术 | 21 | 10 | 48% | 高 |
+| 新生算术 | 21 | 12 | 57% | 高 |
 | POM | 106 | 14 | 13% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~52** | **~13%** | - |
+| **总计** | **394** | **~54** | **~14%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 1006 个 Lean 定理中，约 312 个是论文接口包装，约 46 个直接对应论文中的编号定理。
 
@@ -59,7 +60,7 @@
 1. **Zeckendorf 唯一性完整证明**：证明 `stableValue (X.ofNat m n) = n` 对所有 `n < F_{m+2}` 成立（已完成），进一步证明 Zeckendorf 表示的唯一性定理
 2. **稳定乘法的 Fibonacci 素数域**：当 `F_{m+2}` 为素数时构造 `X m` 上的乘法逆元
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
-4. **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链
+4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射）
 5. **Fibonacci 整除性**：证明 `F_m | F_{nm}` (Fibonacci 整除定理)
 6. **稳定类型同构的范畴化**：将 `stableValue` 升级为环同构证书
 
@@ -106,8 +107,8 @@
 
 ### 立即可执行（1-2 轮内完成）
 
-1. 计划 4（modular 映射塔）
-2. 计划 8（偶/奇分支纤维分离）
+1. 计划 8（最大纤维多重度闭式：$D_{2k}=F_{k+2}$, $D_{2k+1}=2F_{k+1}$）
+2. 计划 9（三纤维闭合形式）
 
 ### 短期可执行（3-5 轮内完成）
 
