@@ -2302,6 +2302,23 @@ theorem error_is_complement_symmetric {α β : Type*} [Fintype α] [Fintype β]
     SPG.scanError μ obs Pᶜ = SPG.scanError μ obs P :=
   SPG.error_complement_symmetry μ obs P
 
+/-! #### Defect Theory: Accumulated Commutativity Failure -/
+
+/-- Local defect characterizes one-step Fold commutativity (named). -/
+theorem local_defect_characterizes (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔ Fold (truncate η) = X.restrict (Fold η) :=
+  localDefect_characterizes_fold η
+
+/-- Global defect characterizes multi-step Fold commutativity (named). -/
+theorem global_defect_characterizes (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = zeroWord m ↔
+      Fold (restrictWord h ω) = X.restrictLE h (Fold ω) :=
+  globalDefect_accumulated h ω
+
+/-- xor is left-cancellative: a ⊕ b = a ⊕ c → b = c. -/
+theorem xor_left_cancel {a b c : Word m} (h : xorWord a b = xorWord a c) : b = c :=
+  xorWord_left_cancel h
+
 end
 
 end Omega.Frontier

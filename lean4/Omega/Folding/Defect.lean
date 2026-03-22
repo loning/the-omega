@@ -312,4 +312,21 @@ theorem defectChain_succ (m k : Nat) (ω : Word (m + k + 1)) :
         (defectChain m k (truncate ω)) :=
   rfl
 
+/-- The defect at adjacent resolutions characterizes Fold commutativity failure. -/
+theorem localDefect_characterizes_fold (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔ Fold (truncate η) = X.restrict (Fold η) :=
+  localDefect_eq_zero_iff_fold_commutes η
+
+/-- Global defect is the accumulated Fold commutativity failure across resolutions. -/
+theorem globalDefect_accumulated (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = zeroWord m ↔
+      Fold (restrictWord h ω) = X.restrictLE h (Fold ω) :=
+  globalDefect_eq_zero_iff h ω
+
+/-- xorWord is left-cancellative. -/
+theorem xorWord_left_cancel {a b c : Word m} (h : xorWord a b = xorWord a c) : b = c := by
+  have := congr_arg (xorWord a) h
+  simp only [← xorWord_assoc, xorWord_self, xorWord_zero_left] at this
+  exact this
+
 end Omega
