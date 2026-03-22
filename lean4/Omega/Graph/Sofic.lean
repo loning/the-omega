@@ -147,4 +147,14 @@ theorem stable_word_is_accepted (x : X m) :
     AcceptsWord goldenMeanGraph false x.1 :=
   acceptsWord_of_stable x
 
+/-- The golden-mean graph has no self-loop at state true (no edge true → true). -/
+theorem goldenMean_no_self_loop_true :
+    ¬ goldenMeanGraph.edge true true true :=
+  goldenMean_no_edge_tt true
+
+/-- From state false, both transitions are valid. -/
+theorem goldenMean_from_false_complete (b : Bool) :
+    goldenMeanGraph.edge false b b :=
+  goldenMean_transfer_false b
+
 end Omega.Graph

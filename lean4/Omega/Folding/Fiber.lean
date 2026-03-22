@@ -811,6 +811,15 @@ theorem word_in_unique_fiber (w : Word m) :
   classical
   exact ⟨Fold w, mem_fiber_Fold w, fun y hy => (mem_fiber.1 hy).symm⟩
 
+/-- The restriction of a stable word preserves stability. -/
+theorem restrict_preserves_stability (x : X (m + 1)) : No11 (X.restrict x).1 :=
+  (X.restrict x).2
+
+/-- stableAdd with zero on both sides. -/
+theorem stableAdd_zero_both :
+    stableAdd (stableZero (m := m)) stableZero = stableZero :=
+  stableAdd_zero_zero
+
 end
 
 end X
