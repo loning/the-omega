@@ -389,6 +389,22 @@ theorem carryIndicator_le_one (x y : X (m + 1)) :
   unfold carryIndicator
   split <;> omega
 
+/-- When the sum is below the threshold, stableAdd at m+1 restricted to m
+    coincides with stableAdd at m of the restrictions (no carry). -/
+theorem restrict_stableAdd_of_no_carry (x y : X (m + 1))
+    (hNoCarry : stableValue x + stableValue y < paperFib (m + 2)) :
+    stableValue (X.restrict (stableAdd x y)) % paperFib (m + 1) =
+      (stableValue (X.restrict x) + stableValue (X.restrict y)) % paperFib (m + 1) := by
+  -- stableValue(x ⊕ y) = sv_x + sv_y (no mod reduction)
+  have hSV : stableValue (stableAdd x y) = stableValue x + stableValue y := by
+    rw [stableValue_stableAdd, Nat.mod_eq_of_lt hNoCarry]
+  -- After rewriting: (sv_x + sv_y) % F_{m+2} = (sv_restrict_x + sv_restrict_y) % F_{m+2}
+  -- Use: sv_x ≡ sv_restrict_x (mod F_{m+2}) and sv_y ≡ sv_restrict_y (mod F_{m+2})
+  have hModX := stableValue_restrict_mod x
+  have hModY := stableValue_restrict_mod y
+  rw [← stableValue_restrict_mod (stableAdd x y), hSV, Nat.add_mod,
+    hModX, hModY, ← Nat.add_mod]
+
 end
 
 end X

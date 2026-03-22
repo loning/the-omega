@@ -1458,6 +1458,16 @@ theorem carry_one_above_threshold (x y : X (m + 1))
     carryIndicator x y = 1 :=
   carryIndicator_one_of_ge x y h
 
+/-! ### Paper POM Theorem: Carry-Free Restriction Identity -/
+
+/-- When stable addition doesn't overflow, restriction commutes with addition modulo F_{m+2}
+    (paper POM carry defect theorem, zero-carry case). -/
+theorem restrict_stableAdd_no_carry (x y : X (m + 1))
+    (h : stableValue x + stableValue y < paperFib (m + 2)) :
+    stableValue (X.restrict (X.stableAdd x y)) % paperFib (m + 1) =
+      (stableValue (X.restrict x) + stableValue (X.restrict y)) % paperFib (m + 1) :=
+  X.restrict_stableAdd_of_no_carry x y h
+
 end
 
 end Omega.Frontier
