@@ -1216,6 +1216,16 @@ theorem stableMul_one (hm : 1 < paperFib (m + 1)) (x : X m) :
     X.stableMul X.stableOne x = x :=
   X.stableMul_one_left hm x
 
+/-- Stable multiplication is associative (paper Section 6). -/
+theorem stableMul_associative (x y z : X m) :
+    X.stableMul (X.stableMul x y) z = X.stableMul x (X.stableMul y z) :=
+  X.stableMul_assoc x y z
+
+/-- Fiber multiplicity depends only on the stable value index. -/
+theorem fiberMultiplicity_value_dependent (x : X m) :
+    X.fiberMultiplicity x = X.fiberMultiplicityByValue m (stableValue x) :=
+  X.fiberMultiplicity_eq_byValue x
+
 /-! ### Paper Theorem 4.1: Zeckendorf Bit Characterization -/
 
 /-- The bit pattern of X.ofNat m n is given by the Zeckendorf representation (paper Theorem 4.1). -/

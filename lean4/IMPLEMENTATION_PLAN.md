@@ -588,4 +588,17 @@ Omega/Audit/NoAxiom.lean
 - **新增**：stableValue Fibonacci 界与稳定加法为有限算术打开入口
 - **新增**：fiber 分割恒等式 Σ|fiber(x)| = 2^m 建立纤维组合基线
 
-下一阶段应围绕 12 条具体计划持续推进。
+已完成计划 1-7, 11-16, 19-22（共 19 条）。延期计划 8, 9, 10, 17, 18。
+
+当前项目形式化覆盖范围总结：
+- **离散核心**：Word, No11, X_m, Fold, Rewrite, Fiber, Defect, InverseLimit（完整闭环）
+- **Zeckendorf 与值**：weight, stableValue, zeckIndices, ofNat, 值界, 双射性（完整闭环）
+- **稳定算术**：stableAdd（交换群）, stableMul（交换半环）, stableZero, stableOne
+- **SPG 组合层**：cylinder, prefix metric, clopen, prefix determination 代数（完整闭环）
+- **SPG 扫描误差**：离散 + 测度双版本, 补对称性, cell 界, 分割恒等式, Bayes 半界
+- **SPG 观测细化**：离散 + 直接测度版本, 前缀单调性
+- **fiber 结构**：partition sum = 2^m, multiplicity 定义, 值索引
+- **defect 结构**：零条件 ↔ Fold 可交换, globalDefect 等价, 链代数
+- **sofic 表示**：golden-mean graph ↔ No11（完整闭环）
+- **Frontier 接口**：~120+ 条论文接口包装定理
+- **审计层**：SourceMap, Inventory, NoAxiom 持续同步

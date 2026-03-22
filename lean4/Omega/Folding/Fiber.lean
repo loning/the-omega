@@ -308,6 +308,20 @@ theorem stableMul_stableAdd_left (x y z : X m) :
   congr 1
   rw [Nat.mul_mod_right', Nat.add_mod', Nat.mul_add]
 
+/-- Stable multiplication is associative. -/
+theorem stableMul_assoc (x y z : X m) :
+    stableMul (stableMul x y) z = stableMul x (stableMul y z) := by
+  simp only [stableMul, stableValue_ofNat_mod]
+  congr 1
+  rw [Nat.mul_mod_left' (stableValue x * stableValue y) (stableValue z),
+    Nat.mul_mod_right' (stableValue x) (stableValue y * stableValue z),
+    Nat.mul_assoc]
+
+/-- stableOne is the right identity for multiplication when F_{m+2} > 1. -/
+theorem stableMul_one_right (hm : 1 < paperFib (m + 1)) (x : X m) :
+    stableMul x stableOne = x := by
+  rw [stableMul_comm]; exact stableMul_one_left hm x
+
 /-- Fiber multiplicity as a function of value index. -/
 noncomputable def fiberMultiplicityByValue (m : Nat) (n : Nat) : Nat :=
   if hn : n < paperFib (m + 1) then fiberMultiplicity (X.ofNat m n) else 0
