@@ -583,6 +583,16 @@ theorem prefixBoundaryCells_compl (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Wo
     prefixBoundaryCells μ h Pᶜ = prefixBoundaryCells μ h P :=
   boundaryCells_compl μ (prefixObservation h) P
 
+/-- Event and complement mass partition the total probability mass. -/
+theorem setMass_add_setMass_compl {α : Type*} [Fintype α] (μ : PMF α) (P : Set α) :
+    setMass μ P + setMass μ Pᶜ = ∑ x, (μ x : ENNReal) := by
+  simp only [setMass]
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun x _ => ?_)
+  by_cases hx : x ∈ P
+  · simp [Set.indicator, hx]
+  · simp [Set.indicator, hx]
+
 end
 
 end Omega.SPG
