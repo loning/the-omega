@@ -965,6 +965,69 @@ theorem prefixEvent_is_pure [MeasurableSpace (Word n)]
     ObservablePureMeasure μ (prefixObservation h) (prefixEvent h A) :=
   prefixObservablePureMeasure_prefixEvent μ h A
 
+/-- Scan error is zero iff observable pure (measure, named). -/
+theorem scanError_measure_zero_iff_pure {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P = 0 ↔ ObservablePureMeasure μ obs P :=
+  scanErrorMeasure_eq_zero_iff_observablePure μ obs P
+
+/-- Scan error is zero iff boundary is empty (measure, named). -/
+theorem scanError_measure_zero_iff_no_boundary {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P = 0 ↔ boundaryCellsMeasure μ obs P = ∅ :=
+  scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty μ obs P
+
+/-- Observable purity iff no boundary (measure, named). -/
+theorem pure_measure_iff_no_boundary {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    ObservablePureMeasure μ obs P ↔ boundaryCellsMeasure μ obs P = ∅ :=
+  observablePureMeasure_iff_boundaryCellsMeasure_eq_empty μ obs P
+
+/-- Prefix scan error is zero iff prefix boundary is empty (measure). -/
+theorem prefix_error_measure_zero_iff {m n : Nat} [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P = 0 ↔ prefixBoundaryCellsMeasure μ h P = ∅ :=
+  prefixScanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty μ h P
+
+/-- Prefix scan error complement invariance (measure). -/
+theorem prefix_error_measure_complement {m n : Nat} [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h Pᶜ = prefixScanErrorMeasure μ h P :=
+  prefixScanErrorMeasure_compl μ h P
+
+/-- Prefix scan error of empty event is zero (measure). -/
+theorem prefix_error_measure_empty {m n : Nat} [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
+    prefixScanErrorMeasure μ h ∅ = 0 :=
+  prefixScanErrorMeasure_empty μ h
+
+/-- Prefix scan error of full event is zero (measure). -/
+theorem prefix_error_measure_univ {m n : Nat} [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
+    prefixScanErrorMeasure μ h Set.univ = 0 :=
+  prefixScanErrorMeasure_univ μ h
+
+/-- PMF bridge: measure scan error = discrete scan error for PMF.toMeasure. -/
+theorem scanError_pmf_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ.toMeasure obs P = scanError μ obs P :=
+  scanErrorMeasure_toMeasure_eq_scanError μ obs P
+
+/-- PMF bridge for boundary cells. -/
+theorem boundary_pmf_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    boundaryCellsMeasure μ.toMeasure obs P = boundaryCells μ obs P :=
+  boundaryCellsMeasure_toMeasure_eq_boundaryCells μ obs P
+
+/-- PMF bridge for purity. -/
+theorem purity_pmf_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ObservablePureMeasure μ.toMeasure obs P ↔ ObservablePure μ obs P :=
+  observablePureMeasure_toMeasure_iff_observablePure μ obs P
+
 end
 
 end Omega.SPG

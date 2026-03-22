@@ -872,5 +872,33 @@ theorem add_sub_cancel_right (x y : X m) : stableSub (stableAdd x y) y = x :=
 theorem sub_add_recover (x y : X m) : stableAdd (stableSub x y) y = x :=
   stableSub_add_cancel x y
 
+/-- stableAdd homomorphism (named). -/
+theorem stableAdd_hom (x y : X m) :
+    stableValue (stableAdd x y) = (stableValue x + stableValue y) % paperFib (m + 1) :=
+  stableValue_stableAdd x y
+
+/-- stableMul homomorphism (named). -/
+theorem stableMul_hom (x y : X m) :
+    stableValue (stableMul x y) = (stableValue x * stableValue y) % paperFib (m + 1) :=
+  stableValue_stableMul x y
+
+/-- stableNeg homomorphism (named). -/
+theorem stableNeg_hom (x : X m) :
+    stableValue (stableNeg x) = (paperFib (m + 1) - stableValue x) % paperFib (m + 1) :=
+  stableValue_stableNeg x
+
+/-- Complete ring axioms for X_m (8 laws). -/
+theorem complete_ring_axioms (m : Nat) :
+    (∀ x y : X m, stableAdd x y = stableAdd y x) ∧
+    (∀ x y z : X m, stableAdd (stableAdd x y) z = stableAdd x (stableAdd y z)) ∧
+    (∀ x : X m, stableAdd stableZero x = x) ∧
+    (∀ x : X m, stableAdd x (stableNeg x) = stableZero) ∧
+    (∀ x y : X m, stableMul x y = stableMul y x) ∧
+    (∀ x y z : X m, stableMul (stableMul x y) z = stableMul x (stableMul y z)) ∧
+    (∀ x y z : X m, stableMul x (stableAdd y z) = stableAdd (stableMul x y) (stableMul x z)) ∧
+    (∀ x y z : X m, stableAdd x y = stableAdd x z → y = z) :=
+  ⟨stableAdd_comm, stableAdd_assoc, stableAdd_zero_left, stableAdd_stableNeg,
+   stableMul_comm, stableMul_assoc, stableMul_stableAdd_left, fun _ _ _ h => stableAdd_left_cancel h⟩
+
 end
 

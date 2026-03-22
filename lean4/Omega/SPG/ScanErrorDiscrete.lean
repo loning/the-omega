@@ -966,6 +966,67 @@ theorem observableEvent_pure_at_finer {α β γ : Type*} [Fintype α] [Fintype �
     scanError μ obs₂ (observableEvent obs₁ A) ≤ scanError μ obs₁ (observableEvent obs₁ A) :=
   scanError_antitone_of_refines μ obs₁ obs₂ f hRef _
 
+/-- Scan error is zero iff every cell is pure (iff version, named). -/
+theorem scanError_zero_iff {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P = 0 ↔ ObservablePure μ obs P :=
+  scanError_eq_zero_iff_observablePure μ obs P
+
+/-- Scan error is zero iff boundary is empty (iff version, named). -/
+theorem scanError_zero_iff_boundary_empty {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs P = 0 ↔ boundaryCells μ obs P = ∅ :=
+  scanError_eq_zero_iff_boundaryCells_eq_empty μ obs P
+
+/-- Observable purity iff no boundary cells (named). -/
+theorem pure_iff_no_boundary {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ObservablePure μ obs P ↔ boundaryCells μ obs P = ∅ :=
+  observablePure_iff_boundaryCells_eq_empty μ obs P
+
+/-- setMass is monotone in set containment. -/
+theorem setMass_monotone {α : Type*} [Fintype α]
+    (μ : PMF α) {s t : Set α} (h : s ⊆ t) :
+    setMass μ s ≤ setMass μ t :=
+  setMass_mono μ h
+
+/-- Cell event mass for empty event is zero. -/
+theorem cellEventMass_of_empty {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (b : β) :
+    cellEventMass μ obs ∅ b = 0 :=
+  cellEventMass_empty μ obs b
+
+/-- Cell complement mass for full event is zero. -/
+theorem cellComplMass_of_univ {α β : Type*} [Fintype α]
+    (μ : PMF α) (obs : α → β) (b : β) :
+    cellComplMass μ obs Set.univ b = 0 :=
+  cellComplMass_univ μ obs b
+
+/-- Prefix observable purity is preserved by prefix events. -/
+theorem prefix_pure_of_prefix_event (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    ObservablePure μ (prefixObservation h) (prefixEvent h A) :=
+  prefixObservablePure_prefixEvent μ h A
+
+/-- Prefix boundary cells of prefix events are empty. -/
+theorem prefix_boundary_of_prefix_event (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    prefixBoundaryCells μ h (prefixEvent h A) = ∅ :=
+  prefixBoundaryCells_prefixEvent_eq_empty μ h A
+
+/-- Prefix scan error is complement-invariant. -/
+theorem prefix_error_complement (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanError μ h Pᶜ = prefixScanError μ h P :=
+  prefixScanError_compl μ h P
+
+/-- Prefix scan error of empty event is zero. -/
+theorem prefix_error_of_empty (μ : PMF (Word n)) (h : m ≤ n) :
+    prefixScanError μ h ∅ = 0 :=
+  prefixScanError_empty μ h
+
+/-- Prefix scan error of full event is zero. -/
+theorem prefix_error_of_univ (μ : PMF (Word n)) (h : m ≤ n) :
+    prefixScanError μ h Set.univ = 0 :=
+  prefixScanError_univ μ h
+
 end
 
 end Omega.SPG
