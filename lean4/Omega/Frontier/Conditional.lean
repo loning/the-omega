@@ -2390,6 +2390,32 @@ theorem prefix_error_half_bound (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word
 theorem fold_output_stable (w : Word m) : No11 (Fold w).1 :=
   X.Fold_maps_to_stable w
 
+/-! #### Observable Event Preimage Characterization -/
+
+/-- Observable events are preimages of the observation map. -/
+theorem observable_event_is_preimage {α β : Type*} (obs : α → β) (A : Set β) :
+    SPG.observableEvent obs A = obs ⁻¹' A :=
+  SPG.observableEvent_eq_preimage obs A
+
+/-- Observable cells are preimages of singletons. -/
+theorem observable_cell_is_preimage {α β : Type*} (obs : α → β) (b : β) :
+    SPG.observableCell obs b = obs ⁻¹' {b} :=
+  SPG.observableCell_eq_preimage obs b
+
+/-- Every element belongs to its observation cell. -/
+theorem element_in_own_cell {α β : Type*} (obs : α → β) (x : α) :
+    x ∈ SPG.observableCell obs (obs x) :=
+  SPG.observableCell_covers obs x
+
+/-! #### Modular Projection Multiplication -/
+
+/-- Modular projection preserves multiplication (no-carry case). -/
+theorem modular_project_mul_no_carry (x y : X (m + 1))
+    (h : stableValue x * stableValue y < paperFib (m + 2)) :
+    X.modularProject (X.stableMul x y) =
+      X.stableMul (X.modularProject x) (X.modularProject y) :=
+  X.modularProject_mul_no_carry x y h
+
 end
 
 end Omega.Frontier
