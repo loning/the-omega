@@ -382,6 +382,107 @@ m_r=\frac1L\sum_{q=0}^{L-1}s_q\,\omega_L^{-rq},
 便得到 multiplicity 向量 \((m_r)\) 的恢复公式。证毕。
 \end{proof}
 
-综上，primitive 扭点平均的 cyclotomic 原子经 Ramanujan 展开后，可在 divisor-compressed 的 \(q\)-轴上被重新组织成一条单变量信号链。该信号的全部线性型都受导数 Parseval 能量控制；其指数衰减率与 kernel-RH 的平方根门槛完全等价；而一旦观察平方归一化后的 Ces\`aro 统计，外围相位多重度的平方和便被精确读取。在有限周期情形下，这条单一算术轴甚至足以完成整个外围相位谱的离散 Fourier 层析。
+\begin{theorem}[平方根阈值的 \(q\)-轴能量三分律]\label{thm:conclusion-qaxis-energy-trichotomy-sqrt-threshold}
+设 \(M\in \mathbf Z_{\ge 0}^{d\times d}\) primitive，\(\rho:=\rho(M)>1\)，并记
+\[
+\Lambda:=\Lambda_{\mathrm{rel}}(M):=\max_{j\ge 2}|\lambda_j|,
+\qquad
+E_N(M):=\frac1N\sum_{q=1}^N \rho^{q}\,|\Psi_q(M)|^2.
+\]
+则存在严格三分：
+\[
+\Lambda<\rho^{-1/2}\ \Longrightarrow\ E_N(M)\to 0,
+\]
+\[
+\Lambda=\rho^{-1/2}\ \Longrightarrow\ E_N(M)\to \sum_{\zeta\in\mathbf T} m(\zeta)^2,
+\]
+\[
+\Lambda>\rho^{-1/2}\ \Longrightarrow\ \limsup_{N\to\infty}E_N(M)=+\infty,
+\]
+其中 \(m(\zeta)\) 为外谱壳层
+\[
+E_\Lambda:=\{\lambda_j:|\lambda_j|=\Lambda\}
+\]
+在相位 \(\zeta\) 处的重数。
+\end{theorem}
+\begin{proof}
+当 \(\Lambda<\rho^{-1/2}\) 时，主稿关于常数层 \(q\)-轴的外谱展开给出
+\[
+\Psi_q(M)=\Lambda^q\sum_{k=1}^r \eta_k^q+O(\Lambda_0^q),
+\qquad
+0\le \Lambda_0<\Lambda,
+\]
+故存在常数 \(C>0\) 使
+\[
+|\Psi_q(M)|\le C\Lambda^q.
+\]
+于是
+\[
+\rho^q|\Psi_q(M)|^2\le C^2(\rho\Lambda^2)^q,
+\]
+右端指数可和，故其 Ces\`aro 平均 \(E_N(M)\) 趋于 \(0\)。
+
+当 \(\Lambda=\rho^{-1/2}\) 时，主稿的 \(q\)-轴 Ces\`aro 能量定理直接给出
+\[
+\frac1N\sum_{q=1}^N\frac{|\Psi_q(M)|^2}{\Lambda^{2q}}
+\longrightarrow
+\sum_{\zeta\in\mathbf T} m(\zeta)^2.
+\]
+由于 \(\Lambda^{-2}=\rho\)，这正是
+\[
+E_N(M)\longrightarrow \sum_{\zeta\in\mathbf T} m(\zeta)^2.
+\]
+
+当 \(\Lambda>\rho^{-1/2}\) 时，主稿关于 \(q\)-轴的下界推论断言：存在常数 \(c>0\) 与无穷多 \(q\) 使
+\[
+|\Psi_q(M)|\ge c\,\Lambda^q.
+\]
+对这些 \(q\) 取 \(N=q\)，便有
+\[
+E_q(M)
+\ge
+\frac1q\,\rho^q|\Psi_q(M)|^2
+\ge
+\frac{c^2}{q}(\rho\Lambda^2)^q.
+\]
+因 \(\rho\Lambda^2>1\)，右端趋于 \(+\infty\)，故
+\[
+\limsup_{N\to\infty}E_N(M)=+\infty.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[外谱壳层的单通道层析]\label{cor:conclusion-outer-spectral-shell-single-channel-tomography}
+在定理 \ref{thm:conclusion-qaxis-energy-trichotomy-sqrt-threshold} 的设定下，单一标量序列 \((\Psi_q(M))_{q\ge1}\) 已足以层析外谱壳层。具体地，
+\[
+\Lambda=\limsup_{q\to\infty} |\Psi_q(M)|^{1/q},
+\]
+并且
+\[
+\lim_{N\to\infty}\frac1N\sum_{q=1}^N\frac{|\Psi_q(M)|^2}{\Lambda^{2q}}
+=
+\sum_{\zeta\in\mathbf T}m(\zeta)^2 .
+\]
+若外谱壳层满足一般位置条件
+\[
+\eta_i\eta_j^{-1}\notin \mu_\infty \qquad (i\ne j),
+\]
+则右端退化为壳层总重数 \(r=|E_\Lambda|\)。换言之，在一般位置下，\((\Psi_q(M))\) 单独恢复 \((\Lambda,r)\)。
+\end{corollary}
+\begin{proof}
+第一式即主稿中常数层 \(q\)-轴指数率恢复定理的内容。第二式由定理 \ref{thm:conclusion-qaxis-energy-trichotomy-sqrt-threshold} 在临界归一化下的 Ces\`aro 极限得到。
+
+若外谱壳层满足一般位置条件，则各外围相位簇均为单重簇，故
+\[
+\sum_{\zeta\in\mathbf T}m(\zeta)^2
+=
+\sum_{\zeta\in\mathbf T}m(\zeta)
+=
+r.
+\]
+于是 \((\Psi_q(M))\) 单独恢复 \(\Lambda\) 与外谱壳层总重数 \(r\)。证毕。
+\end{proof}
+
+综上，primitive 扭点平均的 cyclotomic 原子经 Ramanujan 展开后，可在 divisor-compressed 的 \(q\)-轴上被重新组织成一条单变量信号链。该信号的全部线性型都受导数 Parseval 能量控制；其指数衰减率与 kernel-RH 的平方根门槛完全等价；而一旦改看按 \(\rho^q\) 加权的 \(q\)-轴能量，则平方根阈值表现出严格的三分相变。进一步，单一标量序列 \((\Psi_q(M))\) 已足以恢复外谱壳层的半径以及外围相位簇的平方重数，并在有限周期情形下完成整个外围相位谱的离散 Fourier 层析。
 
 \endinput
