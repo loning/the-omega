@@ -370,4 +370,40 @@ theorem xorWord_zero_id (a : Word m) :
     xorWord a (zeroWord m) = a :=
   xorWord_zero_right a
 
+/-- The xor operation forms an abelian group on Word m:
+    commutative, associative, identity (zeroWord), self-inverse. -/
+theorem xorWord_group_laws (m : Nat) :
+    (∀ a b : Word m, xorWord a b = xorWord b a) ∧
+    (∀ a b c : Word m, xorWord (xorWord a b) c = xorWord a (xorWord b c)) ∧
+    (∀ a : Word m, xorWord a (zeroWord m) = a) ∧
+    (∀ a : Word m, xorWord a a = zeroWord m) :=
+  ⟨xorWord_comm, xorWord_assoc, xorWord_zero_right, xorWord_self⟩
+
+/-- Local defect is the xor of two stable projections. -/
+theorem localDefect_is_xor (η : Word (m + 1)) :
+    localDefect η = xorWord (Fold (truncate η)).1 (X.restrict (Fold η)).1 :=
+  rfl
+
+/-- Global defect at resolution m ≤ n is the xor of two restricted Fold results. -/
+theorem globalDefect_is_xor (h : m ≤ n) (ω : Word n) :
+    globalDefect h ω = xorWord (Fold (restrictWord h ω)).1 (X.restrictLE h (Fold ω)).1 :=
+  rfl
+
+/-- The defect chain telescopes: it equals the global defect. -/
+theorem defectChain_telescopes (m k : Nat) (ω : Word (m + k)) :
+    defectChain m k ω = globalDefect (Nat.le_add_right m k) ω :=
+  (globalDefect_eq_defectChain m k ω).symm
+
+/-- Defect chain at 0 is zero. -/
+theorem defectChain_at_zero (m : Nat) (ω : Word (m + 0)) :
+    defectChain m 0 ω = zeroWord m :=
+  rfl
+
+/-- Defect chain step: chain(k+1) = projected local defect ⊕ chain(k). -/
+theorem defectChain_step_eq (m k : Nat) (ω : Word (m + k + 1)) :
+    defectChain m (k + 1) ω =
+      xorWord (restrictWord (Nat.le_add_right m k) (localDefect ω))
+        (defectChain m k (truncate ω)) :=
+  rfl
+
 end Omega

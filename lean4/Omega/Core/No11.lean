@@ -68,4 +68,11 @@ theorem no11_of_truncate {w : Word (m + 1)} (h : No11 w) : No11 (truncate w) :=
 theorem no11_append_false {w : Word m} (h : No11 w) : No11 (snoc w false) :=
   no11_snoc_false h
 
+/-- No11 is closed under appending true when the last bit is false. -/
+theorem no11_append_true {w : Word m} (h : No11 w) (hLast : get w (m - 1) = false) :
+    No11 (snoc w true) :=
+  no11_snoc_true h hLast
+
+
+
 end Omega

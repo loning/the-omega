@@ -157,4 +157,23 @@ theorem goldenMean_from_false_complete (b : Bool) :
     goldenMeanGraph.edge false b b :=
   goldenMean_transfer_false b
 
+/-- The golden-mean graph forbids 11 transitions (named). -/
+theorem goldenMean_forbids_11 : ¬ goldenMeanGraph.edge true true true :=
+  goldenMean_no_self_loop_true
+
+/-- The stable language is exactly the golden-mean sofic language (bidirectional). -/
+theorem stable_iff_sofic (w : Word m) :
+    No11 w ↔ AcceptsWord goldenMeanGraph false w :=
+  (acceptsWord_goldenMean_iff_no11 w).symm
+
+/-- Every No11 word is accepted by the golden-mean graph (forward). -/
+theorem no11_implies_accepted {w : Word m} (h : No11 w) :
+    AcceptsWord goldenMeanGraph false w :=
+  acceptsWord_goldenMean_of_no11 h
+
+/-- Every accepted word satisfies No11 (backward). -/
+theorem accepted_implies_no11 {w : Word m}
+    (h : AcceptsWord goldenMeanGraph false w) : No11 w :=
+  no11_of_acceptsWord_goldenMean h
+
 end Omega.Graph

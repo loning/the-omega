@@ -250,4 +250,38 @@ theorem cylinderWord_in_prefixAlgebra (w : Word m) :
   rw [show cylinderWord w = fromWordSet {w} from by ext x; simp [fromWordSet]]
   exact fromWordSet_in_prefixAlgebra {w}
 
+/-- Two points in the same cylinder have the same prefix. -/
+theorem eq_prefixWord_of_mem_cylinderWord {x y : OmegaInfinity} {w : Word m}
+    (hx : x ∈ cylinderWord w) (hy : y ∈ cylinderWord w) :
+    prefixWord x m = prefixWord y m := by
+  simp [cylinderWord] at hx hy; rw [hx, hy]
+
+/-- Cylinder sets are non-empty (every word extends to an infinite sequence). -/
+theorem cylinderWord_nonempty (w : Word m) : (cylinderWord w).Nonempty := by
+  exact ⟨extendWord w, by simp [cylinderWord]⟩
+
+/-- fromWordSet of a singleton is a cylinder. -/
+theorem fromWordSet_singleton (w : Word m) :
+    fromWordSet {w} = cylinderWord w := by
+  ext x; simp [fromWordSet]
+
+/-- Prefix determination at depth m implies at depth m+1. -/
+theorem prefixDetermined_succ {s : Set OmegaInfinity} {m : Nat}
+    (h : PrefixDetermined s m) : PrefixDetermined s (m + 1) :=
+  prefixDetermined_of_le (Nat.le_succ m) h
+
+/-- Prefix determination at any depth implies at all larger depths. -/
+theorem prefixDetermined_of_le' {s : Set OmegaInfinity} {m n : Nat}
+    (h : PrefixDetermined s m) (hmn : m ≤ n) : PrefixDetermined s n :=
+  prefixDetermined_of_le hmn h
+
+/-- The prefix algebra is nested: A_m ⊆ A_{m+1}. -/
+theorem prefixAlgebra_succ (m : Nat) : prefixAlgebra m ⊆ prefixAlgebra (m + 1) :=
+  prefixAlgebra_strict_growth m
+
+/-- fromWordSet of the complement. -/
+theorem fromWordSet_compl_eq (A : Set (Word m)) :
+    (fromWordSet A)ᶜ = fromWordSet Aᶜ :=
+  fromWordSet_compl A
+
 end Omega.SPG
