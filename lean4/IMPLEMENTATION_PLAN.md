@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,131 |
-| 定理/定义数 | 1,050 |
+| 总行数 | ~12,166 |
+| 定理/定义数 | 1,057 |
 | 论文接口包装 | 312 |
-| 文件数 | 28 |
+| 文件数 | 29 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -19,7 +19,7 @@
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
 | Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, CarryDefect, FiberFusion, ModularTower) | 13 | ~305 | 97% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
-| Graph (LabeledGraph, Sofic) | 2 | ~16 | 100% |
+| Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
 | Audit (SourceMap, Inventory, NoAxiom) | 3 | ~5 | 同步 |
 
@@ -34,6 +34,7 @@
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_10（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
+**转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -42,14 +43,14 @@
 | 论文章节 | 定理总数 | 已形式化 | 覆盖率 | 难度 |
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
-| Folding | 10 | 9 | 90% | 中 |
+| Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 12 | 57% | 高 |
 | POM | 106 | 26 | 25% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~66** | **~17%** | - |
+| **总计** | **394** | **~67** | **~17%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1050 个 Lean 定理中，约 312 个是论文接口包装，约 58 个直接对应论文中的编号定理。
 
@@ -84,7 +85,7 @@
 
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
-19. **转移矩阵特征值**：证明 golden-mean 图的邻接矩阵特征多项式为 x² - x - 1
+19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1
 20. **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
@@ -115,7 +116,7 @@
 4. 计划 1（Zeckendorf 唯一性）
 5. 计划 5（Fibonacci 整除性）
 6. 计划 13（条件期望型表达）
-7. 计划 19（转移矩阵特征值）
+7. 计划 20（拓扑熵 = log φ）
 
 ### 中期目标（需要新基础设施）
 

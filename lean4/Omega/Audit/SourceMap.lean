@@ -1805,6 +1805,60 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.ModularTower"
       leanName := "Omega.X.modularProject_tower_surjective"
       phase := 13
+      status := .formalized }
+  -- Phase 14: TransferMatrix (Plan 19)
+  -- thm:fold-suite item 3（基数递推 = 特征多项式）
+  -- subsec:folding-stable-compression（golden-mean sofic 邻接矩阵）
+  -- goldenMeanAdjacency 定义, 条目验证, Cayley-Hamilton A²=A+I,
+  --   tr(A)=1, det(A)=-1 (Omega/Graph/TransferMatrix.lean)
+  -- 状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:golden-mean-adjacency-matrix"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency"
+      phase := 14
+      status := .formalized }
+  , { label := "prop:golden-mean-adjacency-entry-00"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_entry_00"
+      phase := 14
+      status := .formalized }
+  , { label := "prop:golden-mean-adjacency-entry-01"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_entry_01"
+      phase := 14
+      status := .formalized }
+  , { label := "prop:golden-mean-adjacency-entry-10"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_entry_10"
+      phase := 14
+      status := .formalized }
+  , { label := "prop:golden-mean-adjacency-entry-11"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_entry_11"
+      phase := 14
+      status := .formalized }
+  , { label := "thm:fold-suite-item3-cayley-hamilton"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_sq"
+      phase := 14
+      status := .formalized }
+  , { label := "prop:golden-mean-adjacency-trace"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_trace"
+      phase := 14
+      status := .formalized }
+  , { label := "prop:golden-mean-adjacency-det"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_det"
+      phase := 14
       status := .formalized } ]
 
 end Omega.Audit

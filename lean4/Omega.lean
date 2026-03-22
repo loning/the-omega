@@ -17,6 +17,7 @@ import Omega.Folding.Defect
 import Omega.Folding.ModularTower
 import Omega.Graph.LabeledGraph
 import Omega.Graph.Sofic
+import Omega.Graph.TransferMatrix
 import Omega.SPG.Cylinder
 import Omega.SPG.PrefixMetric
 import Omega.SPG.Clopen

@@ -294,6 +294,15 @@ Run these commands manually during audit:
   #print axioms Omega.X.stableValue_modularProject_compose
   #print axioms Omega.X.carryIndicator_comm
   #print axioms Omega.X.modularProject_tower_surjective
+  -- TransferMatrix (Plan 19): def:golden-mean-adjacency-matrix, thm:fold-suite item 3, entries + Cayley-Hamilton
+  #print axioms Omega.Graph.goldenMeanAdjacency
+  #print axioms Omega.Graph.goldenMeanAdjacency_entry_00
+  #print axioms Omega.Graph.goldenMeanAdjacency_entry_01
+  #print axioms Omega.Graph.goldenMeanAdjacency_entry_10
+  #print axioms Omega.Graph.goldenMeanAdjacency_entry_11
+  #print axioms Omega.Graph.goldenMeanAdjacency_sq
+  #print axioms Omega.Graph.goldenMeanAdjacency_trace
+  #print axioms Omega.Graph.goldenMeanAdjacency_det
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
