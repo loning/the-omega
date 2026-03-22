@@ -104,4 +104,19 @@ theorem paperFib_dvd_of_succ_dvd {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
 /-- F_6 = 13. -/
 @[simp] theorem paperFib_six : paperFib 6 = 13 := rfl
 
+/-- F_7 = 21. -/
+@[simp] theorem paperFib_seven : paperFib 7 = 21 := rfl
+
+/-- F_8 = 34. -/
+@[simp] theorem paperFib_eight : paperFib 8 = 34 := rfl
+
+/-- F_9 = 55. -/
+@[simp] theorem paperFib_nine : paperFib 9 = 55 := rfl
+
+/-- F_10 = 89. -/
+@[simp] theorem paperFib_ten : paperFib 10 = 89 := rfl
+
+/-- F_11 = 144. -/
+@[simp] theorem paperFib_eleven : paperFib 11 = 144 := rfl
+
 end Omega

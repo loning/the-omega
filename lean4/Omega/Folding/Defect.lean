@@ -345,4 +345,14 @@ theorem globalDefect_determined (h : m ≤ n) (ω : Word n) :
     globalDefect h ω = xorWord (Fold (restrictWord h ω)).1 (X.restrictLE h (Fold ω)).1 :=
   rfl
 
+/-- The xor word operation satisfies the exchange law with restrict. -/
+theorem restrictWord_xorWord (h : m ≤ n) (a b : Word n) :
+    restrictWord h (xorWord a b) = xorWord (restrictWord h a) (restrictWord h b) :=
+  restrictWord_xor h a b
+
+/-- Global defect at identity is always zero (named variant). -/
+theorem globalDefect_identity_zero (ω : Word m) :
+    globalDefect (Nat.le_refl m) ω = zeroWord m :=
+  globalDefect_refl ω
+
 end Omega
