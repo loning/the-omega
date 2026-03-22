@@ -511,6 +511,36 @@ theorem stableValue_stableSub (x y : X m) :
 theorem stableSub_self (x : X m) : stableSub x x = stableZero := by
   simp [stableSub, stableAdd_stableNeg]
 
+/-- stableAdd is cancellative on the left: x + y = x + z → y = z. -/
+theorem stableAdd_left_cancel {x y z : X m} (h : stableAdd x y = stableAdd x z) : y = z := by
+  -- (-x) + (x + y) = (-x) + (x + z)
+  have h1 : stableAdd (stableNeg x) (stableAdd x y) =
+    stableAdd (stableNeg x) (stableAdd x z) := by rw [h]
+  -- (-x + x) + y = (-x + x) + z by associativity
+  rw [← stableAdd_assoc, ← stableAdd_assoc,
+    stableNeg_stableAdd, stableAdd_zero_left, stableAdd_zero_left] at h1
+  exact h1
+
+/-- stableAdd is cancellative on the right: y + x = z + x → y = z. -/
+theorem stableAdd_right_cancel {x y z : X m} (h : stableAdd y x = stableAdd z x) : y = z := by
+  apply stableAdd_left_cancel (x := x)
+  rwa [stableAdd_comm x y, stableAdd_comm x z]
+
+/-- The stable arithmetic on X_m is isomorphic to ℤ/F_{m+2}ℤ as a commutative ring:
+    stableValue witnesses the isomorphism. -/
+theorem stableValue_isomorphism_summary (m : Nat) :
+    -- Additive homomorphism
+    (∀ x y : X m, stableValue (stableAdd x y) = (stableValue x + stableValue y) % paperFib (m + 1)) ∧
+    -- Multiplicative homomorphism
+    (∀ x y : X m, stableValue (stableMul x y) = (stableValue x * stableValue y) % paperFib (m + 1)) ∧
+    -- Injective
+    Function.Injective (stableValue (m := m)) ∧
+    -- Range is {0,...,F_{m+2}-1}
+    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
+  ⟨stableValue_stableAdd, stableValue_stableMul,
+   (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩),
+   stableValue_range m⟩
+
 end
 
 end X
