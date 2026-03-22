@@ -1651,6 +1651,19 @@ theorem stableValue_ring_isomorphism (m : Nat) :
     Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
   X.stableValue_isomorphism_summary m
 
+/-! ### Paper Section 4: Concrete Cardinalities -/
+
+/-- |X_1| = 2. -/
+theorem card_stable_one : Fintype.card (X 1) = 2 := X.card_X_one
+/-- |X_2| = 3. -/
+theorem card_stable_two : Fintype.card (X 2) = 3 := X.card_X_two
+/-- |X_3| = 5. -/
+theorem card_stable_three : Fintype.card (X 3) = 5 := X.card_X_three
+/-- |X_4| = 8. -/
+theorem card_stable_four : Fintype.card (X 4) = 8 := X.card_X_four
+/-- |X_5| = 13. -/
+theorem card_stable_five : Fintype.card (X 5) = 13 := X.card_X_five
+
 end
 
 end Omega.Frontier

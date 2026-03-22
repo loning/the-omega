@@ -710,6 +710,23 @@ theorem scanError_eq_of_cells_eq {α β : Type*} [Fintype α] [Fintype β]
     simp [cellComplMass, hDiff b]
   rw [hEvent, hCompl]
 
+/-- Scan error is zero when P = ∅ (named alias). -/
+theorem scanError_empty_event {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) : scanError μ obs ∅ = 0 :=
+  scanError_empty μ obs
+
+/-- Scan error is zero when P = univ (named alias). -/
+theorem scanError_full_event {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) : scanError μ obs Set.univ = 0 :=
+  scanError_univ μ obs
+
+/-- The identity observation (obs = id) gives scan error = min(μ(P), μ(Pᶜ)).
+    This is the Bayes-optimal bound achieved at maximum resolution. -/
+theorem scanError_id_eq_min_setMass {α : Type*} [Fintype α]
+    (μ : PMF α) (P : Set α) :
+    scanError μ id P ≤ min (setMass μ P) (setMass μ Pᶜ) :=
+  scanError_le_min_setMass μ id P
+
 end
 
 end Omega.SPG

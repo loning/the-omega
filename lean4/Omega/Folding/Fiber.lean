@@ -541,6 +541,31 @@ theorem stableValue_isomorphism_summary (m : Nat) :
    (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩),
    stableValue_range m⟩
 
+/-- |X 1| = 2. -/
+theorem card_X_one : Fintype.card (X 1) = 2 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 2| = 3. -/
+theorem card_X_two : Fintype.card (X 2) = 3 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 3| = 5. -/
+theorem card_X_three : Fintype.card (X 3) = 5 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 4| = 8. -/
+theorem card_X_four : Fintype.card (X 4) = 8 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 5| = 13. -/
+theorem card_X_five : Fintype.card (X 5) = 13 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- The stable value of stableOne is 1 for m ≥ 1. -/
+theorem stableValue_stableOne_of_ge_one (hm : 1 ≤ m) :
+    stableValue (stableOne (m := m)) = 1 :=
+  stableValue_ofNat_lt 1 (paperFib_gt_one hm)
+
 end
 
 end X
