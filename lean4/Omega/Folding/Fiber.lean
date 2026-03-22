@@ -757,6 +757,15 @@ theorem stableMul_one_one (hm : 1 < paperFib (m + 1)) :
     stableMul (stableOne (m := m)) stableOne = stableOne := by
   exact stableMul_one_left hm stableOne
 
+/-- stableAdd of x with itself n times equals stableMul by ofNat n
+    (when n < F_{m+2}). This connects repeated addition to multiplication. -/
+theorem stableAdd_self_eq_stableMul_two (x : X m) (hm : 2 < paperFib (m + 1)) :
+    stableAdd x x = stableMul (X.ofNat m 2) x := by
+  apply eq_of_stableValue_eq
+  rw [stableValue_stableAdd, stableValue_stableMul, stableValue_ofNat_lt 2 hm]
+  ring_nf
+
+
 end
 
 end X

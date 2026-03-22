@@ -2281,6 +2281,27 @@ theorem defect_is_telescope (m k : Nat) (ω : Word (m + k)) :
     globalDefect (Nat.le_add_right m k) ω = defectChain m k ω :=
   globalDefect_eq_defectChain m k ω
 
+/-! #### Stable Arithmetic: Doubling -/
+
+/-- x + x = 2·x in the stable ring (for F_{m+2} > 2). -/
+theorem doubling_eq_two_mul (x : X m) (hm : 2 < paperFib (m + 1)) :
+    X.stableAdd x x = X.stableMul (X.ofNat m 2) x :=
+  X.stableAdd_self_eq_stableMul_two x hm
+
+/-! #### Scan Error Named Variants -/
+
+/-- Purity implies zero scan error (discrete, named). -/
+theorem pure_means_zero {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) (h : SPG.ObservablePure μ obs P) :
+    SPG.scanError μ obs P = 0 :=
+  SPG.purity_implies_zero_error μ obs P h
+
+/-- Scan error complement symmetry (discrete, named). -/
+theorem error_is_complement_symmetric {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs Pᶜ = SPG.scanError μ obs P :=
+  SPG.error_complement_symmetry μ obs P
+
 end
 
 end Omega.Frontier
