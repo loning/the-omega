@@ -472,6 +472,30 @@ theorem stableMul_stableAdd_right (x y z : X m) :
 theorem stableValue_eq_iff (x y : X m) : x = y ↔ stableValue x = stableValue y :=
   ⟨fun h => congrArg _ h, eq_of_stableValue_eq⟩
 
+/-- The stable arithmetic respects the Fibonacci modulus:
+    stableAdd and stableMul are the unique operations making stableValue
+    a surjective ring homomorphism to ℤ/F_{m+2}ℤ. -/
+theorem stableValue_ring_surjective (n : Nat) (hn : n < paperFib (m + 1)) :
+    ∃ x : X m, stableValue x = n :=
+  ⟨X.ofNat m n, stableValue_ofNat_lt n hn⟩
+
+/-- The fiber of Fold over x contains x's own underlying word. -/
+theorem self_in_own_fiber (x : X m) : x.1 ∈ fiber x := by
+  classical
+  exact self_mem_fiber x
+
+/-- Two distinct stable words yield disjoint fibers. -/
+theorem fiber_disjoint {x y : X m} (hne : x ≠ y) :
+    Disjoint (fiber x) (fiber y) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro w hwx hwy
+  exact hne ((mem_fiber.1 hwx).symm.trans (mem_fiber.1 hwy))
+
+/-- Fiber cardinality is at least 1 (positivity, named variant). -/
+theorem fiber_card_ge_one (x : X m) : 1 ≤ (fiber x).card :=
+  fiber_card_pos x
+
 end
 
 end X

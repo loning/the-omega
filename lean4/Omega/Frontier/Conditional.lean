@@ -1561,6 +1561,26 @@ theorem pure_implies_zero_boundary [MeasurableSpace α] [Fintype β]
     SPG.boundaryCylinderCount μ obs P = 0 :=
   SPG.boundaryCylinderCount_zero_of_pure μ obs P hPure
 
+/-! ### Paper Theorem 4.1/6.1: Ring Surjectivity & Fiber Disjointness -/
+
+/-- Every value in {0,...,F_{m+2}-1} is realized by some stable word. -/
+theorem stableValue_surjective (n : Nat) (hn : n < paperFib (m + 1)) :
+    ∃ x : X m, stableValue x = n :=
+  X.stableValue_ring_surjective n hn
+
+/-- Distinct stable words have disjoint Fold fibers. -/
+theorem fold_fibers_disjoint {x y : X m} (hne : x ≠ y) :
+    Disjoint (X.fiber x) (X.fiber y) :=
+  X.fiber_disjoint hne
+
+/-! ### Paper SPG Section: Scan Error Total Mass Bound -/
+
+/-- Scan error is bounded by the total cell mass (discrete). -/
+theorem scanError_le_total_cell_mass {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P ≤ ∑ b, SPG.cellMass μ obs b :=
+  SPG.scanError_le_sum_cellMass μ obs P
+
 end
 
 end Omega.Frontier
