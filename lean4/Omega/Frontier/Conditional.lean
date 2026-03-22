@@ -2255,6 +2255,32 @@ theorem stable_ring_structure (m : Nat) :
   ⟨X.stableAdd_comm, X.stableAdd_assoc, X.stableAdd_zero_left, X.stableAdd_stableNeg,
    X.stableMul_comm, X.stableMul_assoc, X.stableMul_stableAdd_left⟩
 
+/-! #### 6. Inverse Limit -/
+
+/-- Concrete inverse limit: CompatibleFamily ≃ XInfinity. -/
+noncomputable def concrete_inverse_limit : X.CompatibleFamily ≃ X.XInfinity :=
+  X.inverseLimitEquiv
+
+/-! #### 7. Sofic Representation -/
+
+/-- Stable language = Golden-mean sofic language. -/
+theorem stable_equals_sofic (m : Nat) :
+    {w : Word m | No11 w} =
+      {w : Word m | Omega.Graph.AcceptsWord Omega.Graph.goldenMeanGraph false w} :=
+  Omega.Graph.stableLanguage_eq_goldenMean m
+
+/-! #### 8. Defect Theory -/
+
+/-- Zero defect ↔ Fold commutes with restriction. -/
+theorem zero_defect_iff_commutes (η : Word (m + 1)) :
+    localDefect η = zeroWord m ↔ Fold (truncate η) = X.restrict (Fold η) :=
+  localDefect_eq_zero_iff_fold_commutes η
+
+/-- Global defect decomposes as xor-telescope. -/
+theorem defect_is_telescope (m k : Nat) (ω : Word (m + k)) :
+    globalDefect (Nat.le_add_right m k) ω = defectChain m k ω :=
+  globalDefect_eq_defectChain m k ω
+
 end
 
 end Omega.Frontier
