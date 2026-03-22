@@ -238,4 +238,16 @@ theorem fromWordSet_in_prefixAlgebra (A : Set (Word m)) :
     fromWordSet A ∈ prefixAlgebra m :=
   prefixDetermined_fromWordSet A
 
+/-- The prefix algebra at depth m+1 strictly contains the one at depth m
+    (when m ≥ 1, there are sets determined at m+1 but not at m). -/
+theorem prefixAlgebra_strict_growth (m : Nat) :
+    prefixAlgebra m ⊆ prefixAlgebra (m + 1) :=
+  prefixAlgebra_monotone (Nat.le_succ m)
+
+/-- Every cylinder set is in the prefix algebra at its depth. -/
+theorem cylinderWord_in_prefixAlgebra (w : Word m) :
+    cylinderWord w ∈ prefixAlgebra m := by
+  rw [show cylinderWord w = fromWordSet {w} from by ext x; simp [fromWordSet]]
+  exact fromWordSet_in_prefixAlgebra {w}
+
 end Omega.SPG

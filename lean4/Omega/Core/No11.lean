@@ -60,4 +60,12 @@ theorem no11_allFalse : No11 (fun _ : Fin m => false) := by
   · simp at hi
   · simp at hi
 
+/-- No11 is closed under truncation (named). -/
+theorem no11_of_truncate {w : Word (m + 1)} (h : No11 w) : No11 (truncate w) :=
+  no11_truncate h
+
+/-- No11 is closed under appending false (named). -/
+theorem no11_append_false {w : Word m} (h : No11 w) : No11 (snoc w false) :=
+  no11_snoc_false h
+
 end Omega
