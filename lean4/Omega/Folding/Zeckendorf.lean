@@ -144,6 +144,21 @@ theorem stableValue_eq_sum_fib_zeckIndices : ∀ {m : Nat} (x : X m),
     ((zeckRep x).1.map fib).sum = stableValue x := by
   simpa [zeckRep] using (stableValue_eq_sum_fib_zeckIndices x).symm
 
+/-- The zeckIndices list has length ≤ m. -/
+theorem zeckIndices_length_le (x : X m) :
+    (zeckIndices x).length ≤ m := by
+  induction m with
+  | zero =>
+    have : x = empty := Subsingleton.elim _ _
+    subst this; simp [zeckIndices]
+  | succ n ih =>
+    by_cases hLast : Omega.last x.1 = true
+    · simp [zeckIndices, hLast, ih (restrict x)]
+    · have hFalse : Omega.last x.1 = false := by
+        cases h : Omega.last x.1 <;> simp_all
+      simp only [zeckIndices, hFalse, ite_false]
+      exact Nat.le_succ_of_le (ih (restrict x))
+
 end X
 
 end Omega
