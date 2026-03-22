@@ -833,6 +833,18 @@ theorem cellEventMass_of_not_mem_observableEvent {α β : Type*} [Fintype α]
     cellEventMass μ obs (observableEvent obs A) b = 0 :=
   cellEventMass_observableEvent_of_not_mem μ obs A b hb
 
+/-- Observable purity of P implies scan error = 0 (named). -/
+theorem purity_implies_zero_error {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) (h : ObservablePure μ obs P) :
+    scanError μ obs P = 0 :=
+  scanError_eq_zero_of_observablePure μ obs P h
+
+/-- Scan error of P equals scan error of Pᶜ (named). -/
+theorem error_complement_symmetry {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    scanError μ obs Pᶜ = scanError μ obs P :=
+  scanError_compl μ obs P
+
 end
 
 end Omega.SPG

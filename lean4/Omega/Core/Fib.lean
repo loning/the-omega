@@ -92,4 +92,16 @@ theorem paperFib_dvd_of_succ_dvd {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
   unfold paperFib
   exact Nat.fib_dvd (m + 1) (n + 1) h
 
+/-- The first few Fibonacci values: F_3 = 3. -/
+@[simp] theorem paperFib_three : paperFib 3 = 3 := rfl
+
+/-- F_4 = 5. -/
+@[simp] theorem paperFib_four : paperFib 4 = 5 := rfl
+
+/-- F_5 = 8. -/
+@[simp] theorem paperFib_five : paperFib 5 = 8 := rfl
+
+/-- F_6 = 13. -/
+@[simp] theorem paperFib_six : paperFib 6 = 13 := rfl
+
 end Omega
