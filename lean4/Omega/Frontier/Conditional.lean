@@ -1982,6 +1982,21 @@ theorem characteristic_polynomial_witness (m : Nat) :
     Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) :=
   Omega.Graph.goldenMean_characteristic_recurrence m
 
+/-! ### Plan 1: Zeckendorf Uniqueness -/
+
+/-- Zeckendorf uniqueness: same indices ⇒ same stable word. -/
+theorem zeckendorf_uniqueness {x y : X m} (h : X.zeckIndices x = X.zeckIndices y) : x = y :=
+  X.eq_of_zeckIndices_eq h
+
+/-- Zeckendorf encoding is injective on stable words. -/
+theorem zeckendorf_injective (m : Nat) : Function.Injective (X.zeckIndices (m := m)) :=
+  X.zeckIndices_injective m
+
+/-- Same Zeckendorf indices ⇒ same stable value. -/
+theorem zeckendorf_determines_value {x y : X m}
+    (h : X.zeckIndices x = X.zeckIndices y) : stableValue x = stableValue y :=
+  X.stableValue_eq_of_zeckIndices_eq h
+
 end
 
 end Omega.Frontier

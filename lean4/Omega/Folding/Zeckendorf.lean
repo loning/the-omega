@@ -159,6 +159,11 @@ theorem zeckIndices_length_le (x : X m) :
       simp only [zeckIndices, hFalse, ite_false]
       exact Nat.le_succ_of_le (ih (restrict x))
 
+/-- The Zeckendorf representation determines the stable value. -/
+theorem stableValue_eq_of_zeckIndices_eq {x y : X m} (h : zeckIndices x = zeckIndices y) :
+    stableValue x = stableValue y := by
+  rw [stableValue_eq_sum_fib_zeckIndices x, stableValue_eq_sum_fib_zeckIndices y, h]
+
 end X
 
 end Omega

@@ -671,6 +671,15 @@ theorem fiberMultiplicity_total (m : Nat) :
     ∑ x : X m, fiberMultiplicity x = 2 ^ m :=
   fiberMultiplicity_sum_eq_pow m
 
+/-- Zeckendorf uniqueness: same Zeckendorf indices ⇒ same stable word.
+    Proved via value characterization: same indices ⇒ same value ⇒ same word. -/
+theorem eq_of_zeckIndices_eq {x y : X m} (h : X.zeckIndices x = X.zeckIndices y) : x = y :=
+  eq_of_stableValue_eq (X.stableValue_eq_of_zeckIndices_eq h)
+
+/-- The Zeckendorf encoding is faithful: injective on stable words. -/
+theorem zeckIndices_injective (m : Nat) : Function.Injective (X.zeckIndices (m := m)) :=
+  fun _ _ h => eq_of_zeckIndices_eq h
+
 /-- The ring structure on X_m: stableValue is an isomorphism to ℤ/F_{m+2}ℤ.
     Certificate: add hom + mul hom + injective + surjective + neg hom. -/
 structure RingIsomorphismCertificate (m : Nat) where
