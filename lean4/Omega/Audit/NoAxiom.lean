@@ -249,11 +249,37 @@ Run these commands manually during audit:
   #print axioms Omega.X.fib_component_fusion_gain
   #print axioms Omega.X.fib_component_fusion_gain_lower
   #print axioms Omega.X.fib_component_fusion_gain_ge
-  -- MaxFiber (Plan 8 partial): def:pom-top-fiber-spectrum, thm:pom-max-fiber (partial)
+  -- MaxFiber (Plan 8): def:pom-top-fiber-spectrum, thm:pom-max-fiber (partial: 递推上界), cor:pom-D-rec
   #print axioms Omega.X.maxFiberMultiplicity
   #print axioms Omega.X.maxFiberMultiplicity_achieved
   #print axioms Omega.X.fiberMultiplicity_le_max
   #print axioms Omega.X.maxFiberMultiplicity_pos
+  -- thm:pom-max-fiber: 递推上界 D(m+2) ≤ D(m+1) + D(m)
+  #print axioms Omega.X.maxFiberMultiplicity_le_add
+  -- Zeckendorf carry preservation (auxiliary)
+  #print axioms Omega.ofNat_add_paperFib
+  -- Zeckendorf distinctness (auxiliary)
+  #print axioms Omega.ofNat_ne_of_shift
+  -- weight & snoc helpers (auxiliary)
+  #print axioms Omega.X.weight_expand
+  #print axioms Omega.X.weight_lt_paperFib
+  #print axioms Omega.X.snoc_truncate_last
+  -- restrict helpers (auxiliary)
+  #print axioms Omega.restrict_ofNat
+  #print axioms Omega.restrict_Fold_snoc_false
+  -- fib membership bound (auxiliary)
+  #print axioms Omega.X.fib_le_of_mem_zeckendorf
+  -- cor:pom-D-rec: base values D_0 .. D_9 (native_decide)
+  #print axioms Omega.X.maxFiberMultiplicity_zero
+  #print axioms Omega.X.maxFiberMultiplicity_one
+  #print axioms Omega.X.maxFiberMultiplicity_two
+  #print axioms Omega.X.maxFiberMultiplicity_three
+  #print axioms Omega.X.maxFiberMultiplicity_four
+  #print axioms Omega.X.maxFiberMultiplicity_five
+  #print axioms Omega.X.maxFiberMultiplicity_six
+  #print axioms Omega.X.maxFiberMultiplicity_seven
+  #print axioms Omega.X.maxFiberMultiplicity_eight
+  #print axioms Omega.X.maxFiberMultiplicity_nine
   -- ModularTower (Plan 4): thm:pom-modular-tower
   #print axioms Omega.X.modularProject_eq_restrict
   #print axioms Omega.X.modularProject_stableAdd_carry

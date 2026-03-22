@@ -1618,13 +1618,18 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.X.fib_component_fusion_gain_ge"
       phase := 11
       status := .formalized }
-  -- Phase 12: MaxFiber (Plan 8 partial)
-  -- def:pom-top-fiber-spectrum → X.maxFiberMultiplicity (Omega/Folding/MaxFiber.lean:15)
-  -- thm:pom-max-fiber (partial) → X.maxFiberMultiplicity_achieved (Omega/Folding/MaxFiber.lean:20)
-  --                             → X.fiberMultiplicity_le_max    (Omega/Folding/MaxFiber.lean:27)
-  --                             → X.maxFiberMultiplicity_pos    (Omega/Folding/MaxFiber.lean:32)
-  -- 状态: 部分形式化（定义+基本性质已审核），闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
-  -- 审核通过 2026-03-22
+  -- Phase 12: MaxFiber (Plan 8)
+  -- def:pom-top-fiber-spectrum → X.maxFiberMultiplicity (Omega/Folding/MaxFiber.lean:19)
+  -- thm:pom-max-fiber (partial: 递推上界) → X.maxFiberMultiplicity_achieved (line:22)
+  --                                       → X.fiberMultiplicity_le_max    (line:27)
+  --                                       → X.maxFiberMultiplicity_pos    (line:31)
+  --                                       → X.maxFiberMultiplicity_le_add (line:271)
+  -- cor:pom-D-rec (base values D_0..D_9) → X.maxFiberMultiplicity_zero..nine (lines:108-117)
+  -- 辅助引理: restrict_ofNat (line:6), restrict_Fold_snoc_false (line:9),
+  --           snoc_truncate_last (line:119), weight_lt_paperFib (line:126),
+  --           weight_expand (line:139), ofNat_add_paperFib (line:151),
+  --           ofNat_ne_of_shift (line:194), fib_le_of_mem_zeckendorf (line:187)
+  -- 状态: 已形式化, 审核通过 2026-03-23
   , { label := "def:pom-top-fiber-spectrum"
       sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
       moduleName := "Omega.Folding.MaxFiber"
@@ -1647,6 +1652,72 @@ def initialEntries : List SourceMapEntry :=
       sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
       moduleName := "Omega.Folding.MaxFiber"
       leanName := "Omega.X.maxFiberMultiplicity_pos"
+      phase := 12
+      status := .formalized }
+  , { label := "thm:pom-max-fiber-recurrence-upper-bound"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_le_add"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_zero"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_one"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-two"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_two"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-three"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_three"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-four"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_four"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-five"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_five"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-six"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_six"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-seven"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_seven"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-eight"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_eight"
+      phase := 12
+      status := .formalized }
+  , { label := "cor:pom-D-rec-base-nine"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_nine"
       phase := 12
       status := .formalized }
   -- Phase 13: ModularTower (Plan 4)
