@@ -2352,6 +2352,25 @@ theorem unique_fiber_decomposition (w : Word m) :
 theorem fold_unique (w : Word m) : ∃! x : X m, Fold w = x :=
   X.Fold_unique_target w
 
+/-! #### Group Action & Subtraction -/
+
+/-- Addition by x is a bijection on X_m (free group action). -/
+theorem stableAdd_is_bijection (x : X m) :
+    Function.Bijective (X.stableAdd x) :=
+  X.stableAdd_bijective x
+
+/-- x - 0 = x. -/
+theorem sub_zero (x : X m) : X.stableSub x X.stableZero = x :=
+  X.stableSub_zero x
+
+/-- 0 - x = -x. -/
+theorem zero_sub (x : X m) : X.stableSub X.stableZero x = X.stableNeg x :=
+  X.zero_stableSub x
+
+/-- Negation is an involution (Function.Involutive). -/
+theorem neg_involutive : Function.Involutive (X.stableNeg (m := m)) :=
+  X.stableNeg_involutive
+
 end
 
 end Omega.Frontier
