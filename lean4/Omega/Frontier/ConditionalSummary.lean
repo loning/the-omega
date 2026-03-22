@@ -534,6 +534,18 @@ theorem cell_mass_total {α β : Type*} [Fintype α] [Fintype β]
     ∑ b, SPG.cellMass μ obs b = SPG.setMass μ Set.univ :=
   SPG.cellMass_total μ obs
 
+/-! #### Fiber Decomposition Completeness -/
+
+/-- Complete fiber decomposition: uniqueness + positivity + partition sum. -/
+theorem fiber_decomposition (m : Nat) :
+    (∀ w : Word m, ∃! x : X m, w ∈ X.fiber x) ∧
+    (∀ x : X m, 0 < (X.fiber x).card) ∧
+    (∑ x : X m, (X.fiber x).card = 2 ^ m) :=
+  X.fiber_decomposition_complete m
+
+/-- Fold always outputs a stable (No11) word. -/
+theorem fold_always_stable (w : Word m) : No11 (Fold w).1 :=
+  X.Fold_output_is_stable w
 
 end
 
