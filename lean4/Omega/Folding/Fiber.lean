@@ -721,6 +721,24 @@ theorem even_odd_disjoint (m : Nat) :
   classical
   exact Finset.disjoint_filter.2 (fun x _ h1 h2 => by omega)
 
+/-- The fiber of x consists of words whose Fold equals x,
+    i.e., words whose weight equals stableValue x. -/
+theorem mem_fiber_iff_fold (x : X m) (w : Word m) :
+    w ∈ fiber x ↔ Fold w = x := by
+  classical
+  exact mem_fiber
+
+/-- The modular projection is surjective: every element of X_m
+    is the projection of some element of X_{m+1}. -/
+theorem modularProject_surjective (m : Nat) :
+    Function.Surjective (modularProject (m := m)) := by
+  intro y
+  -- y : X m. Take x = appendFalse y : X (m+1). Then restrict x = y.
+  refine ⟨X.appendFalse y, ?_⟩
+  apply eq_of_stableValue_eq
+  rw [stableValue_modularProject, stableValue_restrict_appendFalse,
+    Nat.mod_eq_of_lt (stableValue_lt_paperFib_succ y)]
+
 end
 
 end X

@@ -2094,6 +2094,37 @@ theorem inverse_limit_round_right (a : X.XInfinity) :
     X.ofFamily (X.toFamily a) = a :=
   X.inverseLimitEquiv_right_inv a
 
+/-! ### Plan 9 (partial): Fiber Structure -/
+
+/-- Fiber membership is characterized by the Fold map. -/
+theorem fiber_membership_iff (x : X m) (w : Word m) :
+    w ∈ X.fiber x ↔ Fold w = x :=
+  X.mem_fiber_iff_fold x w
+
+/-- The modular projection is surjective: every element of X_m
+    is the projection of some element of X_{m+1}. -/
+theorem modular_project_surjective (m : Nat) :
+    Function.Surjective (X.modularProject (m := m)) :=
+  X.modularProject_surjective m
+
+/-! ### Plans 17/18: Measure Event/Complement Bounds (named) -/
+
+/-- Scan error ≤ event measure (named). -/
+theorem scan_error_le_event [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    SPG.scanErrorMeasure μ obs P ≤ μ P :=
+  SPG.scanErrorMeasure_le_event_measure μ obs hObs P hP
+
+/-- Scan error ≤ complement measure (named). -/
+theorem scan_error_le_compl [MeasurableSpace α] [Fintype β]
+    [MeasurableSpace β] [MeasurableSingletonClass β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (hObs : Measurable obs)
+    (P : Set α) (hP : MeasurableSet P) :
+    SPG.scanErrorMeasure μ obs P ≤ μ Pᶜ :=
+  SPG.scanErrorMeasure_le_compl_measure μ obs hObs P hP
+
 end
 
 end Omega.Frontier
