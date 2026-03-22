@@ -548,6 +548,11 @@ def coreAuditTargets : List String :=
   , "Omega.X.fib_component_fusion_lt"
   , "Omega.X.fib_component_fusion_gain"
   , "Omega.X.fib_component_fusion_gain_lower"
-  , "Omega.X.fib_component_fusion_gain_ge" ]
+  , "Omega.X.fib_component_fusion_gain_ge"
+  -- MaxFiber (Plan 8 partial)
+  , "Omega.X.maxFiberMultiplicity"
+  , "Omega.X.maxFiberMultiplicity_achieved"
+  , "Omega.X.fiberMultiplicity_le_max"
+  , "Omega.X.maxFiberMultiplicity_pos" ]
 
 end Omega.Audit

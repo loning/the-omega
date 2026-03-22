@@ -1617,6 +1617,37 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberFusion"
       leanName := "Omega.X.fib_component_fusion_gain_ge"
       phase := 11
+      status := .formalized }
+  -- Phase 12: MaxFiber (Plan 8 partial)
+  -- def:pom-top-fiber-spectrum → X.maxFiberMultiplicity (Omega/Folding/MaxFiber.lean:15)
+  -- thm:pom-max-fiber (partial) → X.maxFiberMultiplicity_achieved (Omega/Folding/MaxFiber.lean:20)
+  --                             → X.fiberMultiplicity_le_max    (Omega/Folding/MaxFiber.lean:27)
+  --                             → X.maxFiberMultiplicity_pos    (Omega/Folding/MaxFiber.lean:32)
+  -- 状态: 部分形式化（定义+基本性质已审核），闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
+  -- 审核通过 2026-03-22
+  , { label := "def:pom-top-fiber-spectrum"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity"
+      phase := 12
+      status := .formalized }
+  , { label := "thm:pom-max-fiber-achieved"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_achieved"
+      phase := 12
+      status := .formalized }
+  , { label := "thm:pom-max-fiber-le-max"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.fiberMultiplicity_le_max"
+      phase := 12
+      status := .formalized }
+  , { label := "thm:pom-max-fiber-pos"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.X.maxFiberMultiplicity_pos"
+      phase := 12
       status := .formalized } ]
 
 end Omega.Audit

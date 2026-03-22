@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~11,600 |
-| 定理/定义数 | 1,014 |
+| 总行数 | ~11,643 |
+| 定理/定义数 | 1,019 |
 | 论文接口包装 | 312 |
 | 文件数 | 28 |
 | 公理数 | 0 |
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, Rewrite, Defect, InverseLimit, CarryDefect, FiberFusion) | 11 | ~269 | 92% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, CarryDefect, FiberFusion) | 12 | ~274 | 92% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic) | 2 | ~16 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -31,6 +31,7 @@
 **fiber 结构**：分割和 = 2^m, multiplicity, 不相交性
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
+**最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性；闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
@@ -42,12 +43,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 9 | 90% | 中 |
 | 新生算术 | 21 | 10 | 48% | 高 |
-| POM | 106 | 12 | 11% | 极高 |
+| POM | 106 | 14 | 13% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~50** | **~13%** | - |
+| **总计** | **394** | **~52** | **~13%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 1006 个 Lean 定理中，约 312 个是论文接口包装，约 46 个直接对应论文中的编号定理。
 
@@ -65,7 +66,7 @@
 ### Phase B：POM 纤维谱（计划 7-12）
 
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
-8. **偶/奇分支纤维分离**：按 stableValue 的奇偶性分类纤维结构
+8. **[部分完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber` 部分)；闭式 $D_{2k} = F_{k+2}$, $D_{2k+1} = 2F_{k+1}$ 待实现（需要 Fold-truncate 交换性基础设施）
 9. **三纤维闭合形式**：证明论文中 `D_{2k}^{(3)} = F_{k+2} - F_{k-3}` 的闭合公式
 10. **碰撞核矩阵**：定义碰撞计数矩阵并证明其 Perron-Frobenius 性质
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量
