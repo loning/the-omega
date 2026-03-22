@@ -92,4 +92,142 @@ P(z,u)=P_{\mathrm{core}}(z,u)+\sum_{j=1}^{J}m_j\,u^{E_j}z^{\ell_j},
 \noindent
 由此，有限个原子 Euler 因子的手术从不改变主增长率、主极点位置或极点阶数；它们只在单极点情形下以乘法方式重标定主留数，并在 primitive 与 Abel 有限部两层留下严格可加的有限修正。于是，primitive surgery 的作用被压缩为“主部刚性、有限部可加”的统一闭式法则。
 
+\begin{theorem}[有限原子手术在长度加法谐波上的完全对角化]\label{thm:conclusion-finite-primitive-surgery-additive-harmonic-diagonalization}
+在定理 \ref{thm:conclusion-finite-primitive-surgery-pole-finitepart-transform} 的设定下，对任意整数 \(q\ge 1\) 与任意剩余类 \(a\in \ZZ/q\ZZ\)，定义长度加法投影
+\[
+\Pi_{a,q}f(z):=\frac{1}{q}\sum_{t=0}^{q-1}\omega_q^{-at}f(\omega_q^t z),
+\qquad
+\omega_q:=e^{2\pi i/q}.
+\]
+则 primitive 手术差满足精确对角化公式
+\[
+\Pi_{a,q}\!\bigl(P-P_{\mathrm{core}}\bigr)(z,u)
+=
+\sum_{\ell_j\equiv a\ (\mathrm{mod}\ q)}m_j\,u^{E_j}z^{\ell_j}.
+\]
+更一般地，对任意加法特征 \(\chi(n)=\omega_q^{tn}\) 有
+\[
+\sum_{n\ge 1}\bigl(p_n(u)-p_n^{\mathrm{core}}(u)\bigr)\chi(n)z^n
+=
+\sum_{j=1}^{J}m_j\,\chi(\ell_j)\,u^{E_j}z^{\ell_j}.
+\]
+因此，有限原子手术在长度加法谐波上完全对角化：每个原子只在与其长度同余的唯一 residue channel 中留下质量，而在加法特征下仅留下相位因子 \(\chi(\ell_j)\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-finite-primitive-surgery-pole-finitepart-transform}，
+\[
+P(z,u)-P_{\mathrm{core}}(z,u)=\sum_{j=1}^{J}m_j\,u^{E_j}z^{\ell_j}.
+\]
+对两边作用 \(\Pi_{a,q}\)，只需逐项计算单项式的像。对任意 \(\ell\ge 1\)，有
+\[
+\Pi_{a,q}(z^\ell)
+=
+\frac{1}{q}\sum_{t=0}^{q-1}\omega_q^{-at}(\omega_q^t z)^\ell
+=
+\left(\frac{1}{q}\sum_{t=0}^{q-1}\omega_q^{(\ell-a)t}\right)z^\ell.
+\]
+离散 Fourier 正交关系给出
+\[
+\frac{1}{q}\sum_{t=0}^{q-1}\omega_q^{(\ell-a)t}
+=
+\mathbf 1_{\ell\equiv a\ (\mathrm{mod}\ q)},
+\]
+故
+\[
+\Pi_{a,q}\!\bigl(P-P_{\mathrm{core}}\bigr)(z,u)
+=
+\sum_{\ell_j\equiv a\ (\mathrm{mod}\ q)}m_j\,u^{E_j}z^{\ell_j}.
+\]
+这便得到第一式。
+
+对第二式，只需把
+\[
+\sum_{n\ge 1}\bigl(p_n(u)-p_n^{\mathrm{core}}(u)\bigr)\chi(n)z^n
+\]
+看作对 \(\sum_{n\ge 1}(p_n-p_n^{\mathrm{core}})z^n\) 施加长度方向的 Fourier 线性组合。由于 \(\chi(\ell_j)\) 正是单项式 \(z^{\ell_j}\) 在该加法特征下获得的相位，便得
+\[
+\sum_{n\ge 1}\bigl(p_n(u)-p_n^{\mathrm{core}}(u)\bigr)\chi(n)z^n
+=
+\sum_{j=1}^{J}m_j\,\chi(\ell_j)\,u^{E_j}z^{\ell_j}.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[真实输入 \texorpdfstring{$40$}{40} 状态核的原子 Fourier 指纹]\label{cor:conclusion-realinput40-atomic-fourier-fingerprint}
+在真实输入 \(40\) 状态核中，
+\[
+\Delta(z,u)=(1-uz^2)F(z,u),
+\qquad
+P(z,u)=uz^2+P_{\mathrm{core}}(z,u).
+\]
+记 \(z_\star(u)\) 为由 core 极点 \(F(z_\star(u),u)=0\) 所确定的主极点，并令 \(b\) 为方程
+\[
+1-6b+9b^2-b^3-b^4=0
+\]
+的最大正根。对任意有限加法特征 \(\chi:\ZZ/q\ZZ\to \CC^\times\)，定义原子 Fourier 振幅
+\[
+\mathcal A_\chi(u)
+:=
+\left[\sum_{n\ge 1}\bigl(p_n(u)-p_n^{\mathrm{core}}(u)\bigr)\chi(n)z^n\right]_{z=z_\star(u)}.
+\]
+则有精确公式
+\[
+\mathcal A_\chi(u)=\chi(2)\,u\,z_\star(u)^2,
+\]
+并在低温端 \(u\to +\infty\) 满足
+\[
+\mathcal A_\chi(u)\longrightarrow b\,\chi(2).
+\]
+等价地，对 residue-filtered 振幅
+\[
+\mathcal A_{a,q}(u):=
+\Pi_{a,q}\!\bigl(P-P_{\mathrm{core}}\bigr)(z_\star(u),u),
+\]
+有
+\[
+\mathcal A_{a,q}(u)=u\,z_\star(u)^2\,\mathbf 1_{a\equiv 2\ (\mathrm{mod}\ q)},
+\qquad
+\mathcal A_{a,q}(u)\longrightarrow b\,\mathbf 1_{a\equiv 2\ (\mathrm{mod}\ q)}.
+\]
+因此，真实输入模型中的唯一原子在零温极限中留下一个秩一 Fourier 指纹：全部长度谐波仅在频率 \(2\) 处存活，且极限质量恰为 \(b\)。
+\end{corollary}
+\begin{proof}
+将定理 \ref{thm:conclusion-finite-primitive-surgery-additive-harmonic-diagonalization} 应用于唯一原子
+\[
+(m,\ell,E)=(1,2,1),
+\]
+便得到
+\[
+\sum_{n\ge 1}\bigl(p_n(u)-p_n^{\mathrm{core}}(u)\bigr)\chi(n)z^n
+=
+\chi(2)\,u z^2.
+\]
+在 \(z=z_\star(u)\) 处取值，即得
+\[
+\mathcal A_\chi(u)=\chi(2)\,u\,z_\star(u)^2.
+\]
+而本文前面已证明
+\[
+u\,z_\star(u)^2\longrightarrow b
+\qquad
+(u\to +\infty),
+\]
+故
+\[
+\mathcal A_\chi(u)\longrightarrow b\,\chi(2).
+\]
+
+对 residue-filtered 振幅，只需把 \(\chi\) 换成投影 \(\Pi_{a,q}\) 即可。由第一条结论立刻得到
+\[
+\mathcal A_{a,q}(u)
+=
+u\,z_\star(u)^2\,\mathbf 1_{a\equiv 2\ (\mathrm{mod}\ q)},
+\]
+并在 \(u\to+\infty\) 时收敛到
+\[
+b\,\mathbf 1_{a\equiv 2\ (\mathrm{mod}\ q)}.
+\]
+证毕。
+\end{proof}
+
 \endinput
