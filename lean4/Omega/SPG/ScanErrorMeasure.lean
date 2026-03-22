@@ -807,6 +807,24 @@ theorem scanErrorMeasure_zero_measure {α β : Type*} [MeasurableSpace α] [Fint
     scanErrorMeasure 0 obs P = 0 := by
   simp [scanErrorMeasure, cellEventMeasure, cellComplMeasure]
 
+/-- Observable purity is preserved by observable events (measure). -/
+theorem observablePureMeasure_of_observable {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    ObservablePureMeasure μ obs (observableEvent obs A) :=
+  observablePureMeasure_observableEvent μ obs A
+
+/-- Cell event measure is zero for the empty event. -/
+@[simp] theorem cellEventMeasure_empty_event {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellEventMeasure μ obs ∅ b = 0 :=
+  cellEventMeasure_empty μ obs b
+
+/-- Cell complement measure is zero for the full event. -/
+@[simp] theorem cellComplMeasure_full_event {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellComplMeasure μ obs Set.univ b = 0 :=
+  cellComplMeasure_univ μ obs b
+
 end
 
 end Omega.SPG

@@ -1703,6 +1703,35 @@ theorem scanError_vanishes_full {α β : Type*} [Fintype α] [Fintype β]
     SPG.scanError μ obs Set.univ = 0 :=
   SPG.scanError_full_event μ obs
 
+/-! ### Paper Section 6: Double Negation & Additional Cardinalities -/
+
+/-- Double negation: -(-x) = x (involution property). -/
+theorem stableNeg_involution (x : X m) : X.stableNeg (X.stableNeg x) = x :=
+  X.stableNeg_neg_eq x
+
+/-- |X_6| = 21. -/
+theorem card_stable_six : Fintype.card (X 6) = 21 := X.card_X_six
+/-- |X_7| = 34. -/
+theorem card_stable_seven : Fintype.card (X 7) = 34 := X.card_X_seven
+
+/-! ### Paper SPG: Boundary Cells for Trivial Events -/
+
+/-- Empty boundary for empty event (discrete). -/
+theorem boundaryCells_vanish_empty {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) : SPG.boundaryCells μ obs ∅ = ∅ :=
+  SPG.boundaryCells_empty_event μ obs
+
+/-- Empty boundary for full event (discrete). -/
+theorem boundaryCells_vanish_full {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) : SPG.boundaryCells μ obs Set.univ = ∅ :=
+  SPG.boundaryCells_full_event μ obs
+
+/-- Observable purity for observable events (measure). -/
+theorem observable_events_are_pure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
+    SPG.ObservablePureMeasure μ obs (SPG.observableEvent obs A) :=
+  SPG.observablePureMeasure_of_observable μ obs A
+
 end
 
 end Omega.Frontier

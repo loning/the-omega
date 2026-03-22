@@ -727,6 +727,26 @@ theorem scanError_id_eq_min_setMass {α : Type*} [Fintype α]
     scanError μ id P ≤ min (setMass μ P) (setMass μ Pᶜ) :=
   scanError_le_min_setMass μ id P
 
+/-- Scan error of P ∩ observableEvent is zero. -/
+theorem scanError_inter_observableEvent {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    scanError μ obs (observableEvent obs A) = 0 :=
+  scanError_observableEvent_eq_zero μ obs A
+
+/-- Boundary cells for the empty event are empty. -/
+@[simp] theorem boundaryCells_empty_event {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    boundaryCells μ obs ∅ = ∅ := by
+  rw [← scanError_eq_zero_iff_boundaryCells_eq_empty]
+  exact scanError_empty μ obs
+
+/-- Boundary cells for the full event are empty. -/
+@[simp] theorem boundaryCells_full_event {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    boundaryCells μ obs Set.univ = ∅ := by
+  rw [← scanError_eq_zero_iff_boundaryCells_eq_empty]
+  exact scanError_univ μ obs
+
 end
 
 end Omega.SPG

@@ -566,6 +566,34 @@ theorem stableValue_stableOne_of_ge_one (hm : 1 ≤ m) :
     stableValue (stableOne (m := m)) = 1 :=
   stableValue_ofNat_lt 1 (paperFib_gt_one hm)
 
+/-- |X 6| = 21. -/
+theorem card_X_six : Fintype.card (X 6) = 21 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- |X 7| = 34. -/
+theorem card_X_seven : Fintype.card (X 7) = 34 := by
+  rw [X.card_eq_paperFib_succ]; rfl
+
+/-- stableAdd with stableNeg of y gives stableSub x y. -/
+theorem stableAdd_neg_eq_sub (x y : X m) :
+    stableAdd x (stableNeg y) = stableSub x y :=
+  rfl
+
+/-- Double negation: -(-x) = x. Proved via the additive inverse uniqueness. -/
+theorem stableNeg_neg_eq (x : X m) :
+    stableNeg (stableNeg x) = x := by
+  -- -(-x) + (-x) = 0 and x + (-x) = 0
+  -- Both are left inverses of (-x), so they must be equal.
+  have h1 := stableAdd_stableNeg (stableNeg x)
+  have h2 := stableNeg_stableAdd x
+  -- h1 : (-x) + (-(-x)) = 0, but we need -(-x) + (-x) = 0
+  rw [stableAdd_comm] at h1
+  -- So (-(-x)) + (-x) = 0 and x + (-x) = 0
+  -- (-(-x)) = x by left cancellation of (-x):
+  -- (-(-x)) + (-x) = x + (-x) → -(-x) = x
+  have h3 := stableAdd_stableNeg x
+  exact stableAdd_right_cancel (h1.trans h3.symm)
+
 end
 
 end X
