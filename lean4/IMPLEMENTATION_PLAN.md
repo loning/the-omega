@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | 9,266 |
+| 总行数 | ~11,500 |
 | 定理/定义数 | 1,006 |
 | 论文接口包装 | 312 |
-| 文件数 | 26 |
+| 文件数 | 27 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, Rewrite, Defect, InverseLimit) | 9 | ~250 | 85% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, Rewrite, Defect, InverseLimit, CarryDefect) | 10 | ~261 | 90% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic) | 2 | ~16 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -41,12 +41,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 9 | 90% | 中 |
 | 新生算术 | 21 | 10 | 48% | 高 |
-| POM | 106 | 8 | 8% | 极高 |
+| POM | 106 | 10 | 9% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~46** | **~12%** | - |
+| **总计** | **394** | **~48** | **~12%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 1006 个 Lean 定理中，约 312 个是论文接口包装，约 46 个直接对应论文中的编号定理。
 
@@ -56,7 +56,7 @@
 
 1. **Zeckendorf 唯一性完整证明**：证明 `stableValue (X.ofNat m n) = n` 对所有 `n < F_{m+2}` 成立（已完成），进一步证明 Zeckendorf 表示的唯一性定理
 2. **稳定乘法的 Fibonacci 素数域**：当 `F_{m+2}` 为素数时构造 `X m` 上的乘法逆元
-3. **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
+3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
 4. **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链
 5. **Fibonacci 整除性**：证明 `F_m | F_{nm}` (Fibonacci 整除定理)
 6. **稳定类型同构的范畴化**：将 `stableValue` 升级为环同构证书
@@ -104,9 +104,8 @@
 
 ### 立即可执行（1-2 轮内完成）
 
-1. 计划 3（carry defect 完整定理）
-2. 计划 4（modular 映射塔）
-3. 计划 7（纤维乘数递推）
+1. 计划 4（modular 映射塔）
+2. 计划 7（纤维乘数递推）
 
 ### 短期可执行（3-5 轮内完成）
 
