@@ -19,6 +19,9 @@ import Omega.SPG.ScanErrorDiscrete
 import Omega.SPG.ScanErrorMeasure
 import Omega.Frontier.Assumptions
 import Omega.Frontier.Conditional
+import Omega.Frontier.ConditionalSPG
+import Omega.Frontier.ConditionalArithmetic
+import Omega.Frontier.ConditionalSummary
 import Omega.Frontier.Conjectures
 import Omega.Frontier.Certificates
 import Omega.Audit.SourceMap
