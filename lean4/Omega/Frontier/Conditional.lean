@@ -1287,6 +1287,40 @@ theorem defectChain_is_globalDefect (m k : Nat) (x : X (m + k)) :
     defectChain m k x.1 = globalDefect (Nat.le_add_right m k) x.1 :=
   defectChain_stable m k x
 
+/-! ### Paper Fold Section: Rewrite System Properties -/
+
+/-- Each rewrite step preserves the Fibonacci value (already wrapped, for completeness). -/
+theorem rewrite_value_preserved {a b : Rewrite.DigitCfg} (h : Rewrite.Step a b) :
+    Rewrite.value b = Rewrite.value a :=
+  Rewrite.step_value h
+
+/-- Each rewrite step does not increase the mass (rewrite monotonicity). -/
+theorem rewrite_mass_nonincreasing {a b : Rewrite.DigitCfg} (h : Rewrite.Step a b) :
+    Rewrite.mass b ≤ Rewrite.mass a :=
+  Rewrite.step_mass_le h
+
+/-! ### Paper Graph Section: Golden-Mean Edge Structure -/
+
+/-- The golden-mean graph has edges from state 0 to state 0 (via bit 0). -/
+theorem goldenMean_allows_00 :
+    Omega.Graph.goldenMeanGraph.edge false false false :=
+  Omega.Graph.goldenMean_edge_ff
+
+/-- The golden-mean graph has edges from state 0 to state 1 (via bit 1). -/
+theorem goldenMean_allows_01 :
+    Omega.Graph.goldenMeanGraph.edge false true true :=
+  Omega.Graph.goldenMean_edge_ft
+
+/-- The golden-mean graph has edges from state 1 to state 0 (via bit 0). -/
+theorem goldenMean_allows_10 :
+    Omega.Graph.goldenMeanGraph.edge true false false :=
+  Omega.Graph.goldenMean_edge_tf
+
+/-- The golden-mean graph forbids the 11 transition. -/
+theorem goldenMean_forbids_11 (q' : Bool) :
+    ¬ Omega.Graph.goldenMeanGraph.edge true true q' :=
+  Omega.Graph.goldenMean_no_edge_tt q'
+
 end
 
 end Omega.Frontier

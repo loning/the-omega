@@ -437,6 +437,18 @@ theorem step_value {a b : DigitCfg} (h : Step a b) : value b = value a := by
   | dedupSucc k hk =>
       exact value_dedupSuccTarget a k hk
 
+/-- Each rewrite step does not increase the mass. -/
+theorem step_mass_le {a b : DigitCfg} (h : Step a b) : mass b ≤ mass a := by
+  cases h with
+  | adj k hk hk1 =>
+    have := mass_adjTarget_add a k hk hk1; omega
+  | dedupZero h0 =>
+    have := mass_dedupZeroTarget_add a h0; omega
+  | dedupOne h1 =>
+    exact le_of_eq (mass_dedupOneTarget a h1)
+  | dedupSucc k hk =>
+    exact le_of_eq (mass_dedupSuccTarget a k hk)
+
 /-- Lexicographic decrease relation used for termination bookkeeping. -/
 def MeasureDrop (a b : DigitCfg) : Prop :=
   mass b < mass a ∨
