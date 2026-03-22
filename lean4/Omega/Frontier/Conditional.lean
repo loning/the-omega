@@ -641,6 +641,162 @@ theorem prefixZeroScan_hasCertificate {m n : Nat}
     PrefixZeroScanCertificate.Valid { m := m, n := n, h := h, μ := μ, event := A } :=
   PrefixZeroScanCertificate.canonical μ h A
 
+/-- Scan error is symmetric under complement of the event (discrete). -/
+theorem scanError_compl_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs Pᶜ = SPG.scanError μ obs P :=
+  SPG.scanError_compl μ obs P
+
+/-- Scan error of the empty event is zero (discrete). -/
+theorem scanError_empty_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    SPG.scanError μ obs ∅ = 0 :=
+  SPG.scanError_empty μ obs
+
+/-- Scan error of the full event is zero (discrete). -/
+theorem scanError_univ_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) :
+    SPG.scanError μ obs Set.univ = 0 :=
+  SPG.scanError_univ μ obs
+
+/-- Observable events are observable-pure in the discrete model. -/
+theorem observableEvent_observablePure_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (A : Set β) :
+    SPG.ObservablePure μ obs (SPG.observableEvent obs A) :=
+  SPG.observablePure_observableEvent μ obs A
+
+/-- Discrete observable purity is equivalent to having empty boundary. -/
+theorem observablePure_iff_boundaryEmpty_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.ObservablePure μ obs P ↔ SPG.boundaryCells μ obs P = ∅ :=
+  SPG.observablePure_iff_boundaryCells_eq_empty μ obs P
+
+/-- Zero discrete scan error is equivalent to discrete observable purity. -/
+theorem scanError_zero_iff_observablePure_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P = 0 ↔ SPG.ObservablePure μ obs P :=
+  SPG.scanError_eq_zero_iff_observablePure μ obs P
+
+/-- Zero discrete scan error is equivalent to empty boundary. -/
+theorem scanError_zero_iff_boundaryEmpty_discrete {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P = 0 ↔ SPG.boundaryCells μ obs P = ∅ :=
+  SPG.scanError_eq_zero_iff_boundaryCells_eq_empty μ obs P
+
+/-- Scan error is symmetric under complement of the event (measure). -/
+theorem scanError_compl_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs Pᶜ = SPG.scanErrorMeasure μ obs P :=
+  SPG.scanErrorMeasure_compl μ obs P
+
+/-- Scan error of the empty event is zero (measure). -/
+theorem scanError_empty_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    SPG.scanErrorMeasure μ obs ∅ = 0 :=
+  SPG.scanErrorMeasure_empty μ obs
+
+/-- Scan error of the full event is zero (measure). -/
+theorem scanError_univ_measure [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    SPG.scanErrorMeasure μ obs Set.univ = 0 :=
+  SPG.scanErrorMeasure_univ μ obs
+
+/-- Prefix events are observable-pure in the discrete model. -/
+theorem prefixEvent_observablePure_discrete (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
+    SPG.ObservablePure μ (SPG.prefixObservation h) (SPG.prefixEvent h A) :=
+  SPG.prefixObservablePure_prefixEvent μ h A
+
+/-- Zero discrete prefix scan error is equivalent to prefix-observable purity. -/
+theorem prefixScanError_zero_iff_observablePure_discrete (μ : PMF (Word n)) (h : m ≤ n)
+    (P : Set (Word n)) :
+    SPG.prefixScanError μ h P = 0 ↔ SPG.ObservablePure μ (SPG.prefixObservation h) P :=
+  SPG.prefixScanError_eq_zero_iff_observablePure μ h P
+
+/-- Zero discrete prefix scan error is equivalent to empty prefix boundary. -/
+theorem prefixScanError_zero_iff_boundaryEmpty_discrete (μ : PMF (Word n)) (h : m ≤ n)
+    (P : Set (Word n)) :
+    SPG.prefixScanError μ h P = 0 ↔ SPG.prefixBoundaryCells μ h P = ∅ :=
+  SPG.prefixScanError_eq_zero_iff_boundaryCells_eq_empty μ h P
+
+/-- Prefix scan error is symmetric under complement (discrete). -/
+theorem prefixScanError_compl_discrete (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanError μ h Pᶜ = SPG.prefixScanError μ h P :=
+  SPG.prefixScanError_compl μ h P
+
+/-- Prefix scan error of the empty event is zero (discrete). -/
+theorem prefixScanError_empty_discrete (μ : PMF (Word n)) (h : m ≤ n) :
+    SPG.prefixScanError μ h ∅ = 0 :=
+  SPG.prefixScanError_empty μ h
+
+/-- Prefix scan error of the full event is zero (discrete). -/
+theorem prefixScanError_univ_discrete (μ : PMF (Word n)) (h : m ≤ n) :
+    SPG.prefixScanError μ h Set.univ = 0 :=
+  SPG.prefixScanError_univ μ h
+
+/-- Discrete observable purity is equivalent to measure-theoretic purity under PMF.toMeasure. -/
+theorem observablePure_measure_discrete_bridge {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.ObservablePureMeasure μ.toMeasure obs P ↔ SPG.ObservablePure μ obs P :=
+  SPG.observablePureMeasure_toMeasure_iff_observablePure μ obs P
+
+/-- Prefix scan error is symmetric under complement (measure). -/
+theorem prefixScanError_compl_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    SPG.prefixScanErrorMeasure μ h Pᶜ = SPG.prefixScanErrorMeasure μ h P :=
+  SPG.prefixScanErrorMeasure_compl μ h P
+
+/-- Prefix scan error of the empty event is zero (measure). -/
+theorem prefixScanError_empty_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
+    SPG.prefixScanErrorMeasure μ h ∅ = 0 :=
+  SPG.prefixScanErrorMeasure_empty μ h
+
+/-- Prefix scan error of the full event is zero (measure). -/
+theorem prefixScanError_univ_measure [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
+    SPG.prefixScanErrorMeasure μ h Set.univ = 0 :=
+  SPG.prefixScanErrorMeasure_univ μ h
+
+/-- Finer observation reduces discrete scan error (observation refinement monotonicity). -/
+theorem scanError_antitone_of_refines {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
+    (hRef : ∀ x, obs₁ x = f (obs₂ x)) (P : Set α) :
+    SPG.scanError μ obs₂ P ≤ SPG.scanError μ obs₁ P :=
+  SPG.scanError_antitone_of_refines μ obs₁ obs₂ f hRef P
+
+/-- Prefix scan error is monotonically non-increasing in the prefix resolution. -/
+theorem prefixScanError_antitone {m₁ m₂ n : Nat}
+    (μ : PMF (Word n)) (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂)
+    (P : Set (Word n)) :
+    SPG.prefixScanError μ h₂ P ≤ SPG.prefixScanError μ h₁ P :=
+  SPG.prefixScanError_antitone μ h₁ h₂ hm P
+
+/-- Cell event masses partition the total event mass (discrete). -/
+theorem cellEventMass_partition {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ∑ b, SPG.cellEventMass μ obs P b = SPG.setMass μ P :=
+  SPG.cellEventMass_sum_eq_setMass μ obs P
+
+/-- Cell complement masses partition the total complement mass (discrete). -/
+theorem cellComplMass_partition {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ∑ b, SPG.cellComplMass μ obs P b = SPG.setMass μ Pᶜ :=
+  SPG.cellComplMass_sum_eq_setMass_compl μ obs P
+
+/-- Scan error is bounded by the Bayes-optimal error min(μ(P), μ(Pᶜ)) (discrete). -/
+theorem scanError_bayes_bound {α β : Type*} [Fintype α] [Fintype β]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    SPG.scanError μ obs P ≤ min (SPG.setMass μ P) (SPG.setMass μ Pᶜ) :=
+  SPG.scanError_le_min_setMass μ obs P
+
+/-- Scan error under a general measure is bounded by the Bayes-optimal bound. -/
+theorem scanError_measure_bayes_bound [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    SPG.scanErrorMeasure μ obs P ≤ min
+        (∑ b, SPG.cellEventMeasure μ obs P b) (∑ b, SPG.cellComplMeasure μ obs P b) :=
+  SPG.scanErrorMeasure_le_min μ obs P
+
 end
 
 end Omega.Frontier

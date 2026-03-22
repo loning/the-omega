@@ -63,6 +63,14 @@ def phaseOneTargets : List String :=
   , "frontier boundary-empty zero-error wrappers"
   , "frontier measure zero-iff wrappers"
   , "rewrite/fold/scan-error certificates"
-  , "source map bootstrap" ]
+  , "source map bootstrap"
+  , "SPG discrete observable purity and zero-iff equivalences"
+  , "SPG discrete complement symmetry and trivial events"
+  , "SPG measure complement symmetry and trivial events"
+  , "frontier discrete purity wrappers"
+  , "frontier complement and trivial event wrappers"
+  , "SPG observation refinement monotonicity"
+  , "SPG prefix scan error monotonicity"
+  , "SPG algebraic sum-min inequality" ]
 
 end Omega.Audit

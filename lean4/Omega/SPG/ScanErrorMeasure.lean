@@ -346,6 +346,95 @@ theorem prefixBoundaryCellsMeasure_toMeasure_eq_prefixBoundaryCells {m n : Nat}
     prefixBoundaryCellsMeasure μ.toMeasure h P = prefixBoundaryCells μ h P := by
   exact boundaryCellsMeasure_toMeasure_eq_boundaryCells μ (prefixObservation h) P
 
+theorem cellEventMeasure_compl {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
+    cellEventMeasure μ obs Pᶜ b = cellComplMeasure μ obs P b := by
+  rw [cellEventMeasure, cellComplMeasure, compl_inter_cell_eq_cell_diff]
+
+theorem cellComplMeasure_compl {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
+    cellComplMeasure μ obs Pᶜ b = cellEventMeasure μ obs P b := by
+  rw [cellComplMeasure, cellEventMeasure, cell_diff_compl_eq_inter_cell]
+
+@[simp] theorem cellEventMeasure_empty {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellEventMeasure μ obs ∅ b = 0 := by
+  have : (∅ : Set α) ∩ observableCell obs b = ∅ := by ext x; simp
+  rw [cellEventMeasure, this, MeasureTheory.measure_empty]
+
+@[simp] theorem cellComplMeasure_univ {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) :
+    cellComplMeasure μ obs Set.univ b = 0 := by
+  have : observableCell obs b \ Set.univ = (∅ : Set α) := by ext x; simp
+  rw [cellComplMeasure, this, MeasureTheory.measure_empty]
+
+/-- Scan error under a general measure is invariant under complementation of the event. -/
+theorem scanErrorMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs Pᶜ = scanErrorMeasure μ obs P := by
+  unfold scanErrorMeasure
+  refine Finset.sum_congr rfl (fun b _ => ?_)
+  rw [cellEventMeasure_compl, cellComplMeasure_compl, min_comm]
+
+@[simp] theorem scanErrorMeasure_empty {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs ∅ = 0 :=
+  scanErrorMeasure_eq_zero_of_observablePure μ obs ∅
+    (fun b => Or.inl (cellEventMeasure_empty μ obs b))
+
+@[simp] theorem scanErrorMeasure_univ {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) :
+    scanErrorMeasure μ obs Set.univ = 0 :=
+  scanErrorMeasure_eq_zero_of_observablePure μ obs Set.univ
+    (fun b => Or.inr (cellComplMeasure_univ μ obs b))
+
+theorem observablePureMeasure_toMeasure_iff_observablePure {α β : Type*} [Fintype α] [Fintype β]
+    [MeasurableSpace α] [MeasurableSingletonClass α]
+    (μ : PMF α) (obs : α → β) (P : Set α) :
+    ObservablePureMeasure μ.toMeasure obs P ↔ ObservablePure μ obs P := by
+  simp only [ObservablePureMeasure, ObservablePure,
+    cellEventMeasure_toMeasure_eq_cellEventMass,
+    cellComplMeasure_toMeasure_eq_cellComplMass]
+
+theorem prefixScanErrorMeasure_compl [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h Pᶜ = prefixScanErrorMeasure μ h P :=
+  scanErrorMeasure_compl μ (prefixObservation h) P
+
+@[simp] theorem prefixScanErrorMeasure_empty [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
+    prefixScanErrorMeasure μ h ∅ = 0 :=
+  scanErrorMeasure_empty μ (prefixObservation h)
+
+@[simp] theorem prefixScanErrorMeasure_univ [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
+    prefixScanErrorMeasure μ h Set.univ = 0 :=
+  scanErrorMeasure_univ μ (prefixObservation h)
+
+/-- Finite sums distribute under min: ∑ min(aᵢ, bᵢ) ≤ min(∑ aᵢ, ∑ bᵢ). -/
+theorem sum_min_le_min_sum {ι : Type*} [Fintype ι] (a b : ι → ENNReal) :
+    ∑ i, min (a i) (b i) ≤ min (∑ i, a i) (∑ i, b i) :=
+  le_min (Finset.sum_le_sum (fun i _ => min_le_left _ _))
+    (Finset.sum_le_sum (fun i _ => min_le_right _ _))
+
+/-- Scan error under a general measure is bounded by the minimum of event and complement mass. -/
+theorem scanErrorMeasure_le_min {α β : Type*} [MeasurableSpace α] [Fintype β]
+    (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
+    scanErrorMeasure μ obs P ≤ min (∑ b, cellEventMeasure μ obs P b)
+        (∑ b, cellComplMeasure μ obs P b) := by
+  unfold scanErrorMeasure
+  exact le_min (Finset.sum_le_sum (fun b _ => min_le_left _ _))
+    (Finset.sum_le_sum (fun b _ => min_le_right _ _))
+
+/-- Scan error under a general measure is bounded by the minimum of event and complement mass
+    for the prefix observable. -/
+theorem prefixScanErrorMeasure_le_min [MeasurableSpace (Word n)]
+    (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
+    prefixScanErrorMeasure μ h P ≤ min
+        (∑ b, cellEventMeasure μ (prefixObservation h) P b)
+        (∑ b, cellComplMeasure μ (prefixObservation h) P b) :=
+  scanErrorMeasure_le_min μ (prefixObservation h) P
+
 end
 
 end Omega.SPG

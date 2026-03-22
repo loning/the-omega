@@ -253,9 +253,18 @@ Omega/Audit/NoAxiom.lean
 当前已有：
 
 - boundary decomposition
-- purity
-- zero-error criteria
+- purity (discrete `ObservablePure` + measure `ObservablePureMeasure`)
+- zero-error criteria (discrete + measure, both directions)
+- zero-iff-pure 等价 (discrete + measure)
+- zero-iff-boundary-empty 等价 (discrete + measure)
+- complement symmetry (`scanError_compl` + `scanErrorMeasure_compl`)
+- trivial event zero-error (`scanError_empty/univ` + `scanErrorMeasure_empty/univ`)
 - PMF/measure bridge
+- PMF/measure purity bridge (`observablePureMeasure_toMeasure_iff_observablePure`)
+- 代数不等式 `sum_min_le_min_sum` (∑ min ≤ min ∑)
+- 观测细化单调性 (`scanError_antitone_of_refines`)
+- 前缀扫描误差单调性 (`prefixScanError_antitone`: m₁ ≤ m₂ → SE(m₂) ≤ SE(m₁))
+- 单元质量纤维分解 (`cellEventMass_refines_sum`, `cellComplMass_refines_sum`)
 
 仍缺：
 

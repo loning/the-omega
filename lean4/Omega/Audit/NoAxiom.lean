@@ -144,6 +144,59 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.RewriteStepCertificate.value_preserved
   #print axioms Omega.Frontier.FoldCertificate.idempotent
   #print axioms Omega.Frontier.PrefixZeroScanCertificate.canonical
+  #print axioms Omega.SPG.ObservablePure
+  #print axioms Omega.SPG.observablePure_iff_boundaryCells_eq_empty
+  #print axioms Omega.SPG.scanError_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.scanError_eq_zero_iff_boundaryCells_eq_empty
+  #print axioms Omega.SPG.scanError_compl
+  #print axioms Omega.SPG.scanError_empty
+  #print axioms Omega.SPG.scanError_univ
+  #print axioms Omega.SPG.scanErrorMeasure_compl
+  #print axioms Omega.SPG.scanErrorMeasure_empty
+  #print axioms Omega.SPG.scanErrorMeasure_univ
+  #print axioms Omega.Frontier.scanError_compl_discrete
+  #print axioms Omega.Frontier.scanError_empty_discrete
+  #print axioms Omega.Frontier.scanError_univ_discrete
+  #print axioms Omega.Frontier.observableEvent_observablePure_discrete
+  #print axioms Omega.Frontier.observablePure_iff_boundaryEmpty_discrete
+  #print axioms Omega.Frontier.scanError_zero_iff_observablePure_discrete
+  #print axioms Omega.Frontier.scanError_zero_iff_boundaryEmpty_discrete
+  #print axioms Omega.Frontier.scanError_compl_measure
+  #print axioms Omega.Frontier.scanError_empty_measure
+  #print axioms Omega.Frontier.scanError_univ_measure
+  #print axioms Omega.SPG.prefixScanError_eq_zero_iff_observablePure
+  #print axioms Omega.SPG.prefixScanError_eq_zero_iff_boundaryCells_eq_empty
+  #print axioms Omega.SPG.prefixScanError_compl
+  #print axioms Omega.SPG.prefixScanError_empty
+  #print axioms Omega.SPG.prefixScanError_univ
+  #print axioms Omega.SPG.observablePureMeasure_toMeasure_iff_observablePure
+  #print axioms Omega.SPG.prefixScanErrorMeasure_compl
+  #print axioms Omega.SPG.prefixScanErrorMeasure_empty
+  #print axioms Omega.SPG.prefixScanErrorMeasure_univ
+  #print axioms Omega.SPG.sum_min_le_min_sum
+  #print axioms Omega.Frontier.prefixEvent_observablePure_discrete
+  #print axioms Omega.Frontier.prefixScanError_zero_iff_observablePure_discrete
+  #print axioms Omega.Frontier.prefixScanError_zero_iff_boundaryEmpty_discrete
+  #print axioms Omega.Frontier.prefixScanError_compl_discrete
+  #print axioms Omega.Frontier.prefixScanError_empty_discrete
+  #print axioms Omega.Frontier.prefixScanError_univ_discrete
+  #print axioms Omega.Frontier.observablePure_measure_discrete_bridge
+  #print axioms Omega.Frontier.prefixScanError_compl_measure
+  #print axioms Omega.Frontier.prefixScanError_empty_measure
+  #print axioms Omega.Frontier.prefixScanError_univ_measure
+  #print axioms Omega.SPG.scanError_antitone_of_refines
+  #print axioms Omega.SPG.prefixScanError_antitone
+  #print axioms Omega.Frontier.scanError_antitone_of_refines
+  #print axioms Omega.Frontier.prefixScanError_antitone
+  #print axioms Omega.SPG.cellEventMass_sum_eq_setMass
+  #print axioms Omega.SPG.cellComplMass_sum_eq_setMass_compl
+  #print axioms Omega.SPG.cellMass_sum_eq_setMass_univ
+  #print axioms Omega.SPG.scanError_le_min_setMass
+  #print axioms Omega.SPG.scanErrorMeasure_le_min
+  #print axioms Omega.Frontier.cellEventMass_partition
+  #print axioms Omega.Frontier.cellComplMass_partition
+  #print axioms Omega.Frontier.scanError_bayes_bound
+  #print axioms Omega.Frontier.scanError_measure_bayes_bound
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -275,6 +328,58 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.prefixEvent_pure_measure_discrete_bridge"
   , "Omega.Frontier.RewriteStepCertificate.value_preserved"
   , "Omega.Frontier.FoldCertificate.idempotent"
-  , "Omega.Frontier.PrefixZeroScanCertificate.canonical" ]
+  , "Omega.Frontier.PrefixZeroScanCertificate.canonical"
+  , "Omega.SPG.scanError_compl"
+  , "Omega.SPG.scanError_empty"
+  , "Omega.SPG.scanError_univ"
+  , "Omega.SPG.observablePure_iff_boundaryCells_eq_empty"
+  , "Omega.SPG.scanError_eq_zero_iff_observablePure"
+  , "Omega.SPG.scanError_eq_zero_iff_boundaryCells_eq_empty"
+  , "Omega.SPG.scanErrorMeasure_compl"
+  , "Omega.SPG.scanErrorMeasure_empty"
+  , "Omega.SPG.scanErrorMeasure_univ"
+  , "Omega.Frontier.scanError_compl_discrete"
+  , "Omega.Frontier.scanError_empty_discrete"
+  , "Omega.Frontier.scanError_univ_discrete"
+  , "Omega.Frontier.observableEvent_observablePure_discrete"
+  , "Omega.Frontier.observablePure_iff_boundaryEmpty_discrete"
+  , "Omega.Frontier.scanError_zero_iff_observablePure_discrete"
+  , "Omega.Frontier.scanError_zero_iff_boundaryEmpty_discrete"
+  , "Omega.Frontier.scanError_compl_measure"
+  , "Omega.Frontier.scanError_empty_measure"
+  , "Omega.Frontier.scanError_univ_measure"
+  , "Omega.SPG.prefixScanError_eq_zero_iff_observablePure"
+  , "Omega.SPG.prefixScanError_eq_zero_iff_boundaryCells_eq_empty"
+  , "Omega.SPG.prefixScanError_compl"
+  , "Omega.SPG.prefixScanError_empty"
+  , "Omega.SPG.prefixScanError_univ"
+  , "Omega.SPG.observablePureMeasure_toMeasure_iff_observablePure"
+  , "Omega.SPG.prefixScanErrorMeasure_compl"
+  , "Omega.SPG.prefixScanErrorMeasure_empty"
+  , "Omega.SPG.prefixScanErrorMeasure_univ"
+  , "Omega.SPG.sum_min_le_min_sum"
+  , "Omega.Frontier.prefixEvent_observablePure_discrete"
+  , "Omega.Frontier.prefixScanError_zero_iff_observablePure_discrete"
+  , "Omega.Frontier.prefixScanError_zero_iff_boundaryEmpty_discrete"
+  , "Omega.Frontier.prefixScanError_compl_discrete"
+  , "Omega.Frontier.prefixScanError_empty_discrete"
+  , "Omega.Frontier.prefixScanError_univ_discrete"
+  , "Omega.Frontier.observablePure_measure_discrete_bridge"
+  , "Omega.Frontier.prefixScanError_compl_measure"
+  , "Omega.Frontier.prefixScanError_empty_measure"
+  , "Omega.Frontier.prefixScanError_univ_measure"
+  , "Omega.SPG.scanError_antitone_of_refines"
+  , "Omega.SPG.prefixScanError_antitone"
+  , "Omega.Frontier.scanError_antitone_of_refines"
+  , "Omega.Frontier.prefixScanError_antitone"
+  , "Omega.SPG.cellEventMass_sum_eq_setMass"
+  , "Omega.SPG.cellComplMass_sum_eq_setMass_compl"
+  , "Omega.SPG.cellMass_sum_eq_setMass_univ"
+  , "Omega.SPG.scanError_le_min_setMass"
+  , "Omega.SPG.scanErrorMeasure_le_min"
+  , "Omega.Frontier.cellEventMass_partition"
+  , "Omega.Frontier.cellComplMass_partition"
+  , "Omega.Frontier.scanError_bayes_bound"
+  , "Omega.Frontier.scanError_measure_bayes_bound" ]
 
 end Omega.Audit
