@@ -350,6 +350,28 @@ theorem stableValue_ofNat_roundtrip (n : Nat) (hn : n < paperFib (m + 1)) :
     stableValue (X.ofNat m n) = n :=
   stableValue_ofNat_lt n hn
 
+/-- stableAdd encodes modular addition on values. -/
+theorem stableValue_stableAdd (x y : X m) :
+    stableValue (stableAdd x y) = (stableValue x + stableValue y) % paperFib (m + 1) :=
+  stableValue_ofNat_mod _
+
+/-- stableMul encodes modular multiplication on values. -/
+theorem stableValue_stableMul (x y : X m) :
+    stableValue (stableMul x y) = (stableValue x * stableValue y) % paperFib (m + 1) :=
+  stableValue_ofNat_mod _
+
+/-- The stable value map is a semiring homomorphism to ℤ/F_{m+2}ℤ (addition component). -/
+theorem stableValue_add_mod (x y : X m) :
+    stableValue (stableAdd x y) % paperFib (m + 1) =
+      (stableValue x + stableValue y) % paperFib (m + 1) := by
+  rw [stableValue_stableAdd, Nat.mod_mod_of_dvd _ (dvd_refl _)]
+
+/-- The stable value map is a semiring homomorphism to ℤ/F_{m+2}ℤ (multiplication component). -/
+theorem stableValue_mul_mod (x y : X m) :
+    stableValue (stableMul x y) % paperFib (m + 1) =
+      (stableValue x * stableValue y) % paperFib (m + 1) := by
+  rw [stableValue_stableMul, Nat.mod_mod_of_dvd _ (dvd_refl _)]
+
 end
 
 end X

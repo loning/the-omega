@@ -630,6 +630,11 @@ theorem scanError_le_setMass_compl {α β : Type*} [Fintype α] [Fintype β]
       ≤ min (setMass μ P) (setMass μ Pᶜ) := scanError_le_min_setMass μ obs P
     _ ≤ setMass μ Pᶜ := min_le_right _ _
 
+/-- The constant observation cell covers the entire space. -/
+theorem observableCell_const_eq_univ {α : Type*} (c : β) :
+    observableCell (fun _ : α => c) c = Set.univ := by
+  ext x; simp [observableCell]
+
 end
 
 end Omega.SPG

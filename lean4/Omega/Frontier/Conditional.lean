@@ -1321,6 +1321,54 @@ theorem goldenMean_forbids_11 (q' : Bool) :
     ¬ Omega.Graph.goldenMeanGraph.edge true true q' :=
   Omega.Graph.goldenMean_no_edge_tt q'
 
+/-! ### Paper Section 6: Stable Value Homomorphism -/
+
+/-- stableValue encodes addition modulo F_{m+2}. -/
+theorem stableValue_add_homomorphism (x y : X m) :
+    stableValue (X.stableAdd x y) = (stableValue x + stableValue y) % paperFib (m + 1) :=
+  X.stableValue_stableAdd x y
+
+/-- stableValue encodes multiplication modulo F_{m+2}. -/
+theorem stableValue_mul_homomorphism (x y : X m) :
+    stableValue (X.stableMul x y) = (stableValue x * stableValue y) % paperFib (m + 1) :=
+  X.stableValue_stableMul x y
+
+/-! ### Paper SPG Section: Cell Event Measure Monotonicity -/
+
+/-- Cell event measure is monotone in the event (measure). -/
+theorem cellEventMeasure_event_monotone [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) {P Q : Set α} (h : P ⊆ Q) (b : β) :
+    SPG.cellEventMeasure μ obs P b ≤ SPG.cellEventMeasure μ obs Q b :=
+  SPG.cellEventMeasure_mono μ obs h b
+
+/-! ### Paper SPG Section: Cylinder & Prefix Resolution -/
+
+/-- Prefix determination is closed under mixed-resolution intersections. -/
+theorem prefixDetermined_inter_mixed {s t : Set SPG.OmegaInfinity} {m₁ m₂ : Nat}
+    (hs : SPG.PrefixDetermined s m₁) (ht : SPG.PrefixDetermined t m₂) :
+    SPG.PrefixDetermined (s ∩ t) (max m₁ m₂) :=
+  SPG.prefixDetermined_inter_resolutions hs ht
+
+/-! ### Paper Defect Section: Defect Resolution Structure -/
+
+/-- Global defect at identity resolution is always zero. -/
+theorem globalDefect_identity (ω : Word m) :
+    globalDefect (Nat.le_refl m) ω = zeroWord m :=
+  globalDefect_refl ω
+
+/-- Global defect at adjacent resolutions equals local defect. -/
+theorem globalDefect_adjacent (η : Word (m + 1)) :
+    globalDefect (Nat.le_succ m) η = localDefect η :=
+  globalDefect_succ η
+
+/-! ### Paper Fold Section: Rewrite Chain Properties -/
+
+/-- Mass is non-increasing along rewrite chains. -/
+theorem rewrite_mass_chain_nonincreasing {a b : Rewrite.DigitCfg}
+    (h : Relation.ReflTransGen Rewrite.Step a b) :
+    Rewrite.mass b ≤ Rewrite.mass a :=
+  Rewrite.reflTransGen_mass_le h
+
 end
 
 end Omega.Frontier

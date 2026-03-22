@@ -128,4 +128,24 @@ theorem prefixDetermined_union {s t : Set OmegaInfinity} {m : Nat}
   fun _x _y h => ⟨fun hx => hx.elim (fun h' => Or.inl ((hs h).1 h')) (fun h' => Or.inr ((ht h).1 h')),
     fun hy => hy.elim (fun h' => Or.inl ((hs h).2 h')) (fun h' => Or.inr ((ht h).2 h'))⟩
 
+/-- Cylinder containment: finer-resolution cylinder is contained in coarser. -/
+theorem cylinderWord_subset_of_prefix {w₁ : Word m₁} {w₂ : Word m₂}
+    (h : m₁ ≤ m₂) (hPrefix : ∀ i : Fin m₁, w₁ i = w₂ ⟨i.1, Nat.lt_of_lt_of_le i.2 h⟩) :
+    cylinderWord w₂ ⊆ cylinderWord w₁ := by
+  intro x hx
+  simp only [cylinderWord, Set.mem_setOf_eq, prefixWord] at hx ⊢
+  funext i
+  have := congr_fun hx ⟨i.1, Nat.lt_of_lt_of_le i.2 h⟩
+  rw [hPrefix i]
+  exact this
+
+/-- The intersection of prefix-determined sets is prefix-determined at the finer resolution. -/
+theorem prefixDetermined_inter_resolutions {s : Set OmegaInfinity} {t : Set OmegaInfinity}
+    {m₁ m₂ : Nat}
+    (hs : PrefixDetermined s m₁) (ht : PrefixDetermined t m₂) :
+    PrefixDetermined (s ∩ t) (max m₁ m₂) := by
+  exact prefixDetermined_inter
+    (prefixDetermined_of_le (le_max_left _ _) hs)
+    (prefixDetermined_of_le (le_max_right _ _) ht)
+
 end Omega.SPG

@@ -268,4 +268,20 @@ theorem defectChain_one (m : Nat) (ω : Word (m + 1)) :
       (zeroWord m) := by
   unfold defectChain; rfl
 
+/-- Stable words have zero global defect iff Fold commutes with restriction on stable words. -/
+theorem globalDefect_stable_word (h : m ≤ n) (x : X n) :
+    globalDefect h x.1 = zeroWord m ↔
+      Fold (restrictWord h x.1) = X.restrictLE h (Fold x.1) := by
+  exact globalDefect_eq_zero_iff h x.1
+
+/-- The global defect at the identity resolution is always zero. -/
+@[simp] theorem globalDefect_id (ω : Word m) :
+    globalDefect (Nat.le_refl m) ω = zeroWord m :=
+  globalDefect_refl ω
+
+/-- Defect at adjacent resolutions is the local defect. -/
+theorem globalDefect_succ (η : Word (m + 1)) :
+    globalDefect (Nat.le_succ m) η = localDefect η := by
+  exact (localDefect_eq_globalDefect η).symm
+
 end Omega

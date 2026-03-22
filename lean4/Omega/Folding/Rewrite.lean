@@ -722,6 +722,13 @@ theorem irreducible_terminal_eq_fold {w : Word m} {b : DigitCfg}
     _ = iota (Fold w).1 := by
       rw [normalPrefix_iota_eq_Fold]
 
+/-- Mass is non-increasing along rewrite chains. -/
+theorem reflTransGen_mass_le {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
+    mass b ≤ mass a := by
+  induction h with
+  | refl => exact le_refl _
+  | tail hab hStep ih => exact le_trans (step_mass_le hStep) ih
+
 theorem reflTransGen_value {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
     value b = value a := by
   induction h with

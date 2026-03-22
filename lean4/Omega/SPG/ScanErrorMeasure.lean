@@ -737,6 +737,13 @@ theorem scanErrorMeasure_le_half {α β : Type*} [MeasurableSpace α] [Fintype �
         simp [Set.univ_inter, Set.diff_eq, Set.univ_inter]
     _ = 1 := MeasureTheory.IsProbabilityMeasure.measure_univ
 
+/-- Scan error is monotone in cell event mass: if P ⊆ Q then cellEventMeasure(P) ≤ cellEventMeasure(Q). -/
+theorem cellEventMeasure_mono {α β : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) (obs : α → β) {P Q : Set α} (h : P ⊆ Q) (b : β) :
+    cellEventMeasure μ obs P b ≤ cellEventMeasure μ obs Q b := by
+  unfold cellEventMeasure
+  exact MeasureTheory.measure_mono (Set.inter_subset_inter_left _ h)
+
 end
 
 end Omega.SPG
