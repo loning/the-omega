@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,192 |
-| 定理/定义数 | 1,060 |
+| 总行数 | ~12,283 |
+| 定理/定义数 | 1,070 |
 | 论文接口包装 | 312 |
-| 文件数 | 30 |
+| 文件数 | 32 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower) | 14 | ~308 | 97% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 16 | ~318 | 97% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -33,10 +33,12 @@
 **modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_10（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
+**Fibonacci 素数域（部分）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; paperFib_three/four/six/twelve_prime（native_decide 验证）; paperFib_eight_not_prime（反例验证）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
-**逆极限拓扑（部分）**：XInfinity 紧致性（CompactSpace 实例）、完全不连通性（TotallyDisconnectedSpace 实例）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）；MetrizableSpace 留后续
+**逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
+**shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
 ## 2. 论文总覆盖率分析
@@ -45,13 +47,13 @@
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
-| 新生算术 | 21 | 12 | 57% | 高 |
+| 新生算术 | 21 | 13 | 62% | 高 |
 | POM | 106 | 28 | 26% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~69** | **~18%** | - |
+| **总计** | **394** | **~70** | **~18%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1050 个 Lean 定理中，约 312 个是论文接口包装，约 58 个直接对应论文中的编号定理。
 
@@ -60,7 +62,7 @@
 ### Phase A：新生算术深化（计划 1-6）
 
 1. **Zeckendorf 唯一性完整证明**：证明 `stableValue (X.ofNat m n) = n` 对所有 `n < F_{m+2}` 成立（已完成），进一步证明 Zeckendorf 表示的唯一性定理
-2. **稳定乘法的 Fibonacci 素数域**：当 `F_{m+2}` 为素数时构造 `X m` 上的乘法逆元
+2. **[深化完成] 稳定乘法的 Fibonacci 素数域**：`stableMul_inv_of_prime`（素数时乘法逆存在，`cor:field-phase-fib-prime`）; 素数实例 F(3),F(4),F(6),F(12) 及反例 F(8) via native_decide; 完整 Field 实例构造（GF(p) 同构）待后续
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
 4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射）
 5. **Fibonacci 整除性**：证明 `F_m | F_{nm}` (Fibonacci 整除定理)
@@ -87,13 +89,13 @@
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
 19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1
-20. **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵
+20. **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23）
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 
 ### Phase E：逆极限与无穷结构（计划 23-26）
 
-23. **[部分完成] 逆极限的拓扑结构**：`isClosed_no11Inf`（积拓扑闭集）、`CompactSpace XInfinity`、`TotallyDisconnectedSpace XInfinity` 已形式化；`MetrizableSpace XInfinity` 留后续
+23. ✅ **逆极限的拓扑结构**：`isClosed_no11Inf`（积拓扑闭集）、`CompactSpace XInfinity`、`TotallyDisconnectedSpace XInfinity`、`MetricSpace XInfinity`（PiNat 前缀超度量）、`Inhabited XInfinity`（全 false 序列）、`Infinite XInfinity`（单射 n ↦ 位 2n）全部已形式化
 24. **前缀 σ-代数链**：构造 σ-代数的递减链并证明非扩张性
 25. **Cantor 集同胚**：证明 `XInfinity` 与 Cantor 集同胚
 26. **无穷稳定词的度量化**：在 `XInfinity` 上构造自然度量
@@ -117,17 +119,17 @@
 4. 计划 1（Zeckendorf 唯一性）
 5. 计划 5（Fibonacci 整除性）
 6. 计划 13（条件期望型表达）
-7. 计划 20（拓扑熵 = log φ）
+7. 计划 20（拓扑熵 = log φ；shift 前置已完成，可直接推进）
 
 ### 中期目标（需要新基础设施）
 
 8. 计划 8-12（POM 纤维谱系列）
 9. 计划 14-16（SPG martingale 系列）
-10. 计划 23（剩余：MetrizableSpace），计划 24-26（逆极限拓扑系列）
+10. 计划 24-26（逆极限拓扑系列：前缀 σ-代数链、Cantor 集同胚、无穷稳定词度量化）
 
 ### 长期/探索目标（需重型理论）
 
-11. 计划 2（素数域结构）
+11. 计划 2（素数域结构——逆元已完成，Field 实例构造待后续）
 12. 计划 20-22（动力系统系列）
 13. 计划 27-30（远层探索系列）
 

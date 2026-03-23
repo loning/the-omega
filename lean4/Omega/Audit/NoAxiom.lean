@@ -13,6 +13,8 @@ import Omega.Frontier.Conditional
 import Omega.Folding.CarryDefect
 import Omega.Folding.ModularTower
 import Omega.Folding.InverseLimitTopology
+import Omega.Folding.ShiftDynamics
+import Omega.Folding.FibonacciField
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -304,8 +306,16 @@ Run these commands manually during audit:
   #print axioms Omega.Graph.goldenMeanAdjacency_sq
   #print axioms Omega.Graph.goldenMeanAdjacency_trace
   #print axioms Omega.Graph.goldenMeanAdjacency_det
-  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (partial)
+  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (complete)
   #print axioms Omega.X.isClosed_no11Inf
+  #print axioms Omega.X.instMetricSpaceXInfinity
+  #print axioms Omega.X.instInhabitedXInfinity
+  #print axioms Omega.X.instInfiniteXInfinity
+  -- ShiftDynamics (Plan 20前置): cor:pom-shift-conjugacy-on-godel-image + sofic shift 动力系统基础
+  #print axioms Omega.X.shift
+  #print axioms Omega.X.continuous_shift
+  #print axioms Omega.X.shift_surjective
+  #print axioms Omega.X.shift_val
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -612,7 +622,22 @@ def coreAuditTargets : List String :=
   , "Omega.X.maxFiberMultiplicity_achieved"
   , "Omega.X.fiberMultiplicity_le_max"
   , "Omega.X.maxFiberMultiplicity_pos"
-  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (partial)
-  , "Omega.X.isClosed_no11Inf" ]
+  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (complete)
+  , "Omega.X.isClosed_no11Inf"
+  , "Omega.X.instMetricSpaceXInfinity"
+  , "Omega.X.instInhabitedXInfinity"
+  , "Omega.X.instInfiniteXInfinity"
+  -- ShiftDynamics (Plan 20前置): shift 映射基础
+  , "Omega.X.shift"
+  , "Omega.X.continuous_shift"
+  , "Omega.X.shift_surjective"
+  , "Omega.X.shift_val"
+  -- FibonacciField (Plan 2): Fibonacci 素数域
+  , "Omega.X.stableMul_inv_of_prime"
+  , "Omega.paperFib_three_prime"
+  , "Omega.paperFib_four_prime"
+  , "Omega.paperFib_six_prime"
+  , "Omega.paperFib_eight_not_prime"
+  , "Omega.paperFib_twelve_prime" ]
 
 end Omega.Audit
