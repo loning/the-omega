@@ -16,6 +16,7 @@ import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
+import Omega.Folding.CollisionKernel
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -327,6 +328,12 @@ Run these commands manually during audit:
   #print axioms Omega.momentSum_two_four
   #print axioms Omega.momentSum_two_five
   #print axioms Omega.momentSum_two_six
+  -- Round 10: CollisionKernel (Plan 10, partial): prop:pom-s2-recurrence
+  #print axioms Omega.collisionKernel2
+  #print axioms Omega.collisionKernel2_trace
+  #print axioms Omega.collisionKernel2_det
+  #print axioms Omega.collisionKernel2_cayley_hamilton
+  #print axioms Omega.momentSum_two_recurrence_verified
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

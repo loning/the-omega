@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,393 |
-| 定理/定义数 | 1,085 |
+| 总行数 | ~12,426 |
+| 定理/定义数 | 1,090 |
 | 论文接口包装 | 312 |
-| 文件数 | 33 |
+| 文件数 | 34 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 17 | ~323 | 97% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 18 | ~328 | 97% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -35,6 +35,7 @@
 **最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_10（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
 **矩谱（Round 8）**：momentSum（S_q(m) 定义）; momentSum_zero（S_0=F_{m+1}）; momentSum_one（S_1=2^m）; momentSum_le_max_pow（S_q ≤ D_m^{q-1}·2^m）; paperFib_le_pow（F_{m+1} ≤ 2^m 增长上界）
 **矩谱 S_2 基值（Round 9）**：cMomentSum（S_q 可计算版本）; cMomentSum_eq（可计算=noncomputable 桥接）; momentSum_two_zero..six（S_2(m) 基值 m=0..6，native_decide 验证）
+**碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
 **Fibonacci 素数域（部分）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; paperFib_three/four/six/twelve_prime（native_decide 验证）; paperFib_eight_not_prime（反例验证）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
@@ -50,12 +51,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 13 | 62% | 高 |
-| POM | 106 | 34 | 32% | 极高 |
+| POM | 106 | 35 | 33% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~76** | **~19%** | - |
+| **总计** | **394** | **~77** | **~20%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1050 个 Lean 定理中，约 312 个是论文接口包装，约 58 个直接对应论文中的编号定理。
 
@@ -75,7 +76,7 @@
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
 8. **[深化完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber` 部分)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`thm:pom-max-fiber`)，基值 $D_0..D_{10}$ via native_decide (`cor:pom-D-rec`)；闭式 $D_{2k} = F_{k+2}$, $D_{2k+1} = 2F_{k+1}$ 待实现（需要 Fold-truncate 交换性基础设施）
 9. **三纤维闭合形式**：证明论文中 `D_{2k}^{(3)} = F_{k+2} - F_{k-3}` 的闭合公式
-10. **碰撞核矩阵**：定义碰撞计数矩阵并证明其 Perron-Frobenius 性质
+10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（3×3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 数值验证（native_decide）; Perron-Frobenius 完整性质待后续
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量
 12. **纤维后验等价**：证明纤维后验分布的活动度量不变量
 
@@ -115,7 +116,7 @@
 
 1. 计划 8 剩余（最大纤维多重度闭式：$D_{2k}=F_{k+2}$, $D_{2k+1}=2F_{k+1}$，需 Fold-truncate 交换性）
 2. 计划 9（三纤维闭合形式）
-3. S_2 递推公式证明（$S_2(m+2) = S_2(m+1) + S_2(m) + 2^m$；基值 m=0..6 已形式化，归纳步骤待实现）
+3. S_2 递推公式证明（碰撞核矩阵 + 三阶递推 Cayley-Hamilton 已形式化；S_2 满足 $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$，数值验证 m=0..3 完成；归纳步骤待实现）
 
 ### 短期可执行（3-5 轮内完成）
 

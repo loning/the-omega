@@ -2120,6 +2120,48 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.MomentSum"
       leanName := "Omega.momentSum_two_six"
       phase := 9
+      status := .formalized }
+  -- Phase 15: CollisionKernel (Plan 10, partial)
+  -- prop:pom-s2-recurrence (S_2 碰撞核矩阵 + 三阶递推)
+  -- collisionKernel2 定义 (Omega/Folding/CollisionKernel.lean:11)
+  -- 状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-collision-kernel"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel2"
+      phase := 15
+      status := .formalized }
+  -- prop:pom-s2-recurrence → tr(M)=2 (CollisionKernel.lean:14)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-collision-kernel-trace"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel2_trace"
+      phase := 15
+      status := .formalized }
+  -- prop:pom-s2-recurrence → det(M)=-2 (CollisionKernel.lean:15)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-collision-kernel-det"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel2_det"
+      phase := 15
+      status := .formalized }
+  -- prop:pom-s2-recurrence → Cayley-Hamilton M³=2M²+2M-2I (CollisionKernel.lean:18)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-collision-kernel-cayley-hamilton"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel2_cayley_hamilton"
+      phase := 15
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2 递推 m=0..3 验证 (CollisionKernel.lean:24)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-verified"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.momentSum_two_recurrence_verified"
+      phase := 15
       status := .formalized } ]
 
 end Omega.Audit
