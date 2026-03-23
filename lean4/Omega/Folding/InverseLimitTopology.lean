@@ -1,4 +1,5 @@
 import Mathlib.Topology.Connected.TotallyDisconnected
+import Mathlib.Topology.MetricSpace.PiNat
 import Omega.Folding.InverseLimit
 
 namespace Omega.X
@@ -22,5 +23,22 @@ instance : CompactSpace XInfinity :=
 /-- XInfinity is totally disconnected: subspace of ℕ → Bool (product of discrete spaces). -/
 instance : TotallyDisconnectedSpace XInfinity :=
   Subtype.totallyDisconnectedSpace
+
+/-- XInfinity carries a metric compatible with the product topology. -/
+noncomputable instance : MetricSpace XInfinity :=
+  letI : MetricSpace (ℕ → Bool) := PiNat.metricSpaceOfDiscreteUniformity fun _ => rfl
+  Subtype.metricSpace
+
+/-- XInfinity is inhabited: the all-false sequence satisfies No11Inf. -/
+instance : Inhabited XInfinity :=
+  ⟨⟨fun _ => false, fun _ h => by simp at h⟩⟩
+
+/-- XInfinity is infinite: the map n ↦ (bit 2n = true, rest false) is injective. -/
+instance : Infinite XInfinity := by
+  apply Infinite.of_injective (fun n : ℕ => (⟨fun i => if i = 2 * n then true else false,
+    fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩ : XInfinity))
+  intro a b h
+  have := congr_arg (fun x : XInfinity => x.1 (2 * a)) h
+  simp at this; omega
 
 end Omega.X
