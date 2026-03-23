@@ -3193,6 +3193,72 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Frontier.ConditionalSummary"
       leanName := "Omega.Frontier.momentSum_cauchy_schwarz_restated"
       phase := 19
+      status := .formalized }
+  -- Phase 20: ConditionalSummary — Rényi 上界 + S_1/S_0 恒等式 + 最大纤维概率界
+  -- prop:pom-rq-universal-bounds → renyi_upper_bound (ConditionalSummary.lean:654)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-rq-universal-bounds"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.renyi_upper_bound"
+      phase := 20
+      status := .formalized }
+  -- S_1 = 2^m → moment_sum_one_eq_pow (ConditionalSummary.lean:658)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-rq-universal-bounds-s1"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_sum_one_eq_pow"
+      phase := 20
+      status := .formalized }
+  -- S_0 = F_{m+2} → moment_sum_zero_eq_card (ConditionalSummary.lean:659)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-rq-universal-bounds-s0"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_sum_zero_eq_card"
+      phase := 20
+      status := .formalized }
+  -- cor:pom-max-fiber-rate-endpoint (D_m ≤ 2^m) → max_fiber_le_pow (ConditionalSummary.lean:663)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-max-fiber-rate-endpoint"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_le_pow"
+      phase := 20
+      status := .formalized }
+  -- 1 ≤ D_m → max_fiber_ge_one (ConditionalSummary.lean:671)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-max-fiber-rate-endpoint-lower"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_ge_one"
+      phase := 20
+      status := .formalized }
+  -- 1 ≤ D_m ∧ D_m ≤ 2^m → max_fiber_prob_bounds (ConditionalSummary.lean:674)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-max-fiber-rate-endpoint-both"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_prob_bounds"
+      phase := 20
+      status := .formalized }
+  -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值 (cor:pom-fiber-parity 前置)
+  -- cOddFiberCount 定义 + 基值 m=0..6 (FiberSpectrum.lean:106-120)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-parity-odd-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cOddFiberCount"
+      phase := 20
+      status := .formalized }
+  -- cEvenFiberCount 定义 + 基值 m=0..6 (FiberSpectrum.lean:110-128)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-parity-even-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cEvenFiberCount"
+      phase := 20
       status := .formalized } ]
 
 end Omega.Audit

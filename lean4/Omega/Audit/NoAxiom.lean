@@ -457,6 +457,17 @@ Run these commands manually during audit:
   -- prop:pom-sq-pos, prop:pom-sq-cauchy-schwarz-restated
   #print axioms Omega.Frontier.momentSum_pos
   #print axioms Omega.Frontier.momentSum_cauchy_schwarz_restated
+  -- Phase 20: ConditionalSummary — Rényi 上界 + S_1/S_0 恒等式 + 最大纤维概率界
+  -- prop:pom-rq-universal-bounds + cor:pom-max-fiber-rate-endpoint
+  #print axioms Omega.Frontier.renyi_upper_bound
+  #print axioms Omega.Frontier.moment_sum_one_eq_pow
+  #print axioms Omega.Frontier.moment_sum_zero_eq_card
+  #print axioms Omega.Frontier.max_fiber_le_pow
+  #print axioms Omega.Frontier.max_fiber_ge_one
+  #print axioms Omega.Frontier.max_fiber_prob_bounds
+  -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值 (cor:pom-fiber-parity 前置)
+  #print axioms Omega.cOddFiberCount
+  #print axioms Omega.cEvenFiberCount
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -870,6 +881,16 @@ def coreAuditTargets : List String :=
   , "Omega.X.shift_not_injective"
   -- 计划4深化: restrict 满射与纤维非空 (ModularTower.lean:134-142)
   , "Omega.X.restrict_surjective"
-  , "Omega.X.restrict_fiber_nonempty" ]
+  , "Omega.X.restrict_fiber_nonempty"
+  -- Phase 20: ConditionalSummary — Rényi 上界 + S_1/S_0 恒等式 + 最大纤维概率界
+  , "Omega.Frontier.renyi_upper_bound"
+  , "Omega.Frontier.moment_sum_one_eq_pow"
+  , "Omega.Frontier.moment_sum_zero_eq_card"
+  , "Omega.Frontier.max_fiber_le_pow"
+  , "Omega.Frontier.max_fiber_ge_one"
+  , "Omega.Frontier.max_fiber_prob_bounds"
+  -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值
+  , "Omega.cOddFiberCount"
+  , "Omega.cEvenFiberCount" ]
 
 end Omega.Audit

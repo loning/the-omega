@@ -100,4 +100,33 @@ theorem cNthMaxFiber_third_seven : cNthMaxFiber 7 2 = 4 := by native_decide
 
 end BaseValues
 
+section Parity
+
+/-- Count of stable words with odd fiber multiplicity. -/
+def cOddFiberCount (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x % 2 = 1) |>.card
+
+/-- Count of stable words with even fiber multiplicity. -/
+def cEvenFiberCount (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x % 2 = 0) |>.card
+
+-- Parity base values
+theorem cOddFiberCount_zero : cOddFiberCount 0 = 1 := by native_decide
+theorem cOddFiberCount_one : cOddFiberCount 1 = 2 := by native_decide
+theorem cOddFiberCount_two : cOddFiberCount 2 = 2 := by native_decide
+theorem cOddFiberCount_three : cOddFiberCount 3 = 2 := by native_decide
+theorem cOddFiberCount_four : cOddFiberCount 4 = 4 := by native_decide
+theorem cOddFiberCount_five : cOddFiberCount 5 = 8 := by native_decide
+theorem cOddFiberCount_six : cOddFiberCount 6 = 12 := by native_decide
+
+theorem cEvenFiberCount_zero : cEvenFiberCount 0 = 0 := by native_decide
+theorem cEvenFiberCount_one : cEvenFiberCount 1 = 0 := by native_decide
+theorem cEvenFiberCount_two : cEvenFiberCount 2 = 1 := by native_decide
+theorem cEvenFiberCount_three : cEvenFiberCount 3 = 3 := by native_decide
+theorem cEvenFiberCount_four : cEvenFiberCount 4 = 4 := by native_decide
+theorem cEvenFiberCount_five : cEvenFiberCount 5 = 5 := by native_decide
+theorem cEvenFiberCount_six : cEvenFiberCount 6 = 9 := by native_decide
+
+end Parity
+
 end Omega

@@ -649,6 +649,33 @@ theorem momentSum_cauchy_schwarz_restated (m : Nat) :
   rw [momentSum_zero m, momentSum_one m, Nat.mul_comm]
   exact momentSum_cauchy_schwarz m
 
+/-! ### Task B: Rényi bound wrappers -/
+
+theorem renyi_upper_bound (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ (X.maxFiberMultiplicity m) ^ (q - 1) * 2 ^ m :=
+  momentSum_le_max_pow q m hq
+
+theorem moment_sum_one_eq_pow (m : Nat) : momentSum 1 m = 2 ^ m := momentSum_one m
+theorem moment_sum_zero_eq_card (m : Nat) : momentSum 0 m = Nat.fib (m + 2) := momentSum_zero m
+
+/-! ### Task C: Max fiber probability bounds -/
+
+theorem max_fiber_le_pow (m : Nat) : X.maxFiberMultiplicity m ≤ 2 ^ m := by
+  -- D_m ≤ 2^m since fiber(x) ⊆ Word m and |Word m| = 2^m
+  obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
+  rw [← hx, X.fiberMultiplicity]
+  calc (X.fiber x).card ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    _ = Fintype.card (Word m) := Finset.card_univ
+    _ = 2 ^ m := X.Word_card m
+
+theorem max_fiber_ge_one (m : Nat) : 1 ≤ X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_pos m
+
+theorem max_fiber_prob_bounds (m : Nat) :
+    1 ≤ X.maxFiberMultiplicity m ∧ X.maxFiberMultiplicity m ≤ 2 ^ m :=
+  ⟨max_fiber_ge_one m, max_fiber_le_pow m⟩
+
+
 end
 
 end Omega.Frontier
