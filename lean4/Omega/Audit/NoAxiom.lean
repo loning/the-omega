@@ -358,6 +358,13 @@ Run these commands manually during audit:
   #print axioms Omega.collisionKernel3_trace
   #print axioms Omega.collisionKernel3_det
   #print axioms Omega.collisionKernel3_cayley_hamilton
+  -- Round 14: S_2/S_3 扩展基值 + 有界递推 + 条件递推 (prop:pom-s2-recurrence, prop:pom-s3-recurrence)
+  #print axioms Omega.momentSum_two_seven
+  #print axioms Omega.momentSum_three_seven
+  #print axioms Omega.momentSum_two_recurrence_bounded
+  #print axioms Omega.momentSum_three_recurrence_bounded
+  #print axioms Omega.momentSum_two_recurrence_of
+  #print axioms Omega.momentSum_three_recurrence_of
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

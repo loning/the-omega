@@ -2349,6 +2349,55 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.collisionKernel3_cayley_hamilton"
       phase := 16
       status := .formalized }
+  -- Phase 18: S_2/S_3 扩展基值 + 有界递推 + 条件递推 (Round 14)
+  -- prop:pom-s2-recurrence → S_2(7)=544 (MomentSum.lean:57)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-7"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_seven"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-s3-recurrence → S_3(7)=2504 (MomentSum.lean:67)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-base-7"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_seven"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2 递推有界版 m≤4 (CollisionKernel.lean:63)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-bounded"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.momentSum_two_recurrence_bounded"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-s3-recurrence → S_3 递推有界版 m≤4 (CollisionKernel.lean:69)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-bounded"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.momentSum_three_recurrence_bounded"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2 递推条件性一般版 (CollisionKernel.lean:75)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-of"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.momentSum_two_recurrence_of"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-s3-recurrence → S_3 递推条件性一般版 (CollisionKernel.lean:83)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-of"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.momentSum_three_recurrence_of"
+      phase := 18
+      status := .formalized }
   -- Phase 17: MaxFiber 闭式定理
   -- thm:pom-max-fiber → D(0)=1 基值 (MaxFiber.lean:108)
   --   状态: 已形式化, 审核通过 2026-03-23
