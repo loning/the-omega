@@ -32,16 +32,18 @@ model: opus
 
 ### 步骤 2：调用 Codex
 
-根据问题类型构造精确的 Codex 查询：
+**重要：Codex CLI 正确语法**
 
 ```bash
-codex -a "你是一位 Lean4 专家。请解决以下问题并给出可编译的代码：
+# 1. 将prompt写入临时文件
+cat > /tmp/codex_consult_prompt.txt << 'PROMPT_EOF'
+你是一位 Lean4 专家。请解决以下问题并给出可编译的代码：
 
 ## 问题描述
 [从 team lead 的消息中提取]
 
-## 当前代码上下文
-[相关代码片段]
+## 当前代码上下文（完整源码）
+[直接粘贴工作树中的代码，不要让Codex自己读文件]
 
 ## 已尝试的方法
 [formalizer 已尝试但失败的方法]
@@ -50,8 +52,28 @@ codex -a "你是一位 Lean4 专家。请解决以下问题并给出可编译的
 1. 给出可直接粘贴的 Lean4 代码
 2. 解释关键 tactic/引理的选择理由
 3. 如果有多种方法，列出优劣对比
-4. 标注任何需要的额外 import"
+4. 标注任何需要的额外 import
+PROMPT_EOF
+
+# 2. 通过stdin传递给codex exec
+cat /tmp/codex_consult_prompt.txt | codex exec -s read-only -C /Users/auric/alltheory/the-omega/lean4 -o /tmp/codex_consult_result.txt -
+
+# 3. 读取结果
+cat /tmp/codex_consult_result.txt
 ```
+
+- 使用 `codex exec`（非交互模式），**不是** `codex -a`（交互模式会挂起）
+- `-s read-only`：只读沙箱，防止 Codex 修改代码
+- `-C <dir>`：指定工作目录
+- `-o <file>`：输出结果到文件
+- `-`（末尾）：从 stdin 读取 prompt
+- **不要**在命令行直接传递长 prompt 字符串（会因 shell 转义和参数长度限制而失败）
+
+### 已知 Codex 局限
+
+1. **工作树 vs committed 版本**：Codex 的 `codex exec` 在 read-only 沙箱中可能只读取 git committed 版本，看不到 unstaged/staged changes。**解决方案**：将完整代码直接粘贴到 prompt 中，不依赖 Codex 自己读文件。
+2. **mathlib API 版本差异**：Codex 训练数据中的 mathlib 可能与项目使用的版本不同。**解决方案**：在 prompt 中注明当前 mathlib 版本（v4.28.0），并要求 Codex 标注不确定的 API 名称。
+3. **长 prompt 截断**：如果代码上下文过长，Codex 可能截断。**解决方案**：只粘贴直接相关的代码片段（目标函数/定理 + 依赖的类型定义），而非整个文件。
 
 ### 步骤 3：整理建议
 
