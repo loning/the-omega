@@ -285,15 +285,89 @@ K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\le \frac{\tau}{3},
 以上四项在资源轴上两两正交：增大 \(n\) 仅影响 \eqref{eq:prefix-tail-term}；增大 \(N\) 仅影响 \eqref{eq:prefix-data-envelope}；纤维歧义由 \(\kappa_m\) 单独控制；而 \(\mathsf{NULL}\) 仅由后端证书控制。
 \end{theorem}
 
-\begin{corollary}[可审计的安全分辨率与停止律]\label{cor:prefix-audit-safe-resolution-stopping}
-给定目标阈值 \(\tau>0\) 与边缘分布 \(\pi\in\Delta(X_m)\)。
-称层级 \(m\) 在阈值 \(\tau\) 下为\textbf{纤维安全}，若
-\begin{equation}\label{eq:prefix-fiber-safe-condition}
-\boxed{\;\kappa_m(\pi)\le \frac{\tau^2}{18}\;}
-\end{equation}
-（等价于对所有 \(\|f\|_\infty\le 1\) 与所有 compatible lifts \(\mu\) 都有 \(|\mathbb{E}_\mu f-\mathbb{E}_{\widetilde\pi}f|\le \tau/3\)，见 \eqref{eq:prefix-fiber-term}）。
-\par
-因此，当 \eqref{eq:prefix-fiber-safe-condition} 成立时，纤维歧义项必被压入总误差预算的 \(\tau/3\) 之内；此时进一步增大扫描深度 \(n\) 或样本量 \(N\) 的收益不会受纤维项阻断。
-相反，当 \(\kappa_m(\pi)>\tau^2/18\) 时，定理 \ref{thm:defect-limited-audit} 所给的统一纤维上界本身已超过 \(\tau/3\)，从而任何仅通过增大 \(n\) 或 \(N\) 的策略都无法在审计意义上把该项压入预算；若希望继续降低总预算，必须改变可见域以降低 \(\kappa_m\)，或引入额外正交记录轴并通过后端证书排除 \(\mathsf{NULL}\) 的结构性来源（命题 \ref{prop:xi-completeness-auditable-decomposition}）。
-\end{corollary}
+\begin{theorem}[四项正交审计下的显式停止前沿]\label{thm:prefix-audit-explicit-stopping-frontier}
+固定层级 \(m\)、目标总误差阈值 \(\tau>0\) 与置信参数 \(\delta_{\mathrm{conf}}\in(0,1)\)。
+假设：
+\begin{enumerate}
+  \item \textbf{纤维安全条件}成立，即
+  \[
+  \kappa_m(\pi_m^{\mathrm{fold}})\le \frac{\tau^2}{18};
+  \]
+  \item \(\mathsf{NULL}\) 完备性缺口已由命题 \ref{prop:xi-completeness-auditable-decomposition} 所述的后端证书排除；
+  \item 时间尾项与有限数据项分别由 \eqref{eq:prefix-tail-term} 与 \eqref{eq:prefix-data-envelope} 控制。
+\end{enumerate}
+定义显式阈值
+\[
+\boxed{\;
+n_\star(m,\tau)
+:=
+\left\lceil
+\frac{\log\!\bigl(3K_1(m)|G_m|/\tau\bigr)}
+{(1/2+\varepsilon)\log\lambda}
+\right\rceil,\;}
+\]
+\[
+\boxed{\;
+N_\star(m,\tau,\delta_{\mathrm{conf}})
+:=
+\left\lceil
+\frac{9|X_m|^2}{2\gamma_{\mathrm{ps}}^{(m)}\tau^2}
+\log\!\Bigl(\frac{2|X_m|}{\delta_{\mathrm{conf}}}\Bigr)
+\right\rceil.\;}
+\]
+则对任意
+\[
+n\ge n_\star(m,\tau),
+\qquad
+N\ge N_\star(m,\tau,\delta_{\mathrm{conf}}),
+\]
+前缀读出在审计意义下满足总误差不超过 \(\tau\)。
+并且在同一四项预算分配框架中，停止区域恰为 \((n,N)\)-平面中的东北象限
+\[
+\boxed{\;
+\{(n,N):\ n\ge n_\star(m,\tau),\ N\ge N_\star(m,\tau,\delta_{\mathrm{conf}})\}.\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:prefix-readout-orthogonal-error-decomposition}，只需把四项预算中的三个数值项分别压到 \(\tau/3\) 以内，并由后端证书排除 \(\mathsf{NULL}\) 项。
 
+首先，纤维安全条件给出
+\[
+\sqrt{2\,\kappa_m(\pi_m^{\mathrm{fold}})}\le \frac{\tau}{3},
+\]
+故纤维歧义项已满足预算要求。
+
+其次，由 \eqref{eq:prefix-tail-term}，若
+\[
+K_1(m)\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\le \frac{\tau}{3},
+\]
+则时间尾项不超过 \(\tau/3\)。
+解得
+\[
+n\ge
+\frac{\log\!\bigl(3K_1(m)|G_m|/\tau\bigr)}
+{(1/2+\varepsilon)\log\lambda},
+\]
+故取上整即得 \(n_\star(m,\tau)\)。
+
+再次，由 \eqref{eq:prefix-data-envelope}，若
+\[
+\frac12|X_m|
+\sqrt{
+\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}
+\log\!\Bigl(\frac{2|X_m|}{\delta_{\mathrm{conf}}}\Bigr)}
+\le \frac{\tau}{3},
+\]
+则有限数据项不超过 \(\tau/3\)。
+平方并整理得到
+\[
+N\ge
+\frac{9|X_m|^2}{2\gamma_{\mathrm{ps}}^{(m)}\tau^2}
+\log\!\Bigl(\frac{2|X_m|}{\delta_{\mathrm{conf}}}\Bigr),
+\]
+取上整即得 \(N_\star(m,\tau,\delta_{\mathrm{conf}})\)。
+
+反过来，在该四项预算框架内，时间尾项仅由 \(n\) 控制且随 \(n\) 单调下降，有限数据项仅由 \(N\) 控制且随 \(N\) 单调下降，而纤维项与 \(\mathsf{NULL}\) 项已分别由前两条假设锁定。
+因此一旦 \((n,N)\) 进入由 \((n_\star,N_\star)\) 生成的东北象限，全部预算同时满足；若离开该象限，则至少有一个数值阈值尚未达到。
+故停止区域恰如所述。证毕。
+\end{proof}

@@ -329,6 +329,53 @@ d(q)_k:=q(p_k)\,y_A(p_k)/\Pi'(p_k)
 其中最后一步取 \(q(z)=z^r\) 即得。证毕。
 \end{proof}
 
+\begin{theorem}[一般余维杠杆缺口的普适 \texorpdfstring{$x^{-2}$}{x^-2} 尾律]\label{thm:xi-basepoint-scan-leverage-gap-universal-xminus2-tail}
+在定理 \ref{thm:xi-basepoint-scan-leverage-gap-general-codim-matrix} 的设定下，记 \(e_m\in\CC^m\) 为最后一个标准基向量，并定义
+\[
+c_A:=e_m^\ast M_A^{-1}e_m>0.
+\]
+则当 \(|x|\to\infty\) 时，杠杆缺口满足普适渐近
+\[
+\boxed{\;
+\ell_A(x)=\frac{c_A}{x^2}+O(x^{-3}).\;}
+\]
+特别地，该衰减指数恒等于 \(2\)，与余维 \(m=\kappa-|A|\)、锚点个数 \(|A|\) 以及极点总数 \(\kappa\) 无关。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-basepoint-scan-leverage-gap-general-codim-matrix}，
+\[
+\ell_A(x)=r_A(x)^\ast M_A^{-1}r_A(x),
+\qquad
+r_A(x)=\frac{y_A(x)}{\Pi(x)}(1,x,\dots,x^{m-1})^{\mathsf T}.
+\]
+又因 \(\deg y_A=\kappa-m\)、\(\deg\Pi=\kappa\)，故
+\[
+\frac{y_A(x)}{\Pi(x)}=x^{-m}\bigl(1+O(x^{-1})\bigr)
+\qquad(|x|\to\infty).
+\]
+于是
+\[
+r_A(x)
+=
+\bigl(x^{-m},x^{1-m},\dots,x^{-1}\bigr)^{\mathsf T}\bigl(1+O(x^{-1})\bigr)
+=
+x^{-1}e_m+O(x^{-2}).
+\]
+代入二次型得到
+\[
+\ell_A(x)
+=
+\bigl(x^{-1}e_m+O(x^{-2})\bigr)^\ast
+M_A^{-1}
+\bigl(x^{-1}e_m+O(x^{-2})\bigr)
+=
+x^{-2}e_m^\ast M_A^{-1}e_m+O(x^{-3}),
+\]
+即所求渐近式。
+由于 \(M_A\) 正定，故其逆矩阵亦正定，进而 \(c_A=e_m^\ast M_A^{-1}e_m>0\)。
+证毕。
+\end{proof}
+
 \begin{corollary}[严格非退化性：任取不超过 \texorpdfstring{$\kappa$}{kappa} 个互异锚点均给出可逆 Gram]\label{cor:xi-basepoint-scan-gram-nondegeneracy-up-to-kappa}
 在定理 \ref{thm:xi-basepoint-scan-finite-rank-rkhs} 的设定下，若 \(A\subset\RR\) 为互异锚点族且 \(|A|\le\kappa\)，则 \(G_A\) 自动可逆。
 并且当 \(|A|<\kappa\) 时，对任意 \(x\in\RR\setminus A\) 有 \(\ell_A(x)>0\)，从而
@@ -398,5 +445,43 @@ x\in\arg\max_{t\in\RR\setminus A}\ \left|\frac{y_A(t)}{\Pi(t)}\right|\; }.
 故最大化 \(\det G_{A\cup\{x\}}\) 等价于最大化 \(\left|\frac{y_A(x)}{\Pi(x)}\right|\)。证毕。
 \end{proof}
 
-\endinput
+\begin{theorem}[余维一精确贪婪补全的权重独立性]\label{thm:xi-basepoint-scan-codim1-exact-greedy-weight-independence}
+设 \(|A|=\kappa-1\) 且 \(G_A\) 可逆。
+则所有使
+\[
+x\longmapsto \det G_{A\cup\{x\}}
+\]
+达到全局最大值的实点集合，与权重 \(\{w_k\}_{k=1}^{\kappa}\) 无关；它仅由锚集 \(A\) 与极点集合 \(\{p_k\}_{k=1}^{\kappa}\) 决定。
+更具体地，任一极大点 \(x_\ast\in\RR\setminus A\) 都满足权重无关的平衡方程
+\[
+\boxed{\;
+\sum_{a\in A}\frac{1}{x_\ast-a}
+=
+\Re\sum_{k=1}^{\kappa}\frac{1}{x_\ast-p_k}.\;}
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:xi-basepoint-scan-doptimal-last-step-weight-free}，
+最大化 \(\det G_{A\cup\{x\}}\) 等价于最大化
+\(
+\bigl|\frac{y_A(x)}{\Pi(x)}\bigr|
+\)，
+故极大点集合不依赖于权重 \(\{w_k\}\)。
 
+另一方面，由推论 \ref{cor:xi-basepoint-scan-leverage-gap-codim1-critical-points}，
+任意内点临界值都满足
+\[
+\sum_{a\in A}\frac{1}{x-a}
+=
+\Re\sum_{k=1}^{\kappa}\frac{1}{x-p_k}.
+\]
+而在余维一情形 \(m=1\) 时，定理 \ref{thm:xi-basepoint-scan-leverage-gap-universal-xminus2-tail} 给出
+\(
+\ell_A(x)=c_Ax^{-2}+O(x^{-3})
+\)，
+故 \(\ell_A(x)\to 0\) 当 \(|x|\to\infty\)。
+又由定理 \ref{thm:xi-basepoint-scan-leverage-gap-codim1-closed-form}，对 \(a\in A\) 有 \(\ell_A(a)=0\)。
+因此全局极大值只能在 \(\RR\setminus A\) 的某个有界连通分支内作为内点取得，从而必满足上述临界方程。证毕。
+\end{proof}
+
+\endinput
