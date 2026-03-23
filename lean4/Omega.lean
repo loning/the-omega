@@ -9,6 +9,7 @@ import Omega.Folding.Fold
 import Omega.Folding.Fiber
 import Omega.Folding.MaxFiber
 import Omega.Folding.FiberArithmetic
+import Omega.Folding.FibonacciField
 import Omega.Folding.CarryDefect
 import Omega.Folding.FiberFusion
 import Omega.Folding.InverseLimit

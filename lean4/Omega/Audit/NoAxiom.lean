@@ -14,6 +14,7 @@ import Omega.Folding.CarryDefect
 import Omega.Folding.ModularTower
 import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
+import Omega.Folding.FibonacciField
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -630,6 +631,13 @@ def coreAuditTargets : List String :=
   , "Omega.X.shift"
   , "Omega.X.continuous_shift"
   , "Omega.X.shift_surjective"
-  , "Omega.X.shift_val" ]
+  , "Omega.X.shift_val"
+  -- FibonacciField (Plan 2): Fibonacci 素数域
+  , "Omega.X.stableMul_inv_of_prime"
+  , "Omega.paperFib_three_prime"
+  , "Omega.paperFib_four_prime"
+  , "Omega.paperFib_six_prime"
+  , "Omega.paperFib_eight_not_prime"
+  , "Omega.paperFib_twelve_prime" ]
 
 end Omega.Audit
