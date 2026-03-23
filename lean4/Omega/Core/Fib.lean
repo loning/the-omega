@@ -77,4 +77,16 @@ theorem fib_le_pow_two : ∀ m : Nat, Nat.fib (m + 2) ≤ 2 ^ (m + 1)
           Nat.add_le_add_left (Nat.pow_le_pow_right (by omega) (by omega)) _
       _ = 2 ^ (m + 2 + 1) := by ring
 
+/-- gcd(F_m, F_n) = F_{gcd(m,n)} (strong divisibility). -/
+theorem fib_gcd (m n : Nat) : Nat.gcd (Nat.fib m) (Nat.fib n) = Nat.fib (Nat.gcd m n) :=
+  (Nat.fib_gcd m n).symm
+
+/-- F_m and F_{m+1} are coprime. -/
+theorem fib_coprime_succ (m : Nat) : Nat.Coprime (Nat.fib m) (Nat.fib (m + 1)) :=
+  Nat.fib_coprime_fib_succ m
+
+/-- F_m divides F_{k*m}. -/
+theorem fib_dvd_mul (m k : Nat) : Nat.fib m ∣ Nat.fib (k * m) :=
+  Nat.fib_dvd m (k * m) ⟨k, (Nat.mul_comm m k).symm⟩
+
 end Omega

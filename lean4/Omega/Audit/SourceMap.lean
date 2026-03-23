@@ -2793,6 +2793,73 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberRing"
       leanName := "Omega.X.instField_X11"
       phase := 15
+      status := .formalized }
+  -- Phase 5: Fibonacci 整除性 (计划5)
+  -- fib-gcd → fib_gcd (Omega/Core/Fib.lean:81)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-gcd"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_gcd"
+      phase := 5
+      status := .formalized }
+  -- fib-coprime-succ → fib_coprime_succ (Omega/Core/Fib.lean:85)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-coprime-succ"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_coprime_succ"
+      phase := 5
+      status := .formalized }
+  -- fib-dvd-mul → fib_dvd_mul (Omega/Core/Fib.lean:89)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-dvd-mul"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_dvd_mul"
+      phase := 5
+      status := .formalized }
+  -- Phase 4 深化: restrict 保零保一 (计划4深化)
+  -- restrict-zero → restrict_zero (Omega/Folding/ModularTower.lean:122)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "restrict-zero"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_zero"
+      phase := 4
+      status := .formalized }
+  -- restrict-one → restrict_one (Omega/Folding/ModularTower.lean:128)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "restrict-one"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_one"
+      phase := 4
+      status := .formalized }
+  -- Phase 27 初步: CRT 分解 (计划27)
+  -- crt-decomposition → crtDecomposition (Omega/Folding/FiberRing.lean:179)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "crt-decomposition"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.crtDecomposition"
+      phase := 27
+      status := .formalized }
+  -- crt-X7-decomposition → X7_decomposition (Omega/Folding/FiberRing.lean:185)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "crt-X7-decomposition"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.X7_decomposition"
+      phase := 27
+      status := .formalized }
+  -- crt-X10-decomposition → X10_decomposition (Omega/Folding/FiberRing.lean:189)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "crt-X10-decomposition"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.X10_decomposition"
+      phase := 27
       status := .formalized } ]
 
 end Omega.Audit

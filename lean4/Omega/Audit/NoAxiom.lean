@@ -793,6 +793,17 @@ def coreAuditTargets : List String :=
   , "Omega.cNthMaxFiber_third_four"
   , "Omega.cNthMaxFiber_third_five"
   , "Omega.cNthMaxFiber_third_six"
-  , "Omega.cNthMaxFiber_third_seven" ]
+  , "Omega.cNthMaxFiber_third_seven"
+  -- 计划5: Fibonacci 整除性 (Fib.lean:81-92)
+  , "Omega.fib_gcd"
+  , "Omega.fib_coprime_succ"
+  , "Omega.fib_dvd_mul"
+  -- 计划4深化: restrict 保零保一 (ModularTower.lean:122-133)
+  , "Omega.X.restrict_zero"
+  , "Omega.X.restrict_one"
+  -- 计划27初步: CRT 分解 (FiberRing.lean:179-192)
+  , "Omega.X.crtDecomposition"
+  , "Omega.X.X7_decomposition"
+  , "Omega.X.X10_decomposition" ]
 
 end Omega.Audit

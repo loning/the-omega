@@ -83,4 +83,5 @@ theorem card_X_eq_matrix_sum (m : Nat) :
   rw [X.card_eq_fib]
   exact (Graph.goldenMeanAdjacency_row_sum m).symm
 
+
 end Omega

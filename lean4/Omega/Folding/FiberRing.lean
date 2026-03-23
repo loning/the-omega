@@ -173,5 +173,21 @@ noncomputable instance instField_X9 : Field (X 9) :=
 noncomputable instance instField_X11 : Field (X 11) :=
   instFieldOfPrime (by native_decide)
 
+/-! ### CRT decomposition when F_{m+2} = p * q with coprime factors -/
+
+/-- CRT decomposition: X_m ≃+* ZMod p × ZMod q when F_{m+2} = p * q and gcd(p,q) = 1. -/
+noncomputable def crtDecomposition (m : Nat) (p q : Nat)
+    (hpq : Nat.fib (m + 2) = p * q) (hcop : Nat.Coprime p q) :
+    X m ≃+* ZMod p × ZMod q :=
+  (stableValueRingEquiv m).trans (hpq ▸ ZMod.chineseRemainder hcop)
+
+/-- X_7 ≅ ZMod 2 × ZMod 17 (since F_9 = 34 = 2 × 17). -/
+noncomputable def X7_decomposition : X 7 ≃+* ZMod 2 × ZMod 17 :=
+  crtDecomposition 7 2 17 (by native_decide) (by native_decide)
+
+-- X_10: F_12 = 144 = 16 × 9, gcd(16,9) = 1.
+noncomputable def X10_decomposition : X 10 ≃+* ZMod 16 × ZMod 9 :=
+  crtDecomposition 10 16 9 (by native_decide) (by native_decide)
+
 end
 end Omega.X

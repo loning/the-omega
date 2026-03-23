@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,333 |
-| 定理/定义数 | 1,173 |
+| 总行数 | ~13,355 |
+| 定理/定义数 | 1,181 |
 | 论文接口包装 | 312 |
 | 文件数 | 36 |
 | 公理数 | 0 |
@@ -16,8 +16,8 @@
 
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
-| Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 21 | ~389 | 99% |
+| Core (Fib, Word, No11) | 3 | ~25 | 100% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 21 | ~394 | 99% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -30,7 +30,7 @@
 **SPG 扫描误差**：离散 + 测度双版本, Bayes 半界, 观测细化单调性, 补对称性
 **fiber 结构**：分割和 = 2^m, multiplicity, 不相交性
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
-**modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射
+**modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射, restrict 保零（restrict_zero）, restrict 保一（restrict_one）
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（完整）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m)（maxFiberMultiplicity_le_add）; 基值 D_0..D_10（native_decide 验证，11个定理）; 偶数闭式 D(2k)=F_{k+2} for k=1..5（maxFiberMultiplicity_even）; 奇数闭式 D(2k+1)=2F_k for k=1..4（maxFiberMultiplicity_odd）
 **纤维谱定义与基值（计划9 Phase 0+1）**：cFiberMultiset（所有纤维多重度的多重集）; cFiberSpectrum（排序去重降序列表）; cNthMaxFiber（第 k 大多重度，0-indexed）; fiberValueSet/fiberValueSet_nonempty（noncomputable 版本）; 一致性验证 cNthMaxFiber_zero_eq_0/5/7（与 cMaxFiberMult 吻合）; 完整谱基值 cFiberSpectrum_zero..seven（m=0..7，native_decide）; D_m^{(2)} 基值 cNthMaxFiber_second_four..seven（m=4..7）; D_m^{(3)} 基值 cNthMaxFiber_third_four..seven（m=4..7）；闭式公式待后续（def:pom-top-fiber-spectrum 定义层完整）
@@ -56,8 +56,8 @@
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
-| 新生算术 | 21 | 16 | 76% | 高 |
-| POM | 106 | 65 | 61% | 极高 |
+| 新生算术 | 21 | 19 | 90% | 高 |
+| POM | 106 | 67 | 63% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
@@ -74,7 +74,7 @@
 2. ✅ **稳定乘法的 Fibonacci 素数域**：`stableMul_inv_of_prime`（素数时乘法逆存在，`cor:field-phase-fib-prime`）; 素数实例 F(3),F(4),F(6),F(12) 及反例 F(8) via native_decide; `instFieldOfPrime`（通用域实例构造，F_{m+2} 素数时 X m ≃ GF(F_{m+2})）; 具体域实例 `instField_X1`（GF(2)）、`instField_X2`（GF(3)）、`instField_X3`（GF(5)）、`instField_X5`（GF(13)）、`instField_X9`（GF(89)）、`instField_X11`（GF(233)）via native_decide
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
 4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射）
-5. **Fibonacci 整除性**：证明 `F_m | F_{nm}` (Fibonacci 整除定理)
+5. ✅ **Fibonacci 整除性**：`fib_gcd`（gcd(F_m, F_n)=F_{gcd(m,n)}）; `fib_coprime_succ`（相邻 Fibonacci 数互素）; `fib_dvd_mul`（F_m | F_{km}，整除定理）
 6. ✅ **稳定类型同构的范畴化**：`instCommRing`（CommRing (X m) 实例）; `stableValueRingHom`（X m →+* ZMod(F_{m+2}) 环同态）; `toZMod_injective/surjective`（双射）; `stableValueRingEquiv : X m ≃+* ZMod(F_{m+2})`（完整环同构，thm:finite-resolution-mod + cor:field-phase-fib-prime 前提）
 
 ### Phase B：POM 纤维谱（计划 7-12）
@@ -111,7 +111,7 @@
 
 ### Phase F：远层探索（计划 27-30）
 
-27. **CRT 因式分解条件**：当 F_{m+2} 可分解时的中国剩余定理应用
+27. **[部分完成] CRT 因式分解条件**：`crtDecomposition`（通用 CRT 环同构构造，F_{m+2} 可因子分解时 X m ≃+* ZMod p × ZMod q）; `X7_decomposition`（X 7 ≃+* ZMod 2 × ZMod 17）; `X10_decomposition`（X 10 ≃+* ZMod 16 × ZMod 9）；一般合数情形与谱分解待后续
 28. **Joukowsky-Gödel 椭圆参数化**：构造椭圆参数的可逆映射
 29. **Čech 上同调障碍**：构造前缀站点上的 H² 胶合障碍
 30. **Stokes-dyadic 通量 ζ 函数有理性**：正则语言的 ζ 函数有理延拓
@@ -127,9 +127,10 @@
 
 ### 短期可执行（3-5 轮内完成）
 
-5. 计划 5（Fibonacci 整除性）
+5. ✅ 计划 5（Fibonacci 整除性：fib_gcd, fib_coprime_succ, fib_dvd_mul 已完成）
 6. 计划 13（条件期望型表达）
 7. 计划 20（拓扑熵 = log φ；shift 前置 + 离散骨架已完成，下一步：Real.log 极限论证）
+8. **[部分完成] 计划 27**（CRT 分解：crtDecomposition + X7/X10 具体实例已完成；一般合数情形待续）
 
 ### 中期目标（需要新基础设施）
 
