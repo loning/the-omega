@@ -2836,6 +2836,56 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.X.restrict_one"
       phase := 4
       status := .formalized }
+  -- Phase 20 深化: shift 动力学全零固定点与唯一性 (计划20深化)
+  -- shift-allFalse-fixed → allFalse + shift_allFalse (Omega/Folding/ShiftDynamics.lean:48)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:shift-allFalse"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.allFalse"
+      phase := 20
+      status := .formalized }
+  -- shift_allFalse → shift_allFalse (Omega/Folding/ShiftDynamics.lean:50)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:shift-allFalse-fixed"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_allFalse"
+      phase := 20
+      status := .formalized }
+  -- shift-fixed-iff → shift_fixed_iff (Omega/Folding/ShiftDynamics.lean:54)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shift-fixed-iff"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_fixed_iff"
+      phase := 20
+      status := .formalized }
+  -- shift-not-injective → shift_not_injective (Omega/Folding/ShiftDynamics.lean:69)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:shift-not-injective"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_not_injective"
+      phase := 20
+      status := .formalized }
+  -- Phase 4 深化: restrict 满射与纤维非空 (计划4深化)
+  -- restrict-surjective → restrict_surjective (Omega/Folding/ModularTower.lean:134)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:restrict-surjective"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_surjective"
+      phase := 4
+      status := .formalized }
+  -- restrict-fiber-nonempty → restrict_fiber_nonempty (Omega/Folding/ModularTower.lean:140)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:restrict-fiber-nonempty"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_fiber_nonempty"
+      phase := 4
+      status := .formalized }
   -- Phase 27 初步: CRT 分解 (计划27)
   -- crt-decomposition → crtDecomposition (Omega/Folding/FiberRing.lean:179)
   --   状态: 已形式化, 审核通过 2026-03-23

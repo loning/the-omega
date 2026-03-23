@@ -44,6 +44,45 @@ theorem continuous_shiftN : ∀ (n : Nat), Continuous (shiftN n)
   | 0 => continuous_id
   | n + 1 => continuous_shift.comp (continuous_shiftN n)
 
+/-- The all-false infinite sequence (the unique fixed point of shift). -/
+def allFalse : XInfinity := ⟨fun _ => false, fun _ h => by exact absurd h.1 Bool.false_ne_true⟩
+
+@[simp] theorem shift_allFalse : shift allFalse = allFalse :=
+  Subtype.ext (funext fun _ => rfl)
+
+/-- shift(a) = a iff a is the all-false sequence. -/
+theorem shift_fixed_iff (a : XInfinity) : shift a = a ↔ a = allFalse := by
+  constructor
+  · intro h
+    apply Subtype.ext; funext i
+    have hEq : ∀ j, a.1 (j + 1) = a.1 j := fun j => congr_fun (congr_arg Subtype.val h) j
+    have hConst : ∀ i, a.1 i = a.1 0 := by
+      intro i; induction i with
+      | zero => rfl
+      | succ n ih => exact (hEq n).trans ih
+    cases h0 : a.1 0 with
+    | false => exact (hConst i).trans h0
+    | true => exact absurd ⟨(hConst 0).symm ▸ h0, (hConst 1).symm ▸ h0⟩ (a.2 0)
+  · intro h; rw [h, shift_allFalse]
+
+/-- The shift is not injective (both allFalse and (true,false,false,...) map to allFalse). -/
+theorem shift_not_injective : ¬ Function.Injective shift := by
+  intro hInj
+  have hNo11 : No11Inf (fun i => if i = 0 then true else false) := by
+    intro i ⟨hi, hi1⟩
+    by_cases h0 : i = 0
+    · subst h0; simp at hi1
+    · simp [h0] at hi
+  let a : XInfinity := ⟨_, hNo11⟩
+  have hShift : shift a = shift allFalse := by
+    apply Subtype.ext; funext i
+    show (if i + 1 = 0 then true else false) = false
+    simp
+  have hab := congr_fun (congr_arg Subtype.val (hInj hShift)) 0
+  -- hab : a.1 0 = allFalse.1 0, need to show this is true = false
+  change (if (0 : Nat) = 0 then true else false) = false at hab
+  simp at hab
+
 end Omega.X
 
 namespace Omega

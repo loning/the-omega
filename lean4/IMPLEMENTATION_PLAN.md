@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,355 |
-| 定理/定义数 | 1,181 |
+| 总行数 | ~13,393 |
+| 定理/定义数 | 1,187 |
 | 论文接口包装 | 312 |
 | 文件数 | 36 |
 | 公理数 | 0 |
@@ -30,7 +30,7 @@
 **SPG 扫描误差**：离散 + 测度双版本, Bayes 半界, 观测细化单调性, 补对称性
 **fiber 结构**：分割和 = 2^m, multiplicity, 不相交性
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
-**modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射, restrict 保零（restrict_zero）, restrict 保一（restrict_one）
+**modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射, restrict 保零（restrict_zero）, restrict 保一（restrict_one）, restrict 满射（restrict_surjective）, restrict 纤维非空（restrict_fiber_nonempty）
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（完整）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m)（maxFiberMultiplicity_le_add）; 基值 D_0..D_10（native_decide 验证，11个定理）; 偶数闭式 D(2k)=F_{k+2} for k=1..5（maxFiberMultiplicity_even）; 奇数闭式 D(2k+1)=2F_k for k=1..4（maxFiberMultiplicity_odd）
 **纤维谱定义与基值（计划9 Phase 0+1）**：cFiberMultiset（所有纤维多重度的多重集）; cFiberSpectrum（排序去重降序列表）; cNthMaxFiber（第 k 大多重度，0-indexed）; fiberValueSet/fiberValueSet_nonempty（noncomputable 版本）; 一致性验证 cNthMaxFiber_zero_eq_0/5/7（与 cMaxFiberMult 吻合）; 完整谱基值 cFiberSpectrum_zero..seven（m=0..7，native_decide）; D_m^{(2)} 基值 cNthMaxFiber_second_four..seven（m=4..7）; D_m^{(3)} 基值 cNthMaxFiber_third_four..seven（m=4..7）；闭式公式待后续（def:pom-top-fiber-spectrum 定义层完整）
@@ -46,7 +46,7 @@
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
-**shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）
+**shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）、全零序列（allFalse）、σ(0)=0 固定点（shift_allFalse）、唯一固定点特征（shift_fixed_iff）、非单射性（shift_not_injective）
 **离散骨架（Round 15，cor:folding-stable-syntax-entropy-logqdim Stage 1）**：矩阵 Fibonacci 递推 $A^{m+2}=A^{m+1}+A^m$（goldenMeanAdjacency_pow_add_two）、行和公式 $(A^m)_{00}+(A^m)_{01}=F_{m+2}$（goldenMeanAdjacency_row_sum）、有限稳定语法计数 Fibonacci 递推 $|X_{m+2}|=|X_{m+1}|+|X_m|$（card_X_recurrence）、Fibonacci 比率上下界 $|X_m| \le |X_{m+1}| \le 2|X_m|$（card_X_ratio_bounds）、矩阵求和表示 $|X_m|=(A^m)_{00}+(A^m)_{01}$（card_X_eq_matrix_sum）；完整 $\log\varphi$ 连续熵极限待后续
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -73,7 +73,7 @@
 1. **Zeckendorf 唯一性完整证明**：证明 `stableValue (X.ofNat m n) = n` 对所有 `n < F_{m+2}` 成立（已完成），进一步证明 Zeckendorf 表示的唯一性定理
 2. ✅ **稳定乘法的 Fibonacci 素数域**：`stableMul_inv_of_prime`（素数时乘法逆存在，`cor:field-phase-fib-prime`）; 素数实例 F(3),F(4),F(6),F(12) 及反例 F(8) via native_decide; `instFieldOfPrime`（通用域实例构造，F_{m+2} 素数时 X m ≃ GF(F_{m+2})）; 具体域实例 `instField_X1`（GF(2)）、`instField_X2`（GF(3)）、`instField_X3`（GF(5)）、`instField_X5`（GF(13)）、`instField_X9`（GF(89)）、`instField_X11`（GF(233)）via native_decide
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
-4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射）
+4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射、restrict 保零/保一、restrict_surjective、restrict_fiber_nonempty）
 5. ✅ **Fibonacci 整除性**：`fib_gcd`（gcd(F_m, F_n)=F_{gcd(m,n)}）; `fib_coprime_succ`（相邻 Fibonacci 数互素）; `fib_dvd_mul`（F_m | F_{km}，整除定理）
 6. ✅ **稳定类型同构的范畴化**：`instCommRing`（CommRing (X m) 实例）; `stableValueRingHom`（X m →+* ZMod(F_{m+2}) 环同态）; `toZMod_injective/surjective`（双射）; `stableValueRingEquiv : X m ≃+* ZMod(F_{m+2})`（完整环同构，thm:finite-resolution-mod + cor:field-phase-fib-prime 前提）
 
@@ -98,7 +98,7 @@
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
 19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1
-20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；完整 Real.log 版极限论证待后续）
+20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；shift 动力学深化：allFalse 全零序列、shift_allFalse（σ(0)=0 固定点）、shift_fixed_iff（唯一固定点）、shift_not_injective（非单射）已形式化 2026-03-24；完整 Real.log 版极限论证待后续）
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 

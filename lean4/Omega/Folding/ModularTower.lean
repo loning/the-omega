@@ -130,6 +130,17 @@ theorem restrict_one : X.restrict (1 : X (m + 1)) = (1 : X m) := by
   apply Subtype.ext; funext i
   simp [stableOne, X.ofNat, X.ofIndices, X.wordOfIndices, X.restrict, truncate]
 
+/-- restrict is surjective (from modularProject surjectivity). -/
+theorem restrict_surjective : Function.Surjective (X.restrict (m := m)) := by
+  intro y
+  obtain ⟨x, hx⟩ := modularProject_surjective m y
+  exact ⟨x, (modularProject_eq_restrict x).symm.trans hx⟩
+
+/-- The restrict fiber of y is nonempty (from surjectivity). -/
+theorem restrict_fiber_nonempty (y : X m) :
+    ∃ x : X (m + 1), X.restrict x = y :=
+  restrict_surjective y
+
 end X
 
 end Omega

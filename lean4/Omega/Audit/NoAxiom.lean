@@ -399,6 +399,14 @@ Run these commands manually during audit:
   #print axioms Omega.X.instField_X5
   #print axioms Omega.X.instField_X9
   #print axioms Omega.X.instField_X11
+  -- Plan 20 深化: shift 全零固定点与非单射 (ShiftDynamics.lean:48-82)
+  #print axioms Omega.X.allFalse
+  #print axioms Omega.X.shift_allFalse
+  #print axioms Omega.X.shift_fixed_iff
+  #print axioms Omega.X.shift_not_injective
+  -- Plan 4 深化: restrict 满射与纤维非空 (ModularTower.lean:134-142)
+  #print axioms Omega.X.restrict_surjective
+  #print axioms Omega.X.restrict_fiber_nonempty
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -804,6 +812,14 @@ def coreAuditTargets : List String :=
   -- 计划27初步: CRT 分解 (FiberRing.lean:179-192)
   , "Omega.X.crtDecomposition"
   , "Omega.X.X7_decomposition"
-  , "Omega.X.X10_decomposition" ]
+  , "Omega.X.X10_decomposition"
+  -- 计划20深化: shift 全零固定点与非单射 (ShiftDynamics.lean:48-82)
+  , "Omega.X.allFalse"
+  , "Omega.X.shift_allFalse"
+  , "Omega.X.shift_fixed_iff"
+  , "Omega.X.shift_not_injective"
+  -- 计划4深化: restrict 满射与纤维非空 (ModularTower.lean:134-142)
+  , "Omega.X.restrict_surjective"
+  , "Omega.X.restrict_fiber_nonempty" ]
 
 end Omega.Audit
