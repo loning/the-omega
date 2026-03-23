@@ -114,7 +114,11 @@ Agent(
    - 收到 codex-consultant 建议后，转发给 formalizer，然后 shutdown codex-consultant
    - 等待 formalizer 继续迭代
 
-5. 收到 formalizer 结果后路由：
+5. 收到 formalizer 结果后**立即告知其暂停等待审核**：
+   ```
+   SendMessage(to = "formalizer", message = "已收到结果，进入审核阶段。请暂停当前工作，等待审核结果后再继续。")
+   ```
+   然后路由：
    - 成功 → 标记任务完成，进入 Phase 3
    - 失败 → 记录失败原因，回到 Phase 0+1（发消息让 analyst 选下一个目标）
 
