@@ -74,20 +74,39 @@ cd /Users/auric/alltheory/the-omega/lean4 && lake build
 
 ### 步骤6：提交
 
+**关键：必须 add 所有相关文件，包括 formalizer 修改的代码文件，不仅仅是审计文件。**
+
 ```bash
 cd /Users/auric/alltheory/the-omega
+
+# 1. 先查看所有未暂存的变更，确认 formalizer 修改的文件
+git status
+
+# 2. 添加 lean4/ 下所有修改和新增文件（包括 formalizer 的代码 + 审计文件）
 git add lean4/
+
+# 3. 确认暂存区包含 formalizer 修改的代码文件（不仅仅是 Audit/ 和 IMPLEMENTATION_PLAN.md）
+git diff --cached --stat
+
+# 4. 提交
 git commit -m "Formalize [定理名]: [简短描述]
 
 - New theorems: [列表]
 - Paper coverage: [章节] [旧%] → [新%]
 - Files modified: [列表]
-- Reviewed: internal + codex
+- Reviewed: internal
 - Axioms: none (verified)
 
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+
+# 5. 推送
 git push
+
+# 6. 验证提交后无残留未暂存文件
+git status
 ```
+
+**常见错误**：registrar 在 worktree 中工作时只能看到自己修改的文件（SourceMap/NoAxiom/IMPLEMENTATION_PLAN），看不到 formalizer 在主 worktree 中的修改。**必须在主 worktree（/Users/auric/alltheory/the-omega/）执行 git add lean4/ 和 git commit**，而非在隔离 worktree 中提交。
 
 ### 输出
 
