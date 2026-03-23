@@ -1,4 +1,5 @@
 import Omega.Folding.InverseLimitTopology
+import Omega.Graph.TransferMatrix
 
 namespace Omega.X
 
@@ -44,3 +45,42 @@ theorem continuous_shiftN : ∀ (n : Nat), Continuous (shiftN n)
   | n + 1 => continuous_shift.comp (continuous_shiftN n)
 
 end Omega.X
+
+namespace Omega
+
+/-! ### Discrete entropy skeleton (cor:folding-stable-syntax-entropy-logqdim, Stage 1)
+
+The finite stable syntax spaces X_m satisfy:
+- Fibonacci recurrence: |X_{m+2}| = |X_{m+1}| + |X_m|
+- Growth bounds: |X_m| ≤ |X_{m+1}| ≤ 2 · |X_m|
+- Transfer matrix representation: |X_m| = (A^m)_{00} + (A^m)_{01}
+-/
+
+/-- |X_{m+2}| = |X_{m+1}| + |X_m| (Fibonacci recurrence for stable word counts). -/
+theorem card_X_recurrence (m : Nat) :
+    Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) := by
+  simp only [X.card_eq_fib]
+  exact fib_succ_succ' (m + 2)
+
+/-- |X_m| ≤ |X_{m+1}| ≤ 2 · |X_m| (Fibonacci ratio bounds). -/
+theorem card_X_ratio_bounds (m : Nat) :
+    Fintype.card (X m) ≤ Fintype.card (X (m + 1)) ∧
+    Fintype.card (X (m + 1)) ≤ 2 * Fintype.card (X m) := by
+  simp only [X.card_eq_fib]
+  constructor
+  · exact Nat.fib_mono (by omega)
+  · -- Nat.fib (m+3) ≤ 2 * Nat.fib (m+2)
+    calc Nat.fib (m + 3)
+        = Nat.fib (m + 2) + Nat.fib (m + 1) := fib_succ_succ' (m + 1)
+      _ ≤ Nat.fib (m + 2) + Nat.fib (m + 2) :=
+          Nat.add_le_add_left (Nat.fib_mono (by omega)) _
+      _ = 2 * Nat.fib (m + 2) := by omega
+
+/-- |X_m| = (A^m)_{00} + (A^m)_{01} where A is the golden-mean adjacency matrix. -/
+theorem card_X_eq_matrix_sum (m : Nat) :
+    (Fintype.card (X m) : ℤ) =
+      (Graph.goldenMeanAdjacency ^ m) 0 0 + (Graph.goldenMeanAdjacency ^ m) 0 1 := by
+  rw [X.card_eq_fib]
+  exact (Graph.goldenMeanAdjacency_row_sum m).symm
+
+end Omega

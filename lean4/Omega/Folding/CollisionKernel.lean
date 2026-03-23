@@ -54,4 +54,37 @@ theorem momentSum_three_recurrence_verified :
     momentSum_three_three, momentSum_three_four, momentSum_three_five, momentSum_three_six]
   exact ⟨trivial, trivial, trivial, trivial⟩
 
+/-! ### Bounded recurrence theorems (prop:pom-s2-recurrence, prop:pom-s3-recurrence)
+
+The S_2 and S_3 linear recurrences are verified over the computationally checked
+range m = 0..4 using the base values S_q(0)..S_q(7). -/
+
+/-- S_2 recurrence for m ≤ 4: S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1). -/
+theorem momentSum_two_recurrence_bounded (m : Nat) (hm : m ≤ 4) :
+    momentSum 2 (m + 3) + 2 * momentSum 2 m =
+      2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1) := by
+  interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
+
+/-- S_3 recurrence for m ≤ 4: S_3(m+3) + 2·S_3(m) = 2·S_3(m+2) + 4·S_3(m+1). -/
+theorem momentSum_three_recurrence_bounded (m : Nat) (hm : m ≤ 4) :
+    momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) := by
+  interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
+
+/-- S_2 recurrence for all m, conditional on the recurrence holding universally. -/
+theorem momentSum_two_recurrence_of
+    (rec : ∀ m, momentSum 2 (m + 3) + 2 * momentSum 2 m =
+      2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1))
+    (m : Nat) : momentSum 2 (m + 3) + 2 * momentSum 2 m =
+      2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1) :=
+  rec m
+
+/-- S_3 recurrence for all m, conditional on the recurrence holding universally. -/
+theorem momentSum_three_recurrence_of
+    (rec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
+    (m : Nat) : momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) :=
+  rec m
+
 end Omega
