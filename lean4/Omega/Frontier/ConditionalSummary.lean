@@ -574,6 +574,67 @@ theorem moment_ge_cardinality (q m : Nat) :
 theorem collision_sum_ge_pow (m : Nat) :
     2 ^ m ≤ momentSum 2 m := Omega.momentSum_two_ge_pow m
 
+/-! ### POM existence registrations -/
+
+/-- The maximum fiber multiplicity is achieved by some stable word. -/
+theorem max_fiber_achieved (m : Nat) :
+    ∃ x : X m, X.fiberMultiplicity x = X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_achieved m
+
+/-- For m ≥ 2, some stable word has fiber multiplicity ≥ 2 (pigeonhole). -/
+theorem fiber_pigeonhole (m : Nat) (hm : 2 ≤ m) :
+    ∃ x : X m, 2 ≤ X.fiberMultiplicity x :=
+  Omega.exists_fiber_ge_two m hm
+
+/-- The maximum fiber multiplicity is always positive. -/
+theorem max_fiber_positive (m : Nat) : 0 < X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_pos m
+
+/-- D(m+2) ≤ D(m+1) + D(m) (Fibonacci-type upper bound on max fiber). -/
+theorem max_fiber_fib_bound (m : Nat) :
+    X.maxFiberMultiplicity (m + 2) ≤ X.maxFiberMultiplicity (m + 1) + X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_le_add m
+
+/-! ### Entropy rate discrete skeleton -/
+
+/-- F_{m+2} < 2^m for m ≥ 2 (strict entropy gap). -/
+theorem entropy_gap_strict (m : Nat) (hm : 2 ≤ m) : Nat.fib (m + 2) < 2 ^ m := by
+  have key : ∀ n, 2 ≤ n → Nat.fib (n + 2) < 2 ^ n := by
+    intro n hn
+    induction n with
+    | zero => omega
+    | succ n ih =>
+      cases n with
+      | zero => omega
+      | succ k =>
+        cases k with
+        | zero => native_decide
+        | succ k =>
+          have hR := Omega.fib_succ_succ' (k + 3)
+          have ihk : Nat.fib (k + 4) < 2 ^ (k + 2) := ih (by omega)
+          have ih0 : Nat.fib (k + 3) ≤ 2 ^ (k + 2) := Omega.fib_le_pow_two (k + 1)
+          calc Nat.fib (k + 2 + 1 + 2)
+              = Nat.fib (k + 4) + Nat.fib (k + 3) := hR
+            _ < 2 ^ (k + 2) + 2 ^ (k + 2) := Nat.add_lt_add_of_lt_of_le ihk ih0
+            _ = 2 ^ (k + 2 + 1) := by ring
+  exact key m hm
+
+/-- F_{m+3} ≤ 2 · F_{m+2} (projection ratio bound). -/
+theorem projection_ratio_decreasing (m : Nat) :
+    Nat.fib (m + 3) * 2 ^ m ≤ Nat.fib (m + 2) * 2 ^ (m + 1) := by
+  have hBound : Nat.fib (m + 3) ≤ 2 * Nat.fib (m + 2) := by
+    have h1 : Nat.fib (m + 3) = Nat.fib (m + 2) + Nat.fib (m + 1) :=
+      Omega.fib_succ_succ' (m + 1)
+    have h2 : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+    omega
+  calc Nat.fib (m + 3) * 2 ^ m
+      ≤ 2 * Nat.fib (m + 2) * 2 ^ m := Nat.mul_le_mul_right _ hBound
+    _ = Nat.fib (m + 2) * 2 ^ (m + 1) := by ring
+
+/-- F_{m+2} > 0 (projection ratio positivity). -/
+theorem projection_ratio_positive (m : Nat) : 0 < Nat.fib (m + 2) :=
+  Nat.fib_pos.mpr (by omega)
+
 end
 
 end Omega.Frontier

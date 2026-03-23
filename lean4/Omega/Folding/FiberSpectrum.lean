@@ -27,6 +27,20 @@ theorem cNthMaxFiber_zero_eq_0 : cNthMaxFiber 0 0 = cMaxFiberMult 0 := by native
 theorem cNthMaxFiber_zero_eq_5 : cNthMaxFiber 5 0 = cMaxFiberMult 5 := by native_decide
 theorem cNthMaxFiber_zero_eq_7 : cNthMaxFiber 7 0 = cMaxFiberMult 7 := by native_decide
 
+/-- Number of stable words achieving the maximum fiber multiplicity. -/
+def cMaxFiberAchievers (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x = cMaxFiberMult m) |>.card
+
+-- Achiever counts for small m
+theorem cMaxFiberAchievers_zero : cMaxFiberAchievers 0 = 1 := by native_decide
+theorem cMaxFiberAchievers_one : cMaxFiberAchievers 1 = 2 := by native_decide
+theorem cMaxFiberAchievers_two : cMaxFiberAchievers 2 = 1 := by native_decide
+theorem cMaxFiberAchievers_three : cMaxFiberAchievers 3 = 3 := by native_decide
+theorem cMaxFiberAchievers_four : cMaxFiberAchievers 4 = 2 := by native_decide
+theorem cMaxFiberAchievers_five : cMaxFiberAchievers 5 = 1 := by native_decide
+theorem cMaxFiberAchievers_six : cMaxFiberAchievers 6 = 2 := by native_decide
+theorem cMaxFiberAchievers_seven : cMaxFiberAchievers 7 = 4 := by native_decide
+
 end Computable
 
 namespace X

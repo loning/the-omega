@@ -3077,6 +3077,72 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Frontier.ConditionalSummary"
       leanName := "Omega.Frontier.collision_sum_ge_pow"
       phase := 17
+      status := .formalized }
+  -- Phase 18: Frontier 包装 — ConditionalSummary.lean (POM 存在性与熵率骨架)
+  -- thm:pom-max-fiber (存在部分) → max_fiber_achieved (ConditionalSummary.lean:580)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-fiber-achieved"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_achieved"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-fiber-pigeonhole → fiber_pigeonhole (ConditionalSummary.lean:585)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-fiber-pigeonhole"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.fiber_pigeonhole"
+      phase := 18
+      status := .formalized }
+  -- thm:pom-max-fiber (正性部分) → max_fiber_positive (ConditionalSummary.lean:590)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-fiber-positive"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_positive"
+      phase := 18
+      status := .formalized }
+  -- cor:pom-D-rec (上界) → max_fiber_fib_bound (ConditionalSummary.lean:594)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-D-rec-upper"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_fib_bound"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-projection-entropy (严格版) → entropy_gap_strict (ConditionalSummary.lean:601)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-entropy-strict"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.entropy_gap_strict"
+      phase := 18
+      status := .formalized }
+  -- 投影比率递减 → projection_ratio_decreasing (ConditionalSummary.lean:623)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-ratio-decreasing"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.projection_ratio_decreasing"
+      phase := 18
+      status := .formalized }
+  -- 投影比率正性 → projection_ratio_positive (ConditionalSummary.lean:635)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-ratio-positive"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.projection_ratio_positive"
+      phase := 18
+      status := .formalized }
+  -- Phase 18: FiberSpectrum.lean — 达到者数定义与基值
+  -- thm:pom-max-achievers-phase-stabilization (前置) → cMaxFiberAchievers (FiberSpectrum.lean:31)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-achievers-phase-stabilization-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cMaxFiberAchievers"
+      phase := 18
       status := .formalized } ]
 
 end Omega.Audit

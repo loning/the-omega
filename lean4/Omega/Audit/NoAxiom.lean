@@ -435,6 +435,18 @@ Run these commands manually during audit:
   -- prop:pom-sq-lower, cor:pom-s2-lower (ConditionalSummary.lean:570-576)
   #print axioms Omega.Frontier.moment_ge_cardinality
   #print axioms Omega.Frontier.collision_sum_ge_pow
+  -- Phase 18: ConditionalSummary — POM 存在性与熵率骨架
+  -- thm:pom-max-fiber (存在部分), prop:pom-fiber-pigeonhole, thm:pom-max-fiber (正性)
+  -- cor:pom-D-rec (上界), prop:pom-projection-entropy (严格版), 投影比率递减/正性
+  #print axioms Omega.Frontier.max_fiber_achieved
+  #print axioms Omega.Frontier.fiber_pigeonhole
+  #print axioms Omega.Frontier.max_fiber_positive
+  #print axioms Omega.Frontier.max_fiber_fib_bound
+  #print axioms Omega.Frontier.entropy_gap_strict
+  #print axioms Omega.Frontier.projection_ratio_decreasing
+  #print axioms Omega.Frontier.projection_ratio_positive
+  -- Phase 18: FiberSpectrum — 达到者数定义与基值 (thm:pom-max-achievers-phase-stabilization 前置)
+  #print axioms Omega.cMaxFiberAchievers
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
