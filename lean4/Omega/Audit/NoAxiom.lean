@@ -20,6 +20,8 @@ import Omega.Folding.CollisionKernel
 import Omega.Folding.FibonacciPolynomial
 import Omega.Folding.MaxFiber
 import Omega.Folding.FiberSpectrum
+import Omega.Folding.HankelSpectrum
+import Omega.Folding.FiberArithmeticProperties
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -501,6 +503,33 @@ Run these commands manually during audit:
   #print axioms Omega.X.ne_of_bit_ne
   -- Phase 22: ConditionalSummary — No11 词计数
   #print axioms Omega.Frontier.no11_count
+  -- Phase 26: HankelSpectrum (Round 20, Target A) — Hankel 行列式 + 最小递推阶数
+  -- lem:pom-s2-hankel-det, lem:pom-s2-minimal-order (HankelSpectrum.lean:20-50)
+  #print axioms Omega.hankelS2_2x2_det
+  #print axioms Omega.hankelS2_3x3_det
+  #print axioms Omega.hankelS2_4x4_det
+  #print axioms Omega.hankelS2_3x3_det_ne_zero
+  #print axioms Omega.momentSum_two_minimal_recurrence_order
+  #print axioms Omega.hankelS3_2x2_det
+  #print axioms Omega.hankelS3_3x3_det
+  #print axioms Omega.hankelS3_4x4_det
+  #print axioms Omega.momentSum_three_minimal_recurrence_order
+  -- Phase 26: HankelSpectrum (Round 20, Target B) — 特征多项式验证
+  #print axioms Omega.collisionKernel2_charpoly_eval
+  #print axioms Omega.collisionKernel2_charpoly_coefficients
+  #print axioms Omega.collisionKernel3_charpoly_eval
+  #print axioms Omega.collisionKernel3_charpoly_coefficients
+  #print axioms Omega.collision_kernels_shared_invariants
+  #print axioms Omega.collision_kernel_root_sum_eq_trace
+  #print axioms Omega.collision_kernel_root_product
+  -- Phase 26: HankelSpectrum (Round 20, Target C) — S_2/S_3 分辨率单调性
+  -- thm:pom-s2-rank-exact, prop:pom-s2-recurrence, prop:pom-s3-recurrence
+  #print axioms Omega.momentSum_two_strict_mono_verified
+  #print axioms Omega.momentSum_two_mono_verified
+  #print axioms Omega.momentSum_three_strict_mono_verified
+  #print axioms Omega.momentSum_three_mono_verified
+  #print axioms Omega.momentSum_two_mono_of_recurrence
+  #print axioms Omega.momentSum_three_mono_of_recurrence
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -956,6 +985,29 @@ def coreAuditTargets : List String :=
   -- Phase 25: Value — stableValue = weight (Value.lean:114)
   , "Omega.stableValue_eq_weight"
   -- Phase 25: FiberRing — 环特征 = F_{m+2} (FiberRing.lean:196)
-  , "Omega.instCharP" ]
+  , "Omega.instCharP"
+  -- Phase 26: HankelSpectrum — Hankel 行列式 + 最小递推阶数 + 特征多项式 + 分辨率单调性
+  , "Omega.hankelS2_2x2_det"
+  , "Omega.hankelS2_3x3_det"
+  , "Omega.hankelS2_4x4_det"
+  , "Omega.hankelS2_3x3_det_ne_zero"
+  , "Omega.momentSum_two_minimal_recurrence_order"
+  , "Omega.hankelS3_2x2_det"
+  , "Omega.hankelS3_3x3_det"
+  , "Omega.hankelS3_4x4_det"
+  , "Omega.momentSum_three_minimal_recurrence_order"
+  , "Omega.collisionKernel2_charpoly_eval"
+  , "Omega.collisionKernel2_charpoly_coefficients"
+  , "Omega.collisionKernel3_charpoly_eval"
+  , "Omega.collisionKernel3_charpoly_coefficients"
+  , "Omega.collision_kernels_shared_invariants"
+  , "Omega.collision_kernel_root_sum_eq_trace"
+  , "Omega.collision_kernel_root_product"
+  , "Omega.momentSum_two_strict_mono_verified"
+  , "Omega.momentSum_two_mono_verified"
+  , "Omega.momentSum_three_strict_mono_verified"
+  , "Omega.momentSum_three_mono_verified"
+  , "Omega.momentSum_two_mono_of_recurrence"
+  , "Omega.momentSum_three_mono_of_recurrence" ]
 
 end Omega.Audit

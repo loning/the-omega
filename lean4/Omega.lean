@@ -10,6 +10,7 @@ import Omega.Folding.Fiber
 import Omega.Folding.MaxFiber
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
+import Omega.Folding.FiberArithmeticProperties
 import Omega.Folding.FiberRing
 import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
@@ -22,6 +23,7 @@ import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
+import Omega.Folding.HankelSpectrum
 import Omega.Folding.ModularTower
 import Omega.Graph.LabeledGraph
 import Omega.Graph.Sofic

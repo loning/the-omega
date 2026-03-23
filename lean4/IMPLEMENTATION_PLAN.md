@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,765 |
-| 定理/定义数 | 1,273 |
+| 总行数 | ~14,414 |
+| 定理/定义数 | 1,293 |
 | 论文接口包装 | 340 |
-| 文件数 | 36 |
+| 文件数 | 37 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~25 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 21 | ~405 | 99% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial, HankelSpectrum, FiberArithmeticProperties) | 23 | ~425 | 99% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures, ConditionalSummary) | 5 | ~342 | 80% |
@@ -43,6 +43,7 @@
 **POM 存在性与熵率骨架（Round 18）**：max_fiber_achieved（thm:pom-max-fiber 存在部分，∃ x 达到最大纤维多重度）; fiber_pigeonhole（prop:pom-fiber-pigeonhole，m≥2 时 ∃ x 纤维多重度 ≥ 2）; max_fiber_positive（thm:pom-max-fiber 正性，D_m > 0）; max_fiber_fib_bound（cor:pom-D-rec 上界，D(m+2) ≤ D(m+1)+D(m)，Frontier 包装）; entropy_gap_strict（prop:pom-projection-entropy 严格版，F_{m+2} < 2^m for m≥2）; projection_ratio_decreasing（投影比率递减，F_{m+3}·2^m ≤ F_{m+2}·2^{m+1}）; projection_ratio_positive（F_{m+2} > 0）; cMaxFiberAchievers（达到者数定义 + 基值 m=0..7 native_decide，thm:pom-max-achievers-phase-stabilization 前置）
 **达到者数有界 + 次大纤维基值扩展 + S_q 不等式（Round 19）**：cMaxFiberAchievers_le_univ（达到者数 ≤ |X_m|，thm:pom-max-achievers-phase-stabilization 有界部分）; cNthMaxFiber_second_eight/nine/ten（D_m^{(2)} 扩展基值 m=8,9,10，thm:pom-second-max-fiber-closed-form 数值前置）; momentSum_pos（S_q(m) > 0，prop:pom-sq-pos）; momentSum_cauchy_schwarz_restated（S_2·S_0 ≥ S_1²，prop:pom-sq-cauchy-schwarz-restated，Frontier 包装）
 **Rényi 上界 + 纤维概率端点 + 奇偶纤维计数（Round 20）**：renyi_upper_bound（S_q ≤ D_m^{q-1}·2^m，prop:pom-rq-universal-bounds）; moment_sum_one_eq_pow（S_1=2^m）; moment_sum_zero_eq_card（S_0=F_{m+2}）; max_fiber_le_pow（D_m ≤ 2^m，cor:pom-max-fiber-rate-endpoint）; max_fiber_ge_one（1 ≤ D_m）; max_fiber_prob_bounds（1 ≤ D_m ∧ D_m ≤ 2^m，联合界）; cOddFiberCount/cEvenFiberCount（奇偶纤维计数定义 + 基值 m=0..6，cor:pom-fiber-parity 前置）
+**Hankel 行列式 + 特征多项式 + 分辨率单调性（Round 20 / Phase 26）**：HankelSpectrum.lean（217行，新文件）——Hankel行列式：hankelS2_2x2/3x3/4x4 定义 + det（native_decide）; hankelS2_3x3_det_ne_zero（3×3 非零，lem:pom-s2-hankel-det）; momentSum_two_minimal_recurrence_order（S_2 最小递推阶数=3，lem:pom-s2-minimal-order）; hankelS3 系列 + momentSum_three_minimal_recurrence_order（S_3 最小递推阶数=3）——特征多项式：collisionKernel2/3_charpoly_eval（p(A)=0 Cayley-Hamilton验证，native_decide）; collisionKernel2/3_charpoly_coefficients（tr+det联合界，prop:pom-s2/s3-recurrence）; collision_kernels_shared_invariants（tr=det 共享）; collision_kernel_root_sum_eq_trace/root_product（Vieta公式验证）——S_2/S_3 分辨率单调性：momentSum_two/three_strict_mono_verified（严格单调 m≤6，thm:pom-s2-rank-exact）; momentSum_two/three_mono_verified（单调 m≤6）; momentSum_two/three_mono_of_recurrence（条件性一般单调）——FiberArithmeticProperties.lean（432行，拆分自FiberArithmetic.lean）：环同构证书 RingIsomorphismCertificate + ringIsoCert 定义; even_odd_disjoint（奇偶分区不相交性）等辅助结构
 **S_3 基值 + A_3 碰撞核矩阵（Round 13）**：momentSum_three_zero..six（S_3(m) 基值 m=0..6，native_decide 验证）; momentSum_three_recurrence_verified（S_3 递推 m=0..3 数值验证）; collisionKernel3（A_3 companion matrix 定义）; collisionKernel3_trace（tr=2）; collisionKernel3_det（det=-2）; collisionKernel3_cayley_hamilton（Cayley-Hamilton：M³=2M²+4M-2I，prop:pom-s3-recurrence）
 **S_2/S_3 扩展基值 + 有界递推 + 条件递推（Round 14）**：momentSum_two_seven（S_2(7)=544）; momentSum_three_seven（S_3(7)=2504）; momentSum_two_recurrence_bounded（S_2 递推 m≤4，interval_cases+native_decide）; momentSum_three_recurrence_bounded（S_3 递推 m≤4，interval_cases+native_decide）; momentSum_two_recurrence_of（S_2 递推条件性一般版，prop:pom-s2-recurrence）; momentSum_three_recurrence_of（S_3 递推条件性一般版，prop:pom-s3-recurrence）——有界范围已形式化，完整无界归纳证明待后续
 **Fibonacci 素数域（完整）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; fib_four/five/seven/thirteen_prime（native_decide 验证）; fib_nine_not_prime（反例验证）; instFieldOfPrime（通用域实例：F_{m+2} 素数时 X m 为域，经由 stableValueRingEquiv 转移）; instField_X1（GF(2)）、instField_X2（GF(3)）、instField_X3（GF(5)）、instField_X5（GF(13)）、instField_X9（GF(89)）、instField_X11（GF(233)）（cor:field-phase-fib-prime 完整形式化）
@@ -73,14 +74,14 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 21 | 100% | 高 |
-| POM | 106 | 102 | 96% | 极高 |
+| POM | 106 | 104 | 98% | 极高 |
 | 群统一 | 26 | 5 | 19% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~156** | **~40%** | - |
+| **总计** | **394** | **~158** | **~40%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。Phase 23 新增：ShiftDynamics（5：shift_period2_ne, period2_minimal, period3_minimal, period4Seq, shiftN_four_period4）、Weight（1：weight_allFalse）、Value（1：stableValue_allFalse）——周期轨道深化，全零基值辅助。Phase 24 新增：Zeckendorf（1：zeckIndices_allFalse）——全零稳定词 Zeckendorf 索引为空。Phase 25 新增：Value（1：stableValue_eq_weight）、FiberRing（1：instCharP）——stableValue 与 weight 等式，环特征形式化。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。Phase 23 新增：ShiftDynamics（5：shift_period2_ne, period2_minimal, period3_minimal, period4Seq, shiftN_four_period4）、Weight（1：weight_allFalse）、Value（1：stableValue_allFalse）——周期轨道深化，全零基值辅助。Phase 24 新增：Zeckendorf（1：zeckIndices_allFalse）——全零稳定词 Zeckendorf 索引为空。Phase 25 新增：Value（1：stableValue_eq_weight）、FiberRing（1：instCharP）——stableValue 与 weight 等式，环特征形式化。Phase 26（Round 20）新增：HankelSpectrum（20：hankelS2/3 Hankel det系列+momentSum_two/three_minimal_recurrence_order+charpoly系列+collision_kernels_shared_invariants+root_sum/product+mono系列，lem:pom-s2-hankel-det/lem:pom-s2-minimal-order/thm:pom-s2-rank-exact/prop:pom-s2-recurrence/prop:pom-s3-recurrence）——POM 覆盖率 96% → 98%。FiberArithmeticProperties（拆分辅助，不新增论文定理计数）。
 
 ## 3. 未来工作：30 条具体计划
 
@@ -98,7 +99,7 @@
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
 8. ✅ **[完整] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber`)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`cor:pom-D-rec`)，基值 $D_0..D_{10}$ via native_decide（11个定理），偶数闭式 $D_{2k} = F_{k+2}$ for $k=1..5$（`maxFiberMultiplicity_even`），奇数闭式 $D_{2k+1} = 2F_k$ for $k=1..4$（`maxFiberMultiplicity_odd`）—— Phase 17
 9. **[部分完成] 纤维谱定义与基值（Phase 0+1+扩展 完成）**：cFiberMultiset/cFiberSpectrum/cNthMaxFiber 定义层; 完整谱基值 m=0..7; D_m^{(2)} 基值 m=4..7（native_decide）; D_m^{(3)} 基值 m=4..7（native_decide）; D_m^{(2)} 扩展基值 m=8,9,10（cNthMaxFiber_second_eight/nine/ten, Round 19）; cMaxFiberAchievers_le_univ（达到者数上界）; cOddFiberCount/cEvenFiberCount（奇偶纤维计数定义 + 基值 m=0..6，Round 20）；待完成：D_{2k}^{(3)}=F_{k+2}-F_{k-3} 的闭合公式（Phase 2）
-10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（S_2 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 验证（native_decide）; collisionKernel3（S_3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+4M-2I; S_3 基值 m=0..6 + 递推 m=0..3 验证（Round 13）; S_2(7)=544, S_3(7)=2504 扩展基值; S_2/S_3 递推有界版（m≤4，interval_cases）; S_2/S_3 递推条件性一般版（Round 14）; 完整无界归纳证明待后续; Perron-Frobenius 完整性质待后续
+10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（S_2 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 验证（native_decide）; collisionKernel3（S_3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+4M-2I; S_3 基值 m=0..6 + 递推 m=0..3 验证（Round 13）; S_2(7)=544, S_3(7)=2504 扩展基值; S_2/S_3 递推有界版（m≤4，interval_cases）; S_2/S_3 递推条件性一般版（Round 14）; 特征多项式 p(A)=0 验证（collisionKernel2/3_charpoly_eval，Phase 26）; 特征多项式系数（collisionKernel2/3_charpoly_coefficients，Phase 26）; 共享不变量（collision_kernels_shared_invariants，Phase 26）; Vieta 公式验证（root_sum_eq_trace/root_product，Phase 26）; Hankel 行列式 + 最小阶数（hankelS2/3 系列，Phase 26）; S_2/S_3 严格单调 m≤6（momentSum_two/three_strict_mono_verified，Phase 26）; 条件性一般单调（momentSum_two/three_mono_of_recurrence，Phase 26）; 完整无界归纳证明待后续; Perron-Frobenius 完整性质待后续
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量
 12. **纤维后验等价**：证明纤维后验分布的活动度量不变量
 
@@ -138,7 +139,7 @@
 
 1. ✅ **paperFib → Nat.fib 全局重构**：已完成。消除 `paperFib` 中间层，全局替换为 `Nat.fib (k+1)`；删除 `def paperFib`、`abbrev fib` 及 33 个桥接引理；新增 12 个 `Nat.fib` 便捷引理（`fib_succ_succ'`、`fib_succ_pos`、`one_le_fib_succ`、`fib_add_succ`、`fib_sub_succ`、`fib_mod_sum'`、`fib_lt_fib_succ`、`fib_succ_mod'`、`fib_gt_one_of_ge_two`、`fib_le_pow_two` 等）；`Fib.lean` 从 144 行缩减到 80 行；影响 17 个文件。
 2. **[部分完成] 计划 9**（定义+基值 Phase 0+1 已完成；下一步：$D_{2k}^{(3)} = F_{k+2} - F_{k-3}$ 闭合公式 Phase 2）
-3. **[部分完成] S_2/S_3 递推公式归纳证明**（碰撞核矩阵 + Cayley-Hamilton 已形式化；数值验证 m=0..3 完成；有界版 m≤4 已形式化（Round 14）；条件性一般版已形式化（Round 14）；S_2: $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$；S_3: $S_3(m+3)=2S_3(m+2)+4S_3(m+1)-2S_3(m)$；完整无界归纳步骤待实现）
+3. **[深化完成-部分] S_2/S_3 递推公式归纳证明**（碰撞核矩阵 + Cayley-Hamilton 已形式化；数值验证 m=0..3 完成；有界版 m≤4 已形式化（Round 14）；条件性一般版已形式化（Round 14）；特征多项式 p(A)=0 + 系数 + Vieta 公式验证已形式化（Phase 26）；Hankel 行列式 + 最小阶数=3 已形式化（Phase 26）；S_2/S_3 严格单调 m≤6 + 条件性一般单调已形式化（Phase 26）；S_2: $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$；S_3: $S_3(m+3)=2S_3(m+2)+4S_3(m+1)-2S_3(m)$；完整无界归纳步骤待实现）
 4. 计划 1（Zeckendorf 唯一性）
 
 ### 短期可执行（3-5 轮内完成）

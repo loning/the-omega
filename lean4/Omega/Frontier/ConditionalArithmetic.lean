@@ -1,4 +1,5 @@
 import Omega.Frontier.ConditionalSPG
+import Omega.Folding.FiberArithmeticProperties
 import Omega.Folding.FiberRing
 
 namespace Omega.Frontier
