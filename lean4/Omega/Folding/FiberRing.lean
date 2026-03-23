@@ -189,5 +189,6 @@ noncomputable def X7_decomposition : X 7 ≃+* ZMod 2 × ZMod 17 :=
 noncomputable def X10_decomposition : X 10 ≃+* ZMod 16 × ZMod 9 :=
   crtDecomposition 10 16 9 (by native_decide) (by native_decide)
 
+
 end
 end Omega.X

@@ -104,6 +104,32 @@ def period2Seq : XInfinity :=
 theorem shiftN_two_period2 : shiftN 2 period2Seq = period2Seq := by
   apply Subtype.ext; funext i; simp [shiftN, shift, period2Seq]; omega
 
+/-- The period-2 sequence is not a fixed point. -/
+theorem shift_period2_ne : shift period2Seq ≠ period2Seq := by
+  intro h; have := congr_fun (congr_arg Subtype.val h) 0
+  simp [shift, period2Seq] at this
+
+/-- Period-2 is minimal: not fixed, but period 2. -/
+theorem period2_minimal :
+    shift period2Seq ≠ period2Seq ∧ shiftN 2 period2Seq = period2Seq :=
+  ⟨shift_period2_ne, shiftN_two_period2⟩
+
+/-- Period-3 is minimal: not fixed, not period 2, but period 3. -/
+theorem period3_minimal :
+    shift period3Seq ≠ period3Seq ∧ shiftN 2 period3Seq ≠ period3Seq ∧
+    shiftN 3 period3Seq = period3Seq := by
+  refine ⟨shift_period3_ne, ?_, shiftN_three_period3⟩
+  intro h; have := congr_fun (congr_arg Subtype.val h) 0
+  simp [shiftN, shift, period3Seq] at this
+
+/-- The period-4 sequence: true at positions 0, 4, 8, ... -/
+def period4Seq : XInfinity :=
+  ⟨fun i => decide (i % 4 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
+
+/-- The period-4 sequence has period 4 under shift. -/
+theorem shiftN_four_period4 : shiftN 4 period4Seq = period4Seq := by
+  apply Subtype.ext; funext i; simp [shiftN, shift, period4Seq]; omega
+
 end Omega.X
 
 namespace Omega

@@ -940,6 +940,16 @@ def coreAuditTargets : List String :=
   , "Omega.X.lucasNum_three"
   , "Omega.X.lucasNum_succ_succ"
   , "Omega.X.lucasNum_eq_fib"
-  , "Omega.X.goldenMeanAdjacency_pow_trace" ]
+  , "Omega.X.goldenMeanAdjacency_pow_trace"
+  -- Phase 23: ShiftDynamics — 周期轨道深化 (ShiftDynamics.lean:108-131)
+  , "Omega.X.shift_period2_ne"
+  , "Omega.X.period2_minimal"
+  , "Omega.X.period3_minimal"
+  , "Omega.X.period4Seq"
+  , "Omega.X.shiftN_four_period4"
+  -- Phase 23: Weight — 全零词 weight=0 (Weight.lean:50)
+  , "Omega.weight_allFalse"
+  -- Phase 23: Value — 全零稳定词 stableValue=0 (Value.lean:109)
+  , "Omega.stableValue_allFalse" ]
 
 end Omega.Audit

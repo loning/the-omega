@@ -3386,6 +3386,61 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Frontier.ConditionalSummary"
       leanName := "Omega.Frontier.no11_count"
       phase := 22
+      status := .formalized }
+  -- Phase 23: ShiftDynamics — 周期轨道深化
+  -- shift_period2_ne: 周期2序列非固定点 (ShiftDynamics.lean:108)
+  -- period2_minimal: 周期2最小性 (ShiftDynamics.lean:113)
+  -- period3_minimal: 周期3最小性 (ShiftDynamics.lean:118)
+  -- period4Seq: 周期4序列定义 (ShiftDynamics.lean:126)
+  -- shiftN_four_period4: 周期4轨道 σ⁴(p₄)=p₄ (ShiftDynamics.lean:130)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:shift-period2-ne"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_period2_ne"
+      phase := 23
+      status := .formalized }
+  , { label := "cor:shift-period2-minimal"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period2_minimal"
+      phase := 23
+      status := .formalized }
+  , { label := "cor:shift-period3-minimal"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period3_minimal"
+      phase := 23
+      status := .formalized }
+  , { label := "def:shift-period4-seq"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period4Seq"
+      phase := 23
+      status := .formalized }
+  , { label := "cor:shift-period4-orbit"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shiftN_four_period4"
+      phase := 23
+      status := .formalized }
+  -- Phase 23: Weight — 全零词 weight=0
+  -- weight_allFalse: weight(0⃗) = 0 (Weight.lean:50)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:weight-allFalse"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Weight"
+      leanName := "Omega.weight_allFalse"
+      phase := 23
+      status := .formalized }
+  -- Phase 23: Value — 全零稳定词 stableValue=0
+  -- stableValue_allFalse: stableValue(0⃗) = 0 (Value.lean:109)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:stableValue-allFalse"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Value"
+      leanName := "Omega.stableValue_allFalse"
+      phase := 23
       status := .formalized } ]
 
 end Omega.Audit

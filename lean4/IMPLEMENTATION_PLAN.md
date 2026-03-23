@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,720 |
-| 定理/定义数 | 1,263 |
+| 总行数 | ~13,749 |
+| 定理/定义数 | 1,271 |
 | 论文接口包装 | 340 |
 | 文件数 | 36 |
 | 公理数 | 0 |
@@ -60,7 +60,8 @@
 **shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）、全零序列（allFalse）、σ(0)=0 固定点（shift_allFalse）、唯一固定点特征（shift_fixed_iff）、非单射性（shift_not_injective）
 **离散骨架（Round 15，cor:folding-stable-syntax-entropy-logqdim Stage 1）**：矩阵 Fibonacci 递推 $A^{m+2}=A^{m+1}+A^m$（goldenMeanAdjacency_pow_add_two）、行和公式 $(A^m)_{00}+(A^m)_{01}=F_{m+2}$（goldenMeanAdjacency_row_sum）、有限稳定语法计数 Fibonacci 递推 $|X_{m+2}|=|X_{m+1}|+|X_m|$（card_X_recurrence）、Fibonacci 比率上下界 $|X_m| \le |X_{m+1}| \le 2|X_m|$（card_X_ratio_bounds）、矩阵求和表示 $|X_m|=(A^m)_{00}+(A^m)_{01}$（card_X_eq_matrix_sum）；完整 $\log\varphi$ 连续熵极限待后续
 **转移矩阵幂次条目公式（Round 16，计划19/20深化）**：$(A^m)_{00}=F_{m+1}$（goldenMeanAdjacency_pow_00）; $(A^m)_{01}=F_m$（goldenMeanAdjacency_pow_01）; $(A^m)_{10}=F_m$（goldenMeanAdjacency_pow_10）; $(A^{m+1})_{11}=F_m$（goldenMeanAdjacency_pow_11）; 条目递推辅助引理（pow_entry_add_two，private）
-**周期轨道（Round 16，计划20深化）**：周期3序列定义（period3Seq）; 周期3轨道（shiftN_three_period3：$\sigma^3(p_3)=p_3$）; 非固定点（shift_period3_ne）; 周期2序列定义（period2Seq）; 周期2轨道（shiftN_two_period2：$\sigma^2(p_2)=p_2$）
+**周期轨道（Round 16+23，计划20深化）**：周期3序列定义（period3Seq）; 周期3轨道（shiftN_three_period3：$\sigma^3(p_3)=p_3$）; 非固定点（shift_period3_ne）; 周期2序列定义（period2Seq）; 周期2轨道（shiftN_two_period2：$\sigma^2(p_2)=p_2$）; 周期2非固定点（shift_period2_ne）; 最小周期2（period2_minimal）; 最小周期3（period3_minimal）; 周期4序列定义（period4Seq）; 周期4轨道（shiftN_four_period4：$\sigma^4(p_4)=p_4$）
+**全零词基值（Round 23）**：全零词 weight=0（weight_allFalse，Weight.lean）; 全零稳定词 stableValue=0（stableValue_allFalse，Value.lean）
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -78,7 +79,7 @@
 | 结论 | 57 | 0 | 0% | 极高 |
 | **总计** | **394** | **~156** | **~40%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。Phase 23 新增：ShiftDynamics（5：shift_period2_ne, period2_minimal, period3_minimal, period4Seq, shiftN_four_period4）、Weight（1：weight_allFalse）、Value（1：stableValue_allFalse）——周期轨道深化，全零基值辅助。
 
 ## 3. 未来工作：30 条具体计划
 
@@ -112,7 +113,7 @@
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
 19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1；幂次条目公式 $(A^m)_{00}=F_{m+1}$、$(A^m)_{01}=F_m$、$(A^m)_{10}=F_m$、$(A^{m+1})_{11}=F_m$（2026-03-24）；det(A^m)=(-1)^m（goldenMeanAdjacency_pow_det）；Cassini 恒等式 F_{n+1}·F_{n-1}-F_n²=(-1)^n（fib_cassini，Phase 21）
-20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；shift 动力学深化：allFalse 全零序列、shift_allFalse（σ(0)=0 固定点）、shift_fixed_iff（唯一固定点）、shift_not_injective（非单射）已形式化 2026-03-24；周期轨道：period3Seq/shiftN_three_period3/shift_period3_ne/period2Seq/shiftN_two_period2 已形式化 2026-03-24；Lucas 数 lucasNum 定义+基值+succ_succ + lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1}）+ goldenMeanAdjacency_pow_trace（tr(A^n)=L_n）已形式化 Phase 21；完整 Real.log 版极限论证待后续）
+20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；shift 动力学深化：allFalse 全零序列、shift_allFalse（σ(0)=0 固定点）、shift_fixed_iff（唯一固定点）、shift_not_injective（非单射）已形式化 2026-03-24；周期轨道：period3Seq/shiftN_three_period3/shift_period3_ne/period2Seq/shiftN_two_period2 已形式化 2026-03-24；周期轨道深化：shift_period2_ne/period2_minimal/period3_minimal/period4Seq/shiftN_four_period4 已形式化 Phase 23；Lucas 数 lucasNum 定义+基值+succ_succ + lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1}）+ goldenMeanAdjacency_pow_trace（tr(A^n)=L_n）已形式化 Phase 21；完整 Real.log 版极限论证待后续）
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 
