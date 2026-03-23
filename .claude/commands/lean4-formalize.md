@@ -114,13 +114,19 @@ Agent(
    - 收到 codex-consultant 建议后，转发给 formalizer，然后 shutdown codex-consultant
    - 等待 formalizer 继续迭代
 
-5. 收到 formalizer 结果后路由：
+5. 收到 formalizer 结果后**立即告知其暂停等待审核**：
+   ```
+   SendMessage(to = "formalizer", message = "已收到结果，进入审核阶段。请暂停当前工作，等待审核结果后再继续。")
+   ```
+   然后路由：
    - 成功 → 标记任务完成，进入 Phase 3
    - 失败 → 记录失败原因，回到 Phase 0+1（发消息让 analyst 选下一个目标）
 
-### Phase 3：并行双审
+### Phase 3：内部审核
 
-1. **按需 spawn** reviewer 和 codex-reviewer（一条消息中并行启动，初始 prompt 直接包含审核材料）：
+**默认只启动内部 reviewer，不启动 codex-reviewer**（Codex 外部审核耗时长且常因上下文缺失产生假阴性，性价比低）。
+
+1. **按需 spawn** reviewer（初始 prompt 直接包含审核材料）：
 
    ```
    Agent(
@@ -136,43 +142,39 @@ Agent(
 
      完成后将审核报告通过 SendMessage 发回 team lead。"
    )
+   ```
 
+2. **停下来，等待 reviewer 回复。不做任何其他操作。**
+
+3. 汇总审核结果路由：
+
+   **PASS →**
+   ```
+   SendMessage(to = "reviewer", message = {type: "shutdown_request"})
+   ```
+   进入 Phase 4。
+
+   **FAIL →** 将修复指令发送给 formalizer（formalizer 已有原始规格上下文，只需发增量修复指令）：
+   ```
+   SendMessage(to = "formalizer", message = "审核未通过，请修复以下问题后重新提交：
+
+   [修复指令原样粘贴]")
+   ```
+   等待 formalizer 修复完成后，再次发消息给 reviewer 重新审核。
+
+   **3轮修复仍失败 →** shutdown reviewer，通知 formalizer 回退代码，跳过该定理。
+
+4. **可选：用户显式要求时才启动 codex-reviewer**（`/lean4-formalize --with-codex`）：
+
+   ```
    Agent(
      name = "codex-reviewer",
      subagent_type = "lean4-codex-reviewer",
      team_name = "lean4-formalization",
-     description = "Codex外部审核（按需）",
-     prompt = "你是 lean4-formalization 团队的 Codex 外部审核员。请立即执行审核：
-
-     新增定理：[从 formalizer 结果提取]
-     修改文件：[从 formalizer 结果提取]
-     论文LaTeX原文：[从 analyst 规格提取]
-     analyst规格摘要：[从 analyst 规格提取]
-
-     完成后将审核报告通过 SendMessage 发回 team lead。"
+     description = "Codex外部审核（按需，用户显式请求时启动）",
+     prompt = "..."
    )
    ```
-
-2. **停下来，等待两个 reviewer 都回复。不做任何其他操作。**
-
-3. 汇总审核结果路由：
-
-   **两者都 PASS →**
-   ```
-   SendMessage(to = "reviewer", message = {type: "shutdown_request"})
-   SendMessage(to = "codex-reviewer", message = {type: "shutdown_request"})
-   ```
-   进入 Phase 4。
-
-   **任一 FAIL →** 合并两份修复指令，发送给 formalizer（formalizer 已有原始规格上下文，只需发增量修复指令）：
-   ```
-   SendMessage(to = "formalizer", message = "审核未通过，请修复以下问题后重新提交：
-
-   [合并的修复指令原样粘贴]")
-   ```
-   等待 formalizer 修复完成后，再次发消息给 reviewer 和 codex-reviewer 重新审核。
-
-   **3轮修复仍失败 →** shutdown 两个 reviewer，通知 formalizer 回退代码，跳过该定理。
 
 ### Phase 4：登记
 
@@ -216,8 +218,8 @@ Agent(
 | analyst | lean4-analyst | **持久** | 团队启动时 spawn，全程保留上下文，跨轮复用 |
 | formalizer | lean4-formalizer | **持久** | 团队启动时 spawn，修复循环中复用上下文 |
 | reviewer | lean4-reviewer | 按需 | Phase 3 spawn，审核完 shutdown |
-| codex-reviewer | lean4-codex-reviewer | 按需 | Phase 3 spawn，审核完 shutdown |
-| codex-consultant | lean4-codex-reviewer | 按需 | Phase 2 阻塞时 spawn，咨询完 shutdown |
+| codex-reviewer | lean4-codex-reviewer | 按需（默认不启动） | 仅用户显式请求时 Phase 3 spawn |
+| codex-consultant | lean4-codex-consultant | 按需 | Phase 2 阻塞时 spawn，咨询完 shutdown |
 | registrar | lean4-registrar | 按需 | Phase 4 spawn，登记完 shutdown |
 
 ## 上下文传递规则

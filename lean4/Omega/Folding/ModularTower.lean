@@ -11,18 +11,18 @@ noncomputable section
 
 /-! ### Auxiliary: re-derive stableValue(restrict z) = stableValue z % G -/
 
-/-- stableValue(restrict z) = stableValue z % paperFib(m+1). -/
+/-- stableValue(restrict z) = stableValue z % F(m+2). -/
 private theorem stableValue_restrict_eq_mod_tower (z : X (m + 1)) :
-    stableValue (X.restrict z) = stableValue z % paperFib (m + 1) := by
+    stableValue (X.restrict z) = stableValue z % Nat.fib (m + 2) := by
   have h1 := stableValue_restrict_mod z
-  have h2 := stableValue_lt_paperFib_succ (X.restrict z)
+  have h2 := stableValue_lt_fib (X.restrict z)
   rw [Nat.mod_eq_of_lt h2] at h1
   exact h1.symm
 
 /-! ### Theorem 1: modularProject = restrict -/
 
 /-- modularProject equals restrict as functions X(m+1) → X(m).
-    Both produce the unique stable word with value stableValue(x) % paperFib(m+1). -/
+    Both produce the unique stable word with value stableValue(x) % F(m+2). -/
 theorem modularProject_eq_restrict (x : X (m + 1)) :
     modularProject x = X.restrict x := by
   apply eq_of_stableValue_eq
@@ -44,13 +44,13 @@ theorem modularProject_stableAdd_carry (x y : X (m + 1)) :
 /-- Value-level identity for multiplicative projection through the tower. -/
 theorem stableValue_modularProject_stableMul (x y : X (m + 1)) :
     stableValue (modularProject (stableMul x y)) =
-      (stableValue x * stableValue y) % paperFib (m + 2) % paperFib (m + 1) := by
+      (stableValue x * stableValue y) % Nat.fib (m + 3) % Nat.fib (m + 2) := by
   rw [stableValue_modularProject, stableValue_stableMul]
 
 /-- Multiplicative projection via restrict. -/
 theorem stableValue_restrict_stableMul (x y : X (m + 1)) :
     stableValue (X.restrict (stableMul x y)) =
-      (stableValue x * stableValue y) % paperFib (m + 2) % paperFib (m + 1) := by
+      (stableValue x * stableValue y) % Nat.fib (m + 3) % Nat.fib (m + 2) := by
   rw [stableValue_restrict_eq_mod_tower, stableValue_stableMul]
 
 /-! ### Theorem 4: restrict compose equals restrictLE -/
@@ -95,14 +95,14 @@ theorem modularProject_stableZero :
 theorem stableValue_modularProject_stableAdd_carry (x y : X (m + 1)) :
     stableValue (modularProject (stableAdd x y)) =
       (stableValue (modularProject x) + stableValue (modularProject y) +
-        carryIndicator x y * Nat.fib m) % paperFib (m + 1) := by
+        carryIndicator x y * Nat.fib m) % Nat.fib (m + 2) := by
   rw [modularProject_eq_restrict, modularProject_eq_restrict x, modularProject_eq_restrict y]
   exact stableValue_restrict_stableAdd_carry x y
 
 /-- modularProject composes through two levels via double mod. -/
 theorem stableValue_modularProject_compose (x : X (m + 2)) :
     stableValue (modularProject (m := m) (modularProject (m := m + 1) x)) =
-      stableValue x % paperFib (m + 2) % paperFib (m + 1) := by
+      stableValue x % Nat.fib (m + 3) % Nat.fib (m + 2) := by
   rw [stableValue_modularProject, stableValue_modularProject]
 
 /-- The carry indicator is symmetric. -/

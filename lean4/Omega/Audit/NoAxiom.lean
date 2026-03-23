@@ -16,6 +16,9 @@ import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
+import Omega.Folding.CollisionKernel
+import Omega.Folding.FibonacciPolynomial
+import Omega.Folding.MaxFiber
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -25,8 +28,8 @@ Run these commands manually during audit:
 
   #print axioms Omega.no11_truncate
   #print axioms Omega.X.restrict
-  #print axioms Omega.paperFib_recurrence
-  #print axioms Omega.X.card_eq_paperFib_succ
+  #print axioms Omega.fib_succ_succ'
+  #print axioms Omega.X.card_eq_fib
   #print axioms Omega.X.zeckIndices_isZeckendorfRep
   #print axioms Omega.X.stableValue_eq_sum_fib_zeckIndices
   #print axioms Omega.Fold_stable
@@ -234,9 +237,9 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.fold_ofNat_roundtrip
   #print axioms Omega.Frontier.cellEventMass_add_cellComplMass_partition
   -- Carry Defect (Plan 3)
-  #print axioms Omega.X.paperFib_add_fib_eq
+  #print axioms Omega.X.fib_succ_add_fib_eq
   #print axioms Omega.X.fib_sub_eq
-  #print axioms Omega.X.fib_lt_paperFib_succ
+  #print axioms Omega.X.fib_lt_fib_succ_succ
   #print axioms Omega.X.stableValue_restrict_stableAdd_carry
   #print axioms Omega.X.restrict_stableAdd_carry_defect
   #print axioms Omega.X.carryElement_m6_value
@@ -261,12 +264,11 @@ Run these commands manually during audit:
   -- thm:pom-max-fiber: 递推上界 D(m+2) ≤ D(m+1) + D(m)
   #print axioms Omega.X.maxFiberMultiplicity_le_add
   -- Zeckendorf carry preservation (auxiliary)
-  #print axioms Omega.ofNat_add_paperFib
+  -- ofNat_add_fib, weight_lt_fib are private in MaxFiber.lean
   -- Zeckendorf distinctness (auxiliary)
   #print axioms Omega.ofNat_ne_of_shift
   -- weight & snoc helpers (auxiliary)
   #print axioms Omega.X.weight_expand
-  #print axioms Omega.X.weight_lt_paperFib
   #print axioms Omega.X.snoc_truncate_last
   -- restrict helpers (auxiliary)
   #print axioms Omega.restrict_ofNat
@@ -327,15 +329,44 @@ Run these commands manually during audit:
   #print axioms Omega.momentSum_two_four
   #print axioms Omega.momentSum_two_five
   #print axioms Omega.momentSum_two_six
+  -- Round 10: CollisionKernel (Plan 10, partial): prop:pom-s2-recurrence
+  #print axioms Omega.collisionKernel2
+  #print axioms Omega.collisionKernel2_trace
+  #print axioms Omega.collisionKernel2_det
+  #print axioms Omega.collisionKernel2_cayley_hamilton
+  #print axioms Omega.momentSum_two_recurrence_verified
+  -- Round 11: Fibonacci 多项式 (def:pom-fibonacci-polynomial, thm:pom-path-indset-poly-closed 部分)
+  #print axioms Omega.fibPoly
+  #print axioms Omega.fibPoly_eval_one
+  #print axioms Omega.pathIndSetPoly
+  #print axioms Omega.pathIndSetPoly_eval_one
+  -- Round 12: Cauchy-Schwarz 碰撞界 + S_q 单调性 (thm:fold-collision-convex-lower-bounds)
+  #print axioms Omega.momentSum_mono_q
+  #print axioms Omega.momentSum_two_ge_pow
+  #print axioms Omega.momentSum_ge_card
+  #print axioms Omega.momentSum_cauchy_schwarz
+  -- Round 13: S_3 基值 + A_3 碰撞核矩阵 (prop:pom-s3-recurrence)
+  #print axioms Omega.momentSum_three_zero
+  #print axioms Omega.momentSum_three_one
+  #print axioms Omega.momentSum_three_two
+  #print axioms Omega.momentSum_three_three
+  #print axioms Omega.momentSum_three_four
+  #print axioms Omega.momentSum_three_five
+  #print axioms Omega.momentSum_three_six
+  #print axioms Omega.momentSum_three_recurrence_verified
+  #print axioms Omega.collisionKernel3
+  #print axioms Omega.collisionKernel3_trace
+  #print axioms Omega.collisionKernel3_det
+  #print axioms Omega.collisionKernel3_cayley_hamilton
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
 
 def coreAuditTargets : List String :=
-  [ "Omega.paperFib_recurrence"
+  [ "Omega.fib_succ_succ'"
   , "Omega.no11_truncate"
   , "Omega.X.restrict"
-  , "Omega.X.card_eq_paperFib_succ"
+  , "Omega.X.card_eq_fib"
   , "Omega.X.zeckIndices_isZeckendorfRep"
   , "Omega.X.stableValue_eq_sum_fib_zeckIndices"
   , "Omega.Fold_stable"
@@ -541,9 +572,9 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.fold_ofNat_roundtrip"
   , "Omega.Frontier.cellEventMass_add_cellComplMass_partition"
   -- Carry Defect (Plan 3)
-  , "Omega.X.paperFib_add_fib_eq"
+  , "Omega.X.fib_succ_add_fib_eq"
   , "Omega.X.fib_sub_eq"
-  , "Omega.X.fib_lt_paperFib_succ"
+  , "Omega.X.fib_lt_fib_succ_succ"
   , "Omega.X.stableValue_restrict_stableAdd_carry"
   , "Omega.X.restrict_stableAdd_carry_defect"
   , "Omega.X.carryElement_m6_value"
@@ -551,7 +582,7 @@ def coreAuditTargets : List String :=
   , "Omega.X.carryElement_m7_value"
   , "Omega.X.carryElement_ne_zero"
   -- Stable value bound & arithmetic
-  , "Omega.stableValue_lt_paperFib_succ"
+  , "Omega.stableValue_lt_fib"
   , "Omega.X.stableValueFin"
   , "Omega.X.stableValueFin_injective"
   , "Omega.X.stableAdd"
@@ -559,10 +590,7 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.stableValue_bounded"
   , "Omega.Frontier.stableAdd_commutative"
   -- Fibonacci infrastructure
-  , "Omega.paperFib_pos"
-  , "Omega.paperFib_mono"
-  , "Omega.paperFib_le_succ"
-  , "Omega.paperFib_le_add_right"
+  , "Omega.fib_succ_pos"
   -- Fiber partition & word cardinality
   , "Omega.X.Word_card"
   , "Omega.X.fiber_card_sum"
@@ -645,13 +673,13 @@ def coreAuditTargets : List String :=
   , "Omega.X.shift_val"
   -- FibonacciField (Plan 2): Fibonacci 素数域
   , "Omega.X.stableMul_inv_of_prime"
-  , "Omega.paperFib_three_prime"
-  , "Omega.paperFib_four_prime"
-  , "Omega.paperFib_six_prime"
-  , "Omega.paperFib_eight_not_prime"
-  , "Omega.paperFib_twelve_prime"
+  , "Omega.fib_four_prime"
+  , "Omega.fib_five_prime"
+  , "Omega.fib_seven_prime"
+  , "Omega.fib_nine_not_prime"
+  , "Omega.fib_thirteen_prime"
   -- Round 8: Fibonacci 界 + momentSum
-  , "Omega.paperFib_le_pow"
+  , "Omega.fib_le_pow_two"
   , "Omega.momentSum"
   , "Omega.momentSum_zero"
   , "Omega.momentSum_one"
@@ -665,6 +693,25 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_three"
   , "Omega.momentSum_two_four"
   , "Omega.momentSum_two_five"
-  , "Omega.momentSum_two_six" ]
+  , "Omega.momentSum_two_six"
+  -- Round 11: Fibonacci 多项式 (def:pom-fibonacci-polynomial, thm:pom-path-indset-poly-closed 部分)
+  , "Omega.fibPoly"
+  , "Omega.fibPoly_eval_one"
+  , "Omega.pathIndSetPoly"
+  , "Omega.pathIndSetPoly_eval_one"
+  -- Phase 17: MaxFiber 闭式定理 (thm:pom-max-fiber, cor:pom-D-rec)
+  , "Omega.maxFiberMultiplicity_zero"
+  , "Omega.maxFiberMultiplicity_two"
+  , "Omega.maxFiberMultiplicity_four"
+  , "Omega.maxFiberMultiplicity_six"
+  , "Omega.maxFiberMultiplicity_eight"
+  , "Omega.maxFiberMultiplicity_ten"
+  , "Omega.maxFiberMultiplicity_three"
+  , "Omega.maxFiberMultiplicity_five"
+  , "Omega.maxFiberMultiplicity_seven"
+  , "Omega.maxFiberMultiplicity_nine"
+  , "Omega.maxFiberMultiplicity_even"
+  , "Omega.maxFiberMultiplicity_odd"
+  , "Omega.maxFiberMultiplicity_le_add" ]
 
 end Omega.Audit

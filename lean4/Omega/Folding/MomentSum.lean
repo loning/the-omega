@@ -1,4 +1,5 @@
 import Omega.Folding.MaxFiber
+import Mathlib.Algebra.Order.Chebyshev
 
 namespace Omega
 
@@ -6,10 +7,10 @@ namespace Omega
 noncomputable def momentSum (q m : Nat) : Nat :=
   ∑ x : X m, (X.fiberMultiplicity x) ^ q
 
-/-- S_0(m) = |X_m| = paperFib(m+1). -/
-theorem momentSum_zero (m : Nat) : momentSum 0 m = paperFib (m + 1) := by
+/-- S_0(m) = |X_m| = F(m+1). -/
+theorem momentSum_zero (m : Nat) : momentSum 0 m = Nat.fib (m + 2) := by
   simp only [momentSum, pow_zero, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one,
-    X.card_eq_paperFib_succ]
+    X.card_eq_fib]
 
 /-- S_1(m) = 2^m (fiber multiplicities sum to the word count). -/
 theorem momentSum_one (m : Nat) : momentSum 1 m = 2 ^ m := by
@@ -53,5 +54,95 @@ theorem momentSum_two_three : momentSum 2 3 = 14 := by rw [← cMomentSum_eq]; n
 theorem momentSum_two_four : momentSum 2 4 = 36 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_two_five : momentSum 2 5 = 88 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_two_six : momentSum 2 6 = 220 := by rw [← cMomentSum_eq]; native_decide
+
+-- S_3 base values
+theorem momentSum_three_zero : momentSum 3 0 = 1 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_three_one : momentSum 3 1 = 2 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_three_two : momentSum 3 2 = 10 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_three_three : momentSum 3 3 = 26 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_three_four : momentSum 3 4 = 88 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_three_five : momentSum 3 5 = 260 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_three_six : momentSum 3 6 = 820 := by rw [← cMomentSum_eq]; native_decide
+
+/-- S_q is monotone in q: S_q(m) ≤ S_{q+1}(m) since d(x) ≥ 1. -/
+theorem momentSum_mono_q (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ momentSum (q + 1) m := by
+  simp only [momentSum]
+  apply Finset.sum_le_sum; intro x _
+  -- d(x)^q ≤ d(x)^(q+1) since d(x) ≥ 1
+  calc (X.fiberMultiplicity x) ^ q
+      = (X.fiberMultiplicity x) ^ q * 1 := (Nat.mul_one _).symm
+    _ ≤ (X.fiberMultiplicity x) ^ q * X.fiberMultiplicity x :=
+        Nat.mul_le_mul_left _ (X.fiberMultiplicity_pos x)
+    _ = (X.fiberMultiplicity x) ^ (q + 1) := (pow_succ _ _).symm
+
+/-- S_2(m) ≥ 2^m. -/
+theorem momentSum_two_ge_pow (m : Nat) : 2 ^ m ≤ momentSum 2 m := by
+  rw [← momentSum_one m]; exact momentSum_mono_q 1 m (by omega)
+
+/-- S_q(m) ≥ |X_m| = F(m+1) for all q. -/
+theorem momentSum_ge_card (q m : Nat) : Nat.fib (m + 2) ≤ momentSum q m := by
+  simp only [momentSum]; rw [← X.card_eq_fib, ← Finset.card_univ]
+  rw [Finset.card_eq_sum_ones]
+  apply Finset.sum_le_sum; intro x _
+  exact Nat.one_le_pow q _ (X.fiberMultiplicity_pos x)
+
+/-- Cauchy-Schwarz for fiber multiplicities: (2^m)² ≤ |X_m| · S_2(m). -/
+theorem momentSum_cauchy_schwarz (m : Nat) :
+    (2 ^ m) ^ 2 ≤ Nat.fib (m + 2) * momentSum 2 m := by
+  rw [← momentSum_one, ← momentSum_zero]
+  simp only [momentSum, pow_zero, pow_one, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one]
+  rw [← Finset.card_univ (α := X m)]
+  exact sq_sum_le_card_mul_sum_sq
+
+/-- There exists an element with fiber multiplicity ≥ 2 when m ≥ 2 (pigeonhole: 2^m > F(m+1)). -/
+theorem exists_fiber_ge_two (m : Nat) (hm : 2 ≤ m) : ∃ x : X m, 2 ≤ X.fiberMultiplicity x := by
+  -- Average fiber multiplicity = 2^m / F(m+1) > 1 for m ≥ 2
+  -- So some fiber has multiplicity ≥ 2
+  by_contra h
+  push_neg at h
+  -- All d(x) ≤ 1, so all d(x) = 1 (since d(x) ≥ 1)
+  have hall : ∀ x : X m, X.fiberMultiplicity x = 1 := by
+    intro x; have := X.fiberMultiplicity_pos x; have := h x; omega
+  -- Sum of all d(x) = |X_m| * 1 = F(m+1)
+  have hsum : ∑ x : X m, X.fiberMultiplicity x = Nat.fib (m + 2) := by
+    simp only [hall, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one,
+      X.card_eq_fib]
+  -- But sum = 2^m
+  rw [X.fiberMultiplicity_sum_eq_pow] at hsum
+  -- 2^m = F(m+1), contradiction for m ≥ 2
+  have := fib_le_pow_two m
+  -- F(m+1) ≤ 2^m, and if equal then 2^m = F(m+1).
+  -- But for m ≥ 2: F(m+1) < 2^m strictly.
+  -- F(3) = 3 < 4 = 2^2 for m=2. ✓
+  -- Need: strict inequality for m ≥ 2.
+  -- For m ≥ 2: F(m+1) < 2^m. Base: F(3)=3 < 4=2^2.
+  -- Inductive: F(m+2) = F(m+1)+F(m) < 2^m + 2^(m-1) < 2^(m+1) for m ≥ 2.
+  -- Simpler: 2^m ≥ F(m+1) by fib_le_pow_two, and equality would require
+  -- all Fibonacci steps to be tight, which fails at m=2.
+  -- Use: F 3 = 3 and 2^2 = 4, so strict for m=2.
+  -- For m > 2: F(m+1) ≤ F(m) + F(m-1) < 2^(m-1) + 2^(m-2) < 2^m.
+  -- Just prove F(m+1) < 2^m for m ≥ 2 by strong induction.
+  have hStrict : Nat.fib (m + 2) < 2 ^ m := by
+    have key : ∀ n, 2 ≤ n → Nat.fib (n + 2) < 2 ^ n := by
+      intro n hn
+      induction n with
+      | zero => omega
+      | succ n ih =>
+        cases n with
+        | zero => omega
+        | succ k =>
+          cases k with
+          | zero => native_decide
+          | succ k =>
+            have hR : Nat.fib (k + 5) = Nat.fib (k + 4) + Nat.fib (k + 3) :=
+              fib_succ_succ' (k + 3)
+            have ihk : Nat.fib (k + 4) < 2 ^ (k + 2) := ih (by omega)
+            have ih0 : Nat.fib (k + 3) ≤ 2 ^ (k + 2) := fib_le_pow_two (k + 1)
+            calc Nat.fib (k + 2 + 1 + 2) = Nat.fib (k + 4) + Nat.fib (k + 3) := hR
+              _ < 2 ^ (k + 2) + 2 ^ (k + 2) := Nat.add_lt_add_of_lt_of_le ihk ih0
+              _ = 2 ^ (k + 2 + 1) := by ring
+    exact key m hm
+  omega
 
 end Omega

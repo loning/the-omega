@@ -11,6 +11,8 @@ import Omega.Folding.MaxFiber
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
+import Omega.Folding.CollisionKernel
+import Omega.Folding.FibonacciPolynomial
 import Omega.Folding.CarryDefect
 import Omega.Folding.FiberFusion
 import Omega.Folding.InverseLimit

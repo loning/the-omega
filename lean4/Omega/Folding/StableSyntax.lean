@@ -267,13 +267,13 @@ theorem card_recurrence (m : Nat) :
           simp
     _ = 2 := by norm_num
 
-theorem card_eq_paperFib_succ : ∀ m : Nat, Fintype.card (X m) = paperFib (m + 1)
+theorem card_eq_fib : ∀ m : Nat, Fintype.card (X m) = Nat.fib (m + 2)
   | 0 => by simp
   | 1 => by exact card_one
   | m + 2 => by
-      rw [card_recurrence, card_eq_paperFib_succ (m + 1), card_eq_paperFib_succ m]
+      rw [card_recurrence, card_eq_fib (m + 1), card_eq_fib m]
       simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using
-        (paperFib_recurrence (m + 1)).symm
+        (fib_succ_succ' (m + 2)).symm
 
 end X
 

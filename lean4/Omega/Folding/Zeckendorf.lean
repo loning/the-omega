@@ -10,15 +10,9 @@ abbrev ZeckendorfRep := {l : List Nat // l.IsZeckendorfRep}
 abbrev natZeckendorfEquiv : Nat ≃ ZeckendorfRep := Nat.zeckendorfEquiv
 
 @[simp] theorem sum_nat_zeckendorf_fib (n : Nat) :
-    ((Nat.zeckendorf n).map fib).sum = n := by
+    ((Nat.zeckendorf n).map Nat.fib).sum = n := by
   exact Nat.sum_zeckendorf_fib n
 
-/-- Converting from the paper indexing back to `Nat.fib`. -/
-@[simp] theorem paperFib_pred_eq_fib {k : Nat} (hk : 0 < k) :
-    paperFib (k - 1) = fib k := by
-  rcases k with _ | k
-  · cases Nat.not_lt_zero _ hk
-  · simp [paperFib]
 
 namespace X
 
@@ -106,7 +100,7 @@ def zeckRep (x : X m) : ZeckendorfRep :=
 
 /-- The stable value is the sum of the active Fibonacci indices. -/
 theorem stableValue_eq_sum_fib_zeckIndices : ∀ {m : Nat} (x : X m),
-    stableValue x = ((zeckIndices x).map fib).sum
+    stableValue x = ((zeckIndices x).map Nat.fib).sum
   | 0, x => by
       have hx : x = empty := by
         exact Subsingleton.elim _ _
@@ -118,15 +112,15 @@ theorem stableValue_eq_sum_fib_zeckIndices : ∀ {m : Nat} (x : X m),
         calc
           stableValue x = stableValue (appendTrue (restrict x) hRestrict) := by
             simpa using congrArg stableValue (appendTrue_reconstruct x hLast hRestrict).symm
-          _ = stableValue (restrict x) + paperFib (m + 1) := by
+          _ = stableValue (restrict x) + Nat.fib (m + 2) := by
             exact stableValue_appendTrue (restrict x) hRestrict
-          _ = ((zeckIndices (restrict x)).map fib).sum + fib (m + 2) := by
-            rw [stableValue_eq_sum_fib_zeckIndices (restrict x), paperFib]
-          _ = fib (m + 2) + ((zeckIndices (restrict x)).map fib).sum := by
+          _ = ((zeckIndices (restrict x)).map Nat.fib).sum + Nat.fib (m + 2) := by
+            rw [stableValue_eq_sum_fib_zeckIndices (restrict x)]
+          _ = Nat.fib (m + 2) + ((zeckIndices (restrict x)).map Nat.fib).sum := by
             rw [add_comm]
-          _ = (((m + 2) :: zeckIndices (restrict x)).map fib).sum := by
+          _ = (((m + 2) :: zeckIndices (restrict x)).map Nat.fib).sum := by
             simp
-          _ = ((zeckIndices x).map fib).sum := by
+          _ = ((zeckIndices x).map Nat.fib).sum := by
             simp [zeckIndices, hLast]
       · have hLastFalse : Omega.last x.1 = false := by
           cases hBit : Omega.last x.1 <;> simp [hBit] at hLast ⊢
@@ -135,13 +129,13 @@ theorem stableValue_eq_sum_fib_zeckIndices : ∀ {m : Nat} (x : X m),
             simpa using congrArg stableValue (appendFalse_reconstruct x hLastFalse).symm
           _ = stableValue (restrict x) := by
             exact stableValue_restrict_appendFalse (restrict x)
-          _ = ((zeckIndices (restrict x)).map fib).sum :=
+          _ = ((zeckIndices (restrict x)).map Nat.fib).sum :=
             stableValue_eq_sum_fib_zeckIndices (restrict x)
-          _ = ((zeckIndices x).map fib).sum := by
+          _ = ((zeckIndices x).map Nat.fib).sum := by
             simp [zeckIndices, hLast]
 
 @[simp] theorem sum_fib_zeckRep (x : X m) :
-    ((zeckRep x).1.map fib).sum = stableValue x := by
+    ((zeckRep x).1.map Nat.fib).sum = stableValue x := by
   simpa [zeckRep] using (stableValue_eq_sum_fib_zeckIndices x).symm
 
 /-- The zeckIndices list has length ≤ m. -/

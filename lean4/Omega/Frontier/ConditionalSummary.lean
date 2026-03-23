@@ -90,7 +90,7 @@ theorem zero_times_zero : X.stableMul (X.stableZero (m := m)) X.stableZero = X.s
   X.stableMul_zero_zero
 
 /-- 1 * 1 = 1 in the stable ring (for m ≥ 1). -/
-theorem one_times_one (hm : 1 < paperFib (m + 1)) :
+theorem one_times_one (hm : 1 < Nat.fib (m + 2)) :
     X.stableMul (X.stableOne (m := m)) X.stableOne = X.stableOne :=
   X.stableMul_one_one hm
 
@@ -99,16 +99,16 @@ theorem one_times_one (hm : 1 < paperFib (m + 1)) :
 /-! #### 1. Fibonacci & Cardinality -/
 
 /-- F_0 = 1, F_1 = 1, F_2 = 2 (paper convention). -/
-theorem paperFib_initial : paperFib 0 = 1 ∧ paperFib 1 = 1 ∧ paperFib 2 = 2 :=
+theorem fib_initial : Nat.fib 1 = 1 ∧ Nat.fib 2 = 1 ∧ Nat.fib 3 = 2 :=
   ⟨rfl, rfl, rfl⟩
 
 /-- F_{k+2} = F_{k+1} + F_k (Fibonacci recurrence). -/
-theorem paperFib_fibonacci (k : Nat) : paperFib (k + 2) = paperFib (k + 1) + paperFib k :=
-  paperFib_recurrence k
+theorem fib_fibonacci (k : Nat) : Nat.fib (k + 3) = Nat.fib (k + 2) + Nat.fib (k + 1) :=
+  fib_succ_succ' (k + 1)
 
 /-- |X_m| = F_{m+2} (fundamental cardinality theorem). -/
-theorem stable_syntax_cardinality (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
-  X.card_eq_paperFib_succ m
+theorem stable_syntax_cardinality (m : Nat) : Fintype.card (X m) = Nat.fib (m + 2) :=
+  X.card_eq_fib m
 
 /-! #### 2. Fold Map -/
 
@@ -193,7 +193,7 @@ theorem defect_is_telescope (m k : Nat) (ω : Word (m + k)) :
 /-! #### Stable Arithmetic: Doubling -/
 
 /-- x + x = 2·x in the stable ring (for F_{m+2} > 2). -/
-theorem doubling_eq_two_mul (x : X m) (hm : 2 < paperFib (m + 1)) :
+theorem doubling_eq_two_mul (x : X m) (hm : 2 < Nat.fib (m + 2)) :
     X.stableAdd x x = X.stableMul (X.ofNat m 2) x :=
   X.stableAdd_self_eq_stableMul_two x hm
 
@@ -283,8 +283,8 @@ theorem neg_involutive : Function.Involutive (X.stableNeg (m := m)) :=
 /-! #### Growth Bounds & Prefix Scan Error -/
 
 /-- F_{m+2} ≤ 2^m: Fibonacci is subexponential. -/
-theorem fibonacci_subexponential (m : Nat) : paperFib (m + 1) ≤ 2 ^ m :=
-  X.paperFib_le_pow m
+theorem fibonacci_subexponential (m : Nat) : Nat.fib (m + 2) ≤ 2 ^ m :=
+  X.fib_le_pow_two m
 
 /-- |X_m| ≤ 2^m: stable words are a fraction of all words. -/
 theorem stable_words_bounded (m : Nat) : Fintype.card (X m) ≤ 2 ^ m :=
@@ -320,7 +320,7 @@ theorem element_in_own_cell {α β : Type*} (obs : α → β) (x : α) :
 
 /-- Modular projection preserves multiplication (no-carry case). -/
 theorem modular_project_mul_no_carry (x y : X (m + 1))
-    (h : stableValue x * stableValue y < paperFib (m + 2)) :
+    (h : stableValue x * stableValue y < Nat.fib (m + 3)) :
     X.modularProject (X.stableMul x y) =
       X.stableMul (X.modularProject x) (X.modularProject y) :=
   X.modularProject_mul_no_carry x y h
@@ -328,7 +328,7 @@ theorem modular_project_mul_no_carry (x y : X (m + 1))
 /-! #### Plan 2: Integral Domain & Prime Field -/
 
 /-- When F_{m+2} is prime, X_m is an integral domain (no zero divisors). -/
-theorem integral_domain_when_prime (hPrime : Nat.Prime (paperFib (m + 1)))
+theorem integral_domain_when_prime (hPrime : Nat.Prime (Nat.fib (m + 2)))
     {x y : X m} (hx : x ≠ X.stableZero) (hy : y ≠ X.stableZero) :
     X.stableMul x y ≠ X.stableZero :=
   X.stableMul_no_zero_divisor_of_prime hPrime hx hy
@@ -345,13 +345,13 @@ theorem cell_event_local [MeasurableSpace α]
 /-! #### Plan 2: Concrete Prime Fields -/
 
 /-- X_2 ≅ F_3 is a field (F_3 = 3 is prime). -/
-theorem X2_is_field : Nat.Prime (paperFib 3) := X.X2_is_integral_domain
+theorem X2_is_field : Nat.Prime (Nat.fib 4) := X.X2_is_integral_domain
 
 /-- X_3 ≅ F_5 is a field (F_5 = 5 is prime). -/
-theorem X3_is_field : Nat.Prime (paperFib 4) := X.F4_is_prime
+theorem X3_is_field : Nat.Prime (Nat.fib 5) := X.F4_is_prime
 
 /-- X_4 ≅ ℤ/8ℤ is NOT a field (F_5 = 8 not prime). -/
-theorem X4_not_field : ¬ Nat.Prime (paperFib 5) := X.F5_not_prime
+theorem X4_not_field : ¬ Nat.Prime (Nat.fib 6) := X.F5_not_prime
 
 /-! #### xor-Restrict Exchange -/
 
@@ -363,18 +363,18 @@ theorem restrict_distributes_xor (h : m ≤ n) (a b : Word n) :
 /-! #### Fibonacci Primality & Field Resolutions -/
 
 /-- X_1 ≅ F_2 is a field (F_2 = 2 prime). -/
-theorem X1_is_field : Nat.Prime (paperFib 2) := X.F2_is_prime
+theorem X1_is_field : Nat.Prime (Nat.fib 3) := X.F2_is_prime
 
 /-- X_5 ≅ F_6 is a field (F_6 = 13 prime). -/
-theorem X5_is_field : Nat.Prime (paperFib 6) := X.F6_is_prime
+theorem X5_is_field : Nat.Prime (Nat.fib 7) := X.F6_is_prime
 
 /-- X_9 ≅ F_10 is a field (F_10 = 89 prime). -/
-theorem X9_is_field : Nat.Prime (paperFib 10) := X.F10_is_prime
+theorem X9_is_field : Nat.Prime (Nat.fib 11) := X.F10_is_prime
 
 /-- The 5 Fibonacci primes in F_2..F_11: 2, 3, 5, 13, 89. -/
 theorem fibonacci_primes_census :
-    Nat.Prime (paperFib 2) ∧ Nat.Prime (paperFib 3) ∧ Nat.Prime (paperFib 4) ∧
-    Nat.Prime (paperFib 6) ∧ Nat.Prime (paperFib 10) :=
+    Nat.Prime (Nat.fib 3) ∧ Nat.Prime (Nat.fib 4) ∧ Nat.Prime (Nat.fib 5) ∧
+    Nat.Prime (Nat.fib 7) ∧ Nat.Prime (Nat.fib 11) :=
   X.fibonacci_prime_list
 
 /-! #### Purity & Boundary Equivalence -/
@@ -395,9 +395,9 @@ theorem boundary_count_symmetric {α β : Type*} [Fintype α] [Fintype β]
 
 /-- The 5 composite Fibonacci values in F_2..F_11: 8, 21, 34, 55, 144. -/
 theorem fibonacci_composites :
-    ¬ Nat.Prime (paperFib 5) ∧ ¬ Nat.Prime (paperFib 7) ∧
-    ¬ Nat.Prime (paperFib 8) ∧ ¬ Nat.Prime (paperFib 9) ∧
-    ¬ Nat.Prime (paperFib 11) :=
+    ¬ Nat.Prime (Nat.fib 6) ∧ ¬ Nat.Prime (Nat.fib 8) ∧
+    ¬ Nat.Prime (Nat.fib 9) ∧ ¬ Nat.Prime (Nat.fib 10) ∧
+    ¬ Nat.Prime (Nat.fib 12) :=
   X.fibonacci_composite_list
 
 /-! #### Prefix Event Purity (Measure) -/
@@ -425,11 +425,11 @@ theorem fold_value_roundtrip (x : X m) : stableValue (Fold x.1) = stableValue x 
   X.Fold_stableValue_roundtrip x
 
 /-- Arithmetic operations preserve the Fibonacci bound. -/
-theorem add_preserves_bound (x y : X m) : stableValue (X.stableAdd x y) < paperFib (m + 1) :=
+theorem add_preserves_bound (x y : X m) : stableValue (X.stableAdd x y) < Nat.fib (m + 2) :=
   X.stableAdd_value_bound x y
 
 /-- Multiplication preserves the Fibonacci bound. -/
-theorem mul_preserves_bound (x y : X m) : stableValue (X.stableMul x y) < paperFib (m + 1) :=
+theorem mul_preserves_bound (x y : X m) : stableValue (X.stableMul x y) < Nat.fib (m + 2) :=
   X.stableMul_value_bound x y
 
 /-- stableValue is strictly less than 2^m. -/
@@ -470,7 +470,7 @@ theorem card_stable_twelve : Fintype.card (X 12) = 377 := X.card_X_twelve
 theorem card_stable_thirteen : Fintype.card (X 13) = 610 := X.card_X_thirteen
 
 /-- F_12 = 233 is prime (X_11 is a field). -/
-theorem X11_is_field : Nat.Prime (paperFib 12) := X.F12_is_prime
+theorem X11_is_field : Nat.Prime (Nat.fib 13) := X.F12_is_prime
 
 /-! #### Carry Element & Modular Projection -/
 
@@ -487,12 +487,12 @@ theorem modular_preserves_zero :
 /-! #### Ring Order & Neg-One -/
 
 /-- The ring order (number of elements) is F_{m+2}. -/
-theorem ring_has_fibonacci_order (m : Nat) : Fintype.card (X m) = paperFib (m + 1) :=
+theorem ring_has_fibonacci_order (m : Nat) : Fintype.card (X m) = Nat.fib (m + 2) :=
   X.stable_ring_order m
 
 /-- -1 has value F_{m+2} - 1 (maximal element). -/
 theorem neg_one_is_maximal_element (hm : 1 ≤ m) :
-    stableValue (X.stableNeg (X.stableOne (m := m))) = paperFib (m + 1) - 1 :=
+    stableValue (X.stableNeg (X.stableOne (m := m))) = Nat.fib (m + 2) - 1 :=
   X.neg_one_value hm
 
 /-- stableValue < 2^m (exponential bound). -/
