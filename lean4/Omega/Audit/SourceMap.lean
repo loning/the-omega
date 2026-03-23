@@ -2229,6 +2229,40 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FibonacciPolynomial"
       leanName := "Omega.pathIndSetPoly_eval_one"
       phase := 11
+      status := .formalized }
+  -- Phase 12: Cauchy-Schwarz 碰撞界 + S_q 单调性 (Round 12)
+  -- thm:fold-collision-convex-lower-bounds / S_q 单调性
+  -- momentSum_mono_q: S_q ≤ S_{q+1} (MomentSum.lean:59)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "pom-moment-mono-q"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_mono_q"
+      phase := 12
+      status := .formalized }
+  -- S_q 单调性 → momentSum_two_ge_pow: 2^m ≤ S_2(m) (MomentSum.lean:71)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "pom-moment-two-ge-pow"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_ge_pow"
+      phase := 12
+      status := .formalized }
+  -- S_q 单调性 → momentSum_ge_card: paperFib(m+1) ≤ S_q(m) (MomentSum.lean:75)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "pom-moment-ge-card"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_ge_card"
+      phase := 12
+      status := .formalized }
+  -- thm:fold-collision-convex-lower-bounds → momentSum_cauchy_schwarz: (2^m)² ≤ F_{m+1}·S_2(m) (MomentSum.lean:82)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:fold-collision-convex-lower-bounds"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_cauchy_schwarz"
+      phase := 12
       status := .formalized } ]
 
 end Omega.Audit

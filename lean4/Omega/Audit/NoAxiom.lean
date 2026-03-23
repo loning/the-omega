@@ -340,6 +340,11 @@ Run these commands manually during audit:
   #print axioms Omega.fibPoly_eval_one
   #print axioms Omega.pathIndSetPoly
   #print axioms Omega.pathIndSetPoly_eval_one
+  -- Round 12: Cauchy-Schwarz 碰撞界 + S_q 单调性 (thm:fold-collision-convex-lower-bounds)
+  #print axioms Omega.momentSum_mono_q
+  #print axioms Omega.momentSum_two_ge_pow
+  #print axioms Omega.momentSum_ge_card
+  #print axioms Omega.momentSum_cauchy_schwarz
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

@@ -1,4 +1,5 @@
 import Omega.Folding.MaxFiber
+import Mathlib.Algebra.Order.Chebyshev
 
 namespace Omega
 
@@ -53,5 +54,36 @@ theorem momentSum_two_three : momentSum 2 3 = 14 := by rw [← cMomentSum_eq]; n
 theorem momentSum_two_four : momentSum 2 4 = 36 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_two_five : momentSum 2 5 = 88 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_two_six : momentSum 2 6 = 220 := by rw [← cMomentSum_eq]; native_decide
+
+/-- S_q is monotone in q: S_q(m) ≤ S_{q+1}(m) since d(x) ≥ 1. -/
+theorem momentSum_mono_q (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ momentSum (q + 1) m := by
+  simp only [momentSum]
+  apply Finset.sum_le_sum; intro x _
+  -- d(x)^q ≤ d(x)^(q+1) since d(x) ≥ 1
+  calc (X.fiberMultiplicity x) ^ q
+      = (X.fiberMultiplicity x) ^ q * 1 := (Nat.mul_one _).symm
+    _ ≤ (X.fiberMultiplicity x) ^ q * X.fiberMultiplicity x :=
+        Nat.mul_le_mul_left _ (X.fiberMultiplicity_pos x)
+    _ = (X.fiberMultiplicity x) ^ (q + 1) := (pow_succ _ _).symm
+
+/-- S_2(m) ≥ 2^m. -/
+theorem momentSum_two_ge_pow (m : Nat) : 2 ^ m ≤ momentSum 2 m := by
+  rw [← momentSum_one m]; exact momentSum_mono_q 1 m (by omega)
+
+/-- S_q(m) ≥ |X_m| = paperFib(m+1) for all q. -/
+theorem momentSum_ge_card (q m : Nat) : paperFib (m + 1) ≤ momentSum q m := by
+  simp only [momentSum]; rw [← X.card_eq_paperFib_succ, ← Finset.card_univ]
+  rw [Finset.card_eq_sum_ones]
+  apply Finset.sum_le_sum; intro x _
+  exact Nat.one_le_pow q _ (X.fiberMultiplicity_pos x)
+
+/-- Cauchy-Schwarz for fiber multiplicities: (2^m)² ≤ |X_m| · S_2(m). -/
+theorem momentSum_cauchy_schwarz (m : Nat) :
+    (2 ^ m) ^ 2 ≤ paperFib (m + 1) * momentSum 2 m := by
+  rw [← momentSum_one, ← momentSum_zero]
+  simp only [momentSum, pow_zero, pow_one, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one]
+  rw [← Finset.card_univ (α := X m)]
+  exact sq_sum_le_card_mul_sum_sq
 
 end Omega
