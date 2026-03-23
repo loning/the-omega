@@ -447,6 +447,16 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.projection_ratio_positive
   -- Phase 18: FiberSpectrum — 达到者数定义与基值 (thm:pom-max-achievers-phase-stabilization 前置)
   #print axioms Omega.cMaxFiberAchievers
+  -- Phase 19: FiberSpectrum — 达到者数有界 + 次大纤维基值 m=8,9,10
+  -- thm:pom-max-achievers-phase-stabilization (有界), thm:pom-second-max-fiber-closed-form (m=8,9,10)
+  #print axioms Omega.cMaxFiberAchievers_le_univ
+  #print axioms Omega.cNthMaxFiber_second_eight
+  #print axioms Omega.cNthMaxFiber_second_nine
+  #print axioms Omega.cNthMaxFiber_second_ten
+  -- Phase 19: ConditionalSummary — S_q 正性与 Cauchy-Schwarz 重述
+  -- prop:pom-sq-pos, prop:pom-sq-cauchy-schwarz-restated
+  #print axioms Omega.Frontier.momentSum_pos
+  #print axioms Omega.Frontier.momentSum_cauchy_schwarz_restated
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

@@ -635,6 +635,20 @@ theorem projection_ratio_decreasing (m : Nat) :
 theorem projection_ratio_positive (m : Nat) : 0 < Nat.fib (m + 2) :=
   Nat.fib_pos.mpr (by omega)
 
+/-! ### S_q positivity and Cauchy-Schwarz restatement -/
+
+/-- S_q(m) > 0 for all q, m. -/
+theorem momentSum_pos (q m : Nat) : 0 < momentSum q m := by
+  have : Nat.fib (m + 2) ≤ momentSum q m := momentSum_ge_card q m
+  have : 0 < Nat.fib (m + 2) := Nat.fib_pos.mpr (by omega)
+  omega
+
+/-- Cauchy-Schwarz: S_2(m) · S_0(m) ≥ S_1(m)². -/
+theorem momentSum_cauchy_schwarz_restated (m : Nat) :
+    momentSum 2 m * momentSum 0 m ≥ (momentSum 1 m) ^ 2 := by
+  rw [momentSum_zero m, momentSum_one m, Nat.mul_comm]
+  exact momentSum_cauchy_schwarz m
+
 end
 
 end Omega.Frontier

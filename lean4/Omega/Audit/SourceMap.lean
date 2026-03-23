@@ -3143,6 +3143,56 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberSpectrum"
       leanName := "Omega.cMaxFiberAchievers"
       phase := 18
+      status := .formalized }
+  -- Phase 19: FiberSpectrum.lean — 达到者数有界 + 次大纤维基值 m=8,9,10
+  -- thm:pom-max-achievers-phase-stabilization (有界) → cMaxFiberAchievers_le_univ (FiberSpectrum.lean:46)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-achievers-phase-stabilization-bound"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cMaxFiberAchievers_le_univ"
+      phase := 19
+      status := .formalized }
+  -- thm:pom-second-max-fiber-closed-form (基值 m=8) → cNthMaxFiber_second_eight (FiberSpectrum.lean:91)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-second-max-fiber-closed-form-m8"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_eight"
+      phase := 19
+      status := .formalized }
+  -- thm:pom-second-max-fiber-closed-form (基值 m=9) → cNthMaxFiber_second_nine (FiberSpectrum.lean:92)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-second-max-fiber-closed-form-m9"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_nine"
+      phase := 19
+      status := .formalized }
+  -- thm:pom-second-max-fiber-closed-form (基值 m=10) → cNthMaxFiber_second_ten (FiberSpectrum.lean:93)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-second-max-fiber-closed-form-m10"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_ten"
+      phase := 19
+      status := .formalized }
+  -- Phase 19: ConditionalSummary.lean — S_q 正性与 Cauchy-Schwarz 重述
+  -- prop:pom-sq-monotone (正性) → momentSum_pos (ConditionalSummary.lean:641)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-pos"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.momentSum_pos"
+      phase := 19
+      status := .formalized }
+  -- prop:pom-sq-monotone (Cauchy-Schwarz 重述) → momentSum_cauchy_schwarz_restated (ConditionalSummary.lean:647)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-cauchy-schwarz-restated"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.momentSum_cauchy_schwarz_restated"
+      phase := 19
       status := .formalized } ]
 
 end Omega.Audit

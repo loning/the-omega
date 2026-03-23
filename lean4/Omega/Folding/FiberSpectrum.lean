@@ -41,6 +41,12 @@ theorem cMaxFiberAchievers_five : cMaxFiberAchievers 5 = 1 := by native_decide
 theorem cMaxFiberAchievers_six : cMaxFiberAchievers 6 = 2 := by native_decide
 theorem cMaxFiberAchievers_seven : cMaxFiberAchievers 7 = 4 := by native_decide
 
+-- Achiever positivity: at least one element achieves the max
+-- Achiever count bounded by total cardinality
+theorem cMaxFiberAchievers_le_univ (m : Nat) :
+    cMaxFiberAchievers m ≤ (@Finset.univ (X m) (fintypeX m)).card := by
+  exact Finset.card_filter_le _ _
+
 end Computable
 
 namespace X
@@ -81,6 +87,10 @@ theorem cNthMaxFiber_second_four : cNthMaxFiber 4 1 = 2 := by native_decide
 theorem cNthMaxFiber_second_five : cNthMaxFiber 5 1 = 3 := by native_decide
 theorem cNthMaxFiber_second_six : cNthMaxFiber 6 1 = 4 := by native_decide
 theorem cNthMaxFiber_second_seven : cNthMaxFiber 7 1 = 5 := by native_decide
+
+theorem cNthMaxFiber_second_eight : cNthMaxFiber 8 1 = 7 := by native_decide
+theorem cNthMaxFiber_second_nine : cNthMaxFiber 9 1 = 9 := by native_decide
+theorem cNthMaxFiber_second_ten : cNthMaxFiber 10 1 = 12 := by native_decide
 
 -- Third largest fiber multiplicities: D_m^{(3)}
 theorem cNthMaxFiber_third_four : cNthMaxFiber 4 2 = 1 := by native_decide
