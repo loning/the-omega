@@ -249,14 +249,38 @@ Agent(
 
 ## 关闭流程
 
-1. 所有循环完成后，逐个 shutdown 持久 teammate：
+1. `CronDelete(cronJobId)` 停止自动续轮监控
+2. 逐个 shutdown 持久 teammate：
    ```
    SendMessage(to = "formalizer", message = {type: "shutdown_request"})
    SendMessage(to = "analyst", message = {type: "shutdown_request"})
    ```
-2. 确认所有 teammate 已停止
-3. `TeamDelete()` 清理团队资源
-4. 输出最终总结
+3. 确认所有 teammate 已停止
+4. `TeamDelete()` 清理团队资源
+5. 输出最终总结
+
+## 自动续轮监控
+
+启动团队后，立即创建 CronJob 每10分钟检查团队状态并自动续轮：
+
+```
+CronCreate(
+  cron = "*/10 * * * *",
+  prompt = "检查 lean4-formalization 团队状态。
+读取 ~/.claude/teams/lean4-formalization/config.json 确认团队存在。
+用 TaskList 查看当前任务状态。
+
+判断逻辑：
+1. 如果有 teammate 刚发来消息（未处理）→ 立即处理，按流程路由
+2. 如果所有 teammate idle 且当前 phase 已完成（审核通过/登记完成）→ 自动进入下一轮 Phase 0+1，发消息给 analyst 选取下一个目标
+3. 如果所有 teammate idle 但当前 phase 未完成（等待中）→ 发消息唤醒对应 teammate
+4. 如果团队不存在 → 不做任何操作
+
+注意：不要重复发送相同消息。检查 TaskList 确认当前阶段再决定行动。"
+)
+```
+
+保存返回的 CronJob ID，在关闭流程中用 `CronDelete` 清理。
 
 ## 进度报告
 
