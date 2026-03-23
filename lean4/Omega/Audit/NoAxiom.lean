@@ -345,6 +345,19 @@ Run these commands manually during audit:
   #print axioms Omega.momentSum_two_ge_pow
   #print axioms Omega.momentSum_ge_card
   #print axioms Omega.momentSum_cauchy_schwarz
+  -- Round 13: S_3 基值 + A_3 碰撞核矩阵 (prop:pom-s3-recurrence)
+  #print axioms Omega.momentSum_three_zero
+  #print axioms Omega.momentSum_three_one
+  #print axioms Omega.momentSum_three_two
+  #print axioms Omega.momentSum_three_three
+  #print axioms Omega.momentSum_three_four
+  #print axioms Omega.momentSum_three_five
+  #print axioms Omega.momentSum_three_six
+  #print axioms Omega.momentSum_three_recurrence_verified
+  #print axioms Omega.collisionKernel3
+  #print axioms Omega.collisionKernel3_trace
+  #print axioms Omega.collisionKernel3_det
+  #print axioms Omega.collisionKernel3_cayley_hamilton
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

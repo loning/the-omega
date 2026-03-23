@@ -2263,6 +2263,91 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.MomentSum"
       leanName := "Omega.momentSum_cauchy_schwarz"
       phase := 12
+      status := .formalized }
+  -- Phase 16: S_3 基值 + A_3 碰撞核矩阵 (Round 13)
+  -- prop:pom-s3-recurrence → S_3(m) 基值 m=0..6 (MomentSum.lean:96)
+  -- 状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-base-0"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_zero"
+      phase := 16
+      status := .formalized }
+  , { label := "prop:pom-s3-recurrence-base-1"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_one"
+      phase := 16
+      status := .formalized }
+  , { label := "prop:pom-s3-recurrence-base-2"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_two"
+      phase := 16
+      status := .formalized }
+  , { label := "prop:pom-s3-recurrence-base-3"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_three"
+      phase := 16
+      status := .formalized }
+  , { label := "prop:pom-s3-recurrence-base-4"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_four"
+      phase := 16
+      status := .formalized }
+  , { label := "prop:pom-s3-recurrence-base-5"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_five"
+      phase := 16
+      status := .formalized }
+  , { label := "prop:pom-s3-recurrence-base-6"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_six"
+      phase := 16
+      status := .formalized }
+  -- prop:pom-s3-recurrence → S_3 递推 m=0..3 数值验证 (MomentSum.lean)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-verified"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_three_recurrence_verified"
+      phase := 16
+      status := .formalized }
+  -- prop:pom-s3-recurrence → A_3 companion matrix 定义 (CollisionKernel.lean:56)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-collision-kernel"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel3"
+      phase := 16
+      status := .formalized }
+  -- prop:pom-s3-recurrence → tr(A_3)=2 (CollisionKernel.lean)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-collision-kernel-trace"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel3_trace"
+      phase := 16
+      status := .formalized }
+  -- prop:pom-s3-recurrence → det(A_3)=-2 (CollisionKernel.lean)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-collision-kernel-det"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel3_det"
+      phase := 16
+      status := .formalized }
+  -- prop:pom-s3-recurrence → Cayley-Hamilton M³=2M²+4M-2I (CollisionKernel.lean)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s3-recurrence-collision-kernel-cayley-hamilton"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.CollisionKernel"
+      leanName := "Omega.collisionKernel3_cayley_hamilton"
+      phase := 16
       status := .formalized } ]
 
 end Omega.Audit

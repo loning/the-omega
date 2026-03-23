@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,556 |
-| 定理/定义数 | 1,104 |
+| 总行数 | ~12,708 |
+| 定理/定义数 | 1,116 |
 | 论文接口包装 | 312 |
 | 文件数 | 35 |
 | 公理数 | 0 |
@@ -38,6 +38,7 @@
 **碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
 **Fibonacci 多项式（Round 11）**：fibPoly（Fibonacci 多项式 F_n(x) 定义，递推 F_{n+2}=F_{n+1}+x·F_n）; fibPoly_zero/one/succ_succ（simp 引理）; fibPoly_eval_one（F_n(1)=fib(n)）; fibPoly_two/three（具体值）; pathIndSetPoly（路径独立集多项式 I_ℓ(x)=F_{ℓ+2}(x) 定义）; pathIndSetPoly_eval_one（I_ℓ(1)=fib(ℓ+2)）；闭式系数公式留后续（def:pom-fibonacci-polynomial 完整，thm:pom-path-indset-poly-closed 部分）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
+**S_3 基值 + A_3 碰撞核矩阵（Round 13）**：momentSum_three_zero..six（S_3(m) 基值 m=0..6，native_decide 验证）; momentSum_three_recurrence_verified（S_3 递推 m=0..3 数值验证）; collisionKernel3（A_3 companion matrix 定义）; collisionKernel3_trace（tr=2）; collisionKernel3_det（det=-2）; collisionKernel3_cayley_hamilton（Cayley-Hamilton：M³=2M²+4M-2I，prop:pom-s3-recurrence）
 **Fibonacci 素数域（部分）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; paperFib_three/four/six/twelve_prime（native_decide 验证）; paperFib_eight_not_prime（反例验证）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
@@ -53,12 +54,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 13 | 62% | 高 |
-| POM | 106 | 41 | 39% | 极高 |
+| POM | 106 | 53 | 50% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~83** | **~21%** | - |
+| **总计** | **394** | **~95** | **~24%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1100 个 Lean 定理中，约 312 个是论文接口包装，约 60 个直接对应论文中的编号定理。
 
@@ -78,7 +79,7 @@
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
 8. **[深化完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber` 部分)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`thm:pom-max-fiber`)，基值 $D_0..D_{10}$ via native_decide (`cor:pom-D-rec`)；闭式 $D_{2k} = F_{k+2}$, $D_{2k+1} = 2F_{k+1}$ 待实现（需要 Fold-truncate 交换性基础设施）
 9. **三纤维闭合形式**：证明论文中 `D_{2k}^{(3)} = F_{k+2} - F_{k-3}` 的闭合公式
-10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（3×3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 数值验证（native_decide）; Perron-Frobenius 完整性质待后续
+10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（S_2 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 验证（native_decide）; collisionKernel3（S_3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+4M-2I; S_3 基值 m=0..6 + 递推 m=0..3 验证（Round 13）; Perron-Frobenius 完整性质待后续
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量
 12. **纤维后验等价**：证明纤维后验分布的活动度量不变量
 
@@ -118,7 +119,7 @@
 
 1. 计划 8 剩余（最大纤维多重度闭式：$D_{2k}=F_{k+2}$, $D_{2k+1}=2F_{k+1}$，需 Fold-truncate 交换性）
 2. 计划 9（三纤维闭合形式）
-3. S_2 递推公式证明（碰撞核矩阵 + 三阶递推 Cayley-Hamilton 已形式化；S_2 满足 $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$，数值验证 m=0..3 完成；归纳步骤待实现）
+3. S_2/S_3 递推公式归纳证明（碰撞核矩阵 + Cayley-Hamilton 已形式化；数值验证 m=0..3 完成；S_2: $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$；S_3: $S_3(m+3)=2S_3(m+2)+4S_3(m+1)-2S_3(m)$；归纳步骤待实现）
 
 ### 短期可执行（3-5 轮内完成）
 
