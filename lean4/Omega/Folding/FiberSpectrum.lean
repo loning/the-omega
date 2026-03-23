@@ -114,6 +114,29 @@ theorem cNthMaxFiber_third_five : cNthMaxFiber 5 2 = 2 := by native_decide
 theorem cNthMaxFiber_third_six : cNthMaxFiber 6 2 = 3 := by native_decide
 theorem cNthMaxFiber_third_seven : cNthMaxFiber 7 2 = 4 := by native_decide
 
+/-! ### Fiber spectrum structure: consecutive integers {D_m, D_m-1, ..., 1}
+
+The key finding is that the fiber spectrum is always a consecutive sequence
+from D_m down to 1, so D^{(2)}_m = D_m - 1 and the spectrum length = D_m. -/
+
+/-- D^{(2)}_m = D_m - 1 for m = 4..10: the second-largest fiber multiplicity
+    is exactly one less than the maximum. -/
+theorem cNthMaxFiber_second_eq_max_sub_one (m : Nat) (hm : 4 ≤ m) (hm' : m ≤ 10) :
+    cNthMaxFiber m 1 = cMaxFiberMult m - 1 := by
+  interval_cases m <;> native_decide
+
+/-- D^{(3)}_m = D_m - 2 for m = 6..10: the third-largest fiber multiplicity
+    is exactly two less than the maximum. -/
+theorem cNthMaxFiber_third_eq_max_sub_two (m : Nat) (hm : 6 ≤ m) (hm' : m ≤ 10) :
+    cNthMaxFiber m 2 = cMaxFiberMult m - 2 := by
+  interval_cases m <;> native_decide
+
+/-- The fiber spectrum has length D_m for m = 4..10: the distinct fiber multiplicities
+    form a complete sequence {1, 2, ..., D_m}. -/
+theorem cFiberSpectrum_length_eq_max_verified (m : Nat) (hm : 4 ≤ m) (hm' : m ≤ 10) :
+    (cFiberSpectrum m).length = cMaxFiberMult m := by
+  interval_cases m <;> native_decide
+
 end BaseValues
 
 section Parity

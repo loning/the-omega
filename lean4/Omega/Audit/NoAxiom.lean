@@ -1008,6 +1008,27 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_strict_mono_verified"
   , "Omega.momentSum_three_mono_verified"
   , "Omega.momentSum_two_mono_of_recurrence"
-  , "Omega.momentSum_three_mono_of_recurrence" ]
+  , "Omega.momentSum_three_mono_of_recurrence"
+  -- Phase 26 补充 (Round 20): S_3 Hankel 归一化 + 4x4 秩 + 分辨率单调联合
+  , "Omega.hankelS3_det"
+  , "Omega.hankelS3_det_ne_zero"
+  , "Omega.hankelS2_norm_4x4_det"
+  , "Omega.hankelS2_rank_exact_three"
+  , "Omega.momentSum_two_mono_resolution_verified"
+  , "Omega.momentSum_three_mono_resolution_verified"
+  -- Phase 27: FiberSplit — D_m 严格单调性 + 纤维分裂界 + D^{(2)} 基值
+  , "Omega.X.maxFiberMultiplicity_strict_mono_verified"
+  , "Omega.X.maxFiberMultiplicity_mono_verified"
+  , "Omega.X.maxFiberMultiplicity_mono_of_two_step"
+  , "Omega.X.maxFiberMultiplicity_strict_mono_of_two_step"
+  , "Omega.X.maxFiberMultiplicity_split_bound"
+  , "Omega.X.maxFiberMultiplicity_fibonacci_bound"
+  , "Omega.X.cSecondMaxFiberMult_two"
+  , "Omega.X.cSecondMaxFiberMult_three"
+  , "Omega.X.cSecondMaxFiberMult_four"
+  , "Omega.X.cSecondMaxFiberMult_five"
+  , "Omega.X.cSecondMaxFiberMult_six"
+  , "Omega.X.cSecondMaxFiberMult_seven"
+  , "Omega.X.cSecondMaxFiberMult_eq_prev" ]
 
 end Omega.Audit

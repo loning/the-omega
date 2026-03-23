@@ -1,6 +1,7 @@
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Omega.Folding.CollisionKernel
 
 namespace Omega
@@ -78,10 +79,32 @@ theorem momentSum_three_minimal_recurrence_order :
     hankelS3_3x3.det ≠ 0 ∧ hankelS3_4x4.det = 0 :=
   ⟨by rw [hankelS3_3x3_det]; omega, hankelS3_4x4_det⟩
 
-/-! ### Characteristic polynomial verification for collision kernels
+/-! ### Characteristic polynomial of collision kernels
 
 The characteristic polynomial of A_2 is λ³ − 2λ² − 2λ + 2.
 The characteristic polynomial of A_3 is λ³ − 2λ² − 4λ + 2. -/
+
+/-- The characteristic polynomial of the S_2 collision kernel:
+    p(λ) = λ³ − 2λ² − 2λ + 2. -/
+theorem collisionKernel2_charpoly :
+    collisionKernel2.charpoly = Polynomial.X ^ 3 - 2 * Polynomial.X ^ 2 - 2 * Polynomial.X + Polynomial.C 2 := by
+  unfold Matrix.charpoly Matrix.charmatrix
+  rw [Matrix.det_fin_three]
+  simp only [collisionKernel2, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.head_fin_const, Matrix.of_apply, Fin.isValue]
+  simp (config := { decide := true })
+  ring
+
+/-- The characteristic polynomial of the S_3 collision kernel:
+    p(λ) = λ³ − 2λ² − 4λ + 2. -/
+theorem collisionKernel3_charpoly :
+    collisionKernel3.charpoly = Polynomial.X ^ 3 - 2 * Polynomial.X ^ 2 - 4 * Polynomial.X + Polynomial.C 2 := by
+  unfold Matrix.charpoly Matrix.charmatrix
+  rw [Matrix.det_fin_three]
+  simp only [collisionKernel3, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.head_fin_const, Matrix.of_apply, Fin.isValue]
+  simp (config := { decide := true })
+  ring
 
 /-- Evaluation of the characteristic polynomial of A_2 at A_2:
     A_2³ − 2·A_2² − 2·A_2 + 2·I = 0.
@@ -91,13 +114,6 @@ theorem collisionKernel2_charpoly_eval :
       2 • collisionKernel2 ^ 2 + 2 • collisionKernel2 := by
   native_decide
 
-/-- The characteristic polynomial coefficients of A_2: (c₀, c₁, c₂) = (2, -2, -2),
-    so p(λ) = λ³ − 2λ² − 2λ + 2. Verified via trace and determinant:
-    tr(A_2) = 2 (= −c₂), det(A_2) = −2 (= −c₀). -/
-theorem collisionKernel2_charpoly_coefficients :
-    collisionKernel2.trace = 2 ∧ collisionKernel2.det = -2 :=
-  ⟨collisionKernel2_trace, collisionKernel2_det⟩
-
 /-- Evaluation of the characteristic polynomial of A_3 at A_3:
     A_3³ − 2·A_3² − 4·A_3 + 2·I = 0.
     Equivalently: A_3³ + 2·I = 2·A_3² + 4·A_3. -/
@@ -106,30 +122,19 @@ theorem collisionKernel3_charpoly_eval :
       2 • collisionKernel3 ^ 2 + 4 • collisionKernel3 := by
   native_decide
 
-/-- The characteristic polynomial coefficients of A_3: (c₀, c₁, c₂) = (2, -4, -2),
-    so p(λ) = λ³ − 2λ² − 4λ + 2. Verified via trace and determinant. -/
-theorem collisionKernel3_charpoly_coefficients :
-    collisionKernel3.trace = 2 ∧ collisionKernel3.det = -2 :=
-  ⟨collisionKernel3_trace, collisionKernel3_det⟩
+/-- The collision kernels A_2 and A_3 have equal traces. -/
+theorem collisionKernel_trace_eq : collisionKernel2.trace = collisionKernel3.trace := by
+  rw [collisionKernel2_trace, collisionKernel3_trace]
+
+/-- The collision kernels A_2 and A_3 have equal determinants. -/
+theorem collisionKernel_det_eq : collisionKernel2.det = collisionKernel3.det := by
+  rw [collisionKernel2_det, collisionKernel3_det]
 
 /-- Both collision kernels share trace = 2 and det = −2. -/
 theorem collision_kernels_shared_invariants :
     collisionKernel2.trace = collisionKernel3.trace ∧
     collisionKernel2.det = collisionKernel3.det := by
-  constructor <;> simp [collisionKernel2_trace, collisionKernel3_trace,
-    collisionKernel2_det, collisionKernel3_det]
-
-/-- The sum of characteristic polynomial roots equals the trace (= 2) for both kernels.
-    For A_q: λ₁ + λ₂ + λ₃ = tr(A_q) = 2. -/
-theorem collision_kernel_root_sum_eq_trace :
-    collisionKernel2.trace = 2 ∧ collisionKernel3.trace = 2 :=
-  ⟨collisionKernel2_trace, collisionKernel3_trace⟩
-
-/-- The product of characteristic polynomial roots equals −det for both kernels.
-    For A_q: λ₁·λ₂·λ₃ = −det(A_q) = 2. -/
-theorem collision_kernel_root_product :
-    collisionKernel2.det = -2 ∧ collisionKernel3.det = -2 :=
-  ⟨collisionKernel2_det, collisionKernel3_det⟩
+  exact ⟨collisionKernel_trace_eq, collisionKernel_det_eq⟩
 
 /-! ### S_2 resolution monotonicity
 
@@ -229,6 +234,33 @@ theorem hankelS2_det : hankelS2.det = -2 := by native_decide
 /-- The normalized Hankel determinant is nonzero. -/
 theorem hankelS2_det_ne_zero : hankelS2.det ≠ 0 := by rw [hankelS2_det]; decide
 
+/-- The 4×4 normalized Hankel matrix for S_2 (a_n = S_2(n+2)/2):
+    [[3,7,18,44],[7,18,44,110],[18,44,110,272],[44,110,272,676]].
+    a_6 = S_2(8)/2 = 1352/2 = 676. -/
+def hankelS2_norm_4x4 : Matrix (Fin 4) (Fin 4) ℤ :=
+  !![3, 7, 18, 44; 7, 18, 44, 110; 18, 44, 110, 272; 44, 110, 272, 676]
+
+/-- The normalized 4×4 Hankel determinant for S_2 is 0. -/
+theorem hankelS2_norm_4x4_det : hankelS2_norm_4x4.det = 0 := by native_decide
+
+/-- The minimal recurrence order for the normalized S_2 sequence is 3:
+    3×3 Hankel nonsingular, 4×4 Hankel singular. -/
+theorem hankelS2_rank_exact_three : hankelS2.det ≠ 0 ∧ hankelS2_norm_4x4.det = 0 :=
+  ⟨hankelS2_det_ne_zero, hankelS2_norm_4x4_det⟩
+
+/-! ### Normalized Hankel matrix for S_3 -/
+
+/-- The 3×3 Hankel matrix for the normalized sequence b_n = S_3(n+2)/2:
+    [[5,13,44],[13,44,130],[44,130,410]]. -/
+def hankelS3 : Matrix (Fin 3) (Fin 3) ℤ :=
+  !![5, 13, 44; 13, 44, 130; 44, 130, 410]
+
+/-- The determinant of the normalized S_3 Hankel matrix is −54. -/
+theorem hankelS3_det : hankelS3.det = -54 := by native_decide
+
+/-- The normalized S_3 Hankel determinant is nonzero. -/
+theorem hankelS3_det_ne_zero : hankelS3.det ≠ 0 := by rw [hankelS3_det]; decide
+
 /-- S_2 does not satisfy any second-order linear recurrence over the verified range.
     Proof: if d·S_2(m+1) = α·S_2(m) + β·S_2(m−1) held for m = 2..4, then
     the system at m = 2,3 forces 2α = 3d, but m = 4 forces 3α = 5d,
@@ -275,15 +307,5 @@ theorem momentSum_three_mono_resolution_verified :
     momentSum_three_three, momentSum_three_four, momentSum_three_five,
     momentSum_three_six, momentSum_three_seven]
   omega
-
-/-! ### Collision kernel trace and determinant equality -/
-
-/-- The collision kernels A_2 and A_3 have equal traces. -/
-theorem collisionKernel_trace_eq : collisionKernel2.trace = collisionKernel3.trace := by
-  rw [collisionKernel2_trace, collisionKernel3_trace]
-
-/-- The collision kernels A_2 and A_3 have equal determinants. -/
-theorem collisionKernel_det_eq : collisionKernel2.det = collisionKernel3.det := by
-  rw [collisionKernel2_det, collisionKernel3_det]
 
 end Omega
