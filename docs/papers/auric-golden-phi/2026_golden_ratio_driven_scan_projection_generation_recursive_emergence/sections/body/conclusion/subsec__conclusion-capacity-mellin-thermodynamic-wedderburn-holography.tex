@@ -304,7 +304,157 @@ g_m
 因此，由 fold-gauge 体积账本定义的规范常数列 \((C_m)\) 及其极限 \(2\pi\) 也都成为同一 Wedderburn 块秩统计的函数。证毕。
 \end{proof}
 
+\begin{theorem}[粗粒化下连续容量曲线与全矩谱的全局刚性]\label{thm:conclusion-coarsening-global-rigidity-of-capacity-curve}
+设
+\[
+f:\Omega\to X,
+\qquad
+g:X\to Y,
+\qquad
+h:=g\circ f,
+\]
+并定义纤维多重度
+\[
+d_f(x):=\#f^{-1}(x),
+\qquad
+d_h(y):=\#h^{-1}(y).
+\]
+记连续容量曲线
+\[
+\mathcal C_f^{\mathrm{cont}}(T):=\sum_{x\in X}\min\bigl(d_f(x),T\bigr),
+\qquad
+\mathcal C_h^{\mathrm{cont}}(T):=\sum_{y\in Y}\min\bigl(d_h(y),T\bigr),
+\]
+以及幂和
+\[
+S_q(f):=\sum_{x\in X}d_f(x)^q,
+\qquad
+S_q(h):=\sum_{y\in Y}d_h(y)^q
+\qquad (q>0).
+\]
+再记正纤维支撑
+\[
+X_+:=\{x\in X:d_f(x)>0\}.
+\]
+则下列三条件等价：
+\begin{enumerate}
+  \item \(\mathcal C_h^{\mathrm{cont}}(T)=\mathcal C_f^{\mathrm{cont}}(T)\) 对一切 \(T>0\) 成立；
+  \item \(S_q(h)=S_q(f)\) 对一切 \(q>0\) 成立；
+  \item \(g|_{X_+}\) 为单射。
+\end{enumerate}
+换言之，粗粒化一旦真正合并了两个正纤维，便不可能同时在容量曲线与全部碰撞矩两侧隐身。
+\end{theorem}
+\begin{proof}
+\(\textup{(3)}\Rightarrow\textup{(1)},\textup{(2)}\)：若 \(g|_{X_+}\) 单射，则 \(h\) 的非零纤维多重度多重集与 \(f\) 完全一致，只是重新标号而已。故连续容量曲线与全部幂和都逐项相等。
+
+\(\textup{(1)}\Rightarrow\textup{(3)}\)：反设 \(g|_{X_+}\) 非单射，则存在 \(y\in Y\) 及至少两个不同点 \(x_1,x_2\in X_+\) 满足
+\[
+g(x_1)=g(x_2)=y.
+\]
+记
+\[
+a_x:=d_f(x)
+\qquad (x\in g^{-1}(y)\cap X_+),
+\qquad
+A:=\sum_{g(x)=y}a_x=d_h(y).
+\]
+由于至少有两个 \(a_x>0\)，对任意 \(0<T<A\) 都有严格不等式
+\[
+\min(A,T)<\sum_{g(x)=y}\min(a_x,T).
+\]
+对所有 \(y'\neq y\) 则有
+\[
+\min(d_h(y'),T)\le \sum_{g(x)=y'}\min(d_f(x),T),
+\]
+并且这里其实取等。故
+\[
+\mathcal C_h^{\mathrm{cont}}(T)<\mathcal C_f^{\mathrm{cont}}(T)
+\qquad (0<T<A),
+\]
+与 \(\textup{(1)}\) 矛盾。故 \(g|_{X_+}\) 必为单射。
+
+\(\textup{(1)}\Rightarrow\textup{(2)}\)：由定理 \ref{thm:conclusion-continuous-capacity-integral-node-inversion} 的离散反演公式，\(\mathcal C_f^{\mathrm{cont}}\) 与 \(\mathcal C_h^{\mathrm{cont}}\) 在全部整数节点上相等便推出其纤维直方图完全相等，从而对一切 \(q>0\) 都有
+\[
+S_q(f)=S_q(h).
+\]
+
+\(\textup{(2)}\Rightarrow\textup{(1)}\)：定义
+\[
+n_d(f):=\#\{x\in X:d_f(x)=d\},
+\qquad
+n_d(h):=\#\{y\in Y:d_h(y)=d\}.
+\]
+则对足够小的 \(z>0\)，有解析恒等式
+\[
+\sum_{q\ge 1}S_q(f)z^q
+=
+\sum_{d\ge 1}n_d(f)\frac{dz}{1-dz},
+\qquad
+\sum_{q\ge 1}S_q(h)z^q
+=
+\sum_{d\ge 1}n_d(h)\frac{dz}{1-dz}.
+\]
+若 \(S_q(f)=S_q(h)\) 对一切正整数 \(q\) 成立，则两边作为解析函数恒等，故极点与留数完全一致，从而
+\[
+n_d(f)=n_d(h)
+\qquad (\forall d\ge 1).
+\]
+于是
+\[
+\mathcal C_f^{\mathrm{cont}}(T)=\sum_{d\ge 1}n_d(f)\min(d,T)
+=\sum_{d\ge 1}n_d(h)\min(d,T)
+=\mathcal C_h^{\mathrm{cont}}(T)
+\qquad (\forall T>0).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[低多重度扇区的局部不可见性判据]\label{cor:conclusion-low-multiplicity-sector-local-invisibility}
+沿用定理 \ref{thm:conclusion-coarsening-global-rigidity-of-capacity-curve} 的记号。若存在 \(U>0\) 使
+\[
+\mathcal C_h^{\mathrm{cont}}(T)=\mathcal C_f^{\mathrm{cont}}(T)
+\qquad (0\le T\le U),
+\]
+则对每个整数 \(1\le k<U\) 都有
+\[
+\#\{y\in Y:d_h(y)=k\}
+=
+\#\{x\in X:d_f(x)=k\}.
+\]
+因此，若粗粒化在预算区间 \([0,U]\) 内完全不可见，则它不仅不改变该区间内的总可逆容量，而且逐级冻结了全部低多重度直方图。
+\end{corollary}
+\begin{proof}
+对任意正整数 \(k<U\)，取 \(\varepsilon>0\) 足够小，使
+\[
+k-\varepsilon\ge 0,
+\qquad
+k+\varepsilon<U.
+\]
+由于
+\[
+\mathcal C_f^{\mathrm{cont}}(T)=\mathcal C_h^{\mathrm{cont}}(T)
+\qquad (0\le T\le U),
+\]
+两条曲线在 \(k\) 左右邻域内完全一致。另一方面，对任意有限纤维多重度谱，连续容量曲线在整数点的左右斜率分别为
+\[
+\bigl(\mathcal C^{\mathrm{cont}}\bigr)'_-(k)=\#\{d\ge k\},
+\qquad
+\bigl(\mathcal C^{\mathrm{cont}}\bigr)'_+(k)=\#\{d>k\},
+\]
+故其跳跃恰等于
+\[
+\bigl(\mathcal C^{\mathrm{cont}}\bigr)'_-(k)-\bigl(\mathcal C^{\mathrm{cont}}\bigr)'_+(k)=\#\{d=k\}.
+\]
+将此分别应用于 \(f\) 与 \(h\)，便得到
+\[
+\#\{x\in X:d_f(x)=k\}
+=
+\#\{y\in Y:d_h(y)=k\}.
+\]
+证毕。
+\end{proof}
+
 \noindent
-因此，连续容量曲线在结论层不再只是预算恢复的辅助图像，而成为同时控制负 Mellin 谱、fold-\(\pi\) 的 Bernoulli--Mellin 常数项、全部 \(q\)-阶热力学量与群胚代数 Wedderburn 块账本的统一全息对象。就此而言，阈值空间、热力学空间与半单代数空间之间的接口并非松散类比，而是由同一条容量层析链严格锁定的等价描述。
+因此，连续容量曲线在结论层不再只是预算恢复的辅助图像，而成为同时控制负 Mellin 谱、fold-\(\pi\) 的 Bernoulli--Mellin 常数项、全部 \(q\)-阶热力学量、群胚代数 Wedderburn 块账本以及粗粒化可见性的统一全息对象。就此而言，阈值空间、热力学空间与半单代数空间之间的接口并非松散类比，而是由同一条容量层析链严格锁定的等价描述；并且任何真正合并正纤维的粗粒化，都会立即在容量曲线或矩谱上留下不可抹去的痕迹。
 
 \endinput

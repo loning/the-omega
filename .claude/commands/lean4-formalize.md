@@ -122,9 +122,20 @@ Agent(
    - 成功 → 标记任务完成，进入 Phase 3
    - 失败 → 记录失败原因，回到 Phase 0+1（发消息让 analyst 选下一个目标）
 
-### Phase 3：内部审核
+### Phase 3：审核（按难度触发）
 
-**默认只启动内部 reviewer，不启动 codex-reviewer**（Codex 外部审核耗时长且常因上下文缺失产生假阴性，性价比低）。
+**根据 analyst 评估的难度决定是否启动 reviewer：**
+
+| 难度 | 审核方式 | 说明 |
+|------|---------|------|
+| 低（native_decide / mathlib包装 / 一行证明） | **跳过审核**，team lead 确认 formalizer 报告的 `lake build` 通过 + 零 sorry 即可直接进入 Phase 4 | 节省时间，formalizer 已做完整性检查 |
+| 中（归纳证明 / 类型转换 / 新定义） | **启动 reviewer** | 标准审核 |
+| 高/极高（新基础设施 / 复杂构造） | **启动 reviewer** | 严格审核 |
+| 重构（跨文件修改） | **启动 reviewer** | 语义保持审核 |
+
+**低难度快速通道**：formalizer 报告 `lake build` 通过 + 零 sorry/admit/axiom → team lead 直接进入 Phase 4（登记）。
+
+**需要审核时**：
 
 1. **按需 spawn** reviewer（初始 prompt 直接包含审核材料）：
 
@@ -134,47 +145,21 @@ Agent(
      subagent_type = "lean4-reviewer",
      team_name = "lean4-formalization",
      description = "内部审核Gate1-6（按需）",
-     prompt = "你是 lean4-formalization 团队的内部审核员。请立即执行 Gate 1-6 审核：
-
-     新增定理：[从 formalizer 结果提取]
-     修改文件：[从 formalizer 结果提取]
-     论文对应：[从 analyst 规格提取论文原文]
-
-     完成后将审核报告通过 SendMessage 发回 team lead。"
-   )
-   ```
-
-2. **停下来，等待 reviewer 回复。不做任何其他操作。**
-
-3. 汇总审核结果路由：
-
-   **PASS →**
-   ```
-   SendMessage(to = "reviewer", message = {type: "shutdown_request"})
-   ```
-   进入 Phase 4。
-
-   **FAIL →** 将修复指令发送给 formalizer（formalizer 已有原始规格上下文，只需发增量修复指令）：
-   ```
-   SendMessage(to = "formalizer", message = "审核未通过，请修复以下问题后重新提交：
-
-   [修复指令原样粘贴]")
-   ```
-   等待 formalizer 修复完成后，再次发消息给 reviewer 重新审核。
-
-   **3轮修复仍失败 →** shutdown reviewer，通知 formalizer 回退代码，跳过该定理。
-
-4. **可选：用户显式要求时才启动 codex-reviewer**（`/lean4-formalize --with-codex`）：
-
-   ```
-   Agent(
-     name = "codex-reviewer",
-     subagent_type = "lean4-codex-reviewer",
-     team_name = "lean4-formalization",
-     description = "Codex外部审核（按需，用户显式请求时启动）",
      prompt = "..."
    )
    ```
+
+2. **停下来，等待 reviewer 回复。**
+
+3. 汇总审核结果路由：
+
+   **PASS →** shutdown reviewer，进入 Phase 4。
+
+   **FAIL →** 将修复指令发送给 formalizer，等修复后重新审核。
+
+   **3轮修复仍失败 →** shutdown reviewer，通知 formalizer 回退代码，跳过。
+
+4. **可选：用户显式要求时才启动 codex-reviewer。**
 
 ### Phase 4：登记
 
