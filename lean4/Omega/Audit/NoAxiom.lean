@@ -19,6 +19,7 @@ import Omega.Folding.MomentSum
 import Omega.Folding.CollisionKernel
 import Omega.Folding.FibonacciPolynomial
 import Omega.Folding.MaxFiber
+import Omega.Folding.FiberSpectrum
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -763,6 +764,27 @@ def coreAuditTargets : List String :=
   , "Omega.X.stableValueRingHom"
   , "Omega.X.toZMod_injective"
   , "Omega.X.toZMod_surjective"
-  , "Omega.X.stableValueRingEquiv" ]
+  , "Omega.X.stableValueRingEquiv"
+  -- Phase 9 (partial): FiberSpectrum — 纤维谱定义与基值 (def:pom-top-fiber-spectrum)
+  , "Omega.cNthMaxFiber_zero_eq_0"
+  , "Omega.cNthMaxFiber_zero_eq_5"
+  , "Omega.cNthMaxFiber_zero_eq_7"
+  , "Omega.X.fiberValueSet_nonempty"
+  , "Omega.cFiberSpectrum_zero"
+  , "Omega.cFiberSpectrum_one"
+  , "Omega.cFiberSpectrum_two"
+  , "Omega.cFiberSpectrum_three"
+  , "Omega.cFiberSpectrum_four"
+  , "Omega.cFiberSpectrum_five"
+  , "Omega.cFiberSpectrum_six"
+  , "Omega.cFiberSpectrum_seven"
+  , "Omega.cNthMaxFiber_second_four"
+  , "Omega.cNthMaxFiber_second_five"
+  , "Omega.cNthMaxFiber_second_six"
+  , "Omega.cNthMaxFiber_second_seven"
+  , "Omega.cNthMaxFiber_third_four"
+  , "Omega.cNthMaxFiber_third_five"
+  , "Omega.cNthMaxFiber_third_six"
+  , "Omega.cNthMaxFiber_third_seven" ]
 
 end Omega.Audit

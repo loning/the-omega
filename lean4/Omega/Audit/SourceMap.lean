@@ -2686,6 +2686,55 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.ShiftDynamics"
       leanName := "Omega.card_X_eq_matrix_sum"
       phase := 20
+      status := .formalized }
+  -- Phase 9 (partial): 纤维谱定义与基值 (def:pom-top-fiber-spectrum)
+  -- def:pom-top-fiber-spectrum → cFiberMultiset/cFiberSpectrum/cNthMaxFiber (FiberSpectrum.lean:14-23)
+  -- 状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-top-fiber-spectrum-computable-defs"
+      sourcePath := "sections/body/pom/fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberMultiset"
+      phase := 9
+      status := .formalized }
+  -- def:pom-top-fiber-spectrum → fiberValueSet / fiberValueSet_nonempty (FiberSpectrum.lean:36-41)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-top-fiber-spectrum-noncomputable-set"
+      sourcePath := "sections/body/pom/fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.X.fiberValueSet"
+      phase := 9
+      status := .formalized }
+  -- def:pom-top-fiber-spectrum → cNthMaxFiber_zero_eq_0/5/7 (FiberSpectrum.lean:26-28)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-top-fiber-spectrum-consistency-check"
+      sourcePath := "sections/body/pom/fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_zero_eq_0"
+      phase := 9
+      status := .formalized }
+  -- def:pom-top-fiber-spectrum → cFiberSpectrum_zero..seven (FiberSpectrum.lean:51-58)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-top-fiber-spectrum-base-values"
+      sourcePath := "sections/body/pom/fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberSpectrum_zero"
+      phase := 9
+      status := .formalized }
+  -- def:pom-top-fiber-spectrum → cNthMaxFiber_second_four..seven D_m^{(2)} (FiberSpectrum.lean:61-64)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-top-fiber-spectrum-second-values"
+      sourcePath := "sections/body/pom/fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_four"
+      phase := 9
+      status := .formalized }
+  -- def:pom-top-fiber-spectrum → cNthMaxFiber_third_four..seven D_m^{(3)} (FiberSpectrum.lean:67-70)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-top-fiber-spectrum-third-values"
+      sourcePath := "sections/body/pom/fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_third_four"
+      phase := 9
       status := .formalized } ]
 
 end Omega.Audit
