@@ -1859,6 +1859,34 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Graph.TransferMatrix"
       leanName := "Omega.Graph.goldenMeanAdjacency_det"
       phase := 14
+      status := .formalized }
+  -- Phase 23: 逆极限拓扑结构
+  -- thm:fold-suite item 3 (逆极限拓扑，部分：compact + totally disconnected)
+  --   → isClosed_no11Inf (Omega/Folding/InverseLimitTopology.lean:7)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:fold-suite-item3-topo-closed"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.isClosed_no11Inf"
+      phase := 23
+      status := .formalized }
+  -- thm:inverse-limit-golden (XInfinity 拓扑性质，部分：compact)
+  --   → CompactSpace XInfinity (Omega/Folding/InverseLimitTopology.lean:19)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:inverse-limit-golden-compact"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.CompactSpace XInfinity"
+      phase := 23
+      status := .formalized }
+  -- thm:inverse-limit-golden (XInfinity 拓扑性质，部分：totally disconnected)
+  --   → TotallyDisconnectedSpace XInfinity (Omega/Folding/InverseLimitTopology.lean:23)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:inverse-limit-golden-totally-disconnected"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.TotallyDisconnectedSpace XInfinity"
+      phase := 23
       status := .formalized } ]
 
 end Omega.Audit

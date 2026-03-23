@@ -12,6 +12,7 @@ import Omega.Folding.FiberArithmetic
 import Omega.Folding.CarryDefect
 import Omega.Folding.FiberFusion
 import Omega.Folding.InverseLimit
+import Omega.Folding.InverseLimitTopology
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
 import Omega.Folding.ModularTower
