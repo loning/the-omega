@@ -230,5 +230,154 @@ N^\star(y):=\min\{N:d(N)\ge y\}.
 证毕。
 \end{proof}
 
-\endinput
+\begin{corollary}[约数格硬件证书库的 sharp 相变常数]\label{cor:conclusion-divisor-lattice-sharp-phase-constant}
+定义可行证书库集合
+\[
+\mathcal N_m:=\{N\in\NN_{\ge 1}: d(N)\ge D_m\}.
+\]
+则对任意序列 \(N_m\in\mathcal N_m\)，都有
+\[
+\liminf_{m\to\infty}\frac{\log_2 N_m}{m\log_2 m}
+\ge
+\frac12\log_2\varphi.
+\]
+反之，最优序列
+\[
+N_m^\star:=\min\{N\in\NN_{\ge 1}: d(N)\ge D_m\}
+\]
+满足
+\[
+\log_2 N_m^\star
+=
+\left(\frac12\log_2\varphi+o(1)\right)m\log_2 m.
+\]
+因此，约数格硬件证书库存在 sharp 相变常数
+\[
+c_\star=\frac12\log_2\varphi,
+\]
+低于该常数的位长密度不可能支持 \(\Fold_m\) 的全纤维外置，而该常数本身可达。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-divisor-lattice-optimal-bit-scaling}，
+\[
+\log_2 N_m^\star
+=
+\left(\frac12\log_2\varphi+o(1)\right)m\log_2 m.
+\]
+若 \(N_m\in\mathcal N_m\)，则按 \(N_m^\star\) 的极小性有 \(N_m\ge N_m^\star\)，故
+\[
+\log_2 N_m\ge \log_2 N_m^\star.
+\]
+两边除以 \(m\log_2 m\) 并取 \(\liminf\) 即得下界；可达性由取 \(N_m=N_m^\star\) 直接给出。证毕。
+\end{proof}
 
+\begin{corollary}[固定 prime-axis 家族的灾变性次优]\label{cor:conclusion-fixed-prime-axis-catastrophic-suboptimality}
+设 \(N_m\) 满足
+\[
+d(N_m)\ge D_m
+\]
+并且其不同素因子个数有统一上界
+\[
+\omega(N_m)\le k
+\qquad (k\ \text{与}\ m\ \text{无关}).
+\]
+则
+\[
+\log_2 N_m
+\ge
+\exp\!\left(\left(\frac{\log\varphi}{2k}+o(1)\right)m\right).
+\]
+特别地，
+\[
+\frac{\log_2 N_m}{m\log_2 m}\longrightarrow\infty.
+\]
+因此，固定 prime-axis 的任何 Gödel 证书库都远离 sharp 相变前沿：它们不是 \(m\log m\) 级，而是以 \(\exp(cm)\) 级增长其比特长度。
+\end{corollary}
+\begin{proof}
+将
+\[
+N_m=\prod_{i=1}^{s_m}p_i^{e_i^{(m)}},
+\qquad
+s_m=\omega(N_m)\le k,
+\]
+并记
+\[
+E_m:=\max_{1\le i\le s_m}e_i^{(m)}.
+\]
+则
+\[
+d(N_m)=\prod_{i=1}^{s_m}(e_i^{(m)}+1)\le (E_m+1)^k.
+\]
+由 \(d(N_m)\ge D_m\) 与
+\[
+\log D_m=\frac{m}{2}\log\varphi+O(1)
+\]
+得
+\[
+E_m+1\ge D_m^{1/k}
+=
+\exp\!\left(\left(\frac{\log\varphi}{2k}+o(1)\right)m\right).
+\]
+另一方面，\(N_m\) 至少含有一个指数为 \(E_m\) 的素幂因子，故
+\[
+N_m\ge 2^{E_m},
+\qquad
+\log_2 N_m\ge E_m.
+\]
+代回即得第一式。由于右端比任意 \(m\log m\) 都增长更快，第二式随即成立。证毕。
+\end{proof}
+
+\begin{corollary}[多项式指数约束下的 prime-axis 扩展律]\label{cor:conclusion-polynomial-exponent-prime-axis-expansion}
+设 \(N_m\) 满足
+\[
+d(N_m)\ge D_m,
+\]
+并且其最大素幂指数仅多项式增长：
+\[
+\max_{p^e\parallel N_m}e\le m^c
+\qquad(c>0\ \text{固定}).
+\]
+则不同素因子个数必满足
+\[
+\omega(N_m)
+\ge
+\left(\frac{\log\varphi}{2c}+o(1)\right)\frac{m}{\log m}.
+\]
+因此，在“指数不爆炸”的硬件制度下，prime-axis 数目必须以 \(m/\log m\) 的量级发散；任何接近 sharp 前沿的证书库都不可能停留在有限或缓慢增长的素数轴数上。
+\end{corollary}
+\begin{proof}
+记
+\[
+k_m:=\omega(N_m),
+\qquad
+E_m:=\max_{p^e\parallel N_m}e.
+\]
+则
+\[
+d(N_m)\le (E_m+1)^{k_m}\le (m^c+1)^{k_m}.
+\]
+由 \(d(N_m)\ge D_m\) 与
+\[
+\log D_m=\frac{m}{2}\log\varphi+O(1)
+\]
+得
+\[
+k_m\log(m^c+1)\ge \frac{m}{2}\log\varphi+O(1).
+\]
+再用
+\[
+\log(m^c+1)=c\log m+o(\log m)
+\]
+整理即可得到
+\[
+k_m
+\ge
+\left(\frac{\log\varphi}{2c}+o(1)\right)\frac{m}{\log m}.
+\]
+证毕。
+\end{proof}
+
+\noindent
+因此，Gödel 外置硬件在约数格语义下呈现出一条 sharp 而又强烈各向异性的相图：一方面，最优位长尺度精确落在 \(\frac12\log_2\varphi\) 所控制的 \(m\log m\) 前沿上；另一方面，任何把 prime-axis 数目冻结在常数级的实现都会立刻退化到 \(\exp(cm)\) 级别的灾变性次优，而任何试图把单轴指数压回多项式规模的实现，又必然以 \(m/\log m\) 的速度不断开启新的素数轴。于是，接近最优前沿的 Gödel 证书库不再是“在固定硬件上微调指数”的问题，而是一个 prime-axis 本身必须持续扩张的相变过程。
+
+\endinput

@@ -63,4 +63,90 @@ theorem goldenMeanAdjacency_row_sum :
     exact (Omega.fib_succ_succ' (m + 2)).symm
 
 
+/-- Helper: entry (i,j) of A^(m+2) = entry of A^(m+1) + entry of A^m. -/
+private theorem pow_entry_add_two (m : Nat) (i j : Fin 2) :
+    (goldenMeanAdjacency ^ (m + 2)) i j =
+      (goldenMeanAdjacency ^ (m + 1)) i j + (goldenMeanAdjacency ^ m) i j := by
+  have := goldenMeanAdjacency_pow_add_two m
+  exact congr_fun (congr_fun (congr_arg Matrix.of this) i) j
+
+/-- (A^m)_{00} = F_{m+1}. -/
+theorem goldenMeanAdjacency_pow_00 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 0 = (Nat.fib (m + 1) : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [pow_entry_add_two, goldenMeanAdjacency_pow_00 (m + 1),
+        goldenMeanAdjacency_pow_00 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' (m + 1)).symm
+
+/-- (A^m)_{01} = F_m. -/
+theorem goldenMeanAdjacency_pow_01 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 1 = (Nat.fib m : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [pow_entry_add_two, goldenMeanAdjacency_pow_01 (m + 1),
+        goldenMeanAdjacency_pow_01 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- (A^m)_{10} = F_m. -/
+theorem goldenMeanAdjacency_pow_10 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ m) 1 0 = (Nat.fib m : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [pow_entry_add_two, goldenMeanAdjacency_pow_10 (m + 1),
+        goldenMeanAdjacency_pow_10 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- (A^m)_{11} = F_{m-1} for m ≥ 1. -/
+theorem goldenMeanAdjacency_pow_11 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ (m + 1)) 1 1 = (Nat.fib m : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [show m + 2 + 1 = (m + 1 + 1) + 1 from by omega,
+        show (m + 1 + 1) + 1 = (m + 1) + 2 from by omega,
+        pow_entry_add_two,
+        goldenMeanAdjacency_pow_11 (m + 1), goldenMeanAdjacency_pow_11 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- det(A^m) = (-1)^m. -/
+theorem goldenMeanAdjacency_pow_det (m : Nat) :
+    (goldenMeanAdjacency ^ m).det = (-1 : ℤ) ^ m := by
+  rw [Matrix.det_pow]; simp [goldenMeanAdjacency_det]
+
+/-- Cassini's identity: F_{n+1}·F_{n-1} - F_n² = (-1)^n for n ≥ 1. -/
+theorem fib_cassini (n : Nat) (hn : 1 ≤ n) :
+    (Nat.fib (n + 1) : ℤ) * Nat.fib (n - 1) - (Nat.fib n : ℤ) ^ 2 = (-1 : ℤ) ^ n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  -- det(A^{m+1}) = (A^{m+1})_{00}·(A^{m+1})_{11} - (A^{m+1})_{01}·(A^{m+1})_{10}
+  have hDet := goldenMeanAdjacency_pow_det (m + 1)
+  simp only [Matrix.det_fin_two, goldenMeanAdjacency_pow_00,
+    goldenMeanAdjacency_pow_01, goldenMeanAdjacency_pow_10,
+    goldenMeanAdjacency_pow_11] at hDet
+  -- hDet : F_{m+2}·F_m - F_{m+1}·F_{m+1} = (-1)^{m+1}
+  simp only [show m + 1 - 1 = m from by omega] at *
+  -- hDet : ↑(F_{m+2}) * ↑(F_m) - ↑(F_{m+1}) * ↑(F_{m+1}) = (-1)^(m+1)
+  -- Goal: ↑(F_{m+2}) * ↑(F_m) - ↑(F_{m+1})^2 = (-1)^(m+1)
+  rw [sq]; exact hDet
+
+/-- Row 1 sum of A^m: paths starting from state 1. -/
+theorem goldenMean_path_count_from_true (m : Nat) :
+    (goldenMeanAdjacency ^ m) 1 0 + (goldenMeanAdjacency ^ m) 1 1 =
+      (Nat.fib (m + 1) : ℤ) := by
+  cases m with
+  | zero => native_decide
+  | succ m =>
+    rw [goldenMeanAdjacency_pow_10, goldenMeanAdjacency_pow_11, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- Total paths of length m in the golden-mean shift. -/
+theorem goldenMean_total_paths (m : Nat) :
+    (goldenMeanAdjacency ^ m) 0 0 + (goldenMeanAdjacency ^ m) 0 1 +
+    ((goldenMeanAdjacency ^ m) 1 0 + (goldenMeanAdjacency ^ m) 1 1) =
+      (Nat.fib (m + 2) + Nat.fib (m + 1) : ℤ) := by
+  rw [goldenMeanAdjacency_row_sum, goldenMean_path_count_from_true, ← Nat.cast_add]
+
 end Omega.Graph

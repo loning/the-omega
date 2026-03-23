@@ -1,4 +1,5 @@
 import Omega.Frontier.ConditionalArithmetic
+import Omega.Folding.MomentSum
 
 namespace Omega.Frontier
 
@@ -546,6 +547,137 @@ theorem fiber_decomposition (m : Nat) :
 /-- Fold always outputs a stable (No11) word. -/
 theorem fold_always_stable (w : Word m) : No11 (Fold w).1 :=
   X.Fold_output_is_stable w
+
+/-! ### POM coverage: projection entropy & moment sums -/
+
+/-- |X_m| = F_{m+2} (projection entropy cardinality). -/
+theorem projection_entropy_cardinality (m : Nat) :
+    Fintype.card (X m) = Nat.fib (m + 2) := X.card_eq_fib m
+
+/-- Fiber multiplicities sum to 2^m. -/
+theorem fiber_sum_eq_pow (m : Nat) :
+    ∑ x : X m, X.fiberMultiplicity x = 2 ^ m := X.fiberMultiplicity_sum_eq_pow m
+
+/-- Cauchy-Schwarz collision bound: (2^m)² ≤ F_{m+2} · S_2(m). -/
+theorem cauchy_schwarz_collision_bound (m : Nat) :
+    (2 ^ m) ^ 2 ≤ Nat.fib (m + 2) * momentSum 2 m := momentSum_cauchy_schwarz m
+
+/-- S_q is monotone in q. -/
+theorem moment_monotone (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ momentSum (q + 1) m := momentSum_mono_q q m hq
+
+/-- S_q(m) ≥ F_{m+2} for all q. -/
+theorem moment_ge_cardinality (q m : Nat) :
+    Nat.fib (m + 2) ≤ momentSum q m := momentSum_ge_card q m
+
+/-- S_2(m) ≥ 2^m (collision sum lower bound). -/
+theorem collision_sum_ge_pow (m : Nat) :
+    2 ^ m ≤ momentSum 2 m := Omega.momentSum_two_ge_pow m
+
+/-! ### POM existence registrations -/
+
+/-- The maximum fiber multiplicity is achieved by some stable word. -/
+theorem max_fiber_achieved (m : Nat) :
+    ∃ x : X m, X.fiberMultiplicity x = X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_achieved m
+
+/-- For m ≥ 2, some stable word has fiber multiplicity ≥ 2 (pigeonhole). -/
+theorem fiber_pigeonhole (m : Nat) (hm : 2 ≤ m) :
+    ∃ x : X m, 2 ≤ X.fiberMultiplicity x :=
+  Omega.exists_fiber_ge_two m hm
+
+/-- The maximum fiber multiplicity is always positive. -/
+theorem max_fiber_positive (m : Nat) : 0 < X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_pos m
+
+/-- D(m+2) ≤ D(m+1) + D(m) (Fibonacci-type upper bound on max fiber). -/
+theorem max_fiber_fib_bound (m : Nat) :
+    X.maxFiberMultiplicity (m + 2) ≤ X.maxFiberMultiplicity (m + 1) + X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_le_add m
+
+/-! ### Entropy rate discrete skeleton -/
+
+/-- F_{m+2} < 2^m for m ≥ 2 (strict entropy gap). -/
+theorem entropy_gap_strict (m : Nat) (hm : 2 ≤ m) : Nat.fib (m + 2) < 2 ^ m := by
+  have key : ∀ n, 2 ≤ n → Nat.fib (n + 2) < 2 ^ n := by
+    intro n hn
+    induction n with
+    | zero => omega
+    | succ n ih =>
+      cases n with
+      | zero => omega
+      | succ k =>
+        cases k with
+        | zero => native_decide
+        | succ k =>
+          have hR := Omega.fib_succ_succ' (k + 3)
+          have ihk : Nat.fib (k + 4) < 2 ^ (k + 2) := ih (by omega)
+          have ih0 : Nat.fib (k + 3) ≤ 2 ^ (k + 2) := Omega.fib_le_pow_two (k + 1)
+          calc Nat.fib (k + 2 + 1 + 2)
+              = Nat.fib (k + 4) + Nat.fib (k + 3) := hR
+            _ < 2 ^ (k + 2) + 2 ^ (k + 2) := Nat.add_lt_add_of_lt_of_le ihk ih0
+            _ = 2 ^ (k + 2 + 1) := by ring
+  exact key m hm
+
+/-- F_{m+3} ≤ 2 · F_{m+2} (projection ratio bound). -/
+theorem projection_ratio_decreasing (m : Nat) :
+    Nat.fib (m + 3) * 2 ^ m ≤ Nat.fib (m + 2) * 2 ^ (m + 1) := by
+  have hBound : Nat.fib (m + 3) ≤ 2 * Nat.fib (m + 2) := by
+    have h1 : Nat.fib (m + 3) = Nat.fib (m + 2) + Nat.fib (m + 1) :=
+      Omega.fib_succ_succ' (m + 1)
+    have h2 : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+    omega
+  calc Nat.fib (m + 3) * 2 ^ m
+      ≤ 2 * Nat.fib (m + 2) * 2 ^ m := Nat.mul_le_mul_right _ hBound
+    _ = Nat.fib (m + 2) * 2 ^ (m + 1) := by ring
+
+/-- F_{m+2} > 0 (projection ratio positivity). -/
+theorem projection_ratio_positive (m : Nat) : 0 < Nat.fib (m + 2) :=
+  Nat.fib_pos.mpr (by omega)
+
+/-! ### S_q positivity and Cauchy-Schwarz restatement -/
+
+/-- S_q(m) > 0 for all q, m. -/
+theorem momentSum_pos (q m : Nat) : 0 < momentSum q m := by
+  have : Nat.fib (m + 2) ≤ momentSum q m := momentSum_ge_card q m
+  have : 0 < Nat.fib (m + 2) := Nat.fib_pos.mpr (by omega)
+  omega
+
+/-- Cauchy-Schwarz: S_2(m) · S_0(m) ≥ S_1(m)². -/
+theorem momentSum_cauchy_schwarz_restated (m : Nat) :
+    momentSum 2 m * momentSum 0 m ≥ (momentSum 1 m) ^ 2 := by
+  rw [momentSum_zero m, momentSum_one m, Nat.mul_comm]
+  exact momentSum_cauchy_schwarz m
+
+/-! ### Task B: Rényi bound wrappers -/
+
+theorem renyi_upper_bound (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ (X.maxFiberMultiplicity m) ^ (q - 1) * 2 ^ m :=
+  momentSum_le_max_pow q m hq
+
+theorem moment_sum_one_eq_pow (m : Nat) : momentSum 1 m = 2 ^ m := momentSum_one m
+theorem moment_sum_zero_eq_card (m : Nat) : momentSum 0 m = Nat.fib (m + 2) := momentSum_zero m
+
+/-! ### Task C: Max fiber probability bounds -/
+
+theorem max_fiber_le_pow (m : Nat) : X.maxFiberMultiplicity m ≤ 2 ^ m := by
+  -- D_m ≤ 2^m since fiber(x) ⊆ Word m and |Word m| = 2^m
+  obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
+  rw [← hx, X.fiberMultiplicity]
+  calc (X.fiber x).card ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    _ = Fintype.card (Word m) := Finset.card_univ
+    _ = 2 ^ m := X.Word_card m
+
+theorem max_fiber_ge_one (m : Nat) : 1 ≤ X.maxFiberMultiplicity m :=
+  X.maxFiberMultiplicity_pos m
+
+theorem max_fiber_prob_bounds (m : Nat) :
+    1 ≤ X.maxFiberMultiplicity m ∧ X.maxFiberMultiplicity m ≤ 2 ^ m :=
+  ⟨max_fiber_ge_one m, max_fiber_le_pow m⟩
+
+
+/-- The number of No11 words of length m equals F_{m+2}. -/
+theorem no11_count (m : Nat) : Fintype.card (X m) = Nat.fib (m + 2) := X.card_eq_fib m
 
 end
 

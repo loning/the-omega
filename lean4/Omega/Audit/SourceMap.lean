@@ -2735,6 +2735,739 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberSpectrum"
       leanName := "Omega.cNthMaxFiber_third_four"
       phase := 9
+      status := .formalized }
+  -- Phase 15: cor:field-phase-fib-prime — Field 实例 (FiberRing.lean:143-174)
+  -- instFieldOfPrime (通用域实例，F_{m+2} 素数时 X m 为域)
+  --   → instFieldOfPrime (FiberRing.lean:145)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instFieldOfPrime"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instFieldOfPrime"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X1 : Field (X 1) ≅ GF(2) (FiberRing.lean:153)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X1"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X1"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X2 : Field (X 2) ≅ GF(3) (FiberRing.lean:157)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X2"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X2"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X3 : Field (X 3) ≅ GF(5) (FiberRing.lean:161)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X3"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X3"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X5 : Field (X 5) ≅ GF(13) (FiberRing.lean:165)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X5"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X5"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X9 : Field (X 9) ≅ GF(89) (FiberRing.lean:169)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X9"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X9"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X11 : Field (X 11) ≅ GF(233) (FiberRing.lean:173)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X11"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X11"
+      phase := 15
+      status := .formalized }
+  -- Phase 5: Fibonacci 整除性 (计划5)
+  -- fib-gcd → fib_gcd (Omega/Core/Fib.lean:81)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-gcd"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_gcd"
+      phase := 5
+      status := .formalized }
+  -- fib-coprime-succ → fib_coprime_succ (Omega/Core/Fib.lean:85)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-coprime-succ"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_coprime_succ"
+      phase := 5
+      status := .formalized }
+  -- fib-dvd-mul → fib_dvd_mul (Omega/Core/Fib.lean:89)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-dvd-mul"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_dvd_mul"
+      phase := 5
+      status := .formalized }
+  -- Phase 4 深化: restrict 保零保一 (计划4深化)
+  -- restrict-zero → restrict_zero (Omega/Folding/ModularTower.lean:122)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "restrict-zero"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_zero"
+      phase := 4
+      status := .formalized }
+  -- restrict-one → restrict_one (Omega/Folding/ModularTower.lean:128)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "restrict-one"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_one"
+      phase := 4
+      status := .formalized }
+  -- Phase 20 深化: shift 动力学全零固定点与唯一性 (计划20深化)
+  -- shift-allFalse-fixed → allFalse + shift_allFalse (Omega/Folding/ShiftDynamics.lean:48)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:shift-allFalse"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.allFalse"
+      phase := 20
+      status := .formalized }
+  -- shift_allFalse → shift_allFalse (Omega/Folding/ShiftDynamics.lean:50)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:shift-allFalse-fixed"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_allFalse"
+      phase := 20
+      status := .formalized }
+  -- shift-fixed-iff → shift_fixed_iff (Omega/Folding/ShiftDynamics.lean:54)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shift-fixed-iff"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_fixed_iff"
+      phase := 20
+      status := .formalized }
+  -- shift-not-injective → shift_not_injective (Omega/Folding/ShiftDynamics.lean:69)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:shift-not-injective"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_not_injective"
+      phase := 20
+      status := .formalized }
+  -- Phase 4 深化: restrict 满射与纤维非空 (计划4深化)
+  -- restrict-surjective → restrict_surjective (Omega/Folding/ModularTower.lean:134)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:restrict-surjective"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_surjective"
+      phase := 4
+      status := .formalized }
+  -- restrict-fiber-nonempty → restrict_fiber_nonempty (Omega/Folding/ModularTower.lean:140)
+  --   状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:restrict-fiber-nonempty"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.ModularTower"
+      leanName := "Omega.X.restrict_fiber_nonempty"
+      phase := 4
+      status := .formalized }
+  -- Phase 27 初步: CRT 分解 (计划27)
+  -- crt-decomposition → crtDecomposition (Omega/Folding/FiberRing.lean:179)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "crt-decomposition"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.crtDecomposition"
+      phase := 27
+      status := .formalized }
+  -- crt-X7-decomposition → X7_decomposition (Omega/Folding/FiberRing.lean:185)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "crt-X7-decomposition"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.X7_decomposition"
+      phase := 27
+      status := .formalized }
+  -- crt-X10-decomposition → X10_decomposition (Omega/Folding/FiberRing.lean:189)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "crt-X10-decomposition"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.X10_decomposition"
+      phase := 27
+      status := .formalized }
+  -- Phase 19/20 深化: TransferMatrix 幂次条目公式 (计划19/20深化)
+  -- thm:golden-mean-pow-entry-00 → goldenMeanAdjacency_pow_00 (TransferMatrix.lean:74)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-00"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_00"
+      phase := 19
+      status := .formalized }
+  -- thm:golden-mean-pow-entry-01 → goldenMeanAdjacency_pow_01 (TransferMatrix.lean:84)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-01"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_01"
+      phase := 19
+      status := .formalized }
+  -- thm:golden-mean-pow-entry-10 → goldenMeanAdjacency_pow_10 (TransferMatrix.lean:94)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-10"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_10"
+      phase := 19
+      status := .formalized }
+  -- thm:golden-mean-pow-entry-11 → goldenMeanAdjacency_pow_11 (TransferMatrix.lean:104)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-11"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_11"
+      phase := 19
+      status := .formalized }
+  -- aux:pow-entry-add-two → pow_entry_add_two (TransferMatrix.lean:67, private helper)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  -- Phase 20 深化: 周期轨道 (计划20深化)
+  -- def:period3-seq → period3Seq (ShiftDynamics.lean:87)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:period3-seq"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period3Seq"
+      phase := 20
+      status := .formalized }
+  -- thm:shiftN-three-period3 → shiftN_three_period3 (ShiftDynamics.lean:91)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shiftN-three-period3"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shiftN_three_period3"
+      phase := 20
+      status := .formalized }
+  -- thm:shift-period3-ne → shift_period3_ne (ShiftDynamics.lean:95)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shift-period3-ne"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_period3_ne"
+      phase := 20
+      status := .formalized }
+  -- def:period2-seq → period2Seq (ShiftDynamics.lean:100)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:period2-seq"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period2Seq"
+      phase := 20
+      status := .formalized }
+  -- thm:shiftN-two-period2 → shiftN_two_period2 (ShiftDynamics.lean:104)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shiftN-two-period2"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shiftN_two_period2"
+      phase := 20
+      status := .formalized }
+  -- Phase 11 前置: Fibonacci 多项式 x=0 评估与路径独立集递推 (计划11前置)
+  -- thm:pom-fibonacci-polynomial-eval-zero → fibPoly_eval_zero (FibonacciPolynomial.lean:42)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-fibonacci-polynomial-eval-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_eval_zero"
+      phase := 11
+      status := .formalized }
+  -- thm:pom-path-indset-poly-eval-zero → pathIndSetPoly_eval_zero (FibonacciPolynomial.lean:51)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-path-indset-poly-eval-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.pathIndSetPoly_eval_zero"
+      phase := 11
+      status := .formalized }
+  -- thm:pom-path-indset-poly-recurrence → pathIndSetPoly_recurrence (FibonacciPolynomial.lean:55)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-path-indset-poly-recurrence"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.pathIndSetPoly_recurrence"
+      phase := 11
+      status := .formalized }
+  -- Phase 17: Frontier 包装 — ConditionalArithmetic.lean
+  -- thm:finite-resolution-mod → stable_ring_isomorphism (ConditionalArithmetic.lean:640)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:finite-resolution-mod"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Frontier.ConditionalArithmetic"
+      leanName := "Omega.Frontier.stable_ring_isomorphism"
+      phase := 17
+      status := .formalized }
+  -- cor:field-phase-fib-prime → stable_field_of_prime (ConditionalArithmetic.lean:644)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:field-phase-fib-prime"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Frontier.ConditionalArithmetic"
+      leanName := "Omega.Frontier.stable_field_of_prime"
+      phase := 17
+      status := .formalized }
+  -- Phase 17: Frontier 包装 — ConditionalSummary.lean
+  -- prop:pom-projection-entropy → projection_entropy_cardinality (ConditionalSummary.lean:554)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-entropy"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.projection_entropy_cardinality"
+      phase := 17
+      status := .formalized }
+  -- prop:pom-fiber-sum-identity → fiber_sum_eq_pow (ConditionalSummary.lean:558)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-fiber-sum-identity"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.fiber_sum_eq_pow"
+      phase := 17
+      status := .formalized }
+  -- thm:fold-collision-convex-lower-bounds → cauchy_schwarz_collision_bound (ConditionalSummary.lean:562)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:fold-collision-convex-lower-bounds"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.cauchy_schwarz_collision_bound"
+      phase := 17
+      status := .formalized }
+  -- prop:pom-sq-monotone → moment_monotone (ConditionalSummary.lean:566)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-monotone"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_monotone"
+      phase := 17
+      status := .formalized }
+  -- prop:pom-sq-lower → moment_ge_cardinality (ConditionalSummary.lean:570)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-lower"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_ge_cardinality"
+      phase := 17
+      status := .formalized }
+  -- cor:pom-s2-lower → collision_sum_ge_pow (ConditionalSummary.lean:574)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-s2-lower"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.collision_sum_ge_pow"
+      phase := 17
+      status := .formalized }
+  -- Phase 18: Frontier 包装 — ConditionalSummary.lean (POM 存在性与熵率骨架)
+  -- thm:pom-max-fiber (存在部分) → max_fiber_achieved (ConditionalSummary.lean:580)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-fiber-achieved"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_achieved"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-fiber-pigeonhole → fiber_pigeonhole (ConditionalSummary.lean:585)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-fiber-pigeonhole"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.fiber_pigeonhole"
+      phase := 18
+      status := .formalized }
+  -- thm:pom-max-fiber (正性部分) → max_fiber_positive (ConditionalSummary.lean:590)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-fiber-positive"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_positive"
+      phase := 18
+      status := .formalized }
+  -- cor:pom-D-rec (上界) → max_fiber_fib_bound (ConditionalSummary.lean:594)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-D-rec-upper"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_fib_bound"
+      phase := 18
+      status := .formalized }
+  -- prop:pom-projection-entropy (严格版) → entropy_gap_strict (ConditionalSummary.lean:601)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-entropy-strict"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.entropy_gap_strict"
+      phase := 18
+      status := .formalized }
+  -- 投影比率递减 → projection_ratio_decreasing (ConditionalSummary.lean:623)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-ratio-decreasing"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.projection_ratio_decreasing"
+      phase := 18
+      status := .formalized }
+  -- 投影比率正性 → projection_ratio_positive (ConditionalSummary.lean:635)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-ratio-positive"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.projection_ratio_positive"
+      phase := 18
+      status := .formalized }
+  -- Phase 18: FiberSpectrum.lean — 达到者数定义与基值
+  -- thm:pom-max-achievers-phase-stabilization (前置) → cMaxFiberAchievers (FiberSpectrum.lean:31)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-achievers-phase-stabilization-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cMaxFiberAchievers"
+      phase := 18
+      status := .formalized }
+  -- Phase 19: FiberSpectrum.lean — 达到者数有界 + 次大纤维基值 m=8,9,10
+  -- thm:pom-max-achievers-phase-stabilization (有界) → cMaxFiberAchievers_le_univ (FiberSpectrum.lean:46)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-max-achievers-phase-stabilization-bound"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cMaxFiberAchievers_le_univ"
+      phase := 19
+      status := .formalized }
+  -- thm:pom-second-max-fiber-closed-form (基值 m=8) → cNthMaxFiber_second_eight (FiberSpectrum.lean:91)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-second-max-fiber-closed-form-m8"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_eight"
+      phase := 19
+      status := .formalized }
+  -- thm:pom-second-max-fiber-closed-form (基值 m=9) → cNthMaxFiber_second_nine (FiberSpectrum.lean:92)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-second-max-fiber-closed-form-m9"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_nine"
+      phase := 19
+      status := .formalized }
+  -- thm:pom-second-max-fiber-closed-form (基值 m=10) → cNthMaxFiber_second_ten (FiberSpectrum.lean:93)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-second-max-fiber-closed-form-m10"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cNthMaxFiber_second_ten"
+      phase := 19
+      status := .formalized }
+  -- Phase 19: ConditionalSummary.lean — S_q 正性与 Cauchy-Schwarz 重述
+  -- prop:pom-sq-monotone (正性) → momentSum_pos (ConditionalSummary.lean:641)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-pos"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.momentSum_pos"
+      phase := 19
+      status := .formalized }
+  -- prop:pom-sq-monotone (Cauchy-Schwarz 重述) → momentSum_cauchy_schwarz_restated (ConditionalSummary.lean:647)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-cauchy-schwarz-restated"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.momentSum_cauchy_schwarz_restated"
+      phase := 19
+      status := .formalized }
+  -- Phase 20: ConditionalSummary — Rényi 上界 + S_1/S_0 恒等式 + 最大纤维概率界
+  -- prop:pom-rq-universal-bounds → renyi_upper_bound (ConditionalSummary.lean:654)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-rq-universal-bounds"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.renyi_upper_bound"
+      phase := 20
+      status := .formalized }
+  -- S_1 = 2^m → moment_sum_one_eq_pow (ConditionalSummary.lean:658)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-rq-universal-bounds-s1"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_sum_one_eq_pow"
+      phase := 20
+      status := .formalized }
+  -- S_0 = F_{m+2} → moment_sum_zero_eq_card (ConditionalSummary.lean:659)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-rq-universal-bounds-s0"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_sum_zero_eq_card"
+      phase := 20
+      status := .formalized }
+  -- cor:pom-max-fiber-rate-endpoint (D_m ≤ 2^m) → max_fiber_le_pow (ConditionalSummary.lean:663)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-max-fiber-rate-endpoint"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_le_pow"
+      phase := 20
+      status := .formalized }
+  -- 1 ≤ D_m → max_fiber_ge_one (ConditionalSummary.lean:671)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-max-fiber-rate-endpoint-lower"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_ge_one"
+      phase := 20
+      status := .formalized }
+  -- 1 ≤ D_m ∧ D_m ≤ 2^m → max_fiber_prob_bounds (ConditionalSummary.lean:674)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-max-fiber-rate-endpoint-both"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.max_fiber_prob_bounds"
+      phase := 20
+      status := .formalized }
+  -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值 (cor:pom-fiber-parity 前置)
+  -- cOddFiberCount 定义 + 基值 m=0..6 (FiberSpectrum.lean:106-120)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-parity-odd-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cOddFiberCount"
+      phase := 20
+      status := .formalized }
+  -- cEvenFiberCount 定义 + 基值 m=0..6 (FiberSpectrum.lean:110-128)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-parity-even-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cEvenFiberCount"
+      phase := 20
+      status := .formalized }
+  -- Phase 21: Fib — Fibonacci 双倍公式与平方和恒等式
+  -- fib_double: F_{2n} = F_n·(2F_{n+1}-F_n) (Fib.lean:93)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:fib-double-formula"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_double"
+      phase := 21
+      status := .formalized }
+  -- fib_double_plus_one: F_{2n+1} = F_{n+1}²+F_n² (Fib.lean:98)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:fib-double-plus-one-formula"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_double_plus_one"
+      phase := 21
+      status := .formalized }
+  -- fib_sq_add_sq: F_n²+F_{n+1}² = F_{2n+1} (Fib.lean:103)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:fib-sq-add-sq"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_sq_add_sq"
+      phase := 21
+      status := .formalized }
+  -- Phase 21: TransferMatrix — 行列式幂次公式与 Cassini 恒等式
+  -- goldenMeanAdjacency_pow_det: det(A^m) = (-1)^m (TransferMatrix.lean:116)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:transfer-matrix-pow-det"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_det"
+      phase := 21
+      status := .formalized }
+  -- fib_cassini: Cassini 恒等式 F_{n+1}·F_{n-1}-F_n²=(-1)^n (TransferMatrix.lean:121)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:fib-cassini-identity"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.fib_cassini"
+      phase := 21
+      status := .formalized }
+  -- Phase 21: ShiftDynamics — Lucas 数定义 + Fibonacci 关系 + 迹公式
+  -- lucasNum 定义 + lucasNum_zero/one/two/three/succ_succ (ShiftDynamics.lean:149-159)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:lucas-number"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.lucasNum"
+      phase := 21
+      status := .formalized }
+  -- lucasNum_eq_fib: L_n = F_{n+1}+F_{n-1} (ShiftDynamics.lean:174)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:lucas-fibonacci-identity"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.lucasNum_eq_fib"
+      phase := 21
+      status := .formalized }
+  -- goldenMeanAdjacency_pow_trace: tr(A^n) = F_{n+1}+F_{n-1} (ShiftDynamics.lean:181)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:transfer-matrix-pow-trace"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.goldenMeanAdjacency_pow_trace"
+      phase := 21
+      status := .formalized }
+  -- Phase 22: FiberSpectrum — 纤维直方图定义与基值 (cor:pom-fiber-parity 深化前置)
+  -- cFiberHist 定义 + m=4 直方图基值 (FiberSpectrum.lean:51-57)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-fiber-histogram"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberHist"
+      phase := 22
+      status := .formalized }
+  -- cFiberHist m=4 基值: hist[1]=2, hist[2]=4, hist[3]=2 (FiberSpectrum.lean:55-57)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-histogram-m4"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberHist_4_1"
+      phase := 22
+      status := .formalized }
+  -- cFiberHist m=6 基值: hist[1]=2, hist[2]=4, hist[3]=8, hist[4]=5, hist[5]=2 (FiberSpectrum.lean:60-64)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-histogram-m6"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberHist_6_1"
+      phase := 22
+      status := .formalized }
+  -- Phase 22: TransferMatrix — 路径计数 Fibonacci 等式
+  -- goldenMean_path_count_from_true: row 1 sum = F_{m+1} (TransferMatrix.lean:136)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-path-count-from-true"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMean_path_count_from_true"
+      phase := 22
+      status := .formalized }
+  -- goldenMean_total_paths: total = F_{m+2}+F_{m+1} (TransferMatrix.lean:146)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-total-paths"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMean_total_paths"
+      phase := 22
+      status := .formalized }
+  -- Phase 22: InverseLimitTopology — 位差异→序列不同
+  -- ne_of_bit_ne: 位差异→序列不同 (InverseLimitTopology.lean:45)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:ne-of-bit-ne"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.ne_of_bit_ne"
+      phase := 22
+      status := .formalized }
+  -- Phase 22: ConditionalSummary — No11 词计数 = F_{m+2}
+  -- no11_count: |No11 words| = F_{m+2} (ConditionalSummary.lean:680)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:no11-word-count"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.no11_count"
+      phase := 22
+      status := .formalized }
+  -- Phase 23: ShiftDynamics — 周期轨道深化
+  -- shift_period2_ne: 周期2序列非固定点 (ShiftDynamics.lean:108)
+  -- period2_minimal: 周期2最小性 (ShiftDynamics.lean:113)
+  -- period3_minimal: 周期3最小性 (ShiftDynamics.lean:118)
+  -- period4Seq: 周期4序列定义 (ShiftDynamics.lean:126)
+  -- shiftN_four_period4: 周期4轨道 σ⁴(p₄)=p₄ (ShiftDynamics.lean:130)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:shift-period2-ne"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_period2_ne"
+      phase := 23
+      status := .formalized }
+  , { label := "cor:shift-period2-minimal"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period2_minimal"
+      phase := 23
+      status := .formalized }
+  , { label := "cor:shift-period3-minimal"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period3_minimal"
+      phase := 23
+      status := .formalized }
+  , { label := "def:shift-period4-seq"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period4Seq"
+      phase := 23
+      status := .formalized }
+  , { label := "cor:shift-period4-orbit"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shiftN_four_period4"
+      phase := 23
+      status := .formalized }
+  -- Phase 23: Weight — 全零词 weight=0
+  -- weight_allFalse: weight(0⃗) = 0 (Weight.lean:50)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:weight-allFalse"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Weight"
+      leanName := "Omega.weight_allFalse"
+      phase := 23
+      status := .formalized }
+  -- Phase 23: Value — 全零稳定词 stableValue=0
+  -- stableValue_allFalse: stableValue(0⃗) = 0 (Value.lean:109)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:stableValue-allFalse"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Value"
+      leanName := "Omega.stableValue_allFalse"
+      phase := 23
+      status := .formalized }
+  -- Phase 24: Zeckendorf — 全零稳定词 Zeckendorf 索引为空
+  -- zeckIndices_allFalse: zeckIndices(0⃗) = [] (Zeckendorf.lean:162)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:zeckIndices-allFalse"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Zeckendorf"
+      leanName := "Omega.X.zeckIndices_allFalse"
+      phase := 24
+      status := .formalized }
+  -- Phase 25: Value — stableValue = weight of underlying word
+  -- stableValue_eq_weight: stableValue x = weight x.1 (Value.lean:114)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:stableValue-eq-weight"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Value"
+      leanName := "Omega.stableValue_eq_weight"
+      phase := 25
+      status := .formalized }
+  -- Phase 25: FiberRing — 环特征 = F_{m+2}
+  -- instCharP: CharP (X m) (Nat.fib (m + 2)) (FiberRing.lean:196)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:charP-fib"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.instCharP"
+      phase := 25
       status := .formalized } ]
 
 end Omega.Audit

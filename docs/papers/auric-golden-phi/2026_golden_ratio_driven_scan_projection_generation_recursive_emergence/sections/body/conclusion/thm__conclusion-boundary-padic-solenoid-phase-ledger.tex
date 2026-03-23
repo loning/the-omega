@@ -3,7 +3,7 @@
 \[
 r:=r(f)=\operatorname{rank}_{\ZZ}H_1(\mathsf B_f;\ZZ)=A(f)-|X|+c(\mathsf B_f).
 \]
-前述模 \(p\) 仿射纤维、pro-\(p\) 寄存最小性与 solenoid 终对象性可进一步压缩为一条统一结构链：回路秩 \(r\) 同时控制有限层边界方程的解纤维基数、其 \(p\)-进与阿德尔完成、连续相位通道的最小维数，以及离散寄存器与相位精度之间的线性预算律。
+前述模 \(p\) 仿射纤维、pro-\(p\) 寄存最小性与 solenoid 终对象性可进一步压缩为一条统一结构链：回路秩 \(r\) 同时控制有限层边界方程的解纤维基数、逐层精确选择器的最小离散复杂度、其 \(p\)-进与阿德尔完成、有限素数联合读出的相位/寄存乘法律，以及通用连通包络上的刚性与无穷素数尾的结构性失明。
 
 \begin{theorem}[\(p\)-进边界方程塔与精确秩]\label{thm:conclusion-boundary-padic-tower-exact-rank}
 取 \(\mathsf B_f\) 的任意定向关联矩阵
@@ -82,6 +82,154 @@ p^{\ell r}.
 证毕。
 \end{proof}
 
+\begin{corollary}[\(p\)-进边界方程塔的精确斜率刚性]\label{cor:conclusion-boundary-padic-tower-exact-slope-rigidity}
+在定理 \ref{thm:conclusion-boundary-padic-tower-exact-rank} 的设定下，若 \((\delta_\ell)_{\ell\ge 1}\) 在模约化下相容，则对每个 \(\ell\ge 1\) 都有
+\[
+\frac{\card{\mathcal F_{p^{\ell+1}}(\delta_{\ell+1})}}{\card{\mathcal F_{p^\ell}(\delta_\ell)}}=p^r.
+\]
+并且约化映射
+\[
+\pi_{\ell+1,\ell}:\mathcal F_{p^{\ell+1}}(\delta_{\ell+1})\longrightarrow \mathcal F_{p^\ell}(\delta_\ell)
+\]
+是满射，其每条纤维恰有 \(p^r\) 个点。特别地，
+\[
+\boxed{\;
+r=\frac{1}{\ell}\log_p\card{\mathcal F_{p^\ell}(\delta_\ell)}
+\qquad(\ell\ge 1).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-boundary-padic-tower-exact-rank}，
+\[
+\card{\mathcal F_{p^\ell}(\delta_\ell)}=p^{\ell r},
+\qquad
+\card{\mathcal F_{p^{\ell+1}}(\delta_{\ell+1})}=p^{(\ell+1)r},
+\]
+故层间比值为 \(p^r\)。同一定理的证明还说明
+\(
+\pi_{\ell+1,\ell}
+\)
+在 Smith 坐标下逐坐标表现为
+\[
+(\ZZ/p^{\ell+1}\ZZ)^r\twoheadrightarrow (\ZZ/p^\ell\ZZ)^r,
+\]
+因而为满射，且每条纤维基数恰为 \(p^r\)。最后一式由
+\(
+\card{\mathcal F_{p^\ell}(\delta_\ell)}=p^{\ell r}
+\)
+直接取 \(\log_p\) 得到。证毕。
+\end{proof}
+
+\begin{theorem}[逐层精确选择器的最小离散复杂度]\label{thm:conclusion-boundary-exact-selector-complexity}
+固定素数 \(p\) 与层级 \(\ell\ge 1\)。令
+\[
+B_\ell:(\ZZ/p^\ell\ZZ)^{A(f)}\to (\ZZ/p^\ell\ZZ)^X
+\]
+为边界矩阵 \(B\) 的模 \(p^\ell\) 约化。称映射
+\[
+\Sigma_\ell:(\ZZ/p^\ell\ZZ)^{A(f)}\longrightarrow \operatorname{im}(B_\ell)\times R_\ell,
+\qquad
+\Sigma_\ell(\varphi)=\bigl(B_\ell\varphi,\operatorname{lab}_\ell(\varphi)\bigr)
+\]
+为一条逐层精确选择器，若 \(\Sigma_\ell\) 为单射。则最小离散寄存器规模满足
+\[
+\boxed{\;
+\min \card{R_\ell}=p^{\ell r}.
+\;}
+\]
+等价地，最小比特预算恰为
+\[
+\boxed{\;
+\mathsf{bits}_{\min}(\ell,p)=\ell r\log_2 p.
+\;}
+\]
+\end{theorem}
+\begin{proof}
+任取一条非空纤维 \(\mathcal F_{p^\ell}(\delta_\ell)\)。若 \(\Sigma_\ell\) 为单射，则其在该纤维上的限制仍为单射，故
+\[
+\card{R_\ell}\ge \card{\mathcal F_{p^\ell}(\delta_\ell)}=p^{\ell r}
+\]
+由定理 \ref{thm:conclusion-boundary-padic-tower-exact-rank} 得到。
+
+反向取 Smith 标准形坐标
+\[
+UBV=
+\operatorname{diag}\!\bigl(
+\underbrace{1,\dots,1}_{|X|-c(\mathsf B_f)},
+\underbrace{0,\dots,0}_{r}
+\bigr),
+\]
+并在 \((\ZZ/p^\ell\ZZ)^{A(f)}\) 中写
+\[
+V^{-1}\varphi=(u,v),
+\qquad
+u\in(\ZZ/p^\ell\ZZ)^{|X|-c(\mathsf B_f)},
+\quad
+v\in(\ZZ/p^\ell\ZZ)^r.
+\]
+于是 \(B_\ell\varphi\) 唯一决定 \(u\)，而末 \(r\) 个坐标 \(v\) 正参数化核方向。取
+\[
+R_\ell:=(\ZZ/p^\ell\ZZ)^r,
+\qquad
+\operatorname{lab}_\ell(\varphi):=v.
+\]
+若 \(\Sigma_\ell(\varphi)=\Sigma_\ell(\psi)\)，则 \(B_\ell\varphi=B_\ell\psi\) 给出两者的 \(u\)-坐标相同，而 \(\operatorname{lab}_\ell(\varphi)=\operatorname{lab}_\ell(\psi)\) 给出 \(v\)-坐标相同，因此 \(\varphi=\psi\)。故上界可达，最小寄存器规模即为 \(p^{\ell r}\)。取二进对数即得最小比特预算。证毕。
+\end{proof}
+
+\begin{theorem}[有限素数联合读出的精确选择器乘法律]\label{thm:conclusion-boundary-finite-prime-selector-product-law}
+设 \(S\subset \mathbb P\) 为有限素数集，\(\boldsymbol\ell=(\ell_p)_{p\in S}\) 为正整数向量，并记
+\[
+M_S:=\prod_{p\in S}p^{\ell_p}.
+\]
+对每个 \(p\in S\) 选定一条非空纤维 \(\mathcal F_{p^{\ell_p}}(\delta_{\ell_p}^{(p)})\)，并定义联合纤维
+\[
+\mathcal F_{S,\boldsymbol\ell}(\delta)
+:=
+\prod_{p\in S}\mathcal F_{p^{\ell_p}}(\delta_{\ell_p}^{(p)}).
+\]
+则区分联合纤维内点所需的最小离散寄存器规模恰为
+\[
+\boxed{\;
+\min \card{R_{S,\boldsymbol\ell}}=M_S^{\,r}.
+\;}
+\]
+等价地，其最小比特预算满足
+\[
+\boxed{\;
+\mathsf{bits}_{\min}(S,\boldsymbol\ell)=r\log_2 M_S.
+\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-boundary-padic-tower-exact-rank}，
+\[
+\card{\mathcal F_{S,\boldsymbol\ell}(\delta)}
+=
+\prod_{p\in S}\card{\mathcal F_{p^{\ell_p}}(\delta_{\ell_p}^{(p)})}
+=
+\prod_{p\in S}p^{\ell_p r}
+=
+M_S^{\,r}.
+\]
+任何联合精确选择器在该联合纤维上的限制都必须是单射，故其寄存器规模至少为 \(M_S^r\)。
+
+反向对每个 \(p\in S\) 取定理 \ref{thm:conclusion-boundary-exact-selector-complexity} 中的最优寄存器
+\(
+(\ZZ/p^{\ell_p}\ZZ)^r
+\)，并作直积
+\[
+R_{S,\boldsymbol\ell}
+:=
+\prod_{p\in S}(\ZZ/p^{\ell_p}\ZZ)^r.
+\]
+逐素数记录标签即可得到联合精确选择器，其寄存器规模正好为
+\[
+\prod_{p\in S}p^{\ell_p r}=M_S^r.
+\]
+故下界可达。取二进对数便得到最小比特预算公式。证毕。
+\end{proof}
+
 \begin{theorem}[阿德尔拼接与通用连通包络]\label{thm:conclusion-boundary-adelic-solenoid-envelope}
 对每个素数 \(p\)，取一条相容的 \(p\)-进边界方程塔
 \(
@@ -158,6 +306,110 @@ j:\ZZ^r\hookrightarrow A.
 并满足 \(\pi_{\QQ,r}\circ \widehat{\phi}=\pi\)。
 故 \((\widehat{\QQ}^{\,r},\pi_{\QQ,r})\) 为所述范畴的终对象。
 证毕。
+\end{proof}
+
+\begin{corollary}[通用连通包络相对于基底的自同构刚性]\label{cor:conclusion-boundary-solenoid-over-base-rigidity}
+设
+\[
+u:\widehat{\QQ}^{\,r}\longrightarrow \widehat{\QQ}^{\,r}
+\]
+是连续群同态，并满足
+\[
+\pi_{\QQ,r}\circ u=\pi_{\QQ,r},
+\]
+其中
+\[
+0\to \widehat{\ZZ}^{\,r}\to \widehat{\QQ}^{\,r}\xrightarrow{\ \pi_{\QQ,r}\ }\TT^r\to 0
+\]
+为定理 \ref{thm:conclusion-boundary-adelic-solenoid-envelope} 的典范短正合列。则必有
+\[
+u=\mathrm{id}_{\widehat{\QQ}^{\,r}}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-boundary-adelic-solenoid-envelope}，\((\widehat{\QQ}^{\,r},\pi_{\QQ,r})\) 在相应范畴中是终对象。映射 \(u\) 与恒等映射
+\(
+\mathrm{id}_{\widehat{\QQ}^{\,r}}
+\)
+都是从该终对象到自身、并与到 \(\TT^r\) 的投影相容的态射。终对象上的此类态射唯一，故 \(u=\mathrm{id}_{\widehat{\QQ}^{\,r}}\)。证毕。
+\end{proof}
+
+\begin{theorem}[阿德尔边界 torsor 的有限素数角色分解]\label{thm:conclusion-boundary-adelic-torsor-finite-prime-character-decomposition}
+在定理 \ref{thm:conclusion-boundary-adelic-solenoid-envelope} 的设定下，选定 \(\mathcal F_{\widehat{\ZZ}}(\delta)\) 的一个基点，并识别
+\[
+\mathcal F_{\widehat{\ZZ}}(\delta)\cong \widehat{\ZZ}^{\,r}=\prod_p \ZZ_p^{\,r}.
+\]
+则其 Pontryagin 对偶满足
+\[
+\widehat{\mathcal F_{\widehat{\ZZ}}(\delta)}
+\cong
+\bigoplus_p C_{p^\infty}^{\,r},
+\]
+其中 \(C_{p^\infty}\) 为 Prüfer \(p\)-群。特别地，每个连续角色 \(\chi\) 都唯一分解为有限和
+\[
+\chi=\sum_{p\in S_\chi}\chi_p,
+\qquad
+S_\chi\subset \mathbb P\ \text{有限},
+\qquad
+\chi_p\in C_{p^\infty}^{\,r}.
+\]
+因此，阿德尔边界 torsor 上不存在同时看见无穷多个素数方向的单一连续角色。
+\end{theorem}
+\begin{proof}
+Pontryagin 对偶把紧直积送到离散直和，故
+\[
+\widehat{\mathcal F_{\widehat{\ZZ}}(\delta)}
+\cong
+\widehat{\widehat{\ZZ}^{\,r}}
+\cong
+\widehat{\prod_p \ZZ_p^{\,r}}
+\cong
+\bigoplus_p \widehat{\ZZ_p^{\,r}}.
+\]
+又 \(\widehat{\ZZ_p}\cong C_{p^\infty}\)，从而
+\[
+\widehat{\ZZ_p^{\,r}}\cong C_{p^\infty}^{\,r}.
+\]
+故得到
+\[
+\widehat{\mathcal F_{\widehat{\ZZ}}(\delta)}
+\cong
+\bigoplus_p C_{p^\infty}^{\,r}.
+\]
+直和中的元素只有有限多个非零分量，因此每个连续角色都具有唯一的有限素数支撑分解。证毕。
+\end{proof}
+
+\begin{theorem}[有限维连续相位通道对无穷素数尾的结构性失明]\label{thm:conclusion-boundary-prime-tail-blindness}
+任取连续群同态
+\[
+L:\widehat{\ZZ}^{\,r}\longrightarrow \TT^d.
+\]
+则存在有限素数集 \(S_L\subset \mathbb P\)，使得 \(L\) 因子化为
+\[
+\widehat{\ZZ}^{\,r}\longrightarrow \prod_{p\in S_L}\ZZ_p^{\,r}\xrightarrow{\ \widetilde L\ }\TT^d.
+\]
+等价地，
+\[
+\prod_{p\notin S_L}\ZZ_p^{\,r}\subseteq \ker L.
+\]
+因此，任何有限维连续相位通道都只能看见有限多个素数方向，而无穷素数尾必然落入其不可见核中。
+\end{theorem}
+\begin{proof}
+对偶化得到离散群同态
+\[
+\widehat L:\ZZ^d\longrightarrow \widehat{\widehat{\ZZ}^{\,r}}
+\cong
+\bigoplus_p C_{p^\infty}^{\,r}.
+\]
+由于 \(\ZZ^d\) 有限生成，其像 \(\widehat L(\ZZ^d)\) 亦有限生成。直和群
+\(
+\bigoplus_p C_{p^\infty}^{\,r}
+\)
+中的任意有限生成子群只能支撑在有限多个素数分量上，因为有限组生成元各自只有有限支撑，而有限个有限集之并仍有限。故存在有限素数集 \(S_L\) 使
+\[
+\widehat L(\ZZ^d)\subseteq \bigoplus_{p\in S_L}C_{p^\infty}^{\,r}.
+\]
+再对偶回去，即得 \(L\) 仅通过 \(\prod_{p\in S_L}\ZZ_p^{\,r}\) 因子化。于是全部 \(p\notin S_L\) 的方向都落入 \(\ker L\)。证毕。
 \end{proof}
 
 \begin{theorem}[边界解纤维的最小相位圆数]\label{thm:conclusion-boundary-minimal-phase-circle-count}
@@ -239,107 +491,6 @@ b_\ell\ge \frac{r}{d}\,\ell\log_2 p-O(1).
 证毕。
 \end{proof}
 
-\begin{theorem}[离散寄存器与相位圆的混合预算律]\label{thm:conclusion-boundary-mixed-register-phase-budget}
-沿用定理 \ref{thm:conclusion-boundary-minimal-phase-circle-count} 的设定。
-设 \(R_\ell\) 为有限离散寄存器，满足
-\[
-\card{R_\ell}\le 2^{B_\ell},
-\]
-并给定编码
-\[
-\mathrm{Enc}_\ell:Q_{p,\ell}^{(r)}\longrightarrow R_\ell\times \TT^d.
-\]
-若存在 \(\delta_\ell\in(0,\tfrac14)\) 使得对每个固定的寄存器值 \(\rho\in R_\ell\)，相位子集
-\[
-\left\{\theta\in\TT^d:\ (\rho,\theta)\in \mathrm{Enc}_\ell\bigl(Q_{p,\ell}^{(r)}\bigr)\right\}
-\]
-中的不同点两两 \(2\delta_\ell\)-分离，则记
-\[
-b_\ell:=\Bigl\lceil \log_2\frac{1}{\delta_\ell}\Bigr\rceil,
-\]
-必有线性预算下界
-\[
-\boxed{\;
-B_\ell+d\,b_\ell\ \ge\ r\,\ell\log_2 p-O(1).
-\;}
-\]
-进一步，若离散寄存器由 \(a\) 条 \(p\)-进轴、每条深度 \(\ell\) 实现，即
-\[
-\card{R_\ell}=p^{a\ell+O(1)}
-\qquad\text{（等价地 }B_\ell=a\,\ell\log_2 p+O(1)\text{）},
-\]
-则
-\[
-\boxed{\;
-d\,b_\ell\ \ge\ (r-a)\,\ell\log_2 p-O(1).
-\;}
-\]
-在原生相位分辨率 \(b_\ell=\ell\log_2 p+O(1)\) 下，上式化为
-\[
-\boxed{\;a+d\ \ge\ r.\;}
-\]
-并且该下界是可达的：对任意 \(0\le a\le r\)，取前 \(a\) 个坐标直接写入 \(a\) 条 \(p\)-进寄存轴，余下 \(r-a\) 个坐标按标准嵌入写入 \(\TT^{r-a}\)，即可在 \(a+d=r\) 时实现原生分辨率的唯一恢复。
-\end{theorem}
-\begin{proof}
-由鸽巢原理，存在某个寄存器值 \(\rho_\ast\in R_\ell\)，使得其对应的相位纤维至少含有
-\[
-\frac{p^{\ell r}}{\card{R_\ell}}\ \ge\ p^{\ell r}\,2^{-B_\ell}
-\]
-个点。
-这些点在 \(\TT^d\) 中两两 \(2\delta_\ell\)-分离。
-再次应用 \(\TT^d\) 的体积打包估计，存在常数 \(C_d'>0\) 使
-\[
-p^{\ell r}\,2^{-B_\ell}\le C_d'\delta_\ell^{-d}.
-\]
-取 \(\log_2\) 并代入 \(b_\ell=\lceil \log_2(1/\delta_\ell)\rceil\)，得
-\[
-r\,\ell\log_2 p-B_\ell\le d\,b_\ell+O(1),
-\]
-即第一条预算下界。
-
-若 \(\card{R_\ell}=p^{a\ell+O(1)}\)，则
-\(
-B_\ell=a\ell\log_2 p+O(1)
-\)，代回即得
-\[
-d\,b_\ell\ge (r-a)\ell\log_2 p-O(1).
-\]
-进一步取 \(b_\ell=\ell\log_2 p+O(1)\) 即推出 \(a+d\ge r\)。
-
-反向可达性由显式分裂构造给出：把
-\[
-Q_{p,\ell}^{(r)}=
-\{0,\dots,p^\ell-1\}^{a}\times \{0,\dots,p^\ell-1\}^{r-a}
-\]
-的前 \(a\) 个坐标保留为 \(p\)-进寄存器，后 \(r-a\) 个坐标用
-\[
-(b_1,\dots,b_{r-a})\longmapsto
-\left(\frac{b_1}{p^\ell},\dots,\frac{b_{r-a}}{p^\ell}\right)\bmod \ZZ^{r-a}
-\]
-写入 \(\TT^{r-a}\)。
-此时相位最小间距为 \(p^{-\ell}\)，故在 \(\delta_\ell<\tfrac12p^{-\ell}\) 时唯一可逆，并且恰有 \(a+d=r\)。
-证毕。
-\end{proof}
-
-\paragraph{结构闭合}
-就边界方程而言，回路秩同时控制有限层解纤维、其 \(p\)-进与阿德尔完成、通用连通包络以及相位--寄存双轴预算。
-因此在统一口径下得到结构链
-\[
-\mathsf B_f
-\Longrightarrow
-r(f)
-\Longrightarrow
-\mathcal F_{p^\ell}(\delta_\ell)\cong (\ZZ/p^\ell\ZZ)^{r(f)}
-\Longrightarrow
-\widehat{\ZZ}^{\,r(f)}\text{-torsor}
-\]
-\[
-\Longrightarrow
-\widehat{\QQ}^{\,r(f)}\xrightarrow{\ \pi_{\QQ,r(f)}\ }\TT^{\,r(f)}
-\Longrightarrow
-d_{\min}=r(f)
-\Longrightarrow
-B_\ell+d\,b_\ell\ge r(f)\,\ell\log_2 p-O(1).
-\]
+\input{thm__conclusion-boundary-padic-solenoid-phase-ledger-tail}
 
 \endinput

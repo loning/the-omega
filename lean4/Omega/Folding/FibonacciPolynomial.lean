@@ -38,4 +38,22 @@ theorem pathIndSetPoly_eval_one (ℓ : Nat) :
 theorem fibPoly_two : fibPoly 2 = 1 := by simp [fibPoly]
 theorem fibPoly_three : fibPoly 3 = 1 + X := by simp [fibPoly, mul_one]
 
+/-- fibPoly evaluated at t=0: F_0(0)=0, F_n(0)=1 for n ≥ 1. -/
+theorem fibPoly_eval_zero : ∀ n : Nat, (fibPoly n).eval 0 = if n = 0 then 0 else 1
+  | 0 => by simp [fibPoly]
+  | 1 => by simp [fibPoly]
+  | n + 2 => by
+    simp only [fibPoly_succ_succ, eval_add, eval_mul, eval_X, zero_mul, add_zero,
+      fibPoly_eval_zero (n + 1), show n + 2 ≠ 0 from by omega, show n + 1 ≠ 0 from by omega,
+      ite_false]
+
+/-- pathIndSetPoly evaluated at t=0 is always 1. -/
+theorem pathIndSetPoly_eval_zero (ℓ : Nat) : (pathIndSetPoly ℓ).eval 0 = 1 := by
+  simp [pathIndSetPoly, fibPoly_eval_zero, show ℓ + 2 ≠ 0 from by omega]
+
+/-- pathIndSetPoly recurrence: I_{ℓ+2}(x) = I_{ℓ+1}(x) + x · I_ℓ(x). -/
+theorem pathIndSetPoly_recurrence (ℓ : Nat) :
+    pathIndSetPoly (ℓ + 2) = pathIndSetPoly (ℓ + 1) + X * pathIndSetPoly ℓ := by
+  simp [pathIndSetPoly, fibPoly_succ_succ]
+
 end Omega

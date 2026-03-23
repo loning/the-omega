@@ -139,5 +139,73 @@ theorem toZMod_surjective : Function.Surjective (toZMod (m := m)) :=
 noncomputable def stableValueRingEquiv (m : Nat) : X m ≃+* ZMod (Nat.fib (m + 2)) :=
   RingEquiv.ofBijective (stableValueRingHom m) ⟨toZMod_injective, toZMod_surjective⟩
 
+/-! ### Field instance when F_{m+2} is prime -/
+
+/-- When Nat.fib (m + 2) is prime, X m is a field (transferred from ZMod via the ring iso). -/
+noncomputable def instFieldOfPrime (hp : Nat.Prime (Nat.fib (m + 2))) : Field (X m) := by
+  letI : Fact (Nat.Prime (Nat.fib (m + 2))) := ⟨hp⟩
+  have hIsField := (stableValueRingEquiv m).symm.toMulEquiv.symm.isField (Field.toIsField _)
+  exact hIsField.toField
+
+-- Concrete field instances
+
+/-- X_1 ≅ GF(2) is a field (F_3 = 2 is prime). -/
+noncomputable instance instField_X1 : Field (X 1) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_2 ≅ GF(3) is a field (F_4 = 3 is prime). -/
+noncomputable instance instField_X2 : Field (X 2) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_3 ≅ GF(5) is a field (F_5 = 5 is prime). -/
+noncomputable instance instField_X3 : Field (X 3) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_5 ≅ GF(13) is a field (F_7 = 13 is prime). -/
+noncomputable instance instField_X5 : Field (X 5) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_9 ≅ GF(89) is a field (F_11 = 89 is prime). -/
+noncomputable instance instField_X9 : Field (X 9) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_11 ≅ GF(233) is a field (F_13 = 233 is prime). -/
+noncomputable instance instField_X11 : Field (X 11) :=
+  instFieldOfPrime (by native_decide)
+
+/-! ### CRT decomposition when F_{m+2} = p * q with coprime factors -/
+
+/-- CRT decomposition: X_m ≃+* ZMod p × ZMod q when F_{m+2} = p * q and gcd(p,q) = 1. -/
+noncomputable def crtDecomposition (m : Nat) (p q : Nat)
+    (hpq : Nat.fib (m + 2) = p * q) (hcop : Nat.Coprime p q) :
+    X m ≃+* ZMod p × ZMod q :=
+  (stableValueRingEquiv m).trans (hpq ▸ ZMod.chineseRemainder hcop)
+
+/-- X_7 ≅ ZMod 2 × ZMod 17 (since F_9 = 34 = 2 × 17). -/
+noncomputable def X7_decomposition : X 7 ≃+* ZMod 2 × ZMod 17 :=
+  crtDecomposition 7 2 17 (by native_decide) (by native_decide)
+
+-- X_10: F_12 = 144 = 16 × 9, gcd(16,9) = 1.
+noncomputable def X10_decomposition : X 10 ≃+* ZMod 16 × ZMod 9 :=
+  crtDecomposition 10 16 9 (by native_decide) (by native_decide)
+
+
+/-! ### Characteristic -/
+
+/-- The characteristic of X_m is F_{m+2}. -/
+instance instCharP : CharP (X m) (Nat.fib (m + 2)) where
+  cast_eq_zero_iff n := by
+    have hf := stableValueRingHom m
+    constructor
+    · intro h
+      have h1 : hf (n : X m) = hf 0 := congr_arg hf h
+      rw [map_natCast, map_zero] at h1
+      exact (ZMod.natCast_eq_zero_iff n _).mp h1
+    · intro h
+      have h1 : (n : ZMod (Nat.fib (m + 2))) = 0 := (ZMod.natCast_eq_zero_iff n _).mpr h
+      exact toZMod_injective (show toZMod (n : X m) = toZMod 0 by
+        change (stableValueRingHom m) (n : X m) = (stableValueRingHom m) 0
+        rw [map_natCast, map_zero, h1])
+
 end
 end Omega.X

@@ -105,4 +105,13 @@ theorem carryIndicator_one_of_ge (x y : X (m + 1))
 theorem stableValue_nonneg (x : X m) : 0 ≤ stableValue x :=
   Nat.zero_le _
 
+/-- stableValue of the all-false stable word is 0. -/
+@[simp] theorem stableValue_allFalse :
+    stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) = 0 := by
+  simp [stableValue, weight_allFalse]
+
+/-- stableValue equals weight of the underlying word. -/
+theorem stableValue_eq_weight (x : X m) : stableValue x = weight x.1 := rfl
+
+
 end Omega

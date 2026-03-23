@@ -391,6 +391,116 @@ Run these commands manually during audit:
   #print axioms Omega.X.toZMod_injective
   #print axioms Omega.X.toZMod_surjective
   #print axioms Omega.X.stableValueRingEquiv
+  -- Plan 2: cor:field-phase-fib-prime — Field 实例 (FiberRing.lean:143-174)
+  #print axioms Omega.X.instFieldOfPrime
+  #print axioms Omega.X.instField_X1
+  #print axioms Omega.X.instField_X2
+  #print axioms Omega.X.instField_X3
+  #print axioms Omega.X.instField_X5
+  #print axioms Omega.X.instField_X9
+  #print axioms Omega.X.instField_X11
+  -- Plan 20 深化: shift 全零固定点与非单射 (ShiftDynamics.lean:48-82)
+  #print axioms Omega.X.allFalse
+  #print axioms Omega.X.shift_allFalse
+  #print axioms Omega.X.shift_fixed_iff
+  #print axioms Omega.X.shift_not_injective
+  -- Plan 4 深化: restrict 满射与纤维非空 (ModularTower.lean:134-142)
+  #print axioms Omega.X.restrict_surjective
+  #print axioms Omega.X.restrict_fiber_nonempty
+  -- Round 16: TransferMatrix 幂次条目公式 (TransferMatrix.lean:74-113, 计划19/20深化)
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_00
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_01
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_10
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_11
+  -- Round 16: 周期轨道 (ShiftDynamics.lean:87-105, 计划20深化)
+  #print axioms Omega.X.period3Seq
+  #print axioms Omega.X.shiftN_three_period3
+  #print axioms Omega.X.shift_period3_ne
+  #print axioms Omega.X.period2Seq
+  #print axioms Omega.X.shiftN_two_period2
+  -- Round 16: Fibonacci 多项式 x=0 评估与路径独立集递推 (FibonacciPolynomial.lean:42-57, 计划11前置)
+  #print axioms Omega.fibPoly_eval_zero
+  #print axioms Omega.pathIndSetPoly_eval_zero
+  #print axioms Omega.pathIndSetPoly_recurrence
+  -- Round 17: Frontier 包装 — ConditionalArithmetic + ConditionalSummary
+  -- thm:finite-resolution-mod + cor:field-phase-fib-prime (ConditionalArithmetic.lean:640-645)
+  #print axioms Omega.Frontier.stable_ring_isomorphism
+  #print axioms Omega.Frontier.stable_field_of_prime
+  -- prop:pom-projection-entropy, prop:pom-fiber-sum-identity (ConditionalSummary.lean:554-559)
+  #print axioms Omega.Frontier.projection_entropy_cardinality
+  #print axioms Omega.Frontier.fiber_sum_eq_pow
+  -- thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone (ConditionalSummary.lean:562-568)
+  #print axioms Omega.Frontier.cauchy_schwarz_collision_bound
+  #print axioms Omega.Frontier.moment_monotone
+  -- prop:pom-sq-lower, cor:pom-s2-lower (ConditionalSummary.lean:570-576)
+  #print axioms Omega.Frontier.moment_ge_cardinality
+  #print axioms Omega.Frontier.collision_sum_ge_pow
+  -- Phase 18: ConditionalSummary — POM 存在性与熵率骨架
+  -- thm:pom-max-fiber (存在部分), prop:pom-fiber-pigeonhole, thm:pom-max-fiber (正性)
+  -- cor:pom-D-rec (上界), prop:pom-projection-entropy (严格版), 投影比率递减/正性
+  #print axioms Omega.Frontier.max_fiber_achieved
+  #print axioms Omega.Frontier.fiber_pigeonhole
+  #print axioms Omega.Frontier.max_fiber_positive
+  #print axioms Omega.Frontier.max_fiber_fib_bound
+  #print axioms Omega.Frontier.entropy_gap_strict
+  #print axioms Omega.Frontier.projection_ratio_decreasing
+  #print axioms Omega.Frontier.projection_ratio_positive
+  -- Phase 18: FiberSpectrum — 达到者数定义与基值 (thm:pom-max-achievers-phase-stabilization 前置)
+  #print axioms Omega.cMaxFiberAchievers
+  -- Phase 19: FiberSpectrum — 达到者数有界 + 次大纤维基值 m=8,9,10
+  -- thm:pom-max-achievers-phase-stabilization (有界), thm:pom-second-max-fiber-closed-form (m=8,9,10)
+  #print axioms Omega.cMaxFiberAchievers_le_univ
+  #print axioms Omega.cNthMaxFiber_second_eight
+  #print axioms Omega.cNthMaxFiber_second_nine
+  #print axioms Omega.cNthMaxFiber_second_ten
+  -- Phase 19: ConditionalSummary — S_q 正性与 Cauchy-Schwarz 重述
+  -- prop:pom-sq-pos, prop:pom-sq-cauchy-schwarz-restated
+  #print axioms Omega.Frontier.momentSum_pos
+  #print axioms Omega.Frontier.momentSum_cauchy_schwarz_restated
+  -- Phase 20: ConditionalSummary — Rényi 上界 + S_1/S_0 恒等式 + 最大纤维概率界
+  -- prop:pom-rq-universal-bounds + cor:pom-max-fiber-rate-endpoint
+  #print axioms Omega.Frontier.renyi_upper_bound
+  #print axioms Omega.Frontier.moment_sum_one_eq_pow
+  #print axioms Omega.Frontier.moment_sum_zero_eq_card
+  #print axioms Omega.Frontier.max_fiber_le_pow
+  #print axioms Omega.Frontier.max_fiber_ge_one
+  #print axioms Omega.Frontier.max_fiber_prob_bounds
+  -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值 (cor:pom-fiber-parity 前置)
+  #print axioms Omega.cOddFiberCount
+  #print axioms Omega.cEvenFiberCount
+  -- Phase 21: Fib — Fibonacci 双倍公式与平方和恒等式 (Fib.lean:93-107)
+  #print axioms Omega.fib_double
+  #print axioms Omega.fib_double_plus_one
+  #print axioms Omega.fib_sq_add_sq
+  -- Phase 21: TransferMatrix — 行列式幂次公式与 Cassini 恒等式 (TransferMatrix.lean:116-128)
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_det
+  #print axioms Omega.Graph.fib_cassini
+  -- Phase 21: ShiftDynamics — Lucas 数定义 + Fibonacci 关系 + 迹公式 (ShiftDynamics.lean:149-186)
+  #print axioms Omega.X.lucasNum
+  #print axioms Omega.X.lucasNum_zero
+  #print axioms Omega.X.lucasNum_one
+  #print axioms Omega.X.lucasNum_two
+  #print axioms Omega.X.lucasNum_three
+  #print axioms Omega.X.lucasNum_succ_succ
+  #print axioms Omega.X.lucasNum_eq_fib
+  #print axioms Omega.X.goldenMeanAdjacency_pow_trace
+  -- Phase 22: FiberSpectrum — 纤维直方图定义与基值
+  #print axioms Omega.cFiberHist
+  #print axioms Omega.cFiberHist_4_1
+  #print axioms Omega.cFiberHist_4_2
+  #print axioms Omega.cFiberHist_4_3
+  #print axioms Omega.cFiberHist_6_1
+  #print axioms Omega.cFiberHist_6_2
+  #print axioms Omega.cFiberHist_6_3
+  #print axioms Omega.cFiberHist_6_4
+  #print axioms Omega.cFiberHist_6_5
+  -- Phase 22: TransferMatrix — 路径计数 Fibonacci 等式
+  #print axioms Omega.Graph.goldenMean_path_count_from_true
+  #print axioms Omega.Graph.goldenMean_total_paths
+  -- Phase 22: InverseLimitTopology — 位差异→序列不同
+  #print axioms Omega.X.ne_of_bit_ne
+  -- Phase 22: ConditionalSummary — No11 词计数
+  #print axioms Omega.Frontier.no11_count
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -785,6 +895,67 @@ def coreAuditTargets : List String :=
   , "Omega.cNthMaxFiber_third_four"
   , "Omega.cNthMaxFiber_third_five"
   , "Omega.cNthMaxFiber_third_six"
-  , "Omega.cNthMaxFiber_third_seven" ]
+  , "Omega.cNthMaxFiber_third_seven"
+  -- 计划5: Fibonacci 整除性 (Fib.lean:81-92)
+  , "Omega.fib_gcd"
+  , "Omega.fib_coprime_succ"
+  , "Omega.fib_dvd_mul"
+  -- 计划4深化: restrict 保零保一 (ModularTower.lean:122-133)
+  , "Omega.X.restrict_zero"
+  , "Omega.X.restrict_one"
+  -- 计划27初步: CRT 分解 (FiberRing.lean:179-192)
+  , "Omega.X.crtDecomposition"
+  , "Omega.X.X7_decomposition"
+  , "Omega.X.X10_decomposition"
+  -- 计划20深化: shift 全零固定点与非单射 (ShiftDynamics.lean:48-82)
+  , "Omega.X.allFalse"
+  , "Omega.X.shift_allFalse"
+  , "Omega.X.shift_fixed_iff"
+  , "Omega.X.shift_not_injective"
+  -- 计划4深化: restrict 满射与纤维非空 (ModularTower.lean:134-142)
+  , "Omega.X.restrict_surjective"
+  , "Omega.X.restrict_fiber_nonempty"
+  -- Phase 20: ConditionalSummary — Rényi 上界 + S_1/S_0 恒等式 + 最大纤维概率界
+  , "Omega.Frontier.renyi_upper_bound"
+  , "Omega.Frontier.moment_sum_one_eq_pow"
+  , "Omega.Frontier.moment_sum_zero_eq_card"
+  , "Omega.Frontier.max_fiber_le_pow"
+  , "Omega.Frontier.max_fiber_ge_one"
+  , "Omega.Frontier.max_fiber_prob_bounds"
+  -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值
+  , "Omega.cOddFiberCount"
+  , "Omega.cEvenFiberCount"
+  -- Phase 21: Fib — Fibonacci 双倍公式与平方和恒等式 (Fib.lean:93-107)
+  , "Omega.fib_double"
+  , "Omega.fib_double_plus_one"
+  , "Omega.fib_sq_add_sq"
+  -- Phase 21: TransferMatrix — 行列式幂次公式与 Cassini 恒等式 (TransferMatrix.lean:116-128)
+  , "Omega.Graph.goldenMeanAdjacency_pow_det"
+  , "Omega.Graph.fib_cassini"
+  -- Phase 21: ShiftDynamics — Lucas 数定义 + Fibonacci 关系 + 迹公式 (ShiftDynamics.lean:149-186)
+  , "Omega.X.lucasNum"
+  , "Omega.X.lucasNum_zero"
+  , "Omega.X.lucasNum_one"
+  , "Omega.X.lucasNum_two"
+  , "Omega.X.lucasNum_three"
+  , "Omega.X.lucasNum_succ_succ"
+  , "Omega.X.lucasNum_eq_fib"
+  , "Omega.X.goldenMeanAdjacency_pow_trace"
+  -- Phase 23: ShiftDynamics — 周期轨道深化 (ShiftDynamics.lean:108-131)
+  , "Omega.X.shift_period2_ne"
+  , "Omega.X.period2_minimal"
+  , "Omega.X.period3_minimal"
+  , "Omega.X.period4Seq"
+  , "Omega.X.shiftN_four_period4"
+  -- Phase 23: Weight — 全零词 weight=0 (Weight.lean:50)
+  , "Omega.weight_allFalse"
+  -- Phase 23: Value — 全零稳定词 stableValue=0 (Value.lean:109)
+  , "Omega.stableValue_allFalse"
+  -- Phase 24: Zeckendorf — 全零稳定词 Zeckendorf 索引为空 (Zeckendorf.lean:162)
+  , "Omega.X.zeckIndices_allFalse"
+  -- Phase 25: Value — stableValue = weight (Value.lean:114)
+  , "Omega.stableValue_eq_weight"
+  -- Phase 25: FiberRing — 环特征 = F_{m+2} (FiberRing.lean:196)
+  , "Omega.instCharP" ]
 
 end Omega.Audit

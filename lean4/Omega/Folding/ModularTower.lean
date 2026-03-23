@@ -1,5 +1,6 @@
 import Omega.Folding.CarryDefect
 import Omega.Folding.Defect
+import Omega.Folding.FiberRing
 
 namespace Omega
 
@@ -116,6 +117,29 @@ theorem modularProject_tower_surjective (m : Nat) :
   modularProject_surjective m
 
 end
+
+/-- restrict preserves zero: restrict(0) = 0. -/
+theorem restrict_zero : X.restrict (0 : X (m + 1)) = (0 : X m) := by
+  show X.restrict (stableZero) = stableZero
+  apply Subtype.ext; funext i
+  simp [stableZero, X.ofNat, X.ofIndices, X.wordOfIndices, X.restrict, truncate]
+
+/-- restrict preserves one: restrict(1) = 1. -/
+theorem restrict_one : X.restrict (1 : X (m + 1)) = (1 : X m) := by
+  show X.restrict (stableOne) = stableOne
+  apply Subtype.ext; funext i
+  simp [stableOne, X.ofNat, X.ofIndices, X.wordOfIndices, X.restrict, truncate]
+
+/-- restrict is surjective (from modularProject surjectivity). -/
+theorem restrict_surjective : Function.Surjective (X.restrict (m := m)) := by
+  intro y
+  obtain ⟨x, hx⟩ := modularProject_surjective m y
+  exact ⟨x, (modularProject_eq_restrict x).symm.trans hx⟩
+
+/-- The restrict fiber of y is nonempty (from surjectivity). -/
+theorem restrict_fiber_nonempty (y : X m) :
+    ∃ x : X (m + 1), X.restrict x = y :=
+  restrict_surjective y
 
 end X
 

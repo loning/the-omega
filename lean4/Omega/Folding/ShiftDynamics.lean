@@ -44,6 +44,92 @@ theorem continuous_shiftN : ∀ (n : Nat), Continuous (shiftN n)
   | 0 => continuous_id
   | n + 1 => continuous_shift.comp (continuous_shiftN n)
 
+/-- The all-false infinite sequence (the unique fixed point of shift). -/
+def allFalse : XInfinity := ⟨fun _ => false, fun _ h => by exact absurd h.1 Bool.false_ne_true⟩
+
+@[simp] theorem shift_allFalse : shift allFalse = allFalse :=
+  Subtype.ext (funext fun _ => rfl)
+
+/-- shift(a) = a iff a is the all-false sequence. -/
+theorem shift_fixed_iff (a : XInfinity) : shift a = a ↔ a = allFalse := by
+  constructor
+  · intro h
+    apply Subtype.ext; funext i
+    have hEq : ∀ j, a.1 (j + 1) = a.1 j := fun j => congr_fun (congr_arg Subtype.val h) j
+    have hConst : ∀ i, a.1 i = a.1 0 := by
+      intro i; induction i with
+      | zero => rfl
+      | succ n ih => exact (hEq n).trans ih
+    cases h0 : a.1 0 with
+    | false => exact (hConst i).trans h0
+    | true => exact absurd ⟨(hConst 0).symm ▸ h0, (hConst 1).symm ▸ h0⟩ (a.2 0)
+  · intro h; rw [h, shift_allFalse]
+
+/-- The shift is not injective (both allFalse and (true,false,false,...) map to allFalse). -/
+theorem shift_not_injective : ¬ Function.Injective shift := by
+  intro hInj
+  have hNo11 : No11Inf (fun i => if i = 0 then true else false) := by
+    intro i ⟨hi, hi1⟩
+    by_cases h0 : i = 0
+    · subst h0; simp at hi1
+    · simp [h0] at hi
+  let a : XInfinity := ⟨_, hNo11⟩
+  have hShift : shift a = shift allFalse := by
+    apply Subtype.ext; funext i
+    show (if i + 1 = 0 then true else false) = false
+    simp
+  have hab := congr_fun (congr_arg Subtype.val (hInj hShift)) 0
+  -- hab : a.1 0 = allFalse.1 0, need to show this is true = false
+  change (if (0 : Nat) = 0 then true else false) = false at hab
+  simp at hab
+
+/-- The period-3 sequence: true at positions 0, 3, 6, ... -/
+def period3Seq : XInfinity :=
+  ⟨fun i => decide (i % 3 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
+
+/-- The period-3 sequence has period 3 under shift. -/
+theorem shiftN_three_period3 : shiftN 3 period3Seq = period3Seq := by
+  apply Subtype.ext; funext i; simp [shiftN, shift, period3Seq]; omega
+
+/-- The period-3 sequence is NOT a fixed point of shift. -/
+theorem shift_period3_ne : shift period3Seq ≠ period3Seq := by
+  intro h; have := congr_fun (congr_arg Subtype.val h) 0
+  simp [shift, period3Seq] at this
+
+/-- The period-2 sequence: true at positions 0, 2, 4, ... -/
+def period2Seq : XInfinity :=
+  ⟨fun i => decide (i % 2 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
+
+/-- The period-2 sequence has period 2 under shift. -/
+theorem shiftN_two_period2 : shiftN 2 period2Seq = period2Seq := by
+  apply Subtype.ext; funext i; simp [shiftN, shift, period2Seq]; omega
+
+/-- The period-2 sequence is not a fixed point. -/
+theorem shift_period2_ne : shift period2Seq ≠ period2Seq := by
+  intro h; have := congr_fun (congr_arg Subtype.val h) 0
+  simp [shift, period2Seq] at this
+
+/-- Period-2 is minimal: not fixed, but period 2. -/
+theorem period2_minimal :
+    shift period2Seq ≠ period2Seq ∧ shiftN 2 period2Seq = period2Seq :=
+  ⟨shift_period2_ne, shiftN_two_period2⟩
+
+/-- Period-3 is minimal: not fixed, not period 2, but period 3. -/
+theorem period3_minimal :
+    shift period3Seq ≠ period3Seq ∧ shiftN 2 period3Seq ≠ period3Seq ∧
+    shiftN 3 period3Seq = period3Seq := by
+  refine ⟨shift_period3_ne, ?_, shiftN_three_period3⟩
+  intro h; have := congr_fun (congr_arg Subtype.val h) 0
+  simp [shiftN, shift, period3Seq] at this
+
+/-- The period-4 sequence: true at positions 0, 4, 8, ... -/
+def period4Seq : XInfinity :=
+  ⟨fun i => decide (i % 4 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
+
+/-- The period-4 sequence has period 4 under shift. -/
+theorem shiftN_four_period4 : shiftN 4 period4Seq = period4Seq := by
+  apply Subtype.ext; funext i; simp [shiftN, shift, period4Seq]; omega
+
 end Omega.X
 
 namespace Omega
@@ -82,5 +168,48 @@ theorem card_X_eq_matrix_sum (m : Nat) :
       (Graph.goldenMeanAdjacency ^ m) 0 0 + (Graph.goldenMeanAdjacency ^ m) 0 1 := by
   rw [X.card_eq_fib]
   exact (Graph.goldenMeanAdjacency_row_sum m).symm
+
+/-! ### Lucas numbers -/
+
+/-- The Lucas sequence: L_0 = 2, L_1 = 1, L_{n+2} = L_{n+1} + L_n. -/
+def lucasNum : Nat → Nat
+  | 0 => 2
+  | 1 => 1
+  | n + 2 => lucasNum (n + 1) + lucasNum n
+
+@[simp] theorem lucasNum_zero : lucasNum 0 = 2 := rfl
+@[simp] theorem lucasNum_one : lucasNum 1 = 1 := rfl
+theorem lucasNum_two : lucasNum 2 = 3 := rfl
+theorem lucasNum_three : lucasNum 3 = 4 := rfl
+@[simp] theorem lucasNum_succ_succ (n : Nat) :
+    lucasNum (n + 2) = lucasNum (n + 1) + lucasNum n := rfl
+
+/-- L_n = F_{n+1} + F_{n-1} for n ≥ 1. -/
+private theorem lucasNum_eq_fib_aux :
+    ∀ m : Nat, lucasNum (m + 1) = Nat.fib (m + 2) + Nat.fib m
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [lucasNum_succ_succ, lucasNum_eq_fib_aux (m + 1), lucasNum_eq_fib_aux m]
+    -- Use native_decide for m=0,1 then the recurrence handles the rest uniformly
+    -- Actually the omega issue is Nat.fib normalization. Just native_decide small + fallback.
+    simp only [lucasNum_succ_succ, lucasNum_eq_fib_aux, fib_succ_succ']
+    omega
+
+/-- L_n = F_{n+1} + F_{n-1} for n ≥ 1. -/
+theorem lucasNum_eq_fib (n : Nat) (hn : 1 ≤ n) :
+    lucasNum n = Nat.fib (n + 1) + Nat.fib (n - 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp only [show m + 1 - 1 = m from by omega]
+  exact lucasNum_eq_fib_aux m
+
+/-- trace(A^n) = F_{n+1} + F_{n-1} for n ≥ 1 (= Lucas number). -/
+theorem goldenMeanAdjacency_pow_trace (n : Nat) (hn : 1 ≤ n) :
+    (Graph.goldenMeanAdjacency ^ n).trace =
+      (Nat.fib (n + 1) : ℤ) + Nat.fib (n - 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp only [Matrix.trace, Matrix.diag, show m + 1 - 1 = m from by omega]
+  rw [Fin.sum_univ_two]
+  rw [Graph.goldenMeanAdjacency_pow_00, Graph.goldenMeanAdjacency_pow_11]
 
 end Omega

@@ -46,4 +46,12 @@ theorem weight_word_one (w : Word 1) :
   simp [weight]
 
 
+/-- Weight of the all-false word is 0. -/
+@[simp] theorem weight_allFalse : weight (fun _ : Fin m => false) = 0 := by
+  induction m with
+  | zero => rfl
+  | succ m ih =>
+    simp only [weight, Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
+    convert ih using 2
+
 end Omega
