@@ -1,9 +1,19 @@
-% Auto-split to keep each TeX source < 600 lines.
-
 \subsubsection{审计核硬化：KL 正交分解、Chernoff 断点相图与共振谱本体}\label{subsubsec:discussion-audit-kernel-hardening-kl-chernoff-resonance}
-在 \S\ref{subsubsec:discussion-audit-kernel-closed-loop} 的闭合链之外，文稿中还存在三条更偏“硬约束”的结构线：
-它们分别把“正交记录轴/信息不泄漏”的直觉对象化为严格恒等式，把“预算设计”固化为离散曲率驱动的断点相图，并把共振窗的本体钉死在谱根几何而非额外 Hankel 原始约束上。
-下述陈述均直接引用正文/附录中的已编号结论与生成表，不引入新的证明前提。
+如果上一小节已经说明 \(\varphi\) 不是数值巧合，而是由多通道常数级非均匀性共同暴露出来的主导结构根，那么接下来最关键的问题便是：怎样把这种多通道一致性从解释性判断压缩成一个足够硬的审计核。这里不再满足于说“若干指标都像黄金相”，而要进一步要求：这些指标之间能否被组织成一种分解唯一、相图清楚、谱层可对照的证书结构，使得“进入黄金相”与“仍处于分辨率不足相”之间的差别，不再依赖图像直觉，而依赖可重复的判定流程。
+
+本小节所谓“硬化”，就是把原先分散在不同层的偏差量，诸如分布偏差、窗口偏差、谱偏差与回返偏差，重新装配成一个最小但刚性的三元审计核。它由三部分组成：KL 正交分解，回答偏差究竟分布在哪些统计通道中；Chernoff 断点相图，回答在什么分辨率与样本预算制度下系统从一相切换到另一相；共振谱本体，回答多个表示层读到的谱峰究竟是不是同一个本体模态。只有当这三部分同时对齐时，某个结构常数、某个稳定类型分布或某个 primitive 指纹，才真正可以被提升为硬审计对象。
+
+因此，本小节的任务并不是堆叠更多指标，而是把偏差分解、相变定位与谱本体对齐压缩成一个共同证书。为便于后文记号，可把这一三元对象写成
+\[
+\mathfrak K_m
+:=
+\bigl(
+\mathbf I_m,\,
+\mathcal C_m^\star,s_m^\star,\,
+\Sigma_m
+\bigr),
+\]
+其中 \(\mathbf I_m\) 是 KL 正交通道向量，\((\mathcal C_m^\star,s_m^\star)\) 是 Chernoff 断点数据，而 \(\Sigma_m\) 是跨表示的共振谱簇。在本文现有编号链中，这一理念先由均匀基线下的 KL 勾股分解获得最小实现，再由曲率驱动的断点相图给出换相定位，最后由共振窗的谱根几何给出本体约束。下述陈述均直接引用正文与附录中的已编号结论及生成表，不引入新的证明前提。
 
 \paragraph{KL 勾股分解：把微观残差严格外置为可核验字段}
 在固定分辨率 \(m\) 下，读出算子 \(P_m\) 与纤维均匀提升 \(Q_m\) 构成一个可审计的“宏观—微观”接口（\S\ref{subsec:pom-information-ledger}）。
@@ -329,11 +339,20 @@ V_m(\Phi(\omega))\equiv N(\omega)\pmod{F_{m+2}}\qquad(\forall\,\omega\in\Omega_m
 因此若希望“消解共振”，只能通过改变生成核从而改变 \(P_q\)，或显式外置新通道，而不能依赖在同一 \(P_q\) 下挖掘额外的 Hankel 退化。
 
 \paragraph{审计核的最小字段化输出（硬接口）}
-上述三条线与 \S\ref{subsubsec:discussion-audit-kernel-closed-loop} 的曲率误差条、Hankel 正规形与算术刚性字段可并列组织为一个更硬的审计核输出：
+上述三条线与 \S\ref{subsubsec:discussion-audit-kernel-closed-loop} 的曲率误差条、Hankel 正规形与算术刚性字段可并列组织为一个更硬的审计核输出。就最小字段化口径而言，可把它压缩为
+\[
+\mathfrak K_m
+:=
+\bigl(
+\mathbf I_m,\,
+\mathcal C_m^\star,s_m^\star,\,
+\Sigma_m
+\bigr),
+\]
+并把它理解为三个同时需要通过的字段簇：
 \begin{itemize}
   \item \textbf{信息正交分解字段：}输出 \(\bigl(D_{\mathrm{KL}}(\mu\|u_{\Omega_m}),D_{\mathrm{KL}}(\pi\|w_m),D_{\mathrm{KL}}(\mu\|\mu^e)\bigr)\) 并强制满足勾股恒等式（定理 \ref{thm:pom-kl-pythagoras-uniform}），同时输出 I-投影/最大熵判据（推论 \ref{cor:pom-Iproj-maxent}）。
   \item \textbf{矩阶设计字段：}以已审计 \(\{r_q\}\) 为输入，输出离散曲率 \(A_q\)、断点 \(m_{q\to q+1}(\varepsilon)\) 与相图 \(q^\star(m,\varepsilon)\)（命题 \ref{prop:pom-breakpoint-curvature-law-Aq}；注 \ref{rem:pom-qstar-phase-diagram-breakpoints}；表 \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}）。
   \item \textbf{共振谱字段与原始性字段：}输出 \(\Delta_{\mathrm{prim}}(q)\) 与倍乘分解核验（推论 \ref{cor:pom-hankel-null-no-primitive-residual}；表 \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}），并并列输出谱包几何与相位残差证书（注 \ref{rem:pom-shadow-spectral-packet-q9-17}；表 \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}）。
 \end{itemize}
-任一字段稳定失配都给出实现中立的否证接口，从而把“外置/不泄漏/预算设计/共振来源”的叙事性表述转写为可复核的证书一致性判据。
-
+若某候选机制只在计数比值或单一偏差曲线层面接近黄金相，而 \(\mathbf I_m\) 仍在高阶残差通道弥散、\((\mathcal C_m^\star,s_m^\star)\) 尚未脱离欠分辨锁定区，或 \(\Sigma_m\) 只在某一表示层出现而不能跨表示对齐，则它只能被视为软相似，而不能算作硬审计通过。任一字段稳定失配都给出实现中立的否证接口，从而把“外置、不泄漏、预算设计与共振来源”的解释性表述转写为可复核的证书一致性判据。
