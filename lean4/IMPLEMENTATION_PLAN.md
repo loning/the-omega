@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,749 |
-| 定理/定义数 | 1,271 |
+| 总行数 | ~13,765 |
+| 定理/定义数 | 1,273 |
 | 论文接口包装 | 340 |
 | 文件数 | 36 |
 | 公理数 | 0 |
@@ -62,6 +62,7 @@
 **转移矩阵幂次条目公式（Round 16，计划19/20深化）**：$(A^m)_{00}=F_{m+1}$（goldenMeanAdjacency_pow_00）; $(A^m)_{01}=F_m$（goldenMeanAdjacency_pow_01）; $(A^m)_{10}=F_m$（goldenMeanAdjacency_pow_10）; $(A^{m+1})_{11}=F_m$（goldenMeanAdjacency_pow_11）; 条目递推辅助引理（pow_entry_add_two，private）
 **周期轨道（Round 16+23，计划20深化）**：周期3序列定义（period3Seq）; 周期3轨道（shiftN_three_period3：$\sigma^3(p_3)=p_3$）; 非固定点（shift_period3_ne）; 周期2序列定义（period2Seq）; 周期2轨道（shiftN_two_period2：$\sigma^2(p_2)=p_2$）; 周期2非固定点（shift_period2_ne）; 最小周期2（period2_minimal）; 最小周期3（period3_minimal）; 周期4序列定义（period4Seq）; 周期4轨道（shiftN_four_period4：$\sigma^4(p_4)=p_4$）
 **全零词基值（Round 23-24）**：全零词 weight=0（weight_allFalse，Weight.lean）; 全零稳定词 stableValue=0（stableValue_allFalse，Value.lean）; 全零稳定词 Zeckendorf 索引为空（zeckIndices_allFalse，Zeckendorf.lean:162，Phase 24）
+**stableValue 与 weight 等式 + 环特征（Phase 25）**：stableValue_eq_weight（stableValue x = weight x.1，Value.lean:114）; instCharP（CharP (X m) (Nat.fib (m+2))，环特征 = F_{m+2}，FiberRing.lean:196）
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -79,7 +80,7 @@
 | 结论 | 57 | 0 | 0% | 极高 |
 | **总计** | **394** | **~156** | **~40%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。Phase 23 新增：ShiftDynamics（5：shift_period2_ne, period2_minimal, period3_minimal, period4Seq, shiftN_four_period4）、Weight（1：weight_allFalse）、Value（1：stableValue_allFalse）——周期轨道深化，全零基值辅助。Phase 24 新增：Zeckendorf（1：zeckIndices_allFalse）——全零稳定词 Zeckendorf 索引为空。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。Phase 23 新增：ShiftDynamics（5：shift_period2_ne, period2_minimal, period3_minimal, period4Seq, shiftN_four_period4）、Weight（1：weight_allFalse）、Value（1：stableValue_allFalse）——周期轨道深化，全零基值辅助。Phase 24 新增：Zeckendorf（1：zeckIndices_allFalse）——全零稳定词 Zeckendorf 索引为空。Phase 25 新增：Value（1：stableValue_eq_weight）、FiberRing（1：instCharP）——stableValue 与 weight 等式，环特征形式化。
 
 ## 3. 未来工作：30 条具体计划
 

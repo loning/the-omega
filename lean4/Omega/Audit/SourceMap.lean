@@ -3450,6 +3450,24 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Zeckendorf"
       leanName := "Omega.X.zeckIndices_allFalse"
       phase := 24
+      status := .formalized }
+  -- Phase 25: Value — stableValue = weight of underlying word
+  -- stableValue_eq_weight: stableValue x = weight x.1 (Value.lean:114)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:stableValue-eq-weight"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Value"
+      leanName := "Omega.stableValue_eq_weight"
+      phase := 25
+      status := .formalized }
+  -- Phase 25: FiberRing — 环特征 = F_{m+2}
+  -- instCharP: CharP (X m) (Nat.fib (m + 2)) (FiberRing.lean:196)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:charP-fib"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.instCharP"
+      phase := 25
       status := .formalized } ]
 
 end Omega.Audit

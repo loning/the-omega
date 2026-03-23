@@ -190,5 +190,22 @@ noncomputable def X10_decomposition : X 10 ≃+* ZMod 16 × ZMod 9 :=
   crtDecomposition 10 16 9 (by native_decide) (by native_decide)
 
 
+/-! ### Characteristic -/
+
+/-- The characteristic of X_m is F_{m+2}. -/
+instance instCharP : CharP (X m) (Nat.fib (m + 2)) where
+  cast_eq_zero_iff n := by
+    have hf := stableValueRingHom m
+    constructor
+    · intro h
+      have h1 : hf (n : X m) = hf 0 := congr_arg hf h
+      rw [map_natCast, map_zero] at h1
+      exact (ZMod.natCast_eq_zero_iff n _).mp h1
+    · intro h
+      have h1 : (n : ZMod (Nat.fib (m + 2))) = 0 := (ZMod.natCast_eq_zero_iff n _).mpr h
+      exact toZMod_injective (show toZMod (n : X m) = toZMod 0 by
+        change (stableValueRingHom m) (n : X m) = (stableValueRingHom m) 0
+        rw [map_natCast, map_zero, h1])
+
 end
 end Omega.X

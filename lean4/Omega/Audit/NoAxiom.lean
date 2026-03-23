@@ -952,6 +952,10 @@ def coreAuditTargets : List String :=
   -- Phase 23: Value — 全零稳定词 stableValue=0 (Value.lean:109)
   , "Omega.stableValue_allFalse"
   -- Phase 24: Zeckendorf — 全零稳定词 Zeckendorf 索引为空 (Zeckendorf.lean:162)
-  , "Omega.X.zeckIndices_allFalse" ]
+  , "Omega.X.zeckIndices_allFalse"
+  -- Phase 25: Value — stableValue = weight (Value.lean:114)
+  , "Omega.stableValue_eq_weight"
+  -- Phase 25: FiberRing — 环特征 = F_{m+2} (FiberRing.lean:196)
+  , "Omega.instCharP" ]
 
 end Omega.Audit
