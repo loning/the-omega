@@ -468,6 +468,22 @@ Run these commands manually during audit:
   -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值 (cor:pom-fiber-parity 前置)
   #print axioms Omega.cOddFiberCount
   #print axioms Omega.cEvenFiberCount
+  -- Phase 21: Fib — Fibonacci 双倍公式与平方和恒等式 (Fib.lean:93-107)
+  #print axioms Omega.fib_double
+  #print axioms Omega.fib_double_plus_one
+  #print axioms Omega.fib_sq_add_sq
+  -- Phase 21: TransferMatrix — 行列式幂次公式与 Cassini 恒等式 (TransferMatrix.lean:116-128)
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_det
+  #print axioms Omega.Graph.fib_cassini
+  -- Phase 21: ShiftDynamics — Lucas 数定义 + Fibonacci 关系 + 迹公式 (ShiftDynamics.lean:149-186)
+  #print axioms Omega.X.lucasNum
+  #print axioms Omega.X.lucasNum_zero
+  #print axioms Omega.X.lucasNum_one
+  #print axioms Omega.X.lucasNum_two
+  #print axioms Omega.X.lucasNum_three
+  #print axioms Omega.X.lucasNum_succ_succ
+  #print axioms Omega.X.lucasNum_eq_fib
+  #print axioms Omega.X.goldenMeanAdjacency_pow_trace
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -891,6 +907,22 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.max_fiber_prob_bounds"
   -- Phase 20: FiberSpectrum — 奇偶纤维计数定义与基值
   , "Omega.cOddFiberCount"
-  , "Omega.cEvenFiberCount" ]
+  , "Omega.cEvenFiberCount"
+  -- Phase 21: Fib — Fibonacci 双倍公式与平方和恒等式 (Fib.lean:93-107)
+  , "Omega.fib_double"
+  , "Omega.fib_double_plus_one"
+  , "Omega.fib_sq_add_sq"
+  -- Phase 21: TransferMatrix — 行列式幂次公式与 Cassini 恒等式 (TransferMatrix.lean:116-128)
+  , "Omega.Graph.goldenMeanAdjacency_pow_det"
+  , "Omega.Graph.fib_cassini"
+  -- Phase 21: ShiftDynamics — Lucas 数定义 + Fibonacci 关系 + 迹公式 (ShiftDynamics.lean:149-186)
+  , "Omega.X.lucasNum"
+  , "Omega.X.lucasNum_zero"
+  , "Omega.X.lucasNum_one"
+  , "Omega.X.lucasNum_two"
+  , "Omega.X.lucasNum_three"
+  , "Omega.X.lucasNum_succ_succ"
+  , "Omega.X.lucasNum_eq_fib"
+  , "Omega.X.goldenMeanAdjacency_pow_trace" ]
 
 end Omega.Audit

@@ -143,5 +143,47 @@ theorem card_X_eq_matrix_sum (m : Nat) :
   rw [X.card_eq_fib]
   exact (Graph.goldenMeanAdjacency_row_sum m).symm
 
+/-! ### Lucas numbers -/
+
+/-- The Lucas sequence: L_0 = 2, L_1 = 1, L_{n+2} = L_{n+1} + L_n. -/
+def lucasNum : Nat → Nat
+  | 0 => 2
+  | 1 => 1
+  | n + 2 => lucasNum (n + 1) + lucasNum n
+
+@[simp] theorem lucasNum_zero : lucasNum 0 = 2 := rfl
+@[simp] theorem lucasNum_one : lucasNum 1 = 1 := rfl
+theorem lucasNum_two : lucasNum 2 = 3 := rfl
+theorem lucasNum_three : lucasNum 3 = 4 := rfl
+@[simp] theorem lucasNum_succ_succ (n : Nat) :
+    lucasNum (n + 2) = lucasNum (n + 1) + lucasNum n := rfl
+
+/-- L_n = F_{n+1} + F_{n-1} for n ≥ 1. -/
+private theorem lucasNum_eq_fib_aux :
+    ∀ m : Nat, lucasNum (m + 1) = Nat.fib (m + 2) + Nat.fib m
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [lucasNum_succ_succ, lucasNum_eq_fib_aux (m + 1), lucasNum_eq_fib_aux m]
+    -- Use native_decide for m=0,1 then the recurrence handles the rest uniformly
+    -- Actually the omega issue is Nat.fib normalization. Just native_decide small + fallback.
+    simp only [lucasNum_succ_succ, lucasNum_eq_fib_aux, fib_succ_succ']
+    omega
+
+/-- L_n = F_{n+1} + F_{n-1} for n ≥ 1. -/
+theorem lucasNum_eq_fib (n : Nat) (hn : 1 ≤ n) :
+    lucasNum n = Nat.fib (n + 1) + Nat.fib (n - 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp only [show m + 1 - 1 = m from by omega]
+  exact lucasNum_eq_fib_aux m
+
+/-- trace(A^n) = F_{n+1} + F_{n-1} for n ≥ 1 (= Lucas number). -/
+theorem goldenMeanAdjacency_pow_trace (n : Nat) (hn : 1 ≤ n) :
+    (Graph.goldenMeanAdjacency ^ n).trace =
+      (Nat.fib (n + 1) : ℤ) + Nat.fib (n - 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp only [Matrix.trace, Matrix.diag, show m + 1 - 1 = m from by omega]
+  rw [Fin.sum_univ_two]
+  rw [Graph.goldenMeanAdjacency_pow_00, Graph.goldenMeanAdjacency_pow_11]
 
 end Omega

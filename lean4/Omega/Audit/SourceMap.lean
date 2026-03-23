@@ -3259,6 +3259,73 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberSpectrum"
       leanName := "Omega.cEvenFiberCount"
       phase := 20
+      status := .formalized }
+  -- Phase 21: Fib — Fibonacci 双倍公式与平方和恒等式
+  -- fib_double: F_{2n} = F_n·(2F_{n+1}-F_n) (Fib.lean:93)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:fib-double-formula"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_double"
+      phase := 21
+      status := .formalized }
+  -- fib_double_plus_one: F_{2n+1} = F_{n+1}²+F_n² (Fib.lean:98)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:fib-double-plus-one-formula"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_double_plus_one"
+      phase := 21
+      status := .formalized }
+  -- fib_sq_add_sq: F_n²+F_{n+1}² = F_{2n+1} (Fib.lean:103)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:fib-sq-add-sq"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.fib_sq_add_sq"
+      phase := 21
+      status := .formalized }
+  -- Phase 21: TransferMatrix — 行列式幂次公式与 Cassini 恒等式
+  -- goldenMeanAdjacency_pow_det: det(A^m) = (-1)^m (TransferMatrix.lean:116)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:transfer-matrix-pow-det"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_det"
+      phase := 21
+      status := .formalized }
+  -- fib_cassini: Cassini 恒等式 F_{n+1}·F_{n-1}-F_n²=(-1)^n (TransferMatrix.lean:121)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:fib-cassini-identity"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.fib_cassini"
+      phase := 21
+      status := .formalized }
+  -- Phase 21: ShiftDynamics — Lucas 数定义 + Fibonacci 关系 + 迹公式
+  -- lucasNum 定义 + lucasNum_zero/one/two/three/succ_succ (ShiftDynamics.lean:149-159)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:lucas-number"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.lucasNum"
+      phase := 21
+      status := .formalized }
+  -- lucasNum_eq_fib: L_n = F_{n+1}+F_{n-1} (ShiftDynamics.lean:174)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:lucas-fibonacci-identity"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.lucasNum_eq_fib"
+      phase := 21
+      status := .formalized }
+  -- goldenMeanAdjacency_pow_trace: tr(A^n) = F_{n+1}+F_{n-1} (ShiftDynamics.lean:181)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:transfer-matrix-pow-trace"
+      sourcePath := "sections/body/symbolic/sofic.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.goldenMeanAdjacency_pow_trace"
+      phase := 21
       status := .formalized } ]
 
 end Omega.Audit

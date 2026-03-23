@@ -89,4 +89,19 @@ theorem fib_coprime_succ (m : Nat) : Nat.Coprime (Nat.fib m) (Nat.fib (m + 1)) :
 theorem fib_dvd_mul (m k : Nat) : Nat.fib m ∣ Nat.fib (k * m) :=
   Nat.fib_dvd m (k * m) ⟨k, (Nat.mul_comm m k).symm⟩
 
+/-- F_{2n} = F_n · (2·F_{n+1} - F_n). -/
+theorem fib_double (n : Nat) :
+    Nat.fib (2 * n) = Nat.fib n * (2 * Nat.fib (n + 1) - Nat.fib n) :=
+  Nat.fib_two_mul n
+
+/-- F_{2n+1} = F_{n+1}² + F_n². -/
+theorem fib_double_plus_one (n : Nat) :
+    Nat.fib (2 * n + 1) = Nat.fib (n + 1) ^ 2 + Nat.fib n ^ 2 :=
+  Nat.fib_two_mul_add_one n
+
+/-- F_n² + F_{n+1}² = F_{2n+1}. -/
+theorem fib_sq_add_sq (n : Nat) :
+    Nat.fib n ^ 2 + Nat.fib (n + 1) ^ 2 = Nat.fib (2 * n + 1) := by
+  rw [Nat.add_comm]; exact (Nat.fib_two_mul_add_one n).symm
+
 end Omega

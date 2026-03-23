@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,627 |
-| 定理/定义数 | 1,230 |
+| 总行数 | ~13,685 |
+| 定理/定义数 | 1,248 |
 | 论文接口包装 | 338 |
 | 文件数 | 36 |
 | 公理数 | 0 |
@@ -48,6 +48,9 @@
 **Fibonacci 素数域（完整）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; fib_four/five/seven/thirteen_prime（native_decide 验证）; fib_nine_not_prime（反例验证）; instFieldOfPrime（通用域实例：F_{m+2} 素数时 X m 为域，经由 stableValueRingEquiv 转移）; instField_X1（GF(2)）、instField_X2（GF(3)）、instField_X3（GF(5)）、instField_X5（GF(13)）、instField_X9（GF(89)）、instField_X11（GF(233)）（cor:field-phase-fib-prime 完整形式化）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
+**Fibonacci 双倍公式与平方和（Phase 21）**：fib_double（F_{2n}=F_n·(2F_{n+1}-F_n)）; fib_double_plus_one（F_{2n+1}=F_{n+1}²+F_n²）; fib_sq_add_sq（F_n²+F_{n+1}²=F_{2n+1}）
+**转移矩阵幂次行列式与 Cassini 恒等式（Phase 21）**：goldenMeanAdjacency_pow_det（det(A^m)=(-1)^m）; fib_cassini（Cassini：F_{n+1}·F_{n-1}-F_n²=(-1)^n，由行列式公式推导）
+**Lucas 数与迹公式（Phase 21）**：lucasNum 定义（L_0=2, L_1=1, L_{n+2}=L_{n+1}+L_n）; lucasNum_zero/one/two/three/succ_succ（simp 引理）; lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1} for n≥1）; goldenMeanAdjacency_pow_trace（tr(A^n)=F_{n+1}+F_{n-1} for n≥1）
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
 **shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）、全零序列（allFalse）、σ(0)=0 固定点（shift_allFalse）、唯一固定点特征（shift_fixed_iff）、非单射性（shift_not_injective）
@@ -65,13 +68,13 @@
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 21 | 100% | 高 |
 | POM | 106 | 101 | 95% | 极高 |
-| 群统一 | 26 | 2 | 8% | 极高 |
+| 群统一 | 26 | 5 | 19% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~151** | **~38%** | - |
+| **总计** | **394** | **~154** | **~39%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1230 个 Lean 定理中，约 338 个是论文接口包装，约 101 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1230 个 Lean 定理中，约 338 个是论文接口包装，约 101 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。
 
 ## 3. 未来工作：30 条具体计划
 
@@ -104,8 +107,8 @@
 
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
-19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1；幂次条目公式 $(A^m)_{00}=F_{m+1}$、$(A^m)_{01}=F_m$、$(A^m)_{10}=F_m$、$(A^{m+1})_{11}=F_m$（2026-03-24）
-20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；shift 动力学深化：allFalse 全零序列、shift_allFalse（σ(0)=0 固定点）、shift_fixed_iff（唯一固定点）、shift_not_injective（非单射）已形式化 2026-03-24；周期轨道：period3Seq/shiftN_three_period3/shift_period3_ne/period2Seq/shiftN_two_period2 已形式化 2026-03-24；完整 Real.log 版极限论证待后续）
+19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1；幂次条目公式 $(A^m)_{00}=F_{m+1}$、$(A^m)_{01}=F_m$、$(A^m)_{10}=F_m$、$(A^{m+1})_{11}=F_m$（2026-03-24）；det(A^m)=(-1)^m（goldenMeanAdjacency_pow_det）；Cassini 恒等式 F_{n+1}·F_{n-1}-F_n²=(-1)^n（fib_cassini，Phase 21）
+20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；shift 动力学深化：allFalse 全零序列、shift_allFalse（σ(0)=0 固定点）、shift_fixed_iff（唯一固定点）、shift_not_injective（非单射）已形式化 2026-03-24；周期轨道：period3Seq/shiftN_three_period3/shift_period3_ne/period2Seq/shiftN_two_period2 已形式化 2026-03-24；Lucas 数 lucasNum 定义+基值+succ_succ + lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1}）+ goldenMeanAdjacency_pow_trace（tr(A^n)=L_n）已形式化 Phase 21；完整 Real.log 版极限论证待后续）
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 

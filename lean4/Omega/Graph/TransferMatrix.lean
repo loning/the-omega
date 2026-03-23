@@ -112,4 +112,24 @@ theorem goldenMeanAdjacency_pow_11 :
         goldenMeanAdjacency_pow_11 (m + 1), goldenMeanAdjacency_pow_11 m, ← Nat.cast_add]
     congr 1; exact (Omega.fib_succ_succ' m).symm
 
+/-- det(A^m) = (-1)^m. -/
+theorem goldenMeanAdjacency_pow_det (m : Nat) :
+    (goldenMeanAdjacency ^ m).det = (-1 : ℤ) ^ m := by
+  rw [Matrix.det_pow]; simp [goldenMeanAdjacency_det]
+
+/-- Cassini's identity: F_{n+1}·F_{n-1} - F_n² = (-1)^n for n ≥ 1. -/
+theorem fib_cassini (n : Nat) (hn : 1 ≤ n) :
+    (Nat.fib (n + 1) : ℤ) * Nat.fib (n - 1) - (Nat.fib n : ℤ) ^ 2 = (-1 : ℤ) ^ n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  -- det(A^{m+1}) = (A^{m+1})_{00}·(A^{m+1})_{11} - (A^{m+1})_{01}·(A^{m+1})_{10}
+  have hDet := goldenMeanAdjacency_pow_det (m + 1)
+  simp only [Matrix.det_fin_two, goldenMeanAdjacency_pow_00,
+    goldenMeanAdjacency_pow_01, goldenMeanAdjacency_pow_10,
+    goldenMeanAdjacency_pow_11] at hDet
+  -- hDet : F_{m+2}·F_m - F_{m+1}·F_{m+1} = (-1)^{m+1}
+  simp only [show m + 1 - 1 = m from by omega] at *
+  -- hDet : ↑(F_{m+2}) * ↑(F_m) - ↑(F_{m+1}) * ↑(F_{m+1}) = (-1)^(m+1)
+  -- Goal: ↑(F_{m+2}) * ↑(F_m) - ↑(F_{m+1})^2 = (-1)^(m+1)
+  rw [sq]; exact hDet
+
 end Omega.Graph
