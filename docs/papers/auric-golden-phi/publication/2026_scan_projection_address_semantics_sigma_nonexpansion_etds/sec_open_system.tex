@@ -1,0 +1,410 @@
+\subsection{First-entry residue events and escape rates}
+
+We now close the pressure-gap mechanism by identifying a natural class
+of target events for which the boundary matrix is precisely the killed
+transfer matrix of an open system.  The study of escape rates through
+holes in dynamical systems originates with
+\citet{PianigianiYorke1979}; the transfer-operator approach for
+topological Markov chains was developed by
+\citet{ColletMartinezSchmitt1997}.  For spectral characterizations of
+escape rates and conditionally invariant measures, see
+\citet{DemersYoung2006,DemersWrightYoung2012} and
+\citet{KellerLiverani2009}; for the Gibbs-measure setting, see
+\citet{FergusonPollicott2012}.  Since any finite union of cylinders
+becomes a one-step Markov hole after a sufficiently high block
+presentation, there is no loss in working directly on a one-step shift
+over a finite alphabet \(A\); compare \citet{LindMarcus1995,Bowen2008}.
+
+\begin{theorem}[First-entry residue events and escape rates]
+\label{thm:first-entry-escape-rate}
+Let \(Y\subseteq A^{\NNzero}\) be a topologically mixing one-step
+subshift of finite type, and let \(\nu_\varphi\) be the fully supported
+equilibrium Markov measure of a one-step potential \(\varphi\).  Write
+\(\pi\) for the stationary vector and \(K=(K_{ij})_{i,j\in A}\) for the
+transition matrix.  Let \(M=(M_{ij})_{i,j\in A}\) be the adjacency
+matrix of \(Y\).  Let \(\mathcal H\subsetneq A\) be a non-empty proper
+subset, and set
+\[
+  H:=\bigcup_{h\in\mathcal H}[h],
+  \qquad
+  \mathcal S:=A\setminus \mathcal H.
+\]
+Let
+\[
+  Y_H:=\set{y\in Y:\sigma^n y\notin H\text{ for every }n\geq 0}
+\]
+be the survivor subshift, and assume that \(Y_H\) is topologically
+mixing.  Let
+\[
+  \mathcal S_\infty
+  := \set{i\in\mathcal S:\exists\,y\in Y_H,\ y_0=i}
+\]
+be the survivor alphabet, i.e.\ the set of states that actually appear
+in \(Y_H\).  Since \(Y_H\) is a one-step subshift of finite type, its
+adjacency matrix restricted to \(\mathcal S_\infty\) is irreducible;
+mixing further implies primitivity.  States in
+\(\mathcal S\setminus\mathcal S_\infty\) are transient: from any such
+state, every admissible path eventually enters \(\mathcal H\).
+Define the first entry time
+\[
+  \tau_H(y):=\inf\set{n\geq 0:\sigma^n y\in H}.
+\]
+Fix \(q\geq 2\) and a non-empty proper subset
+\(R\subsetneq \ZZ/q\ZZ\), and define
+\[
+  \mathsf{P}_R
+  := \set{y\in Y:
+      \tau_H(y)<\infty,\
+      \tau_H(y)\bmod q\in R }.
+\]
+
+For \(i\in\mathcal S\), let \(\PP_i\) be the Markov law on \(Y\)
+conditioned to start at state \(i\), and let
+\[
+  \tau_H^+
+  := \inf\set{n\geq 1:y_n\in\mathcal H}.
+\]
+For \(r\in\ZZ/q\ZZ\), define
+\[
+  p_{i,r}:=\PP_i\bigl(r+\tau_H^+\in R \bmod q\bigr),
+  \qquad
+  \beta_{i,r}:=\min\set{p_{i,r},1-p_{i,r}}.
+\]
+Assume the following residue non-degeneracy condition:
+for every \(i\in\mathcal S\) and \(r\in\ZZ/q\ZZ\), there exist
+admissible future paths starting at \(i\) whose first entry into
+\(\mathcal H\) occurs at residues both in \(R-r\) and in
+\((\ZZ/q\ZZ\setminus R)-r\).  Then there exists \(\theta>0\) such that
+\[
+  0<\theta\leq \beta_{i,r}\leq \frac12
+  \qquad
+  \text{for every } i\in\mathcal S,\ r\in\ZZ/q\ZZ.
+\]
+
+Define the killed matrix \(B_H\) on \(\mathcal S\) by
+\[
+  B_H(i,j):=K_{ij}\mathbf{1}_{\{j\in\mathcal S\}},
+  \qquad i,j\in\mathcal S,
+\]
+let \(u\in\RR^{\mathcal S}\) be given by
+\[
+  u_i:=\pi_i,
+\]
+and for \(r\in\ZZ/q\ZZ\) let \(b_r\in\RR^{\mathcal S}\) be the vector
+\[
+  b_r(i):=\beta_{i,r}.
+\]
+Then for every \(m\geq 1\),
+\[
+  \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = u^{\mathsf T}B_H^{m-1}b_{m-1\bmod q}.
+\]
+Moreover,
+\[
+  \theta\,\nu_\varphi(\tau_H\geq m)
+  \leq \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  \leq \frac12\,\nu_\varphi(\tau_H\geq m),
+\]
+where
+\[
+  \nu_\varphi(\tau_H\geq m)
+  = u^{\mathsf T}B_H^{m-1}\mathbf{1}.
+\]
+If \(\rho_H:=\rho(B_H)\), then
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = -\log\rho_H.
+\]
+Finally, if
+\[
+  L_{\varphi,H}(i,j):=M_{ij}e^{\varphi(i,j)}\mathbf{1}_{\{j\in\mathcal S_\infty\}},
+  \qquad i,j\in\mathcal S_\infty,
+\]
+then
+\[
+  -\log\rho_H
+  = P_Y(\varphi)-P_{Y_H}(\varphi).
+\]
+Thus the finite-observation exponent of \(\mathsf{P}_R\) coincides with
+the escape rate of the open system \((Y,\sigma,H)\).
+\end{theorem}
+
+\begin{proof}
+Let \(a=a_0\cdots a_{m-1}\in A^m\).  If \(a_t\in\mathcal H\) for some
+\(0\leq t\leq m-1\), then \(\tau_H\leq m-1\) on the cylinder \([a]\), so
+the truth value of \(\mathsf{P}_R\) is already decided on \([a]\), and
+\([a]\) contributes \(0\) to
+\(\varepsilon_m(\mathsf{P}_R;\nu_\varphi)\).
+
+Assume therefore that \(a_t\in\mathcal S\) for every
+\(0\leq t\leq m-1\).  By the Markov property, conditioned on \([a]\) the
+future depends on the prefix only through the terminal state
+\(a_{m-1}\).  Since the next possible hit time occurs after at least one
+additional step, the conditional probability of \(\mathsf{P}_R\) on
+\([a]\) is exactly \(p_{a_{m-1},\,m-1\bmod q}\).  Hence the Bayes factor
+on \([a]\) is \(\beta_{a_{m-1},\,m-1\bmod q}\).  The residue
+non-degeneracy hypothesis guarantees \(0<\beta_{i,r}\leq \tfrac12\), and
+since the state space \(\mathcal S\times \ZZ/q\ZZ\) is finite, the lower
+bound can be chosen uniformly.
+
+Thus the boundary cylinders for \(\mathsf{P}_R\) are exactly the
+length-\(m\) survivor words, and
+Proposition~\ref{prop:scan-error-cylinder} gives
+\[
+  \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = \sum_{\substack{a\in A^m\\ a_t\in\mathcal S\ \forall t<m}}
+      \nu_\varphi([a])\,
+      \beta_{a_{m-1},\,m-1\bmod q}.
+\]
+Since \(\nu_\varphi\) is Markov,
+\[
+  \nu_\varphi([a])
+  = \pi_{a_0}K_{a_0a_1}\cdots K_{a_{m-2}a_{m-1}},
+\]
+and summing over survivor words with a fixed terminal state gives
+\[
+  \varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = u^{\mathsf T}B_H^{m-1}b_{m-1\bmod q}.
+\]
+The same path sum with terminal weight \(\mathbf{1}\) gives
+\[
+  \nu_\varphi(\tau_H\geq m)
+  = u^{\mathsf T}B_H^{m-1}\mathbf{1}.
+\]
+The two-sided comparison with survivor mass follows immediately from the
+uniform bounds on \(\beta_{i,r}\).
+
+The restriction \(B_H|_{\mathcal S_\infty}\) is primitive: since
+\(Y_H\) is topologically mixing, for every pair
+\(i,j\in\mathcal S_\infty\) there is a path of positive weight from
+\(i\) to \(j\) staying within \(\mathcal S_\infty\), and the greatest
+common divisor of return times is \(1\).  The matrix \(B_H\) on the
+full set \(\mathcal S\) has a block upper-triangular form with
+essential class \(\mathcal S_\infty\); the transient block indexed by
+\(\mathcal S\setminus\mathcal S_\infty\) has strictly smaller spectral
+radius.  Therefore
+\(\rho_H=\rho(B_H)=\rho(B_H|_{\mathcal S_\infty})\), and the
+Perron--Frobenius theorem applied to the primitive block gives
+\[
+  u^{\mathsf T}B_H^{m-1}b_{m-1\bmod q}
+  = C_{m-1\bmod q}\rho_H^{m-1}+O(\vartheta^m)
+\]
+for some \(q\)-periodic family of positive constants
+\((C_r)_{r\in\ZZ/q\ZZ}\) and some \(0\leq \vartheta<\rho_H\).  Hence
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_R;\nu_\varphi)
+  = -\log\rho_H.
+\]
+
+Let \(h>0\) be a Perron right eigenvector of the ambient transfer matrix
+\(L_\varphi(i,j):=M_{ij}e^{\varphi(i,j)}\).  The normalized transition
+matrix satisfies
+\[
+  K_{ij}
+  = M_{ij}e^{\varphi(i,j)-P_Y(\varphi)}\frac{h_j}{h_i}.
+\]
+If \(D\) denotes the diagonal matrix on \(\mathcal S_\infty\) with
+\(D_{ii}=h_i\), then the restriction to \(\mathcal S_\infty\) satisfies
+\[
+  B_H|_{\mathcal S_\infty}=e^{-P_Y(\varphi)}D^{-1}L_{\varphi,H}D.
+\]
+Consequently
+\[
+  \rho_H
+  = \rho(B_H|_{\mathcal S_\infty})
+  = e^{-P_Y(\varphi)}\rho(L_{\varphi,H}).
+\]
+Since \(Y_H\) is a topologically mixing one-step subshift with alphabet
+\(\mathcal S_\infty\), standard thermodynamic formalism identifies
+\(\log\rho(L_{\varphi,H})\) with \(P_{Y_H}(\varphi)\).  Therefore
+\[
+  -\log\rho_H
+  = P_Y(\varphi)-P_{Y_H}(\varphi).
+\]
+The escape-rate interpretation follows from the comparison with
+\(\nu_\varphi(\tau_H\geq m)\).
+\end{proof}
+
+\begin{corollary}[Survivor pressure recovery]
+\label{cor:survivor-pressure-recovery}
+Under the hypotheses of
+Theorem~\ref{thm:first-entry-escape-rate},
+\[
+  P_{Y_H}(\varphi)
+  = P_Y(\varphi)
+    + \lim_{m\to\infty}\frac1m
+      \log \varepsilon_m(\mathsf{P}_R;\nu_\varphi).
+\]
+In particular, for the Parry measure of maximal entropy
+\cite{Parry1964},
+\[
+  h_{\mathrm{top}}(Y_H)
+  = h_{\mathrm{top}}(Y)
+    + \lim_{m\to\infty}\frac1m
+      \log \varepsilon_m(\mathsf{P}_R;\nu_{\max}).
+\]
+\end{corollary}
+
+\begin{proof}
+This is a rearrangement of the pressure identity in
+Theorem~\ref{thm:first-entry-escape-rate}.
+\end{proof}
+
+\begin{proposition}[Doubling map and the Fibonacci escape law]
+\label{prop:doubling-fibonacci-escape}
+Let \(T(x)=2x\bmod 1\) on \([0,1)\), equipped with Lebesgue measure
+\(\Leb\), and let \(W=[1/2,1)\).  The binary itinerary of \(x\) gives
+the full one-sided two-shift with the Bernoulli \((1/2,1/2)\) measure.
+Let
+\[
+  H=[3/4,1),
+\]
+so that \(H\) corresponds to the cylinder \([11]\).  Define
+\[
+  \tau_H(x):=\inf\set{n\geq 0:T^n x\in H}
+\]
+and
+\[
+  \mathsf{P}_{\mathrm{even}}
+  := \set{x:\tau_H(x)<\infty,\ \tau_H(x)\equiv 0 \pmod 2}.
+\]
+If \((F_n)_{n\geq 0}\) denotes the Fibonacci sequence
+\(F_0=0\), \(F_1=1\), then for every \(m\geq 1\),
+\[
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \frac{F_{m+3}}{5\,2^m}.
+\]
+Moreover,
+\[
+  \Leb(\tau_H\geq m)=\frac{F_{m+3}}{2^{m+1}},
+  \qquad
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \frac25\,\Leb(\tau_H\geq m),
+\]
+and therefore
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \log\frac{2}{\varphi}
+  = \log 2-\log\varphi.
+\]
+Equivalently, the survivor entropy of the golden-mean subshift is
+recovered from finite-observation error by
+\[
+  h_{\mathrm{top}}(Y_H)
+  = \log\varphi
+  = \log 2
+    + \lim_{m\to\infty}\frac1m
+      \log \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb).
+\]
+\end{proposition}
+
+\begin{proof}
+In binary coding, \(\tau_H\) is the first index at which the block
+\(11\) appears.  A length-\(m\) prefix contributes to
+\(\varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)\) if and only if it
+contains no occurrence of \(11\) at positions \(0,\ldots,m-2\).  Let
+\begin{align*}
+  G_m^0
+  &:= \set{a\in\{0,1\}^m:
+           a \text{ avoids }11,\ a_{m-1}=0}, \\
+  G_m^1
+  &:= \set{a\in\{0,1\}^m:
+           a \text{ avoids }11,\ a_{m-1}=1}.
+\end{align*}
+The usual golden-mean recursion gives
+\[
+  \card{G_m^0}=F_{m+1},
+  \qquad
+  \card{G_m^1}=F_m.
+\]
+Every length-\(m\) cylinder has Lebesgue measure \(2^{-m}\).
+
+Let
+\begin{align*}
+  a
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of even length ending in }0), \\
+  b
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of even length ending in }1), \\
+  c
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of odd length ending in }0), \\
+  d
+  &:= \Leb(\mathsf{P}_{\mathrm{even}}
+           \mid \text{safe prefix of odd length ending in }1).
+\end{align*}
+Since the next binary digit is \(0\) or \(1\) with equal probability,
+\[
+  a=\frac12 c+\frac12 d,
+  \qquad
+  b=\frac12 c,
+\]
+\[
+  c=\frac12 a+\frac12 b,
+  \qquad
+  d=\frac12+\frac12 a.
+\]
+Solving gives
+\[
+  a=\frac35,\qquad b=\frac15,\qquad c=\frac25,\qquad d=\frac45.
+\]
+Hence the Bayes error on a safe prefix depends only on its terminal
+symbol:
+\[
+  \beta(a)=\frac25
+  \quad\text{on }G_m^0,
+  \qquad
+  \beta(a)=\frac15
+  \quad\text{on }G_m^1.
+\]
+Therefore
+\[
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = 2^{-m}\left(
+      \frac25\card{G_m^0}
+      + \frac15\card{G_m^1}
+    \right)
+  = 2^{-m}\left(
+      \frac25F_{m+1}
+      + \frac15F_m
+    \right).
+\]
+Using \(F_{m+3}=2F_{m+1}+F_m\), we obtain
+\[
+  \varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \frac{F_{m+3}}{5\,2^m}.
+\]
+
+The condition \(\tau_H\geq m\) is equivalent to saying that the first
+\(m+1\) binary digits avoid \(11\), so
+\[
+  \Leb(\tau_H\geq m)=\frac{F_{m+3}}{2^{m+1}}.
+\]
+This proves the exact factor \(\varepsilon_m=\frac25\Leb(\tau_H\geq m)\).
+Finally, \(F_{m+3}\sim \varphi^{m+3}/\sqrt5\), so
+\[
+  \lim_{m\to\infty}
+  -\frac1m\log\varepsilon_m(\mathsf{P}_{\mathrm{even}};\Leb)
+  = \log\frac{2}{\varphi}.
+\]
+The survivor subshift is the golden-mean shift, whose topological
+entropy is \(\log\varphi\), and the last identity follows.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main-clarity}]
+Proposition~\ref{prop:scan-error-cylinder} gives the exact cylinder
+formula.  Theorem~\ref{thm:tanaka-stokes} gives the Tanaka identity.
+The general boundary estimate is
+Theorem~\ref{thm:clarity-boundary-dimension}.  The weighted finite-state
+refinements are supplied by
+Theorem~\ref{thm:weighted-boundary-transfer},
+Corollary~\ref{cor:weighted-boundary-pole},
+Corollary~\ref{cor:pressure-gap},
+Theorem~\ref{thm:first-entry-escape-rate},
+Corollary~\ref{cor:survivor-pressure-recovery},
+and Proposition~\ref{prop:doubling-fibonacci-escape}.
+\end{proof}

@@ -1,6 +1,6 @@
 # Publication Workspace
 
-更新日期：2026-03-19
+更新日期：2026-03-23
 
 详细投稿计划见 `pubplan.md`。
 
@@ -15,7 +15,7 @@
 | # | 目录 | 期刊 | 覆盖总稿章节 | 状态 |
 |---|---|---|---|---|
 | 1 | `submitted_2026_resolution_folding_core_symbolic_dynamics_jnt` | JNT | `folding/` 核心 | 已投稿 |
-| 2 | `submitted_2026_folded_rotation_histogram_certificates_siads` | SIADS | `experiments/` + `statistical_stability/` | 已投稿 |
+| 2 | `submitted_2026_folded_rotation_histogram_certificates_siads` | SIADS | `experiments/` + `statistical_stability/` | 已投稿 -> fall back 转投etds已投 |
 | 3 | `submitted_2026_zeckendorf_streaming_normalization_automata_rairo_ita` | RAIRO-ITA | `emergent_arithmetic/` Zeckendorf 算法 | 已投稿 |
 | 4 | `submitted_2026_fibonacci_moduli_cross_resolution_arithmetic_rint` | RINT | `emergent_arithmetic/` 模结构 | 已投稿 |
 | 5 | `submitted_2026_zero_jitter_information_clocks_parry_gibbs_rigidity_jtp` | QTDS → 改投 J. Theoretical Probability (Springer) | `group_unification/` Parry 基线 | 已投稿（改投中） |
@@ -30,7 +30,7 @@
 
 | 代号 | 目录 | 论文标题 | 首选期刊 | 核心材料 |
 |---|---|---|---|---|
-| E₁ | `2026_conservative_extension_chain_state_forcing_ndjfl` | 无公理结构扩张链与状态 Forcing | Notre Dame J. Formal Logic | `logic_expansion_chain/` |
+| E₁ | `2026_conservative_extension_chain_state_forcing_apal` | 无公理结构扩张链与状态 Forcing | Annals of Pure and Applied Logic | `logic_expansion_chain/` |
 | E₂ | `2026_scan_projection_address_semantics_sigma_nonexpansion_etds` | 扫描-投影地址语义与 σ-代数不扩张 | ETDS | `spg/` + `recursive_addressing/` |
 | F | `2026_projection_ontological_mathematics_core_tams` | 投影本体数学核心 | Trans. AMS | `pom/` 核心子集 |
 
@@ -50,6 +50,7 @@
 |---|---|---|---|---|
 | I | `2026_group_unification_fibonacci_prime_window_entropy_time` | 群论统一窗与熵率时间协议 | J. Algebra | `group_unification/` 超出论文 #5 部分 |
 | J | `2026_zeta_completion_xi_zero_audit` | ζ-Completion 与 Ξ 零点审计 | Inventiones | `zeta_finite_part/xi/` 核心子集 |
+| K | `2026_observer_spacetime_logic_dynamic_update_causal_forcing` | 观察者时空逻辑：动态更新、多观察者通信与事件-区域 forcing | J. Philosophical Logic / Foundations of Physics | `logic_expansion_chain/` L₇–L₁₀^OST（E₁ 续篇） |
 
 ---
 
@@ -58,29 +59,34 @@
 ```
 已发表: #1(Folding) #2(Experiments) #3(Zeckendorf) #4(FibMod) #5(Parry) #6(S4/Prym) #7(GRG)
 
-         ┌──────────────────────────────────┐
-         │  E₁ 逻辑框架 (NDJFL)            │
-         └──────────────────────────────────┘
-         ┌──────────────────────────────────┐
-         │  E₂ 地址语义 (ETDS)              │
-         └──────────┬───────────────────────┘
-                    │
-         ┌──────────▼───────────────────────┐
-         │  F  POM 核心 (Trans. AMS)        │
-         └──────┬───────────┬───────────────┘
-                │           │
-    ┌───────────▼──┐  ┌─────▼──────────────┐
-    │ G 圆维 (JFA) │  │ H ζ有限部 (ETDS)   │
-    └──────────────┘  └─────┬──────────────┘
-                            │
-                    ┌───────▼──────────────┐
-                    │ J ζ-completion       │
-                    └──────────────────────┘
+    ┌──────────────────────────────────────┐
+    │  E₁ cohomological visibility (APAL)  │
+    └──────────┬───────────────────────────┘
+               │
+               ├──────────────────────────────────────┐
+               │                                      │
+    ┌──────────▼───────────────────────┐   ┌──────────▼──────────────────────┐
+    │  E₂ 地址语义 (ETDS)              │   │  K 观察者时空逻辑 (第三批)       │
+    └──────────┬───────────────────────┘   │  L₇–L₁₀^OST                    │
+               │                           │  J.Phil.Logic / FoP / APAL     │
+    ┌──────────▼───────────────────────┐   └─────────────────────────────────┘
+    │  F  POM 核心 (Trans. AMS)        │
+    └──────┬───────────┬───────────────┘
+           │           │
+┌──────────▼──┐  ┌─────▼──────────────┐
+│ G 圆维 (JFA) │  │ H ζ有限部 (ETDS)   │
+└─────────────┘  └─────┬──────────────┘
+                        │
+                ┌───────▼──────────────┐
+                │ J ζ-completion       │
+                └──────────────────────┘
 
     ┌──────────────────────────────────────┐
     │ I 群论统一窗 (J.Algebra) 弱依赖 E/F  │
     └──────────────────────────────────────┘
 ```
+
+E₁ 是全部后续论文的逻辑基础；K 是 E₁ 的续篇（L₇–L₁₀ 物理桥接层，硬依赖 E₁，弱依赖 #7 GRG）；F 是 G/H/J 的必要前驱；G/H/I 之间无硬依赖。
 
 ---
 
