@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,283 |
-| 定理/定义数 | 1,070 |
+| 总行数 | ~12,336 |
+| 定理/定义数 | 1,076 |
 | 论文接口包装 | 312 |
-| 文件数 | 32 |
+| 文件数 | 33 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 16 | ~318 | 97% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 17 | ~323 | 97% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -33,6 +33,7 @@
 **modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_10（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
+**矩谱（Round 8）**：momentSum（S_q(m) 定义）; momentSum_zero（S_0=F_{m+1}）; momentSum_one（S_1=2^m）; momentSum_le_max_pow（S_q ≤ D_m^{q-1}·2^m）; paperFib_le_pow（F_{m+1} ≤ 2^m 增长上界）
 **Fibonacci 素数域（部分）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; paperFib_three/four/six/twelve_prime（native_decide 验证）; paperFib_eight_not_prime（反例验证）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
@@ -48,12 +49,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 13 | 62% | 高 |
-| POM | 106 | 28 | 26% | 极高 |
+| POM | 106 | 33 | 31% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~70** | **~18%** | - |
+| **总计** | **394** | **~75** | **~19%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1050 个 Lean 定理中，约 312 个是论文接口包装，约 58 个直接对应论文中的编号定理。
 

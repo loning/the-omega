@@ -2006,6 +2006,47 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FibonacciField"
       leanName := "Omega.paperFib_twelve_prime"
       phase := 2
+      status := .formalized }
+  -- Phase 8: Fibonacci 界 + momentSum (Round 8)
+  -- Fibonacci 压缩率隐含引理 → paperFib_le_pow (Omega/Core/Fib.lean:129)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "fib-growth-upper-bound"
+      sourcePath := "sections/body/folding/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Core.Fib"
+      leanName := "Omega.paperFib_le_pow"
+      phase := 8
+      status := .formalized }
+  -- subsec:op_algebra_complexity → momentSum 定义 (Omega/Folding/MomentSum.lean:6)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "subsec:op_algebra_complexity-momentSum"
+      sourcePath := "sections/body/folding/subsec__op-algebra-complexity.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum"
+      phase := 8
+      status := .formalized }
+  -- subsec:op_algebra_complexity → momentSum_zero (Omega/Folding/MomentSum.lean:10)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "subsec:op_algebra_complexity-momentSum-zero"
+      sourcePath := "sections/body/folding/subsec__op-algebra-complexity.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_zero"
+      phase := 8
+      status := .formalized }
+  -- subsec:op_algebra_complexity → momentSum_one (Omega/Folding/MomentSum.lean:15)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "subsec:op_algebra_complexity-momentSum-one"
+      sourcePath := "sections/body/folding/subsec__op-algebra-complexity.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_one"
+      phase := 8
+      status := .formalized }
+  -- subsec:op_algebra_complexity → momentSum_le_max_pow (Omega/Folding/MomentSum.lean:19)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "subsec:op_algebra_complexity-momentSum-le-max-pow"
+      sourcePath := "sections/body/folding/subsec__op-algebra-complexity.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_le_max_pow"
+      phase := 8
       status := .formalized } ]
 
 end Omega.Audit

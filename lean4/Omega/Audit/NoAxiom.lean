@@ -638,6 +638,12 @@ def coreAuditTargets : List String :=
   , "Omega.paperFib_four_prime"
   , "Omega.paperFib_six_prime"
   , "Omega.paperFib_eight_not_prime"
-  , "Omega.paperFib_twelve_prime" ]
+  , "Omega.paperFib_twelve_prime"
+  -- Round 8: Fibonacci 界 + momentSum
+  , "Omega.paperFib_le_pow"
+  , "Omega.momentSum"
+  , "Omega.momentSum_zero"
+  , "Omega.momentSum_one"
+  , "Omega.momentSum_le_max_pow" ]
 
 end Omega.Audit

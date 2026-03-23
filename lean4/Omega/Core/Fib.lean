@@ -125,4 +125,20 @@ theorem paperFib_dvd_of_succ_dvd {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
 /-- F_13 = 377. -/
 @[simp] theorem paperFib_thirteen : paperFib 13 = 377 := by native_decide
 
+/-- Upper bound: paperFib(m+1) ≤ 2^m for all m. -/
+theorem paperFib_le_pow : ∀ m : Nat, paperFib (m + 1) ≤ 2 ^ m
+  | 0 => by simp [paperFib]
+  | 1 => by simp [paperFib]
+  | m + 2 => by
+    have hRec := paperFib_recurrence (m + 1)
+    have ih1 := paperFib_le_pow (m + 1)
+    have ih0 := paperFib_le_pow m
+    -- Normalize all paperFib terms to canonical form
+    have : paperFib (m + 1 + 1) = paperFib (m + 2) := rfl
+    have : paperFib (m + 2 + 1) = paperFib (m + 3) := rfl
+    have h1 : paperFib (m + 3) = paperFib (m + 2) + paperFib (m + 1) := paperFib_recurrence (m + 1)
+    have h2 : (2 : Nat) ^ (m + 2) = 2 ^ (m + 1) + 2 ^ (m + 1) := by ring
+    have h3 : (2 : Nat) ^ (m + 1) = 2 ^ m + 2 ^ m := by ring
+    omega
+
 end Omega
