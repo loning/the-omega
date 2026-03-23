@@ -139,5 +139,39 @@ theorem toZMod_surjective : Function.Surjective (toZMod (m := m)) :=
 noncomputable def stableValueRingEquiv (m : Nat) : X m ≃+* ZMod (Nat.fib (m + 2)) :=
   RingEquiv.ofBijective (stableValueRingHom m) ⟨toZMod_injective, toZMod_surjective⟩
 
+/-! ### Field instance when F_{m+2} is prime -/
+
+/-- When Nat.fib (m + 2) is prime, X m is a field (transferred from ZMod via the ring iso). -/
+noncomputable def instFieldOfPrime (hp : Nat.Prime (Nat.fib (m + 2))) : Field (X m) := by
+  letI : Fact (Nat.Prime (Nat.fib (m + 2))) := ⟨hp⟩
+  have hIsField := (stableValueRingEquiv m).symm.toMulEquiv.symm.isField (Field.toIsField _)
+  exact hIsField.toField
+
+-- Concrete field instances
+
+/-- X_1 ≅ GF(2) is a field (F_3 = 2 is prime). -/
+noncomputable instance instField_X1 : Field (X 1) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_2 ≅ GF(3) is a field (F_4 = 3 is prime). -/
+noncomputable instance instField_X2 : Field (X 2) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_3 ≅ GF(5) is a field (F_5 = 5 is prime). -/
+noncomputable instance instField_X3 : Field (X 3) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_5 ≅ GF(13) is a field (F_7 = 13 is prime). -/
+noncomputable instance instField_X5 : Field (X 5) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_9 ≅ GF(89) is a field (F_11 = 89 is prime). -/
+noncomputable instance instField_X9 : Field (X 9) :=
+  instFieldOfPrime (by native_decide)
+
+/-- X_11 ≅ GF(233) is a field (F_13 = 233 is prime). -/
+noncomputable instance instField_X11 : Field (X 11) :=
+  instFieldOfPrime (by native_decide)
+
 end
 end Omega.X

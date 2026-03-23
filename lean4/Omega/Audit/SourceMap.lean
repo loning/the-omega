@@ -2735,6 +2735,64 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberSpectrum"
       leanName := "Omega.cNthMaxFiber_third_four"
       phase := 9
+      status := .formalized }
+  -- Phase 15: cor:field-phase-fib-prime — Field 实例 (FiberRing.lean:143-174)
+  -- instFieldOfPrime (通用域实例，F_{m+2} 素数时 X m 为域)
+  --   → instFieldOfPrime (FiberRing.lean:145)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instFieldOfPrime"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instFieldOfPrime"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X1 : Field (X 1) ≅ GF(2) (FiberRing.lean:153)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X1"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X1"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X2 : Field (X 2) ≅ GF(3) (FiberRing.lean:157)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X2"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X2"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X3 : Field (X 3) ≅ GF(5) (FiberRing.lean:161)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X3"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X3"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X5 : Field (X 5) ≅ GF(13) (FiberRing.lean:165)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X5"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X5"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X9 : Field (X 9) ≅ GF(89) (FiberRing.lean:169)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X9"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X9"
+      phase := 15
+      status := .formalized }
+  -- cor:field-phase-fib-prime → instField_X11 : Field (X 11) ≅ GF(233) (FiberRing.lean:173)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:field-phase-fib-prime-instField-X11"
+      sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instField_X11"
+      phase := 15
       status := .formalized } ]
 
 end Omega.Audit

@@ -391,6 +391,14 @@ Run these commands manually during audit:
   #print axioms Omega.X.toZMod_injective
   #print axioms Omega.X.toZMod_surjective
   #print axioms Omega.X.stableValueRingEquiv
+  -- Plan 2: cor:field-phase-fib-prime — Field 实例 (FiberRing.lean:143-174)
+  #print axioms Omega.X.instFieldOfPrime
+  #print axioms Omega.X.instField_X1
+  #print axioms Omega.X.instField_X2
+  #print axioms Omega.X.instField_X3
+  #print axioms Omega.X.instField_X5
+  #print axioms Omega.X.instField_X9
+  #print axioms Omega.X.instField_X11
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

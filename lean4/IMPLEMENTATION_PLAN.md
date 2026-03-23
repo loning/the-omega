@@ -41,7 +41,7 @@
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **S_3 基值 + A_3 碰撞核矩阵（Round 13）**：momentSum_three_zero..six（S_3(m) 基值 m=0..6，native_decide 验证）; momentSum_three_recurrence_verified（S_3 递推 m=0..3 数值验证）; collisionKernel3（A_3 companion matrix 定义）; collisionKernel3_trace（tr=2）; collisionKernel3_det（det=-2）; collisionKernel3_cayley_hamilton（Cayley-Hamilton：M³=2M²+4M-2I，prop:pom-s3-recurrence）
 **S_2/S_3 扩展基值 + 有界递推 + 条件递推（Round 14）**：momentSum_two_seven（S_2(7)=544）; momentSum_three_seven（S_3(7)=2504）; momentSum_two_recurrence_bounded（S_2 递推 m≤4，interval_cases+native_decide）; momentSum_three_recurrence_bounded（S_3 递推 m≤4，interval_cases+native_decide）; momentSum_two_recurrence_of（S_2 递推条件性一般版，prop:pom-s2-recurrence）; momentSum_three_recurrence_of（S_3 递推条件性一般版，prop:pom-s3-recurrence）——有界范围已形式化，完整无界归纳证明待后续
-**Fibonacci 素数域（部分）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; paperFib_three/four/six/twelve_prime（native_decide 验证）; paperFib_eight_not_prime（反例验证）
+**Fibonacci 素数域（完整）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; fib_four/five/seven/thirteen_prime（native_decide 验证）; fib_nine_not_prime（反例验证）; instFieldOfPrime（通用域实例：F_{m+2} 素数时 X m 为域，经由 stableValueRingEquiv 转移）; instField_X1（GF(2)）、instField_X2（GF(3)）、instField_X3（GF(5)）、instField_X5（GF(13)）、instField_X9（GF(89)）、instField_X11（GF(233)）（cor:field-phase-fib-prime 完整形式化）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
@@ -56,13 +56,13 @@
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
-| 新生算术 | 21 | 15 | 71% | 高 |
+| 新生算术 | 21 | 16 | 76% | 高 |
 | POM | 106 | 65 | 61% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~109** | **~28%** | - |
+| **总计** | **394** | **~110** | **~28%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1173 个 Lean 定理中，约 312 个是论文接口包装，约 65 个直接对应论文中的编号定理。
 
@@ -71,7 +71,7 @@
 ### Phase A：新生算术深化（计划 1-6）
 
 1. **Zeckendorf 唯一性完整证明**：证明 `stableValue (X.ofNat m n) = n` 对所有 `n < F_{m+2}` 成立（已完成），进一步证明 Zeckendorf 表示的唯一性定理
-2. **[深化完成] 稳定乘法的 Fibonacci 素数域**：`stableMul_inv_of_prime`（素数时乘法逆存在，`cor:field-phase-fib-prime`）; 素数实例 F(3),F(4),F(6),F(12) 及反例 F(8) via native_decide; 完整 Field 实例构造（GF(p) 同构）待后续
+2. ✅ **稳定乘法的 Fibonacci 素数域**：`stableMul_inv_of_prime`（素数时乘法逆存在，`cor:field-phase-fib-prime`）; 素数实例 F(3),F(4),F(6),F(12) 及反例 F(8) via native_decide; `instFieldOfPrime`（通用域实例构造，F_{m+2} 素数时 X m ≃ GF(F_{m+2})）; 具体域实例 `instField_X1`（GF(2)）、`instField_X2`（GF(3)）、`instField_X3`（GF(5)）、`instField_X5`（GF(13)）、`instField_X9`（GF(89)）、`instField_X11`（GF(233)）via native_decide
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
 4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射）
 5. **Fibonacci 整除性**：证明 `F_m | F_{nm}` (Fibonacci 整除定理)
@@ -139,9 +139,8 @@
 
 ### 长期/探索目标（需重型理论）
 
-11. 计划 2（素数域结构——逆元已完成，Field 实例构造待后续）
-12. 计划 20-22（动力系统系列）
-13. 计划 27-30（远层探索系列）
+11. 计划 20-22（动力系统系列）
+12. 计划 27-30（远层探索系列）
 
 ## 5. 质量闸门
 
