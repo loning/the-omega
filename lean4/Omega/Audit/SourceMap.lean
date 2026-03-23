@@ -32,7 +32,7 @@ def initialEntries : List SourceMapEntry :=
   , { label := "prop:folding-stable-syntax-fibonacci-count"
       sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
       moduleName := "Omega.Folding.StableSyntax"
-      leanName := "Omega.X.card_eq_paperFib_succ"
+      leanName := "Omega.X.card_eq_fib"
       phase := 1
       status := .formalized }
   , { label := "prop:folding-stable-syntax-terminal-recursion"
@@ -1508,10 +1508,10 @@ def initialEntries : List SourceMapEntry :=
       phase := 9
       status := .formalized }
   -- Phase 10: Carry Defect (Plan 3)
-  , { label := "aux:paperFib-add-fib-eq"
+  , { label := "aux:fib-succ-add-fib-eq"
       sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
       moduleName := "Omega.Folding.CarryDefect"
-      leanName := "Omega.X.paperFib_add_fib_eq"
+      leanName := "Omega.X.fib_succ_add_fib_eq"
       phase := 10
       status := .formalized }
   , { label := "aux:fib-sub-eq"
@@ -1520,10 +1520,10 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.X.fib_sub_eq"
       phase := 10
       status := .formalized }
-  , { label := "aux:fib-lt-paperFib-succ"
+  , { label := "aux:fib-lt-fib-succ-succ"
       sourcePath := "sections/body/pom/subsec__pom-stable-addition.tex"
       moduleName := "Omega.Folding.CarryDefect"
-      leanName := "Omega.X.fib_lt_paperFib_succ"
+      leanName := "Omega.X.fib_lt_fib_succ_succ"
       phase := 10
       status := .formalized }
   , { label := "thm:pom-stable-addition-carry-defect-unique-element"
@@ -1626,8 +1626,8 @@ def initialEntries : List SourceMapEntry :=
   --                                       → X.maxFiberMultiplicity_le_add (line:271)
   -- cor:pom-D-rec (base values D_0..D_10) → X.maxFiberMultiplicity_zero..ten (lines:108-118)
   -- 辅助引理: restrict_ofNat (line:6), restrict_Fold_snoc_false (line:9),
-  --           snoc_truncate_last (line:119), weight_lt_paperFib (line:126),
-  --           weight_expand (line:139), ofNat_add_paperFib (line:151),
+  --           snoc_truncate_last (line:119), weight_lt_fib (line:126),
+  --           weight_expand (line:139), ofNat_add_fib (line:151),
   --           ofNat_ne_of_shift (line:194), fib_le_of_mem_zeckendorf (line:187)
   -- 状态: 已形式化, 审核通过 2026-03-23
   , { label := "def:pom-top-fiber-spectrum"
@@ -1963,57 +1963,57 @@ def initialEntries : List SourceMapEntry :=
       phase := 2
       status := .formalized }
   -- cor:field-phase-fib-prime (F(3)=3 素数验证)
-  --   → paperFib_three_prime (Omega/Folding/FibonacciField.lean:7)
+  --   → fib_four_prime (Omega/Folding/FibonacciField.lean:7)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "cor:field-phase-fib-prime-3"
       sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
       moduleName := "Omega.Folding.FibonacciField"
-      leanName := "Omega.paperFib_three_prime"
+      leanName := "Omega.fib_four_prime"
       phase := 2
       status := .formalized }
   -- cor:field-phase-fib-prime (F(4)=5 素数验证)
-  --   → paperFib_four_prime (Omega/Folding/FibonacciField.lean:8)
+  --   → fib_five_prime (Omega/Folding/FibonacciField.lean:8)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "cor:field-phase-fib-prime-4"
       sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
       moduleName := "Omega.Folding.FibonacciField"
-      leanName := "Omega.paperFib_four_prime"
+      leanName := "Omega.fib_five_prime"
       phase := 2
       status := .formalized }
   -- cor:field-phase-fib-prime (F(6)=13 素数验证)
-  --   → paperFib_six_prime (Omega/Folding/FibonacciField.lean:9)
+  --   → fib_seven_prime (Omega/Folding/FibonacciField.lean:9)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "cor:field-phase-fib-prime-6"
       sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
       moduleName := "Omega.Folding.FibonacciField"
-      leanName := "Omega.paperFib_six_prime"
+      leanName := "Omega.fib_seven_prime"
       phase := 2
       status := .formalized }
   -- cor:field-phase-fib-prime (F(8)=34 非素数验证)
-  --   → paperFib_eight_not_prime (Omega/Folding/FibonacciField.lean:10)
+  --   → fib_nine_not_prime (Omega/Folding/FibonacciField.lean:10)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "cor:field-phase-fib-prime-8-neg"
       sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
       moduleName := "Omega.Folding.FibonacciField"
-      leanName := "Omega.paperFib_eight_not_prime"
+      leanName := "Omega.fib_nine_not_prime"
       phase := 2
       status := .formalized }
   -- cor:field-phase-fib-prime (F(12)=233 素数验证)
-  --   → paperFib_twelve_prime (Omega/Folding/FibonacciField.lean:11)
+  --   → fib_thirteen_prime (Omega/Folding/FibonacciField.lean:11)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "cor:field-phase-fib-prime-12"
       sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
       moduleName := "Omega.Folding.FibonacciField"
-      leanName := "Omega.paperFib_twelve_prime"
+      leanName := "Omega.fib_thirteen_prime"
       phase := 2
       status := .formalized }
   -- Phase 8: Fibonacci 界 + momentSum (Round 8)
-  -- Fibonacci 压缩率隐含引理 → paperFib_le_pow (Omega/Core/Fib.lean:129)
+  -- Fibonacci 压缩率隐含引理 → fib_le_pow_two (Omega/Core/Fib.lean:129)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "fib-growth-upper-bound"
       sourcePath := "sections/body/folding/subsec__pom-fiber-spectrum.tex"
       moduleName := "Omega.Core.Fib"
-      leanName := "Omega.paperFib_le_pow"
+      leanName := "Omega.fib_le_pow_two"
       phase := 8
       status := .formalized }
   -- subsec:op_algebra_complexity → momentSum 定义 (Omega/Folding/MomentSum.lean:6)
@@ -2248,7 +2248,7 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.momentSum_two_ge_pow"
       phase := 12
       status := .formalized }
-  -- S_q 单调性 → momentSum_ge_card: paperFib(m+1) ≤ S_q(m) (MomentSum.lean:75)
+  -- S_q 单调性 → momentSum_ge_card: F(m+2) ≤ S_q(m) (MomentSum.lean:75)
   --   状态: 已形式化, 审核通过 2026-03-23
   , { label := "pom-moment-ge-card"
       sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"

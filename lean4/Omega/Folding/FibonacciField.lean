@@ -4,31 +4,31 @@ import Omega.Folding.FiberArithmetic
 
 namespace Omega
 
-theorem paperFib_three_prime : Nat.Prime (paperFib 3) := by native_decide
-theorem paperFib_four_prime : Nat.Prime (paperFib 4) := by native_decide
-theorem paperFib_six_prime : Nat.Prime (paperFib 6) := by native_decide
-theorem paperFib_eight_not_prime : ¬ Nat.Prime (paperFib 8) := by native_decide
-theorem paperFib_twelve_prime : Nat.Prime (paperFib 12) := by native_decide
+theorem fib_four_prime : Nat.Prime (Nat.fib 4) := by native_decide
+theorem fib_five_prime : Nat.Prime (Nat.fib 5) := by native_decide
+theorem fib_seven_prime : Nat.Prime (Nat.fib 7) := by native_decide
+theorem fib_nine_not_prime : ¬ Nat.Prime (Nat.fib 9) := by native_decide
+theorem fib_thirteen_prime : Nat.Prime (Nat.fib 13) := by native_decide
 
 namespace X
 
 noncomputable section
 
-/-- When paperFib(m+1) is prime, every nonzero element has a multiplicative inverse. -/
-theorem stableMul_inv_of_prime (hp : Nat.Prime (paperFib (m + 1))) (x : X m)
+/-- When F(m+2) is prime, every nonzero element has a multiplicative inverse. -/
+theorem stableMul_inv_of_prime (hp : Nat.Prime (Nat.fib (m + 2))) (x : X m)
     (hx : x ≠ stableZero) :
     ∃ y : X m, stableMul x y = stableOne := by
-  have hP : 1 < paperFib (m + 1) := hp.one_lt
-  have hne : NeZero (paperFib (m + 1)) := ⟨by omega⟩
+  have hP : 1 < Nat.fib (m + 2) := hp.one_lt
+  have hne : NeZero (Nat.fib (m + 2)) := ⟨by omega⟩
   have hsv_ne : stableValue x ≠ 0 := fun h =>
     hx ((X.ofNat_stableValue x).symm.trans (by rw [h]; rfl))
-  have hsv_lt := stableValue_lt_paperFib_succ x
-  have hcop : Nat.Coprime (stableValue x) (paperFib (m + 1)) :=
+  have hsv_lt := stableValue_lt_fib x
+  have hcop : Nat.Coprime (stableValue x) (Nat.fib (m + 2)) :=
     (hp.coprime_iff_not_dvd.mpr (Nat.not_dvd_of_pos_of_lt (Nat.pos_of_ne_zero hsv_ne) hsv_lt)).symm
   -- In ZMod p, stableValue x is a unit with inverse (sv : ZMod p)⁻¹
-  have hUnit := (ZMod.isUnit_iff_coprime (stableValue x) (paperFib (m + 1))).mpr hcop
+  have hUnit := (ZMod.isUnit_iff_coprime (stableValue x) (Nat.fib (m + 2))).mpr hcop
   -- Take k = ((sv : ZMod p)⁻¹).val
-  set p := paperFib (m + 1)
+  set p := Nat.fib (m + 2)
   set sv_zmod := (stableValue x : ZMod p)
   set k := (sv_zmod⁻¹).val
   use X.ofNat m k
@@ -47,10 +47,10 @@ theorem stableMul_inv_of_prime (hp : Nat.Prime (paperFib (m + 1))) (x : X m)
   rw [ZMod.val_one] at hmul
   simp only [ZMod.val_mul] at hmul
   -- hmul : sv_zmod.val * sv_zmod⁻¹.val % p = 1
-  -- Goal : stableValue x * k % paperFib (m + 1) = 1
+  -- Goal : stableValue x * k % Nat.fib (m + 2) = 1
   -- sv_zmod.val = (stableValue x : ZMod p).val = stableValue x (by val_natCast_of_lt)
   -- k = sv_zmod⁻¹.val (by definition)
-  -- p = paperFib (m + 1) (by definition)
+  -- p = Nat.fib (m + 2) (by definition)
   rw [show sv_zmod.val = stableValue x from ZMod.val_natCast_of_lt (by omega)] at hmul
   exact hmul
 

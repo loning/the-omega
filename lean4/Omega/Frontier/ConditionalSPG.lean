@@ -28,8 +28,8 @@ theorem scanError_bayes_half_bound {α β : Type*} [Fintype α] [Fintype β]
 /-! ### Paper Theorem 6.1: Stable Value Bound & Arithmetic -/
 
 /-- Stable values are strictly bounded by the Fibonacci cardinality (paper Theorem 6.1). -/
-theorem stableValue_bounded (x : X m) : stableValue x < paperFib (m + 1) :=
-  stableValue_lt_paperFib_succ x
+theorem stableValue_bounded (x : X m) : stableValue x < Nat.fib (m + 2) :=
+  stableValue_lt_fib x
 
 /-- Stable values can be viewed as Fin-indexed values (paper Theorem 6.1). -/
 theorem stableValue_as_fin (x : X m) :
@@ -46,13 +46,13 @@ theorem stableAdd_commutative (x y : X m) :
   X.stableAdd_comm x y
 
 /-- For n < F_{m+2}, X.ofNat m n has stable value n (paper Theorem 6.1 inverse). -/
-theorem stableValue_ofNat_inverse {m : Nat} (n : Nat) (hn : n < paperFib (m + 1)) :
+theorem stableValue_ofNat_inverse {m : Nat} (n : Nat) (hn : n < Nat.fib (m + 2)) :
     stableValue (X.ofNat m n) = n :=
   X.stableValue_ofNat_lt n hn
 
 /-- Stable value of ofNat respects modular reduction. -/
 theorem stableValue_ofNat_mod_wrapper {m : Nat} (n : Nat) :
-    stableValue (X.ofNat m (n % paperFib (m + 1))) = n % paperFib (m + 1) :=
+    stableValue (X.ofNat m (n % Nat.fib (m + 2))) = n % Nat.fib (m + 2) :=
   X.stableValue_ofNat_mod n
 
 /-- stableZero has value 0. -/
@@ -75,7 +75,7 @@ theorem stableAdd_associative (x y z : X m) :
   X.stableAdd_assoc x y z
 
 /-- The stable syntax space is equivalent to Fin(F_{m+2}) as a finite type. -/
-noncomputable def stableValueEquiv_wrapper (m : Nat) : X m ≃ Fin (paperFib (m + 1)) :=
+noncomputable def stableValueEquiv_wrapper (m : Nat) : X m ≃ Fin (Nat.fib (m + 2)) :=
   X.stableValueEquiv m
 
 /-- The stableValue map into Fin is surjective (paper Theorem 6.1 surjectivity). -/
@@ -284,7 +284,7 @@ theorem stableMul_zero (x : X m) : X.stableMul X.stableZero x = X.stableZero :=
   X.stableMul_zero_left x
 
 /-- stableOne is the multiplicative identity (when F_{m+2} > 1). -/
-theorem stableMul_one (hm : 1 < paperFib (m + 1)) (x : X m) :
+theorem stableMul_one (hm : 1 < Nat.fib (m + 2)) (x : X m) :
     X.stableMul X.stableOne x = x :=
   X.stableMul_one_left hm x
 
@@ -349,7 +349,7 @@ theorem scanError_measure_half_bound [MeasurableSpace α] [Fintype β]
 
 /-- The range of stableValue is exactly {0,...,F_{m+2}-1}. -/
 theorem stableValue_range_eq (m : Nat) :
-    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
+    Set.range (stableValue (m := m)) = {n | n < Nat.fib (m + 2)} :=
   X.stableValue_range m
 
 /-! ### Paper Defect Section: Defect Chain Structure -/
@@ -397,12 +397,12 @@ theorem goldenMean_forbids_11 (q' : Bool) :
 
 /-- stableValue encodes addition modulo F_{m+2}. -/
 theorem stableValue_add_homomorphism (x y : X m) :
-    stableValue (X.stableAdd x y) = (stableValue x + stableValue y) % paperFib (m + 1) :=
+    stableValue (X.stableAdd x y) = (stableValue x + stableValue y) % Nat.fib (m + 2) :=
   X.stableValue_stableAdd x y
 
 /-- stableValue encodes multiplication modulo F_{m+2}. -/
 theorem stableValue_mul_homomorphism (x y : X m) :
-    stableValue (X.stableMul x y) = (stableValue x * stableValue y) % paperFib (m + 1) :=
+    stableValue (X.stableMul x y) = (stableValue x * stableValue y) % Nat.fib (m + 2) :=
   X.stableValue_stableMul x y
 
 /-! ### Paper SPG Section: Cell Event Measure Monotonicity -/
@@ -448,9 +448,9 @@ theorem weight_preserved_appendFalse (x : X m) :
     weight (X.appendFalse x).1 = weight x.1 :=
   weight_appendFalse x
 
-/-- Weight increases by paperFib(m+1) under appending true. -/
+/-- Weight increases by F(m+2) under appending true. -/
 theorem weight_increases_appendTrue (x : X m) (hLast : get x.1 (m - 1) = false) :
-    weight (X.appendTrue x hLast).1 = weight x.1 + paperFib (m + 1) :=
+    weight (X.appendTrue x hLast).1 = weight x.1 + Nat.fib (m + 2) :=
   weight_appendTrue x hLast
 
 /-- The constant observation has a single cell covering everything. -/
@@ -463,7 +463,7 @@ theorem constant_observation_cell (c : β) :
 /-- stableValue decomposes as restrict value + last bit contribution. -/
 theorem stableValue_last_bit_decomposition (x : X (m + 1)) :
     stableValue x = stableValue (X.restrict x) +
-      (if x.1 ⟨m, Nat.lt_succ_self m⟩ = true then paperFib (m + 1) else 0) :=
+      (if x.1 ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0) :=
   stableValue_eq_restrict_add_last x
 
 /-- The carry indicator is bounded by 1. -/
@@ -515,18 +515,18 @@ theorem truncate_distributes_xor (a b : Word (m + 1)) :
 
 /-- stableValue(restrict x) ≡ stableValue(x) mod F_{m+2} (paper POM modular identity). -/
 theorem stableValue_restrict_modular (x : X (m + 1)) :
-    stableValue x % paperFib (m + 1) = stableValue (X.restrict x) % paperFib (m + 1) :=
+    stableValue x % Nat.fib (m + 2) = stableValue (X.restrict x) % Nat.fib (m + 2) :=
   stableValue_restrict_mod x
 
 /-- Carry indicator is zero when sum is below threshold. -/
 theorem carry_zero_below_threshold (x y : X (m + 1))
-    (h : stableValue x + stableValue y < paperFib (m + 2)) :
+    (h : stableValue x + stableValue y < Nat.fib (m + 3)) :
     carryIndicator x y = 0 :=
   carryIndicator_zero_of_lt x y h
 
 /-- Carry indicator is one when sum reaches threshold. -/
 theorem carry_one_above_threshold (x y : X (m + 1))
-    (h : stableValue x + stableValue y ≥ paperFib (m + 2)) :
+    (h : stableValue x + stableValue y ≥ Nat.fib (m + 3)) :
     carryIndicator x y = 1 :=
   carryIndicator_one_of_ge x y h
 
@@ -535,9 +535,9 @@ theorem carry_one_above_threshold (x y : X (m + 1))
 /-- When stable addition doesn't overflow, restriction commutes with addition modulo F_{m+2}
     (paper POM carry defect theorem, zero-carry case). -/
 theorem restrict_stableAdd_no_carry (x y : X (m + 1))
-    (h : stableValue x + stableValue y < paperFib (m + 2)) :
-    stableValue (X.restrict (X.stableAdd x y)) % paperFib (m + 1) =
-      (stableValue (X.restrict x) + stableValue (X.restrict y)) % paperFib (m + 1) :=
+    (h : stableValue x + stableValue y < Nat.fib (m + 3)) :
+    stableValue (X.restrict (X.stableAdd x y)) % Nat.fib (m + 2) =
+      (stableValue (X.restrict x) + stableValue (X.restrict y)) % Nat.fib (m + 2) :=
   X.restrict_stableAdd_of_no_carry x y h
 
 end

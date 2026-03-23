@@ -141,8 +141,8 @@ theorem fiber_card_sum_eq_pow (m : Nat) :
   rw [fiber_card_sum, Word_card]
 
 /-- The stable value of a stable word is a valid Fin index. -/
-def stableValueFin (x : X m) : Fin (paperFib (m + 1)) :=
-  ⟨stableValue x, stableValue_lt_paperFib_succ x⟩
+def stableValueFin (x : X m) : Fin (Nat.fib (m + 2)) :=
+  ⟨stableValue x, stableValue_lt_fib x⟩
 
 /-- stableValueFin is injective. -/
 theorem stableValueFin_injective (m : Nat) :
@@ -152,10 +152,10 @@ theorem stableValueFin_injective (m : Nat) :
   simp only [stableValueFin, Fin.mk.injEq] at this
   exact (Function.HasLeftInverse.injective ⟨X.ofNat m, X.ofNat_stableValue⟩) this
 
-/-- The stable syntax space is equivalent to Fin(paperFib(m+1)).
+/-- The stable syntax space is equivalent to Fin(F(m+2)).
     This is the core encoding result: X_m ≃ {0, ..., F_{m+2}-1}. -/
-noncomputable def stableValueEquiv (m : Nat) : X m ≃ Fin (paperFib (m + 1)) :=
-  Fintype.equivFinOfCardEq (X.card_eq_paperFib_succ m)
+noncomputable def stableValueEquiv (m : Nat) : X m ≃ Fin (Nat.fib (m + 2)) :=
+  Fintype.equivFinOfCardEq (X.card_eq_fib m)
 
 /-- The stableValueFin map is surjective (from injectivity + matching cardinality). -/
 theorem stableValueFin_surjective (m : Nat) :
@@ -184,20 +184,20 @@ theorem fiberMultiplicity_sum_eq_pow (m : Nat) :
     Since |X_m| = F_{m+2}, this ratio approaches φ^m / √5 as m grows. -/
 theorem fiberMultiplicity_avg (m : Nat) :
     ∑ x : X m, fiberMultiplicity x = 2 ^ m ∧
-    Fintype.card (X m) = paperFib (m + 1) :=
-  ⟨fiberMultiplicity_sum_eq_pow m, X.card_eq_paperFib_succ m⟩
+    Fintype.card (X m) = Nat.fib (m + 2) :=
+  ⟨fiberMultiplicity_sum_eq_pow m, X.card_eq_fib m⟩
 
-/-- For n < paperFib(m+1), ofNat m n has stable value n. -/
-theorem stableValue_ofNat_lt (n : Nat) (hn : n < paperFib (m + 1)) :
+/-- For n < F(m+2), ofNat m n has stable value n. -/
+theorem stableValue_ofNat_lt (n : Nat) (hn : n < Nat.fib (m + 2)) :
     stableValue (X.ofNat m n) = n := by
   obtain ⟨x, hx⟩ := stableValueFin_surjective m ⟨n, hn⟩
   have hVal : stableValue x = n := by simpa [stableValueFin] using congr_arg Fin.val hx
   rw [show X.ofNat m n = x from by rw [← hVal, X.ofNat_stableValue], hVal]
 
-/-- For n < paperFib(m+1), ofNat and stableValue form a round-trip. -/
+/-- For n < F(m+2), ofNat and stableValue form a round-trip. -/
 theorem stableValue_ofNat_mod (n : Nat) :
-    stableValue (X.ofNat m (n % paperFib (m + 1))) = n % paperFib (m + 1) :=
-  stableValue_ofNat_lt _ (Nat.mod_lt n (paperFib_pos (m + 1)))
+    stableValue (X.ofNat m (n % Nat.fib (m + 2))) = n % Nat.fib (m + 2) :=
+  stableValue_ofNat_lt _ (Nat.mod_lt n (fib_succ_pos (m + 1)))
 
 
 end

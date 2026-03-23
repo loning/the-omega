@@ -124,8 +124,8 @@ theorem maxFiberMultiplicity_ten : maxFiberMultiplicity 10 = 13 := by rw [← cM
 The maximum fiber multiplicity D(m) satisfies the two-step recurrence
 D(m) = D(m−2) + D(m−4) for m ≥ 6 (cor:pom-D-rec in the paper). Combined with
 base values D(0)..D(10), this yields closed forms:
-- D(2k) = paperFib(k + 1) for k ≥ 1
-- D(2k + 1) = 2 * paperFib(k) for k ≥ 1
+- D(2k) = F(k+2) for k ≥ 1
+- D(2k + 1) = 2 * F(k+1) for k ≥ 1
 
 The two-step recurrence equality is verified computationally for m = 6..10.
 The general closed forms are proved conditionally: given the two-step recurrence
@@ -152,10 +152,9 @@ theorem maxFiberMultiplicity_two_step_10 :
     maxFiberMultiplicity 10 = maxFiberMultiplicity 8 + maxFiberMultiplicity 6 := by
   rw [maxFiberMultiplicity_ten, maxFiberMultiplicity_eight, maxFiberMultiplicity_six]
 
-/-- Even closed form: D(2k) = paperFib(k+1) for 1 ≤ k ≤ 5.
-    paperFib(k+1) = Nat.fib(k+2) = F_{k+2} in standard Fibonacci indexing. -/
+/-- Even closed form: D(2k) = F(k+2) for 1 ≤ k ≤ 5. -/
 theorem maxFiberMultiplicity_even (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 5) :
-    maxFiberMultiplicity (2 * k) = paperFib (k + 1) := by
+    maxFiberMultiplicity (2 * k) = Nat.fib (k + 2) := by
   interval_cases k <;> first
     | exact maxFiberMultiplicity_two
     | exact maxFiberMultiplicity_four
@@ -163,10 +162,10 @@ theorem maxFiberMultiplicity_even (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 5) :
     | exact maxFiberMultiplicity_eight
     | exact maxFiberMultiplicity_ten
 
-/-- Odd closed form: D(2k+1) = 2 * paperFib(k) for 1 ≤ k ≤ 4.
-    2 * paperFib(k) = 2 * Nat.fib(k+1) in standard Fibonacci indexing. -/
+/-- Odd closed form: D(2k+1) = 2 * F(k+1) for 1 ≤ k ≤ 4.
+    2 * F(k+1) = 2 * Nat.fib(k+1) in standard Fibonacci indexing. -/
 theorem maxFiberMultiplicity_odd (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 4) :
-    maxFiberMultiplicity (2 * k + 1) = 2 * paperFib k := by
+    maxFiberMultiplicity (2 * k + 1) = 2 * Nat.fib (k + 1) := by
   interval_cases k <;> first
     | exact maxFiberMultiplicity_three
     | exact maxFiberMultiplicity_five
@@ -177,7 +176,7 @@ theorem maxFiberMultiplicity_odd (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 4) :
 private theorem maxFiberMultiplicity_even_aux
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
       maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4)) :
-    ∀ n : Nat, ∀ j, 1 ≤ j → j ≤ n → maxFiberMultiplicity (2 * j) = paperFib (j + 1)
+    ∀ n : Nat, ∀ j, 1 ≤ j → j ≤ n → maxFiberMultiplicity (2 * j) = Nat.fib (j + 2)
   | 0, _, hj1, hjn => absurd hjn (by omega)
   | 1, 1, _, _ => maxFiberMultiplicity_two
   | 1, j + 2, hj1, hjn => absurd hjn (by omega)
@@ -195,22 +194,22 @@ private theorem maxFiberMultiplicity_even_aux
           show 2 * (j + 3) - 4 = 2 * (j + 1) from by omega,
           maxFiberMultiplicity_even_aux two_step (n + 2) (j + 2) (by omega) (by omega),
           maxFiberMultiplicity_even_aux two_step (n + 2) (j + 1) (by omega) (by omega)]
-      exact (paperFib_recurrence (j + 2)).symm
+      exact (fib_succ_succ' (j + 3)).symm
 
 /-- General even closed form assuming the two-step recurrence.
-    If D(m) = D(m-2) + D(m-4) holds for all m ≥ 6, then D(2k) = paperFib(k+1). -/
+    If D(m) = D(m-2) + D(m-4) holds for all m ≥ 6, then D(2k) = F(k+2). -/
 theorem maxFiberMultiplicity_even_of_two_step
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
       maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4))
     (k : Nat) (hk : 1 ≤ k) :
-    maxFiberMultiplicity (2 * k) = paperFib (k + 1) :=
+    maxFiberMultiplicity (2 * k) = Nat.fib (k + 2) :=
   maxFiberMultiplicity_even_aux two_step k k hk (le_refl k)
 
 /-- Auxiliary: odd closed form for all j ≤ n, by bounded strong induction. -/
 private theorem maxFiberMultiplicity_odd_aux
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
       maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4)) :
-    ∀ n : Nat, ∀ j, 1 ≤ j → j ≤ n → maxFiberMultiplicity (2 * j + 1) = 2 * paperFib j
+    ∀ n : Nat, ∀ j, 1 ≤ j → j ≤ n → maxFiberMultiplicity (2 * j + 1) = 2 * Nat.fib (j + 1)
   | 0, _, hj1, hjn => absurd hjn (by omega)
   | 1, 1, _, _ => maxFiberMultiplicity_three
   | 1, j + 2, _, hjn => absurd hjn (by omega)
@@ -228,17 +227,17 @@ private theorem maxFiberMultiplicity_odd_aux
           show 2 * (j + 3) + 1 - 4 = 2 * (j + 1) + 1 from by omega,
           maxFiberMultiplicity_odd_aux two_step (n + 2) (j + 2) (by omega) (by omega),
           maxFiberMultiplicity_odd_aux two_step (n + 2) (j + 1) (by omega) (by omega)]
-      -- Goal: 2 * paperFib(j+3) = 2 * paperFib(j+2) + 2 * paperFib(j+1)
-      rw [show j + 3 = (j + 1) + 2 from by omega, paperFib_recurrence (j + 1)]
+      -- Goal: 2 * F(j+4) = 2 * F(j+3) + 2 * F(j+2)
+      rw [show j + 3 = (j + 1) + 2 from by omega, fib_succ_succ' (j + 2)]
       ring
 
 /-- General odd closed form assuming the two-step recurrence.
-    If D(m) = D(m-2) + D(m-4) holds for all m ≥ 6, then D(2k+1) = 2 * paperFib(k). -/
+    If D(m) = D(m-2) + D(m-4) holds for all m ≥ 6, then D(2k+1) = 2 * F(k+1). -/
 theorem maxFiberMultiplicity_odd_of_two_step
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
       maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4))
     (k : Nat) (hk : 1 ≤ k) :
-    maxFiberMultiplicity (2 * k + 1) = 2 * paperFib k :=
+    maxFiberMultiplicity (2 * k + 1) = 2 * Nat.fib (k + 1) :=
   maxFiberMultiplicity_odd_aux two_step k k hk (le_refl k)
 
 private theorem snoc_truncate_last {m : Nat} (w : Word (m + 1)) :
@@ -248,33 +247,33 @@ private theorem snoc_truncate_last {m : Nat} (w : Word (m + 1)) :
   · have : i = ⟨m, Nat.lt_succ_self m⟩ := Fin.ext (Nat.eq_of_lt_succ_of_not_lt i.isLt h)
     subst this; simp [snoc, h]
 
-private theorem weight_lt_paperFib {m : Nat} (w : Word m) : weight w < paperFib (m + 2) := by
+private theorem weight_lt_fib {m : Nat} (w : Word m) : weight w < Nat.fib (m + 3) := by
   induction m with
-  | zero => simp [weight, paperFib]
+  | zero => simp [weight]
   | succ m ih =>
     simp only [weight]
     have htr := ih (truncate w)
-    have hRec : paperFib (m + 2) + paperFib (m + 1) = paperFib (m + 3) := paperFib_add (m + 1)
+    have hRec : Nat.fib (m + 3) + Nat.fib (m + 2) = Nat.fib (m + 4) := fib_add_succ (m + 1)
     cases h : w ⟨m, Nat.lt_succ_self m⟩
     · simp only [h, Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
-      show weight (truncate w) < paperFib (m + 3); omega
+      show weight (truncate w) < Nat.fib (m + 4); omega
     · simp only [h, ↓reduceIte]
-      show weight (truncate w) + paperFib (m + 1) < paperFib (m + 3); omega
+      show weight (truncate w) + Nat.fib (m + 2) < Nat.fib (m + 4); omega
 
 private theorem weight_expand {m : Nat} (w : Word (m + 2)) (hLast : w ⟨m + 1, by omega⟩ = true) :
     weight w = weight (truncate (truncate w)) +
-    (if w ⟨m, by omega⟩ = true then paperFib (m + 1) else 0) + paperFib (m + 2) := by
-  have h1 : weight w = weight (truncate w) + paperFib (m + 2) := by
+    (if w ⟨m, by omega⟩ = true then Nat.fib (m + 2) else 0) + Nat.fib (m + 3) := by
+  have h1 : weight w = weight (truncate w) + Nat.fib (m + 3) := by
     rw [weight]; simp only [hLast, ↓reduceIte]
   have h2 : weight (truncate w) = weight (truncate (truncate w)) +
-      (if (truncate w) ⟨m, Nat.lt_succ_self m⟩ = true then paperFib (m + 1) else 0) := by
+      (if (truncate w) ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0) := by
     rw [weight]
   have h3 : (truncate w) ⟨m, Nat.lt_succ_self m⟩ = w ⟨m, by omega⟩ := by
     simp [truncate]
   rw [h1, h2, h3]
 
-private theorem ofNat_add_paperFib {m : Nat} (k : Nat) (hk : m + 2 ≤ k)
-    (n : Nat) (hn : n < paperFib k) : X.ofNat m (n + paperFib k) = X.ofNat m n := by
+private theorem ofNat_add_fib {m : Nat} (k : Nat) (hk : m + 2 ≤ k)
+    (n : Nat) (hn : n < Nat.fib (k + 1)) : X.ofNat m (n + Nat.fib (k + 1)) = X.ofNat m n := by
   apply Subtype.ext; funext j
   simp only [X.ofNat, X.ofIndices, X.wordOfIndices]; congr 1; apply propext
   change j.1 + 2 ∈ Nat.zeckendorf (n + Nat.fib (k + 1)) ↔ j.1 + 2 ∈ Nat.zeckendorf n
@@ -316,8 +315,8 @@ private theorem fib_le_of_mem_zeckendorf {k n : Nat} (h : k ∈ Nat.zeckendorf n
         List.single_le_sum (fun _ _ => Nat.zero_le _) _ hMem
     _ = n := Nat.sum_zeckendorf_fib n
 
-private theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < paperFib (m + 2)) :
-    X.ofNat (m + 2) (wt + paperFib (m + 2)) ≠ X.ofNat (m + 2) (wt + paperFib (m + 3)) := by
+private theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < Nat.fib (m + 3)) :
+    X.ofNat (m + 2) (wt + Nat.fib (m + 3)) ≠ X.ofNat (m + 2) (wt + Nat.fib (m + 4)) := by
   intro heq
   have hFib4 : Nat.fib (m + 4) = Nat.fib (m + 2) + Nat.fib (m + 3) := Nat.fib_add_two
   have hFib5 : Nat.fib (m + 5) = Nat.fib (m + 3) + Nat.fib (m + 4) := Nat.fib_add_two
@@ -419,24 +418,24 @@ theorem maxFiberMultiplicity_le_add (m : Nat) :
         (fun w hw => by
           rw [Finset.mem_coe, Finset.mem_filter] at hw; rw [Finset.mem_coe, mem_fiber]
           have hFold := mem_fiber.mp hw.1; have hLast := hw.2
-          have hWT := weight_lt_paperFib (truncate (truncate w))
+          have hWT := weight_lt_fib (truncate (truncate w))
           show Fold (truncate (truncate w)) = X.restrict (X.restrict x)
           rw [← hFold]; simp only [Fold, restrict_ofNat]
           -- Goal: X.ofNat m (weight(tt w)) = X.ofNat m (weight w)
           rw [weight_expand w hLast]
           cases hMid : w ⟨m, by omega⟩
           · simp only [Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
-            exact (ofNat_add_paperFib (m + 2) (le_refl _) _ hWT).symm
+            exact (ofNat_add_fib (m + 2) (le_refl _) _ hWT).symm
           · simp only [↓reduceIte]
-            rw [show weight (truncate (truncate w)) + paperFib (m + 1) + paperFib (m + 2) =
-                weight (truncate (truncate w)) + (paperFib (m + 2) + paperFib (m + 1)) from by ring,
-                paperFib_add (m + 1)]
-            exact (ofNat_add_paperFib (m + 3) (by omega) _
-              (Nat.lt_of_lt_of_le hWT (paperFib_le_succ (m + 2)))).symm)
+            rw [show weight (truncate (truncate w)) + Nat.fib (m + 2) + Nat.fib (m + 3) =
+                weight (truncate (truncate w)) + (Nat.fib (m + 3) + Nat.fib (m + 2)) from by ring,
+                fib_add_succ (m + 1)]
+            exact (ofNat_add_fib (m + 3) (by omega) _
+              (Nat.lt_of_lt_of_le hWT (Nat.fib_mono (by omega)))).symm)
         (fun w₁ hw₁ w₂ hw₂ hEq => by
           rw [Finset.mem_coe, Finset.mem_filter] at hw₁ hw₂
           have hL1 := hw₁.2; have hL2 := hw₂.2
-          have hWT := weight_lt_paperFib (truncate (truncate w₁))
+          have hWT := weight_lt_fib (truncate (truncate w₁))
           -- Show w₁[m] = w₂[m] via ofNat_ne_of_shift
           have hMidEq : w₁ ⟨m, by omega⟩ = w₂ ⟨m, by omega⟩ := by
             by_contra hne
@@ -457,14 +456,14 @@ theorem maxFiberMultiplicity_le_add (m : Nat) :
             · -- false.true: hFE : ofNat(m+2, wt + pF(m+2)) = ofNat(m+2, wt + pF(m+1) + pF(m+2))
               exfalso
               apply ofNat_ne_of_shift (weight (truncate (truncate w₂))) (hWEq ▸ hWT)
-              have hRec : paperFib (m + 2) + paperFib (m + 1) = paperFib (m + 3) :=
-                paperFib_add (m + 1)
+              have hRec : Nat.fib (m + 3) + Nat.fib (m + 2) = Nat.fib (m + 4) :=
+                fib_add_succ (m + 1)
               exact hFE.trans (congr_arg (X.ofNat (m + 2)) (by omega))
             · -- true.false: hFE : ofNat(m+2, wt + pF(m+1) + pF(m+2)) = ofNat(m+2, wt + pF(m+2))
               exfalso
               apply ofNat_ne_of_shift (weight (truncate (truncate w₂))) (hWEq ▸ hWT)
-              have hRec : paperFib (m + 2) + paperFib (m + 1) = paperFib (m + 3) :=
-                paperFib_add (m + 1)
+              have hRec : Nat.fib (m + 3) + Nat.fib (m + 2) = Nat.fib (m + 4) :=
+                fib_add_succ (m + 1)
               exact hFE.symm.trans (congr_arg (X.ofNat (m + 2)) (by omega))
             · exact absurd (by rw [h₁, h₂]) hne  -- true.true
           -- Reconstruct: wᵢ = snoc (truncate wᵢ) (wᵢ[m+1]) = snoc (truncate wᵢ) true

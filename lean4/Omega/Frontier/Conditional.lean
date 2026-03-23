@@ -799,10 +799,10 @@ theorem scanError_measure_bayes_bound [MeasurableSpace α] [Fintype β]
 
 /-! ### Paper Section 4: Stable Syntax Cardinality & Zeckendorf Bridge -/
 
-/-- |X_m| = paperFib(m+1) = F_{m+2} (paper Proposition 4.1: Fibonacci cardinality). -/
+/-- |X_m| = F_{m+2} (paper Proposition 4.1: Fibonacci cardinality). -/
 theorem stableSyntax_card_eq_fibonacci (m : Nat) :
-    Fintype.card (X m) = paperFib (m + 1) :=
-  X.card_eq_paperFib_succ m
+    Fintype.card (X m) = Nat.fib (m + 2) :=
+  X.card_eq_fib m
 
 /-- |X_{m+2}| = |X_{m+1}| + |X_m| (paper Proposition 4.1: Fibonacci recurrence). -/
 theorem stableSyntax_card_recurrence (m : Nat) :
@@ -821,7 +821,7 @@ theorem stableValue_eq_fibonacci_weighted_sum (x : X m) :
 
 /-- The Zeckendorf encoding of a stable word sums to its stable value. -/
 theorem stableValue_eq_zeckRep_sum (x : X m) :
-    ((X.zeckRep x).1.map fib).sum = stableValue x :=
+    ((X.zeckRep x).1.map Nat.fib).sum = stableValue x :=
   X.sum_fib_zeckRep x
 
 /-- Every stable target has a positive fiber cardinality under Fold. -/

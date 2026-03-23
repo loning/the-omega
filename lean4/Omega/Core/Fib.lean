@@ -1,144 +1,80 @@
 import Mathlib.Data.Nat.Fib.Basic
 
+/-! ### Convenience lemmas for `Nat.fib`
+
+The project uses `Nat.fib` directly with the standard convention F₀ = 0, F₁ = 1.
+The previous `paperFib k` indirection layer has been removed: all references now
+use `Nat.fib (k + 1)` directly.
+
+Mathlib's `Nat.fib_add_two` has the *small* term first:
+  `Nat.fib (n + 2) = Nat.fib n + Nat.fib (n + 1)`.
+Many project proofs need the *large* term first, so we provide `fib_succ_succ`. -/
+
 namespace Omega
 
-/-- The project's canonical Fibonacci sequence is `Nat.fib`. -/
-abbrev fib : Nat → Nat := Nat.fib
+-- ══════════════════════════════════════════════════════════════════
+-- New canonical lemmas (Nat.fib based, in Omega namespace)
+-- ══════════════════════════════════════════════════════════════════
 
-@[simp] theorem fib_zero : fib 0 = 0 := Nat.fib_zero
-@[simp] theorem fib_one : fib 1 = 1 := Nat.fib_one
-@[simp] theorem fib_two : fib 2 = 1 := Nat.fib_two
+/-- Fibonacci recurrence with large term first: F(n+2) = F(n+1) + F(n). -/
+theorem fib_succ_succ' (n : Nat) : Nat.fib (n + 2) = Nat.fib (n + 1) + Nat.fib n := by
+  have := Nat.fib_add_two (n := n); omega
 
-@[simp] theorem fib_succ_succ (n : Nat) : fib (n + 2) = fib (n + 1) + fib n := by
-  simpa [add_comm] using (Nat.fib_add_two (n := n))
+/-- F(n+1) > 0 for all n. -/
+theorem fib_succ_pos (n : Nat) : 0 < Nat.fib (n + 1) :=
+  Nat.fib_pos.mpr (by omega)
 
-/-- The paper's indexing convention, where `F₁ = F₂ = 1`, as a derived view. -/
-def paperFib (k : Nat) : Nat := fib (k + 1)
+/-- F(n+1) ≥ 1 for all n. -/
+theorem one_le_fib_succ (n : Nat) : 1 ≤ Nat.fib (n + 1) :=
+  fib_succ_pos n
 
-@[simp] theorem paperFib_zero : paperFib 0 = 1 := rfl
-@[simp] theorem paperFib_one : paperFib 1 = 1 := rfl
-@[simp] theorem paperFib_two : paperFib 2 = 2 := rfl
+/-- Fibonacci recurrence, additive form: F(m+2) + F(m+1) = F(m+3). -/
+theorem fib_add_succ (m : Nat) : Nat.fib (m + 2) + Nat.fib (m + 1) = Nat.fib (m + 3) := by
+  have h := fib_succ_succ' (m + 1)
+  rw [show m + 1 + 2 = m + 3 from by omega, show m + 1 + 1 = m + 2 from by omega] at h
+  omega
 
-set_option linter.unnecessarySimpa false in
-theorem paperFib_recurrence (k : Nat) :
-    paperFib (k + 2) = paperFib (k + 1) + paperFib k := by
-  unfold paperFib
-  have hIndex : (k + 2) + 1 = (k + 1) + 2 := by
-    simpa [Nat.add_assoc] using (Nat.add_right_comm k 2 1)
-  rw [hIndex]
-  exact fib_succ_succ (k + 1)
+/-- Fibonacci subtraction: F(m+3) - F(m+2) = F(m+1). -/
+theorem fib_sub_succ (m : Nat) : Nat.fib (m + 3) - Nat.fib (m + 2) = Nat.fib (m + 1) := by
+  have h := fib_succ_succ' (m + 1)
+  rw [show m + 1 + 2 = m + 3 from by omega, show m + 1 + 1 = m + 2 from by omega] at h
+  omega
 
-theorem paperFib_pos (n : Nat) : 0 < paperFib n := by
-  simp [paperFib, Nat.fib_pos]
+/-- Carry modular identity: (F(m+2) + F(m+1)) % F(m+3) = 0. -/
+theorem fib_mod_sum' (m : Nat) :
+    (Nat.fib (m + 2) + Nat.fib (m + 1)) % Nat.fib (m + 3) = 0 := by
+  rw [fib_add_succ, Nat.mod_self]
 
-theorem paperFib_mono {m n : Nat} (h : m ≤ n) : paperFib m ≤ paperFib n :=
-  Nat.fib_mono (Nat.succ_le_succ h)
+/-- Strict monotonicity: F(m+2) < F(m+3). -/
+theorem fib_lt_fib_succ (m : Nat) : Nat.fib (m + 2) < Nat.fib (m + 3) := by
+  have h := fib_succ_succ' (m + 1)
+  rw [show m + 1 + 2 = m + 3 from by omega, show m + 1 + 1 = m + 2 from by omega] at h
+  have := fib_succ_pos m; omega
 
-theorem paperFib_le_succ (k : Nat) : paperFib k ≤ paperFib (k + 1) :=
-  paperFib_mono (Nat.le_succ k)
+/-- Resolution-crossing identity: F(m+4) mod F(m+3) = F(m+2). -/
+theorem fib_succ_mod' (m : Nat) :
+    Nat.fib (m + 4) % Nat.fib (m + 3) = Nat.fib (m + 2) := by
+  have : Nat.fib (m + 4) = Nat.fib (m + 3) + Nat.fib (m + 2) := by
+    rw [show m + 4 = (m + 2) + 2 from by omega]; exact fib_succ_succ' (m + 2)
+  rw [this, Nat.add_comm, Nat.add_mod_right, Nat.mod_eq_of_lt (fib_lt_fib_succ m)]
 
-theorem paperFib_le_add_right (k l : Nat) : paperFib k ≤ paperFib (k + l) :=
-  paperFib_mono (Nat.le_add_right k l)
-
-/-- paperFib(m+1) + paperFib(m) = paperFib(m+2) (Fibonacci recurrence, symmetric form). -/
-theorem paperFib_add (m : Nat) : paperFib (m + 1) + paperFib m = paperFib (m + 2) := by
-  have := paperFib_recurrence m; omega
-
-/-- paperFib(m+2) - paperFib(m+1) = paperFib(m) (Fibonacci subtraction). -/
-theorem paperFib_sub (m : Nat) : paperFib (m + 2) - paperFib (m + 1) = paperFib m := by
-  have := paperFib_recurrence m; omega
-
-/-- F_{m+1} + F_m ≡ 0 (mod F_{m+2}) (carry modular identity). -/
-theorem paperFib_mod_sum (m : Nat) :
-    (paperFib (m + 1) + paperFib m) % paperFib (m + 2) = 0 := by
-  rw [paperFib_add, Nat.mod_self]
-
-/-- F_{m+1} < F_{m+2} for all m. -/
-theorem paperFib_lt_succ (m : Nat) : paperFib (m + 1) < paperFib (m + 2) := by
-  have := paperFib_recurrence m; have := paperFib_pos m; omega
-
-/-- F_{m+3} mod F_{m+2} = F_{m+1} (resolution-crossing identity). -/
-theorem paperFib_succ_mod (m : Nat) :
-    paperFib (m + 3) % paperFib (m + 2) = paperFib (m + 1) := by
-  have : paperFib (m + 3) = paperFib (m + 2) + paperFib (m + 1) := by
-    rw [show m + 3 = (m + 1) + 2 from by omega]; exact paperFib_recurrence (m + 1)
-  rw [this, Nat.add_comm, Nat.add_mod_right, Nat.mod_eq_of_lt (paperFib_lt_succ m)]
-
-/-- paperFib at 0 is 1. -/
-@[simp] theorem paperFib_zero' : paperFib 0 = 1 := rfl
-
-/-- paperFib is always at least 1. -/
-theorem one_le_paperFib (n : Nat) : 1 ≤ paperFib n :=
-  paperFib_pos n
-
-/-- paperFib(m+1) > 1 for m ≥ 1. -/
-theorem paperFib_gt_one (hm : 1 ≤ m) : 1 < paperFib (m + 1) := by
-  have h2 : paperFib 2 = 2 := rfl
+/-- F(m+2) > 1 for m ≥ 1. -/
+theorem fib_gt_one_of_ge_two (hm : 1 ≤ m) : 1 < Nat.fib (m + 2) := by
   calc 1 < 2 := by omega
-    _ = paperFib 2 := h2.symm
-    _ ≤ paperFib (m + 1) := paperFib_mono (by omega)
+    _ = Nat.fib 3 := by native_decide
+    _ ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
 
-/-- Fibonacci modular: paperFib(m) divides paperFib(m) (trivially). -/
-theorem paperFib_dvd_self (m : Nat) : paperFib m ∣ paperFib m :=
-  dvd_refl _
-
-/-- Fibonacci divisibility: F_m divides F_n whenever m divides n. -/
-theorem fib_dvd_of_dvd (m n : Nat) (h : m ∣ n) : Nat.fib m ∣ Nat.fib n :=
-  Nat.fib_dvd m n h
-
-/-- paperFib divisibility: paperFib(m) divides paperFib(n) when (m+1) divides (n+1). -/
-theorem paperFib_dvd_of_succ_dvd {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
-    paperFib m ∣ paperFib n := by
-  unfold paperFib
-  exact Nat.fib_dvd (m + 1) (n + 1) h
-
-/-- The first few Fibonacci values: F_3 = 3. -/
-@[simp] theorem paperFib_three : paperFib 3 = 3 := rfl
-
-/-- F_4 = 5. -/
-@[simp] theorem paperFib_four : paperFib 4 = 5 := rfl
-
-/-- F_5 = 8. -/
-@[simp] theorem paperFib_five : paperFib 5 = 8 := rfl
-
-/-- F_6 = 13. -/
-@[simp] theorem paperFib_six : paperFib 6 = 13 := rfl
-
-/-- F_7 = 21. -/
-@[simp] theorem paperFib_seven : paperFib 7 = 21 := rfl
-
-/-- F_8 = 34. -/
-@[simp] theorem paperFib_eight : paperFib 8 = 34 := rfl
-
-/-- F_9 = 55. -/
-@[simp] theorem paperFib_nine : paperFib 9 = 55 := rfl
-
-/-- F_10 = 89. -/
-@[simp] theorem paperFib_ten : paperFib 10 = 89 := rfl
-
-/-- F_11 = 144. -/
-@[simp] theorem paperFib_eleven : paperFib 11 = 144 := rfl
-
-/-- F_12 = 233. -/
-@[simp] theorem paperFib_twelve : paperFib 12 = 233 := by native_decide
-
-/-- F_13 = 377. -/
-@[simp] theorem paperFib_thirteen : paperFib 13 = 377 := by native_decide
-
-/-- Upper bound: paperFib(m+1) ≤ 2^m for all m. -/
-theorem paperFib_le_pow : ∀ m : Nat, paperFib (m + 1) ≤ 2 ^ m
-  | 0 => by simp [paperFib]
-  | 1 => by simp [paperFib]
+/-- Upper bound: F(m+2) ≤ 2^(m+1) for all m. -/
+theorem fib_le_pow_two : ∀ m : Nat, Nat.fib (m + 2) ≤ 2 ^ (m + 1)
+  | 0 => by simp
+  | 1 => by native_decide
   | m + 2 => by
-    have hRec := paperFib_recurrence (m + 1)
-    have ih1 := paperFib_le_pow (m + 1)
-    have ih0 := paperFib_le_pow m
-    -- Normalize all paperFib terms to canonical form
-    have : paperFib (m + 1 + 1) = paperFib (m + 2) := rfl
-    have : paperFib (m + 2 + 1) = paperFib (m + 3) := rfl
-    have h1 : paperFib (m + 3) = paperFib (m + 2) + paperFib (m + 1) := paperFib_recurrence (m + 1)
-    have h2 : (2 : Nat) ^ (m + 2) = 2 ^ (m + 1) + 2 ^ (m + 1) := by ring
-    have h3 : (2 : Nat) ^ (m + 1) = 2 ^ m + 2 ^ m := by ring
-    omega
+    calc Nat.fib (m + 2 + 2)
+        = Nat.fib (m + 2 + 1) + Nat.fib (m + 2) := fib_succ_succ' (m + 2)
+      _ ≤ 2 ^ (m + 1 + 1) + 2 ^ (m + 1) :=
+          Nat.add_le_add (fib_le_pow_two (m + 1)) (fib_le_pow_two m)
+      _ ≤ 2 ^ (m + 1 + 1) + 2 ^ (m + 1 + 1) :=
+          Nat.add_le_add_left (Nat.pow_le_pow_right (by omega) (by omega)) _
+      _ = 2 ^ (m + 2 + 1) := by ring
 
 end Omega

@@ -16,7 +16,7 @@ abbrev DigitCfg := Nat →₀ Nat
 
 /-- Fibonacci weight carried by the zero-based digit position `k`. -/
 def digitWeight (k : Nat) : Nat :=
-  fib (k + 2)
+  Nat.fib (k + 2)
 
 /-- Generic weighted sum over a digit configuration. -/
 def weighted (w : Nat → Nat) (a : DigitCfg) : Nat :=
@@ -119,7 +119,7 @@ theorem weighted_incDigit (w : Nat → Nat) (a : DigitCfg) (k : Nat) :
   simp [digitWeight]
 
 @[simp] theorem digitWeight_one : digitWeight 1 = 2 := by
-  simp [digitWeight]
+  native_decide
 
 @[simp] theorem digitWeight_two : digitWeight 2 = 3 := by
   norm_num [digitWeight]
@@ -127,12 +127,12 @@ theorem weighted_incDigit (w : Nat → Nat) (a : DigitCfg) (k : Nat) :
 theorem digitWeight_adj (k : Nat) :
     digitWeight k + digitWeight (k + 1) = digitWeight (k + 2) := by
   calc
-    digitWeight k + digitWeight (k + 1) = fib (k + 2) + fib (k + 3) := by
+    digitWeight k + digitWeight (k + 1) = Nat.fib (k + 2) + Nat.fib (k + 3) := by
       simp [digitWeight]
-    _ = fib ((k + 2) + 1) + fib (k + 2) := by
+    _ = Nat.fib ((k + 2) + 1) + Nat.fib (k + 2) := by
       simp [Nat.add_left_comm, Nat.add_comm]
-    _ = fib ((k + 2) + 2) := by
-      rw [(fib_succ_succ (k + 2)).symm]
+    _ = Nat.fib ((k + 2) + 2) := by
+      rw [(fib_succ_succ' (k + 2)).symm]
     _ = digitWeight (k + 2) := by
       simp [digitWeight]
 
@@ -149,22 +149,22 @@ theorem digitWeight_dedupSucc (k : Nat) :
   rw [two_mul]
   calc
     digitWeight k + digitWeight (k + 3)
-        = fib (k + 2) + fib (k + 5) := by
+        = Nat.fib (k + 2) + Nat.fib (k + 5) := by
             simp [digitWeight, Nat.add_left_comm, Nat.add_comm]
-    _ = fib (k + 2) + (fib (k + 4) + fib (k + 3)) := by
-          rw [fib_succ_succ (k + 3)]
-    _ = (fib (k + 2) + fib (k + 3)) + fib (k + 4) := by
+    _ = Nat.fib (k + 2) + (Nat.fib (k + 4) + Nat.fib (k + 3)) := by
+          rw [fib_succ_succ' (k + 3)]
+    _ = (Nat.fib (k + 2) + Nat.fib (k + 3)) + Nat.fib (k + 4) := by
           ac_rfl
-    _ = fib (k + 4) + fib (k + 4) := by
-          have hAdj : fib (k + 2) + fib (k + 3) = fib (k + 4) := by
+    _ = Nat.fib (k + 4) + Nat.fib (k + 4) := by
+          have hAdj : Nat.fib (k + 2) + Nat.fib (k + 3) = Nat.fib (k + 4) := by
             calc
-              fib (k + 2) + fib (k + 3) = fib ((k + 2) + 1) + fib (k + 2) := by
+              Nat.fib (k + 2) + Nat.fib (k + 3) = Nat.fib ((k + 2) + 1) + Nat.fib (k + 2) := by
                 simp [Nat.add_left_comm, Nat.add_comm]
-              _ = fib ((k + 2) + 2) := by
-                rw [(fib_succ_succ (k + 2)).symm]
-              _ = fib (k + 4) := by
+              _ = Nat.fib ((k + 2) + 2) := by
+                rw [(fib_succ_succ' (k + 2)).symm]
+              _ = Nat.fib (k + 4) := by
                 simp [Nat.add_assoc]
-          simpa [add_assoc] using congrArg (fun t => t + fib (k + 4)) hAdj
+          simpa [add_assoc] using congrArg (fun t => t + Nat.fib (k + 4)) hAdj
     _ = digitWeight (k + 2) + digitWeight (k + 2) := by
           simp [digitWeight]
 
@@ -231,8 +231,8 @@ theorem iota_pos_iff_get_true {m : Nat} (w : Word m) {k : Nat} :
               = value (incDigit (iota (truncate w)) m) := by
                   simp [iota, hLast]
           _ = value (iota (truncate w)) + digitWeight m := value_incDigit _ _
-          _ = weight (truncate w) + paperFib (m + 1) := by
-                  rw [value_iota (truncate w), digitWeight, paperFib]
+          _ = weight (truncate w) + Nat.fib (m + 2) := by
+                  rw [value_iota (truncate w), digitWeight]
           _ = weight w := by
                   have hBit : w ⟨m, Nat.lt_succ_self m⟩ = true := by
                     simpa [Omega.last] using hLast

@@ -28,8 +28,8 @@ Run these commands manually during audit:
 
   #print axioms Omega.no11_truncate
   #print axioms Omega.X.restrict
-  #print axioms Omega.paperFib_recurrence
-  #print axioms Omega.X.card_eq_paperFib_succ
+  #print axioms Omega.fib_succ_succ'
+  #print axioms Omega.X.card_eq_fib
   #print axioms Omega.X.zeckIndices_isZeckendorfRep
   #print axioms Omega.X.stableValue_eq_sum_fib_zeckIndices
   #print axioms Omega.Fold_stable
@@ -237,9 +237,9 @@ Run these commands manually during audit:
   #print axioms Omega.Frontier.fold_ofNat_roundtrip
   #print axioms Omega.Frontier.cellEventMass_add_cellComplMass_partition
   -- Carry Defect (Plan 3)
-  #print axioms Omega.X.paperFib_add_fib_eq
+  #print axioms Omega.X.fib_succ_add_fib_eq
   #print axioms Omega.X.fib_sub_eq
-  #print axioms Omega.X.fib_lt_paperFib_succ
+  #print axioms Omega.X.fib_lt_fib_succ_succ
   #print axioms Omega.X.stableValue_restrict_stableAdd_carry
   #print axioms Omega.X.restrict_stableAdd_carry_defect
   #print axioms Omega.X.carryElement_m6_value
@@ -264,12 +264,11 @@ Run these commands manually during audit:
   -- thm:pom-max-fiber: 递推上界 D(m+2) ≤ D(m+1) + D(m)
   #print axioms Omega.X.maxFiberMultiplicity_le_add
   -- Zeckendorf carry preservation (auxiliary)
-  #print axioms Omega.ofNat_add_paperFib
+  -- ofNat_add_fib, weight_lt_fib are private in MaxFiber.lean
   -- Zeckendorf distinctness (auxiliary)
   #print axioms Omega.ofNat_ne_of_shift
   -- weight & snoc helpers (auxiliary)
   #print axioms Omega.X.weight_expand
-  #print axioms Omega.X.weight_lt_paperFib
   #print axioms Omega.X.snoc_truncate_last
   -- restrict helpers (auxiliary)
   #print axioms Omega.restrict_ofNat
@@ -364,10 +363,10 @@ The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
 
 def coreAuditTargets : List String :=
-  [ "Omega.paperFib_recurrence"
+  [ "Omega.fib_succ_succ'"
   , "Omega.no11_truncate"
   , "Omega.X.restrict"
-  , "Omega.X.card_eq_paperFib_succ"
+  , "Omega.X.card_eq_fib"
   , "Omega.X.zeckIndices_isZeckendorfRep"
   , "Omega.X.stableValue_eq_sum_fib_zeckIndices"
   , "Omega.Fold_stable"
@@ -573,9 +572,9 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.fold_ofNat_roundtrip"
   , "Omega.Frontier.cellEventMass_add_cellComplMass_partition"
   -- Carry Defect (Plan 3)
-  , "Omega.X.paperFib_add_fib_eq"
+  , "Omega.X.fib_succ_add_fib_eq"
   , "Omega.X.fib_sub_eq"
-  , "Omega.X.fib_lt_paperFib_succ"
+  , "Omega.X.fib_lt_fib_succ_succ"
   , "Omega.X.stableValue_restrict_stableAdd_carry"
   , "Omega.X.restrict_stableAdd_carry_defect"
   , "Omega.X.carryElement_m6_value"
@@ -583,7 +582,7 @@ def coreAuditTargets : List String :=
   , "Omega.X.carryElement_m7_value"
   , "Omega.X.carryElement_ne_zero"
   -- Stable value bound & arithmetic
-  , "Omega.stableValue_lt_paperFib_succ"
+  , "Omega.stableValue_lt_fib"
   , "Omega.X.stableValueFin"
   , "Omega.X.stableValueFin_injective"
   , "Omega.X.stableAdd"
@@ -591,10 +590,7 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.stableValue_bounded"
   , "Omega.Frontier.stableAdd_commutative"
   -- Fibonacci infrastructure
-  , "Omega.paperFib_pos"
-  , "Omega.paperFib_mono"
-  , "Omega.paperFib_le_succ"
-  , "Omega.paperFib_le_add_right"
+  , "Omega.fib_succ_pos"
   -- Fiber partition & word cardinality
   , "Omega.X.Word_card"
   , "Omega.X.fiber_card_sum"
@@ -677,13 +673,13 @@ def coreAuditTargets : List String :=
   , "Omega.X.shift_val"
   -- FibonacciField (Plan 2): Fibonacci 素数域
   , "Omega.X.stableMul_inv_of_prime"
-  , "Omega.paperFib_three_prime"
-  , "Omega.paperFib_four_prime"
-  , "Omega.paperFib_six_prime"
-  , "Omega.paperFib_eight_not_prime"
-  , "Omega.paperFib_twelve_prime"
+  , "Omega.fib_four_prime"
+  , "Omega.fib_five_prime"
+  , "Omega.fib_seven_prime"
+  , "Omega.fib_nine_not_prime"
+  , "Omega.fib_thirteen_prime"
   -- Round 8: Fibonacci 界 + momentSum
-  , "Omega.paperFib_le_pow"
+  , "Omega.fib_le_pow_two"
   , "Omega.momentSum"
   , "Omega.momentSum_zero"
   , "Omega.momentSum_one"

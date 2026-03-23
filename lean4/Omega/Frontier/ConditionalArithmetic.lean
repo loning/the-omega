@@ -62,7 +62,7 @@ theorem rewrite_irreducible_iff_stable {a : Rewrite.DigitCfg} :
 
 /-- The value of the additive inverse. -/
 theorem stableNeg_value (x : X m) :
-    stableValue (X.stableNeg x) = (paperFib (m + 1) - stableValue x) % paperFib (m + 1) :=
+    stableValue (X.stableNeg x) = (Nat.fib (m + 2) - stableValue x) % Nat.fib (m + 2) :=
   X.stableValue_stableNeg x
 
 /-! ### Paper Section 6: Ring Structure Characterization -/
@@ -101,7 +101,7 @@ theorem pure_implies_zero_boundary [MeasurableSpace α] [Fintype β]
 /-! ### Paper Theorem 4.1/6.1: Ring Surjectivity & Fiber Disjointness -/
 
 /-- Every value in {0,...,F_{m+2}-1} is realized by some stable word. -/
-theorem stableValue_surjective (n : Nat) (hn : n < paperFib (m + 1)) :
+theorem stableValue_surjective (n : Nat) (hn : n < Nat.fib (m + 2)) :
     ∃ x : X m, stableValue x = n :=
   X.stableValue_ring_surjective n hn
 
@@ -181,11 +181,11 @@ theorem stableSub_self_eq_zero (x : X m) : X.stableSub x x = X.stableZero :=
     (additive hom + multiplicative hom + injective + surjective). -/
 theorem stableValue_ring_isomorphism (m : Nat) :
     (∀ x y : X m, stableValue (X.stableAdd x y) =
-      (stableValue x + stableValue y) % paperFib (m + 1)) ∧
+      (stableValue x + stableValue y) % Nat.fib (m + 2)) ∧
     (∀ x y : X m, stableValue (X.stableMul x y) =
-      (stableValue x * stableValue y) % paperFib (m + 1)) ∧
+      (stableValue x * stableValue y) % Nat.fib (m + 2)) ∧
     Function.Injective (stableValue (m := m)) ∧
-    Set.range (stableValue (m := m)) = {n | n < paperFib (m + 1)} :=
+    Set.range (stableValue (m := m)) = {n | n < Nat.fib (m + 2)} :=
   X.stableValue_isomorphism_summary m
 
 /-! ### Paper Section 4: Concrete Cardinalities -/
@@ -347,8 +347,8 @@ theorem stable_word_in_fiber (x : X m) : x.1 ∈ X.fiber x :=
 
 /-- The Fibonacci cardinality sequence: |X_m| = F_{m+2}. -/
 theorem fibonacci_cardinality (m : Nat) :
-    Fintype.card (X m) = paperFib (m + 1) :=
-  X.card_eq_paperFib_succ m
+    Fintype.card (X m) = Nat.fib (m + 2) :=
+  X.card_eq_fib m
 
 /-- The Fibonacci recurrence for cardinalities: |X_{m+2}| = |X_{m+1}| + |X_m|. -/
 theorem fibonacci_cardinality_recurrence (m : Nat) :
@@ -437,7 +437,7 @@ theorem prefix_complement_invariance (μ : PMF (Word n)) (h : m ≤ n) (P : Set 
 
 /-- The negation of 1 gives the maximal element F_{m+2} - 1. -/
 theorem neg_one_is_maximal (hm : 1 ≤ m) :
-    stableValue (X.stableNeg (X.stableOne (m := m))) = paperFib (m + 1) - 1 :=
+    stableValue (X.stableNeg (X.stableOne (m := m))) = Nat.fib (m + 2) - 1 :=
   X.stableValue_neg_one hm
 
 /-- For m ≥ 1, the multiplicative identity is distinct from the additive identity. -/
@@ -457,7 +457,7 @@ theorem modular_projection_zero :
 
 /-- Modular projection preserves addition when no carry occurs. -/
 theorem modular_projection_add_no_carry (x y : X (m + 1))
-    (h : stableValue x + stableValue y < paperFib (m + 2)) :
+    (h : stableValue x + stableValue y < Nat.fib (m + 3)) :
     X.modularProject (X.stableAdd x y) =
       X.stableAdd (X.modularProject x) (X.modularProject y) :=
   X.modularProject_add_no_carry x y h
@@ -466,12 +466,12 @@ theorem modular_projection_add_no_carry (x y : X (m + 1))
 
 /-- Fibonacci divisibility: F_m | F_n when m | n. -/
 theorem fibonacci_divisibility {m n : Nat} (h : m ∣ n) : Nat.fib m ∣ Nat.fib n :=
-  fib_dvd_of_dvd m n h
+  Nat.fib_dvd m n h
 
-/-- paperFib divisibility when successor indices divide. -/
-theorem paperFib_divisibility {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
-    paperFib m ∣ paperFib n :=
-  paperFib_dvd_of_succ_dvd h
+/-- Fibonacci divisibility when successor indices divide. -/
+theorem fib_divisibility {m n : Nat} (h : (m + 1) ∣ (n + 1)) :
+    Nat.fib (m + 1) ∣ Nat.fib (n + 1) :=
+  Nat.fib_dvd (m + 1) (n + 1) h
 
 /-! ### Plan 7: Fiber Multiplicity Structure -/
 

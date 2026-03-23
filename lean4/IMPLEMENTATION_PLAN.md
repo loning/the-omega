@@ -117,7 +117,7 @@
 
 ### 立即可执行（1-2 轮内完成）
 
-1. **paperFib → Nat.fib 全局重构**：将 `paperFib` 全部替换为标准 `Nat.fib`。论文本身使用 $F_0=0, F_1=1$ 即标准 Fibonacci，`paperFib k = Nat.fib (k+1)` 多一层无意义偏移。重构后直接使用 mathlib 的 `Nat.fib` 完整 API（`fib_add_two`、单调性、GCD 等），消除索引转换错误源。影响范围：20 个文件、463 处引用。核心替换规则：`paperFib k` → `Nat.fib (k+1)`，或在类型签名中直接对齐论文 $F_n$ 索引。重构后删除 `Fib.lean` 中 `paperFib` 定义及所有桥接引理。
+1. ✅ **paperFib → Nat.fib 全局重构**：已完成。消除 `paperFib` 中间层，全局替换为 `Nat.fib (k+1)`；删除 `def paperFib`、`abbrev fib` 及 33 个桥接引理；新增 12 个 `Nat.fib` 便捷引理（`fib_succ_succ'`、`fib_succ_pos`、`one_le_fib_succ`、`fib_add_succ`、`fib_sub_succ`、`fib_mod_sum'`、`fib_lt_fib_succ`、`fib_succ_mod'`、`fib_gt_one_of_ge_two`、`fib_le_pow_two` 等）；`Fib.lean` 从 144 行缩减到 80 行；影响 17 个文件。
 2. 计划 9（三纤维闭合形式：$D_{2k}^{(3)} = F_{k+2} - F_{k-3}$）
 3. S_2/S_3 递推公式归纳证明（碰撞核矩阵 + Cayley-Hamilton 已形式化；数值验证 m=0..3 完成；S_2: $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$；S_3: $S_3(m+3)=2S_3(m+2)+4S_3(m+1)-2S_3(m)$；归纳步骤待实现）
 4. 计划 1（Zeckendorf 唯一性）
