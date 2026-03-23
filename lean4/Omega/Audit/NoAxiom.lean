@@ -950,6 +950,8 @@ def coreAuditTargets : List String :=
   -- Phase 23: Weight — 全零词 weight=0 (Weight.lean:50)
   , "Omega.weight_allFalse"
   -- Phase 23: Value — 全零稳定词 stableValue=0 (Value.lean:109)
-  , "Omega.stableValue_allFalse" ]
+  , "Omega.stableValue_allFalse"
+  -- Phase 24: Zeckendorf — 全零稳定词 Zeckendorf 索引为空 (Zeckendorf.lean:162)
+  , "Omega.X.zeckIndices_allFalse" ]
 
 end Omega.Audit

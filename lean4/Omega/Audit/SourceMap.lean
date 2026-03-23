@@ -3441,6 +3441,15 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Value"
       leanName := "Omega.stableValue_allFalse"
       phase := 23
+      status := .formalized }
+  -- Phase 24: Zeckendorf — 全零稳定词 Zeckendorf 索引为空
+  -- zeckIndices_allFalse: zeckIndices(0⃗) = [] (Zeckendorf.lean:162)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:zeckIndices-allFalse"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.Zeckendorf"
+      leanName := "Omega.X.zeckIndices_allFalse"
+      phase := 24
       status := .formalized } ]
 
 end Omega.Audit

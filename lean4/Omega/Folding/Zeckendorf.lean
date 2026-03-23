@@ -158,6 +158,15 @@ theorem stableValue_eq_of_zeckIndices_eq {x y : X m} (h : zeckIndices x = zeckIn
     stableValue x = stableValue y := by
   rw [stableValue_eq_sum_fib_zeckIndices x, stableValue_eq_sum_fib_zeckIndices y, h]
 
+/-- The all-false stable word has empty Zeckendorf indices. -/
+@[simp] theorem zeckIndices_allFalse :
+    zeckIndices (⟨fun _ => false, no11_allFalse⟩ : X m) = [] := by
+  induction m with
+  | zero => rfl
+  | succ m ih =>
+    simp only [zeckIndices, Omega.last, Bool.false_eq_true, ↓reduceIte]
+    convert ih using 2
+
 end X
 
 end Omega
