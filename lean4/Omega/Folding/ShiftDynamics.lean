@@ -83,6 +83,27 @@ theorem shift_not_injective : ¬ Function.Injective shift := by
   change (if (0 : Nat) = 0 then true else false) = false at hab
   simp at hab
 
+/-- The period-3 sequence: true at positions 0, 3, 6, ... -/
+def period3Seq : XInfinity :=
+  ⟨fun i => decide (i % 3 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
+
+/-- The period-3 sequence has period 3 under shift. -/
+theorem shiftN_three_period3 : shiftN 3 period3Seq = period3Seq := by
+  apply Subtype.ext; funext i; simp [shiftN, shift, period3Seq]; omega
+
+/-- The period-3 sequence is NOT a fixed point of shift. -/
+theorem shift_period3_ne : shift period3Seq ≠ period3Seq := by
+  intro h; have := congr_fun (congr_arg Subtype.val h) 0
+  simp [shift, period3Seq] at this
+
+/-- The period-2 sequence: true at positions 0, 2, 4, ... -/
+def period2Seq : XInfinity :=
+  ⟨fun i => decide (i % 2 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
+
+/-- The period-2 sequence has period 2 under shift. -/
+theorem shiftN_two_period2 : shiftN 2 period2Seq = period2Seq := by
+  apply Subtype.ext; funext i; simp [shiftN, shift, period2Seq]; omega
+
 end Omega.X
 
 namespace Omega

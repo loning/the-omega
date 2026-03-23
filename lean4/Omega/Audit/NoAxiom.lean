@@ -407,6 +407,21 @@ Run these commands manually during audit:
   -- Plan 4 深化: restrict 满射与纤维非空 (ModularTower.lean:134-142)
   #print axioms Omega.X.restrict_surjective
   #print axioms Omega.X.restrict_fiber_nonempty
+  -- Round 16: TransferMatrix 幂次条目公式 (TransferMatrix.lean:74-113, 计划19/20深化)
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_00
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_01
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_10
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_11
+  -- Round 16: 周期轨道 (ShiftDynamics.lean:87-105, 计划20深化)
+  #print axioms Omega.X.period3Seq
+  #print axioms Omega.X.shiftN_three_period3
+  #print axioms Omega.X.shift_period3_ne
+  #print axioms Omega.X.period2Seq
+  #print axioms Omega.X.shiftN_two_period2
+  -- Round 16: Fibonacci 多项式 x=0 评估与路径独立集递推 (FibonacciPolynomial.lean:42-57, 计划11前置)
+  #print axioms Omega.fibPoly_eval_zero
+  #print axioms Omega.pathIndSetPoly_eval_zero
+  #print axioms Omega.pathIndSetPoly_recurrence
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

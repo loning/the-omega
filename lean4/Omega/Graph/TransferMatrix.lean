@@ -63,4 +63,53 @@ theorem goldenMeanAdjacency_row_sum :
     exact (Omega.fib_succ_succ' (m + 2)).symm
 
 
+/-- Helper: entry (i,j) of A^(m+2) = entry of A^(m+1) + entry of A^m. -/
+private theorem pow_entry_add_two (m : Nat) (i j : Fin 2) :
+    (goldenMeanAdjacency ^ (m + 2)) i j =
+      (goldenMeanAdjacency ^ (m + 1)) i j + (goldenMeanAdjacency ^ m) i j := by
+  have := goldenMeanAdjacency_pow_add_two m
+  exact congr_fun (congr_fun (congr_arg Matrix.of this) i) j
+
+/-- (A^m)_{00} = F_{m+1}. -/
+theorem goldenMeanAdjacency_pow_00 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 0 = (Nat.fib (m + 1) : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [pow_entry_add_two, goldenMeanAdjacency_pow_00 (m + 1),
+        goldenMeanAdjacency_pow_00 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' (m + 1)).symm
+
+/-- (A^m)_{01} = F_m. -/
+theorem goldenMeanAdjacency_pow_01 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 1 = (Nat.fib m : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [pow_entry_add_two, goldenMeanAdjacency_pow_01 (m + 1),
+        goldenMeanAdjacency_pow_01 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- (A^m)_{10} = F_m. -/
+theorem goldenMeanAdjacency_pow_10 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ m) 1 0 = (Nat.fib m : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [pow_entry_add_two, goldenMeanAdjacency_pow_10 (m + 1),
+        goldenMeanAdjacency_pow_10 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- (A^m)_{11} = F_{m-1} for m ≥ 1. -/
+theorem goldenMeanAdjacency_pow_11 :
+    ∀ m : Nat, (goldenMeanAdjacency ^ (m + 1)) 1 1 = (Nat.fib m : ℤ)
+  | 0 => by native_decide
+  | 1 => by native_decide
+  | m + 2 => by
+    rw [show m + 2 + 1 = (m + 1 + 1) + 1 from by omega,
+        show (m + 1 + 1) + 1 = (m + 1) + 2 from by omega,
+        pow_entry_add_two,
+        goldenMeanAdjacency_pow_11 (m + 1), goldenMeanAdjacency_pow_11 m, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
 end Omega.Graph

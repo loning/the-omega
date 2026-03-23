@@ -2910,6 +2910,107 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberRing"
       leanName := "Omega.X.X10_decomposition"
       phase := 27
+      status := .formalized }
+  -- Phase 19/20 深化: TransferMatrix 幂次条目公式 (计划19/20深化)
+  -- thm:golden-mean-pow-entry-00 → goldenMeanAdjacency_pow_00 (TransferMatrix.lean:74)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-00"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_00"
+      phase := 19
+      status := .formalized }
+  -- thm:golden-mean-pow-entry-01 → goldenMeanAdjacency_pow_01 (TransferMatrix.lean:84)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-01"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_01"
+      phase := 19
+      status := .formalized }
+  -- thm:golden-mean-pow-entry-10 → goldenMeanAdjacency_pow_10 (TransferMatrix.lean:94)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-10"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_10"
+      phase := 19
+      status := .formalized }
+  -- thm:golden-mean-pow-entry-11 → goldenMeanAdjacency_pow_11 (TransferMatrix.lean:104)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-pow-entry-11"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_11"
+      phase := 19
+      status := .formalized }
+  -- aux:pow-entry-add-two → pow_entry_add_two (TransferMatrix.lean:67, private helper)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  -- Phase 20 深化: 周期轨道 (计划20深化)
+  -- def:period3-seq → period3Seq (ShiftDynamics.lean:87)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:period3-seq"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period3Seq"
+      phase := 20
+      status := .formalized }
+  -- thm:shiftN-three-period3 → shiftN_three_period3 (ShiftDynamics.lean:91)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shiftN-three-period3"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shiftN_three_period3"
+      phase := 20
+      status := .formalized }
+  -- thm:shift-period3-ne → shift_period3_ne (ShiftDynamics.lean:95)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shift-period3-ne"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_period3_ne"
+      phase := 20
+      status := .formalized }
+  -- def:period2-seq → period2Seq (ShiftDynamics.lean:100)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:period2-seq"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.period2Seq"
+      phase := 20
+      status := .formalized }
+  -- thm:shiftN-two-period2 → shiftN_two_period2 (ShiftDynamics.lean:104)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:shiftN-two-period2"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shiftN_two_period2"
+      phase := 20
+      status := .formalized }
+  -- Phase 11 前置: Fibonacci 多项式 x=0 评估与路径独立集递推 (计划11前置)
+  -- thm:pom-fibonacci-polynomial-eval-zero → fibPoly_eval_zero (FibonacciPolynomial.lean:42)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-fibonacci-polynomial-eval-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_eval_zero"
+      phase := 11
+      status := .formalized }
+  -- thm:pom-path-indset-poly-eval-zero → pathIndSetPoly_eval_zero (FibonacciPolynomial.lean:51)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-path-indset-poly-eval-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.pathIndSetPoly_eval_zero"
+      phase := 11
+      status := .formalized }
+  -- thm:pom-path-indset-poly-recurrence → pathIndSetPoly_recurrence (FibonacciPolynomial.lean:55)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:pom-path-indset-poly-recurrence"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.pathIndSetPoly_recurrence"
+      phase := 11
       status := .formalized } ]
 
 end Omega.Audit
