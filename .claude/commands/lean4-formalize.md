@@ -92,9 +92,10 @@ Agent(
 
 3. **停下来，等待 formalizer 回复。不做任何其他操作。**
 
-4. **如果 formalizer 报告技术阻塞**（API 不匹配、tactic 选择困难、数学路线疑问等）：
+4. **如果 formalizer 报告技术阻塞或推迟任务**（API 不匹配、tactic 选择困难、数学路线疑问、proof engineering 复杂等）：
+   - **积极 spawn codex-consultant**，不要轻易接受"推迟"——先让 Codex 提供独立技术建议
    - 先转发问题给 analyst 获取数学层面的指导
-   - 如果问题是 Lean4 API/语法层面的，**按需 spawn codex-consultant**：
+   - 同时/之后 spawn codex-consultant 获取 Lean4 API/语法/tactic 层面的具体代码建议：
 
    ```
    Agent(
@@ -190,11 +191,12 @@ Agent(
    SendMessage(to = "registrar", message = {type: "shutdown_request"})
    ```
 
-### Phase 5：循环控制
+### Phase 5：循环控制（永不停止）
 
 1. 输出本轮进度报告
-2. 仍有未完成项 → 回到 Phase 0+1，发消息给 analyst
-3. 全部完成 → 进入关闭流程
+2. **永远回到 Phase 0+1**，发消息给 analyst 选取下一个目标
+3. **禁止建议暂停或关闭团队**——即使产出递减，也继续尝试更高难度的目标
+4. 如果连续 3 轮产出 ≤ 2 定理，team lead 应主动要求 analyst 选取中/高难度目标（而非继续低难度扫尾），并在 formalizer 遇到阻塞时积极 spawn codex-consultant
 
 ## Teammate 生命周期
 

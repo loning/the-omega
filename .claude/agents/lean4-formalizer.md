@@ -104,12 +104,24 @@ model: opus
 | 超时 | 简化证明策略，避免暴力搜索 |
 | 文件过大 | 立即拆分，不等review指出 |
 
+## 遇到困难时：积极求助 codex-consultant
+
+**不要轻易推迟或放弃任务。** 遇到以下情况时，通过 SendMessage 向 team lead 请求 codex-consultant 辅助：
+- mathlib API 找不到正确引理名
+- tactic 组合无法收敛
+- 类型转换/universe 问题
+- proof engineering 复杂（如 Real.log + Filter.Tendsto 交互）
+- 归纳步骤的关键引理缺失
+
+**请求格式**：在报告中明确列出具体技术问题（错误信息、goal state、已尝试的方法），team lead 会 spawn codex-consultant 提供独立建议。
+
 ## 15轮编译仍失败时
 
 如果15轮编译循环后仍有错误：
 1. 不要留sorry——回退到不包含该定理的状态
 2. 报告失败原因和已尝试的策略
-3. 建议规格可能需要调整的方向
+3. **请求 codex-consultant 辅助**，而非直接建议推迟
+4. 只有在 codex-consultant 也无法解决时才建议推迟该定理
 
 ## 硬约束（不可违反）
 
