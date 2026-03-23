@@ -1887,6 +1887,33 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.InverseLimitTopology"
       leanName := "Omega.X.TotallyDisconnectedSpace XInfinity"
       phase := 23
+      status := .formalized }
+  -- thm:inverse-limit-golden (XInfinity 拓扑性质：可度量化)
+  --   → MetricSpace XInfinity (Omega/Folding/InverseLimitTopology.lean:28)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:inverse-limit-golden-metrizable"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.MetricSpace XInfinity"
+      phase := 23
+      status := .formalized }
+  -- thm:inverse-limit-golden (XInfinity 拓扑性质：有居民)
+  --   → Inhabited XInfinity (Omega/Folding/InverseLimitTopology.lean:33)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:inverse-limit-golden-inhabited"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.Inhabited XInfinity"
+      phase := 23
+      status := .formalized }
+  -- thm:inverse-limit-golden (XInfinity 拓扑性质：无限)
+  --   → Infinite XInfinity (Omega/Folding/InverseLimitTopology.lean:37)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:inverse-limit-golden-infinite"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.Infinite XInfinity"
+      phase := 23
       status := .formalized } ]
 
 end Omega.Audit

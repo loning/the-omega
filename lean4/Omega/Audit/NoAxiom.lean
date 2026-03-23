@@ -304,8 +304,11 @@ Run these commands manually during audit:
   #print axioms Omega.Graph.goldenMeanAdjacency_sq
   #print axioms Omega.Graph.goldenMeanAdjacency_trace
   #print axioms Omega.Graph.goldenMeanAdjacency_det
-  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (partial)
+  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (complete)
   #print axioms Omega.X.isClosed_no11Inf
+  #print axioms Omega.X.instMetricSpaceXInfinity
+  #print axioms Omega.X.instInhabitedXInfinity
+  #print axioms Omega.X.instInfiniteXInfinity
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -612,7 +615,10 @@ def coreAuditTargets : List String :=
   , "Omega.X.maxFiberMultiplicity_achieved"
   , "Omega.X.fiberMultiplicity_le_max"
   , "Omega.X.maxFiberMultiplicity_pos"
-  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (partial)
-  , "Omega.X.isClosed_no11Inf" ]
+  -- InverseLimitTopology (Plan 23): thm:fold-suite item 3 + thm:inverse-limit-golden (complete)
+  , "Omega.X.isClosed_no11Inf"
+  , "Omega.X.instMetricSpaceXInfinity"
+  , "Omega.X.instInhabitedXInfinity"
+  , "Omega.X.instInfiniteXInfinity" ]
 
 end Omega.Audit

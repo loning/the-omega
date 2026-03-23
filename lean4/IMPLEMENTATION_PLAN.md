@@ -36,7 +36,7 @@
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
-**逆极限拓扑（部分）**：XInfinity 紧致性（CompactSpace 实例）、完全不连通性（TotallyDisconnectedSpace 实例）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）；MetrizableSpace 留后续
+**逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
 ## 2. 论文总覆盖率分析
@@ -93,7 +93,7 @@
 
 ### Phase E：逆极限与无穷结构（计划 23-26）
 
-23. **[部分完成] 逆极限的拓扑结构**：`isClosed_no11Inf`（积拓扑闭集）、`CompactSpace XInfinity`、`TotallyDisconnectedSpace XInfinity` 已形式化；`MetrizableSpace XInfinity` 留后续
+23. ✅ **逆极限的拓扑结构**：`isClosed_no11Inf`（积拓扑闭集）、`CompactSpace XInfinity`、`TotallyDisconnectedSpace XInfinity`、`MetricSpace XInfinity`（PiNat 前缀超度量）、`Inhabited XInfinity`（全 false 序列）、`Infinite XInfinity`（单射 n ↦ 位 2n）全部已形式化
 24. **前缀 σ-代数链**：构造 σ-代数的递减链并证明非扩张性
 25. **Cantor 集同胚**：证明 `XInfinity` 与 Cantor 集同胚
 26. **无穷稳定词的度量化**：在 `XInfinity` 上构造自然度量
@@ -123,7 +123,7 @@
 
 8. 计划 8-12（POM 纤维谱系列）
 9. 计划 14-16（SPG martingale 系列）
-10. 计划 23（剩余：MetrizableSpace），计划 24-26（逆极限拓扑系列）
+10. 计划 24-26（逆极限拓扑系列：前缀 σ-代数链、Cantor 集同胚、无穷稳定词度量化）
 
 ### 长期/探索目标（需重型理论）
 
