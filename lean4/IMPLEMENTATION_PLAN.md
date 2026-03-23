@@ -46,6 +46,7 @@
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
 **shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）
+**离散骨架（Round 15，cor:folding-stable-syntax-entropy-logqdim Stage 1）**：矩阵 Fibonacci 递推 $A^{m+2}=A^{m+1}+A^m$（goldenMeanAdjacency_pow_add_two）、行和公式 $(A^m)_{00}+(A^m)_{01}=F_{m+2}$（goldenMeanAdjacency_row_sum）、有限稳定语法计数 Fibonacci 递推 $|X_{m+2}|=|X_{m+1}|+|X_m|$（card_X_recurrence）、Fibonacci 比率上下界 $|X_m| \le |X_{m+1}| \le 2|X_m|$（card_X_ratio_bounds）、矩阵求和表示 $|X_m|=(A^m)_{00}+(A^m)_{01}$（card_X_eq_matrix_sum）；完整 $\log\varphi$ 连续熵极限待后续
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
 ## 2. 论文总覆盖率分析
@@ -55,12 +56,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 13 | 62% | 高 |
-| POM | 106 | 57 | 54% | 极高 |
+| POM | 106 | 60 | 57% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~99** | **~25%** | - |
+| **总计** | **394** | **~102** | **~26%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1100 个 Lean 定理中，约 312 个是论文接口包装，约 60 个直接对应论文中的编号定理。
 
@@ -96,7 +97,7 @@
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
 19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1
-20. **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23）
+20. **[部分完成] 拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；完整 Real.log 版极限论证待后续）
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 
@@ -127,7 +128,7 @@
 
 5. 计划 5（Fibonacci 整除性）
 6. 计划 13（条件期望型表达）
-7. 计划 20（拓扑熵 = log φ；shift 前置已完成，可直接推进）
+7. 计划 20（拓扑熵 = log φ；shift 前置 + 离散骨架已完成，下一步：Real.log 极限论证）
 
 ### 中期目标（需要新基础设施）
 

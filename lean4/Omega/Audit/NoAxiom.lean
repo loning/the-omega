@@ -365,6 +365,12 @@ Run these commands manually during audit:
   #print axioms Omega.momentSum_three_recurrence_bounded
   #print axioms Omega.momentSum_two_recurrence_of
   #print axioms Omega.momentSum_three_recurrence_of
+  -- Round 15: 离散骨架 (cor:folding-stable-syntax-entropy-logqdim, Stage 1)
+  #print axioms Omega.Graph.goldenMeanAdjacency_pow_add_two
+  #print axioms Omega.Graph.goldenMeanAdjacency_row_sum
+  #print axioms Omega.card_X_recurrence
+  #print axioms Omega.card_X_ratio_bounds
+  #print axioms Omega.card_X_eq_matrix_sum
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

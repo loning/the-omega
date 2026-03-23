@@ -2502,6 +2502,52 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.MaxFiber"
       leanName := "Omega.maxFiberMultiplicity_le_add"
       phase := 17
+      status := .formalized }
+  -- Phase 20: 离散骨架 (cor:folding-stable-syntax-entropy-logqdim, Stage 1)
+  -- goldenMeanAdjacency_pow_add_two → 矩阵 Fibonacci 递推 A^(m+2)=A^(m+1)+A^m
+  --   (Omega/Graph/TransferMatrix.lean:39)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:folding-stable-syntax-entropy-logqdim-matrix-recurrence"
+      sourcePath := "sections/body/folding/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_add_two"
+      phase := 20
+      status := .formalized }
+  -- goldenMeanAdjacency_row_sum → 行和 = F(m+2)
+  --   (Omega/Graph/TransferMatrix.lean:47)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:folding-stable-syntax-entropy-logqdim-row-sum"
+      sourcePath := "sections/body/folding/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_row_sum"
+      phase := 20
+      status := .formalized }
+  -- card_X_recurrence → |X_{m+2}|=|X_{m+1}|+|X_m| Fibonacci 递推
+  --   (Omega/Folding/ShiftDynamics.lean:60)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:folding-stable-syntax-entropy-logqdim-card-recurrence"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.card_X_recurrence"
+      phase := 20
+      status := .formalized }
+  -- card_X_ratio_bounds → |X_m|≤|X_{m+1}|≤2·|X_m| Fibonacci 比率上下界
+  --   (Omega/Folding/ShiftDynamics.lean:66)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:folding-stable-syntax-entropy-logqdim-ratio-bounds"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.card_X_ratio_bounds"
+      phase := 20
+      status := .formalized }
+  -- card_X_eq_matrix_sum → |X_m|=(A^m)_{00}+(A^m)_{01} 矩阵求和表示
+  --   (Omega/Folding/ShiftDynamics.lean:80)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:folding-stable-syntax-entropy-logqdim-matrix-sum"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.card_X_eq_matrix_sum"
+      phase := 20
       status := .formalized } ]
 
 end Omega.Audit
