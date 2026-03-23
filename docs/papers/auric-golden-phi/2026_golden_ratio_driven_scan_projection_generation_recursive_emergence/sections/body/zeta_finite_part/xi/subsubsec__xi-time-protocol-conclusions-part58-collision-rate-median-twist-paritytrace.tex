@@ -407,22 +407,67 @@ f\!\left(-\frac{1}{10}\right)=-\frac{149}{1000}<0,
 最后，由定理 \ref{thm:xi-time-part9p-positive-branch-global-coordinate}，实正扭曲支与 \(\alpha\in(0,\tfrac12)\) 严格一一对应；既然 \(\alpha_-<0\)，该模 \(2\) 分支便不可能属于实正扭曲支。上述结式消元、残差与数值根可由脚本 \texttt{scripts/exp\_xi\_real\_input\_40\_collision\_ldp\_median\_twist\_audit.py} 逐项核验。证毕。
 \end{proof}
 
-\begin{corollary}[素数模上的平方根门槛呈余有限失效]\label{cor:xi-real-input-40-collision-prime-cofinite-sqrt-failure}
-沿用定理 \ref{thm:xi-real-input-40-collision-prime-twist-p2-threshold} 与
-\ref{thm:xi-real-input-40-collision-mod2-trace-three-spectrum} 的记号。对奇素数 \(p\) 定义
+\begin{theorem}[奇素数单位根扭曲的近主模态刚性]\label{thm:xi-real-input-40-collision-prime-near-perron-rigidity}
+沿用定理 \ref{thm:xi-real-input-40-collision-prime-twist-p2-threshold} 的记号。对奇素数 \(p\) 定义
 \[
-\theta_p:=\frac{\log \rho_p}{\log\lambda}.
+\Theta_p:=\frac{\log \rho_p}{\log\lambda}.
 \]
-则当 \(p\to\infty\) 时有
+则当 \(p\to\infty\) 时有四阶渐近
 \[
 \boxed{\;
-\theta_p
+\Theta_p
 =
-1-\frac{c_2}{(\log\lambda)\,p^2}+O(p^{-4}).\;}
+1-\frac{6\sqrt5-5}{250\log\lambda}\Bigl(\frac{2\pi}{p}\Bigr)^2
++\frac{7+24\sqrt5}{75000\log\lambda}\Bigl(\frac{2\pi}{p}\Bigr)^4
++O(p^{-6}).\;}
 \]
-从而 \(\theta_p\to 1\)。特别地，存在 \(p_0\)，使得对所有奇素数 \(p>p_0\) 都有
+特别地，
 \[
-\theta_p>\frac12.
+\Theta_p
+=
+1-\frac{1.3809571881649568\ldots}{p^2}
++\frac{1.3098894548658713\ldots}{p^4}
++O(p^{-6}),
+\]
+从而 \(\Theta_p\to 1\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-real-input-40-collision-prime-twist-p2-threshold}，
+\[
+\log\frac{\rho_p}{\lambda}
+=-\frac{c_2}{p^2}+\frac{c_4}{p^4}+O(p^{-6}),
+\]
+其中
+\[
+c_2=\frac{2\pi^2}{125}(6\sqrt5-5),
+\qquad
+c_4=\frac{2\pi^4}{9375}(7+24\sqrt5).
+\]
+因此
+\[
+\log\rho_p
+=\log\lambda-\frac{c_2}{p^2}+\frac{c_4}{p^4}+O(p^{-6}).
+\]
+两边除以 \(\log\lambda\) 即得
+\[
+\Theta_p
+=
+1-\frac{c_2}{(\log\lambda)\,p^2}
++\frac{c_4}{(\log\lambda)\,p^4}
++O(p^{-6}),
+\]
+这正是盒装式。将 \(\lambda=\varphi^2\) 代入并化简，便得到后面的数值系数。最后由主项显然可知 \(\Theta_p\to 1\)。证毕。
+\end{proof}
+
+\begin{remark}[平方根门槛失效的强化]\label{rem:xi-real-input-40-collision-prime-near-perron-meaning}
+上一定理强于单纯的 \(\Theta_p>\frac12\)。它表明奇素数模上的非平凡单位根扭曲并非只是在若干模数上越过平方根门槛，而是以显式 \(p^{-2}\) 速率贴近未扭曲 Perron 指数 \(1\)；换言之，这族扭曲通道在大素数极限中几乎保留了全部主模态指数。
+\end{remark}
+
+\begin{corollary}[素数模上的平方根门槛呈余有限失效]\label{cor:xi-real-input-40-collision-prime-cofinite-sqrt-failure}
+沿用定理 \ref{thm:xi-real-input-40-collision-prime-near-perron-rigidity} 与
+\ref{thm:xi-real-input-40-collision-mod2-trace-three-spectrum} 的记号。则存在 \(p_0\)，使得对所有奇素数 \(p>p_0\) 都有
+\[
+\Theta_p>\frac12.
 \]
 另一方面，模 \(2\) 扭曲指数
 \[
@@ -435,13 +480,7 @@ f\!\left(-\frac{1}{10}\right)=-\frac{149}{1000}<0,
 因此，在素数模集合中，满足 RH 形平方根门槛的 Dirichlet 扭曲误差至多只剩有限个例外；等价地，平方根门槛在素数模方向呈余有限失效。
 \end{corollary}
 \begin{proof}
-由定理 \ref{thm:xi-real-input-40-collision-prime-twist-p2-threshold}，
-\[
-\log \rho_p
-=
-\log\lambda-\frac{c_2}{p^2}+O(p^{-4}),
-\]
-两边除以 \(\log\lambda\) 即得盒装展开式，故 \(\theta_p\to 1\)，并进一步推出对充分大的奇素数 \(p\) 有 \(\theta_p>\frac12\)。
+由定理 \ref{thm:xi-real-input-40-collision-prime-near-perron-rigidity}，\(\Theta_p\to 1\)，故对充分大的奇素数 \(p\) 必有 \(\Theta_p>\frac12\)。
 
 对模 \(2\) 的情形，由定理 \ref{thm:xi-real-input-40-collision-mod2-trace-three-spectrum}，\(\rho_-\) 是三次方程
 \[
