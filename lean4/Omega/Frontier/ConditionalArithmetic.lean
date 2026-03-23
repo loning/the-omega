@@ -1,4 +1,5 @@
 import Omega.Frontier.ConditionalSPG
+import Omega.Folding.FiberRing
 
 namespace Omega.Frontier
 
@@ -632,6 +633,16 @@ theorem inverse_limit_round_right (a : X.XInfinity) :
   X.inverseLimitEquiv_right_inv a
 
 /-! ### Plan 9 (partial): Fiber Structure -/
+
+/-! ### Coverage: Ring/Field structure registrations -/
+
+/-- X_m ≅ ZMod(F_{m+2}) ring isomorphism (coverage wrapper). -/
+theorem stable_ring_isomorphism (m : Nat) :
+    Nonempty (X m ≃+* ZMod (Nat.fib (m + 2))) := ⟨X.stableValueRingEquiv m⟩
+
+/-- When F_{m+2} is prime, X_m admits a field structure (coverage wrapper). -/
+theorem stable_field_of_prime (hp : Nat.Prime (Nat.fib (m + 2))) :
+    Nonempty (Field (X m)) := ⟨X.instFieldOfPrime hp⟩
 
 end
 

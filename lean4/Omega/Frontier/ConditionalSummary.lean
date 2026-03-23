@@ -1,4 +1,5 @@
 import Omega.Frontier.ConditionalArithmetic
+import Omega.Folding.MomentSum
 
 namespace Omega.Frontier
 
@@ -546,6 +547,32 @@ theorem fiber_decomposition (m : Nat) :
 /-- Fold always outputs a stable (No11) word. -/
 theorem fold_always_stable (w : Word m) : No11 (Fold w).1 :=
   X.Fold_output_is_stable w
+
+/-! ### POM coverage: projection entropy & moment sums -/
+
+/-- |X_m| = F_{m+2} (projection entropy cardinality). -/
+theorem projection_entropy_cardinality (m : Nat) :
+    Fintype.card (X m) = Nat.fib (m + 2) := X.card_eq_fib m
+
+/-- Fiber multiplicities sum to 2^m. -/
+theorem fiber_sum_eq_pow (m : Nat) :
+    ∑ x : X m, X.fiberMultiplicity x = 2 ^ m := X.fiberMultiplicity_sum_eq_pow m
+
+/-- Cauchy-Schwarz collision bound: (2^m)² ≤ F_{m+2} · S_2(m). -/
+theorem cauchy_schwarz_collision_bound (m : Nat) :
+    (2 ^ m) ^ 2 ≤ Nat.fib (m + 2) * momentSum 2 m := momentSum_cauchy_schwarz m
+
+/-- S_q is monotone in q. -/
+theorem moment_monotone (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ momentSum (q + 1) m := momentSum_mono_q q m hq
+
+/-- S_q(m) ≥ F_{m+2} for all q. -/
+theorem moment_ge_cardinality (q m : Nat) :
+    Nat.fib (m + 2) ≤ momentSum q m := momentSum_ge_card q m
+
+/-- S_2(m) ≥ 2^m (collision sum lower bound). -/
+theorem collision_sum_ge_pow (m : Nat) :
+    2 ^ m ≤ momentSum 2 m := Omega.momentSum_two_ge_pow m
 
 end
 

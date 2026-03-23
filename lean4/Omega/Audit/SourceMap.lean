@@ -3011,6 +3011,72 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FibonacciPolynomial"
       leanName := "Omega.pathIndSetPoly_recurrence"
       phase := 11
+      status := .formalized }
+  -- Phase 17: Frontier 包装 — ConditionalArithmetic.lean
+  -- thm:finite-resolution-mod → stable_ring_isomorphism (ConditionalArithmetic.lean:640)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:finite-resolution-mod"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Frontier.ConditionalArithmetic"
+      leanName := "Omega.Frontier.stable_ring_isomorphism"
+      phase := 17
+      status := .formalized }
+  -- cor:field-phase-fib-prime → stable_field_of_prime (ConditionalArithmetic.lean:644)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:field-phase-fib-prime"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Frontier.ConditionalArithmetic"
+      leanName := "Omega.Frontier.stable_field_of_prime"
+      phase := 17
+      status := .formalized }
+  -- Phase 17: Frontier 包装 — ConditionalSummary.lean
+  -- prop:pom-projection-entropy → projection_entropy_cardinality (ConditionalSummary.lean:554)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-projection-entropy"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.projection_entropy_cardinality"
+      phase := 17
+      status := .formalized }
+  -- prop:pom-fiber-sum-identity → fiber_sum_eq_pow (ConditionalSummary.lean:558)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-fiber-sum-identity"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.fiber_sum_eq_pow"
+      phase := 17
+      status := .formalized }
+  -- thm:fold-collision-convex-lower-bounds → cauchy_schwarz_collision_bound (ConditionalSummary.lean:562)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:fold-collision-convex-lower-bounds"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.cauchy_schwarz_collision_bound"
+      phase := 17
+      status := .formalized }
+  -- prop:pom-sq-monotone → moment_monotone (ConditionalSummary.lean:566)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-monotone"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_monotone"
+      phase := 17
+      status := .formalized }
+  -- prop:pom-sq-lower → moment_ge_cardinality (ConditionalSummary.lean:570)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-lower"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.moment_ge_cardinality"
+      phase := 17
+      status := .formalized }
+  -- cor:pom-s2-lower → collision_sum_ge_pow (ConditionalSummary.lean:574)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-s2-lower"
+      sourcePath := "sections/body/pom/subsec__pom-moment-spectrum.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.collision_sum_ge_pow"
+      phase := 17
       status := .formalized } ]
 
 end Omega.Audit

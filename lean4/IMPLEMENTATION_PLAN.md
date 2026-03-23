@@ -6,9 +6,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,471 |
-| 定理/定义数 | 1,199 |
-| 论文接口包装 | 312 |
+| 总行数 | ~13,503 |
+| 定理/定义数 | 1,207 |
+| 论文接口包装 | 320 |
 | 文件数 | 36 |
 | 公理数 | 0 |
 
@@ -39,6 +39,7 @@
 **碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
 **Fibonacci 多项式（Round 11）**：fibPoly（Fibonacci 多项式 F_n(x) 定义，递推 F_{n+2}=F_{n+1}+x·F_n）; fibPoly_zero/one/succ_succ（simp 引理）; fibPoly_eval_one（F_n(1)=fib(n)）; fibPoly_two/three（具体值）; pathIndSetPoly（路径独立集多项式 I_ℓ(x)=F_{ℓ+2}(x) 定义）; pathIndSetPoly_eval_one（I_ℓ(1)=fib(ℓ+2)）；闭式系数公式留后续（def:pom-fibonacci-polynomial 完整，thm:pom-path-indset-poly-closed 部分）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
+**Frontier 包装（Round 17）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）
 **S_3 基值 + A_3 碰撞核矩阵（Round 13）**：momentSum_three_zero..six（S_3(m) 基值 m=0..6，native_decide 验证）; momentSum_three_recurrence_verified（S_3 递推 m=0..3 数值验证）; collisionKernel3（A_3 companion matrix 定义）; collisionKernel3_trace（tr=2）; collisionKernel3_det（det=-2）; collisionKernel3_cayley_hamilton（Cayley-Hamilton：M³=2M²+4M-2I，prop:pom-s3-recurrence）
 **S_2/S_3 扩展基值 + 有界递推 + 条件递推（Round 14）**：momentSum_two_seven（S_2(7)=544）; momentSum_three_seven（S_3(7)=2504）; momentSum_two_recurrence_bounded（S_2 递推 m≤4，interval_cases+native_decide）; momentSum_three_recurrence_bounded（S_3 递推 m≤4，interval_cases+native_decide）; momentSum_two_recurrence_of（S_2 递推条件性一般版，prop:pom-s2-recurrence）; momentSum_three_recurrence_of（S_3 递推条件性一般版，prop:pom-s3-recurrence）——有界范围已形式化，完整无界归纳证明待后续
 **Fibonacci 素数域（完整）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; fib_four/five/seven/thirteen_prime（native_decide 验证）; fib_nine_not_prime（反例验证）; instFieldOfPrime（通用域实例：F_{m+2} 素数时 X m 为域，经由 stableValueRingEquiv 转移）; instField_X1（GF(2)）、instField_X2（GF(3)）、instField_X3（GF(5)）、instField_X5（GF(13)）、instField_X9（GF(89)）、instField_X11（GF(233)）（cor:field-phase-fib-prime 完整形式化）
@@ -59,15 +60,15 @@
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
-| 新生算术 | 21 | 19 | 90% | 高 |
-| POM | 106 | 74 | 70% | 极高 |
+| 新生算术 | 21 | 21 | 100% | 高 |
+| POM | 106 | 80 | 75% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~117** | **~30%** | - |
+| **总计** | **394** | **~130** | **~33%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1199 个 Lean 定理中，约 312 个是论文接口包装，约 72 个直接对应论文中的编号定理。Round 16 新增：转移矩阵幂次条目公式（4）、周期轨道（5）、Fibonacci 多项式评估与递推（3）。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1207 个 Lean 定理中，约 320 个是论文接口包装，约 80 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。
 
 ## 3. 未来工作：30 条具体计划
 
@@ -78,7 +79,7 @@
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
 4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射、restrict 保零/保一、restrict_surjective、restrict_fiber_nonempty）
 5. ✅ **Fibonacci 整除性**：`fib_gcd`（gcd(F_m, F_n)=F_{gcd(m,n)}）; `fib_coprime_succ`（相邻 Fibonacci 数互素）; `fib_dvd_mul`（F_m | F_{km}，整除定理）
-6. ✅ **稳定类型同构的范畴化**：`instCommRing`（CommRing (X m) 实例）; `stableValueRingHom`（X m →+* ZMod(F_{m+2}) 环同态）; `toZMod_injective/surjective`（双射）; `stableValueRingEquiv : X m ≃+* ZMod(F_{m+2})`（完整环同构，thm:finite-resolution-mod + cor:field-phase-fib-prime 前提）
+6. ✅ **稳定类型同构的范畴化**：`instCommRing`（CommRing (X m) 实例）; `stableValueRingHom`（X m →+* ZMod(F_{m+2}) 环同态）; `toZMod_injective/surjective`（双射）; `stableValueRingEquiv : X m ≃+* ZMod(F_{m+2})`（完整环同构，thm:finite-resolution-mod + cor:field-phase-fib-prime 前提）; Frontier 包装 `stable_ring_isomorphism`（thm:finite-resolution-mod）、`stable_field_of_prime`（cor:field-phase-fib-prime）已注册（Round 17）——新生算术覆盖率达 100%
 
 ### Phase B：POM 纤维谱（计划 7-12）
 

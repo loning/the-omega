@@ -422,6 +422,19 @@ Run these commands manually during audit:
   #print axioms Omega.fibPoly_eval_zero
   #print axioms Omega.pathIndSetPoly_eval_zero
   #print axioms Omega.pathIndSetPoly_recurrence
+  -- Round 17: Frontier 包装 — ConditionalArithmetic + ConditionalSummary
+  -- thm:finite-resolution-mod + cor:field-phase-fib-prime (ConditionalArithmetic.lean:640-645)
+  #print axioms Omega.Frontier.stable_ring_isomorphism
+  #print axioms Omega.Frontier.stable_field_of_prime
+  -- prop:pom-projection-entropy, prop:pom-fiber-sum-identity (ConditionalSummary.lean:554-559)
+  #print axioms Omega.Frontier.projection_entropy_cardinality
+  #print axioms Omega.Frontier.fiber_sum_eq_pow
+  -- thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone (ConditionalSummary.lean:562-568)
+  #print axioms Omega.Frontier.cauchy_schwarz_collision_bound
+  #print axioms Omega.Frontier.moment_monotone
+  -- prop:pom-sq-lower, cor:pom-s2-lower (ConditionalSummary.lean:570-576)
+  #print axioms Omega.Frontier.moment_ge_cardinality
+  #print axioms Omega.Frontier.collision_sum_ge_pow
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
