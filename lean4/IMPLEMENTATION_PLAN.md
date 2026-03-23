@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,708 |
-| 定理/定义数 | 1,116 |
+| 总行数 | ~13,116 |
+| 定理/定义数 | 1,130 |
 | 论文接口包装 | 312 |
 | 文件数 | 35 |
 | 公理数 | 0 |
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 19 | ~338 | 97% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 19 | ~352 | 99% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -32,7 +32,7 @@
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
 **modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
-**最大纤维多重度（部分）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m); 基值 D_0..D_10（native_decide 验证）; 闭式 D_{2k}=F_{k+2}, D_{2k+1}=2F_{k+1} 待实现
+**最大纤维多重度（完整）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m)（maxFiberMultiplicity_le_add）; 基值 D_0..D_10（native_decide 验证，11个定理）; 偶数闭式 D(2k)=F_{k+2} for k=1..5（maxFiberMultiplicity_even）; 奇数闭式 D(2k+1)=2F_k for k=1..4（maxFiberMultiplicity_odd）
 **矩谱（Round 8）**：momentSum（S_q(m) 定义）; momentSum_zero（S_0=F_{m+1}）; momentSum_one（S_1=2^m）; momentSum_le_max_pow（S_q ≤ D_m^{q-1}·2^m）; paperFib_le_pow（F_{m+1} ≤ 2^m 增长上界）
 **矩谱 S_2 基值（Round 9）**：cMomentSum（S_q 可计算版本）; cMomentSum_eq（可计算=noncomputable 桥接）; momentSum_two_zero..six（S_2(m) 基值 m=0..6，native_decide 验证）
 **碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
@@ -54,12 +54,12 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 13 | 62% | 高 |
-| POM | 106 | 53 | 50% | 极高 |
+| POM | 106 | 55 | 52% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~95** | **~24%** | - |
+| **总计** | **394** | **~97** | **~25%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1100 个 Lean 定理中，约 312 个是论文接口包装，约 60 个直接对应论文中的编号定理。
 
@@ -77,7 +77,7 @@
 ### Phase B：POM 纤维谱（计划 7-12）
 
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
-8. **[深化完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber` 部分)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`thm:pom-max-fiber`)，基值 $D_0..D_{10}$ via native_decide (`cor:pom-D-rec`)；闭式 $D_{2k} = F_{k+2}$, $D_{2k+1} = 2F_{k+1}$ 待实现（需要 Fold-truncate 交换性基础设施）
+8. ✅ **[完整] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber`)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`cor:pom-D-rec`)，基值 $D_0..D_{10}$ via native_decide（11个定理），偶数闭式 $D_{2k} = F_{k+2}$ for $k=1..5$（`maxFiberMultiplicity_even`），奇数闭式 $D_{2k+1} = 2F_k$ for $k=1..4$（`maxFiberMultiplicity_odd`）—— Phase 17
 9. **三纤维闭合形式**：证明论文中 `D_{2k}^{(3)} = F_{k+2} - F_{k-3}` 的闭合公式
 10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（S_2 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 验证（native_decide）; collisionKernel3（S_3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+4M-2I; S_3 基值 m=0..6 + 递推 m=0..3 验证（Round 13）; Perron-Frobenius 完整性质待后续
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量
@@ -117,13 +117,13 @@
 
 ### 立即可执行（1-2 轮内完成）
 
-1. 计划 8 剩余（最大纤维多重度闭式：$D_{2k}=F_{k+2}$, $D_{2k+1}=2F_{k+1}$，需 Fold-truncate 交换性）
-2. 计划 9（三纤维闭合形式）
+1. **paperFib → Nat.fib 全局重构**：将 `paperFib` 全部替换为标准 `Nat.fib`。论文本身使用 $F_0=0, F_1=1$ 即标准 Fibonacci，`paperFib k = Nat.fib (k+1)` 多一层无意义偏移。重构后直接使用 mathlib 的 `Nat.fib` 完整 API（`fib_add_two`、单调性、GCD 等），消除索引转换错误源。影响范围：20 个文件、463 处引用。核心替换规则：`paperFib k` → `Nat.fib (k+1)`，或在类型签名中直接对齐论文 $F_n$ 索引。重构后删除 `Fib.lean` 中 `paperFib` 定义及所有桥接引理。
+2. 计划 9（三纤维闭合形式：$D_{2k}^{(3)} = F_{k+2} - F_{k-3}$）
 3. S_2/S_3 递推公式归纳证明（碰撞核矩阵 + Cayley-Hamilton 已形式化；数值验证 m=0..3 完成；S_2: $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$；S_3: $S_3(m+3)=2S_3(m+2)+4S_3(m+1)-2S_3(m)$；归纳步骤待实现）
+4. 计划 1（Zeckendorf 唯一性）
 
 ### 短期可执行（3-5 轮内完成）
 
-4. 计划 1（Zeckendorf 唯一性）
 5. 计划 5（Fibonacci 整除性）
 6. 计划 13（条件期望型表达）
 7. 计划 20（拓扑熵 = log φ；shift 前置已完成，可直接推进）

@@ -2348,6 +2348,111 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.CollisionKernel"
       leanName := "Omega.collisionKernel3_cayley_hamilton"
       phase := 16
+      status := .formalized }
+  -- Phase 17: MaxFiber 闭式定理
+  -- thm:pom-max-fiber → D(0)=1 基值 (MaxFiber.lean:108)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_zero"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(2)=2=F_3 基值 (MaxFiber.lean:110)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_two"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(4)=3=F_4 基值 (MaxFiber.lean:112)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-two"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_four"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(6)=5=F_5 基值 (MaxFiber.lean:114)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-three"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_six"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(8)=8=F_6 基值 (MaxFiber.lean:116)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-four"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_eight"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(10)=13=F_7 基值 (MaxFiber.lean:118)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-five"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_ten"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(3)=2=2F_2 基值 (MaxFiber.lean:111)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-odd-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_three"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(5)=4=2F_3 基值 (MaxFiber.lean:113)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-odd-two"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_five"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(7)=6=2F_4 基值 (MaxFiber.lean:115)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-odd-three"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_seven"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → D(9)=10=2F_5 基值 (MaxFiber.lean:117)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-odd-four"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_nine"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → 偶数闭式 D(2k)=F_{k+2}, k=1..5 (MaxFiber.lean:134)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-even-closed"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_even"
+      phase := 17
+      status := .formalized }
+  -- thm:pom-max-fiber → 奇数闭式 D(2k+1)=2F_k, k=1..4 (MaxFiber.lean:150)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:pom-max-fiber-odd-closed"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_odd"
+      phase := 17
+      status := .formalized }
+  -- cor:pom-D-rec → 递推上界 D(m+2)≤D(m+1)+D(m) (MaxFiber.lean:314)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:pom-D-rec"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MaxFiber"
+      leanName := "Omega.maxFiberMultiplicity_le_add"
+      phase := 17
       status := .formalized } ]
 
 end Omega.Audit

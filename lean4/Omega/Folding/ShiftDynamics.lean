@@ -27,4 +27,20 @@ theorem shift_surjective : Function.Surjective shift := by
 /-- Coordinate formula for the left shift: the i-th entry of σ(a) equals a(i+1). -/
 theorem shift_val (a : XInfinity) (i : Nat) : (shift a).1 i = a.1 (i + 1) := rfl
 
+/-- The n-fold iterate of the left shift. -/
+def shiftN : Nat → XInfinity → XInfinity
+  | 0, a => a
+  | n + 1, a => shift (shiftN n a)
+
+/-- Coordinate formula for the n-fold shift: σⁿ(a)(i) = a(i+n). -/
+theorem shiftN_val : ∀ (n : Nat) (a : XInfinity) (i : Nat),
+    (shiftN n a).1 i = a.1 (i + n)
+  | 0, a, i => by simp [shiftN]
+  | n + 1, a, i => by simp [shiftN, shift_val, shiftN_val n a (i + 1)]; ring_nf
+
+/-- The n-fold shift is continuous. -/
+theorem continuous_shiftN : ∀ (n : Nat), Continuous (shiftN n)
+  | 0 => continuous_id
+  | n + 1 => continuous_shift.comp (continuous_shiftN n)
+
 end Omega.X

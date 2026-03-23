@@ -119,6 +119,128 @@ theorem maxFiberMultiplicity_ten : maxFiberMultiplicity 10 = 13 := by rw [← cM
 -- m=11 takes ~9min via native_decide, so we verify it separately and use the value.
 -- D(11) = 16, verified by: rw [← cMaxFiberMult_eq]; native_decide
 
+/-! ### Two-step recurrence and closed-form expressions
+
+The maximum fiber multiplicity D(m) satisfies the two-step recurrence
+D(m) = D(m−2) + D(m−4) for m ≥ 6 (cor:pom-D-rec in the paper). Combined with
+base values D(0)..D(10), this yields closed forms:
+- D(2k) = paperFib(k + 1) for k ≥ 1
+- D(2k + 1) = 2 * paperFib(k) for k ≥ 1
+
+The two-step recurrence equality is verified computationally for m = 6..10.
+The general closed forms are proved conditionally: given the two-step recurrence
+as a hypothesis, `maxFiberMultiplicity_even_of_two_step` and
+`maxFiberMultiplicity_odd_of_two_step` derive the Fibonacci closed forms by
+induction on k. The unconditional versions (`maxFiberMultiplicity_even` and
+`maxFiberMultiplicity_odd`) cover the computationally verified range.
+-/
+
+/-- Two-step recurrence verified computationally for m = 6..10 (cor:pom-D-rec). -/
+theorem maxFiberMultiplicity_two_step_6 :
+    maxFiberMultiplicity 6 = maxFiberMultiplicity 4 + maxFiberMultiplicity 2 := by
+  rw [maxFiberMultiplicity_six, maxFiberMultiplicity_four, maxFiberMultiplicity_two]
+theorem maxFiberMultiplicity_two_step_7 :
+    maxFiberMultiplicity 7 = maxFiberMultiplicity 5 + maxFiberMultiplicity 3 := by
+  rw [maxFiberMultiplicity_seven, maxFiberMultiplicity_five, maxFiberMultiplicity_three]
+theorem maxFiberMultiplicity_two_step_8 :
+    maxFiberMultiplicity 8 = maxFiberMultiplicity 6 + maxFiberMultiplicity 4 := by
+  rw [maxFiberMultiplicity_eight, maxFiberMultiplicity_six, maxFiberMultiplicity_four]
+theorem maxFiberMultiplicity_two_step_9 :
+    maxFiberMultiplicity 9 = maxFiberMultiplicity 7 + maxFiberMultiplicity 5 := by
+  rw [maxFiberMultiplicity_nine, maxFiberMultiplicity_seven, maxFiberMultiplicity_five]
+theorem maxFiberMultiplicity_two_step_10 :
+    maxFiberMultiplicity 10 = maxFiberMultiplicity 8 + maxFiberMultiplicity 6 := by
+  rw [maxFiberMultiplicity_ten, maxFiberMultiplicity_eight, maxFiberMultiplicity_six]
+
+/-- Even closed form: D(2k) = paperFib(k+1) for 1 ≤ k ≤ 5.
+    paperFib(k+1) = Nat.fib(k+2) = F_{k+2} in standard Fibonacci indexing. -/
+theorem maxFiberMultiplicity_even (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 5) :
+    maxFiberMultiplicity (2 * k) = paperFib (k + 1) := by
+  interval_cases k <;> first
+    | exact maxFiberMultiplicity_two
+    | exact maxFiberMultiplicity_four
+    | exact maxFiberMultiplicity_six
+    | exact maxFiberMultiplicity_eight
+    | exact maxFiberMultiplicity_ten
+
+/-- Odd closed form: D(2k+1) = 2 * paperFib(k) for 1 ≤ k ≤ 4.
+    2 * paperFib(k) = 2 * Nat.fib(k+1) in standard Fibonacci indexing. -/
+theorem maxFiberMultiplicity_odd (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 4) :
+    maxFiberMultiplicity (2 * k + 1) = 2 * paperFib k := by
+  interval_cases k <;> first
+    | exact maxFiberMultiplicity_three
+    | exact maxFiberMultiplicity_five
+    | exact maxFiberMultiplicity_seven
+    | exact maxFiberMultiplicity_nine
+
+/-- Auxiliary: even closed form for all j ≤ n, by bounded strong induction. -/
+private theorem maxFiberMultiplicity_even_aux
+    (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
+      maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4)) :
+    ∀ n : Nat, ∀ j, 1 ≤ j → j ≤ n → maxFiberMultiplicity (2 * j) = paperFib (j + 1)
+  | 0, _, hj1, hjn => absurd hjn (by omega)
+  | 1, 1, _, _ => maxFiberMultiplicity_two
+  | 1, j + 2, hj1, hjn => absurd hjn (by omega)
+  | 2, 1, _, _ => maxFiberMultiplicity_two
+  | 2, 2, _, _ => maxFiberMultiplicity_four
+  | 2, j + 3, _, hjn => absurd hjn (by omega)
+  | n + 3, j, hj1, hjn => by
+    by_cases hj2 : j ≤ 2
+    · interval_cases j <;> first | omega | exact maxFiberMultiplicity_two | exact maxFiberMultiplicity_four
+    · push_neg at hj2
+      obtain ⟨j, rfl⟩ : ∃ i, j = i + 3 := ⟨j - 3, by omega⟩
+      have hm : 6 ≤ 2 * (j + 3) := by omega
+      rw [two_step (2 * (j + 3)) hm,
+          show 2 * (j + 3) - 2 = 2 * (j + 2) from by omega,
+          show 2 * (j + 3) - 4 = 2 * (j + 1) from by omega,
+          maxFiberMultiplicity_even_aux two_step (n + 2) (j + 2) (by omega) (by omega),
+          maxFiberMultiplicity_even_aux two_step (n + 2) (j + 1) (by omega) (by omega)]
+      exact (paperFib_recurrence (j + 2)).symm
+
+/-- General even closed form assuming the two-step recurrence.
+    If D(m) = D(m-2) + D(m-4) holds for all m ≥ 6, then D(2k) = paperFib(k+1). -/
+theorem maxFiberMultiplicity_even_of_two_step
+    (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
+      maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4))
+    (k : Nat) (hk : 1 ≤ k) :
+    maxFiberMultiplicity (2 * k) = paperFib (k + 1) :=
+  maxFiberMultiplicity_even_aux two_step k k hk (le_refl k)
+
+/-- Auxiliary: odd closed form for all j ≤ n, by bounded strong induction. -/
+private theorem maxFiberMultiplicity_odd_aux
+    (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
+      maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4)) :
+    ∀ n : Nat, ∀ j, 1 ≤ j → j ≤ n → maxFiberMultiplicity (2 * j + 1) = 2 * paperFib j
+  | 0, _, hj1, hjn => absurd hjn (by omega)
+  | 1, 1, _, _ => maxFiberMultiplicity_three
+  | 1, j + 2, _, hjn => absurd hjn (by omega)
+  | 2, 1, _, _ => maxFiberMultiplicity_three
+  | 2, 2, _, _ => maxFiberMultiplicity_five
+  | 2, j + 3, _, hjn => absurd hjn (by omega)
+  | n + 3, j, hj1, hjn => by
+    by_cases hj2 : j ≤ 2
+    · interval_cases j <;> first | omega | exact maxFiberMultiplicity_three | exact maxFiberMultiplicity_five
+    · push_neg at hj2
+      obtain ⟨j, rfl⟩ : ∃ i, j = i + 3 := ⟨j - 3, by omega⟩
+      have hm : 6 ≤ 2 * (j + 3) + 1 := by omega
+      rw [two_step (2 * (j + 3) + 1) hm,
+          show 2 * (j + 3) + 1 - 2 = 2 * (j + 2) + 1 from by omega,
+          show 2 * (j + 3) + 1 - 4 = 2 * (j + 1) + 1 from by omega,
+          maxFiberMultiplicity_odd_aux two_step (n + 2) (j + 2) (by omega) (by omega),
+          maxFiberMultiplicity_odd_aux two_step (n + 2) (j + 1) (by omega) (by omega)]
+      -- Goal: 2 * paperFib(j+3) = 2 * paperFib(j+2) + 2 * paperFib(j+1)
+      rw [show j + 3 = (j + 1) + 2 from by omega, paperFib_recurrence (j + 1)]
+      ring
+
+/-- General odd closed form assuming the two-step recurrence.
+    If D(m) = D(m-2) + D(m-4) holds for all m ≥ 6, then D(2k+1) = 2 * paperFib(k). -/
+theorem maxFiberMultiplicity_odd_of_two_step
+    (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
+      maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4))
+    (k : Nat) (hk : 1 ≤ k) :
+    maxFiberMultiplicity (2 * k + 1) = 2 * paperFib k :=
+  maxFiberMultiplicity_odd_aux two_step k k hk (le_refl k)
+
 private theorem snoc_truncate_last {m : Nat} (w : Word (m + 1)) :
     snoc (truncate w) (w ⟨m, Nat.lt_succ_self m⟩) = w := by
   funext i; by_cases h : i.1 < m

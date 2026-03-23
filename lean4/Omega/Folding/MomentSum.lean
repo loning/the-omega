@@ -95,4 +95,62 @@ theorem momentSum_cauchy_schwarz (m : Nat) :
   rw [← Finset.card_univ (α := X m)]
   exact sq_sum_le_card_mul_sum_sq
 
+/-- There exists an element with fiber multiplicity ≥ 2 when m ≥ 2 (pigeonhole: 2^m > paperFib(m+1)). -/
+theorem exists_fiber_ge_two (m : Nat) (hm : 2 ≤ m) : ∃ x : X m, 2 ≤ X.fiberMultiplicity x := by
+  -- Average fiber multiplicity = 2^m / paperFib(m+1) > 1 for m ≥ 2
+  -- So some fiber has multiplicity ≥ 2
+  by_contra h
+  push_neg at h
+  -- All d(x) ≤ 1, so all d(x) = 1 (since d(x) ≥ 1)
+  have hall : ∀ x : X m, X.fiberMultiplicity x = 1 := by
+    intro x; have := X.fiberMultiplicity_pos x; have := h x; omega
+  -- Sum of all d(x) = |X_m| * 1 = paperFib(m+1)
+  have hsum : ∑ x : X m, X.fiberMultiplicity x = paperFib (m + 1) := by
+    simp only [hall, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one,
+      X.card_eq_paperFib_succ]
+  -- But sum = 2^m
+  rw [X.fiberMultiplicity_sum_eq_pow] at hsum
+  -- 2^m = paperFib(m+1), contradiction for m ≥ 2
+  have := paperFib_le_pow m
+  -- paperFib(m+1) ≤ 2^m, and if equal then 2^m = paperFib(m+1).
+  -- But for m ≥ 2: paperFib(m+1) < 2^m strictly.
+  -- paperFib(3) = 3 < 4 = 2^2 for m=2. ✓
+  -- Need: strict inequality for m ≥ 2.
+  -- For m ≥ 2: paperFib(m+1) < 2^m. Base: paperFib(3)=3 < 4=2^2.
+  -- Inductive: paperFib(m+2) = paperFib(m+1)+paperFib(m) < 2^m + 2^(m-1) < 2^(m+1) for m ≥ 2.
+  -- Simpler: 2^m ≥ paperFib(m+1) by paperFib_le_pow, and equality would require
+  -- all Fibonacci steps to be tight, which fails at m=2.
+  -- Use: paperFib 3 = 3 and 2^2 = 4, so strict for m=2.
+  -- For m > 2: paperFib(m+1) ≤ paperFib(m) + paperFib(m-1) < 2^(m-1) + 2^(m-2) < 2^m.
+  -- Just prove paperFib(m+1) < 2^m for m ≥ 2 by strong induction.
+  have hStrict : paperFib (m + 1) < 2 ^ m := by
+    induction m with
+    | zero => omega
+    | succ n ih =>
+      cases n with
+      | zero => omega
+      | succ k =>
+        -- m = k + 2, need paperFib(k+3) < 2^(k+2)
+        have hRec := paperFib_recurrence (k + 1)
+        have ih1 := paperFib_le_pow (k + 1)
+        have ih0 := paperFib_le_pow k
+        have : paperFib (k + 1 + 2) = paperFib (k + 3) := rfl
+        have : paperFib (k + 1 + 1) = paperFib (k + 2) := rfl
+        have : (2 : Nat) ^ (k + 2) = 2 ^ (k + 1) + 2 ^ (k + 1) := by ring
+        -- Express everything in terms of a single variable a = 2^k
+        have hR : paperFib (k + 3) = paperFib (k + 2) + paperFib (k + 1) :=
+          paperFib_recurrence (k + 1)
+        have : paperFib (k + 1 + 2) = paperFib (k + 3) := rfl
+        have : paperFib (k + 1 + 1) = paperFib (k + 2) := rfl
+        -- All powers of 2 expressed via a = 2^k
+        have h2k1 : (2:Nat) ^ (k + 1) = 2 * 2 ^ k := by ring
+        have h2k2 : (2:Nat) ^ (k + 2) = 4 * 2 ^ k := by ring
+        -- Substitute into ih0 and ih1
+        rw [h2k1] at ih1; rw [h2k2]
+        -- Now: paperFib(k+2) ≤ 2*a, paperFib(k+1) ≤ a, paperFib(k+3) = paperFib(k+2) + paperFib(k+1)
+        -- Goal: paperFib(k+3) < 4*a
+        have hpos : 0 < 2 ^ k := Nat.two_pow_pos k
+        linarith
+  omega
+
 end Omega

@@ -18,6 +18,7 @@ import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
 import Omega.Folding.CollisionKernel
 import Omega.Folding.FibonacciPolynomial
+import Omega.Folding.MaxFiber
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -701,6 +702,20 @@ def coreAuditTargets : List String :=
   , "Omega.fibPoly"
   , "Omega.fibPoly_eval_one"
   , "Omega.pathIndSetPoly"
-  , "Omega.pathIndSetPoly_eval_one" ]
+  , "Omega.pathIndSetPoly_eval_one"
+  -- Phase 17: MaxFiber 闭式定理 (thm:pom-max-fiber, cor:pom-D-rec)
+  , "Omega.maxFiberMultiplicity_zero"
+  , "Omega.maxFiberMultiplicity_two"
+  , "Omega.maxFiberMultiplicity_four"
+  , "Omega.maxFiberMultiplicity_six"
+  , "Omega.maxFiberMultiplicity_eight"
+  , "Omega.maxFiberMultiplicity_ten"
+  , "Omega.maxFiberMultiplicity_three"
+  , "Omega.maxFiberMultiplicity_five"
+  , "Omega.maxFiberMultiplicity_seven"
+  , "Omega.maxFiberMultiplicity_nine"
+  , "Omega.maxFiberMultiplicity_even"
+  , "Omega.maxFiberMultiplicity_odd"
+  , "Omega.maxFiberMultiplicity_le_add" ]
 
 end Omega.Audit

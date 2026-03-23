@@ -906,3 +906,13 @@ theorem complete_ring_axioms (m : Nat) :
 
 end
 
+/-- Even and odd stableValue elements partition X m. -/
+theorem even_odd_card_sum (m : Nat) :
+    (evenElements m).card + (oddElements m).card = paperFib (m + 1) := by
+  classical
+  rw [← X.card_eq_paperFib_succ, ← Finset.card_univ]
+  rw [← Finset.card_union_of_disjoint (even_odd_disjoint m)]
+  congr 1; ext x
+  simp only [Finset.mem_union, evenElements, oddElements, Finset.mem_filter, Finset.mem_univ, true_and]
+  rcases Nat.mod_two_eq_zero_or_one (stableValue x) with h | h <;> simp [h]
+
