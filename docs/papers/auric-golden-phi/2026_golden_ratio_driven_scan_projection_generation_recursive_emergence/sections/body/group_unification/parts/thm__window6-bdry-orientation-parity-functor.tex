@@ -212,6 +212,60 @@ j(\pi)=w_1(\det(\pi_\ast\RR))
 取 \(U=\pi_{1\ast}\RR\)、\(W=\pi_{2\ast}\RR\) 并用 \(w_1(L^{\otimes n})\equiv (n\bmod 2)\,w_1(L)\)（\(\ZZ_2\) 系数）即得所示公式；偶度情形为其直接推论。证毕。
 \end{proof}
 
+\begin{theorem}[多重纤维积的取向障碍奇偶公式]\label{thm:bdry-orientation-iterated-fiberproduct-parity}
+设 \(Y\) 连通，\(\pi_i:\widetilde Y_i\to Y\)（\(1\le i\le r\)）为常度数有限覆叠，次数记为 \(d_i\)，并记其取向局部系统障碍类为
+\[
+j(\pi_i)\in H^1(Y;\ZZ_2).
+\]
+设
+\[
+\Pi:=\widetilde Y_1\times_Y\widetilde Y_2\times_Y\cdots\times_Y\widetilde Y_r\longrightarrow Y
+\]
+为迭代纤维积诱导的覆叠，则有闭式
+\[
+j(\Pi)=\sum_{i=1}^r\Bigl(\prod_{\ell\neq i} d_\ell \bmod 2\Bigr)\,j(\pi_i)
+\qquad\text{于 }H^1(Y;\ZZ_2).
+\]
+特别地：
+\begin{enumerate}
+\normalfont
+  \item 若至少有两个 \(d_i\) 为偶数，则 \(j(\Pi)=0\)；
+  \item 若全部 \(d_i\) 为奇数，则 \(j(\Pi)=\sum_{i=1}^r j(\pi_i)\)；
+  \item 若恰有一个 \(d_k\) 为偶数而其余全为奇数，则 \(j(\Pi)=j(\pi_k)\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对 \(r\) 作归纳。\(r=2\) 即命题 \ref{prop:bdry-orientation-jumpclass-fiberproduct-multiplicativity}。
+设结论对 \(r-1\) 成立，并记
+\[
+\Pi_{r-1}:=\widetilde Y_1\times_Y\cdots\times_Y\widetilde Y_{r-1}\to Y,
+\qquad
+D_{r-1}:=\prod_{i=1}^{r-1}d_i.
+\]
+由归纳假设，
+\[
+j(\Pi_{r-1})
+=
+\sum_{i=1}^{r-1}\Bigl(\prod_{\substack{\ell\neq i\\ \ell\le r-1}} d_\ell \bmod 2\Bigr)\,j(\pi_i).
+\]
+再将
+\(
+\Pi_r=\Pi_{r-1}\times_Y\widetilde Y_r
+\)
+代入命题 \ref{prop:bdry-orientation-jumpclass-fiberproduct-multiplicativity}，得到
+\[
+j(\Pi_r)
+=(d_r\bmod 2)\,j(\Pi_{r-1})+(D_{r-1}\bmod 2)\,j(\pi_r).
+\]
+把归纳表达式代回，并将 \((d_r\bmod 2)\) 吸收入各项系数，即得
+\[
+j(\Pi_r)
+=
+\sum_{i=1}^r\Bigl(\prod_{\ell\neq i} d_\ell \bmod 2\Bigr)\,j(\pi_i).
+\]
+三条特别情形只是对上述闭式逐项作奇偶判定。证毕。
+\end{proof}
+
 \begin{proposition}[笛卡尔积的取向 torsor 分解与指数律]\label{prop:bdry-orientation-cartesian-product-exponent-law}
 对任意有限集合 \(S,T\)，存在关于 \((S,T)\) 双射自然的规范同构
 \[
@@ -230,6 +284,53 @@ j(\pi)=w_1(\det(\pi_\ast\RR))
 \mathrm{Or}_{\det}(V(S))^{\otimes |T|}\otimes \mathrm{Or}_{\det}(V(T))^{\otimes |S|}.
 \]
 再用命题 \ref{prop:bdry-orientation-torsor-determinant-realization-jumpclass} 的自然同构 \(\Phi\) 把 \(\mathrm{Or}\) 与 \(\mathrm{Or}_{\det}\) 识别，即得所示同构。证毕。
+\end{proof}
+
+\begin{theorem}[笛卡尔幂的取向 torsor 幂律与奇偶塌缩]\label{thm:bdry-orientation-cartesian-power-parity-collapse}
+设 \(S\) 为有限集合，\(|S|=d\ge 1\)，记其取向 torsor 为 \(\mathrm{Or}(S)\)。
+则对任意整数 \(r\ge 1\)，存在关于 \(S\) 自然的规范同构
+\[
+\mathrm{Or}(S^{\times r})\ \cong\ \mathrm{Or}(S)^{\otimes\, r d^{r-1}}.
+\]
+因此有完整奇偶分类
+\[
+\mathrm{Or}(S^{\times r})\cong
+\begin{cases}
+\mathbf 1, & d\ \text{为偶且}\ r\ge 2,\\[2pt]
+\mathbf 1, & d\ \text{为奇且}\ r\ \text{为偶},\\[2pt]
+\mathrm{Or}(S), & d\ \text{为奇且}\ r\ \text{为奇},
+\end{cases}
+\]
+其中 \(\mathbf 1\) 表示 \(\mathbf{Tors}(\ZZ_2)\) 的单位对象。
+\end{theorem}
+\begin{proof}
+记 \(a_r\) 为使得
+\[
+\mathrm{Or}(S^{\times r})\cong \mathrm{Or}(S)^{\otimes a_r}
+\]
+成立的整数。
+当 \(r=1\) 时有 \(a_1=1\)。
+由命题 \ref{prop:bdry-orientation-cartesian-product-exponent-law}，
+\[
+\mathrm{Or}(S^{\times(r+1)})
+\cong
+\mathrm{Or}(S^{\times r})^{\otimes d}\otimes \mathrm{Or}(S)^{\otimes d^r}
+\cong
+\mathrm{Or}(S)^{\otimes (d a_r+d^r)}.
+\]
+故 \(a_r\) 满足递推
+\[
+a_{r+1}=d a_r+d^r,\qquad a_1=1.
+\]
+直接验证其闭式解为 \(a_r=r d^{r-1}\)，从而得到所示同构。
+\par
+再看奇偶性。torsor 张量幂只依赖指数模 \(2\)。
+若 \(d\) 为偶，则当 \(r\ge 2\) 时 \(r d^{r-1}\) 为偶数，故 \(\mathrm{Or}(S^{\times r})\cong \mathbf 1\)。
+若 \(d\) 为奇，则 \(d^{r-1}\equiv 1\pmod 2\)，故
+\(
+r d^{r-1}\equiv r\pmod 2
+\)，
+从而得到三分情形。证毕。
 \end{proof}
 
 \begin{proposition}[取向函子的对称单子结构与 Koszul 符号]\label{prop:bdry-orientation-functor-symmetric-monoidal-koszul}
@@ -289,6 +390,63 @@ T_{\mathrm{odd}}:=\{t\in T:\ |S_t|\equiv 1\ (\mathrm{mod}\ 2)\}\subseteq T.
 \mathrm{Or}(S)\cong \mathrm{Or}(T_{\mathrm{odd}})\otimes\bigotimes_{t\in T}\mathrm{Or}(S_t)
 \)。
 证毕。
+\end{proof}
+
+\begin{theorem}[奇块可见性定律与 wreath 跳跃字符的完全公式]\label{thm:bdry-orientation-wreath-character-odd-visibility}
+设有限集合按分块分解为
+\[
+S=\bigsqcup_{t\in T}S_t,
+\qquad
+T_{\mathrm{odd}}:=\{t\in T:\ |S_t|\equiv 1\pmod 2\}.
+\]
+沿用命题 \ref{prop:bdry-orientation-block-decomposition-odd-visibility} 的规范同构
+\[
+\mathrm{Or}(S)\cong \mathrm{Or}(T_{\mathrm{odd}})\otimes \bigotimes_{t\in T}\mathrm{Or}(S_t).
+\]
+设 \(g\in \mathrm{Sym}(S)\) 保持该分块，即 \(g\) 诱导一个分块置换 \(\tau\in \mathrm{Sym}(T)\)，并对每个 \(t\in T\) 诱导双射
+\[
+g_t:\ S_t\xrightarrow{\sim} S_{\tau(t)}.
+\]
+记 \(\varepsilon(g_t)\in\{\pm 1\}\) 为 \(g_t\) 在取向 torsor 上诱导的符号，即在任意标号识别下 \(\mathrm{Or}(g_t)\) 对应于符号 \(\varepsilon(g_t)\)。
+则 \(g\) 在 \(\mathrm{Or}(S)\) 上诱导的字符满足
+\[
+\varepsilon_S(g)
+=
+\mathrm{sgn}\!\bigl(\tau|_{T_{\mathrm{odd}}}\bigr)\cdot
+\prod_{t\in T}\varepsilon(g_t).
+\]
+
+特别地，若所有块大小都相同且等于 \(d\)，并固定一个 \(d\) 元模型块 \(S_d\)，从而把 \(S\) 识别为 \(T\times S_d\)，则对 wreath 乘积元素
+\[
+(\sigma_t)_{t\in T}\rtimes \tau\in \mathrm{Sym}(S_d)\wr \mathrm{Sym}(T)
+\]
+有
+\[
+\varepsilon_S\bigl((\sigma_t)\rtimes \tau\bigr)
+=
+\mathrm{sgn}(\tau)^d\cdot \prod_{t\in T}\mathrm{sgn}(\sigma_t).
+\]
+因而当 \(d\) 为偶数时，顶层置换 \(\tau\) 在取向层面完全不可见；当 \(d\) 为奇数时，顶层置换的奇偶性完整保留。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:bdry-orientation-block-decomposition-odd-visibility}，
+\(\mathrm{Or}(S)\) 分解为奇块标签 torsor 与各块内部取向 torsor 的张量积。
+分块置换 \(\tau\) 对 \(\mathrm{Or}(T_{\mathrm{odd}})\) 的作用正是其在奇块指标集上的符号表示，因此贡献
+\(
+\mathrm{sgn}(\tau|_{T_{\mathrm{odd}}})
+\)。
+另一方面，每个 \(g_t:S_t\to S_{\tau(t)}\) 在取向 torsor 上诱导 \(\varepsilon(g_t)\)；将这些因子张量相乘即得总字符
+\[
+\varepsilon_S(g)
+=
+\mathrm{sgn}\!\bigl(\tau|_{T_{\mathrm{odd}}}\bigr)\cdot
+\prod_{t\in T}\varepsilon(g_t).
+\]
+\par
+当所有块大小都等于 \(d\) 时，若 \(d\) 为偶，则 \(T_{\mathrm{odd}}=\varnothing\)，顶层置换贡献为 \(1\)；
+若 \(d\) 为奇，则 \(T_{\mathrm{odd}}=T\)，顶层置换贡献为 \(\mathrm{sgn}(\tau)\)。
+这恰可统一写成 \(\mathrm{sgn}(\tau)^d\)。
+而此时每个 \(g_t\) 由模型块上的 \(\sigma_t\in \mathrm{Sym}(S_d)\) 表示，其取向字符即 \(\mathrm{sgn}(\sigma_t)\)，从而得到 wreath 情形的公式。证毕。
 \end{proof}
 
 \begin{proposition}[\texorpdfstring{$t$}{t}-子集构形覆叠的取向传递系数]\label{prop:bdry-orientation-tsubset-transfer-binomial}

@@ -1,13 +1,16 @@
 \section{可复现实验：折叠直方图的收敛与 Parry(PF) 基准的定量对照}\label{sec:experiments}
 
-本节给出一条\textbf{可复现}的定量验证路径。需要强调两点口径：
+\input{para__experiments-positioning}
+
+在这一口径下，需要强调两点：
 \begin{itemize}
   \item \textbf{可证的收敛对象：}对给定动力学与读出，折叠后稳定类型直方图 $\hat{\pi}_{m,N}$ 的极限分布应是 $\pi_m^{\mathrm{fold}}=(\Fold_m)_*\mu_m$（定理 \ref{thm:tv-certificate-hist}），其中 $\mu_m$ 是长度-$m$ 微态在真实过程下的极限分布。
   \item \textbf{Parry(PF) 仅作基线：}本文使用黄金均值 SFT 的 Parry 最大熵柱分布 $\pi_m$ 作为“最大熵基准”。一般动力学（例如旋转产生的 Sturmian）下并\emph{不}主张 $\pi_m^{\mathrm{fold}}=\pi_m$；相反，二者差异由可审计的误差分解式控制（推论 \ref{cor:tv-decomposition-parry}）。
 \end{itemize}
 
 \subsection{实验清单与输出规范：复现入口}\label{subsec:experiments-manifest}
-为避免“只给概述而不可核对”，本节所有实验均以脚本固化参数、输出字段与生成物路径。\textbf{每一类实验}均按同一模板组织：\emph{模型/数据流}（对象与采样方式）—\emph{指标}（TV/KL 等）—\emph{证书}（确定性或概率型上界）—\emph{输出切片}（表/图）—\emph{复现性声明}（脚本与导出文件）。
+\input{para__experiments-manifest-positioning}
+
 代表性复现入口包括：
 \begin{itemize}
   \item 旋转扫描 vs.\ Parry 基线：\path{scripts/exp_rotation_fold_vs_parry.py}（导出 \texttt{artifacts/export/rotation\_fold\_vs\_parry.csv}）。
@@ -17,6 +20,7 @@
 \end{itemize}
 
 \subsection{实验模型、数据流与偏差指标}
+\input{para__experiments-models-positioning}
 
 \textbf{模型（旋转扫描）}：取 $X=\TT^1$，$T(x)=x+\alpha\ (\mathrm{mod}\ 1)$，以区间窗 $W=[0,\beta)$ 生成二元读出 $s_t(x)=\ind_W(T^t x)$。给定长度 $m$，形成窗口微态
 \[
@@ -84,10 +88,7 @@ D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m)
 作为“拟合优度”的无量纲量。
 
 \subsection{有限样本证书：可审计}
-
-对旋转扫描模型，一维星差异度 $D_N^*$ 给出区间窗频率误差的上界证书（参见 \cite{KuipersNiederreiter1974}）。对黄金分支 $\alpha=\varphi^{-1}$ 可取显式的 $O((\log N)/N)$ 上界，从而为“共振诱导不稳定性”的有限样本衰减提供统一证书。
-
-上述证书不仅控制单个窗集的频率误差，也可直接转译为\textbf{窗口微态分布}与\textbf{折叠后稳定类型直方图}的总变差误差界。该转译是纯组合/测度论步骤：在旋转二分割模型中，长度-$m$ 微态对应圆周上的 $m+1$ 个区间分割，且仅有 $m+1$ 个因子出现（参见 \cite{MorseHedlund1940,LindMarcus1995}）。
+\input{para__experiments-finite-sample-positioning}
 
 \begin{theorem}[从差异度到直方图：\texorpdfstring{$D_{\mathrm{TV}}$}{TV} 的可审计有限样本界]\label{thm:tv-certificate-hist}
 在旋转二分割模型中，令 $x_t=\{x_0+t\alpha\}$，令 $\hat{\mu}_{m,N}$ 为长度-$m$ 微态的经验分布（对 $t=0,\dots,N-1$ 的窗口计数并归一化），令 $\mu_m$ 为其极限分布（由 Lebesgue 测度诱导）。则对任意 $N\ge 1$，
@@ -134,8 +135,7 @@ D_N^*(\alpha_A;x_0)\le \frac{A}{\log\lambda_A}\frac{\log N}{N}+\frac{3+A}{N}
 \end{proof}
 
 \subsection{Markov 源下的 TV 置信包络：样本预算与 \texorpdfstring{$\kappa_m$}{kappa}-置信条}\label{subsec:markov-tv-envelope}
-上一小节的证书利用旋转模型的差异度结构给出完全确定性的 TV 上界。
-在另一条常用口径下，若把折叠后直方图视为某个有限状态 Markov 过程的经验分布，则可用“伪谱隙（pseudo spectral gap）”把 TV 偏差参数化为一条\textbf{可审计的置信包络}，并由此直接导出实验预算与 \(\kappa_m\) 的置信条。
+\input{para__experiments-markov-tv-positioning}
 
 \begin{definition}[伪谱隙与经验直方图]\label{def:markov-pseudo-gap-hist}
 设 \((Z_t)_{t\ge 0}\) 为有限状态空间 \(S\) 上的不可约遍历 Markov 链，转移核为 \(P\)，平稳分布为 \(\pi\)。
