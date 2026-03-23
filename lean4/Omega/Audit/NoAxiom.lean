@@ -15,6 +15,7 @@ import Omega.Folding.ModularTower
 import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.FibonacciField
+import Omega.Folding.MomentSum
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -316,6 +317,16 @@ Run these commands manually during audit:
   #print axioms Omega.X.continuous_shift
   #print axioms Omega.X.shift_surjective
   #print axioms Omega.X.shift_val
+  -- Round 9: S_2 矩谱基值 (prop:pom-s2-recurrence)
+  #print axioms Omega.cMomentSum
+  #print axioms Omega.cMomentSum_eq
+  #print axioms Omega.momentSum_two_zero
+  #print axioms Omega.momentSum_two_one
+  #print axioms Omega.momentSum_two_two
+  #print axioms Omega.momentSum_two_three
+  #print axioms Omega.momentSum_two_four
+  #print axioms Omega.momentSum_two_five
+  #print axioms Omega.momentSum_two_six
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -617,7 +628,7 @@ def coreAuditTargets : List String :=
   , "Omega.X.fib_component_fusion_gain"
   , "Omega.X.fib_component_fusion_gain_lower"
   , "Omega.X.fib_component_fusion_gain_ge"
-  -- MaxFiber (Plan 8 partial)
+  -- MaxFiber (Plan 8 partial): def:pom-top-fiber-spectrum, thm:pom-max-fiber (partial), cor:pom-D-rec
   , "Omega.X.maxFiberMultiplicity"
   , "Omega.X.maxFiberMultiplicity_achieved"
   , "Omega.X.fiberMultiplicity_le_max"
@@ -644,6 +655,16 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum"
   , "Omega.momentSum_zero"
   , "Omega.momentSum_one"
-  , "Omega.momentSum_le_max_pow" ]
+  , "Omega.momentSum_le_max_pow"
+  -- Round 9: S_2 矩谱基值 (prop:pom-s2-recurrence)
+  , "Omega.cMomentSum"
+  , "Omega.cMomentSum_eq"
+  , "Omega.momentSum_two_zero"
+  , "Omega.momentSum_two_one"
+  , "Omega.momentSum_two_two"
+  , "Omega.momentSum_two_three"
+  , "Omega.momentSum_two_four"
+  , "Omega.momentSum_two_five"
+  , "Omega.momentSum_two_six" ]
 
 end Omega.Audit

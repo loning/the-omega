@@ -77,16 +77,16 @@ private def decNo11 (w : Word m) : Decidable (No11 w) :=
   if h : no11Bool' m w = true then isTrue ((no11Bool'_iff w).mp h)
   else isFalse (fun hNo11 => h ((no11Bool'_iff w).mpr hNo11))
 
-private def fintypeX (m : Nat) : Fintype (X m) :=
+def fintypeX (m : Nat) : Fintype (X m) :=
   @Subtype.fintype _ _ (fun w => decNo11 w) inferInstance
 
-private instance decEqX (m : Nat) : DecidableEq (X m) :=
+instance decEqX (m : Nat) : DecidableEq (X m) :=
   fun a b => decidable_of_iff (a.1 = b.1) Subtype.ext_iff.symm
 
-private def cFiberMult (x : X m) : Nat :=
+def cFiberMult (x : X m) : Nat :=
   (Finset.univ.filter (fun w : Word m => Fold w = x)).card
 
-private theorem cFiberMult_eq (x : X m) : cFiberMult x = X.fiberMultiplicity x := by
+theorem cFiberMult_eq (x : X m) : cFiberMult x = X.fiberMultiplicity x := by
   unfold cFiberMult X.fiberMultiplicity; congr 1; unfold X.fiber; ext w
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
 

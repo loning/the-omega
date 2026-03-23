@@ -33,4 +33,25 @@ theorem momentSum_le_max_pow (q m : Nat) (hq : 1 ≤ q) :
     _ = (X.maxFiberMultiplicity m) ^ (q - 1) * 2 ^ m := by
         rw [X.fiberMultiplicity_sum_eq_pow]
 
+section Computable
+
+/-- Computable version of momentSum using the decidable infrastructure from MaxFiber. -/
+def cMomentSum (q m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).sum (fun x => (cFiberMult x) ^ q)
+
+theorem cMomentSum_eq (q m : Nat) : cMomentSum q m = momentSum q m := by
+  simp only [cMomentSum, momentSum]
+  apply Finset.sum_equiv (Equiv.refl _) (by simp) (fun x _ => by simp [cFiberMult_eq])
+
+end Computable
+
+-- S_2 base values via native_decide
+theorem momentSum_two_zero : momentSum 2 0 = 1 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_two_one : momentSum 2 1 = 2 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_two_two : momentSum 2 2 = 6 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_two_three : momentSum 2 3 = 14 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_two_four : momentSum 2 4 = 36 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_two_five : momentSum 2 5 = 88 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_two_six : momentSum 2 6 = 220 := by rw [← cMomentSum_eq]; native_decide
+
 end Omega

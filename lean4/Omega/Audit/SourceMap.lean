@@ -2047,6 +2047,79 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.MomentSum"
       leanName := "Omega.momentSum_le_max_pow"
       phase := 8
+      status := .formalized }
+  -- Phase 9: S_2 矩谱基值 (Round 9)
+  -- prop:pom-s2-recurrence → cMomentSum 可计算版本 (Omega/Folding/MomentSum.lean:39)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-cMomentSum"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.cMomentSum"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → cMomentSum_eq 桥接 (Omega/Folding/MomentSum.lean:42)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-cMomentSum-eq"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.cMomentSum_eq"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(0)=1 (Omega/Folding/MomentSum.lean:49)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-0"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_zero"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(1)=2 (Omega/Folding/MomentSum.lean:50)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-1"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_one"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(2)=6 (Omega/Folding/MomentSum.lean:51)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-2"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_two"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(3)=14 (Omega/Folding/MomentSum.lean:52)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-3"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_three"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(4)=36 (Omega/Folding/MomentSum.lean:53)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-4"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_four"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(5)=88 (Omega/Folding/MomentSum.lean:54)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-5"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_five"
+      phase := 9
+      status := .formalized }
+  -- prop:pom-s2-recurrence → S_2(6)=220 (Omega/Folding/MomentSum.lean:55)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:pom-s2-recurrence-base-6"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_two_six"
+      phase := 9
       status := .formalized } ]
 
 end Omega.Audit
