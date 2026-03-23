@@ -23,8 +23,10 @@ import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
+import Omega.Folding.BinFold
 import Omega.Folding.BoundaryLayer
 import Omega.Folding.FiberSplit
+import Omega.Folding.HammingDist
 import Omega.Folding.HankelSpectrum
 import Omega.Folding.ModularTower
 import Omega.Folding.Window6

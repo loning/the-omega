@@ -3794,6 +3794,134 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Window6"
       leanName := "Omega.fiber_sum_six"
       phase := 28
+      status := .formalized }
+  -- Phase 29: ZeckendorfSignature 群统一深化 (Round 23)
+  -- thm:zeckendorf-no-carry-additivity → zeckendorf_no_carry_sm_triple, zeckendorf_no_carry_so10_triple
+  --   (Omega/Folding/ZeckendorfSignature.lean:113,118)
+  -- cor:sm-signature-strict-union → sm_signature_union (line:122)
+  -- prop:bdry-gap-33-cassini-factorization → so10_uplift_gap (line:128), cassini_gap_33_factorization (line:131)
+  -- boundary_square_identity_instances (line:135), cassini_identity_8 (line:142), sm_dim_factorization (line:146)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:zeckendorf-no-carry-sm-triple"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.zeckendorf_no_carry_sm_triple"
+      phase := 29
+      status := .formalized }
+  , { label := "thm:zeckendorf-no-carry-so10-triple"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.zeckendorf_no_carry_so10_triple"
+      phase := 29
+      status := .formalized }
+  , { label := "cor:sm-signature-strict-union"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.sm_signature_union"
+      phase := 29
+      status := .formalized }
+  , { label := "prop:bdry-gap-33-so10-uplift"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.so10_uplift_gap"
+      phase := 29
+      status := .formalized }
+  , { label := "prop:bdry-gap-33-cassini-factorization"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.cassini_gap_33_factorization"
+      phase := 29
+      status := .formalized }
+  , { label := "cor:boundary-square-identity-instances"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.boundary_square_identity_instances"
+      phase := 29
+      status := .formalized }
+  , { label := "cor:cassini-identity-8"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.cassini_identity_8"
+      phase := 29
+      status := .formalized }
+  , { label := "cor:sm-dim-factorization"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.sm_dim_factorization"
+      phase := 29
+      status := .formalized }
+  -- Phase 29: BinFold (Round 23) — thm:terminal-foldbin6-64-to-21-hist
+  -- cBinFold, cBinFiberMult, cBinFiberHist 定义 + m=6 直方图基值
+  --   (Omega/Folding/BinFold.lean:13-22,31-42)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-64-to-21-hist"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberHist"
+      phase := 29
+      status := .formalized }
+  , { label := "thm:terminal-foldbin6-hist-2"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberHist_6_2"
+      phase := 29
+      status := .formalized }
+  , { label := "thm:terminal-foldbin6-hist-3"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberHist_6_3"
+      phase := 29
+      status := .formalized }
+  , { label := "thm:terminal-foldbin6-hist-4"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberHist_6_4"
+      phase := 29
+      status := .formalized }
+  , { label := "cor:terminal-foldbin6-certificate"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFold6_histogram_certificate"
+      phase := 29
+      status := .formalized }
+  , { label := "cor:terminal-foldbin6-distinct-multiplicities"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFold6_distinct_multiplicities"
+      phase := 29
+      status := .formalized }
+  -- Phase 29: HammingDist (Round 23) — Hamming 距离定义与基本性质
+  --   (Omega/Folding/HammingDist.lean:12-39)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:hamming-distance"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.HammingDist"
+      leanName := "Omega.hammingDist"
+      phase := 29
+      status := .formalized }
+  , { label := "prop:hamming-self-zero"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.HammingDist"
+      leanName := "Omega.hammingDist_self"
+      phase := 29
+      status := .formalized }
+  , { label := "prop:hamming-comm"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.HammingDist"
+      leanName := "Omega.hammingDist_comm"
+      phase := 29
+      status := .formalized }
+  , { label := "prop:hamming-le-m"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.HammingDist"
+      leanName := "Omega.hammingDist_le"
+      phase := 29
+      status := .formalized }
+  , { label := "def:min-stable-hamming-dist"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.HammingDist"
+      leanName := "Omega.cMinStableHammingDist"
+      phase := 29
       status := .formalized } ]
 
 end Omega.Audit

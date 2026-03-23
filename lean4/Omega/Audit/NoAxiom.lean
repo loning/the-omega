@@ -530,6 +530,31 @@ Run these commands manually during audit:
   #print axioms Omega.momentSum_three_mono_verified
   #print axioms Omega.momentSum_two_mono_of_recurrence
   #print axioms Omega.momentSum_three_mono_of_recurrence
+  -- Round 23: ZeckendorfSignature 群统一深化
+  #print axioms Omega.ZeckSig.zeckendorf_no_carry_sm_triple
+  #print axioms Omega.ZeckSig.zeckendorf_no_carry_so10_triple
+  #print axioms Omega.ZeckSig.sm_signature_union
+  #print axioms Omega.ZeckSig.so10_uplift_gap
+  #print axioms Omega.ZeckSig.cassini_gap_33_factorization
+  #print axioms Omega.ZeckSig.boundary_square_identity_instances
+  #print axioms Omega.ZeckSig.cassini_identity_8
+  #print axioms Omega.ZeckSig.sm_dim_factorization
+  -- Round 23: BinFold — thm:terminal-foldbin6-64-to-21-hist
+  #print axioms Omega.cBinFiberHist_6_0
+  #print axioms Omega.cBinFiberHist_6_1
+  #print axioms Omega.cBinFiberHist_6_2
+  #print axioms Omega.cBinFiberHist_6_3
+  #print axioms Omega.cBinFiberHist_6_4
+  #print axioms Omega.binFold6_histogram_certificate
+  #print axioms Omega.binFold6_distinct_multiplicities
+  #print axioms Omega.binFold6_sum_check
+  -- Round 23: HammingDist — Hamming 距离定义与基本性质
+  #print axioms Omega.hammingDist_self
+  #print axioms Omega.hammingDist_comm
+  #print axioms Omega.hammingDist_le
+  #print axioms Omega.cMinStableHammingDist_two
+  #print axioms Omega.cMinStableHammingDist_three
+  #print axioms Omega.cMinStableHammingDist_four
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1083,6 +1108,31 @@ def coreAuditTargets : List String :=
   , "Omega.ZeckSig.fib_9_val"
   , "Omega.ZeckSig.fib_10_val"
   , "Omega.ZeckSig.fib_11_val"
-  , "Omega.ZeckSig.fib_13_val" ]
+  , "Omega.ZeckSig.fib_13_val"
+  -- Round 23: ZeckendorfSignature 群统一深化 (Phase 29)
+  , "Omega.ZeckSig.zeckendorf_no_carry_sm_triple"
+  , "Omega.ZeckSig.zeckendorf_no_carry_so10_triple"
+  , "Omega.ZeckSig.sm_signature_union"
+  , "Omega.ZeckSig.so10_uplift_gap"
+  , "Omega.ZeckSig.cassini_gap_33_factorization"
+  , "Omega.ZeckSig.boundary_square_identity_instances"
+  , "Omega.ZeckSig.cassini_identity_8"
+  , "Omega.ZeckSig.sm_dim_factorization"
+  -- Round 23: BinFold — thm:terminal-foldbin6-64-to-21-hist (Phase 29)
+  , "Omega.cBinFiberHist_6_0"
+  , "Omega.cBinFiberHist_6_1"
+  , "Omega.cBinFiberHist_6_2"
+  , "Omega.cBinFiberHist_6_3"
+  , "Omega.cBinFiberHist_6_4"
+  , "Omega.binFold6_histogram_certificate"
+  , "Omega.binFold6_distinct_multiplicities"
+  , "Omega.binFold6_sum_check"
+  -- Round 23: HammingDist — Hamming 距离定义与基本性质 (Phase 29)
+  , "Omega.hammingDist_self"
+  , "Omega.hammingDist_comm"
+  , "Omega.hammingDist_le"
+  , "Omega.cMinStableHammingDist_two"
+  , "Omega.cMinStableHammingDist_three"
+  , "Omega.cMinStableHammingDist_four" ]
 
 end Omega.Audit
