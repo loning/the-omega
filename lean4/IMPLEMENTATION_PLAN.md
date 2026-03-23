@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,192 |
-| 定理/定义数 | 1,060 |
+| 总行数 | ~12,222 |
+| 定理/定义数 | 1,064 |
 | 论文接口包装 | 312 |
-| 文件数 | 30 |
+| 文件数 | 31 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower) | 14 | ~308 | 97% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 15 | ~312 | 97% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -37,6 +37,7 @@
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
+**shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
 ## 2. 论文总覆盖率分析
@@ -87,7 +88,7 @@
 ### Phase D：Sofic 与动力系统（计划 19-22）
 
 19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1
-20. **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵
+20. **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23）
 21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 
@@ -117,7 +118,7 @@
 4. 计划 1（Zeckendorf 唯一性）
 5. 计划 5（Fibonacci 整除性）
 6. 计划 13（条件期望型表达）
-7. 计划 20（拓扑熵 = log φ）
+7. 计划 20（拓扑熵 = log φ；shift 前置已完成，可直接推进）
 
 ### 中期目标（需要新基础设施）
 

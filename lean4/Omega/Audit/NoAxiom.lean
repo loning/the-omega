@@ -13,6 +13,7 @@ import Omega.Frontier.Conditional
 import Omega.Folding.CarryDefect
 import Omega.Folding.ModularTower
 import Omega.Folding.InverseLimitTopology
+import Omega.Folding.ShiftDynamics
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -309,6 +310,11 @@ Run these commands manually during audit:
   #print axioms Omega.X.instMetricSpaceXInfinity
   #print axioms Omega.X.instInhabitedXInfinity
   #print axioms Omega.X.instInfiniteXInfinity
+  -- ShiftDynamics (Plan 20前置): cor:pom-shift-conjugacy-on-godel-image + sofic shift 动力系统基础
+  #print axioms Omega.X.shift
+  #print axioms Omega.X.continuous_shift
+  #print axioms Omega.X.shift_surjective
+  #print axioms Omega.X.shift_val
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -619,6 +625,11 @@ def coreAuditTargets : List String :=
   , "Omega.X.isClosed_no11Inf"
   , "Omega.X.instMetricSpaceXInfinity"
   , "Omega.X.instInhabitedXInfinity"
-  , "Omega.X.instInfiniteXInfinity" ]
+  , "Omega.X.instInfiniteXInfinity"
+  -- ShiftDynamics (Plan 20前置): shift 映射基础
+  , "Omega.X.shift"
+  , "Omega.X.continuous_shift"
+  , "Omega.X.shift_surjective"
+  , "Omega.X.shift_val" ]
 
 end Omega.Audit

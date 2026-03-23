@@ -1914,6 +1914,43 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.InverseLimitTopology"
       leanName := "Omega.X.Infinite XInfinity"
       phase := 23
+      status := .formalized }
+  -- Phase 20前置: Shift 动力系统基础
+  -- cor:pom-shift-conjugacy-on-godel-image (shift 定义)
+  --   → shift (Omega/Folding/ShiftDynamics.lean:7)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "cor:pom-shift-conjugacy-on-godel-image"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift"
+      phase := 20
+      status := .formalized }
+  -- sofic shift 动力系统基础：shift 连续性
+  --   → continuous_shift (Omega/Folding/ShiftDynamics.lean:11)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:shift-continuous"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.continuous_shift"
+      phase := 20
+      status := .formalized }
+  -- sofic shift 动力系统基础：shift 满射性
+  --   → shift_surjective (Omega/Folding/ShiftDynamics.lean:17)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "prop:shift-surjective"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_surjective"
+      phase := 20
+      status := .formalized }
+  -- sofic shift 动力系统基础：坐标展开引理
+  --   → shift_val (Omega/Folding/ShiftDynamics.lean:31)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "lem:shift-val"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.ShiftDynamics"
+      leanName := "Omega.X.shift_val"
+      phase := 20
       status := .formalized } ]
 
 end Omega.Audit
