@@ -371,6 +371,25 @@ Run these commands manually during audit:
   #print axioms Omega.card_X_recurrence
   #print axioms Omega.card_X_ratio_bounds
   #print axioms Omega.card_X_eq_matrix_sum
+  -- Plan 6: FiberRing — CommRing 实例 + 环同构 X m ≃+* ZMod(F_{m+2})
+  #print axioms Omega.X.stableMul_one_left_univ
+  #print axioms Omega.X.stableMul_one_right_univ
+  #print axioms Omega.X.instCommRing
+  #print axioms Omega.X.ring_add_eq
+  #print axioms Omega.X.ring_mul_eq
+  #print axioms Omega.X.ring_zero_eq
+  #print axioms Omega.X.ring_one_eq
+  #print axioms Omega.X.ring_neg_eq
+  #print axioms Omega.X.instNeZeroFib
+  #print axioms Omega.X.toZMod
+  #print axioms Omega.X.toZMod_add
+  #print axioms Omega.X.toZMod_mul
+  #print axioms Omega.X.toZMod_zero
+  #print axioms Omega.X.toZMod_one
+  #print axioms Omega.X.stableValueRingHom
+  #print axioms Omega.X.toZMod_injective
+  #print axioms Omega.X.toZMod_surjective
+  #print axioms Omega.X.stableValueRingEquiv
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -725,6 +744,25 @@ def coreAuditTargets : List String :=
   , "Omega.maxFiberMultiplicity_nine"
   , "Omega.maxFiberMultiplicity_even"
   , "Omega.maxFiberMultiplicity_odd"
-  , "Omega.maxFiberMultiplicity_le_add" ]
+  , "Omega.maxFiberMultiplicity_le_add"
+  -- Plan 6: FiberRing — CommRing + 环同构 X m ≃+* ZMod(F_{m+2})
+  , "Omega.X.stableMul_one_left_univ"
+  , "Omega.X.stableMul_one_right_univ"
+  , "Omega.X.instCommRing"
+  , "Omega.X.ring_add_eq"
+  , "Omega.X.ring_mul_eq"
+  , "Omega.X.ring_zero_eq"
+  , "Omega.X.ring_one_eq"
+  , "Omega.X.ring_neg_eq"
+  , "Omega.X.instNeZeroFib"
+  , "Omega.X.toZMod"
+  , "Omega.X.toZMod_add"
+  , "Omega.X.toZMod_mul"
+  , "Omega.X.toZMod_zero"
+  , "Omega.X.toZMod_one"
+  , "Omega.X.stableValueRingHom"
+  , "Omega.X.toZMod_injective"
+  , "Omega.X.toZMod_surjective"
+  , "Omega.X.stableValueRingEquiv" ]
 
 end Omega.Audit

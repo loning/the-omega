@@ -2503,6 +2503,144 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.maxFiberMultiplicity_le_add"
       phase := 17
       status := .formalized }
+  -- Phase 6: FiberRing — CommRing + 环同构 X m ≃+* ZMod(F_{m+2}) (Plan 6)
+  -- thm:finite-resolution-mod → stableMul_one_left_univ (FiberRing.lean:13)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-mul-one-left"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.stableMul_one_left_univ"
+      phase := 6
+      status := .formalized }
+  -- thm:finite-resolution-mod → stableMul_one_right_univ (FiberRing.lean:22)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-mul-one-right"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.stableMul_one_right_univ"
+      phase := 6
+      status := .formalized }
+  -- thm:finite-resolution-mod → instCommRing : CommRing (X m) (FiberRing.lean:34)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-commring"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instCommRing"
+      phase := 6
+      status := .formalized }
+  -- 定义等式 ring_add/mul/zero/one/neg_eq (FiberRing.lean:52-64)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:fiber-ring-add-eq"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.ring_add_eq"
+      phase := 6
+      status := .formalized }
+  , { label := "def:fiber-ring-mul-eq"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.ring_mul_eq"
+      phase := 6
+      status := .formalized }
+  , { label := "def:fiber-ring-zero-eq"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.ring_zero_eq"
+      phase := 6
+      status := .formalized }
+  , { label := "def:fiber-ring-one-eq"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.ring_one_eq"
+      phase := 6
+      status := .formalized }
+  , { label := "def:fiber-ring-neg-eq"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.ring_neg_eq"
+      phase := 6
+      status := .formalized }
+  -- 环同构 Phase: instNeZeroFib (FiberRing.lean:69)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "inst:fiber-ne-zero-fib"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.instNeZeroFib"
+      phase := 6
+      status := .formalized }
+  -- 环同构: toZMod 定义 (FiberRing.lean:73)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:fiber-to-zmod"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod"
+      phase := 6
+      status := .formalized }
+  -- 环同构: toZMod_add (FiberRing.lean:77)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:fiber-to-zmod-add"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod_add"
+      phase := 6
+      status := .formalized }
+  -- 环同构: toZMod_mul (FiberRing.lean:81)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:fiber-to-zmod-mul"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod_mul"
+      phase := 6
+      status := .formalized }
+  -- 环同构: toZMod_zero (FiberRing.lean:85)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:fiber-to-zmod-zero"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod_zero"
+      phase := 6
+      status := .formalized }
+  -- 环同构: toZMod_one (FiberRing.lean:89)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:fiber-to-zmod-one"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod_one"
+      phase := 6
+      status := .formalized }
+  -- thm:finite-resolution-mod → stableValueRingHom (FiberRing.lean:115)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-ringhom"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.stableValueRingHom"
+      phase := 6
+      status := .formalized }
+  -- thm:finite-resolution-mod → toZMod_injective (FiberRing.lean:123)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-injective"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod_injective"
+      phase := 6
+      status := .formalized }
+  -- thm:finite-resolution-mod → toZMod_surjective (FiberRing.lean:134)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-surjective"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.toZMod_surjective"
+      phase := 6
+      status := .formalized }
+  -- thm:finite-resolution-mod + cor:field-phase-fib-prime (前提)
+  --   → stableValueRingEquiv : X m ≃+* ZMod(F_{m+2}) (FiberRing.lean:139)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "thm:finite-resolution-mod-ringequiv"
+      sourcePath := "sections/body/arithmetic/sec__emergent-stable-arithmetic.tex"
+      moduleName := "Omega.Folding.FiberRing"
+      leanName := "Omega.X.stableValueRingEquiv"
+      phase := 6
+      status := .formalized }
   -- Phase 20: 离散骨架 (cor:folding-stable-syntax-entropy-logqdim, Stage 1)
   -- goldenMeanAdjacency_pow_add_two → 矩阵 Fibonacci 递推 A^(m+2)=A^(m+1)+A^m
   --   (Omega/Graph/TransferMatrix.lean:39)

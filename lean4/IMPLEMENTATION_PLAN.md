@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,116 |
-| 定理/定义数 | 1,136 |
+| 总行数 | ~13,259 |
+| 定理/定义数 | 1,154 |
 | 论文接口包装 | 312 |
 | 文件数 | 35 |
 | 公理数 | 0 |
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 19 | ~352 | 99% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 20 | ~370 | 99% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -26,7 +26,7 @@
 ### 1.3 已完成的核心数学结果
 
 **离散内核**：Word, No11, X_m, Fold, Rewrite 完整闭环
-**值与算术**：stableValue 双射 X_m ↔ Fin(F_{m+2}), 完整交换环 (ℤ/F_{m+2}ℤ)
+**值与算术**：stableValue 双射 X_m ↔ Fin(F_{m+2}), 完整交换环 (ℤ/F_{m+2}ℤ), 环同构 X_m ≃+* ZMod(F_{m+2})
 **SPG 扫描误差**：离散 + 测度双版本, Bayes 半界, 观测细化单调性, 补对称性
 **fiber 结构**：分割和 = 2^m, multiplicity, 不相交性
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
@@ -55,13 +55,13 @@
 |---|---|---|---|---|
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
-| 新生算术 | 21 | 13 | 62% | 高 |
+| 新生算术 | 21 | 15 | 71% | 高 |
 | POM | 106 | 60 | 57% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~102** | **~26%** | - |
+| **总计** | **394** | **~104** | **~26%** | - |
 
 注：论文包含 394 个独立定理/命题/推论。当前 ~1100 个 Lean 定理中，约 312 个是论文接口包装，约 60 个直接对应论文中的编号定理。
 
@@ -74,7 +74,7 @@
 3. ✅ **carry defect 完整定理**：证明 `restrict(x ⊕_{m+1} y) = restrict(x) ⊕_m restrict(y) ⊕_m κ·χ^car` 的完整形式（含进位情况）
 4. ✅ **modular 映射塔**：构造 `X (m+1) → X m` 上的环同态链（modularProject–restrict 等价、进位缺陷、乘法值恒等式、塔相容性、传递性、零保持、满射）
 5. **Fibonacci 整除性**：证明 `F_m | F_{nm}` (Fibonacci 整除定理)
-6. **稳定类型同构的范畴化**：将 `stableValue` 升级为环同构证书
+6. ✅ **稳定类型同构的范畴化**：`instCommRing`（CommRing (X m) 实例）; `stableValueRingHom`（X m →+* ZMod(F_{m+2}) 环同态）; `toZMod_injective/surjective`（双射）; `stableValueRingEquiv : X m ≃+* ZMod(F_{m+2})`（完整环同构，thm:finite-resolution-mod + cor:field-phase-fib-prime 前提）
 
 ### Phase B：POM 纤维谱（计划 7-12）
 
