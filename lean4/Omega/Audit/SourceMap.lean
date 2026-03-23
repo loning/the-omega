@@ -2162,6 +2162,73 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.CollisionKernel"
       leanName := "Omega.momentSum_two_recurrence_verified"
       phase := 15
+      status := .formalized }
+  -- Phase 11: FibonacciPolynomial
+  -- def:pom-fibonacci-polynomial → fibPoly (FibonacciPolynomial.lean:9)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-fibonacci-polynomial"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly"
+      phase := 11
+      status := .formalized }
+  -- def:pom-fibonacci-polynomial → fibPoly_zero/one/succ_succ simp lemmas (FibonacciPolynomial.lean:14-17)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-fibonacci-polynomial-simp-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_zero"
+      phase := 11
+      status := .formalized }
+  , { label := "def:pom-fibonacci-polynomial-simp-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_one"
+      phase := 11
+      status := .formalized }
+  , { label := "def:pom-fibonacci-polynomial-simp-succ"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_succ_succ"
+      phase := 11
+      status := .formalized }
+  -- def:pom-fibonacci-polynomial → fibPoly_eval_one: F_n(1)=fib(n) (FibonacciPolynomial.lean:20)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-fibonacci-polynomial-eval-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_eval_one"
+      phase := 11
+      status := .formalized }
+  -- def:pom-fibonacci-polynomial → fibPoly_two/three: 具体值 (FibonacciPolynomial.lean:37-39)
+  --   状态: 已形式化, 审核通过 2026-03-23
+  , { label := "def:pom-fibonacci-polynomial-two"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_two"
+      phase := 11
+      status := .formalized }
+  , { label := "def:pom-fibonacci-polynomial-three"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.fibPoly_three"
+      phase := 11
+      status := .formalized }
+  -- thm:pom-path-indset-poly-closed (部分) → pathIndSetPoly: I_ℓ=F_{ℓ+2} (FibonacciPolynomial.lean:30)
+  --   状态: 已形式化, 审核通过 2026-03-23（缺闭式系数公式留后续）
+  , { label := "thm:pom-path-indset-poly-closed-def"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.pathIndSetPoly"
+      phase := 11
+      status := .formalized }
+  -- thm:pom-path-indset-poly-closed (部分) → pathIndSetPoly_eval_one: I_ℓ(1)=fib(ℓ+2) (FibonacciPolynomial.lean:33)
+  --   状态: 已形式化, 审核通过 2026-03-23（缺闭式系数公式留后续）
+  , { label := "thm:pom-path-indset-poly-closed-eval-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FibonacciPolynomial"
+      leanName := "Omega.pathIndSetPoly_eval_one"
+      phase := 11
       status := .formalized } ]
 
 end Omega.Audit

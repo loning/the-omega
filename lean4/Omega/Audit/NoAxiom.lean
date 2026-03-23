@@ -17,6 +17,7 @@ import Omega.Folding.ShiftDynamics
 import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
 import Omega.Folding.CollisionKernel
+import Omega.Folding.FibonacciPolynomial
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -334,6 +335,11 @@ Run these commands manually during audit:
   #print axioms Omega.collisionKernel2_det
   #print axioms Omega.collisionKernel2_cayley_hamilton
   #print axioms Omega.momentSum_two_recurrence_verified
+  -- Round 11: Fibonacci 多项式 (def:pom-fibonacci-polynomial, thm:pom-path-indset-poly-closed 部分)
+  #print axioms Omega.fibPoly
+  #print axioms Omega.fibPoly_eval_one
+  #print axioms Omega.pathIndSetPoly
+  #print axioms Omega.pathIndSetPoly_eval_one
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -672,6 +678,11 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_three"
   , "Omega.momentSum_two_four"
   , "Omega.momentSum_two_five"
-  , "Omega.momentSum_two_six" ]
+  , "Omega.momentSum_two_six"
+  -- Round 11: Fibonacci 多项式 (def:pom-fibonacci-polynomial, thm:pom-path-indset-poly-closed 部分)
+  , "Omega.fibPoly"
+  , "Omega.fibPoly_eval_one"
+  , "Omega.pathIndSetPoly"
+  , "Omega.pathIndSetPoly_eval_one" ]
 
 end Omega.Audit

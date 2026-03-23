@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~12,426 |
-| 定理/定义数 | 1,090 |
+| 总行数 | ~12,467 |
+| 定理/定义数 | 1,100 |
 | 论文接口包装 | 312 |
-| 文件数 | 34 |
+| 文件数 | 35 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -17,7 +17,7 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~22 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics) | 18 | ~328 | 97% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FibonacciField, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 19 | ~338 | 97% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
@@ -36,6 +36,7 @@
 **矩谱（Round 8）**：momentSum（S_q(m) 定义）; momentSum_zero（S_0=F_{m+1}）; momentSum_one（S_1=2^m）; momentSum_le_max_pow（S_q ≤ D_m^{q-1}·2^m）; paperFib_le_pow（F_{m+1} ≤ 2^m 增长上界）
 **矩谱 S_2 基值（Round 9）**：cMomentSum（S_q 可计算版本）; cMomentSum_eq（可计算=noncomputable 桥接）; momentSum_two_zero..six（S_2(m) 基值 m=0..6，native_decide 验证）
 **碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
+**Fibonacci 多项式（Round 11）**：fibPoly（Fibonacci 多项式 F_n(x) 定义，递推 F_{n+2}=F_{n+1}+x·F_n）; fibPoly_zero/one/succ_succ（simp 引理）; fibPoly_eval_one（F_n(1)=fib(n)）; fibPoly_two/three（具体值）; pathIndSetPoly（路径独立集多项式 I_ℓ(x)=F_{ℓ+2}(x) 定义）; pathIndSetPoly_eval_one（I_ℓ(1)=fib(ℓ+2)）；闭式系数公式留后续（def:pom-fibonacci-polynomial 完整，thm:pom-path-indset-poly-closed 部分）
 **Fibonacci 素数域（部分）**：stableMul_inv_of_prime（素数时乘法逆存在，域结构核心）; paperFib_three/four/six/twelve_prime（native_decide 验证）; paperFib_eight_not_prime（反例验证）
 **sofic 表示**：golden-mean graph ↔ No11 完整等价
 **转移矩阵特征多项式**：邻接矩阵 A=[[1,1],[1,0]] 定义，条目验证，Cayley-Hamilton A²=A+I，tr(A)=1，det(A)=-1
@@ -51,14 +52,14 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 13 | 62% | 高 |
-| POM | 106 | 35 | 33% | 极高 |
+| POM | 106 | 37 | 35% | 极高 |
 | 群统一 | 26 | 2 | 8% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~77** | **~20%** | - |
+| **总计** | **394** | **~79** | **~20%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1050 个 Lean 定理中，约 312 个是论文接口包装，约 58 个直接对应论文中的编号定理。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1100 个 Lean 定理中，约 312 个是论文接口包装，约 60 个直接对应论文中的编号定理。
 
 ## 3. 未来工作：30 条具体计划
 
