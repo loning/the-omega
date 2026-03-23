@@ -23,9 +23,12 @@ import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
+import Omega.Folding.BoundaryLayer
 import Omega.Folding.FiberSplit
 import Omega.Folding.HankelSpectrum
 import Omega.Folding.ModularTower
+import Omega.Folding.Window6
+import Omega.Folding.ZeckendorfSignature
 import Omega.Graph.LabeledGraph
 import Omega.Graph.Sofic
 import Omega.Graph.TransferMatrix

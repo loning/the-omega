@@ -240,14 +240,14 @@ theorem maxFiberMultiplicity_odd_of_two_step
     maxFiberMultiplicity (2 * k + 1) = 2 * Nat.fib (k + 1) :=
   maxFiberMultiplicity_odd_aux two_step k k hk (le_refl k)
 
-private theorem snoc_truncate_last {m : Nat} (w : Word (m + 1)) :
+theorem snoc_truncate_last {m : Nat} (w : Word (m + 1)) :
     snoc (truncate w) (w ⟨m, Nat.lt_succ_self m⟩) = w := by
   funext i; by_cases h : i.1 < m
   · simp [snoc, truncate, h]
   · have : i = ⟨m, Nat.lt_succ_self m⟩ := Fin.ext (Nat.eq_of_lt_succ_of_not_lt i.isLt h)
     subst this; simp [snoc, h]
 
-private theorem weight_lt_fib {m : Nat} (w : Word m) : weight w < Nat.fib (m + 3) := by
+theorem weight_lt_fib {m : Nat} (w : Word m) : weight w < Nat.fib (m + 3) := by
   induction m with
   | zero => simp [weight]
   | succ m ih =>
@@ -272,7 +272,7 @@ private theorem weight_expand {m : Nat} (w : Word (m + 2)) (hLast : w ⟨m + 1, 
     simp [truncate]
   rw [h1, h2, h3]
 
-private theorem ofNat_add_fib {m : Nat} (k : Nat) (hk : m + 2 ≤ k)
+theorem ofNat_add_fib {m : Nat} (k : Nat) (hk : m + 2 ≤ k)
     (n : Nat) (hn : n < Nat.fib (k + 1)) : X.ofNat m (n + Nat.fib (k + 1)) = X.ofNat m n := by
   apply Subtype.ext; funext j
   simp only [X.ofNat, X.ofIndices, X.wordOfIndices]; congr 1; apply propext

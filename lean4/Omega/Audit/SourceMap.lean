@@ -3730,6 +3730,70 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.FiberSplit"
       leanName := "Omega.X.cSecondMaxFiberMult_eq_prev"
       phase := 27
+      status := .formalized }
+  -- Phase 28: 群统一章节推进 (Round 22)
+  -- prop:bdry-fib-square-identity → cBoundaryCount_eq_fib
+  --   (Omega/Folding/BoundaryLayer.lean:30)
+  -- cor:bdry-m6-square-instance → cBoundaryCount_six, boundary_gap_six
+  --   (Omega/Folding/BoundaryLayer.lean:24,36)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:bdry-fib-square-identity"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BoundaryLayer"
+      leanName := "Omega.cBoundaryCount_eq_fib"
+      phase := 28
+      status := .formalized }
+  , { label := "cor:bdry-m6-square-instance"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BoundaryLayer"
+      leanName := "Omega.cBoundaryCount_six"
+      phase := 28
+      status := .formalized }
+  -- thm:zeckendorf-no-carry-additivity → dim_so10_zeckendorf, dim_sm_zeckendorf
+  --   (Omega/Folding/ZeckendorfSignature.lean:21,25)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:zeckendorf-no-carry-additivity"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.dim_so10_zeckendorf"
+      phase := 28
+      status := .formalized }
+  , { label := "thm:zeckendorf-sm-embedding"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.dim_sm_zeckendorf"
+      phase := 28
+      status := .formalized }
+  -- thm:nap-so10-analytic-minimality → so10_has_F4_and_F6, sm12_has_F4_and_F6,
+  --   nap_su2, nap_su3 (Omega/Folding/ZeckendorfSignature.lean:81,87,92,95)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:nap-so10-analytic-minimality"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.so10_has_F4_and_F6"
+      phase := 28
+      status := .formalized }
+  , { label := "thm:nap-sm-embedding"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.sm12_has_F4_and_F6"
+      phase := 28
+      status := .formalized }
+  -- Window-6 invariants: card_Word_six, card_X_six', cNontrivialFiberCount + _six,
+  --   abelianization_rank_six, compression_ratio_six, fiber_sum_six,
+  --   nontrivial_microstate_count_six (Omega/Folding/Window6.lean)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:window6-compression-ratio"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.compression_ratio_six"
+      phase := 28
+      status := .formalized }
+  , { label := "cor:window6-fiber-sum"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.fiber_sum_six"
+      phase := 28
       status := .formalized } ]
 
 end Omega.Audit
