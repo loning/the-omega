@@ -484,6 +484,23 @@ Run these commands manually during audit:
   #print axioms Omega.X.lucasNum_succ_succ
   #print axioms Omega.X.lucasNum_eq_fib
   #print axioms Omega.X.goldenMeanAdjacency_pow_trace
+  -- Phase 22: FiberSpectrum — 纤维直方图定义与基值
+  #print axioms Omega.cFiberHist
+  #print axioms Omega.cFiberHist_4_1
+  #print axioms Omega.cFiberHist_4_2
+  #print axioms Omega.cFiberHist_4_3
+  #print axioms Omega.cFiberHist_6_1
+  #print axioms Omega.cFiberHist_6_2
+  #print axioms Omega.cFiberHist_6_3
+  #print axioms Omega.cFiberHist_6_4
+  #print axioms Omega.cFiberHist_6_5
+  -- Phase 22: TransferMatrix — 路径计数 Fibonacci 等式
+  #print axioms Omega.Graph.goldenMean_path_count_from_true
+  #print axioms Omega.Graph.goldenMean_total_paths
+  -- Phase 22: InverseLimitTopology — 位差异→序列不同
+  #print axioms Omega.X.ne_of_bit_ne
+  -- Phase 22: ConditionalSummary — No11 词计数
+  #print axioms Omega.Frontier.no11_count
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

@@ -132,4 +132,21 @@ theorem fib_cassini (n : Nat) (hn : 1 ≤ n) :
   -- Goal: ↑(F_{m+2}) * ↑(F_m) - ↑(F_{m+1})^2 = (-1)^(m+1)
   rw [sq]; exact hDet
 
+/-- Row 1 sum of A^m: paths starting from state 1. -/
+theorem goldenMean_path_count_from_true (m : Nat) :
+    (goldenMeanAdjacency ^ m) 1 0 + (goldenMeanAdjacency ^ m) 1 1 =
+      (Nat.fib (m + 1) : ℤ) := by
+  cases m with
+  | zero => native_decide
+  | succ m =>
+    rw [goldenMeanAdjacency_pow_10, goldenMeanAdjacency_pow_11, ← Nat.cast_add]
+    congr 1; exact (Omega.fib_succ_succ' m).symm
+
+/-- Total paths of length m in the golden-mean shift. -/
+theorem goldenMean_total_paths (m : Nat) :
+    (goldenMeanAdjacency ^ m) 0 0 + (goldenMeanAdjacency ^ m) 0 1 +
+    ((goldenMeanAdjacency ^ m) 1 0 + (goldenMeanAdjacency ^ m) 1 1) =
+      (Nat.fib (m + 2) + Nat.fib (m + 1) : ℤ) := by
+  rw [goldenMeanAdjacency_row_sum, goldenMean_path_count_from_true, ← Nat.cast_add]
+
 end Omega.Graph

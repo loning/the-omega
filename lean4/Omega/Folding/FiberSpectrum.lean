@@ -47,6 +47,22 @@ theorem cMaxFiberAchievers_le_univ (m : Nat) :
     cMaxFiberAchievers m ≤ (@Finset.univ (X m) (fintypeX m)).card := by
   exact Finset.card_filter_le _ _
 
+/-- Fiber histogram: number of stable words with fiber multiplicity exactly k. -/
+def cFiberHist (m k : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x = k) |>.card
+
+-- m=4 histogram: multiplicities 1,2,3 have counts 2,4,2
+theorem cFiberHist_4_1 : cFiberHist 4 1 = 2 := by native_decide
+theorem cFiberHist_4_2 : cFiberHist 4 2 = 4 := by native_decide
+theorem cFiberHist_4_3 : cFiberHist 4 3 = 2 := by native_decide
+
+-- m=6 histogram: multiplicities 1..5 have counts 2,4,8,5,2
+theorem cFiberHist_6_1 : cFiberHist 6 1 = 2 := by native_decide
+theorem cFiberHist_6_2 : cFiberHist 6 2 = 4 := by native_decide
+theorem cFiberHist_6_3 : cFiberHist 6 3 = 8 := by native_decide
+theorem cFiberHist_6_4 : cFiberHist 6 4 = 5 := by native_decide
+theorem cFiberHist_6_5 : cFiberHist 6 5 = 2 := by native_decide
+
 end Computable
 
 namespace X

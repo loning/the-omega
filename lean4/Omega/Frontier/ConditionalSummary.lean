@@ -676,6 +676,9 @@ theorem max_fiber_prob_bounds (m : Nat) :
   ⟨max_fiber_ge_one m, max_fiber_le_pow m⟩
 
 
+/-- The number of No11 words of length m equals F_{m+2}. -/
+theorem no11_count (m : Nat) : Fintype.card (X m) = Nat.fib (m + 2) := X.card_eq_fib m
+
 end
 
 end Omega.Frontier

@@ -41,4 +41,8 @@ instance : Infinite XInfinity := by
   have := congr_arg (fun x : XInfinity => x.1 (2 * a)) h
   simp at this; omega
 
+/-- Two infinite sequences differing at any bit are distinct. -/
+theorem ne_of_bit_ne (a b : XInfinity) (n : Nat) (h : a.1 n ≠ b.1 n) : a ≠ b :=
+  fun hab => h (congrArg (fun x => x.1 n) hab)
+
 end Omega.X

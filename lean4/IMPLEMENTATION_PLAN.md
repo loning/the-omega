@@ -6,9 +6,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~13,685 |
-| 定理/定义数 | 1,248 |
-| 论文接口包装 | 338 |
+| 总行数 | ~13,720 |
+| 定理/定义数 | 1,263 |
+| 论文接口包装 | 340 |
 | 文件数 | 36 |
 | 公理数 | 0 |
 
@@ -17,10 +17,10 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~25 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 21 | ~394 | 99% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial) | 21 | ~404 | 99% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
-| Frontier (Assumptions, Certificates, Conditional, Conjectures) | 4 | ~340 | 80% |
+| Frontier (Assumptions, Certificates, Conditional, Conjectures, ConditionalSummary) | 5 | ~342 | 80% |
 | Audit (SourceMap, Inventory, NoAxiom) | 3 | ~5 | 同步 |
 
 ### 1.3 已完成的核心数学结果
@@ -51,6 +51,10 @@
 **Fibonacci 双倍公式与平方和（Phase 21）**：fib_double（F_{2n}=F_n·(2F_{n+1}-F_n)）; fib_double_plus_one（F_{2n+1}=F_{n+1}²+F_n²）; fib_sq_add_sq（F_n²+F_{n+1}²=F_{2n+1}）
 **转移矩阵幂次行列式与 Cassini 恒等式（Phase 21）**：goldenMeanAdjacency_pow_det（det(A^m)=(-1)^m）; fib_cassini（Cassini：F_{n+1}·F_{n-1}-F_n²=(-1)^n，由行列式公式推导）
 **Lucas 数与迹公式（Phase 21）**：lucasNum 定义（L_0=2, L_1=1, L_{n+2}=L_{n+1}+L_n）; lucasNum_zero/one/two/three/succ_succ（simp 引理）; lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1} for n≥1）; goldenMeanAdjacency_pow_trace（tr(A^n)=F_{n+1}+F_{n-1} for n≥1）
+**纤维直方图基值（Phase 22）**：cFiberHist 定义（稳定词 x 纤维多重度恰好为 k 的计数）; m=4 直方图基值（hist[1]=2, hist[2]=4, hist[3]=2）; m=6 直方图基值（hist[1]=2, hist[2]=4, hist[3]=8, hist[4]=5, hist[5]=2）
+**路径计数 Fibonacci 等式（Phase 22）**：goldenMean_path_count_from_true（row 1 sum = F_{m+1}，从状态 true 出发的路径数）; goldenMean_total_paths（total = F_{m+2}+F_{m+1}，所有路径总数）
+**逆极限序列区分引理（Phase 22）**：ne_of_bit_ne（XInfinity 中位差异→序列不同，位可分离性）
+**No11 词计数（Phase 22）**：no11_count（|X m| = F_{m+2}，Frontier 包装，prop:folding-stable-syntax-fibonacci-count）
 **逆极限**：CompatibleFamily ≃ XInfinity 完整等价
 **逆极限拓扑**：XInfinity 紧致性（CompactSpace）、完全不连通性（TotallyDisconnectedSpace）、可度量化（MetricSpace，PiNat 前缀超度量）、有居民（Inhabited，全 false 序列）、无限性（Infinite，单射 n ↦ 位 2n）；No11Inf 在积拓扑中闭集（isClosed_no11Inf）
 **shift 动力系统基础**：左移映射 σ(a)(i)=a(i+1) 定义（shift）、连续性（continuous_shift）、满射性（shift_surjective）、坐标展开（shift_val）、全零序列（allFalse）、σ(0)=0 固定点（shift_allFalse）、唯一固定点特征（shift_fixed_iff）、非单射性（shift_not_injective）
@@ -67,14 +71,14 @@
 | SPG | 18 | 17 | 95% | 低 |
 | Folding | 10 | 10 | 100% | 中 |
 | 新生算术 | 21 | 21 | 100% | 高 |
-| POM | 106 | 101 | 95% | 极高 |
+| POM | 106 | 102 | 96% | 极高 |
 | 群统一 | 26 | 5 | 19% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
 | Zeta 有限部分 | 139 | 0 | 0% | 极高 |
 | 结论 | 57 | 0 | 0% | 极高 |
-| **总计** | **394** | **~154** | **~39%** | - |
+| **总计** | **394** | **~156** | **~40%** | - |
 
-注：论文包含 394 个独立定理/命题/推论。当前 ~1230 个 Lean 定理中，约 338 个是论文接口包装，约 101 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。
+注：论文包含 394 个独立定理/命题/推论。当前 ~1248 个 Lean 定理中，约 340 个是论文接口包装，约 102 个直接对应论文中的编号定理。Round 17 新增：Frontier 包装 — 新生算术（2：thm:finite-resolution-mod, cor:field-phase-fib-prime）、POM（6：prop:pom-projection-entropy, prop:pom-fiber-sum-identity, thm:fold-collision-convex-lower-bounds, prop:pom-sq-monotone, prop:pom-sq-lower, cor:pom-s2-lower）。Round 18 新增：ConditionalSummary（7：max_fiber_achieved, fiber_pigeonhole, max_fiber_positive, max_fiber_fib_bound, entropy_gap_strict, projection_ratio_decreasing, projection_ratio_positive）、FiberSpectrum（1：cMaxFiberAchievers 定义+基值 m=0..7）。Round 19 新增：FiberSpectrum（4：cMaxFiberAchievers_le_univ, cNthMaxFiber_second_eight, cNthMaxFiber_second_nine, cNthMaxFiber_second_ten）、ConditionalSummary（2：momentSum_pos, momentSum_cauchy_schwarz_restated）。Round 20 新增：ConditionalSummary（6：renyi_upper_bound, moment_sum_one_eq_pow, moment_sum_zero_eq_card, max_fiber_le_pow, max_fiber_ge_one, max_fiber_prob_bounds）、FiberSpectrum（2：cOddFiberCount, cEvenFiberCount 定义+基值 m=0..6）。Phase 21 新增：Fib（3：fib_double, fib_double_plus_one, fib_sq_add_sq）、TransferMatrix（2：goldenMeanAdjacency_pow_det, fib_cassini）、ShiftDynamics（3：lucasNum 定义, lucasNum_eq_fib, goldenMeanAdjacency_pow_trace）——群统一覆盖率 8% → 19%。Phase 22 新增：FiberSpectrum（3：cFiberHist 定义, m=4 直方图基值, m=6 直方图基值）、TransferMatrix（2：goldenMean_path_count_from_true, goldenMean_total_paths）、InverseLimitTopology（1：ne_of_bit_ne）、ConditionalSummary（1：no11_count）——POM 覆盖率 95% → 96%。
 
 ## 3. 未来工作：30 条具体计划
 

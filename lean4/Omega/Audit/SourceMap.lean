@@ -3326,6 +3326,66 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.ShiftDynamics"
       leanName := "Omega.X.goldenMeanAdjacency_pow_trace"
       phase := 21
+      status := .formalized }
+  -- Phase 22: FiberSpectrum — 纤维直方图定义与基值 (cor:pom-fiber-parity 深化前置)
+  -- cFiberHist 定义 + m=4 直方图基值 (FiberSpectrum.lean:51-57)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-fiber-histogram"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberHist"
+      phase := 22
+      status := .formalized }
+  -- cFiberHist m=4 基值: hist[1]=2, hist[2]=4, hist[3]=2 (FiberSpectrum.lean:55-57)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-histogram-m4"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberHist_4_1"
+      phase := 22
+      status := .formalized }
+  -- cFiberHist m=6 基值: hist[1]=2, hist[2]=4, hist[3]=8, hist[4]=5, hist[5]=2 (FiberSpectrum.lean:60-64)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:pom-fiber-histogram-m6"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.FiberSpectrum"
+      leanName := "Omega.cFiberHist_6_1"
+      phase := 22
+      status := .formalized }
+  -- Phase 22: TransferMatrix — 路径计数 Fibonacci 等式
+  -- goldenMean_path_count_from_true: row 1 sum = F_{m+1} (TransferMatrix.lean:136)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-path-count-from-true"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMean_path_count_from_true"
+      phase := 22
+      status := .formalized }
+  -- goldenMean_total_paths: total = F_{m+2}+F_{m+1} (TransferMatrix.lean:146)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:golden-mean-total-paths"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMean_total_paths"
+      phase := 22
+      status := .formalized }
+  -- Phase 22: InverseLimitTopology — 位差异→序列不同
+  -- ne_of_bit_ne: 位差异→序列不同 (InverseLimitTopology.lean:45)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:ne-of-bit-ne"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Folding.InverseLimitTopology"
+      leanName := "Omega.X.ne_of_bit_ne"
+      phase := 22
+      status := .formalized }
+  -- Phase 22: ConditionalSummary — No11 词计数 = F_{m+2}
+  -- no11_count: |No11 words| = F_{m+2} (ConditionalSummary.lean:680)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:no11-word-count"
+      sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+      moduleName := "Omega.Frontier.ConditionalSummary"
+      leanName := "Omega.Frontier.no11_count"
+      phase := 22
       status := .formalized } ]
 
 end Omega.Audit
