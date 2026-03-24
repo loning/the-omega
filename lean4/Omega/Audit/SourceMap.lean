@@ -5401,6 +5401,80 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.topological_entropy_bound"
       phase := 42
+      status := .formalized }
+  -- Phase 43: Real 路线首轮 (Round 38, Entropy.lean:14-69)
+  -- Fibonacci ℝ 正性
+  -- aux:coe-fib-pos → coe_fib_pos (Entropy.lean:14-15)
+  , { label := "aux:coe-fib-pos"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.coe_fib_pos"
+      phase := 43
+      status := .formalized }
+  -- aux:stable-syntax-count-pos → stableSyntaxCount_pos (Entropy.lean:18-19)
+  , { label := "aux:stable-syntax-count-pos"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.stableSyntaxCount_pos"
+      phase := 43
+      status := .formalized }
+  -- Golden ratio properties
+  -- aux:golden-ratio-gt-one → goldenRatio_gt_one (Entropy.lean:24)
+  , { label := "aux:golden-ratio-gt-one"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_gt_one"
+      phase := 43
+      status := .formalized }
+  -- aux:log-golden-ratio-pos → log_goldenRatio_pos (Entropy.lean:27)
+  , { label := "aux:log-golden-ratio-pos"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.log_goldenRatio_pos"
+      phase := 43
+      status := .formalized }
+  -- aux:golden-ratio-lt-two → goldenRatio_lt_two (Entropy.lean:30-33)
+  , { label := "aux:golden-ratio-lt-two"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_lt_two"
+      phase := 43
+      status := .formalized }
+  -- aux:abs-golden-conj-lt-one → abs_goldenConj_lt_one (Entropy.lean:36-39)
+  , { label := "aux:abs-golden-conj-lt-one"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.abs_goldenConj_lt_one"
+      phase := 43
+      status := .formalized }
+  -- aux:golden-conj-bounds → goldenConj_bounds (Entropy.lean:41-42)
+  , { label := "aux:golden-conj-bounds"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenConj_bounds"
+      phase := 43
+      status := .formalized }
+  -- Topological entropy ingredients
+  -- aux:fib-ratio-tendsto → fib_ratio_tendsto (Entropy.lean:50-52)
+  , { label := "aux:fib-ratio-tendsto"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.fib_ratio_tendsto"
+      phase := 43
+      status := .formalized }
+  -- aux:log-continuous-at-phi → log_continuous_at_phi (Entropy.lean:55-56)
+  , { label := "aux:log-continuous-at-phi"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.log_continuous_at_phi"
+      phase := 43
+      status := .formalized }
+  -- cor:folding-stable-syntax-entropy-logqdim (部分, per-step 收敛) → log_fib_ratio_tendsto (Entropy.lean:60-67)
+  , { label := "cor:folding-stable-syntax-entropy-logqdim-perStep"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.log_fib_ratio_tendsto"
+      phase := 43
       status := .formalized } ]
 
 end Omega.Audit

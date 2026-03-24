@@ -22,6 +22,7 @@ import Omega.Folding.MaxFiber
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.HankelSpectrum
 import Omega.Folding.FiberArithmeticProperties
+import Omega.Folding.Entropy
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -684,6 +685,17 @@ Run these commands manually during audit:
   #print axioms Omega.pisano_period_6
   -- def:pom-fib-entry-point-21 (CollisionZeta.lean:251-255)
   #print axioms Omega.fib_entry_point_21
+  -- Round 38: Real 路线首轮 (Entropy.lean:14-69)
+  #print axioms Omega.Entropy.coe_fib_pos
+  #print axioms Omega.Entropy.stableSyntaxCount_pos
+  #print axioms Omega.Entropy.goldenRatio_gt_one
+  #print axioms Omega.Entropy.log_goldenRatio_pos
+  #print axioms Omega.Entropy.goldenRatio_lt_two
+  #print axioms Omega.Entropy.abs_goldenConj_lt_one
+  #print axioms Omega.Entropy.goldenConj_bounds
+  #print axioms Omega.Entropy.fib_ratio_tendsto
+  #print axioms Omega.Entropy.log_continuous_at_phi
+  #print axioms Omega.Entropy.log_fib_ratio_tendsto
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1507,6 +1519,21 @@ def coreAuditTargets : List String :=
   -- Round 37: S_q(2) 扩展 q=9,10 (prop:pom-sq-at-two-extended, Window6.lean:318-320)
   , "Omega.momentSum_at_two_extended"
   -- Round 37: Real.log 入口 (thm:entropy-real-log-infrastructure, Entropy.lean:8-9)
-  , "Omega.Entropy.topological_entropy_bound" ]
+  , "Omega.Entropy.topological_entropy_bound"
+  -- Round 38: Real 路线首轮 (cor:folding-stable-syntax-entropy-logqdim 部分, Entropy.lean:14-69)
+  -- Fibonacci ℝ 正性
+  , "Omega.Entropy.coe_fib_pos"
+  , "Omega.Entropy.stableSyntaxCount_pos"
+  -- Golden ratio properties
+  , "Omega.Entropy.goldenRatio_gt_one"
+  , "Omega.Entropy.log_goldenRatio_pos"
+  , "Omega.Entropy.goldenRatio_lt_two"
+  , "Omega.Entropy.abs_goldenConj_lt_one"
+  , "Omega.Entropy.goldenConj_bounds"
+  -- Topological entropy ingredients
+  , "Omega.Entropy.fib_ratio_tendsto"
+  , "Omega.Entropy.log_continuous_at_phi"
+  -- per-step 收敛：核心突破
+  , "Omega.Entropy.log_fib_ratio_tendsto" ]
 
 end Omega.Audit

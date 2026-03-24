@@ -1,11 +1,69 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecificLimits.Fibonacci
+import Mathlib.NumberTheory.Real.GoldenRatio
 import Omega.Folding.ShiftDynamics
+
+open scoped goldenRatio
+open Filter Topology
 
 namespace Omega.Entropy
 
-/-- The topological entropy of the golden-mean shift is log(φ).
-    This is a placeholder for future Real-valued entropy computations. -/
-theorem topological_entropy_bound :
-    Real.log 2 > 0 := Real.log_pos (by norm_num)
+/-! ### Binet corollaries: positivity of Fibonacci casts -/
+
+/-- Nat.fib n is positive for n ≥ 1 (cast to ℝ). -/
+theorem coe_fib_pos (n : Nat) (hn : 1 ≤ n) : (0 : ℝ) < (Nat.fib n : ℝ) := by
+  exact_mod_cast Nat.fib_pos.mpr (by omega)
+
+/-- |X_m| = F(m+2) is positive (cast to ℝ). -/
+theorem stableSyntaxCount_pos (n : Nat) : (0 : ℝ) < (Nat.fib (n + 2) : ℝ) :=
+  coe_fib_pos (n + 2) (by omega)
+
+/-! ### Golden ratio properties -/
+
+/-- φ > 1. -/
+theorem goldenRatio_gt_one : φ > 1 := Real.one_lt_goldenRatio
+
+/-- log(φ) > 0: the topological entropy is positive. -/
+theorem log_goldenRatio_pos : Real.log φ > 0 := Real.log_pos Real.one_lt_goldenRatio
+
+/-- φ < 2. -/
+theorem goldenRatio_lt_two : φ < 2 := by
+  have : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
+  -- φ < 2 ↔ φ² < 2φ (since φ > 0) ↔ φ+1 < 2φ ↔ 1 < φ, which is true
+  nlinarith [Real.one_lt_goldenRatio]
+
+/-- |ψ| < 1: the golden conjugate is contractive. -/
+theorem abs_goldenConj_lt_one : |ψ| < 1 := by
+  rw [abs_lt]
+  exact ⟨by linarith [Real.neg_one_lt_goldenConj], by linarith [Real.goldenConj_neg]⟩
+
+/-- ψ is between -1 and 0. -/
+theorem goldenConj_bounds : -1 < ψ ∧ ψ < 0 :=
+  ⟨Real.neg_one_lt_goldenConj, Real.goldenConj_neg⟩
+
+/-! ### Topological entropy ingredients
+
+The topological entropy of the golden-mean shift is h_top = log φ.
+Key ingredients: F(n+1)/F(n) → φ and continuity of log. -/
+
+/-- F(n+1)/F(n) → φ (from mathlib). -/
+theorem fib_ratio_tendsto :
+    Tendsto (fun n => (Nat.fib (n + 1) : ℝ) / Nat.fib n) atTop (𝓝 φ) :=
+  tendsto_fib_succ_div_fib_atTop
+
+/-- log is continuous at φ (since φ > 0). -/
+theorem log_continuous_at_phi : ContinuousAt Real.log φ :=
+  Real.continuousAt_log (ne_of_gt Real.goldenRatio_pos)
+
+/-- log(F(n+2)/F(n+1)) → log φ as n → ∞.
+    This is the key per-step entropy convergence. -/
+theorem log_fib_ratio_tendsto :
+    Tendsto (fun n => Real.log ((Nat.fib (n + 2) : ℝ) / Nat.fib (n + 1)))
+      atTop (𝓝 (Real.log φ)) := by
+  -- F(n+2)/F(n+1) = F((n+1)+1)/F(n+1) → φ by tendsto_fib_succ_div_fib_atTop shifted
+  have hshift : Tendsto (fun n => (Nat.fib (n + 1 + 1) : ℝ) / Nat.fib (n + 1))
+      atTop (𝓝 φ) :=
+    tendsto_fib_succ_div_fib_atTop.comp (tendsto_add_atTop_nat 1)
+  exact (Real.continuousAt_log (ne_of_gt Real.goldenRatio_pos)).tendsto.comp hshift
 
 end Omega.Entropy
