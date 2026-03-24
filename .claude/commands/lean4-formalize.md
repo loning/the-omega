@@ -68,12 +68,17 @@ Agent(
 
 2. 发消息给 analyst：
    ```
-   SendMessage(to = "analyst", message = "请读取 lean4/IMPLEMENTATION_PLAN.md §4 执行优先级，选取最高优先级的未完成计划项，然后生成该计划项的完整Lean4形式化规格。")
+   SendMessage(to = "analyst", message = "请读取 lean4/IMPLEMENTATION_PLAN.md §4 执行优先级，选取最高优先级的未完成计划项，然后生成该计划项的完整Lean4形式化规格。
+
+   **必须包含论文证明过程**：找到论文 .tex 文件中该定理的完整证明，逐步提取为 formalizer 可理解的数学步骤链。")
    ```
 
 3. **停下来，等待 analyst 回复。不做任何其他操作。**
 
-4. 收到 analyst 的规格后，保存完整内容，标记任务完成。
+4. 收到 analyst 的规格后：
+   - **检查规格是否包含"论文证明过程"章节**。如果缺失，要求 analyst 补充
+   - **检查是否包含"小值验证"章节**。如果缺失，要求 analyst 补充
+   - 保存完整内容，标记任务完成
 
 ### Phase 2：实现
 
@@ -82,13 +87,15 @@ Agent(
    TaskCreate(title = "实现：[定理名]")
    ```
 
-2. 将 analyst 的完整规格原样转发给 formalizer：
+2. 将 analyst 的完整规格原样转发给 formalizer（**包含论文证明过程**）：
    ```
    SendMessage(to = "formalizer", message = "请按照以下规格实现Lean4形式化：
 
-   [analyst 的完整规格原样粘贴]
+   [analyst 的完整规格原样粘贴——必须包含"论文证明过程"和"小值验证"章节]
 
-   硬约束：零sorry、零admit、零axiom、lake build必须通过、文件不超过800行、最多15轮编译循环")
+   硬约束：零sorry、零admit、零axiom、lake build必须通过、文件不超过800行、最多15轮编译循环
+
+   **证明路线要求**：请先理解论文的证明步骤，按论文路线翻译为 Lean4。如果论文步骤在 Lean4 中不可行，报告具体哪一步无法翻译。")
    ```
 
 3. **停下来，等待 formalizer 回复。不做任何其他操作。**
