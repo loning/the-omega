@@ -1781,15 +1781,20 @@ def coreAuditTargets : List String :=
   , "Omega.mem_fiber_iff_weight_mod"
   , "Omega.fiberMultiplicity_eq_weight_congr_count"
   , "Omega.fiberMultiplicity_le_restrict_add"
-  -- Phase 75: 全零词纤维特征化 (MaxFiberTwoStep.lean:438-549)
+  -- Phase 75: 全零词纤维特征化 (FiberWeightCount.lean:10-106)
   , "Omega.X.ofNat_zero"
   , "Omega.Fold_eq_allFalse_of_weight_eq_fib"
   , "Omega.fiberMultiplicity_allFalse"
-  -- Phase 76: exactWeightCount 基础设施 (MaxFiberTwoStep.lean:555-674)
+  -- Phase 76: exactWeightCount 基础设施 (FiberWeightCount.lean:113-224)
   , "Omega.exactWeightCount_zero_zero"
   , "Omega.exactWeightCount_zero_succ"
   , "Omega.exactWeightCount_succ"
   , "Omega.exactWeightCount_eq_zero_of_ge_fib"
-  , "Omega.fiberMultiplicity_eq_two_ewc" ]
+  , "Omega.fiberMultiplicity_eq_two_ewc"
+  -- Phase 77: ewc 双步递推 + allFalse 纤维递推与闭式 (FiberWeightCount.lean:230-344)
+  , "Omega.exactWeightCount_succ_succ"
+  , "Omega.exactWeightCount_fib_shift"
+  , "Omega.fiberMultiplicity_allFalse_recurrence"
+  , "Omega.fiberMultiplicity_allFalse_closed" ]
 
 end Omega.Audit

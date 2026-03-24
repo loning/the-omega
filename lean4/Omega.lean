@@ -10,6 +10,7 @@ import Omega.Folding.Fiber
 import Omega.Folding.MaxFiber
 import Omega.Folding.MaxFiberHigh
 import Omega.Folding.MaxFiberTwoStep
+import Omega.Folding.FiberWeightCount
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FiberArithmeticProperties
