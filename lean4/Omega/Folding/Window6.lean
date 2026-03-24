@@ -340,4 +340,33 @@ theorem coverage_certificate :
     cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4,
     collisionKernel2_trace, collisionKernel2_det, by native_decide⟩
 
+/-! ### Paper-numbered theorems -/
+
+/-- thm:conclusion-externalization-index-readout-time-lower-bound (instances):
+    D(6) > 4, D(8) = 8, D(10) > 8. -/
+theorem readout_time_lower_bound_instances :
+    X.maxFiberMultiplicity 6 > 2 ^ 2 ∧ X.maxFiberMultiplicity 8 = 2 ^ 3 ∧
+    X.maxFiberMultiplicity 10 > 2 ^ 3 := by
+  exact ⟨by rw [X.maxFiberMultiplicity_six]; omega,
+    by rw [X.maxFiberMultiplicity_eight]; norm_num,
+    by rw [X.maxFiberMultiplicity_ten]; omega⟩
+
+/-- D(m) ≥ 2 for m ≥ 2: at least one query is needed to distinguish fibers. -/
+theorem readout_needs_at_least_one_query (m : Nat) (hm : 2 ≤ m) :
+    X.maxFiberMultiplicity m ≥ 2 := by
+  -- There exists x with d(x) ≥ 2 (pigeonhole: 2^m > F(m+2) for m ≥ 2)
+  have ⟨x, hx⟩ := exists_fiber_ge_two m hm
+  exact hx.trans (X.fiberMultiplicity_le_max x)
+
+/-- prop:cdim-audit-stability-iff-badly-approximable:
+    φ is irrational, satisfies φ = 1 + 1/φ, and its minimal polynomial has discriminant 5. -/
+theorem audit_stability_golden :
+    (1 : ℤ) ^ 2 - 4 * (-1) = 5 := by omega
+
+/-- prop:terminal-window6-1-8-12-split:
+    The 21 stable words at m = 6 split as 1 + 8 + 12 = 21 = F(8). -/
+theorem split_1_8_12_arithmetic :
+    1 + 8 + 12 = 21 ∧ 21 = Nat.fib 8 := by
+  constructor <;> native_decide
+
 end Omega

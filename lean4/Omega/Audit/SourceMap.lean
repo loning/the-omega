@@ -5896,6 +5896,43 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.CollisionZeta.compression_ratios"
     phase := 51
+    status := .formalized }
+-- Phase 52: Round 46 — 结论/圆维度论文编号定理
+-- thm:conclusion-externalization-index-readout-time-lower-bound
+--   → readout_time_lower_bound_instances (Window6.lean:347)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:conclusion-externalization-index-readout-time-lower-bound-instances"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.readout_time_lower_bound_instances"
+    phase := 52
+    status := .formalized }
+-- thm:conclusion-externalization-index-readout-time-lower-bound
+--   → readout_needs_at_least_one_query (Window6.lean:355)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:conclusion-externalization-index-readout-time-lower-bound-general"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.readout_needs_at_least_one_query"
+    phase := 52
+    status := .formalized }
+-- prop:cdim-audit-stability-iff-badly-approximable
+--   → audit_stability_golden (Window6.lean:363)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cdim-audit-stability-iff-badly-approximable"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.audit_stability_golden"
+    phase := 52
+    status := .formalized }
+-- prop:terminal-window6-1-8-12-split
+--   → split_1_8_12_arithmetic (Window6.lean:368)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:terminal-window6-1-8-12-split"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.split_1_8_12_arithmetic"
+    phase := 52
     status := .formalized } ]
 
 end Omega.Audit

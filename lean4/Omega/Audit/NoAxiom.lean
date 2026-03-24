@@ -1615,6 +1615,14 @@ def coreAuditTargets : List String :=
   , "Omega.CollisionZeta.cauchy_schwarz_instance_q3_m4"
   , "Omega.CollisionZeta.perron_root_A4_in_interval"
   , "Omega.CollisionZeta.compression_growth"
-  , "Omega.CollisionZeta.compression_ratios" ]
+  , "Omega.CollisionZeta.compression_ratios"
+  -- Round 46: Window6 — 结论/圆维度论文编号定理 (Window6.lean:347-371)
+  -- thm:conclusion-externalization-index-readout-time-lower-bound
+  , "Omega.readout_time_lower_bound_instances"
+  , "Omega.readout_needs_at_least_one_query"
+  -- prop:cdim-audit-stability-iff-badly-approximable
+  , "Omega.audit_stability_golden"
+  -- prop:terminal-window6-1-8-12-split
+  , "Omega.split_1_8_12_arithmetic" ]
 
 end Omega.Audit
