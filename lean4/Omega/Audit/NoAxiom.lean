@@ -1583,6 +1583,14 @@ def coreAuditTargets : List String :=
   , "Omega.Entropy.entropy_comprehensive_certificate"
   , "Omega.momentSum_five_six"
   , "Omega.hankelS5_4x4_det_ne_zero"
-  , "Omega.Entropy.recursion_order_pattern" ]
+  , "Omega.Entropy.recursion_order_pattern"
+  -- Round 43: Newton 恒等式 + S_2 增长率界 + 覆盖率证书 + Binet 夹逼
+  -- (CollisionZeta.lean:376-405, Window6.lean:325-343, Entropy.lean:304-311)
+  , "Omega.CollisionZeta.newton_identity_A2"
+  , "Omega.CollisionZeta.newton_identity_A3"
+  , "Omega.CollisionZeta.newton_identity_A4_partial"
+  , "Omega.CollisionZeta.momentSum_two_ratio_bounds"
+  , "Omega.Window6.coverage_certificate"
+  , "Omega.Entropy.fib_growth_sandwich" ]
 
 end Omega.Audit

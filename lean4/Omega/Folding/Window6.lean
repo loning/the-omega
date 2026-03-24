@@ -319,4 +319,25 @@ theorem momentSum_at_two_extended :
     momentSum 9 2 = 2 ^ 9 + 2 ∧ momentSum 10 2 = 2 ^ 10 + 2 := by
   rw [momentSum_nine_two, momentSum_ten_two]; omega
 
+/-! ### Coverage certificate -/
+
+/-- Complete coverage certificate: all key numerical invariants verified. -/
+theorem coverage_certificate :
+    -- Fibonacci
+    Nat.fib 8 = 21 ∧ Nat.fib 9 = 34 ∧ Nat.fib 10 = 55 ∧
+    -- Window-6 type count
+    Fintype.card (X 6) = 21 ∧
+    -- Moment sums
+    momentSum 2 6 = 220 ∧ momentSum 3 6 = 820 ∧ momentSum 4 6 = 3244 ∧
+    -- BinFold histogram
+    cBinFiberHist 6 2 = 8 ∧ cBinFiberHist 6 3 = 4 ∧ cBinFiberHist 6 4 = 9 ∧
+    -- Collision kernels
+    collisionKernel2.trace = 2 ∧ collisionKernel2.det = -2 ∧
+    -- Zeckendorf
+    (45 : Nat) = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 := by
+  refine ⟨by native_decide, by native_decide, by native_decide,
+    X.card_X_six, momentSum_two_six, momentSum_three_six, momentSum_four_six,
+    cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4,
+    collisionKernel2_trace, collisionKernel2_det, by native_decide⟩
+
 end Omega

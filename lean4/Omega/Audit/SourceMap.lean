@@ -5685,6 +5685,55 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.psi_pow_tendsto_zero'"
       phase := 48
-      status := .formalized } ]
+      status := .formalized }
+-- Phase 49: Newton 恒等式 + S_2 增长率界 + 覆盖率证书 + Binet 夹逼 (Round 43)
+-- prop:pom-newton-identity-a2 → newton_identity_A2 (CollisionZeta.lean:376)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-newton-identity-a2"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.newton_identity_A2"
+    phase := 49
+    status := .formalized }
+-- prop:pom-newton-identity-a3 → newton_identity_A3 (CollisionZeta.lean:384)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-newton-identity-a3"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.newton_identity_A3"
+    phase := 49
+    status := .formalized }
+-- prop:pom-newton-identity-a4-partial → newton_identity_A4_partial (CollisionZeta.lean:392)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-newton-identity-a4-partial"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.newton_identity_A4_partial"
+    phase := 49
+    status := .formalized }
+-- prop:pom-s2-ratio-bounds → momentSum_two_ratio_bounds (CollisionZeta.lean:400)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-s2-ratio-bounds"
+    sourcePath := "sections/body/pom/subsec__pom-sq-monotone.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.momentSum_two_ratio_bounds"
+    phase := 49
+    status := .formalized }
+-- prop:conclusion-coverage-certificate → coverage_certificate (Window6.lean:325)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:conclusion-coverage-certificate"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-coverage-certificate.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.Window6.coverage_certificate"
+    phase := 49
+    status := .formalized }
+-- prop:cdim-binet-growth-sandwich → fib_growth_sandwich (Entropy.lean:304)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cdim-binet-growth-sandwich"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-fibonacci-nearest-integer.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.fib_growth_sandwich"
+    phase := 49
+    status := .formalized } ]
 
 end Omega.Audit

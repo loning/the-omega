@@ -297,4 +297,15 @@ theorem psi_pow_tendsto_zero' :
     Tendsto (fun n => ψ ^ n) atTop (𝓝 0) :=
   tendsto_pow_atTop_nhds_zero_of_abs_lt_one abs_goldenConj_lt_one
 
+/-! ### Fibonacci growth sandwich -/
+
+/-- Growth sandwich: φ^n/√5 - 1/2 < F(n) < φ^n/√5 + 1/2.
+    Direct consequence of the nearest integer property. -/
+theorem fib_growth_sandwich (n : Nat) :
+    φ ^ n / Real.sqrt 5 - 1 / 2 < (Nat.fib n : ℝ) ∧
+    (Nat.fib n : ℝ) < φ ^ n / Real.sqrt 5 + 1 / 2 := by
+  have h := fib_nearest_integer n
+  rw [abs_lt] at h
+  constructor <;> linarith [h.1, h.2]
+
 end Omega.Entropy

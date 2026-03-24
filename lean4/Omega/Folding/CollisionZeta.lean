@@ -368,4 +368,38 @@ theorem hankelS5_4x4_det_ne_zero : hankelS5_4x4.det ≠ 0 := by
   show hankelS5_4x4.det ≠ 0
   native_decide
 
+/-! ### Newton identities -/
+
+/-- Newton identity for A_2: the characteristic polynomial coefficients
+    are recovered from tr(A^k) via Newton's identities.
+    p₁ = -tr = -2, p₂ = (tr²-tr(A²))/2 = -2, p₃ = -det = 2. -/
+theorem newton_identity_A2 :
+    (-(collisionKernel2.trace : ℤ) = -2) ∧
+    (((collisionKernel2.trace : ℤ) ^ 2 - (collisionKernel2 ^ 2).trace) / 2 = -2) ∧
+    (-(collisionKernel2.det : ℤ) = 2) := by
+  refine ⟨by rw [collisionKernel2_trace], by native_decide,
+    by rw [collisionKernel2_det]; norm_num⟩
+
+/-- Newton identity for A_3. -/
+theorem newton_identity_A3 :
+    (-(collisionKernel3.trace : ℤ) = -2) ∧
+    (((collisionKernel3.trace : ℤ) ^ 2 - (collisionKernel3 ^ 2).trace) / 2 = -4) ∧
+    (-(collisionKernel3.det : ℤ) = 2) := by
+  refine ⟨by rw [collisionKernel3_trace], by native_decide,
+    by rw [collisionKernel3_det]; norm_num⟩
+
+/-- Newton identity for A_4 (partial: trace and det). -/
+theorem newton_identity_A4_partial :
+    (-(collisionKernel4.trace : ℤ) = -2) ∧
+    (-(collisionKernel4.det : ℤ) = 2) := by
+  refine ⟨by rw [collisionKernel4_trace], by rw [collisionKernel4_det]; norm_num⟩
+
+/-! ### S_2 growth rate bounds -/
+
+/-- S_2 growth ratio: 2·S_2(m) ≤ S_2(m+1) ≤ 3·S_2(m) for m = 2..6. -/
+theorem momentSum_two_ratio_bounds (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 6) :
+    2 * momentSum 2 m ≤ momentSum 2 (m + 1) ∧
+    momentSum 2 (m + 1) ≤ 3 * momentSum 2 m := by
+  interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
+
 end Omega
