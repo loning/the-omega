@@ -615,6 +615,27 @@ Run these commands manually during audit:
   -- Round 30: ZeckendorfSignature — 素赋值度量非退化 (Phase 35)
   -- thm:conclusion-valuation-isometry-classification (部分)
   #print axioms Omega.ZeckSig.factorization_determines_nat
+  -- Round 32: A_4 碰撞核 + 递推验证 (prop:pom-s4-recurrence, CollisionKernel.lean:90-122)
+  #print axioms Omega.collisionKernel4
+  #print axioms Omega.collisionKernel4_trace
+  #print axioms Omega.collisionKernel4_det
+  #print axioms Omega.momentSum_four_recurrence_verified
+  #print axioms Omega.collision_kernels_shared_invariants_triple
+  -- Round 32: A_4 迹幂 + primitive 轨道 + Hankel + det 幂 (def:pom-collision-zeta-a4, CollisionZeta.lean:99-141)
+  #print axioms Omega.collisionKernel4_trace_pow_0
+  #print axioms Omega.collisionKernel4_trace_pow_1
+  #print axioms Omega.collisionKernel4_trace_pow_2
+  #print axioms Omega.collisionKernel4_trace_pow_3
+  #print axioms Omega.collisionKernel4_trace_pow_4
+  #print axioms Omega.primitive_orbit_A4
+  #print axioms Omega.hankelS4_4x4
+  #print axioms Omega.hankelS4_4x4_det
+  #print axioms Omega.hankelS4_4x4_det_ne_zero
+  #print axioms Omega.collisionKernel2_det_pow_2
+  #print axioms Omega.collisionKernel2_det_pow_3
+  #print axioms Omega.collisionKernel3_det_pow_2
+  #print axioms Omega.collisionKernel3_det_pow_3
+  #print axioms Omega.collisionKernel4_det_pow_2
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~15,672 |
-| 定理/定义数 | ~1,479 |
+| 总行数 | ~15,725 |
+| 定理/定义数 | ~1,497 |
 | 论文接口包装 | 340 |
 | 文件数 | 44 |
 | 公理数 | 0 |
@@ -88,7 +88,7 @@
 | POM | 106 | 106 | 100% | 极高 |
 | 群统一 | 26 | 22 | 85% | 极高 |
 | 圆维度 | 16 | 0 | 0% | 极高 |
-| Zeta 有限部分 | 139 | 21 | ~15% | 极高 |
+| Zeta 有限部分 | 139 | 39 | ~28% | 极高 |
 | 结论 | 57 | 49 | 86% | 极高 |
 | **总计** | **394** | **~242** | **~60%** | - |
 
@@ -156,7 +156,7 @@
 ### 短期可执行（3-5 轮内完成）
 
 5. ✅ 计划 5（Fibonacci 整除性：fib_gcd, fib_coprime_succ, fib_dvd_mul 已完成）
-6. **[深化 Round 31] Zeta 有限部分深化**（CollisionZeta 已建立 21 定理：迹幂 1..6 + 递推验证 A_2/A_3 + trace^0 + primitive 轨道 A_2/A_3 + ζ 分母系数 A_2/A_3；下一步：S_4 递推 collisionKernel4 矩阵定义、迹幂的 Weyl-Selberg 有理性、L-函数极点解析延拓骨架，thm:pom-zeta-finite-part-rationality）
+6. **[深化 Round 32] Zeta 有限部分深化**（CollisionKernel+CollisionZeta 已建立 39 定理：A_2/A_3/A_4 全系迹幂+递推+primitive 轨道+Hankel+det 幂+ζ 分母系数；下一步：迹幂的 Weyl-Selberg 有理性、L-函数极点解析延拓骨架，thm:pom-zeta-finite-part-rationality）
 7. 计划 13（条件期望型表达）
 8. 计划 20（拓扑熵 = log φ；shift 前置 + 离散骨架 + 周期轨道已完成，下一步：Real.log 极限论证）
 9. **[部分完成] 计划 27**（CRT 分解：crtDecomposition + X7/X10 具体实例已完成；一般合数情形待续）

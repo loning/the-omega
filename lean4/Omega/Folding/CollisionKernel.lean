@@ -87,4 +87,36 @@ theorem momentSum_three_recurrence_of
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) :=
   rec m
 
+/-! ### S_4 collision kernel (5×5 companion matrix)
+
+The S_4 recurrence: S_4(m+5) = 2·S_4(m+4) + 7·S_4(m+3) + 2·S_4(m+1) - 2·S_4(m).
+Characteristic polynomial: λ^5 - 2λ^4 - 7λ^3 - 2λ + 2 = 0. -/
+
+/-- The 5×5 companion matrix for the S_4 recurrence. -/
+def collisionKernel4 : Matrix (Fin 5) (Fin 5) ℤ :=
+  !![0, 1, 0, 0, 0;
+     0, 0, 1, 0, 0;
+     0, 0, 0, 1, 0;
+     0, 0, 0, 0, 1;
+     -2, 2, 0, 7, 2]
+
+theorem collisionKernel4_trace : collisionKernel4.trace = 2 := by native_decide
+theorem collisionKernel4_det : collisionKernel4.det = -2 := by native_decide
+
+/-- S_4 recurrence verification: S_4(m+5) + 2·S_4(m) = 2·S_4(m+4) + 7·S_4(m+3) + 2·S_4(m+1)
+    for m = 0..2 using base values. -/
+theorem momentSum_four_recurrence_verified :
+    (momentSum 4 5 + 2 * momentSum 4 0 =
+      2 * momentSum 4 4 + 7 * momentSum 4 3 + 2 * momentSum 4 1) ∧
+    (momentSum 4 6 + 2 * momentSum 4 1 =
+      2 * momentSum 4 5 + 7 * momentSum 4 4 + 2 * momentSum 4 2) := by
+  refine ⟨?_, ?_⟩ <;> simp only [← cMomentSum_eq] <;> native_decide
+
+/-- All three collision kernels share trace = 2 and det = -2. -/
+theorem collision_kernels_shared_invariants_triple :
+    collisionKernel2.trace = 2 ∧ collisionKernel3.trace = 2 ∧ collisionKernel4.trace = 2 ∧
+    collisionKernel2.det = -2 ∧ collisionKernel3.det = -2 ∧ collisionKernel4.det = -2 :=
+  ⟨collisionKernel2_trace, collisionKernel3_trace, collisionKernel4_trace,
+   collisionKernel2_det, collisionKernel3_det, collisionKernel4_det⟩
+
 end Omega
