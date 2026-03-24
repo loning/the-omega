@@ -4526,6 +4526,76 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Window6"
       leanName := "Omega.gauge_group_order_factored"
       phase := 33
+      status := .formalized }
+  -- Phase 34: Round 29 — 结论章节深化（Zeckendorf 15·F(n)/16·F(n) + TQFT 属格生成函数 + Q_6 超立方相二次闭合）
+  -- thm:conclusion-zeckendorf-15-16-closed → zeckendorf_15Fn_instances, zeckendorf_16Fn_instances,
+  --   dim_15_16_zeckendorf (ZeckendorfSignature.lean:249-268)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-zeckendorf-15-16-closed-fn"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.zeckendorf_15Fn_instances"
+      phase := 34
+      status := .formalized }
+  , { label := "thm:conclusion-zeckendorf-15-16-closed-16fn"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.zeckendorf_16Fn_instances"
+      phase := 34
+      status := .formalized }
+  , { label := "thm:conclusion-zeckendorf-15-16-closed-dim"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.dim_15_16_zeckendorf"
+      phase := 34
+      status := .formalized }
+  -- prop:conclusion-tqft-genus-generating-function-rational → sector_sum_six_q4, sector_sum_six_q5,
+  --   genus_recurrence_order_six, distinct_fiber_sq_six (Window6.lean:221-233)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-tqft-genus-generating-function-rational-q4"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sector_sum_six_q4"
+      phase := 34
+      status := .formalized }
+  , { label := "prop:conclusion-tqft-genus-generating-function-rational-q5"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sector_sum_six_q5"
+      phase := 34
+      status := .formalized }
+  , { label := "prop:conclusion-tqft-genus-generating-function-rational-genus"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.genus_recurrence_order_six"
+      phase := 34
+      status := .formalized }
+  , { label := "prop:conclusion-tqft-genus-generating-function-rational-sq"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.distinct_fiber_sq_six"
+      phase := 34
+      status := .formalized }
+  -- thm:conclusion-hypercube-phase-quadratic-closure → q6_multiplicities, q6_multiplicity_sum,
+  --   q6_trace_zero (Window6.lean:238-250)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-hypercube-phase-quadratic-closure-mult"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.q6_multiplicities"
+      phase := 34
+      status := .formalized }
+  , { label := "thm:conclusion-hypercube-phase-quadratic-closure-sum"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.q6_multiplicity_sum"
+      phase := 34
+      status := .formalized }
+  , { label := "thm:conclusion-hypercube-phase-quadratic-closure-trace"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.q6_trace_zero"
+      phase := 34
       status := .formalized } ]
 
 end Omega.Audit

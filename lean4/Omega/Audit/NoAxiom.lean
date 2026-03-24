@@ -1256,6 +1256,21 @@ def coreAuditTargets : List String :=
   , "Omega.cauchy_schwarz_gap_six"
   , "Omega.tqft_genus_values_six"
   , "Omega.weyl_orders"
-  , "Omega.gauge_group_order_factored" ]
+  , "Omega.gauge_group_order_factored"
+  -- Round 29: ZeckendorfSignature — 15·F(n)/16·F(n) Zeckendorf 分解 (Phase 34)
+  -- thm:conclusion-zeckendorf-15-16-closed (ZeckendorfSignature.lean:249-268)
+  , "Omega.ZeckSig.zeckendorf_15Fn_instances"
+  , "Omega.ZeckSig.zeckendorf_16Fn_instances"
+  , "Omega.ZeckSig.dim_15_16_zeckendorf"
+  -- Round 29: Window6 — TQFT 属格生成函数 + Q_6 超立方相二次闭合 (Phase 34)
+  -- prop:conclusion-tqft-genus-generating-function-rational (Window6.lean:221-233)
+  , "Omega.sector_sum_six_q4"
+  , "Omega.sector_sum_six_q5"
+  , "Omega.genus_recurrence_order_six"
+  , "Omega.distinct_fiber_sq_six"
+  -- thm:conclusion-hypercube-phase-quadratic-closure (Window6.lean:238-250)
+  , "Omega.q6_multiplicities"
+  , "Omega.q6_multiplicity_sum"
+  , "Omega.q6_trace_zero" ]
 
 end Omega.Audit

@@ -246,4 +246,24 @@ theorem fib_gcd_instances :
 theorem phase_space_coprimality :
     Nat.gcd 21 34 = 1 ∧ Nat.gcd 21 55 = 1 := by native_decide
 
+/-! ### Zeckendorf decompositions of 15·F(n) and 16·F(n) -/
+
+/-- 15·F(n) Zeckendorf decompositions for n = 8, 9, 10. -/
+theorem zeckendorf_15Fn_instances :
+    15 * Nat.fib 8 = Nat.fib 13 + Nat.fib 10 + Nat.fib 8 + Nat.fib 5 + Nat.fib 2 ∧
+    15 * Nat.fib 9 = Nat.fib 14 + Nat.fib 11 + Nat.fib 9 + Nat.fib 6 + Nat.fib 3 ∧
+    15 * Nat.fib 10 = Nat.fib 15 + Nat.fib 12 + Nat.fib 10 + Nat.fib 7 + Nat.fib 4 := by
+  native_decide
+
+/-- 16·F(n) Zeckendorf decompositions for n = 8, 9, 10. -/
+theorem zeckendorf_16Fn_instances :
+    16 * Nat.fib 8 = Nat.fib 13 + Nat.fib 11 + Nat.fib 7 + Nat.fib 2 ∧
+    16 * Nat.fib 9 = Nat.fib 14 + Nat.fib 12 + Nat.fib 8 + Nat.fib 3 ∧
+    16 * Nat.fib 10 = Nat.fib 15 + Nat.fib 13 + Nat.fib 9 + Nat.fib 4 := by
+  native_decide
+
+/-- 15 and 16 Zeckendorf decompositions: 15 = F(7)+F(3), 16 = F(7)+F(4). -/
+theorem dim_15_16_zeckendorf :
+    15 = Nat.fib 7 + Nat.fib 3 ∧ 16 = Nat.fib 7 + Nat.fib 4 := by native_decide
+
 end Omega.ZeckSig

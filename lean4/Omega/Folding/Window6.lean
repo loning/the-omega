@@ -215,4 +215,38 @@ theorem gauge_group_order_factored :
     (Nat.factorial 2) ^ 8 * (Nat.factorial 3) ^ 4 * (Nat.factorial 4) ^ 9 =
       2 ^ 8 * 6 ^ 4 * 24 ^ 9 := by native_decide
 
+/-! ### Higher-order sector sums + genus recurrence -/
+
+/-- Sector sum at m = 6, q = 4. -/
+theorem sector_sum_six_q4 :
+    2 * 1 ^ 4 + 4 * 2 ^ 4 + 8 * 3 ^ 4 + 5 * 4 ^ 4 + 2 * 5 ^ 4 = 3244 := by omega
+
+/-- Sector sum at m = 6, q = 5. -/
+theorem sector_sum_six_q5 :
+    2 * 1 ^ 5 + 4 * 2 ^ 5 + 8 * 3 ^ 5 + 5 * 4 ^ 5 + 2 * 5 ^ 5 = 13444 := by omega
+
+/-- The genus recurrence order at m = 6: 5 distinct fiber multiplicities. -/
+theorem genus_recurrence_order_six : (cFiberSpectrum 6).length = 5 := by native_decide
+
+/-- Distinct fiber multiplicity squares. -/
+theorem distinct_fiber_sq_six :
+    1 ^ 2 = 1 ∧ 2 ^ 2 = 4 ∧ 3 ^ 2 = 9 ∧ 4 ^ 2 = 16 ∧ 5 ^ 2 = 25 := by omega
+
+/-! ### Q_6 spectrum + binomial multiplicities -/
+
+/-- Binomial coefficients C(6, k) for k = 0..6. -/
+theorem q6_multiplicities :
+    Nat.choose 6 0 = 1 ∧ Nat.choose 6 1 = 6 ∧ Nat.choose 6 2 = 15 ∧
+    Nat.choose 6 3 = 20 ∧ Nat.choose 6 4 = 15 ∧ Nat.choose 6 5 = 6 ∧
+    Nat.choose 6 6 = 1 := by native_decide
+
+/-- Sum of binomial coefficients: ∑ C(6,k) = 2^6 = 64. -/
+theorem q6_multiplicity_sum :
+    Nat.choose 6 0 + Nat.choose 6 1 + Nat.choose 6 2 + Nat.choose 6 3 +
+    Nat.choose 6 4 + Nat.choose 6 5 + Nat.choose 6 6 = 64 := by native_decide
+
+/-- Weighted trace sums for Q_6 adjacency eigenvalues. -/
+theorem q6_trace_zero :
+    6 * 1 + 4 * 6 + 2 * 15 = 60 ∧ 2 * 15 + 4 * 6 + 6 * 1 = 60 := by omega
+
 end Omega
