@@ -666,6 +666,24 @@ Run these commands manually during audit:
   #print axioms Omega.perron_A2_in_interval
   #print axioms Omega.perron_A3_in_interval
   #print axioms Omega.charPoly_A3_root_in_01
+  -- Round 34: Möbius 轨道扩展 + 判别式 + Pisano 周期 + Fibonacci 入口点 (Phase 39)
+  -- def:pom-primitive-orbit-extended (CollisionZeta.lean:193-200)
+  #print axioms Omega.primitive_orbit_A2_extended
+  #print axioms Omega.primitive_orbit_A3_extended
+  -- def:pom-charpoly-discriminant (CollisionZeta.lean:209-219)
+  #print axioms Omega.charPoly_A2_discriminant_positive
+  #print axioms Omega.charPoly_A3_discriminant_positive
+  #print axioms Omega.collision_kernels_all_real_eigenvalues
+  -- def:pom-perron-root-separated (CollisionZeta.lean:225-227)
+  #print axioms Omega.perron_root_separated_by_three
+  -- def:pom-pisano-period-2/3/5/7/6 (CollisionZeta.lean:235-247)
+  #print axioms Omega.pisano_period_2
+  #print axioms Omega.pisano_period_3
+  #print axioms Omega.pisano_period_5
+  #print axioms Omega.pisano_period_7
+  #print axioms Omega.pisano_period_6
+  -- def:pom-fib-entry-point-21 (CollisionZeta.lean:251-255)
+  #print axioms Omega.fib_entry_point_21
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1430,6 +1448,19 @@ def coreAuditTargets : List String :=
   , "Omega.charPoly_A2_sign_changes"
   , "Omega.perron_A2_in_interval"
   , "Omega.perron_A3_in_interval"
-  , "Omega.charPoly_A3_root_in_01" ]
+  , "Omega.charPoly_A3_root_in_01"
+  -- Round 34: Möbius 轨道扩展 + 判别式 + Pisano 周期 + Fibonacci 入口点 (Phase 39)
+  , "Omega.primitive_orbit_A2_extended"
+  , "Omega.primitive_orbit_A3_extended"
+  , "Omega.charPoly_A2_discriminant_positive"
+  , "Omega.charPoly_A3_discriminant_positive"
+  , "Omega.collision_kernels_all_real_eigenvalues"
+  , "Omega.perron_root_separated_by_three"
+  , "Omega.pisano_period_2"
+  , "Omega.pisano_period_3"
+  , "Omega.pisano_period_5"
+  , "Omega.pisano_period_7"
+  , "Omega.pisano_period_6"
+  , "Omega.fib_entry_point_21" ]
 
 end Omega.Audit

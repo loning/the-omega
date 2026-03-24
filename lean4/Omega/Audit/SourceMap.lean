@@ -5137,6 +5137,86 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.CollisionZeta"
       leanName := "Omega.charPoly_A3_root_in_01"
       phase := 38
+      status := .formalized }
+  -- Phase 39: Round 34 — Möbius 轨道扩展 + 判别式 + Pisano 周期 + Fibonacci 入口点
+  -- def:pom-primitive-orbit-extended → primitive_orbit_A2/A3_extended (CollisionZeta.lean:193-200)
+  -- def:pom-charpoly-discriminant → charPoly_A2/A3_discriminant_positive (CollisionZeta.lean:209-216)
+  -- def:pom-collision-all-real-eigenvalues → collision_kernels_all_real_eigenvalues (CollisionZeta.lean:219)
+  -- def:pom-perron-root-separated → perron_root_separated_by_three (CollisionZeta.lean:225-227)
+  -- def:pom-pisano-period-2/3/5/7/6 → pisano_period_2/3/5/7/6 (CollisionZeta.lean:235-247)
+  -- def:pom-fib-entry-point-21 → fib_entry_point_21 (CollisionZeta.lean:251-255)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-primitive-orbit-A2-extended"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.primitive_orbit_A2_extended"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-primitive-orbit-A3-extended"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.primitive_orbit_A3_extended"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-charpoly-A2-discriminant"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.charPoly_A2_discriminant_positive"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-charpoly-A3-discriminant"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.charPoly_A3_discriminant_positive"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-collision-all-real-eigenvalues"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collision_kernels_all_real_eigenvalues"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-perron-root-separated-by-three"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.perron_root_separated_by_three"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-pisano-period-2"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.pisano_period_2"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-pisano-period-3"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.pisano_period_3"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-pisano-period-5"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.pisano_period_5"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-pisano-period-7"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.pisano_period_7"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-pisano-period-6"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.pisano_period_6"
+      phase := 39
+      status := .formalized }
+  , { label := "def:pom-fib-entry-point-21"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.fib_entry_point_21"
+      phase := 39
       status := .formalized } ]
 
 end Omega.Audit

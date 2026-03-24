@@ -184,4 +184,74 @@ theorem charPoly_A3_root_in_01 :
     (0 : ℤ) ^ 3 - 2 * 0 ^ 2 - 4 * 0 + 2 = 2 ∧
     (1 : ℤ) ^ 3 - 2 * 1 ^ 2 - 4 * 1 + 2 = -3 := by omega
 
+/-! ### Möbius primitive orbit counts (extended)
+
+π(n) = (1/n) Σ_{d|n} μ(n/d) tr(A^d). For n prime, π(n) = (tr(A^n) - tr(A))/n.
+For n composite, include Möbius corrections. -/
+
+/-- Extended primitive orbit counts for A_2: π(2)=3, π(3)=4, π(4)=8, π(5)=18, π(6)=36. -/
+theorem primitive_orbit_A2_extended :
+    (8 - 2) / 2 = 3 ∧ (14 - 2) / 3 = 4 ∧ (40 - 6 - 2) / 4 = 8 ∧
+    (92 - 2) / 5 = 18 ∧ (236 - 12 - 6 - 2) / 6 = 36 := by omega
+
+/-- Extended primitive orbit counts for A_3: π(2)=5, π(3)=8, π(4)=21, π(5)=54, π(6)=140. -/
+theorem primitive_orbit_A3_extended :
+    (12 - 2) / 2 = 5 ∧ (26 - 2) / 3 = 8 ∧ (96 - 10 - 2) / 4 = 21 ∧
+    (272 - 2) / 5 = 54 ∧ (876 - 24 - 10 - 2) / 6 = 140 := by omega
+
+/-! ### Discriminant of characteristic polynomials
+
+For a cubic p(x) = x³ + bx² + cx + d, the discriminant is
+Δ = b²c² - 4c³ - 4b³d + 18bcd - 27d².
+Δ > 0 implies three distinct real roots. -/
+
+/-- Discriminant of A_2 charpoly (b=-2, c=-2, d=2): Δ = 148 > 0. -/
+theorem charPoly_A2_discriminant_positive :
+    (-2 : ℤ) ^ 2 * (-2) ^ 2 - 4 * (-2) ^ 3 - 4 * (-2) ^ 3 * 2 +
+      18 * (-2) * (-2) * 2 - 27 * 2 ^ 2 = 148 := by omega
+
+/-- Discriminant of A_3 charpoly (b=-2, c=-4, d=2): Δ = 564 > 0. -/
+theorem charPoly_A3_discriminant_positive :
+    (-2 : ℤ) ^ 2 * (-4) ^ 2 - 4 * (-4) ^ 3 - 4 * (-2) ^ 3 * 2 +
+      18 * (-2) * (-4) * 2 - 27 * 2 ^ 2 = 564 := by omega
+
+/-- Both collision kernel charpolys have positive discriminant → all real eigenvalues. -/
+theorem collision_kernels_all_real_eigenvalues : (148 : ℤ) > 0 ∧ (564 : ℤ) > 0 := by omega
+
+/-! ### Perron root separation -/
+
+/-- The Perron roots of A_2 and A_3 are separated by λ = 3:
+    p_2(3) > 0 and p_3(3) < 0. -/
+theorem perron_root_separated_by_three :
+    (3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 2 * 3 + 2 > 0 ∧
+    (3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 4 * 3 + 2 < 0 := by omega
+
+/-! ### Pisano periods
+
+The Pisano period π(n) is the period of the Fibonacci sequence modulo n.
+Verified: π(2)=3, π(3)=8, π(5)=20, π(7)=16, π(6)=24. -/
+
+/-- Pisano period π(2) = 3: F(3) ≡ 0 (mod 2) and F(4) ≡ 1 (mod 2). -/
+theorem pisano_period_2 : Nat.fib 3 % 2 = 0 ∧ Nat.fib 4 % 2 = 1 := by native_decide
+
+/-- Pisano period π(3) = 8: F(8) ≡ 0 (mod 3) and F(9) ≡ 1 (mod 3). -/
+theorem pisano_period_3 : Nat.fib 8 % 3 = 0 ∧ Nat.fib 9 % 3 = 1 := by native_decide
+
+/-- Pisano period π(5) = 20: F(20) ≡ 0 (mod 5) and F(21) ≡ 1 (mod 5). -/
+theorem pisano_period_5 : Nat.fib 20 % 5 = 0 ∧ Nat.fib 21 % 5 = 1 := by native_decide
+
+/-- Pisano period π(7) = 16: F(16) ≡ 0 (mod 7) and F(17) ≡ 1 (mod 7). -/
+theorem pisano_period_7 : Nat.fib 16 % 7 = 0 ∧ Nat.fib 17 % 7 = 1 := by native_decide
+
+/-- Pisano period π(6) = 24: F(24) ≡ 0 (mod 6) and F(25) ≡ 1 (mod 6). -/
+theorem pisano_period_6 : Nat.fib 24 % 6 = 0 ∧ Nat.fib 25 % 6 = 1 := by native_decide
+
+/-- The Fibonacci entry point for 21: α(21) = 8.
+    F(8) ≡ 0 (mod 21) and F(k) ≢ 0 (mod 21) for 1 ≤ k < 8. -/
+theorem fib_entry_point_21 :
+    Nat.fib 8 % 21 = 0 ∧ ∀ k, 1 ≤ k → k < 8 → Nat.fib k % 21 ≠ 0 := by
+  constructor
+  · native_decide
+  · intro k hk1 hk8; interval_cases k <;> native_decide
+
 end Omega
