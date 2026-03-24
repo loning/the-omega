@@ -23,6 +23,7 @@ import Omega.Folding.FiberSpectrum
 import Omega.Folding.HankelSpectrum
 import Omega.Folding.FiberArithmeticProperties
 import Omega.Folding.Entropy
+import Omega.Folding.CollisionZetaOperator
 import Omega.Audit.SourceMap
 
 namespace Omega.Audit
@@ -1717,6 +1718,13 @@ def coreAuditTargets : List String :=
   , "Omega.spectral_flow_sign_change"
   , "Omega.reduced_determinant_residue_golden"
   , "Omega.p_typical_frobenius_instances"
-  , "Omega.witt_ghost_trace_correspondence" ]
+  , "Omega.witt_ghost_trace_correspondence"
+  -- Round 58: CollisionZeta拆分 + Fredholm等式可判定 + 矩异常比代理 + 异常通道计数 + 群逆Vieta代理 + 对称群阶数
+  -- (CollisionZetaOperator.lean:392-400)
+  , "Omega.fredholm_equality_decidable_finite"
+  , "Omega.moment_anomaly_ratio_proxy"
+  , "Omega.anomaly_channel_count"
+  , "Omega.group_inverse_vieta_proxy"
+  , "Omega.symmetric_group_orders" ]
 
 end Omega.Audit

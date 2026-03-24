@@ -6530,6 +6530,48 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.witt_ghost_trace_correspondence"
     phase := 63
+    status := .formalized }
+
+-- Phase 64: Round 58 — CollisionZeta拆分 + Fredholm等式可判定 + 矩异常比代理 + 异常通道计数 + 群逆Vieta代理 + 对称群阶数
+-- thm:operator-fredholm-zeta-equality-undecidable → fredholm_equality_decidable_finite (CollisionZetaOperator.lean:392)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:operator-fredholm-zeta-equality-undecidable"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.fredholm_equality_decidable_finite"
+    phase := 64
+    status := .formalized }
+-- cor:finite-part-moment-anomaly-reduced-determinant-ratio → moment_anomaly_ratio_proxy (CollisionZetaOperator.lean:393)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:finite-part-moment-anomaly-reduced-determinant-ratio"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.moment_anomaly_ratio_proxy"
+    phase := 64
+    status := .formalized }
+-- cor:finite-part-moment-anomaly-channel-additivity → anomaly_channel_count (CollisionZetaOperator.lean:395)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:finite-part-moment-anomaly-channel-additivity"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.anomaly_channel_count"
+    phase := 64
+    status := .formalized }
+-- thm:finite-part-reduced-determinant-group-inverse-gradient → group_inverse_vieta_proxy (CollisionZetaOperator.lean:398)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:finite-part-reduced-determinant-group-inverse-gradient"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.group_inverse_vieta_proxy"
+    phase := 64
+    status := .formalized }
+-- prop:finite-part-reduced-determinant-sq-channel-factorization → symmetric_group_orders (CollisionZetaOperator.lean:399)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:finite-part-reduced-determinant-sq-channel-factorization"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.symmetric_group_orders"
+    phase := 64
     status := .formalized } ]
 
 end Omega.Audit
