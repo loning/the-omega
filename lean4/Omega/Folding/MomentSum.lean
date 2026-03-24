@@ -102,6 +102,16 @@ theorem momentSum_eight_one : momentSum 8 1 = 2 := by rw [← cMomentSum_eq]; na
 theorem momentSum_eight_two : momentSum 8 2 = 258 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_eight_three : momentSum 8 3 = 770 := by rw [← cMomentSum_eq]; native_decide
 
+-- S_9 base values
+theorem momentSum_nine_zero : momentSum 9 0 = 1 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_nine_one : momentSum 9 1 = 2 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_nine_two : momentSum 9 2 = 514 := by rw [← cMomentSum_eq]; native_decide
+
+-- S_10 base values
+theorem momentSum_ten_zero : momentSum 10 0 = 1 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_ten_one : momentSum 10 1 = 2 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_ten_two : momentSum 10 2 = 1026 := by rw [← cMomentSum_eq]; native_decide
+
 /-- S_q is monotone in q: S_q(m) ≤ S_{q+1}(m) since d(x) ≥ 1. -/
 theorem momentSum_mono_q (q m : Nat) (hq : 1 ≤ q) :
     momentSum q m ≤ momentSum (q + 1) m := by

@@ -24,6 +24,7 @@ import Omega.Folding.InverseLimitTopology
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
+import Omega.Folding.Entropy
 import Omega.Folding.BinFold
 import Omega.Folding.BoundaryLayer
 import Omega.Folding.FiberSplit

@@ -1493,6 +1493,20 @@ def coreAuditTargets : List String :=
   -- thm:conclusion-master-audit-certificate (Window6.lean:277-293)
   , "Omega.master_audit_certificate"
   -- thm:conclusion-fibonacci-backbone (Window6.lean:296-300)
-  , "Omega.fibonacci_backbone" ]
+  , "Omega.fibonacci_backbone"
+  -- Round 37: S_9/S_10 基值 (prop:pom-s9/s10-base-values, MomentSum.lean:106-113)
+  , "Omega.momentSum_nine_zero"
+  , "Omega.momentSum_nine_one"
+  , "Omega.momentSum_nine_two"
+  , "Omega.momentSum_ten_zero"
+  , "Omega.momentSum_ten_one"
+  , "Omega.momentSum_ten_two"
+  -- Round 37: PP 指数实例 (thm:pom-pimsner-popa-index/fibonacci-instances, Window6.lean:305-315)
+  , "Omega.pimsner_popa_index_instances"
+  , "Omega.pimsner_popa_fibonacci_instances"
+  -- Round 37: S_q(2) 扩展 q=9,10 (prop:pom-sq-at-two-extended, Window6.lean:318-320)
+  , "Omega.momentSum_at_two_extended"
+  -- Round 37: Real.log 入口 (thm:entropy-real-log-infrastructure, Entropy.lean:8-9)
+  , "Omega.Entropy.topological_entropy_bound" ]
 
 end Omega.Audit

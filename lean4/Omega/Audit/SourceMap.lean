@@ -5333,6 +5333,74 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Window6"
       leanName := "Omega.fibonacci_backbone"
       phase := 41
+      status := .formalized }
+  -- Phase 42: Round 37 — S_9/S_10 基值 + PP 指数 + S_q(2) 扩展 + Real.log 入口
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  -- prop:pom-s9-base-values → momentSum_nine_zero/one/two (MomentSum.lean:106-108)
+  , { label := "prop:pom-s9-base-values-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_nine_zero"
+      phase := 42
+      status := .formalized }
+  , { label := "prop:pom-s9-base-values-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_nine_one"
+      phase := 42
+      status := .formalized }
+  , { label := "prop:pom-s9-base-values-two"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_nine_two"
+      phase := 42
+      status := .formalized }
+  -- prop:pom-s10-base-values → momentSum_ten_zero/one/two (MomentSum.lean:111-113)
+  , { label := "prop:pom-s10-base-values-zero"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_ten_zero"
+      phase := 42
+      status := .formalized }
+  , { label := "prop:pom-s10-base-values-one"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_ten_one"
+      phase := 42
+      status := .formalized }
+  , { label := "prop:pom-s10-base-values-two"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_ten_two"
+      phase := 42
+      status := .formalized }
+  -- thm:pom-pimsner-popa-index-instances → pimsner_popa_index_instances (Window6.lean:305-308)
+  , { label := "thm:pom-pimsner-popa-index-instances"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.pimsner_popa_index_instances"
+      phase := 42
+      status := .formalized }
+  -- thm:pom-pimsner-popa-fibonacci-instances → pimsner_popa_fibonacci_instances (Window6.lean:311-315)
+  , { label := "thm:pom-pimsner-popa-fibonacci-instances"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.pimsner_popa_fibonacci_instances"
+      phase := 42
+      status := .formalized }
+  -- prop:pom-sq-at-two-extended → momentSum_at_two_extended (Window6.lean:318-320)
+  , { label := "prop:pom-sq-at-two-extended"
+      sourcePath := "sections/body/pom/subsec__pom-fiber-spectrum.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.momentSum_at_two_extended"
+      phase := 42
+      status := .formalized }
+  -- thm:entropy-real-log-infrastructure → topological_entropy_bound (Entropy.lean:8-9)
+  , { label := "thm:entropy-real-log-infrastructure"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.topological_entropy_bound"
+      phase := 42
       status := .formalized } ]
 
 end Omega.Audit

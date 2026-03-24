@@ -299,4 +299,24 @@ theorem fibonacci_backbone :
     Nat.fib 4 = 3 ∧ Nat.fib 6 = 8 := by
   refine ⟨?_, ?_, ?_, ?_⟩ <;> native_decide
 
+/-! ### Pimsner-Popa index instances -/
+
+/-- Maximum fiber multiplicities at key resolutions: D(6)=5, D(8)=8, D(10)=13. -/
+theorem pimsner_popa_index_instances :
+    X.maxFiberMultiplicity 6 = 5 ∧ X.maxFiberMultiplicity 8 = 8 ∧
+    X.maxFiberMultiplicity 10 = 13 :=
+  ⟨X.maxFiberMultiplicity_six, X.maxFiberMultiplicity_eight, X.maxFiberMultiplicity_ten⟩
+
+/-- D(m) = F(m/2 + 2) for even m (instances): D(6)=F(5)=5, D(8)=F(6)=8, D(10)=F(7)=13. -/
+theorem pimsner_popa_fibonacci_instances :
+    X.maxFiberMultiplicity 6 = Nat.fib 5 ∧
+    X.maxFiberMultiplicity 8 = Nat.fib 6 ∧
+    X.maxFiberMultiplicity 10 = Nat.fib 7 :=
+  ⟨X.maxFiberMultiplicity_six, X.maxFiberMultiplicity_eight, X.maxFiberMultiplicity_ten⟩
+
+/-- S_q(2) = 2^q + 2 extended: verified for q = 9, 10. -/
+theorem momentSum_at_two_extended :
+    momentSum 9 2 = 2 ^ 9 + 2 ∧ momentSum 10 2 = 2 ^ 10 + 2 := by
+  rw [momentSum_nine_two, momentSum_ten_two]; omega
+
 end Omega
