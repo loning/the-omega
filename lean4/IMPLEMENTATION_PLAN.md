@@ -32,14 +32,15 @@
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
 **modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射, restrict 保零（restrict_zero）, restrict 保一（restrict_one）, restrict 满射（restrict_surjective）, restrict 纤维非空（restrict_fiber_nonempty）
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
-**最大纤维多重度（完整）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m)（maxFiberMultiplicity_le_add）; 基值 D_0..D_10（native_decide 验证，11个定理）; 偶数闭式 D(2k)=F_{k+2} for k=1..5（maxFiberMultiplicity_even）; 奇数闭式 D(2k+1)=2F_k for k=1..4（maxFiberMultiplicity_odd）
+**最大纤维多重度（部分完成）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m)（maxFiberMultiplicity_le_add）; 基值 D_0..D_10（native_decide 验证，11个定理）; 偶数闭式 D(2k)=F_{k+2} 目前仅对 k=1..5 无条件成立（maxFiberMultiplicity_even）; 奇数闭式 D(2k+1)=2F_k 目前仅对 k=1..4 无条件成立（maxFiberMultiplicity_odd）; 一般闭式仍以 two-step recurrence 为条件（maxFiberMultiplicity_even_of_two_step / maxFiberMultiplicity_odd_of_two_step）
 **纤维谱定义与基值（计划9 Phase 0+1）**：cFiberMultiset（所有纤维多重度的多重集）; cFiberSpectrum（排序去重降序列表）; cNthMaxFiber（第 k 大多重度，0-indexed）; fiberValueSet/fiberValueSet_nonempty（noncomputable 版本）; 一致性验证 cNthMaxFiber_zero_eq_0/5/7（与 cMaxFiberMult 吻合）; 完整谱基值 cFiberSpectrum_zero..seven（m=0..7，native_decide）; D_m^{(2)} 基值 cNthMaxFiber_second_four..seven（m=4..7）; D_m^{(3)} 基值 cNthMaxFiber_third_four..seven（m=4..7）；D_m^{(2)} 扩展基值 cNthMaxFiber_second_eight/nine/ten（m=8,9,10，native_decide）；闭式公式待后续（def:pom-top-fiber-spectrum 定义层完整）
 **矩谱（Round 8）**：momentSum（S_q(m) 定义）; momentSum_zero（S_0=F_{m+1}）; momentSum_one（S_1=2^m）; momentSum_le_max_pow（S_q ≤ D_m^{q-1}·2^m）; paperFib_le_pow（F_{m+1} ≤ 2^m 增长上界）
 **矩谱 S_2 基值（Round 9）**：cMomentSum（S_q 可计算版本）; cMomentSum_eq（可计算=noncomputable 桥接）; momentSum_two_zero..six（S_2(m) 基值 m=0..6，native_decide 验证）
 **碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
 **Fibonacci 多项式（Round 11）**：fibPoly（Fibonacci 多项式 F_n(x) 定义，递推 F_{n+2}=F_{n+1}+x·F_n）; fibPoly_zero/one/succ_succ（simp 引理）; fibPoly_eval_one（F_n(1)=fib(n)）; fibPoly_two/three（具体值）; pathIndSetPoly（路径独立集多项式 I_ℓ(x)=F_{ℓ+2}(x) 定义）; pathIndSetPoly_eval_one（I_ℓ(1)=fib(ℓ+2)）；闭式系数公式留后续（def:pom-fibonacci-polynomial 完整，thm:pom-path-indset-poly-closed 部分）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
-**Frontier 包装（Round 17）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）
+**Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
+
 **POM 存在性与熵率骨架（Round 18）**：max_fiber_achieved（thm:pom-max-fiber 存在部分，∃ x 达到最大纤维多重度）; fiber_pigeonhole（prop:pom-fiber-pigeonhole，m≥2 时 ∃ x 纤维多重度 ≥ 2）; max_fiber_positive（thm:pom-max-fiber 正性，D_m > 0）; max_fiber_fib_bound（cor:pom-D-rec 上界，D(m+2) ≤ D(m+1)+D(m)，Frontier 包装）; entropy_gap_strict（prop:pom-projection-entropy 严格版，F_{m+2} < 2^m for m≥2）; projection_ratio_decreasing（投影比率递减，F_{m+3}·2^m ≤ F_{m+2}·2^{m+1}）; projection_ratio_positive（F_{m+2} > 0）; cMaxFiberAchievers（达到者数定义 + 基值 m=0..7 native_decide，thm:pom-max-achievers-phase-stabilization 前置）
 **达到者数有界 + 次大纤维基值扩展 + S_q 不等式（Round 19）**：cMaxFiberAchievers_le_univ（达到者数 ≤ |X_m|，thm:pom-max-achievers-phase-stabilization 有界部分）; cNthMaxFiber_second_eight/nine/ten（D_m^{(2)} 扩展基值 m=8,9,10，thm:pom-second-max-fiber-closed-form 数值前置）; momentSum_pos（S_q(m) > 0，prop:pom-sq-pos）; momentSum_cauchy_schwarz_restated（S_2·S_0 ≥ S_1²，prop:pom-sq-cauchy-schwarz-restated，Frontier 包装）
 **Rényi 上界 + 纤维概率端点 + 奇偶纤维计数（Round 20）**：renyi_upper_bound（S_q ≤ D_m^{q-1}·2^m，prop:pom-rq-universal-bounds）; moment_sum_one_eq_pow（S_1=2^m）; moment_sum_zero_eq_card（S_0=F_{m+2}）; max_fiber_le_pow（D_m ≤ 2^m，cor:pom-max-fiber-rate-endpoint）; max_fiber_ge_one（1 ≤ D_m）; max_fiber_prob_bounds（1 ≤ D_m ∧ D_m ≤ 2^m，联合界）; cOddFiberCount/cEvenFiberCount（奇偶纤维计数定义 + 基值 m=0..6，cor:pom-fiber-parity 前置）
@@ -110,7 +111,7 @@
 ### Phase B：POM 纤维谱（计划 7-12）
 
 7. ✅ **Fibonacci 融合次乘性与分量合并增益**：证明 `fib_fusion` 恒等式、严格次乘性链 (`fib_prod_lt_fib_fusion`, `fib_fusion_lt_fib_sum`, `fib_prod_lt_fib_sum`)，以及分量合并增益上下界 (`fib_component_fusion_gain`, `fib_component_fusion_gain_lower`, `fib_component_fusion_gain_ge`)
-8. ✅ **[完整] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber`)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`cor:pom-D-rec`)，基值 $D_0..D_{10}$ via native_decide（11个定理），偶数闭式 $D_{2k} = F_{k+2}$ for $k=1..5$（`maxFiberMultiplicity_even`），奇数闭式 $D_{2k+1} = 2F_k$ for $k=1..4$（`maxFiberMultiplicity_odd`）—— Phase 17
+8. **[部分完成] 最大纤维多重度定义与基本性质**：`maxFiberMultiplicity` 定义 (`def:pom-top-fiber-spectrum`)，achiever 存在性、上界、正性 (`thm:pom-max-fiber`)，递推上界 $D(m+2) \le D(m+1) + D(m)$ (`cor:pom-D-rec`)，基值 $D_0..D_{10}$ via native_decide（11个定理），偶数闭式 $D_{2k} = F_{k+2}$ 目前无条件覆盖 $k=1..5$（`maxFiberMultiplicity_even`），奇数闭式 $D_{2k+1} = 2F_k$ 目前无条件覆盖 $k=1..4$（`maxFiberMultiplicity_odd`）；一般闭式仍以 `two_step` 递推为前提（`maxFiberMultiplicity_even_of_two_step` / `maxFiberMultiplicity_odd_of_two_step`）—— Phase 17
 9. **[部分完成] 纤维谱定义与基值（Phase 0+1+扩展 完成）**：cFiberMultiset/cFiberSpectrum/cNthMaxFiber 定义层; 完整谱基值 m=0..7; D_m^{(2)} 基值 m=4..7（native_decide）; D_m^{(3)} 基值 m=4..7（native_decide）; D_m^{(2)} 扩展基值 m=8,9,10（cNthMaxFiber_second_eight/nine/ten, Round 19）; cMaxFiberAchievers_le_univ（达到者数上界）; cOddFiberCount/cEvenFiberCount（奇偶纤维计数定义 + 基值 m=0..6，Round 20）; cSecondMaxFiberMult 定义+基值 m=2..7+cSecondMaxFiberMult_eq_prev（D^{(2)}(m)=D(m-1) for 4≤m≤7，Round 21 FiberSplit）；待完成：D_{2k}^{(3)}=F_{k+2}-F_{k-3} 的闭合公式（Phase 2）
 10. **[深化完成-部分] 碰撞核矩阵**：collisionKernel2（S_2 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+2M-2I; S_2 递推 m=0..3 验证（native_decide）; collisionKernel3（S_3 伴随矩阵定义）; tr=2, det=-2; Cayley-Hamilton M³=2M²+4M-2I; S_3 基值 m=0..6 + 递推 m=0..3 验证（Round 13）; S_2(7)=544, S_3(7)=2504 扩展基值; S_2/S_3 递推有界版（m≤4，interval_cases）; S_2/S_3 递推条件性一般版（Round 14）; 特征多项式 p(A)=0 验证（collisionKernel2/3_charpoly_eval，Phase 26）; 特征多项式系数（collisionKernel2/3_charpoly_coefficients，Phase 26）; 共享不变量（collision_kernels_shared_invariants，Phase 26）; Vieta 公式验证（root_sum_eq_trace/root_product，Phase 26）; Hankel 行列式 + 最小阶数（hankelS2/3 系列，Phase 26）; S_2/S_3 严格单调 m≤6（momentSum_two/three_strict_mono_verified，Phase 26）; 条件性一般单调（momentSum_two/three_mono_of_recurrence，Phase 26）; 归一化 Hankel + 4x4 det=0 + rank_exact_three + 联合单调性 m=0..7（Round 20 补充）; D(m) 严格单调性（maxFiberMultiplicity_strict/mono_verified + mono/strict_mono_of_two_step，FiberSplit, Round 21）; 完整无界归纳证明待后续; Perron-Frobenius 完整性质待后续
 11. **mod-3 障碍**：证明纤维重写中的 mod-3 不变量
@@ -146,7 +147,28 @@
 29. **Čech 上同调障碍**：构造前缀站点上的 H² 胶合障碍
 30. **Stokes-dyadic 通量 ζ 函数有理性**：正则语言的 ζ 函数有理延拓
 
-## 4. 执行优先级
+## 4. 已知问题与表述修正
+
+1. **Frontier 猜想/假设层存在过弱占位定义**：
+   - `UniformGapConjecture := ∃ _ : UniformGap, True` 目前只表达“存在某个 0<η<1 的实数”，尚未把 η 与 defect / scan-error 动力学联系起来。
+   - `DefectBudget m := ∀ k, ∃ C : Nat, C ≤ m + k` 过弱，取 `C = 0` 即平凡成立，因此 `GlobalDefectBudget` / `GlobalDefectBudgetConjecture` 目前不构成有内容的数学命题。
+   - `NoncommutativeStokesLift := ∀ _ : Nat, ∃ liftCarrier : Type, Nonempty liftCarrier` 仅是类型非空占位，尚未表达任何 Stokes 型结构。
+   - 处理原则：上述对象在替换为真实命题前，只能视为占位接口，不计入“已形式化 conjecture”。
+2. **证书层（Certificates / Conditional）主要是工程接口，不是新增数学结果**：
+   - 多数 `Valid` 直接定义为原命题本身，例如 `ScanErrorCertificate.Valid := scanError = claimed`、`DefectCertificate.Valid := globalDefect ... = claimed`。
+   - 因而 `*_hasCertificate` / `*_certificate_sound` / `*_valid` 大量只是把底层定理重新封装进证书 API，不能单独宣称为新的数学定理；它们应计入“论文接口包装/可追溯性层”。
+3. **MaxFiber / FiberSpectrum / MomentSum 中若干结论目前属于“基值验证 + 有界范围 + 条件性推广”**：
+   - `maxFiberMultiplicity_even` / `maxFiberMultiplicity_odd` 目前只覆盖小范围 `k`；一般闭式仍依赖 `two_step` 条件版本。
+   - `S_q`、纤维谱、碰撞核矩阵中的不少命题是 `native_decide` 基值或有界区间验证，应与统一结构证明区分记账，不宜写成“完整闭式/完整递推已证”。
+   - 后续文档中凡出现“完整”“闭式”“无界递推已完成”字样，必须明确区分：无条件证明、条件性证明、有界验证、纯计算基值。
+4. **`Audit/NoAxiom.lean` 目前仍是手工审计清单，不是 CI 级自动闸门**：
+   - 当前文件主要提供 `#print axioms` 的人工检查命令和目标列表；“无公理”结论尚未被构造成可执行、可失败的自动审计目标。
+   - 后续需要补一个可由 `lake build`/独立 audit target 调用的自动检查步骤。
+5. **覆盖率/完成度口径需要分层统计**：
+   - 底层数学层（Core/Folding/SPG/Graph）与 Frontier 包装层必须分开统计。
+   - `native_decide` 基值、接口重导出、证书包装，不应与结构性定理、统一归纳证明、同构/极限定理混合计数。
+
+## 5. 执行优先级
 
 ### 立即可执行（1-2 轮内完成）
 
@@ -174,17 +196,20 @@
 11. 计划 20-22（动力系统系列）
 12. 计划 27-30（远层探索系列）
 
-## 5. 质量闸门
+## 6. 质量闸门
 
 - `lake build` 全量通过
 - 不留 `sorry` 或 `admit`
 - 新定理进入 `Audit/NoAxiom.lean` 审计
+- `Audit/NoAxiom.lean` 逐步升级为可执行自动审计目标，避免停留在手工 `#print axioms` 清单
 - 论文对应定理进入 `Frontier/Conditional.lean`
 - 每轮提交后推送到远程
 
-## 6. 工程约束
+## 7. 工程约束
 
 - 不新增 `axiom`
 - mathlib 已有定理只做桥接包装
+- 占位 conjecture / assumption 不得写成平凡真命题；若仅为接口占位，必须显式标注为 placeholder
 - 猜想不伪装为已证结论
+- 证书包装、重导出接口、`native_decide` 基值不得冒充为结构性新定理
 - 半成品不留主分支
