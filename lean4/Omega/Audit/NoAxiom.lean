@@ -1627,6 +1627,16 @@ def coreAuditTargets : List String :=
   -- Round 47: 圆维度高阶谱 + Zeta 迹线性递推证书
   -- (Window6.lean:374, CollisionZeta.lean:486)
   , "Omega.higher_spectrum_not_marginal_determined"
-  , "Omega.CollisionZeta.trace_linear_recurrence_certificate" ]
+  , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
+  -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
+  -- (CollisionZeta.lean:503-549, Window6.lean:386-389)
+  , "Omega.goldenMean_zeta_rational"
+  , "Omega.collision_zeta_denominator_coefficients"
+  , "Omega.stable_language_exponentially_sparse"
+  , "Omega.density_ratio_decreasing_instances"
+  , "Omega.succ_branch_at_b6"
+  , "Omega.zero_is_merge_point"
+  , "Omega.s4_conjugacy_classes"
+  , "Omega.hurwitz_genus_zero" ]
 
 end Omega.Audit

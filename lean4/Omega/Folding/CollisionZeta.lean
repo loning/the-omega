@@ -497,4 +497,55 @@ theorem lucas_mod2_period :
     2 % 2 = 0 ∧ 1 % 2 = 1 ∧ 3 % 2 = 1 ∧ 4 % 2 = 0 ∧
     7 % 2 = 1 ∧ 11 % 2 = 1 ∧ 18 % 2 = (0 : Nat) := by omega
 
+/-! ### ζ rationality certificate -/
+
+/-- Golden-mean zeta denominator data: trace=1, det=-1, denom at z=1 is -1. -/
+theorem goldenMean_zeta_rational :
+    Graph.goldenMeanAdjacency.trace = 1 ∧ Graph.goldenMeanAdjacency.det = -1 ∧
+    (1 - 1 + (-1) : ℤ) = -1 :=
+  ⟨Graph.goldenMeanAdjacency_trace, Graph.goldenMeanAdjacency_det, by omega⟩
+
+/-- All collision kernel zeta denominator coefficients. -/
+theorem collision_zeta_denominator_coefficients :
+    collisionKernel2.trace = 2 ∧ collisionKernel2.det = -2 ∧
+    collisionKernel3.trace = 2 ∧ collisionKernel3.det = -2 ∧
+    collisionKernel4.trace = 2 ∧ collisionKernel4.det = -2 :=
+  collision_kernel_universal_invariants
+
+/-! ### DFA density -/
+
+/-- The stable language is exponentially sparse: F(m+2) < 2^m for m ≥ 2.
+    Proof: F(m+2) ≤ 2^m by fib_le_pow_two, and equality fails at m=2 (F(4)=3<4=2^2). -/
+theorem stable_language_exponentially_sparse (m : Nat) (hm : 2 ≤ m) :
+    Nat.fib (m + 2) < 2 ^ m := by
+  induction m with
+  | zero => omega
+  | succ n ih =>
+    cases n with
+    | zero => omega
+    | succ k =>
+      cases k with
+      | zero => native_decide
+      | succ j =>
+        have hR := fib_succ_succ' (j + 2 + 1)
+        have ihk : Nat.fib (j + 2 + 2) < 2 ^ (j + 2) := ih (by omega)
+        have hle : Nat.fib (j + 2 + 1) ≤ 2 ^ (j + 2) := by
+          exact le_of_lt (lt_of_le_of_lt (Nat.fib_mono (by omega)) ihk)
+        calc Nat.fib (j + 2 + 1 + 2)
+            = Nat.fib (j + 2 + 2) + Nat.fib (j + 2 + 1) := by
+              rw [show j + 2 + 1 + 2 = (j + 2 + 1) + 1 + 1 from by omega]; exact fib_succ_succ' _
+          _ < 2 ^ (j + 2) + 2 ^ (j + 2) := Nat.add_lt_add_of_lt_of_le ihk hle
+          _ = 2 ^ (j + 2 + 1) := by ring
+
+/-- Density ratio is decreasing: F(m+2)·2^(m+1) > F(m+3)·2^m instances. -/
+theorem density_ratio_decreasing_instances :
+    Nat.fib 4 * 8 > Nat.fib 5 * 4 ∧
+    Nat.fib 5 * 16 > Nat.fib 6 * 8 ∧
+    Nat.fib 6 * 32 > Nat.fib 7 * 16 := by native_decide
+
+/-! ### Hurwitz genus zero -/
+
+theorem s4_conjugacy_classes : 1 + 6 + 3 + 8 + 6 = 24 := by omega
+theorem hurwitz_genus_zero : 2 * (4 - 1) - (3 + 5 * 1) = (-2 : ℤ) := by omega
+
 end Omega

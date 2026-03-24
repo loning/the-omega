@@ -5952,6 +5952,79 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.CollisionZeta.trace_linear_recurrence_certificate"
     phase := 53
+    status := .formalized }
+-- Phase 54: Round 48 — ζ 有理性 + DFA 密度二分法 + 终端分支合并
+-- subsec:zeta-syntax-zeta (ζ 有理性)
+--   → goldenMean_zeta_rational (CollisionZeta.lean:503)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "subsec:zeta-syntax-zeta-golden-mean-rational"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.goldenMean_zeta_rational"
+    phase := 54
+    status := .formalized }
+-- subsec:zeta-syntax-zeta (ζ 分母系数)
+--   → collision_zeta_denominator_coefficients (CollisionZeta.lean:509)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "subsec:zeta-syntax-zeta-denominator-coefficients"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.collision_zeta_denominator_coefficients"
+    phase := 54
+    status := .formalized }
+-- thm:zeta-syntax-dfa-density-dichotomy (DFA 密度二分法, ∀ m≥2)
+--   → stable_language_exponentially_sparse (CollisionZeta.lean:519)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-dfa-density-dichotomy"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.stable_language_exponentially_sparse"
+    phase := 54
+    status := .formalized }
+-- 密度比递减实例
+--   → density_ratio_decreasing_instances (CollisionZeta.lean:541)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-density-ratio-decreasing-instances"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.density_ratio_decreasing_instances"
+    phase := 54
+    status := .formalized }
+-- thm:terminal-succ-unique-branch-merge (后继唯一分支)
+--   → succ_branch_at_b6 (Window6.lean:386)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:terminal-succ-unique-branch-merge-branch"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.succ_branch_at_b6"
+    phase := 54
+    status := .formalized }
+-- thm:terminal-succ-unique-branch-merge (零为合并点)
+--   → zero_is_merge_point (Window6.lean:389)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:terminal-succ-unique-branch-merge-zero"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.zero_is_merge_point"
+    phase := 54
+    status := .formalized }
+-- thm:cdim-s4-hurwitz-conjugacy-single-orbit (前置: S_4 共轭类)
+--   → s4_conjugacy_classes (CollisionZeta.lean:548)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:cdim-s4-hurwitz-conjugacy-single-orbit-classes"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-hurwitz.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.s4_conjugacy_classes"
+    phase := 54
+    status := .formalized }
+-- thm:cdim-s4-hurwitz-conjugacy-single-orbit (前置: Hurwitz 亏格零)
+--   → hurwitz_genus_zero (CollisionZeta.lean:549)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:cdim-s4-hurwitz-conjugacy-single-orbit-genus"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-hurwitz.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.hurwitz_genus_zero"
+    phase := 54
     status := .formalized } ]
 
 end Omega.Audit

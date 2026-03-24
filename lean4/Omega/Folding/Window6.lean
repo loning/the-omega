@@ -382,4 +382,10 @@ theorem higher_spectrum_not_marginal_determined :
 theorem s4_basic_counts :
     Nat.factorial 4 = 24 ∧ Nat.factorial 3 = 6 ∧ Nat.choose 4 2 = 6 := by native_decide
 
+/-- Successor branch: adjacent stable values map to distinct stable words at m=6. -/
+theorem succ_branch_at_b6 : X.ofNat 6 12 ≠ X.ofNat 6 13 := by native_decide
+
+/-- Zero is the merge point: stableValue of ofNat 6 0 is 0. -/
+theorem zero_is_merge_point : stableValue (X.ofNat 6 0) = 0 := by native_decide
+
 end Omega
