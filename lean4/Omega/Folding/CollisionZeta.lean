@@ -433,4 +433,47 @@ theorem collision_kernel2_mulVec_step1 :
 theorem collision_kernel2_mulVec_step2 :
     collisionKernel2.mulVec ![6, 14, 36] = ![14, 36, 88] := by native_decide
 
+/-! ### Collision pairs: S_2 = |{(w₁,w₂) : Fold w₁ = Fold w₂}| -/
+
+/-- The set of collision pairs: ordered pairs of words that fold to the same stable word. -/
+noncomputable def collisionPairs (m : Nat) : Finset (Word m × Word m) :=
+  Finset.univ.filter (fun p => Fold p.1 = Fold p.2)
+
+/-- Computable version of collision pairs count. -/
+def cCollisionPairsCount (m : Nat) : Nat :=
+  (@Finset.univ (Word m × Word m) inferInstance).filter
+    (fun p => decide (Fold p.1 = Fold p.2)) |>.card
+
+/-- S_2(m) = |collisionPairs(m)|: the second moment equals the number of collision pairs.
+
+    Proof: ∑_x |fiber(x)|² = ∑_x |{(w₁,w₂) ∈ fiber(x) × fiber(x)}|
+    = |{(w₁,w₂) : Fold w₁ = Fold w₂}| since the fibers partition Word m. -/
+theorem momentSum_two_eq_collision (m : Nat) :
+    momentSum 2 m = (Finset.univ.filter
+      (fun p : Word m × Word m => Fold p.1 = Fold p.2)).card := by
+  classical
+  simp only [momentSum, sq]
+  -- ∑_x d(x)² = ∑_x |fiber(x)|² = |{(w₁,w₂) : Fold w₁ = Fold w₂}|
+  simp_rw [show ∀ (x : X m), X.fiberMultiplicity x * X.fiberMultiplicity x =
+    (X.fiber x ×ˢ X.fiber x).card from fun x => (Finset.card_product _ _).symm]
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨w₁, w₂⟩
+    simp only [Finset.mem_biUnion, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and, X.mem_fiber]
+    exact ⟨fun ⟨x, hw₁, hw₂⟩ => hw₁.trans hw₂.symm,
+      fun h => ⟨Fold w₁, rfl, h.symm⟩⟩
+  · intro x _ y _ hne
+    simp only [Function.onFun, Finset.disjoint_product]
+    left
+    rw [Finset.disjoint_left]
+    intro w hwx hwy
+    exact hne ((X.mem_fiber.1 hwx).symm.trans (X.mem_fiber.1 hwy))
+
+/-- Computable verification: cCollisionPairsCount matches S_2 for m = 0..4. -/
+theorem collision_pairs_count_verified :
+    cCollisionPairsCount 0 = 1 ∧ cCollisionPairsCount 1 = 2 ∧
+    cCollisionPairsCount 2 = 6 ∧ cCollisionPairsCount 3 = 14 ∧
+    cCollisionPairsCount 4 = 36 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
+
 end Omega

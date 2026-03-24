@@ -6690,6 +6690,39 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "collision_kernel2_mulVec_step2"
     phase := 67
+    status := .formalized }
+-- Round 64: 碰撞对恒等式 (CollisionZeta.lean:436-480)
+-- def:pom-s2 → Omega.collisionPairs (CollisionZeta.lean:439) — 碰撞对集合定义
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:collisionPairs"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.collisionPairs"
+    phase := 68
+    status := .formalized }
+-- def:pom-s2 → Omega.cCollisionPairsCount (CollisionZeta.lean:443) — 碰撞对数可计算版本
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:cCollisionPairsCount"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.cCollisionPairsCount"
+    phase := 68
+    status := .formalized }
+-- def:pom-s2 → Omega.momentSum_two_eq_collision (CollisionZeta.lean:451) — S_2(m) = 碰撞对数恒等式（完全证明）
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "bridge:pom-s2-collision-pair-identity"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.momentSum_two_eq_collision"
+    phase := 68
+    status := .formalized }
+-- def:pom-s2 → Omega.collision_pairs_count_verified (CollisionZeta.lean:474) — 碰撞对数 native_decide 验证 m=0..4
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:collision_pairs_count_verified"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.collision_pairs_count_verified"
+    phase := 68
     status := .formalized } ]
 
 end Omega.Audit

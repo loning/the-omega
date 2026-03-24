@@ -1743,6 +1743,9 @@ def coreAuditTargets : List String :=
   , "fiberMultiplicity_split_last_bit"
   , "collision_kernel2_mulVec_base"
   , "collision_kernel2_mulVec_step1"
-  , "collision_kernel2_mulVec_step2" ]
+  , "collision_kernel2_mulVec_step2"
+  -- Round 64: 碰撞对恒等式 — S_2(m) = collision pair count (CollisionZeta.lean:436-480)
+  , "Omega.momentSum_two_eq_collision"
+  , "Omega.collision_pairs_count_verified" ]
 
 end Omega.Audit
