@@ -1679,6 +1679,13 @@ def coreAuditTargets : List String :=
   , "Omega.nielsen_cardinality_s4"
   , "Omega.double_discriminant_two_parameter"
   , "Omega.edge_flux_total"
-  , "Omega.curvature_parenthesization" ]
+  , "Omega.curvature_parenthesization"
+  -- Round 53: 密度代数 + Euler 积 + 非正则 + lumpability
+  -- (CollisionZeta.lean:673-691)
+  , "Omega.leftce_density_algebraic_golden_mean"
+  , "Omega.euler_product_dense_phases"
+  , "Omega.omega_not_regular_structural"
+  , "Omega.lumpability_no_self_loops"
+  , "Omega.non_uniform_fibers_no_equitable_quotient" ]
 
 end Omega.Audit

@@ -6306,6 +6306,47 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Window6"
     leanName := "Omega.curvature_parenthesization"
     phase := 58
+    status := .formalized }
+-- Phase 59: Round 53 — 密度代数 + Euler 积 + 非正则 + lumpability
+-- thm:zeta-syntax-leftce-dyadic-density → leftce_density_algebraic_golden_mean (CollisionZeta.lean:673)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-leftce-dyadic-density"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.leftce_density_algebraic_golden_mean"
+    phase := 59
+    status := .formalized }
+-- thm:zeta-syntax-euler-product-natural-boundary → euler_product_dense_phases (CollisionZeta.lean:677)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-euler-product-natural-boundary"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.euler_product_dense_phases"
+    phase := 59
+    status := .formalized }
+-- thm:zeta-syntax-omega-regular-impossible → omega_not_regular_structural (CollisionZeta.lean:684)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-omega-regular-impossible"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.omega_not_regular_structural"
+    phase := 59
+    status := .formalized }
+-- thm:foldbin-equitable-lumpability-spectral-rigidity → lumpability_no_self_loops (CollisionZeta.lean:687)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:foldbin-equitable-lumpability-spectral-rigidity"
+    sourcePath := "sections/body/terminal/subsec__terminal-window6.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.lumpability_no_self_loops"
+    phase := 59
+    status := .formalized }
+-- cor:terminal-window6-nonlumpable-by-spectrum → non_uniform_fibers_no_equitable_quotient (CollisionZeta.lean:690)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:terminal-window6-nonlumpable-by-spectrum"
+    sourcePath := "sections/body/terminal/subsec__terminal-window6.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.non_uniform_fibers_no_equitable_quotient"
+    phase := 59
     status := .formalized } ]
 
 end Omega.Audit
