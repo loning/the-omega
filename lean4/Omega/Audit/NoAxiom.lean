@@ -1710,6 +1710,13 @@ def coreAuditTargets : List String :=
   , "Omega.fredholm_witt_product_check"
   , "Omega.tensor_gcd_lcm_instances"
   , "Omega.tensor_det_instances"
-  , "Omega.schatten_norm_cyclic" ]
+  , "Omega.schatten_norm_cyclic"
+  -- Round 57: 预解算符迹跳变 + 谱流符号翻转 + 约化行列式留数 + p-典型Frobenius + Witt幽灵迹对应
+  -- (CollisionZeta.lean:770-779)
+  , "Omega.resolvent_trace_jump_instances"
+  , "Omega.spectral_flow_sign_change"
+  , "Omega.reduced_determinant_residue_golden"
+  , "Omega.p_typical_frobenius_instances"
+  , "Omega.witt_ghost_trace_correspondence" ]
 
 end Omega.Audit

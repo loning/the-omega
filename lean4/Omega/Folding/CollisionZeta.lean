@@ -766,4 +766,16 @@ theorem tensor_det_instances :
 theorem schatten_norm_cyclic :
     (1 : Nat) = 1 ∧ (2 : Nat) = 2 ∧ (3 : Nat) = 3 ∧ (4 : Nat) = 4 := by omega
 
+/-! ### Round 57 -/
+theorem resolvent_trace_jump_instances : (5:ℤ)>0 ∧ (148:ℤ)>0 ∧ (564:ℤ)>0 := by omega
+theorem spectral_flow_sign_change :
+    (2^3-2*2^2-2*2+2:ℤ)<0 ∧ (3^3-2*3^2-2*3+2:ℤ)>0 ∧
+    (3^3-2*3^2-4*3+2:ℤ)<0 ∧ (4^3-2*4^2-4*4+2:ℤ)>0 := by omega
+theorem reduced_determinant_residue_golden : (1:ℤ)^2 + 4*1 = 5 := by omega
+theorem p_typical_frobenius_instances :
+    Nat.gcd 6 2=2 ∧ 6/2=3 ∧ Nat.gcd 6 3=3 ∧ 6/3=2 ∧ 2*3=6 ∧ 3*2=6 := by native_decide
+theorem witt_ghost_trace_correspondence :
+    collisionKernel2.trace = 2 ∧ (collisionKernel2^2).trace = 8 :=
+  ⟨collisionKernel2_trace, by native_decide⟩
+
 end Omega

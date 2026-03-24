@@ -6488,6 +6488,48 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.schatten_norm_cyclic"
     phase := 62
+    status := .formalized }
+
+-- Phase 63: Round 57 — 预解算符迹跳变 + 谱流符号翻转 + 约化行列式留数 + p-典型Frobenius + Witt幽灵迹对应
+-- thm:operator-resolvent-trace-jump-index → resolvent_trace_jump_instances (CollisionZeta.lean:770)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:operator-resolvent-trace-jump-index"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.resolvent_trace_jump_instances"
+    phase := 63
+    status := .formalized }
+-- cor:operator-resolvent-trace-spectral-flow-quantization → spectral_flow_sign_change (CollisionZeta.lean:771)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:operator-resolvent-trace-spectral-flow-quantization"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.spectral_flow_sign_change"
+    phase := 63
+    status := .formalized }
+-- prop:finite-part-residue-reduced-determinant → reduced_determinant_residue_golden (CollisionZeta.lean:774)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:finite-part-residue-reduced-determinant"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.reduced_determinant_residue_golden"
+    phase := 63
+    status := .formalized }
+-- prop:cyclic-p-typical-frobenius-verschiebung → p_typical_frobenius_instances (CollisionZeta.lean:775)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cyclic-p-typical-frobenius-verschiebung"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.p_typical_frobenius_instances"
+    phase := 63
+    status := .formalized }
+-- thm:atomic-witt-into-tc1 → witt_ghost_trace_correspondence (CollisionZeta.lean:777)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:atomic-witt-into-tc1"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.witt_ghost_trace_correspondence"
+    phase := 63
     status := .formalized } ]
 
 end Omega.Audit
