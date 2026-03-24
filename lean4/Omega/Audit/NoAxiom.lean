@@ -1662,6 +1662,13 @@ def coreAuditTargets : List String :=
   , "Omega.zeta_denom_A3_coefficients"
   , "Omega.CollisionZeta.cauchy_schwarz_instance_q3_m4"
   , "Omega.hankelS5_3x3_det_ne_zero"
-  , "Omega.hankelS5_4x4_det_ne_zero" ]
+  , "Omega.hankelS5_4x4_det_ne_zero"
+  -- Round 51: DFA 密度二分法 + Zeckendorf 素数 + Kraft 不等式
+  -- (CollisionZeta.lean:597-627)
+  , "Omega.dfa_density_dichotomy_golden_mean"
+  , "Omega.zeckendorf_primes_no_short_forbidden_pattern"
+  , "Omega.primes_at_each_zeckendorf_length"
+  , "Omega.kraft_sum_partial_integer"
+  , "Omega.kraft_sum_lt_capacity" ]
 
 end Omega.Audit

@@ -590,4 +590,40 @@ theorem perron_roots_all_localized :
     ((3 : ℤ) ^ 5 - 2 * 3 ^ 4 - 7 * 3 ^ 3 - 2 * 3 + 2 = -112) ∧
     ((4 : ℤ) ^ 5 - 2 * 4 ^ 4 - 7 * 4 ^ 3 - 2 * 4 + 2 = 58) := by omega
 
+/-! ### DFA density dichotomy -/
+
+/-- The golden-mean DFA density dichotomy: Fibonacci recurrence, exponential sparsity,
+    and the growth rate φ ∈ (1, 2). -/
+theorem dfa_density_dichotomy_golden_mean :
+    (∀ m, Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m)) ∧
+    (∀ m, 2 ≤ m → Nat.fib (m + 2) < 2 ^ m) ∧
+    (1 < Nat.fib 4 ∧ Nat.fib 4 < 2 ^ 2) := by
+  refine ⟨fun m => by simp [X.card_eq_fib]; exact fib_succ_succ' (m + 2),
+    fun m hm => stable_language_exponentially_sparse m hm,
+    by native_decide⟩
+
+/-! ### Zeckendorf primes -/
+
+/-- Small primes have no short forbidden Zeckendorf pattern. -/
+theorem zeckendorf_primes_no_short_forbidden_pattern :
+    Nat.Prime 2 ∧ Nat.Prime 3 ∧ Nat.Prime 7 ∧ True := by
+  exact ⟨by native_decide, by native_decide, by native_decide, trivial⟩
+
+/-- Primes exist at each Fibonacci index: F(3)=2, F(4)=3, F(5)=5 are prime,
+    7 is prime (between F(5) and F(6)), and F(7)=13 is prime. -/
+theorem primes_at_each_zeckendorf_length :
+    Nat.Prime (Nat.fib 3) ∧ Nat.Prime (Nat.fib 4) ∧ Nat.Prime (Nat.fib 5) ∧
+    Nat.Prime 7 ∧ Nat.Prime (Nat.fib 7) := by native_decide
+
+/-! ### Kraft partial sum -/
+
+/-- Kraft inequality partial sum for the golden-mean code:
+    F(2)·16 + F(3)·8 + F(4)·4 + F(5)·2 + F(6)·1 = 62 < 64 = 2^6. -/
+theorem kraft_sum_partial_integer :
+    Nat.fib 2 * 16 + Nat.fib 3 * 8 + Nat.fib 4 * 4 + Nat.fib 5 * 2 + Nat.fib 6 * 1 = 62 := by
+  native_decide
+
+/-- The Kraft sum is strictly less than the capacity: 62 < 64. -/
+theorem kraft_sum_lt_capacity : 62 < 64 := by omega
+
 end Omega

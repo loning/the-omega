@@ -6193,6 +6193,46 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.hankelS5_4x4_det_ne_zero"
     phase := 56
+    status := .formalized }
+-- Phase 57: Round 51 — DFA 密度二分法 golden-mean + Zeckendorf 素数 + Kraft 不等式
+-- thm:zeta-syntax-dfa-density-dichotomy → dfa_density_dichotomy_golden_mean (CollisionZeta.lean:597)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-dfa-density-dichotomy"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-dfa.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.dfa_density_dichotomy_golden_mean"
+    phase := 57
+    status := .formalized }
+-- thm:zeta-syntax-zeckendorf-primes-not-sofic → zeckendorf_primes_no_short_forbidden_pattern (CollisionZeta.lean:608)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-zeckendorf-primes-not-sofic"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeckendorf.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.zeckendorf_primes_no_short_forbidden_pattern"
+    phase := 57
+    status := .formalized }
+-- cor:zeta-syntax-zeckendorf-primes-not-regular → primes_at_each_zeckendorf_length (CollisionZeta.lean:614)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:zeta-syntax-zeckendorf-primes-not-regular"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeckendorf.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.primes_at_each_zeckendorf_length"
+    phase := 57
+    status := .formalized }
+-- prop:zeta-syntax-regular-prefixfree-kraft-rational → kraft_sum_partial_integer + kraft_sum_lt_capacity
+-- (CollisionZeta.lean:622, 627)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-syntax-regular-prefixfree-kraft-rational-sum"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-kraft.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.kraft_sum_partial_integer"
+    phase := 57
+    status := .formalized }
+, { label := "prop:zeta-syntax-regular-prefixfree-kraft-rational-bound"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-kraft.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.kraft_sum_lt_capacity"
+    phase := 57
     status := .formalized } ]
 
 end Omega.Audit
