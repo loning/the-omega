@@ -1746,6 +1746,12 @@ def coreAuditTargets : List String :=
   , "collision_kernel2_mulVec_step2"
   -- Round 64: 碰撞对恒等式 — S_2(m) = collision pair count (CollisionZeta.lean:436-480)
   , "Omega.momentSum_two_eq_collision"
-  , "Omega.collision_pairs_count_verified" ]
+  , "Omega.collision_pairs_count_verified"
+  -- Round 66: Fibonacci奇偶性 + 最大纤维界 + 偶奇偶性 (CollisionZeta.lean:260-303, FiberSplit.lean:232, MaxFiber.lean:178)
+  , "fib_mod_two_table"
+  , "fib_even_iff_mod3"
+  , "fib_odd_iff_not_mod3"
+  , "maxFiber_lt_half_wordcount"
+  , "maxFiberMultiplicity_even_parity" ]
 
 end Omega.Audit

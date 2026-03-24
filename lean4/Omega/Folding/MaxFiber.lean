@@ -172,6 +172,16 @@ theorem maxFiberMultiplicity_odd (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 4) :
     | exact maxFiberMultiplicity_seven
     | exact maxFiberMultiplicity_nine
 
+/-- D(2k) is even iff k+2 ≡ 0 (mod 3), verified for k = 1..5.
+    cor:pom-fiber-parity-mod3 (numerical instances).
+    D(2k) = F(k+2), so Even(D(2k)) iff Even(F(k+2)) iff (k+2)%3=0. -/
+theorem maxFiberMultiplicity_even_parity (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 5) :
+    Even (maxFiberMultiplicity (2 * k)) ↔ (k + 2) % 3 = 0 := by
+  interval_cases k <;> simp_all only [show 2 * 1 = 2 from rfl, show 2 * 2 = 4 from rfl,
+    show 2 * 3 = 6 from rfl, show 2 * 4 = 8 from rfl, show 2 * 5 = 10 from rfl,
+    maxFiberMultiplicity_two, maxFiberMultiplicity_four, maxFiberMultiplicity_six,
+    maxFiberMultiplicity_eight, maxFiberMultiplicity_ten] <;> decide
+
 /-- Auxiliary: even closed form for all j ≤ n, by bounded strong induction. -/
 private theorem maxFiberMultiplicity_even_aux
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =

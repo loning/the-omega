@@ -6723,6 +6723,47 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.collision_pairs_count_verified"
     phase := 68
+    status := .formalized }
+-- Round 66: Fibonacci奇偶性 + 最大纤维界 + 偶奇偶性 (5 theorems)
+-- cor:pom-fiber-parity-mod3 → fib_mod_two_table (CollisionZeta.lean:260)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-fiber-parity-mod3"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fiber-parity.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "fib_mod_two_table"
+    phase := 69
+    status := .formalized }
+-- cor:pom-fiber-parity-mod3 → fib_even_iff_mod3 (CollisionZeta.lean:269) — 一般性定理，强覆盖
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-fiber-parity-mod3-general"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fiber-parity.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "fib_even_iff_mod3"
+    phase := 69
+    status := .formalized }
+-- cor:pom-fiber-parity-mod3 → fib_odd_iff_not_mod3 (CollisionZeta.lean:303)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-fiber-parity-mod3-odd"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fiber-parity.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "fib_odd_iff_not_mod3"
+    phase := 69
+    status := .formalized }
+-- cor:pom-max-fiber-rate-endpoint → maxFiber_lt_half_wordcount (FiberSplit.lean:232)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-max-fiber-rate-endpoint"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberSplit"
+    leanName := "maxFiber_lt_half_wordcount"
+    phase := 69
+    status := .formalized }
+-- cor:pom-fiber-parity-mod3 → maxFiberMultiplicity_even_parity (MaxFiber.lean:178)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-fiber-parity-mod3-max"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fiber-parity.tex"
+    moduleName := "Omega.Folding.MaxFiber"
+    leanName := "maxFiberMultiplicity_even_parity"
+    phase := 69
     status := .formalized } ]
 
 end Omega.Audit

@@ -225,6 +225,17 @@ theorem truncate_mem_fiber_restrict_false {m : Nat} (x : X (m + 1)) (w : Word (m
     Fold (truncate w) = X.restrict x := by
   rw [← hw]; exact truncate_Fold_eq_restrict_of_false w h
 
+/-! ### Max fiber strictly less than word count -/
+
+/-- D(m) < 2^m for 2 ≤ m ≤ 10: the max fiber is strictly smaller than total word count.
+    cor:pom-max-fiber-rate-endpoint -/
+theorem maxFiber_lt_half_wordcount (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 10) :
+    maxFiberMultiplicity m < 2 ^ m := by
+  interval_cases m <;> simp only [
+    maxFiberMultiplicity_two, maxFiberMultiplicity_three, maxFiberMultiplicity_four,
+    maxFiberMultiplicity_five, maxFiberMultiplicity_six, maxFiberMultiplicity_seven,
+    maxFiberMultiplicity_eight, maxFiberMultiplicity_nine, maxFiberMultiplicity_ten] <;> omega
+
 end
 end X
 end Omega

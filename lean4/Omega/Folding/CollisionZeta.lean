@@ -254,6 +254,56 @@ theorem fib_entry_point_21 :
   · native_decide
   · intro k hk1 hk8; interval_cases k <;> native_decide
 
+/-! ### Fibonacci parity (Pisano π(2)=3) -/
+
+/-- Verified instances: F(n) % 2 for n = 1..12 (one full Pisano cycle). -/
+theorem fib_mod_two_table :
+    Nat.fib 1 % 2 = 1 ∧ Nat.fib 2 % 2 = 1 ∧ Nat.fib 3 % 2 = 0 ∧
+    Nat.fib 4 % 2 = 1 ∧ Nat.fib 5 % 2 = 1 ∧ Nat.fib 6 % 2 = 0 ∧
+    Nat.fib 7 % 2 = 1 ∧ Nat.fib 8 % 2 = 1 ∧ Nat.fib 9 % 2 = 0 ∧
+    Nat.fib 10 % 2 = 1 ∧ Nat.fib 11 % 2 = 1 ∧ Nat.fib 12 % 2 = 0 := by
+  native_decide
+
+/-- Fibonacci parity law: F(n) is even iff n ≡ 0 (mod 3).
+    Proof by strong induction using the Pisano period π(2)=3. -/
+theorem fib_even_iff_mod3 (n : Nat) (hn : 1 ≤ n) :
+    Even (Nat.fib n) ↔ n % 3 = 0 := by
+  -- Bounded version: check all n ≤ 30 computationally, then use Pisano period π(2)=3.
+  -- For the general case, we prove by induction on n with step size 3.
+  -- F(n+3) = F(n+2)+F(n+1) = 2F(n+1)+F(n), so F(n+3)%2 = F(n)%2.
+  -- Thus Even(F(n+3)) ↔ Even(F(n)), and (n+3)%3 = n%3.
+  have step : ∀ k, Nat.fib (k + 3) % 2 = Nat.fib k % 2 := by
+    intro k
+    -- F(k+3) = F(k+2)+F(k+1) and F(k+2) = F(k+1)+F(k)
+    -- So F(k+3) = 2*F(k+1)+F(k), hence F(k+3) ≡ F(k) (mod 2)
+    have h1 : Nat.fib (k + 1 + 2) = Nat.fib (k + 1 + 1) + Nat.fib (k + 1) :=
+      fib_succ_succ' (k + 1)
+    have h2 : Nat.fib (k + 2) = Nat.fib (k + 1) + Nat.fib k := fib_succ_succ' k
+    have h_eq1 : Nat.fib (k + 1 + 2) = Nat.fib (k + 3) := rfl
+    have h_eq2 : Nat.fib (k + 1 + 1) = Nat.fib (k + 2) := rfl
+    rw [h_eq1, h_eq2] at h1
+    omega
+  rw [Nat.even_iff]
+  suffices h : ∀ k, Nat.fib k % 2 = Nat.fib (k % 3) % 2 by
+    rw [h n]
+    have hcases : n % 3 = 0 ∨ n % 3 = 1 ∨ n % 3 = 2 := by omega
+    rcases hcases with h0 | h1 | h2
+    · rw [h0]; simp [Nat.fib]
+    · rw [h1]; simp [Nat.fib]
+    · rw [h2]; simp [Nat.fib]
+  intro k; induction k using Nat.strongRecOn with
+  | _ k ih =>
+    by_cases hk3 : k < 3
+    · interval_cases k <;> simp [Nat.fib]
+    · have hmod : k % 3 = (k - 3) % 3 := by omega
+      rw [hmod, ← ih (k - 3) (by omega), show k = (k - 3) + 3 from by omega]
+      exact step (k - 3)
+
+/-- Fibonacci parity: F(n) is odd iff n ≢ 0 (mod 3). -/
+theorem fib_odd_iff_not_mod3 (n : Nat) (hn : 1 ≤ n) :
+    ¬ Even (Nat.fib n) ↔ n % 3 ≠ 0 := by
+  rw [fib_even_iff_mod3 n hn]
+
 /-! ### Golden-mean primitive orbits -/
 
 /-- Golden-mean primitive orbit counts: π_GM(1)=1, π_GM(2)=1, π_GM(3)=1, π_GM(4)=1, π_GM(5)=2, π_GM(6)=2.
