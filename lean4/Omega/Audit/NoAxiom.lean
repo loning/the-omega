@@ -1637,6 +1637,13 @@ def coreAuditTargets : List String :=
   , "Omega.succ_branch_at_b6"
   , "Omega.zero_is_merge_point"
   , "Omega.s4_conjugacy_classes"
-  , "Omega.hurwitz_genus_zero" ]
+  , "Omega.hurwitz_genus_zero"
+  -- Round 49: Ghost 素数不相容 + Hurwitz 覆叠亏格 + Zeta 辅助
+  -- (CollisionZeta.lean:556-591)
+  , "Omega.ghost_prime_incompatibility_proxy"
+  , "Omega.hurwitz_covering_genus"
+  , "Omega.riemann_hurwitz_s4"
+  , "Omega.collision_kernel_dimensions"
+  , "Omega.perron_roots_all_localized" ]
 
 end Omega.Audit

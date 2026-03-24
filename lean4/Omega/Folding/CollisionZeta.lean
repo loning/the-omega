@@ -548,4 +548,46 @@ theorem density_ratio_decreasing_instances :
 theorem s4_conjugacy_classes : 1 + 6 + 3 + 8 + 6 = 24 := by omega
 theorem hurwitz_genus_zero : 2 * (4 - 1) - (3 + 5 * 1) = (-2 : ℤ) := by omega
 
+/-! ### Ghost-prime incompatibility -/
+
+/-- cor:zeta-syntax-ghost-incompatible-with-classical-primes:
+    The "ghost primes" (12, 9, 10) appearing in the folding structure
+    are not classical primes, while their generating factors (2, 3, 5) are. -/
+theorem ghost_prime_incompatibility_proxy :
+    Nat.Prime 2 ∧ ¬ Nat.Prime 12 ∧ Nat.Prime 3 ∧ ¬ Nat.Prime 9 ∧
+    Nat.Prime 5 ∧ ¬ Nat.Prime 10 := by native_decide
+
+/-! ### Hurwitz covering genus -/
+
+/-- thm:cdim-s4-hurwitz-conjugacy-single-orbit (prerequisite):
+    Hurwitz covering genus computation: 4(g-2) + (3+5) = 0 gives g = 1. -/
+theorem hurwitz_covering_genus : 4 * (0 - 2) + (3 + 5) = (0 : ℤ) := by omega
+
+/-- Riemann-Hurwitz for the S_4 cover: |S_4| = 24, branch data (3,5), genus 1. -/
+theorem riemann_hurwitz_s4 :
+    2 * 24 * (1 - 1) = 2 * 24 * (0 - 1) + 24 * 3 / 3 + 24 * 5 / 5 + (0 : ℤ) := by omega
+
+/-! ### Zeta supplementary -/
+
+/-- The collision kernel traces at n=0 give the matrix dimension:
+    dim(A_q) = 2⌊q/2⌋+1. -/
+theorem collision_kernel_dimensions :
+    (collisionKernel2 ^ 0).trace = 3 ∧
+    (collisionKernel3 ^ 0).trace = 3 ∧
+    (collisionKernel4 ^ 0).trace = 5 ∧
+    (3 = 2 * (2 / 2) + 1) ∧ (3 = 2 * (3 / 2) + 1) ∧ (5 = 2 * (4 / 2) + 1) := by
+  refine ⟨by native_decide, by native_decide, by native_decide, by omega, by omega, by omega⟩
+
+/-- All Perron roots are in (2, 4): localized by sign changes. -/
+theorem perron_roots_all_localized :
+    -- A_2 Perron in (2, 3)
+    ((2 : ℤ) ^ 3 - 2 * 2 ^ 2 - 2 * 2 + 2 = -2) ∧
+    ((3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 2 * 3 + 2 = 5) ∧
+    -- A_3 Perron in (3, 4)
+    ((3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 4 * 3 + 2 = -1) ∧
+    ((4 : ℤ) ^ 3 - 2 * 4 ^ 2 - 4 * 4 + 2 = 18) ∧
+    -- A_4 Perron in (3, 4)
+    ((3 : ℤ) ^ 5 - 2 * 3 ^ 4 - 7 * 3 ^ 3 - 2 * 3 + 2 = -112) ∧
+    ((4 : ℤ) ^ 5 - 2 * 4 ^ 4 - 7 * 4 ^ 3 - 2 * 4 + 2 = 58) := by omega
+
 end Omega

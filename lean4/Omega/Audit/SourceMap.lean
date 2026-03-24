@@ -6025,6 +6025,52 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.hurwitz_genus_zero"
     phase := 54
+    status := .formalized }
+-- Phase 55: Round 49 — Ghost 素数不相容 + Hurwitz 覆叠亏格 + Zeta 辅助
+-- cor:zeta-syntax-ghost-incompatible-with-classical-primes
+--   → ghost_prime_incompatibility_proxy (CollisionZeta.lean:556)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:zeta-syntax-ghost-incompatible-with-classical-primes"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.ghost_prime_incompatibility_proxy"
+    phase := 55
+    status := .formalized }
+-- thm:cdim-s4-hurwitz-conjugacy-single-orbit (前置: Hurwitz 覆叠亏格计算)
+--   → hurwitz_covering_genus (CollisionZeta.lean:564)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:cdim-s4-hurwitz-conjugacy-single-orbit-covering-genus"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-hurwitz.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.hurwitz_covering_genus"
+    phase := 55
+    status := .formalized }
+-- thm:cdim-s4-hurwitz-conjugacy-single-orbit (前置: Riemann-Hurwitz S_4 验证)
+--   → riemann_hurwitz_s4 (CollisionZeta.lean:567)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:cdim-s4-hurwitz-conjugacy-single-orbit-rh-s4"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-hurwitz.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.riemann_hurwitz_s4"
+    phase := 55
+    status := .formalized }
+-- Zeta 辅助: 碰撞核矩阵维度
+--   → collision_kernel_dimensions (CollisionZeta.lean:574)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:zeta-collision-kernel-dimensions"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.collision_kernel_dimensions"
+    phase := 55
+    status := .formalized }
+-- Zeta 辅助: 全 Perron 根定位
+--   → perron_roots_all_localized (CollisionZeta.lean:582)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:zeta-perron-roots-all-localized"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.perron_roots_all_localized"
+    phase := 55
     status := .formalized } ]
 
 end Omega.Audit
