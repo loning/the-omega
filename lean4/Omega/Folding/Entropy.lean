@@ -105,4 +105,51 @@ theorem topological_entropy_eq_log_phi :
     _ = Real.log (Nat.fib (n + 2) : ℝ) / (n : ℝ) := by
           rw [div_eq_mul_inv, mul_comm]
 
+/-! ### Golden ratio arithmetic-geometric properties -/
+
+/-- φ > 3/2. -/
+theorem goldenRatio_gt_three_half : φ > 3 / 2 := by
+  have hsq : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
+  -- φ > 3/2 ↔ φ² > (3/2)² = 9/4 (since φ > 0)
+  -- φ² = φ + 1, so need φ + 1 > 9/4 ↔ φ > 5/4
+  -- φ > 1 > 5/4? No, 1 < 5/4. Use: φ² = φ+1, if φ ≤ 3/2 then φ+1 ≤ 5/2
+  -- but (3/2)² = 9/4 = 2.25, and if φ ≤ 3/2 then φ² ≤ (3/2)² = 9/4
+  -- but φ² = φ+1 ≥ 1+1 = 2 (since φ > 1). Need sharper.
+  -- Actually: φ > 1, φ² = φ+1. If φ ≤ 3/2, then φ+1 ≤ 5/2 and φ² = φ+1 ≤ 5/2.
+  -- Also φ² ≥ φ·(3/2) (if φ ≥ 3/2). Contradiction approach:
+  nlinarith [Real.one_lt_goldenRatio, Real.goldenRatio_sq]
+
+/-- φ < 5/3. -/
+theorem goldenRatio_lt_five_thirds : φ < 5 / 3 := by
+  nlinarith [Real.goldenRatio_sq, Real.one_lt_goldenRatio]
+
+/-- φ = 1 + 1/φ (the defining fixed-point equation). -/
+theorem goldenRatio_eq_one_add_inv : φ = 1 + φ⁻¹ := by
+  have hne : φ ≠ 0 := ne_of_gt Real.goldenRatio_pos
+  have hsq : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
+  have key : φ - 1 = φ⁻¹ := by
+    rw [eq_comm, inv_eq_of_mul_eq_one_left]
+    nlinarith
+  linarith
+
+/-- φ is irrational. -/
+theorem phi_irrational : Irrational φ := Real.goldenRatio_irrational
+
+/-! ### Entropy rate comparison -/
+
+/-- The topological entropy log φ is strictly less than log 2
+    (the entropy of the full shift). -/
+theorem entropy_ordering_proxy : Real.log φ < Real.log 2 :=
+  Real.log_lt_log Real.goldenRatio_pos goldenRatio_lt_two
+
+/-- The entropy gap: log 2 - log φ = log(2/φ) > 0. -/
+theorem entropy_gap_pos : Real.log 2 - Real.log φ > 0 := by
+  linarith [entropy_ordering_proxy]
+
+/-! ### Binet formula (from mathlib) -/
+
+/-- Binet formula: F(n) = (φ^n - ψ^n) / √5 (from mathlib). -/
+theorem binet_formula (n : Nat) : (Nat.fib n : ℝ) = (φ ^ n - ψ ^ n) / Real.sqrt 5 :=
+  Real.coe_fib_eq n
+
 end Omega.Entropy

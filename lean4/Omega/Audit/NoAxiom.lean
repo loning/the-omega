@@ -699,6 +699,15 @@ Run these commands manually during audit:
   -- Phase 44 (Plan 20 complete): 拓扑熵 h_top = log φ (Entropy.lean:80-107)
   -- cor:folding-stable-syntax-entropy-logqdim 完整版: Cesaro + 望远镜求和 + Real 分析极限
   #print axioms Omega.Entropy.topological_entropy_eq_log_phi
+  -- Round 39: 圆维度章节前置 (Entropy.lean:111-153)
+  -- 黄金比例算术几何 + 熵率比较 + Binet 公式
+  #print axioms Omega.Entropy.goldenRatio_gt_three_half
+  #print axioms Omega.Entropy.goldenRatio_lt_five_thirds
+  #print axioms Omega.Entropy.goldenRatio_eq_one_add_inv
+  #print axioms Omega.Entropy.phi_irrational
+  #print axioms Omega.Entropy.entropy_ordering_proxy
+  #print axioms Omega.Entropy.entropy_gap_pos
+  #print axioms Omega.Entropy.binet_formula
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1537,6 +1546,15 @@ def coreAuditTargets : List String :=
   , "Omega.Entropy.fib_ratio_tendsto"
   , "Omega.Entropy.log_continuous_at_phi"
   -- per-step 收敛：核心突破
-  , "Omega.Entropy.log_fib_ratio_tendsto" ]
+  , "Omega.Entropy.log_fib_ratio_tendsto"
+  -- Round 39: 圆维度章节前置 (Entropy.lean:111-153)
+  -- 黄金比例算术几何 + 熵率比较 + Binet 公式
+  , "Omega.Entropy.goldenRatio_gt_three_half"
+  , "Omega.Entropy.goldenRatio_lt_five_thirds"
+  , "Omega.Entropy.goldenRatio_eq_one_add_inv"
+  , "Omega.Entropy.phi_irrational"
+  , "Omega.Entropy.entropy_ordering_proxy"
+  , "Omega.Entropy.entropy_gap_pos"
+  , "Omega.Entropy.binet_formula" ]
 
 end Omega.Audit

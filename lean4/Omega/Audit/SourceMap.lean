@@ -5484,6 +5484,58 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.topological_entropy_eq_log_phi"
       phase := 44
+      status := .formalized }
+  -- Phase 45: 圆维度章节前置 (Round 39)
+  -- def:cdim-audit-stability-separation 等前置算术 → 黄金比例算术几何 + 熵率比较 + Binet 公式
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  -- goldenRatio_gt_three_half → φ > 3/2 (Entropy.lean:111-120)
+  , { label := "aux:cdim-phi-gt-three-half"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_gt_three_half"
+      phase := 45
+      status := .formalized }
+  -- goldenRatio_lt_five_thirds → φ < 5/3 (Entropy.lean:123-124)
+  , { label := "aux:cdim-phi-lt-five-thirds"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_lt_five_thirds"
+      phase := 45
+      status := .formalized }
+  -- goldenRatio_eq_one_add_inv → φ = 1 + 1/φ (Entropy.lean:127-133)
+  , { label := "aux:cdim-phi-fixed-point"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_eq_one_add_inv"
+      phase := 45
+      status := .formalized }
+  -- phi_irrational → φ 无理 (Entropy.lean:136)
+  , { label := "aux:cdim-phi-irrational"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.phi_irrational"
+      phase := 45
+      status := .formalized }
+  -- entropy_ordering_proxy → log φ < log 2 (Entropy.lean:142-143)
+  , { label := "aux:cdim-entropy-ordering-proxy"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.entropy_ordering_proxy"
+      phase := 45
+      status := .formalized }
+  -- entropy_gap_pos → log 2 - log φ > 0 (Entropy.lean:146-147)
+  , { label := "aux:cdim-entropy-gap-pos"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.entropy_gap_pos"
+      phase := 45
+      status := .formalized }
+  -- binet_formula → F(n) = (φ^n - ψ^n)/√5 (Entropy.lean:152-153)
+  , { label := "aux:cdim-binet-formula"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.binet_formula"
+      phase := 45
       status := .formalized } ]
 
 end Omega.Audit
