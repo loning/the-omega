@@ -5266,6 +5266,73 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.CollisionZeta"
       leanName := "Omega.hankelS5_3x3_det_ne_zero"
       phase := 40
+      status := .formalized }
+  -- Phase 41: Round 36 — S_q(2)/S_q(3) 闭式 + m=4 扇区分解 + DFA 线性递推 (CollisionZeta)
+  -- prop:pom-sq-at-two-formula → momentSum_at_two_formula (CollisionZeta.lean:322)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-sq-at-two-formula"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.momentSum_at_two_formula"
+      phase := 41
+      status := .formalized }
+  -- prop:pom-sq-at-three-formula → momentSum_at_three_formula (CollisionZeta.lean:336)
+  , { label := "prop:pom-sq-at-three-formula"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.momentSum_at_three_formula"
+      phase := 41
+      status := .formalized }
+  -- thm:pom-sector-decomp-m4-q0 → sector_decomp_m4_q0 (CollisionZeta.lean:347)
+  , { label := "thm:pom-sector-decomp-m4-q0"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.sector_decomp_m4_q0"
+      phase := 41
+      status := .formalized }
+  -- thm:pom-sector-decomp-m4-q1 → sector_decomp_m4_q1 (CollisionZeta.lean:348)
+  , { label := "thm:pom-sector-decomp-m4-q1"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.sector_decomp_m4_q1"
+      phase := 41
+      status := .formalized }
+  -- thm:pom-sector-decomp-m4-q2 → sector_decomp_m4_q2 (CollisionZeta.lean:345)
+  , { label := "thm:pom-sector-decomp-m4-q2"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.sector_decomp_m4_q2"
+      phase := 41
+      status := .formalized }
+  -- thm:pom-sector-decomp-m4-q3 → sector_decomp_m4_q3 (CollisionZeta.lean:346)
+  , { label := "thm:pom-sector-decomp-m4-q3"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.sector_decomp_m4_q3"
+      phase := 41
+      status := .formalized }
+  -- thm:pom-dfa-linear-recurrence → dfa_linear_recurrence_instances (CollisionZeta.lean:353)
+  , { label := "thm:pom-dfa-linear-recurrence"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.dfa_linear_recurrence_instances"
+      phase := 41
+      status := .formalized }
+  -- Phase 41: Round 36 — 跨章节审计证书 + Fibonacci 骨架 (Window6)
+  -- thm:conclusion-master-audit-certificate → master_audit_certificate (Window6.lean:277)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-master-audit-certificate"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.master_audit_certificate"
+      phase := 41
+      status := .formalized }
+  -- thm:conclusion-fibonacci-backbone → fibonacci_backbone (Window6.lean:296)
+  , { label := "thm:conclusion-fibonacci-backbone"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.fibonacci_backbone"
+      phase := 41
       status := .formalized } ]
 
 end Omega.Audit

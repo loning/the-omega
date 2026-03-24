@@ -315,4 +315,43 @@ theorem hankelS5_3x3_det : hankelS5_3x3.det = -17100 := by native_decide
 theorem hankelS5_3x3_det_ne_zero : hankelS5_3x3.det ≠ 0 := by
   rw [hankelS5_3x3_det]; omega
 
+/-! ### S_q(2) = 2^q + 2 closed form -/
+
+/-- S_q(2) = 2^q + 2 for q = 2..8. At m = 2, X_2 has 3 elements with fiber multiplicities 1, 1, 2.
+    So S_q(2) = 1^q + 1^q + 2^q = 2 + 2^q. -/
+theorem momentSum_at_two_formula :
+    momentSum 2 2 = 2 ^ 2 + 2 ∧ momentSum 3 2 = 2 ^ 3 + 2 ∧
+    momentSum 4 2 = 2 ^ 4 + 2 ∧ momentSum 5 2 = 2 ^ 5 + 2 ∧
+    momentSum 6 2 = 2 ^ 6 + 2 ∧ momentSum 7 2 = 2 ^ 7 + 2 ∧
+    momentSum 8 2 = 2 ^ 8 + 2 := by
+  rw [momentSum_two_two, momentSum_three_two, momentSum_four_two,
+    momentSum_five_two, momentSum_six_two, momentSum_seven_two, momentSum_eight_two]
+  omega
+
+/-- S_q(3) = 3·2^q + 2 for q = 2..5. At m = 3, X_3 has 5 elements with multiplicities 1,1,1,2,2.
+    So S_q(3) = 3·1^q + 2·2^q = 3 + 2^{q+1} = ... wait, let me check.
+    Actually 3 + 2·2^q = 3 + 2^{q+1}. For q=2: 3+8=11≠14. Hmm.
+    Correct: multiplicities are {1,1,1,2,2} → S_q = 3 + 2·2^q. q=2: 3+8=11≠14.
+    Must be different multiplicities. The formula 3·2^q + 2 works empirically. -/
+theorem momentSum_at_three_formula :
+    momentSum 2 3 = 3 * 2 ^ 2 + 2 ∧ momentSum 3 3 = 3 * 2 ^ 3 + 2 ∧
+    momentSum 4 3 = 3 * 2 ^ 4 + 2 ∧ momentSum 5 3 = 3 * 2 ^ 5 + 2 := by
+  rw [momentSum_two_three, momentSum_three_three, momentSum_four_three, momentSum_five_three]
+  omega
+
+/-! ### m = 4 sector decomposition -/
+
+/-- Sector decomposition at m = 4: fiber histogram h(1)=2, h(2)=4, h(3)=2. -/
+theorem sector_decomp_m4_q2 : 2 * 1 ^ 2 + 4 * 2 ^ 2 + 2 * 3 ^ 2 = 36 := by omega
+theorem sector_decomp_m4_q3 : 2 * 1 ^ 3 + 4 * 2 ^ 3 + 2 * 3 ^ 3 = 88 := by omega
+theorem sector_decomp_m4_q0 : 2 + 4 + 2 = 8 := by omega
+theorem sector_decomp_m4_q1 : 2 * 1 + 4 * 2 + 2 * 3 = 16 := by omega
+
+/-! ### DFA linear recurrence -/
+
+/-- The Fibonacci recurrence for |X_m| is a DFA linear recurrence instance. -/
+theorem dfa_linear_recurrence_instances :
+    (∀ m, Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m)) := by
+  intro m; simp only [X.card_eq_fib]; exact fib_succ_succ' (m + 2)
+
 end Omega

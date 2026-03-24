@@ -1476,6 +1476,23 @@ def coreAuditTargets : List String :=
   -- lem:pom-hankel-s5-3x3-det (CollisionZeta.lean:313)
   , "Omega.hankelS5_3x3_det"
   -- cor:pom-hankel-s5-3x3-det-ne-zero (CollisionZeta.lean:315-316)
-  , "Omega.hankelS5_3x3_det_ne_zero" ]
+  , "Omega.hankelS5_3x3_det_ne_zero"
+  -- Round 36: S_q(2)/S_q(3) 闭式 + m=4 扇区分解 + DFA 线性递推 (Phase 41, CollisionZeta)
+  -- prop:pom-sq-at-two-formula (CollisionZeta.lean:322-329)
+  , "Omega.momentSum_at_two_formula"
+  -- prop:pom-sq-at-three-formula (CollisionZeta.lean:336-340)
+  , "Omega.momentSum_at_three_formula"
+  -- thm:pom-sector-decomp-m4-q0/q1/q2/q3 (CollisionZeta.lean:345-348)
+  , "Omega.sector_decomp_m4_q0"
+  , "Omega.sector_decomp_m4_q1"
+  , "Omega.sector_decomp_m4_q2"
+  , "Omega.sector_decomp_m4_q3"
+  -- thm:pom-dfa-linear-recurrence (CollisionZeta.lean:353-355)
+  , "Omega.dfa_linear_recurrence_instances"
+  -- Round 36: 跨章节审计证书 + Fibonacci 骨架 (Phase 41, Window6)
+  -- thm:conclusion-master-audit-certificate (Window6.lean:277-293)
+  , "Omega.master_audit_certificate"
+  -- thm:conclusion-fibonacci-backbone (Window6.lean:296-300)
+  , "Omega.fibonacci_backbone" ]
 
 end Omega.Audit

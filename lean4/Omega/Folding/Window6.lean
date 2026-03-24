@@ -2,6 +2,7 @@ import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.MomentSum
 import Omega.Folding.BinFold
+import Omega.Folding.CollisionKernel
 
 /-! ### Window-6 invariants
 
@@ -269,5 +270,33 @@ theorem hydrogenic_total_count_instances :
 
 /-- The sum of squares formula: ∑_{k=1}^{n} k² = n(n+1)(2n+1)/6 for n = 4. -/
 theorem sum_squares_four : 1 ^ 2 + 2 ^ 2 + 3 ^ 2 + 4 ^ 2 = 4 * 5 * 9 / 6 := by omega
+
+/-! ### Master audit certificate -/
+
+/-- Cross-chapter master audit certificate: all key Window-6 invariants in one theorem. -/
+theorem master_audit_certificate :
+    -- Core counts
+    Fintype.card (X 6) = 21 ∧ 2 ^ 6 = 64 ∧
+    -- Moment sums
+    momentSum 2 6 = 220 ∧ momentSum 3 6 = 820 ∧
+    -- Collision kernels
+    collisionKernel2.trace = 2 ∧ collisionKernel2.det = -2 ∧
+    -- Zeckendorf alignment
+    (45 : Nat) = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧
+    -- BinFold histogram
+    cBinFiberHist 6 2 = 8 ∧ cBinFiberHist 6 3 = 4 ∧ cBinFiberHist 6 4 = 9 ∧
+    -- Hidden dimensions
+    2 ^ 6 - Fintype.card (X 6) = 43 := by
+  exact ⟨X.card_X_six, by norm_num, momentSum_two_six, momentSum_three_six,
+    collisionKernel2_trace, collisionKernel2_det, by native_decide,
+    cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4,
+    by rw [X.card_X_six]; norm_num⟩
+
+/-- Fibonacci backbone: the recurrence and key arithmetic. -/
+theorem fibonacci_backbone :
+    Nat.fib 9 - Nat.fib 2 = 33 ∧
+    Nat.fib 8 = 3 * 7 ∧
+    Nat.fib 4 = 3 ∧ Nat.fib 6 = 8 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> native_decide
 
 end Omega
