@@ -5734,6 +5734,119 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.Entropy.fib_growth_sandwich"
     phase := 49
+    status := .formalized }
+-- Phase 50: 扇区扩展 + A_4 Newton 完整 + 迹幂和 + fiber sum 实例 + 连分数误差 (Round 44)
+-- thm:pom-sector-decomp-m4-q4 → sector_decomp_m4_q4 (CollisionZeta.lean:406)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-decomp-m4-q4"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_decomp_m4_q4"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-decomp-m4-q5 → sector_decomp_m4_q5 (CollisionZeta.lean:407)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-decomp-m4-q5"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_decomp_m4_q5"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-m2-q9 → sector_m2_q9 (CollisionZeta.lean:408)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-m2-q9"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_m2_q9"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-m2-q10 → sector_m2_q10 (CollisionZeta.lean:409)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-m2-q10"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_m2_q10"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-m2-q12 → sector_m2_q12 (CollisionZeta.lean:410)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-m2-q12"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_m2_q12"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-m2-q16 → sector_m2_q16 (CollisionZeta.lean:411)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-m2-q16"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_m2_q16"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-m3-q9 → sector_m3_q9 (CollisionZeta.lean:412)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-m3-q9"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_m3_q9"
+    phase := 50
+    status := .formalized }
+-- thm:pom-sector-m3-q10 → sector_m3_q10 (CollisionZeta.lean:413)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:pom-sector-m3-q10"
+    sourcePath := "sections/body/pom/subsec__pom-sector-decomposition.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.sector_m3_q10"
+    phase := 50
+    status := .formalized }
+-- prop:pom-newton-a4-full → newton_A4_full (CollisionZeta.lean:417)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-newton-a4-full"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.newton_A4_full"
+    phase := 50
+    status := .formalized }
+-- prop:pom-trace-power-sum-a2 → trace_power_sum_A2 (CollisionZeta.lean:427)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-trace-power-sum-a2"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.trace_power_sum_A2"
+    phase := 50
+    status := .formalized }
+-- prop:pom-trace-power-sum-a3 → trace_power_sum_A3 (CollisionZeta.lean:428)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-trace-power-sum-a3"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.trace_power_sum_A3"
+    phase := 50
+    status := .formalized }
+-- prop:pom-fiber-sum-instances → fiber_sum_instances (CollisionZeta.lean:432)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-fiber-sum-instances"
+    sourcePath := "sections/body/pom/subsec__pom-fiber-sum.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.fiber_sum_instances"
+    phase := 50
+    status := .formalized }
+-- prop:cdim-fib-ratio-error → fib_ratio_error (Entropy.lean:317)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cdim-fib-ratio-error"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-fibonacci-nearest-integer.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.fib_ratio_error"
+    phase := 50
+    status := .formalized }
+-- prop:cdim-fib-ratio-error-lt-one → fib_ratio_error_lt_one (Entropy.lean:323)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cdim-fib-ratio-error-lt-one"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-fibonacci-nearest-integer.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.fib_ratio_error_lt_one"
+    phase := 50
     status := .formalized } ]
 
 end Omega.Audit

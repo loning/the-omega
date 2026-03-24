@@ -1591,6 +1591,22 @@ def coreAuditTargets : List String :=
   , "Omega.CollisionZeta.newton_identity_A4_partial"
   , "Omega.CollisionZeta.momentSum_two_ratio_bounds"
   , "Omega.Window6.coverage_certificate"
-  , "Omega.Entropy.fib_growth_sandwich" ]
+  , "Omega.Entropy.fib_growth_sandwich"
+  -- Round 44: 扇区扩展 + A_4 Newton 完整 + 迹幂和 + fiber sum 实例 + 连分数误差
+  -- (CollisionZeta.lean:406-439, Entropy.lean:317-328)
+  , "Omega.CollisionZeta.sector_decomp_m4_q4"
+  , "Omega.CollisionZeta.sector_decomp_m4_q5"
+  , "Omega.CollisionZeta.sector_m2_q9"
+  , "Omega.CollisionZeta.sector_m2_q10"
+  , "Omega.CollisionZeta.sector_m2_q12"
+  , "Omega.CollisionZeta.sector_m2_q16"
+  , "Omega.CollisionZeta.sector_m3_q9"
+  , "Omega.CollisionZeta.sector_m3_q10"
+  , "Omega.CollisionZeta.newton_A4_full"
+  , "Omega.CollisionZeta.trace_power_sum_A2"
+  , "Omega.CollisionZeta.trace_power_sum_A3"
+  , "Omega.CollisionZeta.fiber_sum_instances"
+  , "Omega.Entropy.fib_ratio_error"
+  , "Omega.Entropy.fib_ratio_error_lt_one" ]
 
 end Omega.Audit

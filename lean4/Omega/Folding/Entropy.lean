@@ -308,4 +308,21 @@ theorem fib_growth_sandwich (n : Nat) :
   rw [abs_lt] at h
   constructor <;> linarith [h.1, h.2]
 
+/-! ### Continued fraction convergence error -/
+
+/-- F(n+1) - φ·F(n) = ψ^n (from mathlib). -/
+theorem fib_ratio_error (n : Nat) :
+    (Nat.fib (n + 1) : ℝ) - φ * Nat.fib n = ψ ^ n :=
+  Real.fib_succ_sub_goldenRatio_mul_fib n
+
+/-- |F(n+1) - φ·F(n)| < 1 for n ≥ 1 (since |ψ^n| ≤ |ψ| < 1). -/
+theorem fib_ratio_error_lt_one (n : Nat) (hn : 1 ≤ n) :
+    |(Nat.fib (n + 1) : ℝ) - φ * Nat.fib n| < 1 := by
+  rw [fib_ratio_error]
+  calc |ψ ^ n| = |ψ| ^ n := abs_pow ψ n
+    _ ≤ |ψ| ^ 1 := by
+        apply pow_le_pow_of_le_one (abs_nonneg _) (le_of_lt abs_goldenConj_lt_one) hn
+    _ = |ψ| := pow_one _
+    _ < 1 := abs_goldenConj_lt_one
+
 end Omega.Entropy

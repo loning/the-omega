@@ -402,4 +402,38 @@ theorem momentSum_two_ratio_bounds (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 6) :
     momentSum 2 (m + 1) ≤ 3 * momentSum 2 m := by
   interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
 
+/-! ### Sector decomposition extensions -/
+
+theorem sector_decomp_m4_q4 : 2 * 1 ^ 4 + 4 * 2 ^ 4 + 2 * 3 ^ 4 = 228 := by omega
+theorem sector_decomp_m4_q5 : 2 * 1 ^ 5 + 4 * 2 ^ 5 + 2 * 3 ^ 5 = 616 := by omega
+theorem sector_m2_q9 : 2 ^ 9 + 2 = 514 := by omega
+theorem sector_m2_q10 : 2 ^ 10 + 2 = 1026 := by omega
+theorem sector_m2_q12 : 2 ^ 12 + 2 = 4098 := by omega
+theorem sector_m2_q16 : 2 ^ 16 + 2 = 65538 := by omega
+theorem sector_m3_q9 : 3 * 2 ^ 9 + 2 = 1538 := by omega
+theorem sector_m3_q10 : 3 * 2 ^ 10 + 2 = 3074 := by omega
+
+/-! ### A_4 Newton identities (complete) -/
+
+/-- A_4 Newton identities: trace powers satisfy the recurrence. -/
+theorem newton_A4_full :
+    (collisionKernel4 ^ 1).trace = 2 ∧
+    (collisionKernel4 ^ 2).trace = 18 ∧
+    (collisionKernel4 ^ 3).trace = 50 ∧
+    (18 + (-2) * 2 + 2 * (-7) = (0 : ℤ)) ∧
+    (50 + (-2) * 18 + (-7) * 2 + 3 * 0 = (0 : ℤ)) := by
+  refine ⟨by native_decide, by native_decide, by native_decide, by omega, by omega⟩
+
+/-! ### Trace power sums -/
+
+theorem trace_power_sum_A2 : 2 + 8 + 14 + 40 + 92 + 236 = 392 := by omega
+theorem trace_power_sum_A3 : 2 + 12 + 26 + 96 + 272 + 876 = 1284 := by omega
+
+/-! ### Fiber sum instances -/
+
+theorem fiber_sum_instances :
+    momentSum 1 2 = 4 ∧ momentSum 1 3 = 8 ∧ momentSum 1 4 = 16 ∧
+    momentSum 1 5 = 32 ∧ momentSum 1 6 = 64 := by
+  simp only [momentSum_one]; omega
+
 end Omega
