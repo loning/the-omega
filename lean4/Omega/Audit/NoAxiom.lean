@@ -1223,6 +1223,24 @@ def coreAuditTargets : List String :=
   , "Omega.ZeckSig.gcd_as_median_instances"
   , "Omega.ZeckSig.fib_coprime_consecutive"
   , "Omega.ZeckSig.fib_gcd_instances"
-  , "Omega.ZeckSig.phase_space_coprimality" ]
+  , "Omega.ZeckSig.phase_space_coprimality"
+  -- Round 27: Window6 TQFT 配分函数 + 隐藏反射包 + 信息证书 (Phase 32)
+  -- thm:conclusion-fold-symtft-partition-function-collision-moments
+  -- cor:conclusion-tqft-sphere-partition-function-s2
+  -- thm:conclusion-window6-hidden-a-type-weyl-package
+  -- thm:conclusion-window6-hidden-logvolume-geometry-information-splitting
+  , "Omega.tqft_sphere_eq_momentSum_two"
+  , "Omega.tqft_torus_eq_card"
+  , "Omega.sector_sum_six_q0"
+  , "Omega.sector_sum_six_q1"
+  , "Omega.sector_sum_six_q2"
+  , "Omega.hidden_reflection_dim_six"
+  , "Omega.hidden_reflection_from_histogram"
+  , "Omega.quadratic_collision_mass_six"
+  , "Omega.discriminant_total_degree_six"
+  , "Omega.jones_index_lower_six"
+  , "Omega.window6_information_certificate"
+  , "Omega.tqft_triple_six"
+  , "Omega.collision_ratio_bounds_six" ]
 
 end Omega.Audit

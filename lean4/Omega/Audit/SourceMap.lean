@@ -4336,6 +4336,114 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.ZeckendorfSignature"
       leanName := "Omega.ZeckSig.phase_space_coprimality"
       phase := 31
+      status := .formalized }
+  -- Phase 32: Window6 TQFT 配分函数 + 隐藏反射包 + 信息证书 (Round 27)
+  -- thm:conclusion-fold-symtft-partition-function-collision-moments
+  -- tqft_sphere_eq_momentSum_two: Σd²=S_2 (Window6.lean:95)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-fold-symtft-partition-function-collision-moments"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.tqft_sphere_eq_momentSum_two"
+      phase := 32
+      status := .formalized }
+  -- cor:conclusion-tqft-sphere-partition-function-s2
+  -- tqft_torus_eq_card: Σd⁰=F(m+2) (Window6.lean:99)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-tqft-sphere-partition-function-s2"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.tqft_torus_eq_card"
+      phase := 32
+      status := .formalized }
+  -- sector_sum_six_q0: 扇区求和 q=0, 2+4+8+5+2=21 (Window6.lean:112)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-sector-sum-q0"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sector_sum_six_q0"
+      phase := 32
+      status := .formalized }
+  -- sector_sum_six_q1: 扇区求和 q=1, 2·1+4·2+8·3+5·4+2·5=64 (Window6.lean:109)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-sector-sum-q1"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sector_sum_six_q1"
+      phase := 32
+      status := .formalized }
+  -- sector_sum_six_q2: 扇区求和 q=2, 2·1²+4·2²+8·3²+5·4²+2·5²=220 (Window6.lean:105)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-sector-sum-q2"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sector_sum_six_q2"
+      phase := 32
+      status := .formalized }
+  -- thm:conclusion-window6-hidden-a-type-weyl-package
+  -- hidden_reflection_dim_six: 8·1+4·2+9·3=43 (Window6.lean:120)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-hidden-a-type-weyl-package"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.hidden_reflection_dim_six"
+      phase := 32
+      status := .formalized }
+  -- hidden_reflection_from_histogram: 直方图→隐藏维数 (Window6.lean:124)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-hidden-reflection-histogram"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.hidden_reflection_from_histogram"
+      phase := 32
+      status := .formalized }
+  -- quadratic_collision_mass_six: S_2(6)-2^6=156 (Window6.lean:130)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-hidden-logvolume-geometry-information-splitting"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.quadratic_collision_mass_six"
+      phase := 32
+      status := .formalized }
+  -- discriminant_total_degree_six: 判别式全阶 8·1+4·3+9·6=74 (Window6.lean:134)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-discriminant-total-degree"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.discriminant_total_degree_six"
+      phase := 32
+      status := .formalized }
+  -- jones_index_lower_six: Jones 指数下界 (Window6.lean:139)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-jones-index-lower"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.jones_index_lower_six"
+      phase := 32
+      status := .formalized }
+  -- window6_information_certificate: 7合取完整证书 (Window6.lean:143)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-information-certificate"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.window6_information_certificate"
+      phase := 32
+      status := .formalized }
+  -- tqft_triple_six: (21,64,220) 三元组 (Window6.lean:152)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-tqft-triple"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.tqft_triple_six"
+      phase := 32
+      status := .formalized }
+  -- collision_ratio_bounds_six: 碰撞比界 10·21<220<11·21 (Window6.lean:158)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-collision-ratio-bounds"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.collision_ratio_bounds_six"
+      phase := 32
       status := .formalized } ]
 
 end Omega.Audit
