@@ -395,4 +395,42 @@ theorem newton_identity_A4_partial :
   refine ⟨by rw [collisionKernel4_trace], by rw [collisionKernel4_det]; norm_num⟩
 
 
+/-! ### S_2 recursion infrastructure -/
+
+/-- The fiber of x splits by the last bit into false-ending and true-ending parts. -/
+theorem fiberMultiplicity_split_last_bit (x : X (m + 1)) :
+    X.fiberMultiplicity x =
+      ((X.fiber x).filter (fun w => w ⟨m, by omega⟩ = false)).card +
+      ((X.fiber x).filter (fun w => w ⟨m, by omega⟩ = true)).card := by
+  classical
+  show (X.fiber x).card = _
+  have hdisj : Disjoint
+    ((X.fiber x).filter (fun w => w ⟨m, by omega⟩ = false))
+    ((X.fiber x).filter (fun w => w ⟨m, by omega⟩ = true)) :=
+    Finset.disjoint_filter.mpr fun w _ h1 h2 => by simp_all
+  rw [← Finset.card_union_of_disjoint hdisj]
+  congr 1; ext w; simp only [Finset.mem_union, Finset.mem_filter]
+  constructor
+  · intro h; cases hw : w ⟨m, by omega⟩ <;> simp_all
+  · intro h; exact h.elim And.left And.left
+
+/-- The S_2 moment state vector at resolution m: (S_2(m), S_2(m+1), S_2(m+2)). -/
+noncomputable def momentStateVec (m : Nat) : Fin 3 → ℤ :=
+  ![↑(momentSum 2 m), ↑(momentSum 2 (m + 1)), ↑(momentSum 2 (m + 2))]
+
+/-- Verification: M · stateVec(0) = stateVec(1) via native_decide on concrete values.
+    collisionKernel2 · (1, 2, 6) = (2, 6, 14). -/
+theorem collision_kernel2_mulVec_base :
+    collisionKernel2.mulVec ![1, 2, 6] = ![2, 6, 14] := by native_decide
+
+/-- Verification: M · stateVec(1) = stateVec(2).
+    collisionKernel2 · (2, 6, 14) = (6, 14, 36). -/
+theorem collision_kernel2_mulVec_step1 :
+    collisionKernel2.mulVec ![2, 6, 14] = ![6, 14, 36] := by native_decide
+
+/-- Verification: M · stateVec(2) = stateVec(3).
+    collisionKernel2 · (6, 14, 36) = (14, 36, 88). -/
+theorem collision_kernel2_mulVec_step2 :
+    collisionKernel2.mulVec ![6, 14, 36] = ![14, 36, 88] := by native_decide
+
 end Omega

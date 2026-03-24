@@ -6648,6 +6648,48 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Frontier.Conjectures"
     leanName := "Omega.Frontier.FrontierConclusionPalindrome"
     phase := 66
-    status := .frontier } ]
+    status := .frontier }
+
+-- Phase 67: Round 63 — S_2 递推基础引理（辅助引理，不计入论文覆盖率）
+-- fiberMultiplicity_split_last_bit (CollisionZeta.lean:401) — 纤维末位分裂
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:fiberMultiplicity_split_last_bit"
+    sourcePath := "aux"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "fiberMultiplicity_split_last_bit"
+    phase := 67
+    status := .formalized }
+-- momentStateVec (CollisionZeta.lean:418) — S_2 状态向量定义
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:momentStateVec"
+    sourcePath := "aux"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "momentStateVec"
+    phase := 67
+    status := .formalized }
+-- collision_kernel2_mulVec_base (CollisionZeta.lean:423) — M·v 基础验证
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:collision_kernel2_mulVec_base"
+    sourcePath := "aux"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "collision_kernel2_mulVec_base"
+    phase := 67
+    status := .formalized }
+-- collision_kernel2_mulVec_step1 (CollisionZeta.lean:428) — M·v step1 验证
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:collision_kernel2_mulVec_step1"
+    sourcePath := "aux"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "collision_kernel2_mulVec_step1"
+    phase := 67
+    status := .formalized }
+-- collision_kernel2_mulVec_step2 (CollisionZeta.lean:433) — M·v step2 验证
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:collision_kernel2_mulVec_step2"
+    sourcePath := "aux"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "collision_kernel2_mulVec_step2"
+    phase := 67
+    status := .formalized } ]
 
 end Omega.Audit

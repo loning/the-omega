@@ -1738,6 +1738,11 @@ def coreAuditTargets : List String :=
   , "Omega.Frontier.FrontierCdimPoissonLp"
   , "Omega.Frontier.FrontierCdimKLAsymptotic"
   , "Omega.Frontier.FrontierCdimKLSixthNeg"
-  , "Omega.Frontier.FrontierConclusionPalindrome" ]
+  , "Omega.Frontier.FrontierConclusionPalindrome"
+  -- Round 63: S_2 递推基础引理 (CollisionZeta.lean:401-434)
+  , "fiberMultiplicity_split_last_bit"
+  , "collision_kernel2_mulVec_base"
+  , "collision_kernel2_mulVec_step1"
+  , "collision_kernel2_mulVec_step2" ]
 
 end Omega.Audit
