@@ -696,6 +696,9 @@ Run these commands manually during audit:
   #print axioms Omega.Entropy.fib_ratio_tendsto
   #print axioms Omega.Entropy.log_continuous_at_phi
   #print axioms Omega.Entropy.log_fib_ratio_tendsto
+  -- Phase 44 (Plan 20 complete): 拓扑熵 h_top = log φ (Entropy.lean:80-107)
+  -- cor:folding-stable-syntax-entropy-logqdim 完整版: Cesaro + 望远镜求和 + Real 分析极限
+  #print axioms Omega.Entropy.topological_entropy_eq_log_phi
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

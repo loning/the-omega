@@ -5475,6 +5475,15 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.log_fib_ratio_tendsto"
       phase := 43
+      status := .formalized }
+  -- Phase 44: Entropy (Plan 20 complete)
+  -- cor:folding-stable-syntax-entropy-logqdim (完整版) → topological_entropy_eq_log_phi (Entropy.lean:80-107)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:folding-stable-syntax-entropy-logqdim"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.topological_entropy_eq_log_phi"
+      phase := 44
       status := .formalized } ]
 
 end Omega.Audit
