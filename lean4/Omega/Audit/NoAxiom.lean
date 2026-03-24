@@ -1731,6 +1731,13 @@ def coreAuditTargets : List String :=
   , "Omega.lumpability_spectral_rigidity"
   , "Omega.nonlumpable_by_nonuniform_fibers"
   , "Omega.succ_unique_branch_partial"
-  , "Omega.edge_flux_skeleton_totals" ]
+  , "Omega.edge_flux_skeleton_totals"
+  -- Round 61: 项目最终登记 — Frontier占位注册（5个前沿定理，status=frontier）
+  -- (Frontier/Conjectures.lean:31-57)
+  , "Omega.Frontier.FrontierSPGPoincare"
+  , "Omega.Frontier.FrontierCdimPoissonLp"
+  , "Omega.Frontier.FrontierCdimKLAsymptotic"
+  , "Omega.Frontier.FrontierCdimKLSixthNeg"
+  , "Omega.Frontier.FrontierConclusionPalindrome" ]
 
 end Omega.Audit

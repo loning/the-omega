@@ -6606,6 +6606,48 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZetaOperator"
     leanName := "Omega.edge_flux_skeleton_totals"
     phase := 65
-    status := .formalized } ]
+    status := .formalized }
+
+-- Phase 66: Round 61 — 项目最终登记 — Frontier占位注册（5个前沿定理）
+-- thm:spg-scan-error-poincare-recurrence → FrontierSPGPoincare (Frontier/Conjectures.lean:31)
+-- 状态: frontier 占位, 需要遍历理论基础设施, 审核通过 2026-03-24
+, { label := "thm:spg-scan-error-poincare-recurrence"
+    sourcePath := "sections/body/spg/subsec__spg-scan-error.tex"
+    moduleName := "Omega.Frontier.Conjectures"
+    leanName := "Omega.Frontier.FrontierSPGPoincare"
+    phase := 66
+    status := .frontier }
+-- prop:cdim-poisson-Lp-bound → FrontierCdimPoissonLp (Frontier/Conjectures.lean:37)
+-- 状态: frontier 占位, 需要调和分析基础设施, 审核通过 2026-03-24
+, { label := "prop:cdim-poisson-Lp-bound"
+    sourcePath := "sections/body/cdim/subsec__cdim-circular-dim.tex"
+    moduleName := "Omega.Frontier.Conjectures"
+    leanName := "Omega.Frontier.FrontierCdimPoissonLp"
+    phase := 66
+    status := .frontier }
+-- thm:cdim-KL-divergence-asymptotic → FrontierCdimKLAsymptotic (Frontier/Conjectures.lean:43)
+-- 状态: frontier 占位, 需要 KL 散度定义 + Cesaro 渐近, 审核通过 2026-03-24
+, { label := "thm:cdim-KL-divergence-asymptotic"
+    sourcePath := "sections/body/cdim/subsec__cdim-circular-dim.tex"
+    moduleName := "Omega.Frontier.Conjectures"
+    leanName := "Omega.Frontier.FrontierCdimKLAsymptotic"
+    phase := 66
+    status := .frontier }
+-- cor:cdim-KL-sixth-moment-negative → FrontierCdimKLSixthNeg (Frontier/Conjectures.lean:49)
+-- 状态: frontier 占位, 依赖 FrontierCdimKLAsymptotic + 累积量演算, 审核通过 2026-03-24
+, { label := "cor:cdim-KL-sixth-moment-negative"
+    sourcePath := "sections/body/cdim/subsec__cdim-circular-dim.tex"
+    moduleName := "Omega.Frontier.Conjectures"
+    leanName := "Omega.Frontier.FrontierCdimKLSixthNeg"
+    phase := 66
+    status := .frontier }
+-- thm:conclusion-palindrome-defect-symmetry → FrontierConclusionPalindrome (Frontier/Conjectures.lean:55)
+-- 状态: frontier 占位, 需要回文词构造 + Matrix.transpose, 审核通过 2026-03-24
+, { label := "thm:conclusion-palindrome-defect-symmetry"
+    sourcePath := "sections/body/conclusion/subsec__conclusion.tex"
+    moduleName := "Omega.Frontier.Conjectures"
+    leanName := "Omega.Frontier.FrontierConclusionPalindrome"
+    phase := 66
+    status := .frontier } ]
 
 end Omega.Audit
