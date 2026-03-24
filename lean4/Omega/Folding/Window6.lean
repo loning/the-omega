@@ -1,4 +1,5 @@
 import Omega.Folding.FiberSpectrum
+import Omega.Folding.MaxFiberHigh
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.MomentSum
 import Omega.Folding.BinFold

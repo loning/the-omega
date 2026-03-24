@@ -8,6 +8,7 @@ import Omega.Folding.Zeckendorf
 import Omega.Folding.Fold
 import Omega.Folding.Fiber
 import Omega.Folding.MaxFiber
+import Omega.Folding.MaxFiberHigh
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FiberArithmeticProperties

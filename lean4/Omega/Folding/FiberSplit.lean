@@ -1,4 +1,4 @@
-import Omega.Folding.MaxFiber
+import Omega.Folding.MaxFiberHigh
 import Omega.Folding.FiberArithmetic
 
 namespace Omega
