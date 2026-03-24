@@ -66,6 +66,15 @@ theorem momentSum_three_five : momentSum 3 5 = 260 := by rw [← cMomentSum_eq];
 theorem momentSum_three_six : momentSum 3 6 = 820 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_three_seven : momentSum 3 7 = 2504 := by rw [← cMomentSum_eq]; native_decide
 
+-- S_4 base values via native_decide
+theorem momentSum_four_zero : momentSum 4 0 = 1 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_four_one : momentSum 4 1 = 2 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_four_two : momentSum 4 2 = 18 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_four_three : momentSum 4 3 = 50 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_four_four : momentSum 4 4 = 228 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_four_five : momentSum 4 5 = 808 := by rw [← cMomentSum_eq]; native_decide
+theorem momentSum_four_six : momentSum 4 6 = 3244 := by rw [← cMomentSum_eq]; native_decide
+
 /-- S_q is monotone in q: S_q(m) ≤ S_{q+1}(m) since d(x) ≥ 1. -/
 theorem momentSum_mono_q (q m : Nat) (hq : 1 ≤ q) :
     momentSum q m ≤ momentSum (q + 1) m := by

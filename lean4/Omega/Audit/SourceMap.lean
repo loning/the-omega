@@ -4724,6 +4724,120 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.ZeckendorfSignature"
       leanName := "Omega.ZeckSig.factorization_determines_nat"
       phase := 35
+      status := .formalized }
+  -- Phase 36: Round 31 — Zeta 深化（S_4 基值 + 迹递推 + primitive 轨道 + ζ 分母 + 矩阵幂次）
+  -- prop:pom-s4-base-values → momentSum_four_zero..six (MomentSum.lean:70-76)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-s4-base-value-0"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_zero"
+      phase := 36
+      status := .formalized }
+  , { label := "prop:pom-s4-base-value-1"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_one"
+      phase := 36
+      status := .formalized }
+  , { label := "prop:pom-s4-base-value-2"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_two"
+      phase := 36
+      status := .formalized }
+  , { label := "prop:pom-s4-base-value-3"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_three"
+      phase := 36
+      status := .formalized }
+  , { label := "prop:pom-s4-base-value-4"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_four"
+      phase := 36
+      status := .formalized }
+  , { label := "prop:pom-s4-base-value-5"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_five"
+      phase := 36
+      status := .formalized }
+  , { label := "prop:pom-s4-base-value-6"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_four_six"
+      phase := 36
+      status := .formalized }
+  -- def:pom-collision-zeta-a3-recurrence → collisionKernel3_trace_recurrence (CollisionZeta.lean:44-51)
+  -- def:pom-collision-zeta-identity-matrix-trace → collisionKernel2/3_trace_pow_0 (CollisionZeta.lean:56-57)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-collision-zeta-a3-recurrence"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_recurrence"
+      phase := 36
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-trace-pow-0"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_0"
+      phase := 36
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-trace-pow-0"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_0"
+      phase := 36
+      status := .formalized }
+  -- def:pom-primitive-orbit-count → primitive_orbit_A2/A3 (CollisionZeta.lean:68-79)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-primitive-orbit-A2"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.primitive_orbit_A2"
+      phase := 36
+      status := .formalized }
+  , { label := "def:pom-primitive-orbit-A3"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.primitive_orbit_A3"
+      phase := 36
+      status := .formalized }
+  -- def:pom-zeta-denom-coefficients → zeta_denom_A2/A3_coefficients (CollisionZeta.lean:88-97)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-zeta-denom-A2-coefficients"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.zeta_denom_A2_coefficients"
+      phase := 36
+      status := .formalized }
+  , { label := "def:pom-zeta-denom-A3-coefficients"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.zeta_denom_A3_coefficients"
+      phase := 36
+      status := .formalized }
+  -- thm:transfer-matrix-specific-powers → goldenMeanAdjacency_pow_five/six/ten_00 (TransferMatrix.lean:153-165)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:transfer-matrix-pow-five-00"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_five_00"
+      phase := 36
+      status := .formalized }
+  , { label := "thm:transfer-matrix-pow-six-00"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_six_00"
+      phase := 36
+      status := .formalized }
+  , { label := "thm:transfer-matrix-pow-ten-00"
+      sourcePath := "sections/body/folding/subsec__folding-multiscale.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pow_ten_00"
+      phase := 36
       status := .formalized } ]
 
 end Omega.Audit

@@ -1323,6 +1323,32 @@ def coreAuditTargets : List String :=
   , "Omega.sum_squares_four"
   -- Round 30: ZeckendorfSignature — 素赋值度量非退化 (Phase 35)
   -- thm:conclusion-valuation-isometry-classification (部分) (ZeckendorfSignature.lean:274-276)
-  , "Omega.ZeckSig.factorization_determines_nat" ]
+  , "Omega.ZeckSig.factorization_determines_nat"
+  -- Round 31: MomentSum — S_4 基值 (Phase 36)
+  -- prop:pom-s4-base-values (MomentSum.lean:70-76)
+  , "Omega.momentSum_four_zero"
+  , "Omega.momentSum_four_one"
+  , "Omega.momentSum_four_two"
+  , "Omega.momentSum_four_three"
+  , "Omega.momentSum_four_four"
+  , "Omega.momentSum_four_five"
+  , "Omega.momentSum_four_six"
+  -- Round 31: CollisionZeta — 迹递推 + trace^0 + primitive 轨道 + ζ 分母 (Phase 36)
+  -- def:pom-collision-zeta-a3-recurrence (CollisionZeta.lean:44-51)
+  , "Omega.collisionKernel3_trace_recurrence"
+  -- trace_pow_0 for both kernels (CollisionZeta.lean:56-57)
+  , "Omega.collisionKernel2_trace_pow_0"
+  , "Omega.collisionKernel3_trace_pow_0"
+  -- def:pom-primitive-orbit-count (CollisionZeta.lean:68-79)
+  , "Omega.primitive_orbit_A2"
+  , "Omega.primitive_orbit_A3"
+  -- def:pom-zeta-denom-coefficients (CollisionZeta.lean:88-97)
+  , "Omega.zeta_denom_A2_coefficients"
+  , "Omega.zeta_denom_A3_coefficients"
+  -- Round 31: TransferMatrix — 矩阵幂次扩展 (Phase 36)
+  -- thm:transfer-matrix-specific-powers (TransferMatrix.lean:153-165)
+  , "Omega.Graph.goldenMeanAdjacency_pow_five_00"
+  , "Omega.Graph.goldenMeanAdjacency_pow_six_00"
+  , "Omega.Graph.goldenMeanAdjacency_pow_ten_00" ]
 
 end Omega.Audit

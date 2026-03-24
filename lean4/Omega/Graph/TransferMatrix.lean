@@ -149,4 +149,19 @@ theorem goldenMean_total_paths (m : Nat) :
       (Nat.fib (m + 2) + Nat.fib (m + 1) : ℤ) := by
   rw [goldenMeanAdjacency_row_sum, goldenMean_path_count_from_true, ← Nat.cast_add]
 
+/-- Specific power entries: (A^5)_{00} = F(6) = 8. -/
+theorem goldenMeanAdjacency_pow_five_00 :
+    (goldenMeanAdjacency ^ 5) 0 0 = (Nat.fib 6 : ℤ) :=
+  goldenMeanAdjacency_pow_00 5
+
+/-- Specific power entries: (A^6)_{00} = F(7) = 13. -/
+theorem goldenMeanAdjacency_pow_six_00 :
+    (goldenMeanAdjacency ^ 6) 0 0 = (Nat.fib 7 : ℤ) :=
+  goldenMeanAdjacency_pow_00 6
+
+/-- Specific power entries: (A^10)_{00} = F(11) = 89. -/
+theorem goldenMeanAdjacency_pow_ten_00 :
+    (goldenMeanAdjacency ^ 10) 0 0 = (Nat.fib 11 : ℤ) :=
+  goldenMeanAdjacency_pow_00 10
+
 end Omega.Graph
