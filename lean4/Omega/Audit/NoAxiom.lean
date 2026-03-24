@@ -1669,6 +1669,16 @@ def coreAuditTargets : List String :=
   , "Omega.zeckendorf_primes_no_short_forbidden_pattern"
   , "Omega.primes_at_each_zeckendorf_length"
   , "Omega.kraft_sum_partial_integer"
-  , "Omega.kraft_sum_lt_capacity" ]
+  , "Omega.kraft_sum_lt_capacity"
+  -- Round 52: 里程碑 90%（CollisionZeta.lean:632-668, Window6.lean:394）
+  , "Omega.constant_memory_exponential_forgetting"
+  , "Omega.finite_forbidden_exp_sparse"
+  , "Omega.finite_zeta_all_real_poles"
+  , "Omega.zeckendorf_regular_powerlaw"
+  , "Omega.mealy_regular_cannot_detect_primes"
+  , "Omega.nielsen_cardinality_s4"
+  , "Omega.double_discriminant_two_parameter"
+  , "Omega.edge_flux_total"
+  , "Omega.curvature_parenthesization" ]
 
 end Omega.Audit

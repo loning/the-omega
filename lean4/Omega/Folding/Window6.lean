@@ -3,6 +3,7 @@ import Omega.Folding.FiberArithmetic
 import Omega.Folding.MomentSum
 import Omega.Folding.BinFold
 import Omega.Folding.CollisionKernel
+import Omega.Folding.Defect
 
 /-! ### Window-6 invariants
 
@@ -387,5 +388,12 @@ theorem succ_branch_at_b6 : X.ofNat 6 12 ≠ X.ofNat 6 13 := by native_decide
 
 /-- Zero is the merge point: stableValue of ofNat 6 0 is 0. -/
 theorem zero_is_merge_point : stableValue (X.ofNat 6 0) = 0 := by native_decide
+
+/-- thm:conclusion-pom-curvature-ledger-parenthesization-invariance:
+    XOR on Word m is associative and commutative. -/
+theorem curvature_parenthesization :
+    (∀ (a b c : Word m), xorWord (xorWord a b) c = xorWord a (xorWord b c)) ∧
+    (∀ (a b : Word m), xorWord a b = xorWord b a) :=
+  ⟨xorWord_assoc, xorWord_comm⟩
 
 end Omega

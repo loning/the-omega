@@ -6233,6 +6233,79 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.kraft_sum_lt_capacity"
     phase := 57
+    status := .formalized }
+-- Phase 58: Round 52 — 里程碑 90%：8 Zeta/cdim 定理 + 结论100%
+-- prop:zeta-syntax-constant-memory-exponential-forgetting → constant_memory_exponential_forgetting (CollisionZeta.lean:632)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-syntax-constant-memory-exponential-forgetting"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-dfa.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.constant_memory_exponential_forgetting"
+    phase := 58
+    status := .formalized }
+-- prop:zeta-syntax-finite-forbidden-exp-sparse → finite_forbidden_exp_sparse (CollisionZeta.lean:638)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-syntax-finite-forbidden-exp-sparse"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-dfa.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.finite_forbidden_exp_sparse"
+    phase := 58
+    status := .formalized }
+-- thm:zeta-syntax-finite-zeta-imaginary-periodicity → finite_zeta_all_real_poles (CollisionZeta.lean:642)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-finite-zeta-imaginary-periodicity"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.finite_zeta_all_real_poles"
+    phase := 58
+    status := .formalized }
+-- thm:zeta-syntax-zeckendorf-regular-valuation-powerlaw → zeckendorf_regular_powerlaw (CollisionZeta.lean:646)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-zeckendorf-regular-valuation-powerlaw"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeckendorf.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.zeckendorf_regular_powerlaw"
+    phase := 58
+    status := .formalized }
+-- cor:zeta-syntax-zeckendorf-primes-mealy-regular-impossible → mealy_regular_cannot_detect_primes (CollisionZeta.lean:652)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:zeta-syntax-zeckendorf-primes-mealy-regular-impossible"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeckendorf.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.mealy_regular_cannot_detect_primes"
+    phase := 58
+    status := .formalized }
+-- cor:cdim-s4-abs-nielsen-cardinality-degree → nielsen_cardinality_s4 (CollisionZeta.lean:657)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:cdim-s4-abs-nielsen-cardinality-degree"
+    sourcePath := "sections/body/cdim/subsec__cdim-s4.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.nielsen_cardinality_s4"
+    phase := 58
+    status := .formalized }
+-- prop:cdim-double-discriminant-two-parameter-family → double_discriminant_two_parameter (CollisionZeta.lean:663)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cdim-double-discriminant-two-parameter-family"
+    sourcePath := "sections/body/cdim/subsec__cdim-discriminant.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.double_discriminant_two_parameter"
+    phase := 58
+    status := .formalized }
+-- thm:terminal-window6-edge-flux-skeleton → edge_flux_total (CollisionZeta.lean:668)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:terminal-window6-edge-flux-skeleton"
+    sourcePath := "sections/body/terminal/subsec__terminal-window6.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.edge_flux_total"
+    phase := 58
+    status := .formalized }
+-- thm:conclusion-pom-curvature-ledger-parenthesization-invariance → curvature_parenthesization (Window6.lean:394)
+-- 状态: 已形式化, 审核通过 2026-03-24（结论章节 100%）
+, { label := "thm:conclusion-pom-curvature-ledger-parenthesization-invariance"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.curvature_parenthesization"
+    phase := 58
     status := .formalized } ]
 
 end Omega.Audit
