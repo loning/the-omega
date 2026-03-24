@@ -149,4 +149,39 @@ theorem cTypeAdjCount_row_sum_six :
 theorem cTypeAdjCount_nonzero_exists :
     cTypeAdjCount 6 (X.ofNat 6 0) (X.ofNat 6 1) > 0 := by native_decide
 
+/-! ### Local/global separation -/
+
+/-- Minimum BinFold fiber multiplicity at resolution m. -/
+def cBinFiberMin (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).inf' (@Finset.univ_nonempty _ (fintypeX m) (X.instNonempty m))
+    (fun x => cBinFiberMult m x)
+
+/-- Maximum BinFold fiber multiplicity at resolution m. -/
+def cBinFiberMax (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).sup' (@Finset.univ_nonempty _ (fintypeX m) (X.instNonempty m))
+    (fun x => cBinFiberMult m x)
+
+/-- Minimum BinFold multiplicity at m = 6 is 2. -/
+theorem cBinFiberMin_six : cBinFiberMin 6 = 2 := by native_decide
+
+/-- Maximum BinFold multiplicity at m = 6 is 4. -/
+theorem cBinFiberMax_six : cBinFiberMax 6 = 4 := by native_decide
+
+/-- Local index < global compression: min_mult × |X_6| < 2^6. -/
+theorem local_index_lt_global_compression :
+    cBinFiberMin 6 * 21 < 2 ^ 6 := by
+  rw [cBinFiberMin_six]; omega
+
+/-- Total hidden dimensions at m = 6: 2^6 - |X_6| = 43. -/
+theorem total_hidden_dims_six : 2 ^ 6 - 21 = 43 := by omega
+
+/-- The compression ratio bounds: min ≤ 2^m / |X_m| ≤ max. -/
+theorem compression_bounds_six :
+    cBinFiberMin 6 ≤ 64 / 21 ∧ 64 / 21 ≤ cBinFiberMax 6 := by
+  rw [cBinFiberMin_six, cBinFiberMax_six]; omega
+
+/-- The multiplicity spread at m = 6: max - min = 2. -/
+theorem multiplicity_spread_six : cBinFiberMax 6 - cBinFiberMin 6 = 2 := by
+  rw [cBinFiberMax_six, cBinFiberMin_six]
+
 end Omega

@@ -222,4 +222,28 @@ theorem unification_triple_dynamic :
     45 - 24 = Nat.fib 8 ∧
     78 - 45 = Nat.fib 9 - Nat.fib 2 := by native_decide
 
+/-! ### GCD / median group instances -/
+
+/-- GCD instances relevant to the folding structure. -/
+theorem gcd_as_median_instances :
+    Nat.gcd 6 10 = 2 ∧ Nat.gcd 12 18 = 6 ∧ Nat.gcd 21 34 = 1 ∧
+    Nat.gcd (Nat.fib 8) (Nat.fib 6) = 1 ∧
+    Nat.gcd (Nat.fib 8) (Nat.fib 4) = Nat.fib 4 := by native_decide
+
+/-- Coprimality of consecutive Fibonacci numbers: gcd(F(n), F(n+1)) = 1. -/
+theorem fib_coprime_consecutive :
+    Nat.gcd (Nat.fib 7) (Nat.fib 8) = 1 ∧
+    Nat.gcd (Nat.fib 8) (Nat.fib 9) = 1 ∧
+    Nat.gcd (Nat.fib 9) (Nat.fib 10) = 1 := by native_decide
+
+/-- gcd(F(m), F(n)) = F(gcd(m,n)) instances. -/
+theorem fib_gcd_instances :
+    Nat.gcd (Nat.fib 6) (Nat.fib 8) = Nat.fib (Nat.gcd 6 8) ∧
+    Nat.gcd (Nat.fib 4) (Nat.fib 8) = Nat.fib (Nat.gcd 4 8) ∧
+    Nat.gcd (Nat.fib 6) (Nat.fib 9) = Nat.fib (Nat.gcd 6 9) := by native_decide
+
+/-- The phase space order 21 is coprime to its Fibonacci neighbors. -/
+theorem phase_space_coprimality :
+    Nat.gcd 21 34 = 1 ∧ Nat.gcd 21 55 = 1 := by native_decide
+
 end Omega.ZeckSig

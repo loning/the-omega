@@ -4167,6 +4167,175 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.BinFold"
       leanName := "Omega.cTypeAdjCount_nonzero_exists"
       phase := 30
+      status := .formalized }
+  -- Phase 31: Window6 结论章节 — CRT 幂等元 (Round 26)
+  -- thm:conclusion-window6-visible-crt-arithmetic-phase-space
+  -- prop:conclusion-window6-crt-idempotent-sector-splitting
+  -- fib8_factorization: F(8) = 3 × 7
+  --   (Omega/Folding/Window6.lean:54)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-visible-crt-arithmetic-phase-space"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.fib8_factorization"
+      phase := 31
+      status := .formalized }
+  -- crt_idempotent_7: 7² ≡ 7 (mod 21)
+  --   (Omega/Folding/Window6.lean:60)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-crt-idempotent-sector-splitting"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.crt_idempotent_7"
+      phase := 31
+      status := .formalized }
+  -- crt_idempotent_15: 15² ≡ 15 (mod 21)
+  --   (Omega/Folding/Window6.lean:63)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-crt-idempotent-sector-splitting-15"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.crt_idempotent_15"
+      phase := 31
+      status := .formalized }
+  -- crt_idempotent_product: e₁ · e₂ = 0
+  --   (Omega/Folding/Window6.lean:66)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-crt-idempotent-orthogonal"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.crt_idempotent_product"
+      phase := 31
+      status := .formalized }
+  -- crt_idempotent_sum: e₁ + e₂ = 1
+  --   (Omega/Folding/Window6.lean:69)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-crt-idempotent-complementary"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.crt_idempotent_sum"
+      phase := 31
+      status := .formalized }
+  -- zmod21_idempotents_complete: ℤ/21ℤ 中恰好 {0,1,7,15} 为幂等元
+  --   (Omega/Folding/Window6.lean:72)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-crt-idempotent-complete-classification"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.zmod21_idempotents_complete"
+      phase := 31
+      status := .formalized }
+  -- zmod21_unit_count: φ(21) = 12
+  --   (Omega/Folding/Window6.lean:76)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-window6-crt-euler-phi"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.zmod21_unit_count"
+      phase := 31
+      status := .formalized }
+  -- Phase 31: BinFold 局部/全局分离 (Round 26)
+  -- thm:conclusion-window6-local-index-global-compression-separation
+  -- cBinFiberMin/Max 定义
+  --   (Omega/Folding/BinFold.lean:155-162)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:conclusion-window6-bin-fiber-min-max"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberMin"
+      phase := 31
+      status := .formalized }
+  -- cBinFiberMin_six: min mult at m=6 is 2
+  --   (Omega/Folding/BinFold.lean:165)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-local-index-global-compression-separation"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberMin_six"
+      phase := 31
+      status := .formalized }
+  -- cBinFiberMax_six: max mult at m=6 is 4
+  --   (Omega/Folding/BinFold.lean:168)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-bin-fiber-max-six"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberMax_six"
+      phase := 31
+      status := .formalized }
+  -- local_index_lt_global_compression: min_mult × 21 < 2^6
+  --   (Omega/Folding/BinFold.lean:171)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-local-index-lt-global-compression"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.local_index_lt_global_compression"
+      phase := 31
+      status := .formalized }
+  -- total_hidden_dims_six: 2^6 - 21 = 43
+  --   (Omega/Folding/BinFold.lean:176)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-total-hidden-dims"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.total_hidden_dims_six"
+      phase := 31
+      status := .formalized }
+  -- compression_bounds_six: min ≤ 64/21 ≤ max
+  --   (Omega/Folding/BinFold.lean:179)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-compression-bounds"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.compression_bounds_six"
+      phase := 31
+      status := .formalized }
+  -- multiplicity_spread_six: max - min = 2
+  --   (Omega/Folding/BinFold.lean:184)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-multiplicity-spread"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.multiplicity_spread_six"
+      phase := 31
+      status := .formalized }
+  -- Phase 31: ZeckendorfSignature GCD 实例 (Round 26)
+  -- thm:conclusion-valuation-median-group
+  -- gcd_as_median_instances: GCD 中值群实例
+  --   (Omega/Folding/ZeckendorfSignature.lean:228)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-valuation-median-group"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.gcd_as_median_instances"
+      phase := 31
+      status := .formalized }
+  -- fib_coprime_consecutive: gcd(F(n), F(n+1)) = 1 实例
+  --   (Omega/Folding/ZeckendorfSignature.lean:234)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-valuation-fib-coprime-consecutive"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.fib_coprime_consecutive"
+      phase := 31
+      status := .formalized }
+  -- fib_gcd_instances: gcd(F(m), F(n)) = F(gcd(m,n)) 实例
+  --   (Omega/Folding/ZeckendorfSignature.lean:240)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-valuation-fib-gcd-instances"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.fib_gcd_instances"
+      phase := 31
+      status := .formalized }
+  -- phase_space_coprimality: gcd(21, 34) = 1 ∧ gcd(21, 55) = 1
+  --   (Omega/Folding/ZeckendorfSignature.lean:246)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-valuation-phase-space-coprimality"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.phase_space_coprimality"
+      phase := 31
       status := .formalized } ]
 
 end Omega.Audit

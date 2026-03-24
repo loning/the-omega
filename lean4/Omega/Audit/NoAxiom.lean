@@ -1199,6 +1199,30 @@ def coreAuditTargets : List String :=
   -- Round 25: BinFold — thm:terminal-foldbin6-pushforward-markov (Phase 30)
   , "Omega.cTypeAdjCount_symm_six"
   , "Omega.cTypeAdjCount_row_sum_six"
-  , "Omega.cTypeAdjCount_nonzero_exists" ]
+  , "Omega.cTypeAdjCount_nonzero_exists"
+  -- Round 26: Window6 CRT 幂等元 (Phase 31)
+  -- thm:conclusion-window6-visible-crt-arithmetic-phase-space
+  -- prop:conclusion-window6-crt-idempotent-sector-splitting
+  , "Omega.fib8_factorization"
+  , "Omega.crt_idempotent_7"
+  , "Omega.crt_idempotent_15"
+  , "Omega.crt_idempotent_product"
+  , "Omega.crt_idempotent_sum"
+  , "Omega.zmod21_idempotents_complete"
+  , "Omega.zmod21_unit_count"
+  -- Round 26: BinFold 局部/全局分离 (Phase 31)
+  -- thm:conclusion-window6-local-index-global-compression-separation
+  , "Omega.cBinFiberMin_six"
+  , "Omega.cBinFiberMax_six"
+  , "Omega.local_index_lt_global_compression"
+  , "Omega.total_hidden_dims_six"
+  , "Omega.compression_bounds_six"
+  , "Omega.multiplicity_spread_six"
+  -- Round 26: ZeckendorfSignature GCD 实例 (Phase 31)
+  -- thm:conclusion-valuation-median-group
+  , "Omega.ZeckSig.gcd_as_median_instances"
+  , "Omega.ZeckSig.fib_coprime_consecutive"
+  , "Omega.ZeckSig.fib_gcd_instances"
+  , "Omega.ZeckSig.phase_space_coprimality" ]
 
 end Omega.Audit

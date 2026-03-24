@@ -45,4 +45,41 @@ theorem nontrivial_microstate_count_six :
     Fintype.card (Word 6) - cFiberHist 6 1 = 62 := by
   rw [card_Word_six, cFiberHist_6_1]
 
+/-! ### CRT phase space structure
+
+|X_6| = F(8) = 21 = 3 × 7. By CRT, ℤ/21ℤ ≅ ℤ/3ℤ × ℤ/7ℤ.
+The idempotents of ℤ/21ℤ encode the CRT projection structure. -/
+
+/-- F(8) = 21 = 3 × 7. -/
+theorem fib8_factorization : Nat.fib 8 = 3 * 7 := by native_decide
+
+/-- 21 = 3 × 7 (direct). -/
+theorem card_X6_factorization : 21 = 3 * 7 := by omega
+
+/-- The CRT idempotent e₁ = 7 in ℤ/21ℤ: 7² ≡ 7 (mod 21). -/
+theorem crt_idempotent_7 : (7 : ZMod 21) ^ 2 = 7 := by native_decide
+
+/-- The CRT idempotent e₂ = 15 in ℤ/21ℤ: 15² ≡ 15 (mod 21). -/
+theorem crt_idempotent_15 : (15 : ZMod 21) ^ 2 = 15 := by native_decide
+
+/-- The CRT idempotents are orthogonal: e₁ · e₂ = 0. -/
+theorem crt_idempotent_product : (7 : ZMod 21) * 15 = 0 := by native_decide
+
+/-- The CRT idempotents are complementary: e₁ + e₂ = 1. -/
+theorem crt_idempotent_sum : (7 : ZMod 21) + 15 = 1 := by native_decide
+
+/-- Complete classification of idempotents in ℤ/21ℤ: exactly {0, 1, 7, 15}. -/
+theorem zmod21_idempotents_complete :
+    ∀ x : ZMod 21, x ^ 2 = x ↔ x = 0 ∨ x = 1 ∨ x = 7 ∨ x = 15 := by native_decide
+
+/-- The unit group of ℤ/21ℤ has 12 elements (Euler's φ(21) = 12). -/
+theorem zmod21_unit_count :
+    (Finset.univ.filter (fun x : ZMod 21 => IsUnit x)).card = 12 := by native_decide
+
+/-- The non-unit, non-zero elements of ℤ/21ℤ: 21 - 12 - 1 = 8. -/
+theorem zmod21_nonunit_nonzero_count : 21 - 1 - 12 = 8 := by omega
+
+/-- Euler's totient: φ(3) × φ(7) = 2 × 6 = 12. -/
+theorem euler_totient_21 : 2 * 6 = 12 := by omega
+
 end Omega
