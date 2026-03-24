@@ -6953,6 +6953,34 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.fiberMultiplicity_le_restrict_add"
     phase := 74
+    status := .formalized }
+-- Phase 75: 全零词纤维特征化 (MaxFiberTwoStep.lean:438-549)
+-- thm:pom-max-fiber → X.ofNat_zero（X.ofNat m 0 = allFalse）
+-- (MaxFiberTwoStep.lean:438-442)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-ofNat-zero-allFalse"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.X.ofNat_zero"
+    phase := 75
+    status := .formalized }
+-- thm:pom-max-fiber → Fold_eq_allFalse_of_weight_eq_fib（weight=F(m+2) 的词 Fold 到 allFalse）
+-- (MaxFiberTwoStep.lean:445-462)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-Fold-allFalse-weight-fib"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_eq_allFalse_of_weight_eq_fib"
+    phase := 75
+    status := .formalized }
+-- thm:pom-max-fiber → fiberMultiplicity_allFalse（allFalse 纤维大小 = 1 + #{weight=F(m+2)}）
+-- (MaxFiberTwoStep.lean:487-549)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-fiberMultiplicity-allFalse"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.fiberMultiplicity_allFalse"
+    phase := 75
     status := .formalized } ]
 
 end Omega.Audit

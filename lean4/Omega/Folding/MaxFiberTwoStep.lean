@@ -430,4 +430,121 @@ theorem fiberMultiplicity_le_restrict_add (x : X (m + 2)) :
       exact ⟨fun h => by cases w ⟨m+1, by omega⟩ <;> simp_all, fun h => h.elim And.left And.left⟩
     _ ≤ _ := Nat.add_le_add hFalse hTrue
 
+-- ══════════════════════════════════════════════════════════════
+-- All-false word characterization
+-- ══════════════════════════════════════════════════════════════
+
+/-- X.ofNat m 0 is the all-false stable word. -/
+theorem X.ofNat_zero (m : Nat) :
+    X.ofNat m 0 = ⟨fun _ => false, no11_allFalse⟩ := by
+  have h : stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) = 0 := stableValue_allFalse
+  rw [show (0 : Nat) = stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) from h.symm]
+  exact X.ofNat_stableValue _
+
+/-- Words with weight exactly F_{m+2} fold to the all-false stable word. -/
+theorem Fold_eq_allFalse_of_weight_eq_fib (w : Word m)
+    (hw : weight w = Nat.fib (m + 2)) :
+    Fold w = ⟨fun _ => false, no11_allFalse⟩ := by
+  -- By weight_eq_stableValue_add_hiddenBit: F(m+2) = sv + b * F(m+2), b ∈ {0,1}, sv < F(m+2)
+  have heq := weight_eq_stableValue_add_hiddenBit w
+  rw [hw] at heq
+  have hlt := stableValue_lt_fib (Fold w)
+  have hle := hiddenBit_le_one w
+  have hFpos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  -- Only solution: b = 1, sv = 0
+  have hsv : stableValue (Fold w) = 0 := by
+    -- From heq: F = sv + b * F, with sv < F and b ≤ 1
+    -- If b = 0: F = sv, contradicts sv < F
+    -- If b = 1: F = sv + F, so sv = 0
+    interval_cases (hiddenBit w) <;> omega
+  -- stableValue(Fold w) = 0 = stableValue(allFalse)
+  have hall : stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) = 0 := stableValue_allFalse
+  exact X.stableValueFin_injective m (by simp [X.stableValueFin, hsv, hall])
+
+/-- Only the all-false word has weight 0. -/
+private theorem eq_allFalse_of_weight_zero {m : Nat} (w : Word m) (hw : weight w = 0) :
+    w = fun _ => false := by
+  induction m with
+  | zero => funext i; exact absurd i.isLt (Nat.not_lt_zero _)
+  | succ m ih =>
+    have hLast : w ⟨m, Nat.lt_succ_self m⟩ = false := by
+      by_contra h
+      have htrue : w ⟨m, Nat.lt_succ_self m⟩ = true := by
+        cases hb : w ⟨m, Nat.lt_succ_self m⟩ <;> simp_all
+      have hpos := weight_pos_of_bit_true htrue
+      omega
+    funext i
+    by_cases hi : i.val < m
+    · have htr : weight (truncate w) = 0 := by
+        rw [weight] at hw; simp only [hLast, Bool.false_eq_true, ↓reduceIte, Nat.add_zero] at hw
+        exact hw
+      have := congr_fun (ih (truncate w) htr) ⟨i.val, hi⟩
+      simp [truncate] at this; exact this
+    · have : i = ⟨m, Nat.lt_succ_self m⟩ := Fin.ext (Nat.eq_of_lt_succ_of_not_lt i.isLt hi)
+      rw [this, hLast]
+
+/-- The fiber of allFalse has size 1 + #{weight = F_{m+2}}. -/
+theorem fiberMultiplicity_allFalse (m : Nat) :
+    X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m) =
+    1 + (Finset.univ.filter (fun w : Word m => weight w = Nat.fib (m + 2))).card := by
+  rw [fiberMultiplicity_eq_weight_congr_count]
+  simp only [stableValue_allFalse]
+  -- Goal: #{w: weight w % F = 0} = 1 + #{w: weight w = F}
+  -- Split {weight % F = 0} into {weight = 0} ∪ {weight = F}
+  -- Since weight < F(m+3) ≤ 2·F(m+2), weight % F = 0 ↔ weight = 0 ∨ weight = F
+  have hFpos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  suffices hsplit : Finset.univ.filter (fun w : Word m => weight w % Nat.fib (m + 2) = 0) =
+      Finset.univ.filter (fun w : Word m => weight w = 0) ∪
+      Finset.univ.filter (fun w : Word m => weight w = Nat.fib (m + 2)) by
+    rw [hsplit]
+    have hdisjoint : Disjoint
+        (Finset.univ.filter (fun w : Word m => weight w = 0))
+        (Finset.univ.filter (fun w : Word m => weight w = Nat.fib (m + 2))) := by
+      apply Finset.disjoint_filter.mpr
+      intro w _ h1 h2; omega
+    rw [Finset.card_union_of_disjoint hdisjoint]
+    -- #{weight = 0} = 1 (only the all-false word)
+    have hone : (Finset.univ.filter (fun w : Word m => weight w = 0)).card = 1 := by
+      rw [Finset.card_eq_one]
+      refine ⟨fun _ => false, ?_⟩
+      ext w
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+      constructor
+      · intro hw; exact eq_allFalse_of_weight_zero w hw
+      · intro hw; rw [hw]; exact weight_allFalse
+    omega
+  -- Prove the split
+  ext w
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+  constructor
+  · intro hmod
+    have hwlt := X.weight_lt_fib w
+    -- weight w < fib(m+3) = fib(m+1) + fib(m+2) ≤ 2 · fib(m+2)
+    have hbound : weight w < 2 * Nat.fib (m + 2) := by
+      have : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+      have : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+      omega
+    -- weight % F = 0 and weight < 2F → weight = 0 or weight = F
+    have : weight w = 0 ∨ weight w = Nat.fib (m + 2) := by
+      rcases Nat.eq_zero_or_pos (weight w) with h | h
+      · left; exact h
+      · right
+        obtain ⟨k, hk⟩ := Nat.dvd_of_mod_eq_zero hmod
+        -- weight = F * k, weight > 0, so k > 0; weight < 2F, so k < 2; thus k = 1
+        have hk_pos : 0 < k := by
+          rcases Nat.eq_zero_or_pos k with hk0 | hk0
+          · rw [hk0, Nat.mul_zero] at hk; omega
+          · exact hk0
+        have hk_lt : k < 2 := by
+          by_contra hge
+          push_neg at hge
+          have : 2 * Nat.fib (m + 2) ≤ Nat.fib (m + 2) * k := by
+            calc 2 * Nat.fib (m + 2) = Nat.fib (m + 2) * 2 := by ring
+              _ ≤ Nat.fib (m + 2) * k := Nat.mul_le_mul_left _ hge
+          omega
+        have : k = 1 := by omega
+        rw [this, Nat.mul_one] at hk; omega
+    exact this
+  · rintro (h | h) <;> simp [h]
+
 end Omega

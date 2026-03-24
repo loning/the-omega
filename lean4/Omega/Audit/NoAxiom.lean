@@ -1780,6 +1780,10 @@ def coreAuditTargets : List String :=
   -- Phase 74: 纤维同余特征化 + pointwise 递推不等式 (MaxFiberTwoStep.lean:306-431)
   , "Omega.mem_fiber_iff_weight_mod"
   , "Omega.fiberMultiplicity_eq_weight_congr_count"
-  , "Omega.fiberMultiplicity_le_restrict_add" ]
+  , "Omega.fiberMultiplicity_le_restrict_add"
+  -- Phase 75: 全零词纤维特征化 (MaxFiberTwoStep.lean:438-549)
+  , "Omega.X.ofNat_zero"
+  , "Omega.Fold_eq_allFalse_of_weight_eq_fib"
+  , "Omega.fiberMultiplicity_allFalse" ]
 
 end Omega.Audit
