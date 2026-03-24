@@ -270,4 +270,35 @@ theorem weight_eq_stableValue_add_hiddenBit (w : Word m) :
       Nat.add_zero]
     rw [X.stableValue_ofNat_lt _ hge]
 
+-- ══════════════════════════════════════════════════════════════
+-- stableValue of Fold as modular reduction
+-- ══════════════════════════════════════════════════════════════
+
+/-- stableValue of Fold w equals weight w mod F_{m+2}. -/
+theorem stableValue_Fold_mod (w : Word m) :
+    stableValue (Fold w) = weight w % Nat.fib (m + 2) := by
+  have h := weight_eq_stableValue_add_hiddenBit w
+  have hlt := stableValue_lt_fib (Fold w)
+  have hfib_pos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  -- weight w = sv + b * F, sv < F  ⟹  sv = weight w % F
+  rw [h, Nat.add_mul_mod_self_right]
+  exact (Nat.mod_eq_of_lt hlt).symm
+
+-- ══════════════════════════════════════════════════════════════
+-- lem:pom-fold-congruence: Fold(w) = Fold(w') iff weight congruent mod F_{m+2}
+-- ══════════════════════════════════════════════════════════════
+
+/-- lem:pom-fold-congruence: Fold(w) = Fold(w') iff weight(w) ≡ weight(w') (mod F_{m+2}). -/
+theorem Fold_eq_iff_weight_mod {m : Nat} (w w' : Word m) :
+    Fold w = Fold w' ↔ weight w % Nat.fib (m + 2) = weight w' % Nat.fib (m + 2) := by
+  constructor
+  · intro h
+    rw [← stableValue_Fold_mod w, ← stableValue_Fold_mod w', h]
+  · intro h
+    have hsv : stableValue (Fold w) = stableValue (Fold w') := by
+      rw [stableValue_Fold_mod w, stableValue_Fold_mod w', h]
+    exact X.stableValueFin_injective m (by simp [X.stableValueFin, hsv])
+
+
+
 end Omega

@@ -6906,6 +6906,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.weight_eq_stableValue_add_hiddenBit"
     phase := 72
+    status := .formalized }
+-- Phase 73: lem:pom-fold-congruence — Fold 等价 ↔ weight 模同余 (MaxFiberTwoStep.lean:278-300)
+-- lem:pom-fold-congruence → stableValue_Fold_mod（stableValue(Fold w) = weight w % fib(m+2)）
+-- (MaxFiberTwoStep.lean:278-285)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "lem:pom-stableValue-Fold-mod"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.stableValue_Fold_mod"
+    phase := 73
+    status := .formalized }
+-- lem:pom-fold-congruence → Fold_eq_iff_weight_mod（Fold w = Fold w' ↔ weight w % F = weight w' % F）
+-- (MaxFiberTwoStep.lean:292-300)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "lem:pom-fold-congruence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_eq_iff_weight_mod"
+    phase := 73
     status := .formalized } ]
 
 end Omega.Audit

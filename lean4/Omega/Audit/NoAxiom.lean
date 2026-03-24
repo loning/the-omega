@@ -1773,6 +1773,9 @@ def coreAuditTargets : List String :=
   -- Phase 72: lem:pom-one-bit — 单隐藏位分解 (MaxFiberTwoStep.lean:213-272)
   , "Omega.hiddenBit_le_one"
   , "Omega.ofNat_sub_fib_of_ge"
-  , "Omega.weight_eq_stableValue_add_hiddenBit" ]
+  , "Omega.weight_eq_stableValue_add_hiddenBit"
+  -- Phase 73: lem:pom-fold-congruence — Fold 等价 ↔ weight 模同余 (MaxFiberTwoStep.lean:278-300)
+  , "Omega.stableValue_Fold_mod"
+  , "Omega.Fold_eq_iff_weight_mod" ]
 
 end Omega.Audit
