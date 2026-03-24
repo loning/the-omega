@@ -3922,6 +3922,132 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.HammingDist"
       leanName := "Omega.cMinStableHammingDist"
       phase := 29
+      status := .formalized }
+  -- Phase 29: BinFold (Round 24) — 群统一攻坚
+  -- Target 1: 边分离
+  -- thm:terminal-foldbin6-cube-edge-separation → binFold6_edge_separation
+  --   (Omega/Folding/BinFold.lean:43-45)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-cube-edge-separation"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFold6_edge_separation"
+      phase := 29
+      status := .formalized }
+  -- 存在 mult=3 的纤维（线性核障碍）→ binFold6_mult_three_exists
+  --   (Omega/Folding/BinFold.lean:50)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:terminal-foldbin6-mult-three-exists"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFold6_mult_three_exists"
+      phase := 29
+      status := .formalized }
+  -- 非均匀纤维 → binFold6_no_uniform_fibers
+  --   (Omega/Folding/BinFold.lean:53-55)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:terminal-foldbin6-no-uniform-fibers"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFold6_no_uniform_fibers"
+      phase := 29
+      status := .formalized }
+  -- Target 2: Hamming 三值律
+  -- 定义 intToWord, cBinFiberMinHamming, cBinFiberMinHammingHist
+  --   (Omega/Folding/BinFold.lean:60-73)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:terminal-foldbin6-int-to-word"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.intToWord"
+      phase := 29
+      status := .formalized }
+  , { label := "def:terminal-foldbin6-min-hamming"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberMinHamming"
+      phase := 29
+      status := .formalized }
+  , { label := "def:terminal-foldbin6-min-hamming-hist"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberMinHammingHist"
+      phase := 29
+      status := .formalized }
+  -- thm:terminal-foldbin6-fiber-hamming-three-valued → binFiber6_minHamming_hist_2/3/5
+  --   (Omega/Folding/BinFold.lean:76-78)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-fiber-hamming-three-valued-2"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFiber6_minHamming_hist_2"
+      phase := 29
+      status := .formalized }
+  , { label := "thm:terminal-foldbin6-fiber-hamming-three-valued-3"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFiber6_minHamming_hist_3"
+      phase := 29
+      status := .formalized }
+  , { label := "thm:terminal-foldbin6-fiber-hamming-three-valued-5"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.binFiber6_minHamming_hist_5"
+      phase := 29
+      status := .formalized }
+  -- Target 2: 仿射平坦分类
+  -- 定义 cBinFiberIsAffine, cAffineFlatCount
+  --   (Omega/Folding/BinFold.lean:88-97)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:terminal-foldbin6-fiber-is-affine"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cBinFiberIsAffine"
+      phase := 29
+      status := .formalized }
+  , { label := "def:terminal-foldbin6-affine-flat-count"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cAffineFlatCount"
+      phase := 29
+      status := .formalized }
+  -- thm:terminal-foldbin6-fiber-affine-geometry → cAffineFlatCount_six = 11
+  --   (Omega/Folding/BinFold.lean:100)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-fiber-affine-geometry"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cAffineFlatCount_six"
+      phase := 29
+      status := .formalized }
+  -- 非仿射纤维计数 21-11=10 → nonAffineFiber_count_six
+  --   (Omega/Folding/BinFold.lean:103-104)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:terminal-foldbin6-non-affine-fiber-count"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.nonAffineFiber_count_six"
+      phase := 29
+      status := .formalized }
+  -- Target 3: 几何稳定子（native_decide 验证稳定子为平凡群，论文记录 Z_2 待勘误说明）
+  -- cor:terminal-foldbin6-geo-stabilizer (修正版) → geoStabilizer_trivial
+  --   (Omega/Folding/BinFold.lean:110-113)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  -- 注: 论文声称稳定子为 Z_2（δ=34），native_decide 验证结果为平凡群 {0}
+  , { label := "cor:terminal-foldbin6-geo-stabilizer-trivial"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.geoStabilizer_trivial"
+      phase := 29
+      status := .formalized }
+  -- 稳定子阶数=1 → geoStabilizer_order_one
+  --   (Omega/Folding/BinFold.lean:116-119)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:terminal-foldbin6-geo-stabilizer-order"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.geoStabilizer_order_one"
+      phase := 29
       status := .formalized } ]
 
 end Omega.Audit

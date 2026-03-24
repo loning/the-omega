@@ -1,56 +1,121 @@
 import Omega.Folding.FiberSpectrum
+import Omega.Folding.HammingDist
 
-/-! ### Binary Fold: folding integers via Zeckendorf projection
-
-The BinFold map sends a natural number N < 2^m to the stable word X.ofNat m N.
-This provides a "binary-to-Fibonacci" projection that partitions {0, ..., 2^m - 1}
-into fibers over X_m. The resulting histogram differs from the standard fiber
-histogram (which uses weight-based folding of Word m). -/
+/-! ### Binary Fold: folding integers via Zeckendorf projection -/
 
 namespace Omega
 
 /-- BinFold: project a natural number onto X_m via Zeckendorf truncation. -/
 def cBinFold (m N : Nat) : X m := X.ofNat m N
 
-/-- The BinFold fiber multiplicity: number of integers in {0, ..., 2^m - 1}
-    that map to x under BinFold. -/
+/-- The BinFold fiber multiplicity. -/
 def cBinFiberMult (m : Nat) (x : X m) : Nat :=
   (Finset.range (2 ^ m)).filter (fun N => cBinFold m N = x) |>.card
 
-/-- The BinFold fiber histogram: number of stable words with BinFold multiplicity k. -/
+/-- The BinFold fiber histogram. -/
 def cBinFiberHist (m k : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cBinFiberMult m x = k) |>.card
 
-/-! ### m = 6 BinFold histogram
+/-! ### m = 6 BinFold histogram -/
 
-At resolution 6, BinFold maps {0, ..., 63} onto 21 stable words.
-The histogram is: multiplicity 2 → 8 words, multiplicity 3 → 4 words,
-multiplicity 4 → 9 words. -/
-
-/-- BinFold histogram at m = 6: 8 stable words have BinFold multiplicity 2. -/
-theorem cBinFiberHist_6_2 : cBinFiberHist 6 2 = 8 := by native_decide
-/-- BinFold histogram at m = 6: 4 stable words have BinFold multiplicity 3. -/
-theorem cBinFiberHist_6_3 : cBinFiberHist 6 3 = 4 := by native_decide
-/-- BinFold histogram at m = 6: 9 stable words have BinFold multiplicity 4. -/
-theorem cBinFiberHist_6_4 : cBinFiberHist 6 4 = 9 := by native_decide
-
-/-- The BinFold histogram accounts for all 64 microstates: 8·2 + 4·3 + 9·4 = 64. -/
-theorem binFold6_histogram_certificate : 8 * 2 + 4 * 3 + 9 * 4 = 64 := by omega
-
-/-- No stable word has BinFold multiplicity 0 or 1 at m = 6. -/
 theorem cBinFiberHist_6_0 : cBinFiberHist 6 0 = 0 := by native_decide
 theorem cBinFiberHist_6_1 : cBinFiberHist 6 1 = 0 := by native_decide
+theorem cBinFiberHist_6_2 : cBinFiberHist 6 2 = 8 := by native_decide
+theorem cBinFiberHist_6_3 : cBinFiberHist 6 3 = 4 := by native_decide
+theorem cBinFiberHist_6_4 : cBinFiberHist 6 4 = 9 := by native_decide
 
-/-- The total number of distinct BinFold multiplicities at m = 6 is 3 (values 2, 3, 4). -/
+theorem binFold6_histogram_certificate : 8 * 2 + 4 * 3 + 9 * 4 = 64 := by omega
+
 theorem binFold6_distinct_multiplicities :
     cBinFiberHist 6 2 + cBinFiberHist 6 3 + cBinFiberHist 6 4 = 21 := by
   rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]
 
-/-- BinFold multiplicity sum verification: ∑ k · h(k) = 2^m at m = 6. -/
 theorem binFold6_sum_check :
     cBinFiberHist 6 0 * 0 + cBinFiberHist 6 1 * 1 + cBinFiberHist 6 2 * 2 +
     cBinFiberHist 6 3 * 3 + cBinFiberHist 6 4 * 4 = 64 := by
   rw [cBinFiberHist_6_0, cBinFiberHist_6_1, cBinFiberHist_6_2,
     cBinFiberHist_6_3, cBinFiberHist_6_4]
+
+/-! ### Edge separation at m = 6 -/
+
+/-- BinFold separates hypercube edges at m = 6: flipping any single bit always
+    changes the BinFold image. -/
+theorem binFold6_edge_separation :
+    ∀ N : Fin 64, ∀ k : Fin 6,
+      cBinFold 6 N.val ≠ cBinFold 6 (N.val ^^^ (2 ^ k.val)) := by native_decide
+
+/-! ### Linear kernel obstacle -/
+
+/-- There exists a stable word with BinFold multiplicity 3 (not a power of 2). -/
+theorem binFold6_mult_three_exists : cBinFiberMult 6 (X.ofNat 6 9) = 3 := by native_decide
+
+/-- Not all BinFold fiber multiplicities are equal (some are 2, some 3, some 4). -/
+theorem binFold6_no_uniform_fibers :
+    cBinFiberHist 6 2 ≠ 0 ∧ cBinFiberHist 6 3 ≠ 0 ∧ cBinFiberHist 6 4 ≠ 0 := by
+  rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
+
+/-! ### Intra-fiber Hamming distance -/
+
+/-- Convert a natural number to a Word m (big-endian binary). -/
+def intToWord (m : Nat) (N : Nat) : Word m :=
+  fun i => decide (N / 2 ^ (m - 1 - i.val) % 2 = 1)
+
+/-- Minimum Hamming distance within a BinFold fiber. -/
+def cBinFiberMinHamming (m : Nat) (x : X m) : Nat :=
+  let preimages := (Finset.range (2 ^ m)).filter (fun N => cBinFold m N = x)
+  let pairs := preimages.product preimages |>.filter (fun (a, b) => a < b)
+  if h : pairs.Nonempty then
+    pairs.inf' h (fun (a, b) => hammingDist (intToWord m a) (intToWord m b))
+  else 0
+
+/-- Histogram of intra-fiber minimum Hamming distances. -/
+def cBinFiberMinHammingHist (m d : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).filter (fun x => cBinFiberMinHamming m x = d) |>.card
+
+/-- At m = 6, intra-fiber min Hamming distances take values 2, 3, 5. -/
+theorem binFiber6_minHamming_hist_2 : cBinFiberMinHammingHist 6 2 = 13 := by native_decide
+theorem binFiber6_minHamming_hist_3 : cBinFiberMinHammingHist 6 3 = 6 := by native_decide
+theorem binFiber6_minHamming_hist_5 : cBinFiberMinHammingHist 6 5 = 2 := by native_decide
+
+theorem binFiber6_minHamming_total :
+    cBinFiberMinHammingHist 6 2 + cBinFiberMinHammingHist 6 3 +
+    cBinFiberMinHammingHist 6 5 = 21 := by
+  rw [binFiber6_minHamming_hist_2, binFiber6_minHamming_hist_3, binFiber6_minHamming_hist_5]
+
+/-! ### Affine flat classification -/
+
+/-- Test whether a BinFold fiber is an affine flat (3-point XOR closure). -/
+def cBinFiberIsAffine (m : Nat) (x : X m) : Bool :=
+  let preimages := ((Finset.range (2 ^ m)).filter (fun N => cBinFold m N = x)).sort (· ≤ ·)
+  preimages.all fun a =>
+    preimages.all fun b =>
+      preimages.all fun c =>
+        decide (cBinFold m (a ^^^ b ^^^ c) = x)
+
+/-- Count of affine fibers at resolution m. -/
+def cAffineFlatCount (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).filter (fun x => cBinFiberIsAffine m x) |>.card
+
+/-- At m = 6, exactly 11 fibers are affine flats. -/
+theorem cAffineFlatCount_six : cAffineFlatCount 6 = 11 := by native_decide
+
+/-- The non-affine fibers at m = 6: 21 - 11 = 10 fibers are non-affine. -/
+theorem nonAffineFiber_count_six : 21 - cAffineFlatCount 6 = 10 := by
+  rw [cAffineFlatCount_six]
+
+/-! ### Geometric stabilizer -/
+
+/-- The geometric stabilizer at m = 6: the only δ ∈ {0,...,63} with
+    BinFold(N) = BinFold(N ⊕ δ) for all N is δ = 0 (trivial stabilizer). -/
+theorem geoStabilizer_trivial :
+    (Finset.range 64).filter (fun δ =>
+      ∀ N : Fin 64, cBinFold 6 N.val = cBinFold 6 (N.val ^^^ δ)) = {0} := by
+  native_decide
+
+/-- The geometric stabilizer has order 1 (trivial). -/
+theorem geoStabilizer_order_one :
+    ((Finset.range 64).filter (fun δ =>
+      ∀ N : Fin 64, cBinFold 6 N.val = cBinFold 6 (N.val ^^^ δ))).card = 1 := by
+  native_decide
 
 end Omega

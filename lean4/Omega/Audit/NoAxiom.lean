@@ -555,6 +555,24 @@ Run these commands manually during audit:
   #print axioms Omega.cMinStableHammingDist_two
   #print axioms Omega.cMinStableHammingDist_three
   #print axioms Omega.cMinStableHammingDist_four
+  -- Round 24: BinFold 群统一攻坚 — Target 1 边分离
+  -- thm:terminal-foldbin6-cube-edge-separation, 线性核障碍, 非均匀纤维
+  #print axioms Omega.binFold6_edge_separation
+  #print axioms Omega.binFold6_mult_three_exists
+  #print axioms Omega.binFold6_no_uniform_fibers
+  -- Round 24: BinFold — Target 2 Hamming 三值律
+  -- thm:terminal-foldbin6-fiber-hamming-three-valued (13,6,2)
+  #print axioms Omega.binFiber6_minHamming_hist_2
+  #print axioms Omega.binFiber6_minHamming_hist_3
+  #print axioms Omega.binFiber6_minHamming_hist_5
+  -- Round 24: BinFold — Target 2 仿射平坦几何
+  -- thm:terminal-foldbin6-fiber-affine-geometry: 11 个仿射纤维
+  #print axioms Omega.cAffineFlatCount_six
+  #print axioms Omega.nonAffineFiber_count_six
+  -- Round 24: BinFold — Target 3 几何稳定子（平凡群，论文勘误）
+  -- cor:terminal-foldbin6-geo-stabilizer 修正版
+  #print axioms Omega.geoStabilizer_trivial
+  #print axioms Omega.geoStabilizer_order_one
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1133,6 +1151,21 @@ def coreAuditTargets : List String :=
   , "Omega.hammingDist_le"
   , "Omega.cMinStableHammingDist_two"
   , "Omega.cMinStableHammingDist_three"
-  , "Omega.cMinStableHammingDist_four" ]
+  , "Omega.cMinStableHammingDist_four"
+  -- Round 24: BinFold 群统一攻坚 (Phase 29)
+  -- Target 1: 边分离 + 线性核障碍 + 非均匀纤维
+  , "Omega.binFold6_edge_separation"
+  , "Omega.binFold6_mult_three_exists"
+  , "Omega.binFold6_no_uniform_fibers"
+  -- Target 2: Hamming 三值律 (thm:terminal-foldbin6-fiber-hamming-three-valued)
+  , "Omega.binFiber6_minHamming_hist_2"
+  , "Omega.binFiber6_minHamming_hist_3"
+  , "Omega.binFiber6_minHamming_hist_5"
+  -- Target 2: 仿射平坦几何 (thm:terminal-foldbin6-fiber-affine-geometry)
+  , "Omega.cAffineFlatCount_six"
+  , "Omega.nonAffineFiber_count_six"
+  -- Target 3: 几何稳定子平凡 (cor:terminal-foldbin6-geo-stabilizer 修正版)
+  , "Omega.geoStabilizer_trivial"
+  , "Omega.geoStabilizer_order_one" ]
 
 end Omega.Audit
