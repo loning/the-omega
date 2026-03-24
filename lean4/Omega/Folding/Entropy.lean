@@ -277,4 +277,24 @@ theorem recursion_order_pattern :
     (3 = 2 * (2 / 2) + 1) ∧ (3 = 2 * (3 / 2) + 1) ∧
     (5 = 2 * (4 / 2) + 1) ∧ (5 = 2 * (5 / 2) + 1) := by omega
 
+/-! ### Fibonacci convergent alternation (Cassini identity instances) -/
+
+/-- Cassini identity alternation: F(n)² alternately exceeds and falls below F(n-1)F(n+1). -/
+theorem fib_convergent_alternation :
+    Nat.fib 3 ^ 2 > Nat.fib 2 * Nat.fib 4 ∧
+    Nat.fib 4 ^ 2 < Nat.fib 3 * Nat.fib 5 ∧
+    Nat.fib 5 ^ 2 > Nat.fib 4 * Nat.fib 6 := by native_decide
+
+/-! ### ψ^n → 0 -/
+
+/-- |ψ|^n → 0 as n → ∞ (geometric decay since |ψ| < 1). -/
+theorem psi_pow_tendsto_zero :
+    Tendsto (fun n => |ψ| ^ n) atTop (𝓝 0) :=
+  tendsto_pow_atTop_nhds_zero_of_lt_one (abs_nonneg _) abs_goldenConj_lt_one
+
+/-- ψ^n → 0 as n → ∞. -/
+theorem psi_pow_tendsto_zero' :
+    Tendsto (fun n => ψ ^ n) atTop (𝓝 0) :=
+  tendsto_pow_atTop_nhds_zero_of_abs_lt_one abs_goldenConj_lt_one
+
 end Omega.Entropy

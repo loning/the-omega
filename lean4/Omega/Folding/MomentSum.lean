@@ -112,6 +112,54 @@ theorem momentSum_ten_zero : momentSum 10 0 = 1 := by rw [← cMomentSum_eq]; na
 theorem momentSum_ten_one : momentSum 10 1 = 2 := by rw [← cMomentSum_eq]; native_decide
 theorem momentSum_ten_two : momentSum 10 2 = 1026 := by rw [← cMomentSum_eq]; native_decide
 
+/-! ### Universal base values -/
+
+/-- S_q(0) = 1 for all q: X_0 has one element with fiber multiplicity 1. -/
+theorem momentSum_zero_univ (q : Nat) : momentSum q 0 = 1 := by
+  simp only [momentSum]
+  have hcard : Fintype.card (X 0) = 1 := by rw [X.card_eq_fib]; rfl
+  have hsum : ∑ x : X 0, X.fiberMultiplicity x = 1 :=
+    X.fiberMultiplicity_sum_eq_pow (m := 0)
+  -- All fiber multiplicities are 1 (sum = 1 and all ≥ 1, with |X_0| = 1)
+  have hall : ∀ x : X 0, X.fiberMultiplicity x = 1 := by
+    intro x; have := X.fiberMultiplicity_pos x
+    have : Fintype.card (X 0) = 1 := hcard
+    have : ∑ y : X 0, X.fiberMultiplicity y = 1 := hsum
+    have hle : X.fiberMultiplicity x ≤ 1 := by
+      calc X.fiberMultiplicity x
+          ≤ ∑ y : X 0, X.fiberMultiplicity y := Finset.single_le_sum
+              (fun y _ => Nat.zero_le _) (Finset.mem_univ x)
+        _ = 1 := hsum
+    omega
+  simp [hall]
+
+/-- S_q(1) = 2 for all q: X_1 has two elements, each with fiber multiplicity 1. -/
+theorem momentSum_one_univ (q : Nat) : momentSum q 1 = 2 := by
+  simp only [momentSum]
+  have hcard : Fintype.card (X 1) = 2 := by rw [X.card_eq_fib]; rfl
+  have hsum : ∑ x : X 1, X.fiberMultiplicity x = 2 := by
+    rw [X.fiberMultiplicity_sum_eq_pow]; rfl
+  have hall : ∀ x : X 1, X.fiberMultiplicity x = 1 := by
+    intro x
+    have hpos := X.fiberMultiplicity_pos x
+    have hle : X.fiberMultiplicity x ≤ 1 := by
+      by_contra h; push_neg at h
+      have hge2 : X.fiberMultiplicity x ≥ 2 := by omega
+      have : ∑ y : X 1, X.fiberMultiplicity y ≥ 3 := by
+        calc ∑ y : X 1, X.fiberMultiplicity y
+            = X.fiberMultiplicity x + ∑ y ∈ Finset.univ.erase x, X.fiberMultiplicity y := by
+              rw [Finset.add_sum_erase _ _ (Finset.mem_univ x)]
+          _ ≥ 2 + ∑ y ∈ Finset.univ.erase x, 1 := by
+              apply Nat.add_le_add hge2
+              apply Finset.sum_le_sum; intro y _; exact X.fiberMultiplicity_pos y
+          _ = 2 + (Finset.univ.erase x).card := by simp
+          _ = 3 := by
+              have := Finset.card_erase_of_mem (Finset.mem_univ x)
+              rw [Finset.card_univ, hcard] at this; omega
+      omega
+    omega
+  simp [hall, hcard]
+
 /-- S_q is monotone in q: S_q(m) ≤ S_{q+1}(m) since d(x) ≥ 1. -/
 theorem momentSum_mono_q (q m : Nat) (hq : 1 ≤ q) :
     momentSum q m ≤ momentSum (q + 1) m := by

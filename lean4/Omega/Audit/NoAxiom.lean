@@ -719,6 +719,15 @@ Run these commands manually during audit:
   #print axioms Omega.Entropy.goldenAngle_sq
   #print axioms Omega.Entropy.abs_psi_pow_div_sqrt5_lt_half
   #print axioms Omega.Entropy.fib_nearest_integer
+  -- Round 42: S_q 通用基值完整化 + ψ^n 收敛 (Phase 48)
+  -- prop:pom-moment-zero-univ, prop:pom-moment-one-univ (MomentSum.lean:118,137)
+  #print axioms Omega.momentSum_zero_univ
+  #print axioms Omega.momentSum_one_univ
+  -- aux:cdim-cassini-alternation (Entropy.lean:283)
+  #print axioms Omega.Entropy.fib_convergent_alternation
+  -- prop:cdim-psi-pow-tendsto-zero, prop:cdim-psi-pow-tendsto-zero-real (Entropy.lean:291,296)
+  #print axioms Omega.Entropy.psi_pow_tendsto_zero
+  #print axioms Omega.Entropy.psi_pow_tendsto_zero'
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

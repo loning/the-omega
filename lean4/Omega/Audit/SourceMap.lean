@@ -5644,6 +5644,47 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.recursion_order_pattern"
       phase := 47
+      status := .formalized }
+  -- Phase 48: S_q 通用基值完整化 + ψ^n 收敛 (Round 42)
+  -- prop:pom-moment-universal-base 一般形式 → momentSum_zero_univ (MomentSum.lean:118)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-moment-zero-univ"
+      sourcePath := "sections/body/pom/subsec__pom-sq-base-values.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_zero_univ"
+      phase := 48
+      status := .formalized }
+  -- prop:pom-moment-universal-base 一般形式 → momentSum_one_univ (MomentSum.lean:137)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-moment-one-univ"
+      sourcePath := "sections/body/pom/subsec__pom-sq-base-values.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_one_univ"
+      phase := 48
+      status := .formalized }
+  -- aux:cdim-cassini-alternation → fib_convergent_alternation (Entropy.lean:283)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "aux:cdim-cassini-alternation"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-fibonacci-nearest-integer.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.fib_convergent_alternation"
+      phase := 48
+      status := .formalized }
+  -- prop:cdim-psi-pow-tendsto-zero → psi_pow_tendsto_zero (Entropy.lean:291)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:cdim-psi-pow-tendsto-zero"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.psi_pow_tendsto_zero"
+      phase := 48
+      status := .formalized }
+  -- prop:cdim-psi-pow-tendsto-zero-real → psi_pow_tendsto_zero' (Entropy.lean:296)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:cdim-psi-pow-tendsto-zero-real"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.psi_pow_tendsto_zero'"
+      phase := 48
       status := .formalized } ]
 
 end Omega.Audit
