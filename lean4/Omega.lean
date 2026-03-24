@@ -15,6 +15,7 @@ import Omega.Folding.FiberRing
 import Omega.Folding.FibonacciField
 import Omega.Folding.MomentSum
 import Omega.Folding.CollisionKernel
+import Omega.Folding.CollisionZeta
 import Omega.Folding.FibonacciPolynomial
 import Omega.Folding.CarryDefect
 import Omega.Folding.FiberFusion

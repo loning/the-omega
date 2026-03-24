@@ -249,4 +249,25 @@ theorem q6_multiplicity_sum :
 theorem q6_trace_zero :
     6 * 1 + 4 * 6 + 2 * 15 = 60 ∧ 2 * 15 + 4 * 6 + 6 * 1 = 60 := by omega
 
+/-! ### Hydrogenic quantum number syntax -/
+
+/-- Sum of first n odd numbers equals n²: ∑_{l=0}^{n-1} (2l+1) = n². -/
+theorem sum_odd_eq_square (n : Nat) :
+    (Finset.range n).sum (fun l => 2 * l + 1) = n ^ 2 := by
+  induction n with
+  | zero => simp
+  | succ k ih => simp [Finset.sum_range_succ, ih]; ring
+
+/-- Hydrogenic shell degeneracies: 2n² for n = 1, 2, 3, 4. -/
+theorem hydrogenic_instances :
+    2 * 1 ^ 2 = 2 ∧ 2 * 2 ^ 2 = 8 ∧ 2 * 3 ^ 2 = 18 ∧ 2 * 4 ^ 2 = 32 := by omega
+
+/-- Total hydrogenic count for n = 1..4: ∑ 2n² = 60.
+    Also: 4 · 5 · 9 / 3 = 60 (sum of squares formula). -/
+theorem hydrogenic_total_count_instances :
+    2 * 1 + 2 * 4 + 2 * 9 + 2 * 16 = 60 ∧ 4 * 5 * 9 / 3 = 60 := by omega
+
+/-- The sum of squares formula: ∑_{k=1}^{n} k² = n(n+1)(2n+1)/6 for n = 4. -/
+theorem sum_squares_four : 1 ^ 2 + 2 ^ 2 + 3 ^ 2 + 4 ^ 2 = 4 * 5 * 9 / 6 := by omega
+
 end Omega

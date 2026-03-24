@@ -590,6 +590,31 @@ Run these commands manually during audit:
   #print axioms Omega.cTypeAdjCount_symm_six
   #print axioms Omega.cTypeAdjCount_row_sum_six
   #print axioms Omega.cTypeAdjCount_nonzero_exists
+  -- Round 30: CollisionZeta — 碰撞核迹幂 A_2/A_3 (Phase 35)
+  -- def:pom-collision-zeta-a2/a3
+  #print axioms Omega.collisionKernel2_trace_pow_1
+  #print axioms Omega.collisionKernel2_trace_pow_2
+  #print axioms Omega.collisionKernel2_trace_pow_3
+  #print axioms Omega.collisionKernel2_trace_pow_4
+  #print axioms Omega.collisionKernel2_trace_pow_5
+  #print axioms Omega.collisionKernel2_trace_pow_6
+  #print axioms Omega.collisionKernel3_trace_pow_1
+  #print axioms Omega.collisionKernel3_trace_pow_2
+  #print axioms Omega.collisionKernel3_trace_pow_3
+  #print axioms Omega.collisionKernel3_trace_pow_4
+  #print axioms Omega.collisionKernel3_trace_pow_5
+  #print axioms Omega.collisionKernel3_trace_pow_6
+  #print axioms Omega.collision_trace_pow1_eq
+  #print axioms Omega.collisionKernel2_trace_recurrence
+  -- Round 30: Window6 — 氢型量子数语法 (Phase 35)
+  -- prop:conclusion-hydrogenic-address-grammar
+  #print axioms Omega.sum_odd_eq_square
+  #print axioms Omega.hydrogenic_instances
+  #print axioms Omega.hydrogenic_total_count_instances
+  #print axioms Omega.sum_squares_four
+  -- Round 30: ZeckendorfSignature — 素赋值度量非退化 (Phase 35)
+  -- thm:conclusion-valuation-isometry-classification (部分)
+  #print axioms Omega.ZeckSig.factorization_determines_nat
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1271,6 +1296,33 @@ def coreAuditTargets : List String :=
   -- thm:conclusion-hypercube-phase-quadratic-closure (Window6.lean:238-250)
   , "Omega.q6_multiplicities"
   , "Omega.q6_multiplicity_sum"
-  , "Omega.q6_trace_zero" ]
+  , "Omega.q6_trace_zero"
+  -- Round 30: CollisionZeta — 碰撞核迹幂（Zeta 有限部分章节入口，Phase 35）
+  -- def:pom-collision-zeta-a2 (CollisionZeta.lean:11-16)
+  , "Omega.collisionKernel2_trace_pow_1"
+  , "Omega.collisionKernel2_trace_pow_2"
+  , "Omega.collisionKernel2_trace_pow_3"
+  , "Omega.collisionKernel2_trace_pow_4"
+  , "Omega.collisionKernel2_trace_pow_5"
+  , "Omega.collisionKernel2_trace_pow_6"
+  -- def:pom-collision-zeta-a3 (CollisionZeta.lean:19-24)
+  , "Omega.collisionKernel3_trace_pow_1"
+  , "Omega.collisionKernel3_trace_pow_2"
+  , "Omega.collisionKernel3_trace_pow_3"
+  , "Omega.collisionKernel3_trace_pow_4"
+  , "Omega.collisionKernel3_trace_pow_5"
+  , "Omega.collisionKernel3_trace_pow_6"
+  -- 迹相等 + A_2 递推验证 (CollisionZeta.lean:27-40)
+  , "Omega.collision_trace_pow1_eq"
+  , "Omega.collisionKernel2_trace_recurrence"
+  -- Round 30: Window6 — 氢型量子数语法 (Phase 35)
+  -- prop:conclusion-hydrogenic-address-grammar (Window6.lean:255-271)
+  , "Omega.sum_odd_eq_square"
+  , "Omega.hydrogenic_instances"
+  , "Omega.hydrogenic_total_count_instances"
+  , "Omega.sum_squares_four"
+  -- Round 30: ZeckendorfSignature — 素赋值度量非退化 (Phase 35)
+  -- thm:conclusion-valuation-isometry-classification (部分) (ZeckendorfSignature.lean:274-276)
+  , "Omega.ZeckSig.factorization_determines_nat" ]
 
 end Omega.Audit

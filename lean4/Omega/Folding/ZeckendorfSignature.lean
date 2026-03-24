@@ -1,4 +1,5 @@
 import Omega.Core.Fib
+import Mathlib.Data.Nat.Factorization.Defs
 
 /-! ### Zeckendorf signatures of Lie algebra dimensions
 
@@ -265,5 +266,13 @@ theorem zeckendorf_16Fn_instances :
 /-- 15 and 16 Zeckendorf decompositions: 15 = F(7)+F(3), 16 = F(7)+F(4). -/
 theorem dim_15_16_zeckendorf :
     15 = Nat.fib 7 + Nat.fib 3 ∧ 16 = Nat.fib 7 + Nat.fib 4 := by native_decide
+
+/-! ### Prime valuation metric -/
+
+/-- Factorization determines the natural number (for nonzero inputs):
+    if n.factorization = m.factorization and both ≥ 1, then n = m. -/
+theorem factorization_determines_nat (n m : Nat) (hn : 1 ≤ n) (hm : 1 ≤ m)
+    (h : n.factorization = m.factorization) : n = m :=
+  Nat.factorization_inj (by omega : n ≠ 0) (by omega : m ≠ 0) h
 
 end Omega.ZeckSig

@@ -4596,6 +4596,134 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Window6"
       leanName := "Omega.q6_trace_zero"
       phase := 34
+      status := .formalized }
+  -- Phase 35: Round 30 — Zeta 有限部分首次突破（CollisionZeta）+
+  --   氢型量子数语法（Window6）+ 素赋值度量非退化（ZeckendorfSignature）
+  -- def:pom-collision-zeta-a2 → collisionKernel2_trace_pow_1..6 (CollisionZeta.lean:11-16)
+  -- def:pom-collision-zeta-a3 → collisionKernel3_trace_pow_1..6 (CollisionZeta.lean:19-24)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-collision-zeta-a2-pow1"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_1"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-pow2"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_2"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-pow3"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_3"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-pow4"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_4"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-pow5"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_5"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-pow6"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_pow_6"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-pow1"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_1"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-pow2"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_2"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-pow3"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_3"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-pow4"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_4"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-pow5"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_5"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a3-pow6"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel3_trace_pow_6"
+      phase := 35
+      status := .formalized }
+  -- collision_trace_pow1_eq → 两核迹相等 (CollisionZeta.lean:27-29)
+  -- collisionKernel2_trace_recurrence → A_2 迹幂递推验证 (CollisionZeta.lean:33-40)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-collision-zeta-a2-trace-eq"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collision_trace_pow1_eq"
+      phase := 35
+      status := .formalized }
+  , { label := "def:pom-collision-zeta-a2-recurrence"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.collisionKernel2_trace_recurrence"
+      phase := 35
+      status := .formalized }
+  -- prop:conclusion-hydrogenic-address-grammar → sum_odd_eq_square, hydrogenic_instances,
+  --   hydrogenic_total_count_instances, sum_squares_four (Window6.lean:255-271)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-hydrogenic-address-grammar-odd"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sum_odd_eq_square"
+      phase := 35
+      status := .formalized }
+  , { label := "prop:conclusion-hydrogenic-address-grammar-instances"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.hydrogenic_instances"
+      phase := 35
+      status := .formalized }
+  , { label := "prop:conclusion-hydrogenic-address-grammar-total"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.hydrogenic_total_count_instances"
+      phase := 35
+      status := .formalized }
+  , { label := "prop:conclusion-hydrogenic-address-grammar-sq"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sum_squares_four"
+      phase := 35
+      status := .formalized }
+  -- thm:conclusion-valuation-isometry-classification (部分) → factorization_determines_nat
+  --   (ZeckendorfSignature.lean:274-276)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-valuation-isometry-classification-factorization"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.factorization_determines_nat"
+      phase := 35
       status := .formalized } ]
 
 end Omega.Audit
