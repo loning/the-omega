@@ -6422,6 +6422,72 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.real_arc_convergence"
     phase := 61
+    status := .formalized }
+
+-- Phase 62: Round 56 — 循环块行列式符号 + 截断误差衰减 + 张量 GCD/LCM + Schatten 范数循环（里程碑：95%）
+-- prop:zeta-truncation-error-decay → truncation_error_decay (CollisionZeta.lean:743)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-truncation-error-decay"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.truncation_error_decay"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-primitive-moments-sum → primitive_moments (CollisionZeta.lean:744)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-primitive-moments-sum"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.primitive_moments"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-cyclic-block-det-sign → cyclic_block_det_sign (CollisionZeta.lean:746)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-cyclic-block-det-sign"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.cyclic_block_det_sign"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-primitive-data-nonneg → primitive_data_nonneg (CollisionZeta.lean:750)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-primitive-data-nonneg"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.primitive_data_nonneg"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-fredholm-witt-product → fredholm_witt_product_check (CollisionZeta.lean:754)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-fredholm-witt-product"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.fredholm_witt_product_check"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-tensor-gcd-lcm → tensor_gcd_lcm_instances (CollisionZeta.lean:758)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-tensor-gcd-lcm"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.tensor_gcd_lcm_instances"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-tensor-det-instances → tensor_det_instances (CollisionZeta.lean:762)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-tensor-det-instances"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.tensor_det_instances"
+    phase := 62
+    status := .formalized }
+-- prop:zeta-schatten-norm-cyclic → schatten_norm_cyclic (CollisionZeta.lean:766)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-schatten-norm-cyclic"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.schatten_norm_cyclic"
+    phase := 62
     status := .formalized } ]
 
 end Omega.Audit

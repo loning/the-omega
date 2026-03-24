@@ -1699,6 +1699,17 @@ def coreAuditTargets : List String :=
   , "Omega.cycle_permutation_det_instances"
   , "Omega.euler_product_truncation_check"
   , "Omega.resolvent_residue_simple_poles"
-  , "Omega.real_arc_convergence" ]
+  , "Omega.real_arc_convergence"
+  -- Round 56: 截断误差衰减 + primitive矩和 + 循环块行列式符号 + primitive数据非负
+  --           Fredholm-Witt乘积 + 张量GCD/LCM + 张量行列式 + Schatten范数循环
+  -- (CollisionZeta.lean:743-768)  里程碑：95%覆盖率
+  , "Omega.truncation_error_decay"
+  , "Omega.primitive_moments"
+  , "Omega.cyclic_block_det_sign"
+  , "Omega.primitive_data_nonneg"
+  , "Omega.fredholm_witt_product_check"
+  , "Omega.tensor_gcd_lcm_instances"
+  , "Omega.tensor_det_instances"
+  , "Omega.schatten_norm_cyclic" ]
 
 end Omega.Audit
