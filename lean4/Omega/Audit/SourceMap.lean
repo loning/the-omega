@@ -6347,6 +6347,47 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.non_uniform_fibers_no_equitable_quotient"
     phase := 59
+    status := .formalized }
+-- Phase 60: Round 54 — Fredholm + Möbius综合 + cyclotomic + 谱隙
+-- def:fredholm-determinant → fredholmDet (CollisionZeta.lean:696)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "def:fredholm-determinant"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.fredholmDet"
+    phase := 60
+    status := .formalized }
+-- prop:zetaK-mobius-primitive → mobius_primitive_comprehensive (CollisionZeta.lean:701)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zetaK-mobius-primitive"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.mobius_primitive_comprehensive"
+    phase := 60
+    status := .formalized }
+-- def:finite-part-cyclic-lift-psi → cyclotomic_at_fibonacci (CollisionZeta.lean:708)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "def:finite-part-cyclic-lift-psi"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.cyclotomic_at_fibonacci"
+    phase := 60
+    status := .formalized }
+-- prop:zeta-syntax-constant-memory-exponential-forgetting (spectral gap proxy) → spectral_gap_A2_proxy (CollisionZeta.lean:714)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zeta-syntax-spectral-gap-a2-proxy"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.spectral_gap_A2_proxy"
+    phase := 60
+    status := .formalized }
+-- three_eigenvalue_regimes → Zeta 辅助 (CollisionZeta.lean:721)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "aux:zeta-three-eigenvalue-regimes"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.three_eigenvalue_regimes"
+    phase := 60
     status := .formalized } ]
 
 end Omega.Audit

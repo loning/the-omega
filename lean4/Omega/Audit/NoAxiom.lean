@@ -1686,6 +1686,13 @@ def coreAuditTargets : List String :=
   , "Omega.euler_product_dense_phases"
   , "Omega.omega_not_regular_structural"
   , "Omega.lumpability_no_self_loops"
-  , "Omega.non_uniform_fibers_no_equitable_quotient" ]
+  , "Omega.non_uniform_fibers_no_equitable_quotient"
+  -- Round 54: Fredholm + Möbius综合 + cyclotomic + 谱隙
+  -- (CollisionZeta.lean:693-725)
+  , "Omega.fredholmDet"
+  , "Omega.mobius_primitive_comprehensive"
+  , "Omega.cyclotomic_at_fibonacci"
+  , "Omega.spectral_gap_A2_proxy"
+  , "Omega.three_eigenvalue_regimes" ]
 
 end Omega.Audit
