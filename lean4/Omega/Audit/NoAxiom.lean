@@ -1784,6 +1784,12 @@ def coreAuditTargets : List String :=
   -- Phase 75: 全零词纤维特征化 (MaxFiberTwoStep.lean:438-549)
   , "Omega.X.ofNat_zero"
   , "Omega.Fold_eq_allFalse_of_weight_eq_fib"
-  , "Omega.fiberMultiplicity_allFalse" ]
+  , "Omega.fiberMultiplicity_allFalse"
+  -- Phase 76: exactWeightCount 基础设施 (MaxFiberTwoStep.lean:555-674)
+  , "Omega.exactWeightCount_zero_zero"
+  , "Omega.exactWeightCount_zero_succ"
+  , "Omega.exactWeightCount_succ"
+  , "Omega.exactWeightCount_eq_zero_of_ge_fib"
+  , "Omega.fiberMultiplicity_eq_two_ewc" ]
 
 end Omega.Audit

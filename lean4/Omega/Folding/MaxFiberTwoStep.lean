@@ -547,4 +547,129 @@ theorem fiberMultiplicity_allFalse (m : Nat) :
     exact this
   · rintro (h | h) <;> simp [h]
 
+-- ══════════════════════════════════════════════════════════════
+-- exactWeightCount: counting words of a given weight
+-- ══════════════════════════════════════════════════════════════
+
+/-- Number of m-bit words with exactly weight n. -/
+def exactWeightCount (m n : Nat) : Nat :=
+  (Finset.univ.filter (fun w : Word m => weight w = n)).card
+
+theorem exactWeightCount_zero_zero : exactWeightCount 0 0 = 1 := by decide
+
+theorem exactWeightCount_zero_succ (n : Nat) : exactWeightCount 0 (n + 1) = 0 := by
+  unfold exactWeightCount
+  simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff, Finset.mem_univ, true_implies,
+    weight, not_true_eq_false]; omega
+
+/-- Last-bit split: ewc(m+1, n) = ewc(m, n) + ewc(m, n - F_{m+2}). -/
+theorem exactWeightCount_succ (m n : Nat) :
+    exactWeightCount (m + 1) n =
+    exactWeightCount m n +
+    (if Nat.fib (m + 2) ≤ n then exactWeightCount m (n - Nat.fib (m + 2)) else 0) := by
+  classical
+  unfold exactWeightCount
+  -- Split Word(m+1) by last bit w[m]
+  have hpartition : Finset.univ.filter (fun w : Word (m + 1) => weight w = n) =
+      (Finset.univ.filter (fun w : Word (m + 1) => weight w = n ∧ w ⟨m, by omega⟩ = false)) ∪
+      (Finset.univ.filter (fun w : Word (m + 1) => weight w = n ∧ w ⟨m, by omega⟩ = true)) := by
+    ext w; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+    constructor
+    · intro hw; cases hb : w ⟨m, by omega⟩ <;> simp [hw, hb]
+    · rintro (⟨hw, _⟩ | ⟨hw, _⟩) <;> exact hw
+  have hdisjoint : Disjoint
+      (Finset.univ.filter (fun w : Word (m + 1) => weight w = n ∧ w ⟨m, by omega⟩ = false))
+      (Finset.univ.filter (fun w : Word (m + 1) => weight w = n ∧ w ⟨m, by omega⟩ = true)) := by
+    apply Finset.disjoint_filter.mpr
+    intro w _ ⟨_, hF⟩ ⟨_, hT⟩; rw [hF] at hT; exact Bool.noConfusion hT
+  rw [hpartition, Finset.card_union_of_disjoint hdisjoint]
+  -- |false-ending| = ewc(m, n)
+  congr 1
+  · apply Finset.card_bij (fun (w : Word (m + 1)) _ => truncate w)
+    · intro w hw
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+      rw [weight] at hw; simp only [hw.2, Bool.false_eq_true, ↓reduceIte, Nat.add_zero] at hw
+      exact hw.1
+    · intro w₁ hw₁ w₂ hw₂ heq
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw₁ hw₂
+      rw [← X.snoc_truncate_last w₁, ← X.snoc_truncate_last w₂, heq, hw₁.2, hw₂.2]
+    · intro w hw
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+      exact ⟨snoc w false, by simp [weight_snoc, hw], by simp⟩
+  · -- |true-ending| = ewc(m, n - F) or 0
+    split
+    · rename_i hle
+      apply Finset.card_bij (fun (w : Word (m + 1)) _ => truncate w)
+      · intro w hw
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+        rw [weight] at hw; simp only [hw.2, ↓reduceIte] at hw; omega
+      · intro w₁ hw₁ w₂ hw₂ heq
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw₁ hw₂
+        rw [← X.snoc_truncate_last w₁, ← X.snoc_truncate_last w₂, heq, hw₁.2, hw₂.2]
+      · intro w hw
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+        exact ⟨snoc w true, by constructor <;> simp [weight_snoc, hw]; omega, by simp⟩
+    · rename_i hlt; push_neg at hlt
+      convert Finset.card_empty
+      simp only [Finset.filter_eq_empty_iff, Finset.mem_univ, true_implies]
+      intro w ⟨hwn, hwt⟩
+      rw [weight] at hwn; simp only [hwt, ↓reduceIte] at hwn; omega
+
+-- ══════════════════════════════════════════════════════════════
+-- Upper bound: no word has weight ≥ F(m+3)
+-- ══════════════════════════════════════════════════════════════
+
+theorem exactWeightCount_eq_zero_of_ge_fib (m n : Nat) (hn : Nat.fib (m + 3) ≤ n) :
+    exactWeightCount m n = 0 := by
+  unfold exactWeightCount
+  apply Finset.card_eq_zero.mpr
+  rw [Finset.filter_eq_empty_iff]
+  intro w _
+  have := X.weight_lt_fib w
+  omega
+
+-- ══════════════════════════════════════════════════════════════
+-- Fiber multiplicity = two exactWeightCount terms
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fiber multiplicity = ewc at stableValue + ewc at stableValue + F. -/
+theorem fiberMultiplicity_eq_two_ewc (x : X m) :
+    X.fiberMultiplicity x =
+    exactWeightCount m (stableValue x) +
+    exactWeightCount m (stableValue x + Nat.fib (m + 2)) := by
+  rw [fiberMultiplicity_eq_weight_congr_count]
+  -- Goal: #{weight % F = sv} = #{weight = sv} + #{weight = sv + F}
+  have hFpos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  have hsv_lt := stableValue_lt_fib x
+  -- Split {weight % F = sv} into {weight = sv} ∪ {weight = sv + F}
+  suffices hsplit : Finset.univ.filter (fun w : Word m => weight w % Nat.fib (m + 2) = stableValue x)
+      = Finset.univ.filter (fun w : Word m => weight w = stableValue x) ∪
+        Finset.univ.filter (fun w : Word m => weight w = stableValue x + Nat.fib (m + 2)) by
+    rw [hsplit]
+    have hdisjoint : Disjoint
+        (Finset.univ.filter (fun w : Word m => weight w = stableValue x))
+        (Finset.univ.filter (fun w : Word m => weight w = stableValue x + Nat.fib (m + 2))) := by
+      apply Finset.disjoint_filter.mpr; intro w _ h1 h2; omega
+    rw [Finset.card_union_of_disjoint hdisjoint]; rfl
+  ext w
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+  constructor
+  · intro hmod
+    have hwlt := X.weight_lt_fib w
+    have hbound : weight w < 2 * Nat.fib (m + 2) := by
+      have : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+      have : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+      omega
+    -- weight = F * q + r where r = weight % F = sv
+    have hdiv := Nat.div_add_mod (weight w) (Nat.fib (m + 2))
+    rw [hmod] at hdiv
+    -- q = weight / F; since weight < 2F, q < 2
+    have hq_lt : weight w / Nat.fib (m + 2) < 2 := Nat.div_lt_of_lt_mul (by omega)
+    interval_cases (weight w / Nat.fib (m + 2))
+    · left; omega
+    · right; omega
+  · rintro (h | h)
+    · rw [h]; exact Nat.mod_eq_of_lt hsv_lt
+    · rw [h, Nat.add_mod_right]; exact Nat.mod_eq_of_lt hsv_lt
+
 end Omega

@@ -6981,6 +6981,61 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.fiberMultiplicity_allFalse"
     phase := 75
+    status := .formalized }
+-- Phase 76: exactWeightCount 基础设施 (MaxFiberTwoStep.lean:555-674)
+-- def:pom-exactWeightCount → exactWeightCount（定义：m-bit 词中 weight = n 的计数）
+-- (MaxFiberTwoStep.lean:555-556)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-exactWeightCount"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.exactWeightCount"
+    phase := 76
+    status := .formalized }
+-- def:pom-exactWeightCount → exactWeightCount_zero_zero（基例 ewc(0,0) = 1）
+-- (MaxFiberTwoStep.lean:558)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-ewc-zero-zero"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.exactWeightCount_zero_zero"
+    phase := 76
+    status := .formalized }
+-- def:pom-exactWeightCount → exactWeightCount_zero_succ（基例 ewc(0, n+1) = 0）
+-- (MaxFiberTwoStep.lean:560-563)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-ewc-zero-succ"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.exactWeightCount_zero_succ"
+    phase := 76
+    status := .formalized }
+-- def:pom-exactWeightCount → exactWeightCount_succ（末位分裂递推：ewc(m+1,n) = ewc(m,n) + ewc(m,n-F)）
+-- (MaxFiberTwoStep.lean:566-616)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-ewc-succ"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.exactWeightCount_succ"
+    phase := 76
+    status := .formalized }
+-- def:pom-exactWeightCount → exactWeightCount_eq_zero_of_ge_fib（上界：n ≥ F(m+3) → ewc = 0）
+-- (MaxFiberTwoStep.lean:622-629)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-ewc-zero-ge-fib"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.exactWeightCount_eq_zero_of_ge_fib"
+    phase := 76
+    status := .formalized }
+-- thm:pom-max-fiber → fiberMultiplicity_eq_two_ewc（纤维大小 = ewc(sv) + ewc(sv+F)）
+-- (MaxFiberTwoStep.lean:636-673)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-fiberMultiplicity-two-ewc"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.fiberMultiplicity_eq_two_ewc"
+    phase := 76
     status := .formalized } ]
 
 end Omega.Audit
