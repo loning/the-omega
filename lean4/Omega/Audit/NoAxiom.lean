@@ -1644,6 +1644,24 @@ def coreAuditTargets : List String :=
   , "Omega.hurwitz_covering_genus"
   , "Omega.riemann_hurwitz_s4"
   , "Omega.collision_kernel_dimensions"
-  , "Omega.perron_roots_all_localized" ]
+  , "Omega.perron_roots_all_localized"
+  -- Phase 56 批量补注册: 论文标签对应定理公理审计
+  -- cor:pom-s4-asymptotic, rem:pom-collision-rh-margin-a2/a3
+  -- prop:zetaK-mobius-primitive, def:pom-collision-zeta-a2/a3
+  -- cor:pom-s2/s3-asymptotic, prop:pom-sq-cross-q-logconvex, prop:pom-s5-hankel-det
+  , "Omega.CollisionZeta.perron_root_A4_in_interval"
+  , "Omega.charPoly_A2_discriminant_positive"
+  , "Omega.perron_A2_in_interval"
+  , "Omega.charPoly_A3_discriminant_positive"
+  , "Omega.perron_A3_in_interval"
+  , "Omega.primitive_orbit_A2"
+  , "Omega.primitive_orbit_A3"
+  , "Omega.primitive_orbit_A4"
+  , "Omega.goldenMean_primitive_orbits"
+  , "Omega.zeta_denom_A2_coefficients"
+  , "Omega.zeta_denom_A3_coefficients"
+  , "Omega.CollisionZeta.cauchy_schwarz_instance_q3_m4"
+  , "Omega.hankelS5_3x3_det_ne_zero"
+  , "Omega.hankelS5_4x4_det_ne_zero" ]
 
 end Omega.Audit

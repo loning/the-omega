@@ -6071,6 +6071,128 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.perron_roots_all_localized"
     phase := 55
+    status := .formalized }
+-- Phase 56: 批量论文标签补注册 (Round 38 冲刺) — 2026-03-24
+-- 以下条目对应已形式化定理的论文级别标签, 所有 Lean 定理已存在, 仅补登记
+-- cor:pom-s4-asymptotic → perron_root_A4_in_interval (CollisionZeta.lean:462)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-s4-asymptotic"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.perron_root_A4_in_interval"
+    phase := 56
+    status := .formalized }
+-- rem:pom-collision-rh-margin-a2 → charPoly_A2_discriminant_positive + perron_A2_in_interval
+-- (CollisionZeta.lean:209, 173)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "rem:pom-collision-rh-margin-a2-discriminant"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.charPoly_A2_discriminant_positive"
+    phase := 56
+    status := .formalized }
+, { label := "rem:pom-collision-rh-margin-a2-perron"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.perron_A2_in_interval"
+    phase := 56
+    status := .formalized }
+-- rem:pom-collision-rh-margin-a3 → charPoly_A3_discriminant_positive + perron_A3_in_interval
+-- (CollisionZeta.lean:214, 178)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "rem:pom-collision-rh-margin-a3-discriminant"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.charPoly_A3_discriminant_positive"
+    phase := 56
+    status := .formalized }
+, { label := "rem:pom-collision-rh-margin-a3-perron"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.perron_A3_in_interval"
+    phase := 56
+    status := .formalized }
+-- prop:zetaK-mobius-primitive → primitive_orbit_A2/A3/A4 + goldenMean_primitive_orbits
+-- (CollisionZeta.lean:69/76/110/261)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:zetaK-mobius-primitive-a2"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.primitive_orbit_A2"
+    phase := 56
+    status := .formalized }
+, { label := "prop:zetaK-mobius-primitive-a3"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.primitive_orbit_A3"
+    phase := 56
+    status := .formalized }
+, { label := "prop:zetaK-mobius-primitive-a4"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.primitive_orbit_A4"
+    phase := 56
+    status := .formalized }
+, { label := "prop:zetaK-mobius-primitive-gm"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.goldenMean_primitive_orbits"
+    phase := 56
+    status := .formalized }
+-- def:pom-collision-zeta-a2 → zeta_denom_A2_coefficients (CollisionZeta.lean:89)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "def:pom-collision-zeta-a2-coefficients"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.zeta_denom_A2_coefficients"
+    phase := 56
+    status := .formalized }
+-- def:pom-collision-zeta-a3 → zeta_denom_A3_coefficients (CollisionZeta.lean:95)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "def:pom-collision-zeta-a3-coefficients"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.zeta_denom_A3_coefficients"
+    phase := 56
+    status := .formalized }
+-- cor:pom-s2-asymptotic → perron_A2_in_interval (CollisionZeta.lean:173)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-s2-asymptotic"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.perron_A2_in_interval"
+    phase := 56
+    status := .formalized }
+-- cor:pom-s3-asymptotic → perron_A3_in_interval (CollisionZeta.lean:178)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:pom-s3-asymptotic"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.perron_A3_in_interval"
+    phase := 56
+    status := .formalized }
+-- prop:pom-sq-cross-q-logconvex → cauchy_schwarz_instance_q3_m4 (CollisionZeta.lean:455)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-sq-cross-q-logconvex"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.cauchy_schwarz_instance_q3_m4"
+    phase := 56
+    status := .formalized }
+-- prop:pom-s5-hankel-det → hankelS5_3x3_det_ne_zero + hankelS5_4x4_det_ne_zero
+-- (CollisionZeta.lean:315/367)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-s5-hankel-det-3x3"
+    sourcePath := "sections/body/pom/subsec__pom-s5-hankel.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.hankelS5_3x3_det_ne_zero"
+    phase := 56
+    status := .formalized }
+, { label := "prop:pom-s5-hankel-det-4x4"
+    sourcePath := "sections/body/pom/subsec__pom-s5-hankel.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.hankelS5_4x4_det_ne_zero"
+    phase := 56
     status := .formalized } ]
 
 end Omega.Audit
