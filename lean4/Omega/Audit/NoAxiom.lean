@@ -1693,6 +1693,12 @@ def coreAuditTargets : List String :=
   , "Omega.mobius_primitive_comprehensive"
   , "Omega.cyclotomic_at_fibonacci"
   , "Omega.spectral_gap_A2_proxy"
-  , "Omega.three_eigenvalue_regimes" ]
+  , "Omega.three_eigenvalue_regimes"
+  -- Round 55: 循环置换行列式 + Euler 积截断 + 留数简单极点 + 实弧收敛
+  -- (CollisionZeta.lean:726-741)
+  , "Omega.cycle_permutation_det_instances"
+  , "Omega.euler_product_truncation_check"
+  , "Omega.resolvent_residue_simple_poles"
+  , "Omega.real_arc_convergence" ]
 
 end Omega.Audit

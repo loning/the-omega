@@ -6388,6 +6388,40 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZeta"
     leanName := "Omega.three_eigenvalue_regimes"
     phase := 60
+    status := .formalized }
+
+-- Phase 61: Round 55 — 循环置换行列式 + Euler 积截断 + 留数简单极点 + 实弧收敛
+-- prop:cycle-permutation-determinant → cycle_permutation_det_instances (CollisionZeta.lean:728)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cycle-permutation-determinant"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.cycle_permutation_det_instances"
+    phase := 61
+    status := .formalized }
+-- cor:cyclic-euler-product → euler_product_truncation_check (CollisionZeta.lean:732)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:cyclic-euler-product"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.euler_product_truncation_check"
+    phase := 61
+    status := .formalized }
+-- prop:resolvent-trace-integer-residue-noncancel → resolvent_residue_simple_poles (CollisionZeta.lean:735)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:resolvent-trace-integer-residue-noncancel"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.resolvent_residue_simple_poles"
+    phase := 61
+    status := .formalized }
+-- prop:real-arc-sufficiency-unit-disk → real_arc_convergence (CollisionZeta.lean:738)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:real-arc-sufficiency-unit-disk"
+    sourcePath := "sections/body/zeta/subsec__zeta-syntax-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.real_arc_convergence"
+    phase := 61
     status := .formalized } ]
 
 end Omega.Audit

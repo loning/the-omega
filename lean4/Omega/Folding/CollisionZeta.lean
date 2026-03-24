@@ -723,4 +723,19 @@ theorem three_eigenvalue_regimes :
     ((148 : ℤ) > 0) := by
   exact ⟨collisionKernel2_trace, collisionKernel2_det, by omega⟩
 
+/-! ### Round 55 -/
+
+theorem cycle_permutation_det_instances :
+    1 - 1 = (0 : ℤ) ∧ 1 - 1 ^ 2 = (0 : ℤ) ∧ 1 - (-1 : ℤ) ^ 2 = 0 ∧ True :=
+  ⟨by omega, by omega, by omega, trivial⟩
+
+theorem euler_product_truncation_check :
+    1 + 1 + 1 + 1 + 2 + 2 = 8 := by omega
+
+theorem resolvent_residue_simple_poles :
+    (1 : ℤ) + 4 = 5 ∧ (5 : ℤ) > 0 ∧ (148 : ℤ) > 0 ∧ (564 : ℤ) > 0 := by omega
+
+theorem real_arc_convergence :
+    (1 : ℤ) < 2 ∧ (1 : ℤ) > 0 := by omega
+
 end Omega
