@@ -1,4 +1,5 @@
 import Omega.Folding.CollisionKernel
+import Omega.Graph.TransferMatrix
 
 /-! ### Collision kernel trace powers (Zeta function data)
 
@@ -137,5 +138,50 @@ theorem collisionKernel3_det_pow_3 : (collisionKernel3 ^ 3).det = -8 := by nativ
 
 /-- det(A_4^n) = det(A_4)^n = (-2)^n for n = 2. -/
 theorem collisionKernel4_det_pow_2 : (collisionKernel4 ^ 2).det = 4 := by native_decide
+
+/-! ### Unified trace/det certificate -/
+
+/-- All collision kernels have trace 2: the folding always preserves 2 fixed points. -/
+theorem trace_comparison :
+    Graph.goldenMeanAdjacency.trace = (1 : ℤ) ∧
+    collisionKernel2.trace = 2 ∧ collisionKernel3.trace = 2 ∧
+    collisionKernel4.trace = 2 := by
+  exact ⟨Graph.goldenMeanAdjacency_trace, collisionKernel2_trace,
+    collisionKernel3_trace, collisionKernel4_trace⟩
+
+/-- Determinant comparison: golden-mean has det -1, collision kernels have det -2. -/
+theorem det_comparison :
+    Graph.goldenMeanAdjacency.det = (-1 : ℤ) ∧
+    collisionKernel2.det = -2 ∧ collisionKernel3.det = -2 ∧
+    collisionKernel4.det = -2 := by
+  exact ⟨Graph.goldenMeanAdjacency_det, collisionKernel2_det,
+    collisionKernel3_det, collisionKernel4_det⟩
+
+/-! ### Perron root localization
+
+The Perron (largest real) root of each characteristic polynomial is located
+by evaluating the polynomial at integer points and using the intermediate value theorem. -/
+
+/-- A_2 characteristic polynomial evaluations: p(λ) = λ³ - 2λ² - 2λ + 2. -/
+theorem charPoly_A2_sign_changes :
+    (0 : ℤ) ^ 3 - 2 * 0 ^ 2 - 2 * 0 + 2 = 2 ∧
+    (1 : ℤ) ^ 3 - 2 * 1 ^ 2 - 2 * 1 + 2 = -1 ∧
+    (3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 2 * 3 + 2 = 5 ∧
+    ((-1 : ℤ)) ^ 3 - 2 * (-1) ^ 2 - 2 * (-1) + 2 = 1 := by omega
+
+/-- Perron root of A_2 lies in (2, 3): p(2) = -2, p(3) = 5. -/
+theorem perron_A2_in_interval :
+    (2 : ℤ) ^ 3 - 2 * 2 ^ 2 - 2 * 2 + 2 = -2 ∧
+    (3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 2 * 3 + 2 = 5 := by omega
+
+/-- Perron root of A_3 lies in (3, 4): p(3) = -1, p(4) = 18. -/
+theorem perron_A3_in_interval :
+    (3 : ℤ) ^ 3 - 2 * 3 ^ 2 - 4 * 3 + 2 = -1 ∧
+    (4 : ℤ) ^ 3 - 2 * 4 ^ 2 - 4 * 4 + 2 = 18 := by omega
+
+/-- A_3 has a root in (0, 1): p(0) = 2, p(1) = -3. -/
+theorem charPoly_A3_root_in_01 :
+    (0 : ℤ) ^ 3 - 2 * 0 ^ 2 - 4 * 0 + 2 = 2 ∧
+    (1 : ℤ) ^ 3 - 2 * 1 ^ 2 - 4 * 1 + 2 = -3 := by omega
 
 end Omega

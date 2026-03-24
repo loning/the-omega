@@ -4958,6 +4958,185 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.CollisionZeta"
       leanName := "Omega.collisionKernel4_det_pow_2"
       phase := 37
+      status := .formalized }
+  -- Phase 38: Round 33 — S_5-S_8 基值 + golden-mean ζ + 统一迹/det + Perron 定位
+  -- prop:pom-s5-base-values → momentSum_five_zero..five (MomentSum.lean:79-84)
+  -- prop:pom-s6-base-values → momentSum_six_zero..four (MomentSum.lean:87-91)
+  -- prop:pom-s7-base-values → momentSum_seven_zero..three (MomentSum.lean:94-97)
+  -- prop:pom-s8-base-values → momentSum_eight_zero..three (MomentSum.lean:100-103)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-s5-base-zero"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_five_zero"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s5-base-one"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_five_one"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s5-base-two"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_five_two"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s5-base-three"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_five_three"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s5-base-four"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_five_four"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s5-base-five"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_five_five"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s6-base-zero"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_six_zero"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s6-base-one"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_six_one"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s6-base-two"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_six_two"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s6-base-three"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_six_three"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s6-base-four"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_six_four"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s7-base-zero"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_seven_zero"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s7-base-one"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_seven_one"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s7-base-two"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_seven_two"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s7-base-three"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_seven_three"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s8-base-zero"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_eight_zero"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s8-base-one"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_eight_one"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s8-base-two"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_eight_two"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-s8-base-three"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.MomentSum"
+      leanName := "Omega.momentSum_eight_three"
+      phase := 38
+      status := .formalized }
+  -- prop:pom-zeta-golden-mean-denom-at-one → goldenMean_zeta_denom_at_one (TransferMatrix.lean:170-172)
+  -- prop:pom-trace-recurrence-verified → goldenMean_trace_recurrence_verified (TransferMatrix.lean:175-181)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-zeta-golden-mean-denom-at-one"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMean_zeta_denom_at_one"
+      phase := 38
+      status := .formalized }
+  , { label := "prop:pom-trace-recurrence-verified"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMean_trace_recurrence_verified"
+      phase := 38
+      status := .formalized }
+  -- 统一迹/det 证书 + Perron 定位 (CollisionZeta.lean:145-186)
+  -- def:pom-trace-comparison → trace_comparison
+  -- def:pom-det-comparison → det_comparison
+  -- def:pom-charpoly-a2-sign-changes → charPoly_A2_sign_changes
+  -- def:pom-perron-a2-interval → perron_A2_in_interval
+  -- def:pom-perron-a3-interval → perron_A3_in_interval
+  -- def:pom-charpoly-a3-root-01 → charPoly_A3_root_in_01
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:pom-trace-comparison"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.trace_comparison"
+      phase := 38
+      status := .formalized }
+  , { label := "def:pom-det-comparison"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.det_comparison"
+      phase := 38
+      status := .formalized }
+  , { label := "def:pom-charpoly-a2-sign-changes"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.charPoly_A2_sign_changes"
+      phase := 38
+      status := .formalized }
+  , { label := "def:pom-perron-a2-interval"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.perron_A2_in_interval"
+      phase := 38
+      status := .formalized }
+  , { label := "def:pom-perron-a3-interval"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.perron_A3_in_interval"
+      phase := 38
+      status := .formalized }
+  , { label := "def:pom-charpoly-a3-root-01"
+      sourcePath := "sections/body/folding/subsec__folding-zeta-finite-part.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.charPoly_A3_root_in_01"
+      phase := 38
       status := .formalized } ]
 
 end Omega.Audit

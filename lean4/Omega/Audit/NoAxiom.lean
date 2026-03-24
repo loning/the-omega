@@ -636,6 +636,36 @@ Run these commands manually during audit:
   #print axioms Omega.collisionKernel3_det_pow_2
   #print axioms Omega.collisionKernel3_det_pow_3
   #print axioms Omega.collisionKernel4_det_pow_2
+  -- Round 33: S_5-S_8 基值 (prop:pom-s5/s6/s7/s8-base-values, MomentSum.lean:79-103)
+  #print axioms Omega.momentSum_five_zero
+  #print axioms Omega.momentSum_five_one
+  #print axioms Omega.momentSum_five_two
+  #print axioms Omega.momentSum_five_three
+  #print axioms Omega.momentSum_five_four
+  #print axioms Omega.momentSum_five_five
+  #print axioms Omega.momentSum_six_zero
+  #print axioms Omega.momentSum_six_one
+  #print axioms Omega.momentSum_six_two
+  #print axioms Omega.momentSum_six_three
+  #print axioms Omega.momentSum_six_four
+  #print axioms Omega.momentSum_seven_zero
+  #print axioms Omega.momentSum_seven_one
+  #print axioms Omega.momentSum_seven_two
+  #print axioms Omega.momentSum_seven_three
+  #print axioms Omega.momentSum_eight_zero
+  #print axioms Omega.momentSum_eight_one
+  #print axioms Omega.momentSum_eight_two
+  #print axioms Omega.momentSum_eight_three
+  -- Round 33: golden-mean ζ 分母 + 迹递推 (TransferMatrix.lean:170-181)
+  #print axioms Omega.Graph.goldenMean_zeta_denom_at_one
+  #print axioms Omega.Graph.goldenMean_trace_recurrence_verified
+  -- Round 33: 统一迹/det 证书 + Perron 定位 (CollisionZeta.lean:145-186)
+  #print axioms Omega.trace_comparison
+  #print axioms Omega.det_comparison
+  #print axioms Omega.charPoly_A2_sign_changes
+  #print axioms Omega.perron_A2_in_interval
+  #print axioms Omega.perron_A3_in_interval
+  #print axioms Omega.charPoly_A3_root_in_01
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1370,6 +1400,36 @@ def coreAuditTargets : List String :=
   -- thm:transfer-matrix-specific-powers (TransferMatrix.lean:153-165)
   , "Omega.Graph.goldenMeanAdjacency_pow_five_00"
   , "Omega.Graph.goldenMeanAdjacency_pow_six_00"
-  , "Omega.Graph.goldenMeanAdjacency_pow_ten_00" ]
+  , "Omega.Graph.goldenMeanAdjacency_pow_ten_00"
+  -- Round 33: S_5-S_8 基值 (prop:pom-s5/s6/s7/s8-base-values, MomentSum.lean:79-103)
+  , "Omega.momentSum_five_zero"
+  , "Omega.momentSum_five_one"
+  , "Omega.momentSum_five_two"
+  , "Omega.momentSum_five_three"
+  , "Omega.momentSum_five_four"
+  , "Omega.momentSum_five_five"
+  , "Omega.momentSum_six_zero"
+  , "Omega.momentSum_six_one"
+  , "Omega.momentSum_six_two"
+  , "Omega.momentSum_six_three"
+  , "Omega.momentSum_six_four"
+  , "Omega.momentSum_seven_zero"
+  , "Omega.momentSum_seven_one"
+  , "Omega.momentSum_seven_two"
+  , "Omega.momentSum_seven_three"
+  , "Omega.momentSum_eight_zero"
+  , "Omega.momentSum_eight_one"
+  , "Omega.momentSum_eight_two"
+  , "Omega.momentSum_eight_three"
+  -- Round 33: golden-mean ζ 分母 + 迹递推 (TransferMatrix.lean:170-181)
+  , "Omega.Graph.goldenMean_zeta_denom_at_one"
+  , "Omega.Graph.goldenMean_trace_recurrence_verified"
+  -- Round 33: 统一迹/det 证书 + Perron 定位 (CollisionZeta.lean:145-186)
+  , "Omega.trace_comparison"
+  , "Omega.det_comparison"
+  , "Omega.charPoly_A2_sign_changes"
+  , "Omega.perron_A2_in_interval"
+  , "Omega.perron_A3_in_interval"
+  , "Omega.charPoly_A3_root_in_01" ]
 
 end Omega.Audit

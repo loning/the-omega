@@ -164,4 +164,20 @@ theorem goldenMeanAdjacency_pow_ten_00 :
     (goldenMeanAdjacency ^ 10) 0 0 = (Nat.fib 11 : ℤ) :=
   goldenMeanAdjacency_pow_00 10
 
+/-! ### Golden-mean zeta function -/
+
+/-- Zeta denominator evaluation at z=1: 1 - tr(A) + det(A) = 1 - 1 + (-1) = -1. -/
+theorem goldenMean_zeta_denom_at_one :
+    (1 : ℤ) - goldenMeanAdjacency.trace + goldenMeanAdjacency.det = -1 := by
+  rw [goldenMeanAdjacency_trace, goldenMeanAdjacency_det]; norm_num
+
+/-- Golden-mean trace recurrence verified for n = 0..4. -/
+theorem goldenMean_trace_recurrence_verified :
+    (goldenMeanAdjacency ^ 2).trace = (goldenMeanAdjacency ^ 1).trace + (goldenMeanAdjacency ^ 0).trace ∧
+    (goldenMeanAdjacency ^ 3).trace = (goldenMeanAdjacency ^ 2).trace + (goldenMeanAdjacency ^ 1).trace ∧
+    (goldenMeanAdjacency ^ 4).trace = (goldenMeanAdjacency ^ 3).trace + (goldenMeanAdjacency ^ 2).trace ∧
+    (goldenMeanAdjacency ^ 5).trace = (goldenMeanAdjacency ^ 4).trace + (goldenMeanAdjacency ^ 3).trace ∧
+    (goldenMeanAdjacency ^ 6).trace = (goldenMeanAdjacency ^ 5).trace + (goldenMeanAdjacency ^ 4).trace := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
+
 end Omega.Graph
