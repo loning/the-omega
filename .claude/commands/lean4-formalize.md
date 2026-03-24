@@ -12,6 +12,7 @@
 - ✅ 只做：建团队、建任务、分配任务、转发消息、路由结果、记录勘误
 - ✅ 每个 phase 必须收到 teammate 回复后才进入下一 phase
 - ✅ 发现论文错误时立即记录到 ERRATA.md
+- ✅ **编译串行原则**：任何涉及 `lake build` 的 agent（formalizer、registrar、optimizer、reviewer）不得并行运行。必须等一个完全结束（shutdown 或 idle）后才启动下一个
 
 ## 环境
 
@@ -164,7 +165,11 @@ Agent(
 
 ### Phase 4：登记
 
-1. **按需 spawn** registrar：
+**严格串行约束**：registrar 必须在 formalizer 完全停止后才能启动。formalizer 和 registrar 不得并行运行，因为两者都涉及 `lake build` 编译过程，并行会导致文件冲突。
+
+**流程**：
+1. 确认 formalizer 已暂停（收到其确认消息或 idle 通知）
+2. **然后才** spawn registrar：
 
    ```
    Agent(
@@ -184,16 +189,20 @@ Agent(
    )
    ```
 
-2. **停下来，等待 registrar 回复。**
+3. **停下来，等待 registrar 回复。不要在此期间给 formalizer 发新任务。**
 
-3. 收到登记报告后：
+4. 收到登记报告后：
    ```
    SendMessage(to = "registrar", message = {type: "shutdown_request"})
    ```
 
+5. **等待 registrar shutdown 确认后**，才可以给 formalizer 发送下一轮任务。
+
 ### Phase 4.5：性能优化（每5轮触发）
 
 **触发条件**：`round_count % 5 == 0`（team lead 从启动起维护 round_count 计数器）
+
+**串行约束**：optimizer 必须在 registrar shutdown 后、formalizer 收到新任务前运行。不得与其他涉及编译的 agent 并行。
 
 - 不满足条件 → 跳过，直接进入 Phase 5
 - 满足条件 → spawn optimizer：
