@@ -5536,6 +5536,65 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.binet_formula"
       phase := 45
+      status := .formalized }
+  -- Phase 46: 圆维度正式开辟 (Round 40)
+  -- def:cdim-audit-stability-separation 前置 → √5 算术 + φ vs √5 + goldenAngle (Entropy.lean:175-219)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "aux:cdim-sqrt5-gt-two"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.sqrt5_gt_two'"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-sqrt5-lt-three"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.sqrt5_lt_three'"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-phi-lt-sqrt5"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.phi_lt_sqrt5"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-phi-add-one-gt-sqrt5"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.phi_add_one_gt_sqrt5"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-golden-angle-pos"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenAngle_pos"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-golden-angle-lt-one"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenAngle_lt_one"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-golden-angle-sq"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenAngle_sq"
+      phase := 46
+      status := .formalized }
+  , { label := "aux:cdim-abs-psi-pow-div-sqrt5-lt-half"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.abs_psi_pow_div_sqrt5_lt_half"
+      phase := 46
+      status := .formalized }
+  -- prop:cdim-fibonacci-nearest-integer → fib_nearest_integer (Entropy.lean:242)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:cdim-fibonacci-nearest-integer"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-fibonacci-nearest-integer.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.fib_nearest_integer"
+      phase := 46
       status := .formalized } ]
 
 end Omega.Audit

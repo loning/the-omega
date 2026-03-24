@@ -708,6 +708,17 @@ Run these commands manually during audit:
   #print axioms Omega.Entropy.entropy_ordering_proxy
   #print axioms Omega.Entropy.entropy_gap_pos
   #print axioms Omega.Entropy.binet_formula
+  -- Round 40: 圆维度正式开辟 (Entropy.lean:155-249)
+  -- √5 算术 + φ vs √5 + goldenAngle + |ψ^n/√5| < 1/2 + fib_nearest_integer
+  #print axioms Omega.Entropy.sqrt5_gt_two'
+  #print axioms Omega.Entropy.sqrt5_lt_three'
+  #print axioms Omega.Entropy.phi_lt_sqrt5
+  #print axioms Omega.Entropy.phi_add_one_gt_sqrt5
+  #print axioms Omega.Entropy.goldenAngle_pos
+  #print axioms Omega.Entropy.goldenAngle_lt_one
+  #print axioms Omega.Entropy.goldenAngle_sq
+  #print axioms Omega.Entropy.abs_psi_pow_div_sqrt5_lt_half
+  #print axioms Omega.Entropy.fib_nearest_integer
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

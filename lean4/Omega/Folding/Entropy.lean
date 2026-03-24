@@ -152,4 +152,98 @@ theorem entropy_gap_pos : Real.log 2 - Real.log φ > 0 := by
 theorem binet_formula (n : Nat) : (Nat.fib n : ℝ) = (φ ^ n - ψ ^ n) / Real.sqrt 5 :=
   Real.coe_fib_eq n
 
+/-! ### √5 auxiliary lemmas -/
+
+private theorem sq_sqrt5 : Real.sqrt 5 ^ 2 = 5 :=
+  Real.sq_sqrt (by norm_num : (5 : ℝ) ≥ 0)
+
+private theorem sqrt5_pos : (0 : ℝ) < Real.sqrt 5 :=
+  Real.sqrt_pos_of_pos (by norm_num : (5 : ℝ) > 0)
+
+private theorem sqrt5_gt_two : Real.sqrt 5 > 2 := by
+  have h := sq_sqrt5
+  have hp := sqrt5_pos
+  nlinarith [sq_abs (Real.sqrt 5 - 2)]
+
+private theorem sqrt5_lt_three : Real.sqrt 5 < 3 := by
+  have h := sq_sqrt5
+  nlinarith [sq_abs (Real.sqrt 5 - 3)]
+
+/-! ### φ/√5 precise bounds -/
+
+/-- √5 > 2 (from sq_sqrt5 and nlinarith). -/
+theorem sqrt5_gt_two' : Real.sqrt 5 > 2 := sqrt5_gt_two
+
+/-- √5 < 3 (from sq_sqrt5 and nlinarith). -/
+theorem sqrt5_lt_three' : Real.sqrt 5 < 3 := sqrt5_lt_three
+
+/-- φ < √5: since φ = (1+√5)/2 and √5 > 2, we have 2φ = 1+√5 < 2√5. -/
+theorem phi_lt_sqrt5 : φ < Real.sqrt 5 := by
+  rw [Real.goldenRatio]; linarith [sqrt5_gt_two]
+
+/-- φ+1 > √5: since φ+1 = (3+√5)/2 and √5 < 3, we have 2(φ+1) = 3+√5 > 2√5. -/
+theorem phi_add_one_gt_sqrt5 : φ + 1 > Real.sqrt 5 := by
+  rw [Real.goldenRatio]; linarith [sqrt5_lt_three]
+
+/-! ### Golden angle -/
+
+/-- The golden angle: 1/φ = φ - 1. -/
+noncomputable def goldenAngle : ℝ := φ⁻¹
+
+/-- The golden angle is positive. -/
+theorem goldenAngle_pos : 0 < goldenAngle :=
+  inv_pos.mpr Real.goldenRatio_pos
+
+/-- The golden angle is less than 1. -/
+theorem goldenAngle_lt_one : goldenAngle < 1 :=
+  inv_lt_one_of_one_lt₀ Real.one_lt_goldenRatio
+
+/-- The golden angle satisfies θ² = 1 - θ (dual of φ² = φ + 1). -/
+theorem goldenAngle_sq : goldenAngle ^ 2 = 1 - goldenAngle := by
+  have hne : φ ≠ 0 := ne_of_gt Real.goldenRatio_pos
+  have hsq : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
+  simp only [goldenAngle, inv_pow]
+  -- Goal: (φ^2)⁻¹ = 1 - φ⁻¹
+  rw [hsq]
+  have hne : φ ≠ 0 := ne_of_gt Real.goldenRatio_pos
+  have hne2 : φ + 1 ≠ 0 := by linarith [Real.goldenRatio_pos]
+  have hkey := goldenRatio_eq_one_add_inv
+  -- φ = 1 + φ⁻¹, so φ⁻¹ = φ - 1, so 1 - φ⁻¹ = 2 - φ
+  -- Also φ² = φ+1, so (φ+1)⁻¹ = (φ²)⁻¹
+  -- We need (φ+1)⁻¹ = 1 - φ⁻¹ = 1 - (φ-1) = 2-φ
+  -- (φ+1)⁻¹ = 2-φ ↔ 1 = (φ+1)(2-φ) = 2φ+2-φ²-φ = φ+2-(φ+1) = 1 ✓
+  have : (φ + 1) * (1 - φ⁻¹) = 1 := by
+    have : φ⁻¹ = φ - 1 := by linarith
+    rw [this]; nlinarith [Real.goldenRatio_sq]
+  exact eq_inv_of_mul_eq_one_right this |>.symm
+
+/-! ### Binet nearest integer property -/
+
+/-- |ψ^n / √5| < 1/2 for all n ≥ 0 (since |ψ| < 1 and √5 > 2). -/
+theorem abs_psi_pow_div_sqrt5_lt_half (n : Nat) :
+    |ψ ^ n / Real.sqrt 5| < 1 / 2 := by
+  rw [abs_div, abs_of_pos sqrt5_pos]
+  have hle : |ψ ^ n| ≤ 1 := by
+    calc |ψ ^ n| = |ψ| ^ n := abs_pow ψ n
+      _ ≤ 1 := pow_le_one₀ (abs_nonneg _) abs_goldenConj_lt_one.le
+  have hgt2 : Real.sqrt 5 > 2 := sqrt5_gt_two
+  have hp5 := sqrt5_pos
+  -- |ψ^n|/√5 ≤ 1/√5 < 1/2
+  -- Direct: |ψ^n|/√5 ≤ 1/√5 since |ψ^n| ≤ 1 and √5 > 0
+  -- 1/√5 < 1/2 since √5 > 2
+  -- So |ψ^n|/√5 < 1/2
+  have h1 : |ψ ^ n| * 2 ≤ 1 * 2 := by linarith
+  -- |ψ^n|/√5 * (2*√5) ≤ 2 and 1/2 * (2*√5) = √5
+  -- Equivalently: 2*|ψ^n| ≤ 2 < √5, so 2*|ψ^n|/√5 < 1, so |ψ^n|/√5 < 1/2
+  rw [div_lt_div_iff₀ hp5 (by norm_num : (0:ℝ) < 2)]
+  linarith
+
+/-- Binet nearest integer: |F(n) - φ^n/√5| < 1/2 for all n. -/
+theorem fib_nearest_integer (n : Nat) :
+    |(Nat.fib n : ℝ) - φ ^ n / Real.sqrt 5| < 1 / 2 := by
+  rw [binet_formula, show (φ ^ n - ψ ^ n) / Real.sqrt 5 - φ ^ n / Real.sqrt 5 =
+    -(ψ ^ n / Real.sqrt 5) from by ring]
+  rw [abs_neg]
+  exact abs_psi_pow_div_sqrt5_lt_half n
+
 end Omega.Entropy
