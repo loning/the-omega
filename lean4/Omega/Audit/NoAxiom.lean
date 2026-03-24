@@ -1566,6 +1566,14 @@ def coreAuditTargets : List String :=
   , "Omega.Entropy.phi_irrational"
   , "Omega.Entropy.entropy_ordering_proxy"
   , "Omega.Entropy.entropy_gap_pos"
-  , "Omega.Entropy.binet_formula" ]
+  , "Omega.Entropy.binet_formula"
+  -- Round 41: Chebyshev 相位 + 熵综合证书 + S_5 Hankel 4×4 + 递推阶模式
+  -- (Entropy.lean:249-278, CollisionZeta.lean:357-370)
+  , "Omega.Entropy.goldenRatio_div_two_sq"
+  , "Omega.Entropy.goldenRatio_half_minpoly"
+  , "Omega.Entropy.entropy_comprehensive_certificate"
+  , "Omega.momentSum_five_six"
+  , "Omega.hankelS5_4x4_det_ne_zero"
+  , "Omega.Entropy.recursion_order_pattern" ]
 
 end Omega.Audit

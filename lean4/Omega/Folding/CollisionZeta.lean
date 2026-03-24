@@ -354,4 +354,18 @@ theorem dfa_linear_recurrence_instances :
     (∀ m, Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m)) := by
   intro m; simp only [X.card_eq_fib]; exact fib_succ_succ' (m + 2)
 
+/-! ### S_5 Hankel 4×4 -/
+
+/-- S_5(6) base value. -/
+theorem momentSum_five_six : momentSum 5 6 = 13444 := by rw [← cMomentSum_eq]; native_decide
+
+/-- 4×4 Hankel matrix for S_5 using correct values. -/
+def hankelS5_4x4 : Matrix (Fin 4) (Fin 4) ℤ :=
+  !![1, 2, 34, 98; 2, 34, 98, 616; 34, 98, 616, 2612; 98, 616, 2612, 13444]
+
+/-- 4×4 Hankel determinant for S_5 is nonzero (recurrence order ≥ 4). -/
+theorem hankelS5_4x4_det_ne_zero : hankelS5_4x4.det ≠ 0 := by
+  show hankelS5_4x4.det ≠ 0
+  native_decide
+
 end Omega

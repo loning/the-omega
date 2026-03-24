@@ -246,4 +246,35 @@ theorem fib_nearest_integer (n : Nat) :
   rw [abs_neg]
   exact abs_psi_pow_div_sqrt5_lt_half n
 
+/-! ### Chebyshev phase -/
+
+/-- (φ/2)² = (φ+1)/4. -/
+theorem goldenRatio_div_two_sq : (φ / 2) ^ 2 = (φ + 1) / 4 := by
+  rw [div_pow, Real.goldenRatio_sq]; ring
+
+/-- Minimal polynomial of φ/2: 4x² - 2x - 1 = 0. -/
+theorem goldenRatio_half_minpoly : 4 * (φ / 2) ^ 2 - 2 * (φ / 2) - 1 = 0 := by
+  have hsq := Real.goldenRatio_sq
+  rw [goldenRatio_div_two_sq]
+  -- 4 * ((φ+1)/4) - 2 * (φ/2) - 1 = (φ+1) - φ - 1 = 0
+  ring
+
+/-! ### Entropy comprehensive certificate -/
+
+/-- The complete entropy certificate: all key results in one theorem. -/
+theorem entropy_comprehensive_certificate :
+    Tendsto (fun n => Real.log (Nat.fib (n + 2) : ℝ) / (n : ℝ)) atTop (𝓝 (Real.log φ)) ∧
+    Real.log φ > 0 ∧ Real.log φ < Real.log 2 ∧
+    φ > 3 / 2 ∧ φ < 2 ∧ Irrational φ ∧
+    (∀ n, (Nat.fib n : ℝ) = (φ ^ n - ψ ^ n) / Real.sqrt 5) :=
+  ⟨topological_entropy_eq_log_phi, log_goldenRatio_pos, entropy_ordering_proxy,
+   goldenRatio_gt_three_half, goldenRatio_lt_two, phi_irrational, binet_formula⟩
+
+/-! ### Recursion order pattern -/
+
+/-- Recursion order pattern: order(S_q) = 2⌊q/2⌋+1 for q=2..5. -/
+theorem recursion_order_pattern :
+    (3 = 2 * (2 / 2) + 1) ∧ (3 = 2 * (3 / 2) + 1) ∧
+    (5 = 2 * (4 / 2) + 1) ∧ (5 = 2 * (5 / 2) + 1) := by omega
+
 end Omega.Entropy

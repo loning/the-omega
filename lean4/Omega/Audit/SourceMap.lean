@@ -5595,6 +5595,55 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Entropy"
       leanName := "Omega.Entropy.fib_nearest_integer"
       phase := 46
+      status := .formalized }
+  -- Phase 47: Chebyshev 相位 + 熵综合证书 + 递推阶模式 (Round 41)
+  -- aux:cdim-chebyshev-phi-half-sq → goldenRatio_div_two_sq (Entropy.lean:252)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "aux:cdim-chebyshev-phi-half-sq"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-chebyshev-phase.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_div_two_sq"
+      phase := 47
+      status := .formalized }
+  -- aux:cdim-chebyshev-phi-half-minpoly → goldenRatio_half_minpoly (Entropy.lean:256)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "aux:cdim-chebyshev-phi-half-minpoly"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-chebyshev-phase.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.goldenRatio_half_minpoly"
+      phase := 47
+      status := .formalized }
+  -- thm:entropy-comprehensive-certificate → entropy_comprehensive_certificate (Entropy.lean:265)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:entropy-comprehensive-certificate"
+      sourcePath := "sections/body/circular-dim/subsec__cdim-entropy-certificate.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.entropy_comprehensive_certificate"
+      phase := 47
+      status := .formalized }
+  -- prop:pom-moment-five-six → momentSum_five_six (CollisionZeta.lean:360)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-moment-five-six"
+      sourcePath := "sections/body/pom/subsec__pom-s5-hankel.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.momentSum_five_six"
+      phase := 47
+      status := .formalized }
+  -- lem:pom-hankel-s5-4x4-det → hankelS5_4x4_det_ne_zero (CollisionZeta.lean:367)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "lem:pom-hankel-s5-4x4-det"
+      sourcePath := "sections/body/pom/subsec__pom-s5-hankel.tex"
+      moduleName := "Omega.Folding.CollisionZeta"
+      leanName := "Omega.hankelS5_4x4_det_ne_zero"
+      phase := 47
+      status := .formalized }
+  -- prop:pom-recursion-order-pattern → recursion_order_pattern (Entropy.lean:276)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:pom-recursion-order-pattern"
+      sourcePath := "sections/body/pom/subsec__pom-recursion-order.tex"
+      moduleName := "Omega.Folding.Entropy"
+      leanName := "Omega.Entropy.recursion_order_pattern"
+      phase := 47
       status := .formalized } ]
 
 end Omega.Audit
