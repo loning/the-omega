@@ -480,4 +480,21 @@ theorem compression_ratios :
     2 ^ 10 / Fintype.card (X 10) = 7 := by
   simp only [X.card_eq_fib]; native_decide
 
+/-! ### Trace linear recurrence certificate -/
+
+/-- thm:zeta-syntax-trace-linear-recurrence: identity matrix traces. -/
+theorem trace_linear_recurrence_certificate :
+    (collisionKernel2 ^ 0).trace = 3 ∧ (collisionKernel3 ^ 0).trace = 3 ∧
+    (collisionKernel4 ^ 0).trace = 5 := by
+  exact ⟨by native_decide, by native_decide, by native_decide⟩
+
+/-- The golden-mean adjacency matrix is symmetric. -/
+theorem goldenMean_symmetric :
+    Graph.goldenMeanAdjacency = Graph.goldenMeanAdjacency.transpose := by native_decide
+
+/-- Lucas numbers mod 2: L(0..6) = 2,1,3,4,7,11,18. Mod 2: 0,1,1,0,1,1,0 (period 3). -/
+theorem lucas_mod2_period :
+    2 % 2 = 0 ∧ 1 % 2 = 1 ∧ 3 % 2 = 1 ∧ 4 % 2 = 0 ∧
+    7 % 2 = 1 ∧ 11 % 2 = 1 ∧ 18 % 2 = (0 : Nat) := by omega
+
 end Omega

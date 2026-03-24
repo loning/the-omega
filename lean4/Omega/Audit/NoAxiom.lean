@@ -1623,6 +1623,10 @@ def coreAuditTargets : List String :=
   -- prop:cdim-audit-stability-iff-badly-approximable
   , "Omega.audit_stability_golden"
   -- prop:terminal-window6-1-8-12-split
-  , "Omega.split_1_8_12_arithmetic" ]
+  , "Omega.split_1_8_12_arithmetic"
+  -- Round 47: 圆维度高阶谱 + Zeta 迹线性递推证书
+  -- (Window6.lean:374, CollisionZeta.lean:486)
+  , "Omega.higher_spectrum_not_marginal_determined"
+  , "Omega.CollisionZeta.trace_linear_recurrence_certificate" ]
 
 end Omega.Audit

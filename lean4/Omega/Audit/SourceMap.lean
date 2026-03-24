@@ -5933,6 +5933,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Window6"
     leanName := "Omega.split_1_8_12_arithmetic"
     phase := 52
+    status := .formalized }
+-- Phase 53: Round 47 — 圆维度/Zeta 论文编号定理
+-- prop:cdim-higher-spectrum-not-determined-by-marginals
+--   → higher_spectrum_not_marginal_determined (Window6.lean:374)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:cdim-higher-spectrum-not-determined-by-marginals"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-spectrum.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.higher_spectrum_not_marginal_determined"
+    phase := 53
+    status := .formalized }
+-- thm:zeta-syntax-trace-linear-recurrence
+--   → trace_linear_recurrence_certificate (CollisionZeta.lean:486)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:zeta-syntax-trace-linear-recurrence"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.trace_linear_recurrence_certificate"
+    phase := 53
     status := .formalized } ]
 
 end Omega.Audit

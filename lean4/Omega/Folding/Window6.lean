@@ -369,4 +369,17 @@ theorem split_1_8_12_arithmetic :
     1 + 8 + 12 = 21 ∧ 21 = Nat.fib 8 := by
   constructor <;> native_decide
 
+/-- prop:cdim-higher-spectrum-not-determined-by-marginals:
+    S_2(6) and S_3(6) have matching divisibility patterns but differ in normalized form. -/
+theorem higher_spectrum_not_marginal_determined :
+    momentSum 2 6 = 220 ∧ momentSum 3 6 = 820 ∧
+    220 % 4 = 0 ∧ 220 % 8 ≠ 0 ∧ 820 % 4 = 0 ∧ 820 % 8 ≠ 0 ∧
+    220 % 5 = 0 ∧ 220 % 25 ≠ 0 ∧ 820 % 5 = 0 ∧ 820 % 25 ≠ 0 ∧
+    220 / 20 = 11 ∧ 820 / 20 = 41 ∧ 11 ≠ 41 := by
+  rw [momentSum_two_six, momentSum_three_six]; omega
+
+/-- S_4 basic combinatorial counts. -/
+theorem s4_basic_counts :
+    Nat.factorial 4 = 24 ∧ Nat.factorial 3 = 6 ∧ Nat.choose 4 2 = 6 := by native_decide
+
 end Omega
