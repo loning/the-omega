@@ -573,6 +573,23 @@ Run these commands manually during audit:
   -- cor:terminal-foldbin6-geo-stabilizer 修正版
   #print axioms Omega.geoStabilizer_trivial
   #print axioms Omega.geoStabilizer_order_one
+  -- Round 25: ZeckendorfSignature 群统一冲刺 (Phase 30)
+  -- thm:terminal-window6-tail-three-branch, thm:terminal-family-uplift-lock
+  -- thm:terminal-6d-microstate-golden-time-gut-branch
+  #print axioms Omega.ZeckSig.uplift_three_branch
+  #print axioms Omega.ZeckSig.dim_su5_top_term
+  #print axioms Omega.ZeckSig.gut_top_terms_align
+  #print axioms Omega.ZeckSig.family_lock_zeckendorf
+  #print axioms Omega.ZeckSig.family_three_selects_so10
+  #print axioms Omega.ZeckSig.gut_dimension_gaps
+  #print axioms Omega.ZeckSig.exceptional_zeckendorf_signatures
+  #print axioms Omega.ZeckSig.discrete_unification_certificate
+  #print axioms Omega.ZeckSig.unification_triple_dynamic
+  -- Round 25: BinFold — thm:terminal-foldbin6-pushforward-markov (Phase 30)
+  -- detailed balance 不成立（已记录为论文修正）
+  #print axioms Omega.cTypeAdjCount_symm_six
+  #print axioms Omega.cTypeAdjCount_row_sum_six
+  #print axioms Omega.cTypeAdjCount_nonzero_exists
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1166,6 +1183,22 @@ def coreAuditTargets : List String :=
   , "Omega.nonAffineFiber_count_six"
   -- Target 3: 几何稳定子平凡 (cor:terminal-foldbin6-geo-stabilizer 修正版)
   , "Omega.geoStabilizer_trivial"
-  , "Omega.geoStabilizer_order_one" ]
+  , "Omega.geoStabilizer_order_one"
+  -- Round 25: ZeckendorfSignature 群统一冲刺 (Phase 30)
+  -- thm:terminal-window6-tail-three-branch, thm:terminal-family-uplift-lock
+  -- thm:terminal-6d-microstate-golden-time-gut-branch
+  , "Omega.ZeckSig.uplift_three_branch"
+  , "Omega.ZeckSig.dim_su5_top_term"
+  , "Omega.ZeckSig.gut_top_terms_align"
+  , "Omega.ZeckSig.family_lock_zeckendorf"
+  , "Omega.ZeckSig.family_three_selects_so10"
+  , "Omega.ZeckSig.gut_dimension_gaps"
+  , "Omega.ZeckSig.exceptional_zeckendorf_signatures"
+  , "Omega.ZeckSig.discrete_unification_certificate"
+  , "Omega.ZeckSig.unification_triple_dynamic"
+  -- Round 25: BinFold — thm:terminal-foldbin6-pushforward-markov (Phase 30)
+  , "Omega.cTypeAdjCount_symm_six"
+  , "Omega.cTypeAdjCount_row_sum_six"
+  , "Omega.cTypeAdjCount_nonzero_exists" ]
 
 end Omega.Audit

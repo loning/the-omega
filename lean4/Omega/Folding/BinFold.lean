@@ -118,4 +118,35 @@ theorem geoStabilizer_order_one :
       ∀ N : Fin 64, cBinFold 6 N.val = cBinFold 6 (N.val ^^^ δ))).card = 1 := by
   native_decide
 
+/-! ### Type adjacency and Markov kernel
+
+The type adjacency count A(x,y) counts the number of hypercube edges between
+the BinFold fibers of x and y. This defines a symmetric weighted graph on X_m
+(the "type graph") whose properties encode the Markov kernel of the folding. -/
+
+/-- Type adjacency count: number of hypercube edges from fiber(x) to fiber(y). -/
+def cTypeAdjCount (m : Nat) (x y : X m) : Nat :=
+  let preX := (Finset.range (2 ^ m)).filter (fun N => cBinFold m N = x)
+  preX.sum fun N =>
+    (Finset.range m).filter (fun k =>
+      cBinFold m (N ^^^ (2 ^ k)) = y) |>.card
+
+/-- Type adjacency is symmetric at m = 6: A(x,y) = A(y,x).
+    Quantified over stable value indices 0..20 to avoid noncomputable Fintype. -/
+theorem cTypeAdjCount_symm_six :
+    ∀ i j : Fin 21,
+      cTypeAdjCount 6 (X.ofNat 6 i) (X.ofNat 6 j) =
+        cTypeAdjCount 6 (X.ofNat 6 j) (X.ofNat 6 i) := by native_decide
+
+/-- Row sum of type adjacency equals 6 · d(x) at m = 6. -/
+theorem cTypeAdjCount_row_sum_six :
+    ∀ i : Fin 21,
+      (Finset.univ : Finset (Fin 21)).sum (fun j =>
+        cTypeAdjCount 6 (X.ofNat 6 i) (X.ofNat 6 j)) =
+        6 * cBinFiberMult 6 (X.ofNat 6 i) := by native_decide
+
+/-- The type adjacency graph is nondegenerate: there exist adjacent type pairs. -/
+theorem cTypeAdjCount_nonzero_exists :
+    cTypeAdjCount 6 (X.ofNat 6 0) (X.ofNat 6 1) > 0 := by native_decide
+
 end Omega

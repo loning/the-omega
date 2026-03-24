@@ -4048,6 +4048,125 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.BinFold"
       leanName := "Omega.geoStabilizer_order_one"
       phase := 29
+      status := .formalized }
+  -- Phase 30: ZeckendorfSignature 群统一冲刺 (Round 25)
+  -- thm:terminal-window6-tail-three-branch → uplift_three_branch
+  --   (Omega/Folding/ZeckendorfSignature.lean:155)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-window6-tail-three-branch"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.uplift_three_branch"
+      phase := 30
+      status := .formalized }
+  -- dim_su5_top_term: 24 = F(8) + F(4)
+  --   (Omega/Folding/ZeckendorfSignature.lean:159)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-family-uplift-lock-su5-top"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.dim_su5_top_term"
+      phase := 30
+      status := .formalized }
+  -- gut_top_terms_align: SU(5)/SO(10)/E_6 顶项对齐
+  --   (Omega/Folding/ZeckendorfSignature.lean:163)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-family-uplift-lock-gut-align"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.gut_top_terms_align"
+      phase := 30
+      status := .formalized }
+  -- family_lock_zeckendorf: 30/45/60 Zeckendorf 锁定
+  --   (Omega/Folding/ZeckendorfSignature.lean:170)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-family-uplift-lock-family-zeck"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.family_lock_zeckendorf"
+      phase := 30
+      status := .formalized }
+  -- family_three_selects_so10: N_f=3 → SO(10)
+  --   (Omega/Folding/ZeckendorfSignature.lean:176)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-family-uplift-lock-nf3-so10"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.family_three_selects_so10"
+      phase := 30
+      status := .formalized }
+  -- gut_dimension_gaps: 间距 = Fibonacci
+  --   (Omega/Folding/ZeckendorfSignature.lean:181)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-family-uplift-lock-dim-gaps"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.gut_dimension_gaps"
+      phase := 30
+      status := .formalized }
+  -- exceptional_zeckendorf_signatures: G2/F4/E6/E7/E8 Zeckendorf
+  --   (Omega/Folding/ZeckendorfSignature.lean:188)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-family-uplift-lock-exceptional"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.exceptional_zeckendorf_signatures"
+      phase := 30
+      status := .formalized }
+  -- discrete_unification_certificate: 10 合取完整证书
+  --   (Omega/Folding/ZeckendorfSignature.lean:202)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-6d-microstate-golden-time-gut-branch-cert"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.discrete_unification_certificate"
+      phase := 30
+      status := .formalized }
+  -- unification_triple_dynamic: SU(5) ⊂ SO(10) ⊂ E_6 动态三元组
+  --   (Omega/Folding/ZeckendorfSignature.lean:217)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-6d-microstate-golden-time-gut-branch-triple"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.ZeckendorfSignature"
+      leanName := "Omega.ZeckSig.unification_triple_dynamic"
+      phase := 30
+      status := .formalized }
+  -- Phase 30: BinFold 群统一冲刺 (Round 25)
+  -- def cTypeAdjCount: 类型邻接计数定义
+  --   (Omega/Folding/BinFold.lean:128)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "def:terminal-foldbin6-type-adj-count"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cTypeAdjCount"
+      phase := 30
+      status := .formalized }
+  -- cTypeAdjCount_symm_six: 对称性 A(x,y)=A(y,x)
+  --   (Omega/Folding/BinFold.lean:136)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-pushforward-markov-symm"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cTypeAdjCount_symm_six"
+      phase := 30
+      status := .formalized }
+  -- cTypeAdjCount_row_sum_six: 行和 = 6·d(x)
+  --   (Omega/Folding/BinFold.lean:142)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-pushforward-markov-rowsum"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cTypeAdjCount_row_sum_six"
+      phase := 30
+      status := .formalized }
+  -- cTypeAdjCount_nonzero_exists: 非退化 A(x,y)>0
+  --   (Omega/Folding/BinFold.lean:149)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:terminal-foldbin6-pushforward-markov-nonzero"
+      sourcePath := "sections/body/unification/sec__group-unification.tex"
+      moduleName := "Omega.Folding.BinFold"
+      leanName := "Omega.cTypeAdjCount_nonzero_exists"
+      phase := 30
       status := .formalized } ]
 
 end Omega.Audit

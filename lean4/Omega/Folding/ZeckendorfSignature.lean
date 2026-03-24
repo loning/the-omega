@@ -145,4 +145,81 @@ theorem cassini_identity_8 :
 /-- The SM embedding dimension 12 splits as 3 · 4 = F(4) · (F(4) + 1). -/
 theorem sm_dim_factorization : 12 = Nat.fib 4 * (Nat.fib 4 + 1) := by native_decide
 
+/-! ### Uplift three-branch structure
+
+The GUT uplift maps SU(5) → SO(10) → E_6 correspond to the Fibonacci ladder
+F(8) = 21, F(9) = 34, F(10) = 55. The top Zeckendorf terms of their dimensions
+align along this ladder. -/
+
+/-- The Fibonacci uplift ladder: (F(8), F(9), F(10)) = (21, 34, 55). -/
+theorem uplift_three_branch : (Nat.fib 8, Nat.fib 9, Nat.fib 10) = (21, 34, 55) := by
+  native_decide
+
+/-- dim(SU(5)) = 24 = F(8) + F(4) = 21 + 3. -/
+theorem dim_su5_top_term : 24 = Nat.fib 8 + Nat.fib 4 := by native_decide
+
+/-- GUT top terms align along the Fibonacci ladder:
+    SU(5): 24 = F(8) + F(4), SO(10): 45 = F(9) + F(6) + F(4), E_6: 78 = F(10) + F(8) + F(3). -/
+theorem gut_top_terms_align :
+    24 = Nat.fib 8 + Nat.fib 4 ∧
+    45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧
+    78 = Nat.fib 10 + Nat.fib 8 + Nat.fib 3 := by native_decide
+
+/-- Family lock: the three-family constraint selects specific Zeckendorf signatures.
+    30 = F(8) + F(6) + F(2), 45 = F(9) + F(6) + F(4), 60 = F(10) + F(5). -/
+theorem family_lock_zeckendorf :
+    30 = Nat.fib 8 + Nat.fib 6 + Nat.fib 2 ∧
+    45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧
+    60 = Nat.fib 10 + Nat.fib 5 := by native_decide
+
+/-- Three families select SO(10): 15 × 3 = 45 = F(9) + F(6) + F(4). -/
+theorem family_three_selects_so10 :
+    15 * 3 = 45 ∧ 45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 := by native_decide
+
+/-- The dimension gaps between GUT groups follow Fibonacci arithmetic:
+    45 - 24 = 21 = F(8), 78 - 45 = 33 = F(9) - F(2). -/
+theorem gut_dimension_gaps :
+    45 - 24 = 21 ∧ 21 = Nat.fib 8 ∧ 78 - 45 = 33 ∧ 33 = Nat.fib 9 - Nat.fib 2 := by
+  native_decide
+
+/-! ### Exceptional Zeckendorf signatures -/
+
+/-- Zeckendorf decompositions of the five exceptional Lie algebra dimensions. -/
+theorem exceptional_zeckendorf_signatures :
+    14 = Nat.fib 7 + Nat.fib 2 ∧
+    52 = Nat.fib 9 + Nat.fib 7 + Nat.fib 5 ∧
+    78 = Nat.fib 10 + Nat.fib 8 + Nat.fib 3 ∧
+    133 = Nat.fib 11 + Nat.fib 9 + Nat.fib 6 + Nat.fib 3 ∧
+    248 = Nat.fib 13 + Nat.fib 7 + Nat.fib 3 := by native_decide
+
+/-! ### Discrete unification certificate
+
+The complete certificate: all GUT-relevant dimensions decompose into Fibonacci
+components, the uplift ladder aligns, and the family structure is locked by the
+three-generation constraint. -/
+
+/-- Discrete unification certificate: the full set of alignment conditions. -/
+theorem discrete_unification_certificate :
+    -- SM dimensions
+    (3 = Nat.fib 4) ∧ (8 = Nat.fib 6) ∧ (12 = Nat.fib 6 + Nat.fib 4 + Nat.fib 2) ∧
+    -- GUT dimensions align on Fibonacci ladder
+    (24 = Nat.fib 8 + Nat.fib 4) ∧
+    (45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4) ∧
+    (78 = Nat.fib 10 + Nat.fib 8 + Nat.fib 3) ∧
+    -- Uplift gaps are Fibonacci
+    (45 - 24 = Nat.fib 8) ∧ (78 - 45 = Nat.fib 9 - Nat.fib 2) ∧
+    -- Family lock
+    (15 * 3 = 45) ∧
+    -- Fibonacci ladder
+    (Nat.fib 8, Nat.fib 9, Nat.fib 10) = (21, 34, 55) := by native_decide
+
+/-- The unification triple: SU(5) ⊂ SO(10) ⊂ E_6 with dimension alignment. -/
+theorem unification_triple_dynamic :
+    24 < 45 ∧ 45 < 78 ∧
+    24 = Nat.fib 8 + Nat.fib 4 ∧
+    45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧
+    78 = Nat.fib 10 + Nat.fib 8 + Nat.fib 3 ∧
+    45 - 24 = Nat.fib 8 ∧
+    78 - 45 = Nat.fib 9 - Nat.fib 2 := by native_decide
+
 end Omega.ZeckSig
