@@ -198,6 +198,79 @@ Agent(
 3. **禁止建议暂停或关闭团队**——即使产出递减，也继续尝试更高难度的目标
 4. 如果连续 3 轮产出 ≤ 2 定理，team lead 应主动要求 analyst 选取中/高难度目标（而非继续低难度扫尾），并在 formalizer 遇到阻塞时积极 spawn codex-consultant
 
+### Phase 6：里程碑审查（每达到里程碑触发）
+
+**里程碑定义**：覆盖率每增加 10%（如 30%→40%→50%...）、单章节达到 100%、或重大突破（如首个 Real 分析定理）时触发。
+
+**审查流程**：
+
+1. **Spawn Codex 外部审查顾问**（独立于团队内部的 analyst/reviewer，提供客观第三方视角）：
+   ```
+   Agent(
+     name = "milestone-reviewer",
+     subagent_type = "lean4-codex-reviewer",  -- 使用 Codex 提供独立审核
+     description = "里程碑审查：Codex 独立全面审查",
+     prompt = "你是独立的 Codex 外部审查顾问。请对当前 Lean4 形式化项目进行全面尖锐审查：
+
+     **覆盖率审计**：
+     1. 论文定理总数是否准确？扫描论文 LaTeX 源文件统计所有 theorem/proposition/corollary/lemma/definition 环境的数量，与 IMPLEMENTATION_PLAN 声称的总数对比。如果实际数量更多，覆盖率被高估。
+     2. SourceMap 中的论文标签映射是否准确？是否有过度归因（弱版本注册为强版本）？
+     3. 是否有'形式上空洞'的注册（如 True := trivial、纯算术恒等式冒充深层定理）？
+
+     **证明质量审计**：
+     4. 抽查关键定理——native_decide 证明是否被过度归因为比实际更强的论文定理？
+     5. 条件性定理（假设递推成立）是否被标记为无条件定理？
+     6. 有界范围验证（m≤5）是否被标记为一般性定理？
+
+     **论文对应审计**：
+     7. 抽查 5-10 个论文标签，读取 LaTeX 原文和 Lean 定理，评估语义是否真正等价。
+     8. 勘误记录是否完整和准确？
+
+     **工程审计**：
+     9. 文件超 800 行？SourceMap.lean 行数？
+     10. 未使用的定义或 import？
+
+     **计划更新建议**：
+     11. 基于审查发现，建议如何调整 IMPLEMENTATION_PLAN 的覆盖率数字和优先级。
+     12. 列出所有需要修复的问题（按严重程度排序）。
+
+     输出完整审查报告。"
+   )
+   ```
+
+2. **收到审查报告后**：
+   - 将完整报告转发给 analyst
+   - analyst **全面更新 IMPLEMENTATION_PLAN**：
+     a. **重新统计论文定理总数**（如果审查发现低估）
+     b. **下调覆盖率**（如果发现虚报/过度归因）
+     c. **标注弱覆盖**（有界范围/条件性/数值实例 vs 一般性定理）
+     d. 添加修复任务到优先级列表
+     e. 调整章节覆盖率数字
+   - 严重问题（覆盖率虚报、语义偏差）**优先修复**
+   - 非阻断问题（lint warning、文档缺失）记入后续工作
+
+3. **审查后 analyst 生成修正轮规格**：
+   - 修复审查发现的所有阻断问题
+   - 重新计算真实覆盖率（区分"强覆盖"vs"弱覆盖"）
+   - 更新论文定理总数（如果发现更多未追踪的定理）
+   - 修正论文对应偏差
+   - 完善勘误记录
+   - **输出修正后的完整覆盖率报告**
+
+### Phase 7：计划持续更新（每 5 轮触发）
+
+**触发条件**：每 5 轮自动触发一次，或论文内容发生变化时手动触发。
+
+**更新内容**：
+1. analyst 重新扫描论文 .tex 文件，检查是否有新增/修改的定理
+2. 更新 IMPLEMENTATION_PLAN §2 的论文总覆盖率表
+3. 识别新增的可形式化目标
+4. 调整 §4 执行优先级
+5. 标注覆盖率的三个层次：
+   - **强覆盖**：一般性定理，∀ 量化，完整证明
+   - **中覆盖**：有界范围验证 + 条件性一般版本
+   - **弱覆盖**：native_decide 数值实例 / 整数代理 / 占位注册
+
 ## Teammate 生命周期
 
 | 角色 | agent 定义 | 生命周期 | 说明 |
@@ -208,6 +281,7 @@ Agent(
 | codex-reviewer | lean4-codex-reviewer | 按需（默认不启动） | 仅用户显式请求时 Phase 3 spawn |
 | codex-consultant | lean4-codex-consultant | 按需 | Phase 2 阻塞时 spawn，咨询完 shutdown |
 | registrar | lean4-registrar | 按需 | Phase 4 spawn，登记完 shutdown |
+| milestone-reviewer | lean4-codex-reviewer | 按需 | Phase 6 里程碑审查时 spawn，审查完 shutdown |
 
 ## 上下文传递规则
 
