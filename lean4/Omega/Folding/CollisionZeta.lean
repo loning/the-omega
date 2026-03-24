@@ -436,4 +436,48 @@ theorem fiber_sum_instances :
     momentSum 1 5 = 32 ∧ momentSum 1 6 = 64 := by
   simp only [momentSum_one]; omega
 
+/-! ### Cross-q consistency -/
+
+/-- S_q is monotone in q at m = 4: S_2(4) ≤ S_3(4) ≤ ... ≤ S_8(4). -/
+theorem cross_q_consistency_m4 :
+    momentSum 2 4 ≤ momentSum 3 4 ∧ momentSum 3 4 ≤ momentSum 4 4 ∧
+    momentSum 4 4 ≤ momentSum 5 4 ∧ momentSum 5 4 ≤ momentSum 6 4 ∧
+    momentSum 6 4 ≤ momentSum 7 4 ∧ momentSum 7 4 ≤ momentSum 8 4 := by
+  simp only [← cMomentSum_eq]; native_decide
+
+/-- S_q is monotone in q at m = 3. -/
+theorem cross_q_consistency_m3 :
+    momentSum 2 3 ≤ momentSum 3 3 ∧ momentSum 3 3 ≤ momentSum 4 3 ∧
+    momentSum 4 3 ≤ momentSum 5 3 ∧ momentSum 5 3 ≤ momentSum 6 3 := by
+  simp only [← cMomentSum_eq]; native_decide
+
+/-- Cauchy-Schwarz instance: S_3(4)² ≤ S_2(4)·S_4(4). (88² = 7744 ≤ 36·228 = 8208.) -/
+theorem cauchy_schwarz_instance_q3_m4 :
+    momentSum 3 4 ^ 2 ≤ momentSum 2 4 * momentSum 4 4 := by
+  rw [momentSum_three_four, momentSum_two_four, momentSum_four_four]; omega
+
+/-! ### Perron root of A_4 -/
+
+/-- The Perron root of A_4 lies in (3, 4): p(3) = -112, p(4) = 58. -/
+theorem perron_root_A4_in_interval :
+    ((3 : ℤ) ^ 5 - 2 * 3 ^ 4 - 7 * 3 ^ 3 - 2 * 3 + 2 = -112) ∧
+    ((4 : ℤ) ^ 5 - 2 * 4 ^ 4 - 7 * 4 ^ 3 - 2 * 4 + 2 = 58) := by omega
+
+/-! ### Compression growth -/
+
+/-- 2^m > |X_m| for m = 2, 4, 6, 8, 10: the compression ratio grows. -/
+theorem compression_growth :
+    2 ^ 2 > Fintype.card (X 2) ∧ 2 ^ 4 > Fintype.card (X 4) ∧
+    2 ^ 6 > Fintype.card (X 6) ∧ 2 ^ 8 > Fintype.card (X 8) ∧
+    2 ^ 10 > Fintype.card (X 10) := by
+  simp only [X.card_eq_fib]; native_decide
+
+/-- Compression ratios: 2^m / |X_m| at even m. -/
+theorem compression_ratios :
+    2 ^ 4 / Fintype.card (X 4) = 2 ∧
+    2 ^ 6 / Fintype.card (X 6) = 3 ∧
+    2 ^ 8 / Fintype.card (X 8) = 4 ∧
+    2 ^ 10 / Fintype.card (X 10) = 7 := by
+  simp only [X.card_eq_fib]; native_decide
+
 end Omega

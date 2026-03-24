@@ -1607,6 +1607,14 @@ def coreAuditTargets : List String :=
   , "Omega.CollisionZeta.trace_power_sum_A3"
   , "Omega.CollisionZeta.fiber_sum_instances"
   , "Omega.Entropy.fib_ratio_error"
-  , "Omega.Entropy.fib_ratio_error_lt_one" ]
+  , "Omega.Entropy.fib_ratio_error_lt_one"
+  -- Round 45: 跨 q 单调性 + CS 实例 + Perron 根 + 压缩增长
+  -- (CollisionZeta.lean:442-483)
+  , "Omega.CollisionZeta.cross_q_consistency_m4"
+  , "Omega.CollisionZeta.cross_q_consistency_m3"
+  , "Omega.CollisionZeta.cauchy_schwarz_instance_q3_m4"
+  , "Omega.CollisionZeta.perron_root_A4_in_interval"
+  , "Omega.CollisionZeta.compression_growth"
+  , "Omega.CollisionZeta.compression_ratios" ]
 
 end Omega.Audit

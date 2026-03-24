@@ -5847,6 +5847,55 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.Entropy.fib_ratio_error_lt_one"
     phase := 50
+    status := .formalized }
+-- Phase 51: Round 45 — 跨 q 单调性 + CS 实例 + Perron 根 + 压缩增长
+-- prop:pom-cross-q-mono-m4 → cross_q_consistency_m4 (CollisionZeta.lean:442)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-cross-q-mono-m4"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.cross_q_consistency_m4"
+    phase := 51
+    status := .formalized }
+-- prop:pom-cross-q-mono-m3 → cross_q_consistency_m3 (CollisionZeta.lean:449)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-cross-q-mono-m3"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.cross_q_consistency_m3"
+    phase := 51
+    status := .formalized }
+-- prop:pom-cs-instance-q3-m4 → cauchy_schwarz_instance_q3_m4 (CollisionZeta.lean:455)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-cs-instance-q3-m4"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.cauchy_schwarz_instance_q3_m4"
+    phase := 51
+    status := .formalized }
+-- prop:pom-perron-root-a4-interval → perron_root_A4_in_interval (CollisionZeta.lean:462)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-perron-root-a4-interval"
+    sourcePath := "sections/body/pom/subsec__pom-collision-zeta.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.perron_root_A4_in_interval"
+    phase := 51
+    status := .formalized }
+-- prop:pom-compression-growth → compression_growth (CollisionZeta.lean:469)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-compression-growth"
+    sourcePath := "sections/body/pom/subsec__pom-fiber-sum.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.compression_growth"
+    phase := 51
+    status := .formalized }
+-- prop:pom-compression-ratios → compression_ratios (CollisionZeta.lean:476)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "prop:pom-compression-ratios"
+    sourcePath := "sections/body/pom/subsec__pom-fiber-sum.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.CollisionZeta.compression_ratios"
+    phase := 51
     status := .formalized } ]
 
 end Omega.Audit
