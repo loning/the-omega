@@ -1760,6 +1760,12 @@ def coreAuditTargets : List String :=
   -- Round 67: PathIndSet — 路径图独立集计数 = Fibonacci (Combinatorics/PathIndSet.lean:310-348)
   , "Omega.pathIndCount_recurrence"
   , "Omega.path_independent_set_count"
-  , "Omega.path_independent_set_count'" ]
+  , "Omega.path_independent_set_count'"
+  -- Round 68: 隐藏位计数理论 (MaxFiberTwoStep.lean:41-207)
+  -- thm:pom-hidden-bit-count — hiddenBitCount 定义 + 基例 + 递推 + 闭式
+  , "Omega.hiddenBitCount_zero"
+  , "Omega.hiddenBitCount_one"
+  , "Omega.hiddenBitCount_recurrence"
+  , "Omega.hiddenBitCount_closed" ]
 
 end Omega.Audit

@@ -6805,6 +6805,52 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.PathIndSet"
     leanName := "Omega.path_independent_set_count'"
     phase := 70
+    status := .formalized }
+-- Phase 71: 隐藏位计数理论 (MaxFiberTwoStep.lean)
+-- thm:pom-hidden-bit-count → hiddenBitCount（定义：weight ≥ fib(m+2) 的 Word m 个数）
+-- (MaxFiberTwoStep.lean:41-42)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-hidden-bit-count"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBitCount"
+    phase := 71
+    status := .formalized }
+-- thm:pom-hidden-bit-count → hiddenBitCount_zero（基例 B_0 = 0）
+-- (MaxFiberTwoStep.lean:44)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-hidden-bit-count-zero"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBitCount_zero"
+    phase := 71
+    status := .formalized }
+-- thm:pom-hidden-bit-count → hiddenBitCount_one（基例 B_1 = 0）
+-- (MaxFiberTwoStep.lean:46)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-hidden-bit-count-one"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBitCount_one"
+    phase := 71
+    status := .formalized }
+-- thm:pom-hidden-bit-count → hiddenBitCount_recurrence（递推：B_{m+2} = 2^m + B_m）
+-- (MaxFiberTwoStep.lean:66-187)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-hidden-bit-count-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBitCount_recurrence"
+    phase := 71
+    status := .formalized }
+-- thm:pom-hidden-bit-count → hiddenBitCount_closed（闭式：B_m * 3 + δ = 2^m）
+-- (MaxFiberTwoStep.lean:193-207)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-hidden-bit-count-closed"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBitCount_closed"
+    phase := 71
     status := .formalized } ]
 
 end Omega.Audit
