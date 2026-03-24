@@ -100,22 +100,35 @@ private theorem cMaxFiberMult_eq (m : Nat) : cMaxFiberMult m = X.maxFiberMultipl
   · exact Finset.sup'_le _ _ fun x _ => by
       rw [← cFiberMult_eq]; exact Finset.le_sup' _ (@Finset.mem_univ _ (fintypeX m) x)
 
+-- Cached @[simp] lemmas for cMaxFiberMult values
+@[simp] theorem cached_cMaxFiberMult_0 : cMaxFiberMult 0 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_1 : cMaxFiberMult 1 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_2 : cMaxFiberMult 2 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_3 : cMaxFiberMult 3 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_4 : cMaxFiberMult 4 = 3 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_5 : cMaxFiberMult 5 = 4 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_6 : cMaxFiberMult 6 = 5 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_7 : cMaxFiberMult 7 = 6 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_8 : cMaxFiberMult 8 = 8 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_9 : cMaxFiberMult 9 = 10 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_10 : cMaxFiberMult 10 = 13 := by native_decide
+
 end Computable
 
 namespace X
 section ClosedForm
 
-theorem maxFiberMultiplicity_zero : maxFiberMultiplicity 0 = 1 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_one : maxFiberMultiplicity 1 = 1 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_two : maxFiberMultiplicity 2 = 2 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_three : maxFiberMultiplicity 3 = 2 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_four : maxFiberMultiplicity 4 = 3 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_five : maxFiberMultiplicity 5 = 4 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_six : maxFiberMultiplicity 6 = 5 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_seven : maxFiberMultiplicity 7 = 6 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_eight : maxFiberMultiplicity 8 = 8 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_nine : maxFiberMultiplicity 9 = 10 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_ten : maxFiberMultiplicity 10 = 13 := by rw [← cMaxFiberMult_eq]; native_decide
+theorem maxFiberMultiplicity_zero : maxFiberMultiplicity 0 = 1 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_one : maxFiberMultiplicity 1 = 1 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_two : maxFiberMultiplicity 2 = 2 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_three : maxFiberMultiplicity 3 = 2 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_four : maxFiberMultiplicity 4 = 3 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_five : maxFiberMultiplicity 5 = 4 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_six : maxFiberMultiplicity 6 = 5 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_seven : maxFiberMultiplicity 7 = 6 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_eight : maxFiberMultiplicity 8 = 8 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_nine : maxFiberMultiplicity 9 = 10 := by rw [← cMaxFiberMult_eq]; simp
+theorem maxFiberMultiplicity_ten : maxFiberMultiplicity 10 = 13 := by rw [← cMaxFiberMult_eq]; simp
 -- m=11 takes ~9min via native_decide, so we verify it separately and use the value.
 -- D(11) = 16, verified by: rw [← cMaxFiberMult_eq]; native_decide
 

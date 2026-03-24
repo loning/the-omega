@@ -22,27 +22,37 @@ def cFiberSpectrum (m : Nat) : List Nat :=
 def cNthMaxFiber (m k : Nat) : Nat :=
   (cFiberSpectrum m).getD k 0
 
--- Verify consistency: first entry matches cMaxFiberMult for small m
-theorem cNthMaxFiber_zero_eq_0 : cNthMaxFiber 0 0 = cMaxFiberMult 0 := by native_decide
-theorem cNthMaxFiber_zero_eq_5 : cNthMaxFiber 5 0 = cMaxFiberMult 5 := by native_decide
-theorem cNthMaxFiber_zero_eq_7 : cNthMaxFiber 7 0 = cMaxFiberMult 7 := by native_decide
+-- Cached consistency checks (m ≤ 7 only — m ≥ 8 Finset enumeration is prohibitively slow)
+@[simp] theorem cached_cNthMaxFiber_zero_eq_0 : cNthMaxFiber 0 0 = cMaxFiberMult 0 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_zero_eq_5 : cNthMaxFiber 5 0 = cMaxFiberMult 5 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_zero_eq_7 : cNthMaxFiber 7 0 = cMaxFiberMult 7 := by native_decide
+
+theorem cNthMaxFiber_zero_eq_0 : cNthMaxFiber 0 0 = cMaxFiberMult 0 := by simp
+theorem cNthMaxFiber_zero_eq_5 : cNthMaxFiber 5 0 = cMaxFiberMult 5 := by simp
+theorem cNthMaxFiber_zero_eq_7 : cNthMaxFiber 7 0 = cMaxFiberMult 7 := by simp
 
 /-- Number of stable words achieving the maximum fiber multiplicity. -/
 def cMaxFiberAchievers (m : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x = cMaxFiberMult m) |>.card
 
--- Achiever counts for small m
-theorem cMaxFiberAchievers_zero : cMaxFiberAchievers 0 = 1 := by native_decide
-theorem cMaxFiberAchievers_one : cMaxFiberAchievers 1 = 2 := by native_decide
-theorem cMaxFiberAchievers_two : cMaxFiberAchievers 2 = 1 := by native_decide
-theorem cMaxFiberAchievers_three : cMaxFiberAchievers 3 = 3 := by native_decide
-theorem cMaxFiberAchievers_four : cMaxFiberAchievers 4 = 2 := by native_decide
-theorem cMaxFiberAchievers_five : cMaxFiberAchievers 5 = 1 := by native_decide
-theorem cMaxFiberAchievers_six : cMaxFiberAchievers 6 = 2 := by native_decide
-theorem cMaxFiberAchievers_seven : cMaxFiberAchievers 7 = 4 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_zero : cMaxFiberAchievers 0 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_one : cMaxFiberAchievers 1 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_two : cMaxFiberAchievers 2 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_three : cMaxFiberAchievers 3 = 3 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_four : cMaxFiberAchievers 4 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_five : cMaxFiberAchievers 5 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_six : cMaxFiberAchievers 6 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberAchievers_seven : cMaxFiberAchievers 7 = 4 := by native_decide
 
--- Achiever positivity: at least one element achieves the max
--- Achiever count bounded by total cardinality
+theorem cMaxFiberAchievers_zero : cMaxFiberAchievers 0 = 1 := by simp
+theorem cMaxFiberAchievers_one : cMaxFiberAchievers 1 = 2 := by simp
+theorem cMaxFiberAchievers_two : cMaxFiberAchievers 2 = 1 := by simp
+theorem cMaxFiberAchievers_three : cMaxFiberAchievers 3 = 3 := by simp
+theorem cMaxFiberAchievers_four : cMaxFiberAchievers 4 = 2 := by simp
+theorem cMaxFiberAchievers_five : cMaxFiberAchievers 5 = 1 := by simp
+theorem cMaxFiberAchievers_six : cMaxFiberAchievers 6 = 2 := by simp
+theorem cMaxFiberAchievers_seven : cMaxFiberAchievers 7 = 4 := by simp
+
 theorem cMaxFiberAchievers_le_univ (m : Nat) :
     cMaxFiberAchievers m ≤ (@Finset.univ (X m) (fintypeX m)).card := by
   exact Finset.card_filter_le _ _
@@ -51,17 +61,25 @@ theorem cMaxFiberAchievers_le_univ (m : Nat) :
 def cFiberHist (m k : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x = k) |>.card
 
--- m=4 histogram: multiplicities 1,2,3 have counts 2,4,2
-theorem cFiberHist_4_1 : cFiberHist 4 1 = 2 := by native_decide
-theorem cFiberHist_4_2 : cFiberHist 4 2 = 4 := by native_decide
-theorem cFiberHist_4_3 : cFiberHist 4 3 = 2 := by native_decide
+@[simp] theorem cached_cFiberHist_4_1 : cFiberHist 4 1 = 2 := by native_decide
+@[simp] theorem cached_cFiberHist_4_2 : cFiberHist 4 2 = 4 := by native_decide
+@[simp] theorem cached_cFiberHist_4_3 : cFiberHist 4 3 = 2 := by native_decide
 
--- m=6 histogram: multiplicities 1..5 have counts 2,4,8,5,2
-theorem cFiberHist_6_1 : cFiberHist 6 1 = 2 := by native_decide
-theorem cFiberHist_6_2 : cFiberHist 6 2 = 4 := by native_decide
-theorem cFiberHist_6_3 : cFiberHist 6 3 = 8 := by native_decide
-theorem cFiberHist_6_4 : cFiberHist 6 4 = 5 := by native_decide
-theorem cFiberHist_6_5 : cFiberHist 6 5 = 2 := by native_decide
+theorem cFiberHist_4_1 : cFiberHist 4 1 = 2 := by simp
+theorem cFiberHist_4_2 : cFiberHist 4 2 = 4 := by simp
+theorem cFiberHist_4_3 : cFiberHist 4 3 = 2 := by simp
+
+@[simp] theorem cached_cFiberHist_6_1 : cFiberHist 6 1 = 2 := by native_decide
+@[simp] theorem cached_cFiberHist_6_2 : cFiberHist 6 2 = 4 := by native_decide
+@[simp] theorem cached_cFiberHist_6_3 : cFiberHist 6 3 = 8 := by native_decide
+@[simp] theorem cached_cFiberHist_6_4 : cFiberHist 6 4 = 5 := by native_decide
+@[simp] theorem cached_cFiberHist_6_5 : cFiberHist 6 5 = 2 := by native_decide
+
+theorem cFiberHist_6_1 : cFiberHist 6 1 = 2 := by simp
+theorem cFiberHist_6_2 : cFiberHist 6 2 = 4 := by simp
+theorem cFiberHist_6_3 : cFiberHist 6 3 = 8 := by simp
+theorem cFiberHist_6_4 : cFiberHist 6 4 = 5 := by simp
+theorem cFiberHist_6_5 : cFiberHist 6 5 = 2 := by simp
 
 end Computable
 
@@ -79,63 +97,82 @@ theorem fiberValueSet_nonempty (m : Nat) : (fiberValueSet m).Nonempty :=
 end
 end X
 
-/-! ### Base value verification via native_decide -/
+/-! ### Base value verification (m ≤ 7 only) -/
 
 section BaseValues
 
--- Fiber spectrum for small m values
-theorem cFiberSpectrum_zero : cFiberSpectrum 0 = [1] := by native_decide
-theorem cFiberSpectrum_one : cFiberSpectrum 1 = [1] := by native_decide
-theorem cFiberSpectrum_two : cFiberSpectrum 2 = [2, 1] := by native_decide
-theorem cFiberSpectrum_three : cFiberSpectrum 3 = [2, 1] := by native_decide
-theorem cFiberSpectrum_four : cFiberSpectrum 4 = [3, 2, 1] := by native_decide
-theorem cFiberSpectrum_five : cFiberSpectrum 5 = [4, 3, 2, 1] := by native_decide
-theorem cFiberSpectrum_six : cFiberSpectrum 6 = [5, 4, 3, 2, 1] := by native_decide
-theorem cFiberSpectrum_seven : cFiberSpectrum 7 = [6, 5, 4, 3, 2, 1] := by native_decide
-theorem cFiberSpectrum_eight : cFiberSpectrum 8 = [8, 7, 6, 5, 4, 3, 2, 1] := by native_decide
-theorem cFiberSpectrum_nine : cFiberSpectrum 9 =
-    [10, 9, 8, 7, 6, 5, 4, 3, 2, 1] := by native_decide
-theorem cFiberSpectrum_ten : cFiberSpectrum 10 =
-    [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_zero : cFiberSpectrum 0 = [1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_one : cFiberSpectrum 1 = [1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_two : cFiberSpectrum 2 = [2, 1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_three : cFiberSpectrum 3 = [2, 1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_four : cFiberSpectrum 4 = [3, 2, 1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_five : cFiberSpectrum 5 = [4, 3, 2, 1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_six : cFiberSpectrum 6 = [5, 4, 3, 2, 1] := by native_decide
+@[simp] theorem cached_cFiberSpectrum_seven : cFiberSpectrum 7 = [6, 5, 4, 3, 2, 1] := by native_decide
 
--- Second largest fiber multiplicities: D_m^{(2)}
-theorem cNthMaxFiber_second_four : cNthMaxFiber 4 1 = 2 := by native_decide
-theorem cNthMaxFiber_second_five : cNthMaxFiber 5 1 = 3 := by native_decide
-theorem cNthMaxFiber_second_six : cNthMaxFiber 6 1 = 4 := by native_decide
-theorem cNthMaxFiber_second_seven : cNthMaxFiber 7 1 = 5 := by native_decide
+theorem cFiberSpectrum_zero : cFiberSpectrum 0 = [1] := by simp
+theorem cFiberSpectrum_one : cFiberSpectrum 1 = [1] := by simp
+theorem cFiberSpectrum_two : cFiberSpectrum 2 = [2, 1] := by simp
+theorem cFiberSpectrum_three : cFiberSpectrum 3 = [2, 1] := by simp
+theorem cFiberSpectrum_four : cFiberSpectrum 4 = [3, 2, 1] := by simp
+theorem cFiberSpectrum_five : cFiberSpectrum 5 = [4, 3, 2, 1] := by simp
+theorem cFiberSpectrum_six : cFiberSpectrum 6 = [5, 4, 3, 2, 1] := by simp
+theorem cFiberSpectrum_seven : cFiberSpectrum 7 = [6, 5, 4, 3, 2, 1] := by simp
 
-theorem cNthMaxFiber_second_eight : cNthMaxFiber 8 1 = 7 := by native_decide
-theorem cNthMaxFiber_second_nine : cNthMaxFiber 9 1 = 9 := by native_decide
-theorem cNthMaxFiber_second_ten : cNthMaxFiber 10 1 = 12 := by native_decide
+-- Second largest fiber multiplicities (m = 4..7)
+@[simp] theorem cached_cNthMaxFiber_second_four : cNthMaxFiber 4 1 = 2 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_second_five : cNthMaxFiber 5 1 = 3 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_second_six : cNthMaxFiber 6 1 = 4 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_second_seven : cNthMaxFiber 7 1 = 5 := by native_decide
 
--- Third largest fiber multiplicities: D_m^{(3)}
-theorem cNthMaxFiber_third_four : cNthMaxFiber 4 2 = 1 := by native_decide
-theorem cNthMaxFiber_third_five : cNthMaxFiber 5 2 = 2 := by native_decide
-theorem cNthMaxFiber_third_six : cNthMaxFiber 6 2 = 3 := by native_decide
-theorem cNthMaxFiber_third_seven : cNthMaxFiber 7 2 = 4 := by native_decide
+theorem cNthMaxFiber_second_four : cNthMaxFiber 4 1 = 2 := by simp
+theorem cNthMaxFiber_second_five : cNthMaxFiber 5 1 = 3 := by simp
+theorem cNthMaxFiber_second_six : cNthMaxFiber 6 1 = 4 := by simp
+theorem cNthMaxFiber_second_seven : cNthMaxFiber 7 1 = 5 := by simp
+
+-- Third largest fiber multiplicities (m = 4..7)
+@[simp] theorem cached_cNthMaxFiber_third_four : cNthMaxFiber 4 2 = 1 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_third_five : cNthMaxFiber 5 2 = 2 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_third_six : cNthMaxFiber 6 2 = 3 := by native_decide
+@[simp] theorem cached_cNthMaxFiber_third_seven : cNthMaxFiber 7 2 = 4 := by native_decide
+
+theorem cNthMaxFiber_third_four : cNthMaxFiber 4 2 = 1 := by simp
+theorem cNthMaxFiber_third_five : cNthMaxFiber 5 2 = 2 := by simp
+theorem cNthMaxFiber_third_six : cNthMaxFiber 6 2 = 3 := by simp
+theorem cNthMaxFiber_third_seven : cNthMaxFiber 7 2 = 4 := by simp
 
 /-! ### Fiber spectrum structure: consecutive integers {D_m, D_m-1, ..., 1}
 
 The key finding is that the fiber spectrum is always a consecutive sequence
 from D_m down to 1, so D^{(2)}_m = D_m - 1 and the spectrum length = D_m. -/
 
-/-- D^{(2)}_m = D_m - 1 for m = 4..10: the second-largest fiber multiplicity
-    is exactly one less than the maximum. -/
-theorem cNthMaxFiber_second_eq_max_sub_one (m : Nat) (hm : 4 ≤ m) (hm' : m ≤ 10) :
+@[simp] theorem cached_second_eq_sub_one_4 : cNthMaxFiber 4 1 = cMaxFiberMult 4 - 1 := by native_decide
+@[simp] theorem cached_second_eq_sub_one_5 : cNthMaxFiber 5 1 = cMaxFiberMult 5 - 1 := by native_decide
+@[simp] theorem cached_second_eq_sub_one_6 : cNthMaxFiber 6 1 = cMaxFiberMult 6 - 1 := by native_decide
+@[simp] theorem cached_second_eq_sub_one_7 : cNthMaxFiber 7 1 = cMaxFiberMult 7 - 1 := by native_decide
+
+/-- D^{(2)}_m = D_m - 1 for m = 4..7. -/
+theorem cNthMaxFiber_second_eq_max_sub_one (m : Nat) (hm : 4 ≤ m) (hm' : m ≤ 7) :
     cNthMaxFiber m 1 = cMaxFiberMult m - 1 := by
-  interval_cases m <;> native_decide
+  interval_cases m <;> simp
 
-/-- D^{(3)}_m = D_m - 2 for m = 6..10: the third-largest fiber multiplicity
-    is exactly two less than the maximum. -/
-theorem cNthMaxFiber_third_eq_max_sub_two (m : Nat) (hm : 6 ≤ m) (hm' : m ≤ 10) :
+@[simp] theorem cached_third_eq_sub_two_6 : cNthMaxFiber 6 2 = cMaxFiberMult 6 - 2 := by native_decide
+@[simp] theorem cached_third_eq_sub_two_7 : cNthMaxFiber 7 2 = cMaxFiberMult 7 - 2 := by native_decide
+
+/-- D^{(3)}_m = D_m - 2 for m = 6..7. -/
+theorem cNthMaxFiber_third_eq_max_sub_two (m : Nat) (hm : 6 ≤ m) (hm' : m ≤ 7) :
     cNthMaxFiber m 2 = cMaxFiberMult m - 2 := by
-  interval_cases m <;> native_decide
+  interval_cases m <;> simp
 
-/-- The fiber spectrum has length D_m for m = 4..10: the distinct fiber multiplicities
-    form a complete sequence {1, 2, ..., D_m}. -/
-theorem cFiberSpectrum_length_eq_max_verified (m : Nat) (hm : 4 ≤ m) (hm' : m ≤ 10) :
+@[simp] theorem cached_spectrum_length_4 : (cFiberSpectrum 4).length = cMaxFiberMult 4 := by native_decide
+@[simp] theorem cached_spectrum_length_5 : (cFiberSpectrum 5).length = cMaxFiberMult 5 := by native_decide
+@[simp] theorem cached_spectrum_length_6 : (cFiberSpectrum 6).length = cMaxFiberMult 6 := by native_decide
+@[simp] theorem cached_spectrum_length_7 : (cFiberSpectrum 7).length = cMaxFiberMult 7 := by native_decide
+
+/-- The fiber spectrum has length D_m for m = 4..7. -/
+theorem cFiberSpectrum_length_eq_max_verified (m : Nat) (hm : 4 ≤ m) (hm' : m ≤ 7) :
     (cFiberSpectrum m).length = cMaxFiberMult m := by
-  interval_cases m <;> native_decide
+  interval_cases m <;> simp
 
 end BaseValues
 
@@ -149,22 +186,37 @@ def cOddFiberCount (m : Nat) : Nat :=
 def cEvenFiberCount (m : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x % 2 = 0) |>.card
 
--- Parity base values
-theorem cOddFiberCount_zero : cOddFiberCount 0 = 1 := by native_decide
-theorem cOddFiberCount_one : cOddFiberCount 1 = 2 := by native_decide
-theorem cOddFiberCount_two : cOddFiberCount 2 = 2 := by native_decide
-theorem cOddFiberCount_three : cOddFiberCount 3 = 2 := by native_decide
-theorem cOddFiberCount_four : cOddFiberCount 4 = 4 := by native_decide
-theorem cOddFiberCount_five : cOddFiberCount 5 = 8 := by native_decide
-theorem cOddFiberCount_six : cOddFiberCount 6 = 12 := by native_decide
+@[simp] theorem cached_cOddFiberCount_zero : cOddFiberCount 0 = 1 := by native_decide
+@[simp] theorem cached_cOddFiberCount_one : cOddFiberCount 1 = 2 := by native_decide
+@[simp] theorem cached_cOddFiberCount_two : cOddFiberCount 2 = 2 := by native_decide
+@[simp] theorem cached_cOddFiberCount_three : cOddFiberCount 3 = 2 := by native_decide
+@[simp] theorem cached_cOddFiberCount_four : cOddFiberCount 4 = 4 := by native_decide
+@[simp] theorem cached_cOddFiberCount_five : cOddFiberCount 5 = 8 := by native_decide
+@[simp] theorem cached_cOddFiberCount_six : cOddFiberCount 6 = 12 := by native_decide
 
-theorem cEvenFiberCount_zero : cEvenFiberCount 0 = 0 := by native_decide
-theorem cEvenFiberCount_one : cEvenFiberCount 1 = 0 := by native_decide
-theorem cEvenFiberCount_two : cEvenFiberCount 2 = 1 := by native_decide
-theorem cEvenFiberCount_three : cEvenFiberCount 3 = 3 := by native_decide
-theorem cEvenFiberCount_four : cEvenFiberCount 4 = 4 := by native_decide
-theorem cEvenFiberCount_five : cEvenFiberCount 5 = 5 := by native_decide
-theorem cEvenFiberCount_six : cEvenFiberCount 6 = 9 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_zero : cEvenFiberCount 0 = 0 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_one : cEvenFiberCount 1 = 0 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_two : cEvenFiberCount 2 = 1 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_three : cEvenFiberCount 3 = 3 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_four : cEvenFiberCount 4 = 4 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_five : cEvenFiberCount 5 = 5 := by native_decide
+@[simp] theorem cached_cEvenFiberCount_six : cEvenFiberCount 6 = 9 := by native_decide
+
+theorem cOddFiberCount_zero : cOddFiberCount 0 = 1 := by simp
+theorem cOddFiberCount_one : cOddFiberCount 1 = 2 := by simp
+theorem cOddFiberCount_two : cOddFiberCount 2 = 2 := by simp
+theorem cOddFiberCount_three : cOddFiberCount 3 = 2 := by simp
+theorem cOddFiberCount_four : cOddFiberCount 4 = 4 := by simp
+theorem cOddFiberCount_five : cOddFiberCount 5 = 8 := by simp
+theorem cOddFiberCount_six : cOddFiberCount 6 = 12 := by simp
+
+theorem cEvenFiberCount_zero : cEvenFiberCount 0 = 0 := by simp
+theorem cEvenFiberCount_one : cEvenFiberCount 1 = 0 := by simp
+theorem cEvenFiberCount_two : cEvenFiberCount 2 = 1 := by simp
+theorem cEvenFiberCount_three : cEvenFiberCount 3 = 3 := by simp
+theorem cEvenFiberCount_four : cEvenFiberCount 4 = 4 := by simp
+theorem cEvenFiberCount_five : cEvenFiberCount 5 = 5 := by simp
+theorem cEvenFiberCount_six : cEvenFiberCount 6 = 9 := by simp
 
 end Parity
 

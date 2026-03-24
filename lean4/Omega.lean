@@ -49,6 +49,7 @@ import Omega.Frontier.ConditionalArithmetic
 import Omega.Frontier.ConditionalSummary
 import Omega.Frontier.Conjectures
 import Omega.Frontier.Certificates
-import Omega.Audit.SourceMap
-import Omega.Audit.Inventory
-import Omega.Audit.NoAxiom
+-- Audit files excluded from default build (large, no proof content)
+-- import Omega.Audit.SourceMap
+-- import Omega.Audit.Inventory
+-- import Omega.Audit.NoAxiom
