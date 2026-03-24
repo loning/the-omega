@@ -1766,6 +1766,13 @@ def coreAuditTargets : List String :=
   , "Omega.hiddenBitCount_zero"
   , "Omega.hiddenBitCount_one"
   , "Omega.hiddenBitCount_recurrence"
-  , "Omega.hiddenBitCount_closed" ]
+  , "Omega.hiddenBitCount_closed"
+  -- Phase 71 补充: 末位辅助引理 (MaxFiberTwoStep.lean:6-34)
+  , "Omega.ofNat_last_false_of_lt"
+  , "Omega.ofNat_last_true_of_ge"
+  -- Phase 72: lem:pom-one-bit — 单隐藏位分解 (MaxFiberTwoStep.lean:213-272)
+  , "Omega.hiddenBit_le_one"
+  , "Omega.ofNat_sub_fib_of_ge"
+  , "Omega.weight_eq_stableValue_add_hiddenBit" ]
 
 end Omega.Audit

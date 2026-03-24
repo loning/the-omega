@@ -205,4 +205,69 @@ theorem hiddenBitCount_closed (m : Nat) :
       have h2 : 2 ^ (m + 2) = 4 * 2 ^ m := by ring
       omega
 
+-- ══════════════════════════════════════════════════════════════
+-- lem:pom-one-bit: single hidden bit decomposition
+-- ══════════════════════════════════════════════════════════════
+
+/-- The hidden bit: 1 if weight w ≥ fib(m+2), else 0. -/
+def hiddenBit (w : Word m) : Nat :=
+  if Nat.fib (m + 2) ≤ weight w then 1 else 0
+
+theorem hiddenBit_le_one (w : Word m) : hiddenBit w ≤ 1 := by
+  unfold hiddenBit; split <;> omega
+
+/-- When fib(m+2) ≤ n < fib(m+3), X.ofNat m n = X.ofNat m (n - fib(m+2)).
+    The Zeckendorf head index m+2 is invisible at level m. -/
+theorem ofNat_sub_fib_of_ge (m n : Nat)
+    (hlo : Nat.fib (m + 2) ≤ n) (hhi : n < Nat.fib (m + 3)) :
+    X.ofNat m n = X.ofNat m (n - Nat.fib (m + 2)) := by
+  apply Subtype.ext; funext j
+  simp only [X.ofNat, X.ofIndices, X.wordOfIndices]; congr 1; apply propext
+  -- Goal: j.1 + 2 ∈ Nat.zeckendorf n ↔ j.1 + 2 ∈ Nat.zeckendorf (n - fib(m+2))
+  change j.1 + 2 ∈ Nat.zeckendorf n ↔ j.1 + 2 ∈ Nat.zeckendorf (n - Nat.fib (m + 2))
+  have hpos : 0 < n := Nat.lt_of_lt_of_le (Nat.fib_pos.mpr (by omega)) hlo
+  -- greatestFib n = m + 2
+  have hGF : Nat.greatestFib n = m + 2 :=
+    Nat.le_antisymm
+      (Nat.lt_succ_iff.mp (Nat.greatestFib_lt.mpr hhi))
+      (Nat.le_greatestFib.mpr hlo)
+  -- zeckendorf n = (m+2) :: zeckendorf (n - fib(m+2))
+  rw [Nat.zeckendorf_of_pos hpos, hGF]
+  -- Goal: j.1 + 2 ∈ (m + 2) :: Nat.zeckendorf (n - fib(m+2)) ↔
+  --       j.1 + 2 ∈ Nat.zeckendorf (n - fib(m+2))
+  simp only [List.mem_cons]
+  -- j.1 + 2 = m + 2 ∨ j.1 + 2 ∈ tail ↔ j.1 + 2 ∈ tail
+  -- Since j : Fin m, j.1 < m, so j.1 + 2 < m + 2, hence j.1 + 2 ≠ m + 2
+  constructor
+  · intro h; rcases h with heq | htail
+    · exfalso; omega
+    · exact htail
+  · exact Or.inr
+
+/-- lem:pom-one-bit: weight(w) = stableValue(Fold(w)) + hiddenBit(w) · fib(m+2). -/
+theorem weight_eq_stableValue_add_hiddenBit (w : Word m) :
+    weight w = stableValue (Fold w) + hiddenBit w * Nat.fib (m + 2) := by
+  unfold hiddenBit Fold
+  have hwlt : weight w < Nat.fib (m + 3) := X.weight_lt_fib w
+  by_cases hge : Nat.fib (m + 2) ≤ weight w
+  · -- Case b=1: weight w ≥ fib(m+2)
+    simp only [hge, ite_true, one_mul]
+    -- Fold w = X.ofNat m (weight w)
+    -- By ofNat_sub_fib_of_ge: X.ofNat m (weight w) = X.ofNat m (weight w - fib(m+2))
+    have hsub : X.ofNat m (weight w) = X.ofNat m (weight w - Nat.fib (m + 2)) :=
+      ofNat_sub_fib_of_ge m (weight w) hge hwlt
+    rw [hsub]
+    -- weight w - fib(m+2) < fib(m+1) < fib(m+2)
+    have hrem_lt : weight w - Nat.fib (m + 2) < Nat.fib (m + 2) := by
+      have hfib3 : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+      have : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+      omega
+    rw [X.stableValue_ofNat_lt _ hrem_lt]
+    omega
+  · -- Case b=0: weight w < fib(m+2)
+    push_neg at hge
+    simp only [show ¬ (Nat.fib (m + 2) ≤ weight w) from by omega, ite_false, zero_mul,
+      Nat.add_zero]
+    rw [X.stableValue_ofNat_lt _ hge]
+
 end Omega

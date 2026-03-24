@@ -6807,6 +6807,24 @@ def initialEntries : List SourceMapEntry :=
     phase := 70
     status := .formalized }
 -- Phase 71: 隐藏位计数理论 (MaxFiberTwoStep.lean)
+-- infra:ofNat-last-false → ofNat_last_false_of_lt（n < fib(m+3) 时末位为 false）
+-- (MaxFiberTwoStep.lean:6-17)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:ofNat-last-false"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.ofNat_last_false_of_lt"
+    phase := 71
+    status := .formalized }
+-- infra:ofNat-last-true → ofNat_last_true_of_ge（fib(m+3) ≤ n < fib(m+4) 时末位为 true）
+-- (MaxFiberTwoStep.lean:20-34)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:ofNat-last-true"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.ofNat_last_true_of_ge"
+    phase := 71
+    status := .formalized }
 -- thm:pom-hidden-bit-count → hiddenBitCount（定义：weight ≥ fib(m+2) 的 Word m 个数）
 -- (MaxFiberTwoStep.lean:41-42)
 -- 状态: 已形式化, 审核通过 2026-03-25
@@ -6851,6 +6869,43 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.hiddenBitCount_closed"
     phase := 71
+    status := .formalized }
+-- Phase 72: lem:pom-one-bit — 单隐藏位分解 (MaxFiberTwoStep.lean:213-273)
+-- lem:pom-one-bit → hiddenBit（定义：weight ≥ fib(m+2) 时为 1，否则为 0）
+-- (MaxFiberTwoStep.lean:213-214)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-hidden-bit"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBit"
+    phase := 72
+    status := .formalized }
+-- lem:pom-one-bit → hiddenBit_le_one（隐藏位 ≤ 1）
+-- (MaxFiberTwoStep.lean:216-217)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "lem:pom-hidden-bit-le-one"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBit_le_one"
+    phase := 72
+    status := .formalized }
+-- lem:pom-one-bit → ofNat_sub_fib_of_ge（fib(m+2) ≤ n 时 ofNat m n = ofNat m (n - fib(m+2))）
+-- (MaxFiberTwoStep.lean:221-245)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "lem:pom-ofNat-sub-fib"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.ofNat_sub_fib_of_ge"
+    phase := 72
+    status := .formalized }
+-- lem:pom-one-bit → weight_eq_stableValue_add_hiddenBit（weight w = stableValue(Fold w) + hiddenBit(w)·fib(m+2)）
+-- (MaxFiberTwoStep.lean:248-272)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "lem:pom-one-bit"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.weight_eq_stableValue_add_hiddenBit"
+    phase := 72
     status := .formalized } ]
 
 end Omega.Audit
