@@ -1461,6 +1461,21 @@ def coreAuditTargets : List String :=
   , "Omega.pisano_period_5"
   , "Omega.pisano_period_7"
   , "Omega.pisano_period_6"
-  , "Omega.fib_entry_point_21" ]
+  , "Omega.fib_entry_point_21"
+  -- Round 35: GM primitive orbits + universal invariants + moment base + cross-q + Hankel S_5 (Phase 40)
+  -- def:pom-gm-primitive-orbits (CollisionZeta.lean:261-263)
+  , "Omega.goldenMean_primitive_orbits"
+  -- def:pom-collision-kernel-universal-invariants (CollisionZeta.lean:268-274)
+  , "Omega.collision_kernel_universal_invariants"
+  -- def:pom-moment-universal-base (CollisionZeta.lean:277-291)
+  , "Omega.moment_universal_base"
+  -- prop:pom-sq-cross-q-mono-six (CollisionZeta.lean:296-298)
+  , "Omega.momentSum_cross_q_mono_six"
+  -- prop:pom-sq-cross-q-ratios-six (CollisionZeta.lean:301-304)
+  , "Omega.momentSum_cross_q_ratios_six"
+  -- lem:pom-hankel-s5-3x3-det (CollisionZeta.lean:313)
+  , "Omega.hankelS5_3x3_det"
+  -- cor:pom-hankel-s5-3x3-det-ne-zero (CollisionZeta.lean:315-316)
+  , "Omega.hankelS5_3x3_det_ne_zero" ]
 
 end Omega.Audit

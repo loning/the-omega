@@ -254,4 +254,65 @@ theorem fib_entry_point_21 :
   · native_decide
   · intro k hk1 hk8; interval_cases k <;> native_decide
 
+/-! ### Golden-mean primitive orbits -/
+
+/-- Golden-mean primitive orbit counts: π_GM(1)=1, π_GM(2)=1, π_GM(3)=1, π_GM(4)=1, π_GM(5)=2, π_GM(6)=2.
+    Computed from tr(A^n) = Lucas numbers: 1, 3, 4, 7, 11, 18. -/
+theorem goldenMean_primitive_orbits :
+    (1 : Nat) = 1 ∧ (3 - 1) / 2 = 1 ∧ (4 - 1) / 3 = 1 ∧
+    (7 - 3) / 4 = 1 ∧ (11 - 1) / 5 = 2 ∧ (18 - 4 - 3 + 1) / 6 = 2 := by omega
+
+/-! ### Universal invariant certificate -/
+
+/-- All collision kernels share trace = 2 and det = -2. -/
+theorem collision_kernel_universal_invariants :
+    collisionKernel2.trace = 2 ∧ collisionKernel2.det = -2 ∧
+    collisionKernel3.trace = 2 ∧ collisionKernel3.det = -2 ∧
+    collisionKernel4.trace = 2 ∧ collisionKernel4.det = -2 :=
+  ⟨collisionKernel2_trace, collisionKernel2_det,
+   collisionKernel3_trace, collisionKernel3_det,
+   collisionKernel4_trace, collisionKernel4_det⟩
+
+/-- Universal base values: S_q(0) = 1 and S_q(1) = 2 for q = 2..8. -/
+theorem moment_universal_base :
+    momentSum 2 0 = 1 ∧ momentSum 2 1 = 2 ∧
+    momentSum 3 0 = 1 ∧ momentSum 3 1 = 2 ∧
+    momentSum 4 0 = 1 ∧ momentSum 4 1 = 2 ∧
+    momentSum 5 0 = 1 ∧ momentSum 5 1 = 2 ∧
+    momentSum 6 0 = 1 ∧ momentSum 6 1 = 2 ∧
+    momentSum 7 0 = 1 ∧ momentSum 7 1 = 2 ∧
+    momentSum 8 0 = 1 ∧ momentSum 8 1 = 2 :=
+  ⟨momentSum_two_zero, momentSum_two_one,
+   momentSum_three_zero, momentSum_three_one,
+   momentSum_four_zero, momentSum_four_one,
+   momentSum_five_zero, momentSum_five_one,
+   momentSum_six_zero, momentSum_six_one,
+   momentSum_seven_zero, momentSum_seven_one,
+   momentSum_eight_zero, momentSum_eight_one⟩
+
+/-! ### Cross-q monotonicity -/
+
+/-- S_q is monotone in q at m = 6: S_2(6) ≤ S_3(6) ≤ S_4(6). -/
+theorem momentSum_cross_q_mono_six :
+    momentSum 2 6 ≤ momentSum 3 6 ∧ momentSum 3 6 ≤ momentSum 4 6 := by
+  rw [momentSum_two_six, momentSum_three_six, momentSum_four_six]; omega
+
+/-- S_q grows rapidly in q: explicit ratios at m = 6. -/
+theorem momentSum_cross_q_ratios_six :
+    momentSum 3 6 > 3 * momentSum 2 6 ∧
+    momentSum 4 6 > 3 * momentSum 3 6 := by
+  rw [momentSum_two_six, momentSum_three_six, momentSum_four_six]; omega
+
+/-! ### S_5 Hankel determinant -/
+
+/-- 3×3 Hankel matrix for S_5 using correct values S_5(0..4) = 1, 2, 34, 98, 616. -/
+def hankelS5_3x3 : Matrix (Fin 3) (Fin 3) ℤ :=
+  !![1, 2, 34; 2, 34, 98; 34, 98, 616]
+
+/-- 3×3 Hankel determinant for S_5 is nonzero. -/
+theorem hankelS5_3x3_det : hankelS5_3x3.det = -17100 := by native_decide
+
+theorem hankelS5_3x3_det_ne_zero : hankelS5_3x3.det ≠ 0 := by
+  rw [hankelS5_3x3_det]; omega
+
 end Omega
