@@ -212,6 +212,155 @@ D_\alpha(\mu_m\Vert u_m)=\frac{1}{\alpha-1}\log \mathbb E[R_m(W_m)^\alpha].
 \(\alpha\to 1\) 的连续延拓与命题 \ref{prop:fold-bin-kl-constant} 给出的 KL 常数一致。证毕。
 \end{proof}
 
+\begin{theorem}[bin-fold 渐近 Rényi 谱的 Mellin 完备性]\label{thm:conclusion-foldbin-renyi-mellin-complete-two-point-law}
+沿用上文记号，并令 \(\widetilde W_m\sim \mu_m\) 为按输出分布抽样的随机稳定词。则随机变量
+\[
+R_m(\widetilde W_m)=\frac{|X_m|\,d_m(\widetilde W_m)}{2^m}
+\]
+在分布上收敛到两点随机变量 \(R_\infty\)：
+\[
+R_\infty=
+\begin{cases}
+\dfrac{\varphi^2}{\sqrt5}, & \text{以概率 }\dfrac{\varphi}{\sqrt5},\\[10pt]
+\dfrac{\varphi}{\sqrt5}, & \text{以概率 }\dfrac{1}{\varphi\sqrt5}.
+\end{cases}
+\]
+并且对任意 \(\alpha>0\) 都有
+\[
+D_\alpha^\infty
+:=
+\lim_{m\to\infty}D_\alpha(\mu_m\Vert u_m)
+=
+\frac{1}{\alpha-1}\log \EE\!\left(R_\infty^{\alpha-1}\right)
+\]
+（\(\alpha=1\) 按连续延拓解释）。
+
+反之，若某个正随机变量 \(R\) 的 Mellin 变换在某开区间上存在，且满足
+\[
+\frac{1}{\alpha-1}\log \EE\!\left(R^{\alpha-1}\right)=D_\alpha^\infty
+\]
+于该区间上成立，则 \(R\) 的分布必与 \(R_\infty\) 相同。因而，bin-fold 的渐近 Rényi 谱对其两点相对密度律给出 Mellin 完备刻画。
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:fold-bin-two-point-limit-law}，在 \(\mu_m\)-随机输出下，
+\[
+Z_m:=\left(\frac{\varphi}{2}\right)^m d_m(\widetilde W_m)
+\]
+在分布上收敛到两点随机变量 \(Z\)，其中
+\[
+Z=
+\begin{cases}
+1, & \text{以概率 }\dfrac{\varphi}{\sqrt5},\\[8pt]
+\varphi^{-1}, & \text{以概率 }\dfrac{1}{\varphi\sqrt5}.
+\end{cases}
+\]
+另一方面，由 Binet 渐近
+\[
+|X_m|=F_{m+2}\sim \frac{\varphi^{m+2}}{\sqrt5},
+\]
+故
+\[
+R_m(\widetilde W_m)
+=
+\frac{|X_m|\,d_m(\widetilde W_m)}{2^m}
+=
+\frac{\varphi^2}{\sqrt5}\,Z_m+o(1)
+\]
+在分布上成立，从而
+\[
+R_m(\widetilde W_m)\Rightarrow R_\infty:=\frac{\varphi^2}{\sqrt5}Z.
+\]
+这就给出所述两点极限律。
+
+再由 Rényi 散度定义，
+\[
+e^{(\alpha-1)D_\alpha(\mu_m\Vert u_m)}
+=
+\sum_{w\in X_m}\mu_m(w)\,R_m(w)^{\alpha-1}
+=
+\EE\!\left(R_m(\widetilde W_m)^{\alpha-1}\right).
+\]
+由两点极限与定理 \ref{thm:fold-bin-two-state-asymptotic} 的一致有界性，可用支配收敛得到
+\[
+e^{(\alpha-1)D_\alpha^\infty}
+=
+\EE\!\left(R_\infty^{\alpha-1}\right),
+\]
+即所示公式；\(\alpha=1\) 时连续延拓便恢复 Shannon/KL 极限。
+
+反向唯一性方面，令 \(Y:=\log R\)、\(Y_\infty:=\log R_\infty\)。给定假设等价于
+\[
+\EE(e^{sY})=\EE(e^{sY_\infty})
+\]
+在某个包含 \(0\) 的开区间上成立，其中 \(s=\alpha-1\)。由 Laplace 变换唯一性，\(Y\) 与 \(Y_\infty\) 同分布，从而 \(R\) 与 \(R_\infty\) 同分布。证毕。
+\end{proof}
+
+\begin{corollary}[subcritical 分位阈值与 Rényi-\texorpdfstring{$\infty$}{infty} 极限的统一]\label{cor:conclusion-foldbin-quantile-threshold-renyi-infty-unification}
+沿用推论 \ref{cor:fold-bin-quantile-threshold-constant} 的分位阈值 \(B_m^{\mathrm{bin}}(\varepsilon)\)。对任意固定
+\[
+0<\varepsilon<\frac{\varphi}{\sqrt5},
+\]
+有极限
+\[
+\lim_{m\to\infty}\frac{|X_m|\,B_m^{\mathrm{bin}}(\varepsilon)}{2^m}
+=
+\frac{\varphi^2}{\sqrt5}.
+\]
+另一方面，定义
+\[
+D_\infty^\infty:=\lim_{\alpha\to\infty}D_\alpha^\infty.
+\]
+则
+\[
+\exp(D_\infty^\infty)=\frac{\varphi^2}{\sqrt5},
+\]
+从而得到严格同一
+\[
+\lim_{m\to\infty}\frac{|X_m|\,B_m^{\mathrm{bin}}(\varepsilon)}{2^m}
+=
+\exp(D_\infty^\infty).
+\]
+因此，subcritical quantile regime 中的最小可见尾阈值，恰等于 order-\(\infty\) Rényi 指纹的指数化。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:fold-bin-quantile-threshold-constant}，
+\[
+B_m^{\mathrm{bin}}(\varepsilon)
+=
+\left(\frac{2}{\varphi}\right)^m(1+o(1))
+\qquad
+\left(0<\varepsilon<\frac{\varphi}{\sqrt5}\right).
+\]
+再结合
+\[
+|X_m|=F_{m+2}\sim \frac{\varphi^{m+2}}{\sqrt5},
+\]
+即得
+\[
+\frac{|X_m|\,B_m^{\mathrm{bin}}(\varepsilon)}{2^m}
+\longrightarrow
+\frac{\varphi^{m+2}}{\sqrt5}\cdot\frac{(2/\varphi)^m}{2^m}
+=
+\frac{\varphi^2}{\sqrt5}.
+\]
+
+另一方面，由定理 \ref{thm:conclusion-foldbin-renyi-mellin-complete-two-point-law}，
+\[
+e^{(\alpha-1)D_\alpha^\infty}
+=
+\EE\!\left(R_\infty^{\alpha-1}\right).
+\]
+令 \(\alpha\to\infty\)，即可得到
+\[
+\exp(D_\infty^\infty)
+=
+\operatorname*{ess\,sup}R_\infty
+=
+\frac{\varphi^2}{\sqrt5},
+\]
+因为 \(R_\infty\) 的较大原子正是 \(\varphi^2/\sqrt5\)。两式合并即得结论。证毕。
+\end{proof}
+
 \begin{theorem}[临界预算下最优预言机反演的块阈值塌缩]\label{thm:conclusion-foldbin-oracle-block-threshold-collapse}
 令 \((B_m)_{m\ge 1}\subset\ZZ_{\ge 0}\) 满足
 \[

@@ -293,6 +293,128 @@ L(s,f)=L(s,\rho),
 局部因子在有限外一致即给出 Euler 乘积的有限处同调修正，故原始部分同一并继承权一模形式的解析性质。证毕。
 \end{proof}
 
+\begin{theorem}[纤维内算法复杂度的平均精确律]\label{thm:conclusion-fold-fiber-average-algorithmic-complexity}
+对任意 \(m\ge1\) 与 \(x\in X_m\)，记 \(U_x\) 为纤维 \(\Fold_m^{-1}(x)\) 上的均匀分布。则存在绝对常数 \(C_1,C_2>0\)，使得
+\[
+\Bigl|
+\mathbb E_{\omega\sim U_x}K(\omega\mid m)
+-
+K(x\mid m)-\log_2 d_m(x)
+\Bigr|
+\le C_1\log m + C_2,
+\]
+并且该估计对所有纤维同时一致。
+\end{theorem}
+\begin{proof}
+主稿关于 Fold 算法全息账本的 Kolmogorov 上界给出：对任意 \(\omega\in \Fold_m^{-1}(x)\)，
+\[
+K(\omega\mid m)\le K(x\mid m)+\lceil \log_2 d_m(x)\rceil + O(\log m).
+\]
+对 \(U_x\) 取平均即得
+\[
+\mathbb E_{U_x}K(\omega\mid m)\le K(x\mid m)+\log_2 d_m(x)+O(\log m).
+\]
+
+另一方面，同一主稿定理的证明先固定纤维后作计数，因此实际上给出逐纤维尾估计：存在绝对常数 \(C>0\) 使对任意 \(c\ge1\),
+\[
+U_x\!\left(
+K(\omega\mid m)
+<
+K(x\mid m)+\lfloor \log_2 d_m(x)\rfloor - C(\log m+c)
+\right)\le 2^{-c}.
+\]
+令
+\[
+Z_x(\omega):=
+K(x\mid m)+\lfloor \log_2 d_m(x)\rfloor-K(\omega\mid m).
+\]
+则
+\[
+U_x\bigl(Z_x>C(\log m+c)\bigr)\le 2^{-c}.
+\]
+由尾积分公式，
+\[
+\mathbb E_{U_x}(Z_x)_+
+\le
+C\log m + C\sum_{c\ge1}2^{-c}
+=
+O(\log m).
+\]
+故
+\[
+\mathbb E_{U_x}K(\omega\mid m)
+\ge
+K(x\mid m)+\log_2 d_m(x)-O(\log m).
+\]
+上下界合并即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[全局算法复杂度的推前--纤维分解]\label{cor:conclusion-global-algorithmic-complexity-pushforward-fiber}
+记推前权重
+\[
+w_m(x):=\frac{d_m(x)}{2^m}\qquad (x\in X_m).
+\]
+则
+\[
+\mathbb E_{\omega\sim \mathrm{Unif}(\Omega_m)}K(\omega\mid m)
+=
+\sum_{x\in X_m} w_m(x)\,K(x\mid m)
++
+\frac1{2^m}\sum_{x\in X_m} d_m(x)\log_2 d_m(x)
++
+O(\log m).
+\]
+因此，微态算法复杂度在平均意义下精确裂解为两部分：稳定型本身的描述复杂度，与纤维几何所携带的隐藏对数体积。
+\end{corollary}
+\begin{proof}
+由全概率公式，
+\[
+\mathbb E_{\omega\sim \mathrm{Unif}(\Omega_m)}K(\omega\mid m)
+=
+\sum_{x\in X_m} w_m(x)\,
+\mathbb E_{\omega\sim U_x}K(\omega\mid m).
+\]
+将定理 \ref{thm:conclusion-fold-fiber-average-algorithmic-complexity} 逐纤维代入即可。证毕。
+\end{proof}
+
+\begin{theorem}[最大算法 uplift 与最大纤维对数的等价]\label{thm:conclusion-max-algorithmic-uplift-maxfiber-log}
+记
+\[
+M_m:=\max_{x\in X_m} d_m(x).
+\]
+则有
+\[
+\sup_{\omega\in\Omega_m}
+\Bigl(
+K(\omega\mid m)-K(\Fold_m(\omega)\mid m)
+\Bigr)
+=
+\log_2 M_m + O(\log m).
+\]
+换言之，Fold 在算法论意义下所能隐藏的最大信息量，精确等于最大纤维体积的对数，误差仅为对数量级。
+\end{theorem}
+\begin{proof}
+对任意 \(\omega\in\Omega_m\)，主稿中的统一上界给出
+\[
+K(\omega\mid m)-K(\Fold_m(\omega)\mid m)
+\le
+\lceil \log_2 d_m(\Fold_m(\omega))\rceil + O(\log m)
+\le
+\log_2 M_m + O(\log m).
+\]
+故得上界。
+
+取 \(x^\star\in X_m\) 使 \(d_m(x^\star)=M_m\)。由主稿的纤维内可达下界，存在 \(\omega^\star\in \Fold_m^{-1}(x^\star)\) 满足
+\[
+K(\omega^\star\mid m)\ge K(x^\star\mid m)+\lfloor \log_2 M_m\rfloor - O(\log m).
+\]
+于是
+\[
+K(\omega^\star\mid m)-K(x^\star\mid m)\ge \log_2 M_m - O(\log m),
+\]
+得所需下界。证毕。
+\end{proof}
+
 \begin{conjecture}[Fold--Jones 谱拓扑同构]\label{conj:conclusion-fold-jones-spectral-topological-equivalence}
 存在自然 \(2\)-函子
 \[
@@ -306,3 +428,4 @@ L(s,f)=L(s,\rho),
 最小可行验证路径为：在固定 \(m\) 的 witness-block 上显式构造 Jones 投影，核验 Temperley--Lieb 关系，并比较 Markov 迹与 \(\zeta\)-读出分母多项式。
 \end{conjecture}
 
+\endinput

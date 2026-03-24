@@ -346,6 +346,117 @@ t=t_p:=\frac{2\pi}{p},
 故坏模数并非有限个，也不是某个稀疏素数尾集，而是覆盖全部充分大的奇素数。证毕。
 \end{proof}
 
+\begin{theorem}[奇素数扭曲的二次松弛时间律]\label{thm:conclusion-odd-prime-twist-quadratic-relaxation-time}
+记碰撞位势未扭曲 Perron 根为
+\[
+\lambda=\rho(1)=\varphi^2,
+\]
+奇素数 \(p\) 的最小非平凡单位根角为
+\[
+t_p:=\frac{2\pi}{p},
+\]
+并记
+\[
+A_\varphi:=\frac{(2\pi)^2(6\sqrt5-5)}{250},
+\qquad
+B_\varphi:=\frac{(2\pi)^4(7+24\sqrt5)}{75000}.
+\]
+定义奇素数通道的谱包络衰减函数
+\[
+\mathcal E_p(n):=
+p\left(\frac{\rho(t_p)}{\lambda}\right)^n
+\]
+及其 \(\varepsilon\)-松弛时间
+\[
+\tau_p^{\mathrm{env}}(\varepsilon)
+:=
+\min\{n\ge 1:\ \mathcal E_p(n)\le \varepsilon\}.
+\]
+则对每个固定 \(\varepsilon\in(0,1)\)，有精确渐近
+\[
+\tau_p^{\mathrm{env}}(\varepsilon)
+=
+\frac{p^2}{A_\varphi}\log\frac{p}{\varepsilon}
++O_\varepsilon(\log p)
+\qquad (p\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+由定义，
+\[
+\mathcal E_p(n)\le \varepsilon
+\iff
+\log p+n\log\frac{\rho(t_p)}{\lambda}\le \log\varepsilon.
+\]
+再由定理 \ref{thm:conclusion-collision-unit-root-spectral-ratio-fourth-order}，
+\[
+1-\frac{\rho(t_p)}{\lambda}
+=
+\frac{A_\varphi}{p^2}-\frac{65-6\sqrt5}{37500}(2\pi)^4p^{-4}+O(p^{-6}),
+\]
+等价地，
+\[
+\log\frac{\rho(t_p)}{\lambda}
+=
+-A_\varphi p^{-2}+B_\varphi p^{-4}+O(p^{-6}).
+\]
+因此
+\[
+\log p
+-A_\varphi n p^{-2}
++B_\varphi n p^{-4}
++O(np^{-6})
+\le \log\varepsilon.
+\]
+由于所求 \(n\) 必为 \(O(p^2\log p)\)，故
+\[
+B_\varphi n p^{-4}+O(np^{-6})=O_\varepsilon(p^{-2}\log p).
+\]
+于是上式等价于
+\[
+A_\varphi n p^{-2}
+\ge
+\log\frac{p}{\varepsilon}
++O_\varepsilon(p^{-2}\log p).
+\]
+乘以 \(p^2/A_\varphi\) 即得
+\[
+\tau_p^{\mathrm{env}}(\varepsilon)
+=
+\frac{p^2}{A_\varphi}\log\frac{p}{\varepsilon}
++O_\varepsilon(\log p).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[奇偶通道与奇素数通道的时间尺度裂解]\label{cor:conclusion-parity-versus-odd-prime-time-scale-splitting}
+定义奇偶通道的包络松弛时间
+\[
+\tau_{\mathrm{par}}^{\mathrm{env}}(\varepsilon)
+:=
+\min\left\{n\ge 1:\left(\frac{\rho(-1)}{\lambda}\right)^n\le \varepsilon\right\}.
+\]
+则对每个固定 \(\varepsilon\in(0,1)\)，有
+\[
+\tau_{\mathrm{par}}^{\mathrm{env}}(\varepsilon)
+=
+\frac{\log(1/\varepsilon)}{\log(\lambda/\rho(-1))}+O(1),
+\]
+并且
+\[
+\frac{\tau_{\mathrm{par}}^{\mathrm{env}}(\varepsilon)}{\tau_p^{\mathrm{env}}(\varepsilon)}
+\longrightarrow 0
+\qquad (p\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+第一式由定义直接解得。第二式由定理 \ref{thm:conclusion-odd-prime-twist-quadratic-relaxation-time} 给出
+\[
+\tau_p^{\mathrm{env}}(\varepsilon)\asymp p^2\log p,
+\]
+而 \(\tau_{\mathrm{par}}^{\mathrm{env}}(\varepsilon)\) 与 \(p\) 无关，故其比值趋于零。证毕。
+\end{proof}
+
 \begin{theorem}[最小退化剔除的双尺度回灌律]\label{thm:conclusion-minsector-doublescale-feedback-law}
 在已审计的偶数窗口
 \[

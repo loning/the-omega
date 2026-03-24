@@ -30,6 +30,57 @@ K_{\mathrm{gen}}(y)\ \le\ K_{\mathrm{gen}}(x)+O(\log n).
 \)，即得所示不等式。证毕。
 \end{proof}
 
+\begin{theorem}[有限前缀不可判别性的任意有限多重化]\label{thm:cdim-computable-prefix-nonidentifiability-multiplicity}
+在定理 \ref{thm:cdim-computable-prefix-nonidentifiability} 的设定下，对任意可计算无穷二元序列 \(x\in\{0,1\}^{\NN}\)、任意 \(n\ge 1\) 与任意整数 \(t\ge 1\)，存在两两不同的可计算序列
+\[
+y^{(1)},\dots,y^{(t)}
+\]
+满足
+\[
+y^{(j)}\upharpoonright n=x\upharpoonright n
+\qquad
+(1\le j\le t),
+\]
+且
+\[
+K_{\mathrm{gen}}(y^{(j)})
+\le
+K_{\mathrm{gen}}(x)+O(\log n+\log t)
+\qquad
+(1\le j\le t).
+\]
+亦即，共享长度 \(n\) 前缀的语义不可判别类，可以在仅增加 \(O(\log n+\log t)\) 描述开销的条件下扩张到任意预先指定的有限规模 \(t\)。
+\end{theorem}
+\begin{proof}
+固定实现 \(K_{\mathrm{gen}}(x)\) 的最短程序 \(p_x\)。对每个 \(1\le j\le t\)，构造程序 \(p_j\) 如下：在输入 \(m\) 时，先调用 \(p_x\) 计算 \(x\upharpoonright \max\{m,n+j\}\)；随后定义输出序列 \(y^{(j)}\) 为
+\[
+y^{(j)}(r)=
+\begin{cases}
+x(r),& r<n+j,\\
+1-x(n+j),& r=n+j,\\
+0,& r>n+j.
+\end{cases}
+\]
+于是每个 \(y^{(j)}\) 都是可计算序列，并且其前 \(n\) 位与 \(x\) 完全相同。若 \(i\neq j\)，则 \(y^{(i)}\) 与 \(y^{(j)}\) 在位置 \(n+\min\{i,j\}\) 处已经分离，故两两不同。
+\par
+为了生成 \(y^{(j)}\)，程序 \(p_j\) 只需在 \(p_x\) 的基础上额外编码整数 \(n\)、整数 \(j\) 以及一段固定长度的修改规则。因此
+\[
+|p_j|
+\le
+|p_x|+O(\log n+\log j)
+\le
+|p_x|+O(\log n+\log t).
+\]
+取最短描述长度即得
+\[
+K_{\mathrm{gen}}(y^{(j)})
+\le
+K_{\mathrm{gen}}(x)+O(\log n+\log t),
+\]
+结论成立。证毕。
+\end{proof}
+这说明前缀预算不足所导致的语义歧义并非只表现为“存在一个竞争者”，而是能够以对数额外开销支持任意给定规模的有限歧义簇。
+
 \begin{proposition}[\texorpdfstring{$\mathsf{NULL}$}{NULL} 的对象论判据：局部截面存在性]\label{prop:cdim-nonnull-section-criterion}
 在上述站点/（预）层表述下，地址 \(a\) 的读出在类型层非 \(\mathsf{NULL}\) 当且仅当
 \[
@@ -383,4 +434,3 @@ b\ \ge\ 2\log_2 T+\log_2\log T-O(1).
 该标度由平均零点间距 \(\asymp 2\pi/\log T\) 与相位门端点导数的 \(T^{-2}\) 压缩共同决定；因此，不外置前缀时位预算主项的 \(2\log_2T\) 不可由仅提升固定图表分辨率替代。
 
 \endinput
-

@@ -143,28 +143,81 @@ D_P(\varrho)\ge \log(\varrho/|a|)
 证毕。
 \end{proof}
 
-\begin{corollary}[有限维 Ramanujan 证书序列 \texorpdfstring{$\Rightarrow$}{=>} RH 的可审计路线]\label{cor:xi-finite-ramanujan-carath-implies-rh}
-若存在一列有限正原子测度 \(\mu_N\)（\(N\ge 1\)）满足自对偶对称
-\[
-\mu_N\circ(\xi\mapsto\xi^{-1})^{-1}=\mu_N,
-\]
-并定义其 Carath\'eodory 变换
-\[
-\mathscr{C}_N(w):=\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu_N(\xi),\qquad w\in\mathbb{D},
-\]
-且 \(\mathscr{C}_N\to \mathscr{C}_{\zeta}\) 在 \(\mathbb{D}\) 的每个紧子集上一致收敛，则 RH 成立。
-\end{corollary}
+\begin{theorem}[RH 的有限对称原子 Carath\'eodory 逼近等价]\label{thm:xi-finite-symmetric-atomic-carath-rh-equivalence}
+设 \(\mathscr{C}_{\zeta}\) 为视界 Carath\'eodory 对数导数。
+则 RH 等价于以下逼近命题：
+
+存在一列定义在 \(\TT\) 上的有限正原子测度 \(\mu_N\) 与一列实常数 \(\beta_N\in\RR\)，使得
+\begin{enumerate}
+  \item \(\mu_N\) 关于反演 \(\xi\mapsto \xi^{-1}\) 对称，即
+  \[
+  \mu_N\circ(\xi\mapsto\xi^{-1})^{-1}=\mu_N;
+  \]
+  \item 令
+  \[
+  \mathscr{C}_N(w)
+  :=
+  \mathrm{i}\beta_N+\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu_N(\xi),
+  \qquad
+  w\in\mathbb D,
+  \]
+  则每个 \(\mathscr{C}_N\) 都给出一个有限维对称 Ramanujan--Carath\'eodory 证书；
+  \item \(\mathscr{C}_N\to \mathscr{C}_{\zeta}\) 在 \(\mathbb D\) 的每个紧子集上一致收敛。
+\end{enumerate}
+\end{theorem}
 
 \begin{proof}
-由 \eqref{eq:app-horizon-herglotz-disk} 的一般理论（或直接由核 \(\frac{\xi+w}{\xi-w}\) 的正实部性），每个 \(\mathscr{C}_N\) 均为 Carath\'eodory 函数。
-由定理 \ref{thm:xi-horizon-carath-closure} 得 \(\mathscr{C}_{\zeta}\) 亦为 Carath\'eodory；再由推论 \ref{cor:app-horizon-carath-rh} 即推出 RH。证毕。
+先证“若”方向。
+由 \eqref{eq:app-horizon-herglotz-disk} 的 Herglotz 表示，每个 \(\mathscr{C}_N\) 都是 Carath\'eodory 函数。
+由定理 \ref{thm:xi-horizon-carath-closure}，其局部一致极限 \(\mathscr{C}_{\zeta}\) 仍为 Carath\'eodory。
+再由推论 \ref{cor:app-horizon-carath-rh}，立得 RH。
+
+再证“唯若”方向。
+若 RH 成立，则推论 \ref{cor:app-horizon-carath-rh} 表明 \(\mathscr{C}_{\zeta}\) 本身属于 Carath\'eodory 类。
+于是存在有限正测度 \(\mu\) 与实常数 \(\beta\) 使
+\[
+\mathscr{C}_{\zeta}(w)
+=
+\mathrm{i}\beta+\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu(\xi)
+\qquad(w\in\mathbb D).
+\]
+由注 \ref{rem:xi-slice-horizon-measure-reflection-positivity} 的固定切片反射正性，可取 \(\mu\) 关于反演 \(\xi\mapsto\xi^{-1}\) 对称。
+
+有限正原子测度在有限正测度的弱-\(\ast\) 拓扑下稠密。
+任取一列有限正原子测度 \(\nu_N\overset{\ast}{\rightharpoonup}\mu\)，定义其对称化
+\[
+\mu_N
+:=
+\frac12\Bigl(\nu_N+\nu_N\circ(\xi\mapsto\xi^{-1})^{-1}\Bigr).
+\]
+则每个 \(\mu_N\) 仍为有限正原子测度，且关于 \(\xi\mapsto\xi^{-1}\) 对称，并满足 \(\mu_N\overset{\ast}{\rightharpoonup}\mu\)。
+取 \(\beta_N\equiv\beta\)，并定义
+\[
+\mathscr{C}_N(w)
+:=
+\mathrm{i}\beta+\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu_N(\xi).
+\]
+
+对任意紧集 \(K\subset\mathbb D\)，核函数
+\[
+(\xi,w)\longmapsto\frac{\xi+w}{\xi-w}
+\]
+在 \(\TT\times K\) 上连续且有界。
+因此由弱-\(\ast\) 收敛可得
+\[
+\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu_N(\xi)
+\longrightarrow
+\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu(\xi)
+\]
+在 \(K\) 上一致成立，从而 \(\mathscr{C}_N\to \mathscr{C}_{\zeta}\) 在每个紧子集上一致收敛。
+证毕。
 \end{proof}
 
 \paragraph{闭环式总结（结构等价而非修辞）}
 定理 \ref{thm:xi-horizon-purity-criterion} 把 RH 压缩为 Jensen 缺陷的单标量极限判据；
 定理 \ref{thm:xi-selfinversive-jensen-criterion} 给出有限维 self-inversive 完成化对象的同型缺陷判据，并在推论 \ref{cor:xi-finite-ramanujan-defect-translation} 中与 toy-RH/Ramanujan 的单位圆根判据对齐；
 定理 \ref{thm:xi-hurwitz-horizon-reduction} 把“构造视界纯的 Ramanujan 逼近”升级为推出 RH 的充分条件；
-而定理 \ref{thm:xi-horizon-carath-closure} 则以正性闭包给出一条并行的极限转移原则：若能构造一列有限维 Carath\'eodory/Ramanujan 对象在 \(\mathbb{D}\) 内紧致一致收敛到 \(\mathscr{C}_{\zeta}\)，则 RH 由推论 \ref{cor:app-horizon-carath-rh} 直接推出。
+而定理 \ref{thm:xi-finite-symmetric-atomic-carath-rh-equivalence} 则把这一正性闭包进一步压成一个严格等价的有限维原子逼近命题：RH 成立当且仅当 \(\mathscr{C}_{\zeta}\) 可由一列反演对称的有限原子 Carath\'eodory 证书在 \(\mathbb{D}\) 内局部一致逼近。
 在本文的协议语义语言下，上述结论共同给出一个可审计闭环：
 \[
 \text{自对偶（固定切片）}\ +\ \text{Ramanujan 相位化（谱界）}
