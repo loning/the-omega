@@ -309,14 +309,14 @@ theorem ofNat_add_fib {m : Nat} (k : Nat) (hk : m + 2 ≤ k)
     rw [Nat.zeckendorf_of_pos hn_pos, hGF_n]; simp only [List.mem_cons]
     exact ⟨fun h => h.elim (by omega) (Or.inr ·), fun h => h.elim (by omega) (Or.inr ·)⟩
 
-private theorem fib_le_of_mem_zeckendorf {k n : Nat} (h : k ∈ Nat.zeckendorf n) :
+theorem fib_le_of_mem_zeckendorf {k n : Nat} (h : k ∈ Nat.zeckendorf n) :
     Nat.fib k ≤ n := by
   have hMem : Nat.fib k ∈ (Nat.zeckendorf n).map Nat.fib := List.mem_map.mpr ⟨k, h, rfl⟩
   calc Nat.fib k ≤ ((Nat.zeckendorf n).map Nat.fib).sum :=
         List.single_le_sum (fun _ _ => Nat.zero_le _) _ hMem
     _ = n := Nat.sum_zeckendorf_fib n
 
-private theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < Nat.fib (m + 3)) :
+theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < Nat.fib (m + 3)) :
     X.ofNat (m + 2) (wt + Nat.fib (m + 3)) ≠ X.ofNat (m + 2) (wt + Nat.fib (m + 4)) := by
   intro heq
   have hFib4 : Nat.fib (m + 4) = Nat.fib (m + 2) + Nat.fib (m + 3) := Nat.fib_add_two

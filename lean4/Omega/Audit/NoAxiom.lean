@@ -729,6 +729,10 @@ Run these commands manually during audit:
   -- prop:cdim-psi-pow-tendsto-zero, prop:cdim-psi-pow-tendsto-zero-real (Entropy.lean:291,296)
   #print axioms Omega.Entropy.psi_pow_tendsto_zero
   #print axioms Omega.Entropy.psi_pow_tendsto_zero'
+  -- Round 67: PathIndSet — 路径图独立集 Fibonacci 计数 (PathIndSet.lean:310-348)
+  #print axioms Omega.pathIndCount_recurrence
+  #print axioms Omega.path_independent_set_count
+  #print axioms Omega.path_independent_set_count'
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1752,6 +1756,10 @@ def coreAuditTargets : List String :=
   , "fib_even_iff_mod3"
   , "fib_odd_iff_not_mod3"
   , "maxFiber_lt_half_wordcount"
-  , "maxFiberMultiplicity_even_parity" ]
+  , "maxFiberMultiplicity_even_parity"
+  -- Round 67: PathIndSet — 路径图独立集计数 = Fibonacci (Combinatorics/PathIndSet.lean:310-348)
+  , "Omega.pathIndCount_recurrence"
+  , "Omega.path_independent_set_count"
+  , "Omega.path_independent_set_count'" ]
 
 end Omega.Audit

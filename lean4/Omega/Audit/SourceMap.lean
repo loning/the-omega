@@ -6764,6 +6764,47 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiber"
     leanName := "maxFiberMultiplicity_even_parity"
     phase := 69
+    status := .formalized }
+-- Phase 70: PathIndSet — 路径图独立集计数 = Fibonacci（thm:pom-max-fiber / cor:pom-D-rec 前置）
+-- IsPathIndependent（定义）→ IsPathIndependent (Combinatorics/PathIndSet.lean:19)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:path-ind-set-def"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.PathIndSet"
+    leanName := "Omega.IsPathIndependent"
+    phase := 70
+    status := .formalized }
+-- pathIndCount（定义）→ pathIndCount (PathIndSet.lean:27)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:path-ind-count-def"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.PathIndSet"
+    leanName := "Omega.pathIndCount"
+    phase := 70
+    status := .formalized }
+-- pathIndCount_recurrence → pathIndCount(n+2) = pathIndCount(n+1) + pathIndCount(n) (PathIndSet.lean:310)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:path-ind-count-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.PathIndSet"
+    leanName := "Omega.pathIndCount_recurrence"
+    phase := 70
+    status := .formalized }
+-- path_independent_set_count → pathIndCount(n) = Nat.fib(n+2) (PathIndSet.lean:332)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:path-ind-set-count"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.PathIndSet"
+    leanName := "Omega.path_independent_set_count"
+    phase := 70
+    status := .formalized }
+-- path_independent_set_count' → Finset.filter 直接形式 (PathIndSet.lean:345)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "infra:path-ind-set-count-filter"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.PathIndSet"
+    leanName := "Omega.path_independent_set_count'"
+    phase := 70
     status := .formalized } ]
 
 end Omega.Audit

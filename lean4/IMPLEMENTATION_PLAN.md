@@ -7,9 +7,9 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~16,751 |
-| 定理/定义数 | ~1,642 |
+| 定理/定义数 | ~1,664 |
 | 论文接口包装 | 346 |
-| 文件数 | 46 |
+| 文件数 | 47 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -21,6 +21,7 @@
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures, ConditionalSummary) | 5 | ~347 | 99% |
+| Combinatorics (PathIndSet) | 1 | ~22 | 100% |
 | Audit (SourceMap, Inventory, NoAxiom) | 3 | ~5 | 同步 |
 
 ### 1.3 已完成的核心数学结果
@@ -38,6 +39,7 @@
 **矩谱 S_2 基值（Round 9）**：cMomentSum（S_q 可计算版本）; cMomentSum_eq（可计算=noncomputable 桥接）; momentSum_two_zero..six（S_2(m) 基值 m=0..6，native_decide 验证）
 **碰撞核矩阵（Round 10）**：collisionKernel2（S_2 递推的 3×3 伴随矩阵定义）; collisionKernel2_trace（tr=2）; collisionKernel2_det（det=-2）; collisionKernel2_cayley_hamilton（Cayley-Hamilton：M³=2M²+2M-2I）; momentSum_two_recurrence_verified（S_2 递推 m=0..3 数值验证）
 **Fibonacci 多项式（Round 11）**：fibPoly（Fibonacci 多项式 F_n(x) 定义，递推 F_{n+2}=F_{n+1}+x·F_n）; fibPoly_zero/one/succ_succ（simp 引理）; fibPoly_eval_one（F_n(1)=fib(n)）; fibPoly_two/three（具体值）; pathIndSetPoly（路径独立集多项式 I_ℓ(x)=F_{ℓ+2}(x) 定义）; pathIndSetPoly_eval_one（I_ℓ(1)=fib(ℓ+2)）；闭式系数公式留后续（def:pom-fibonacci-polynomial 完整，thm:pom-path-indset-poly-closed 部分）
+**路径图独立集计数（Round 67）**：Combinatorics/PathIndSet.lean（350行，新文件）——IsPathIndependent（路径图 P_n 独立集定义：无相邻顶点）; pathIndCount（独立集计数定义）; pathIndCount_recurrence（递推：pathIndCount(n+2)=pathIndCount(n+1)+pathIndCount(n)，通过 notContainingLast/containingLast 分划 + 双射证明）; path_independent_set_count（主定理：pathIndCount(n)=Nat.fib(n+2)，强归纳）; path_independent_set_count'（Finset.filter 等价形式）——辅助基础设施：liftIndSet/liftWithLast（两类独立集的提升函数）; pathInd_partition/disjoint（分划与不相交性）; card_notContainingLast/containingLast（基数等式）——作为 thm:pom-max-fiber / cor:pom-D-rec 完整组合证明的前置基础设施（Phase 70）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
