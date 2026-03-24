@@ -1,4 +1,5 @@
 import Omega.Folding.MaxFiberTwoStep
+import Omega.Folding.MomentSum
 
 namespace Omega
 
@@ -341,5 +342,72 @@ theorem fiberMultiplicity_allFalse_closed (m : Nat) :
       -- Goal: m / 2 + 1 + 1 = (m + 2) / 2 + 1
       -- (m + 2) / 2 = m / 2 + 1 for natural number division
       omega
+
+-- ══════════════════════════════════════════════════════════════
+-- Weight congruence class count
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight congruence class count: #{w : Word m | weight w % F_{m+2} = r}. -/
+def weightCongruenceCount (m r : Nat) : Nat :=
+  (Finset.univ.filter (fun w : Word m => weight w % Nat.fib (m + 2) = r)).card
+
+/-- wcc = ewc(r) + ewc(r + F). -/
+theorem weightCongruenceCount_eq_sum_ewc (m r : Nat) (hr : r < Nat.fib (m + 2)) :
+    weightCongruenceCount m r =
+    exactWeightCount m r + exactWeightCount m (r + Nat.fib (m + 2)) := by
+  unfold weightCongruenceCount exactWeightCount
+  -- Same pattern as fiberMultiplicity_eq_two_ewc
+  have hFpos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  suffices hsplit : Finset.univ.filter (fun w : Word m => weight w % Nat.fib (m + 2) = r)
+      = Finset.univ.filter (fun w : Word m => weight w = r) ∪
+        Finset.univ.filter (fun w : Word m => weight w = r + Nat.fib (m + 2)) by
+    rw [hsplit]
+    exact Finset.card_union_of_disjoint
+      (Finset.disjoint_filter.mpr fun w _ h1 h2 => by omega)
+  ext w
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+  constructor
+  · intro hmod
+    have hwlt := X.weight_lt_fib w
+    have hbound : weight w < 2 * Nat.fib (m + 2) := by
+      have : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+      have : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+      omega
+    have hdiv := Nat.div_add_mod (weight w) (Nat.fib (m + 2))
+    rw [hmod] at hdiv
+    have hq_lt : weight w / Nat.fib (m + 2) < 2 := Nat.div_lt_of_lt_mul (by omega)
+    interval_cases (weight w / Nat.fib (m + 2))
+    · left; omega
+    · right; omega
+  · rintro (h | h)
+    · rw [h]; exact Nat.mod_eq_of_lt hr
+    · rw [h, Nat.add_mod_right]; exact Nat.mod_eq_of_lt hr
+
+/-- d(x) = wcc(m, stableValue x). -/
+theorem fiberMultiplicity_eq_wcc (x : X m) :
+    X.fiberMultiplicity x = weightCongruenceCount m (stableValue x) := by
+  rw [fiberMultiplicity_eq_weight_congr_count]; rfl
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 = sum of squared congruence class sizes
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m) = sum of squared congruence class sizes. -/
+theorem momentSum_two_eq_congr_sq_sum (m : Nat) :
+    momentSum 2 m =
+    ∑ r ∈ Finset.range (Nat.fib (m + 2)), weightCongruenceCount m r ^ 2 := by
+  unfold momentSum
+  -- Step 1: rewrite fiberMultiplicity as wcc
+  simp_rw [fiberMultiplicity_eq_wcc]
+  -- Step 2: reparametrize via stableValueFin bijection
+  -- ∑ x : X m, wcc(m, stableValue x)^2 = ∑ r : Fin F, wcc(m, r.val)^2
+  have hbij := X.stableValueFin_bijective m
+  have step : ∑ x : X m, weightCongruenceCount m (stableValue x) ^ 2 =
+      ∑ r : Fin (Nat.fib (m + 2)), weightCongruenceCount m r.val ^ 2 := by
+    rw [show (fun x : X m => weightCongruenceCount m (stableValue x) ^ 2) =
+      (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val ^ 2) ∘
+      X.stableValueFin from by ext x; simp [X.stableValueFin]]
+    exact hbij.sum_comp (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val ^ 2)
+  rw [step, ← Fin.sum_univ_eq_sum_range]
 
 end Omega

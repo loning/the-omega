@@ -1795,6 +1795,10 @@ def coreAuditTargets : List String :=
   , "Omega.exactWeightCount_succ_succ"
   , "Omega.exactWeightCount_fib_shift"
   , "Omega.fiberMultiplicity_allFalse_recurrence"
-  , "Omega.fiberMultiplicity_allFalse_closed" ]
+  , "Omega.fiberMultiplicity_allFalse_closed"
+  -- Phase 78: weightCongruenceCount + S_2 同余矩表达 (FiberWeightCount.lean:346-413)
+  , "Omega.weightCongruenceCount_eq_sum_ewc"
+  , "Omega.fiberMultiplicity_eq_wcc"
+  , "Omega.momentSum_two_eq_congr_sq_sum" ]
 
 end Omega.Audit

@@ -7073,6 +7073,43 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.FiberWeightCount"
     leanName := "Omega.fiberMultiplicity_allFalse_closed"
     phase := 77
+    status := .formalized }
+-- Phase 78: weightCongruenceCount + S_2 同余矩表达 (FiberWeightCount.lean:346-413)
+-- prop:pom-moment-congruence-q → weightCongruenceCount（同余类计数定义：#{w | weight w % F_{m+2} = r}）
+-- (FiberWeightCount.lean:351)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-wcc"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.weightCongruenceCount"
+    phase := 78
+    status := .formalized }
+-- prop:pom-moment-congruence-q → weightCongruenceCount_eq_sum_ewc（wcc = ewc(r) + ewc(r+F)）
+-- (FiberWeightCount.lean:355)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-wcc-eq-sum-ewc"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.weightCongruenceCount_eq_sum_ewc"
+    phase := 78
+    status := .formalized }
+-- prop:pom-moment-congruence-q → fiberMultiplicity_eq_wcc（d(x) = wcc(m, sv(x))）
+-- (FiberWeightCount.lean:387)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-fiberMultiplicity-eq-wcc"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.fiberMultiplicity_eq_wcc"
+    phase := 78
+    status := .formalized }
+-- prop:pom-moment-congruence-q → momentSum_two_eq_congr_sq_sum（S_2(m) = Σ wcc(r)^2，q=2）
+-- (FiberWeightCount.lean:396)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.momentSum_two_eq_congr_sq_sum"
+    phase := 78
     status := .formalized } ]
 
 end Omega.Audit
