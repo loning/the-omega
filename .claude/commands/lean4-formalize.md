@@ -28,34 +28,47 @@
 TeamCreate(team_name = "lean4-formalization", description = "Lean4形式化持续推进")
 ```
 
-### 2. 启动持久 teammate（并行 spawn）
-
-在一条消息中同时启动两个持久角色：
+### 2. 启动持久 teammate（并行 spawn 三个常驻角色）
 
 ```
 Agent(
   name = "analyst",
   subagent_type = "lean4-analyst",
   team_name = "lean4-formalization",
-  description = "形式化分析师（持久）",
-  prompt = "你是 lean4-formalization 团队的分析师（持久角色）。
-你将通过 SendMessage 收到 team lead 的分析任务。
-收到任务后按 lean4-analyst 规格执行分析，完成后将规格通过 SendMessage 发回 team lead。"
+  description = "形式化分析师（常驻）",
+  prompt = "你是 lean4-formalization 团队的分析师（常驻角色）。
+你将通过 SendMessage 收到 team lead 或其他 teammate 的分析任务。
+收到任务后按 lean4-analyst 规格执行分析，完成后将规格通过 SendMessage 发回 team lead。
+你可以直接给 formalizer 或 registrar 发消息（如需协调），但重要决策须报告 team lead。"
 )
 
 Agent(
   name = "formalizer",
   subagent_type = "lean4-formalizer",
   team_name = "lean4-formalization",
-  description = "形式化实现者（持久）",
+  description = "形式化实现者（常驻）",
   mode = "bypassPermissions",
-  prompt = "你是 lean4-formalization 团队的实现者（持久角色）。
+  prompt = "你是 lean4-formalization 团队的实现者（常驻角色）。
 你将通过 SendMessage 收到 team lead 的实现任务和规格。
-收到任务后按 lean4-formalizer 规格实现证明，完成后将结果通过 SendMessage 发回 team lead。"
+收到任务后按 lean4-formalizer 规格实现证明，完成后将结果通过 SendMessage 发回 team lead。
+实现完成后，可直接通知 registrar 进行登记（抄送 team lead）。"
+)
+
+Agent(
+  name = "registrar",
+  subagent_type = "lean4-registrar",
+  team_name = "lean4-formalization",
+  description = "登记员（常驻）",
+  mode = "bypassPermissions",
+  prompt = "你是 lean4-formalization 团队的登记员（常驻角色）。
+你将通过 SendMessage 收到 team lead 或 formalizer 的登记任务。
+收到任务后更新 SourceMap/NoAxiom/IMPLEMENTATION_PLAN，然后 git commit + push。
+完成后将登记报告通过 SendMessage 发回 team lead。
+**编译串行约束**：执行 lake build 前确认 formalizer 已暂停。"
 )
 ```
 
-**spawn 完毕后等待两个 teammate idle，不做其他操作。**
+**spawn 完毕后等待三个 teammate idle，不做其他操作。**
 
 ## 每轮循环流程
 
