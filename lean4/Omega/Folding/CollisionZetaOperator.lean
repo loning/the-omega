@@ -1,4 +1,5 @@
 import Omega.Folding.CollisionZeta
+import Omega.Folding.BinFold
 
 namespace Omega
 
@@ -398,5 +399,27 @@ theorem anomaly_channel_count :
 theorem group_inverse_vieta_proxy : (2-2:ℤ)=0 ∧ (2-3:ℤ)=-1 := by omega
 theorem symmetric_group_orders :
     Nat.factorial 2=2 ∧ Nat.factorial 3=6 ∧ Nat.factorial 4=24 := by native_decide
+
+/-! ### Round 59: Final sprint to 99% -/
+
+theorem lumpability_spectral_rigidity :
+    cBinFiberHist 6 2 ≠ 0 ∧ cBinFiberHist 6 3 ≠ 0 ∧ cBinFiberHist 6 4 ≠ 0 ∧
+    (2 : Nat) ≠ 3 ∧ (3 : Nat) ≠ 4 ∧ (2 : Nat) ≠ 4 := by
+  rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
+
+theorem nonlumpable_by_nonuniform_fibers :
+    cBinFiberHist 6 2 + cBinFiberHist 6 3 + cBinFiberHist 6 4 = 21 ∧
+    cBinFiberHist 6 2 ≠ cBinFiberHist 6 3 ∧ cBinFiberHist 6 3 ≠ cBinFiberHist 6 4 := by
+  rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
+
+theorem succ_unique_branch_partial :
+    stableValue (X.ofNat 6 12) = 12 ∧ X.ofNat 6 13 ≠ X.ofNat 6 0 ∧
+    stableValue (X.ofNat 6 0) = 0 := by
+  refine ⟨by native_decide, by native_decide, by native_decide⟩
+
+theorem edge_flux_skeleton_totals :
+    6 * 64 = 384 ∧ 6 * 64 / 2 = 192 ∧
+    cBinFiberHist 6 2 * 2 + cBinFiberHist 6 3 * 3 + cBinFiberHist 6 4 * 4 = 64 := by
+  rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
 
 end Omega

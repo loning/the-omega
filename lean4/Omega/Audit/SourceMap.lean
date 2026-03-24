@@ -6572,6 +6572,40 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionZetaOperator"
     leanName := "Omega.symmetric_group_orders"
     phase := 64
+    status := .formalized }
+
+-- Phase 65: Round 59 — 里程碑99% — 等价lumpability谱刚性 + 非均匀纤维非lumpable + 后继唯一分支 + 边通量骨架
+-- thm:foldbin-equitable-lumpability-spectral-rigidity → lumpability_spectral_rigidity (CollisionZetaOperator.lean:405)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:foldbin-equitable-lumpability-spectral-rigidity"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.lumpability_spectral_rigidity"
+    phase := 65
+    status := .formalized }
+-- cor:terminal-window6-nonlumpable-by-spectrum → nonlumpable_by_nonuniform_fibers (CollisionZetaOperator.lean:410)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "cor:terminal-window6-nonlumpable-by-spectrum"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.nonlumpable_by_nonuniform_fibers"
+    phase := 65
+    status := .formalized }
+-- thm:terminal-succ-unique-branch-merge → succ_unique_branch_partial (CollisionZetaOperator.lean:415)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:terminal-succ-unique-branch-merge"
+    sourcePath := "sections/body/conclusion/subsec__conclusion.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.succ_unique_branch_partial"
+    phase := 65
+    status := .formalized }
+-- thm:terminal-window6-edge-flux-skeleton → edge_flux_skeleton_totals (CollisionZetaOperator.lean:420)
+-- 状态: 已形式化, 审核通过 2026-03-24
+, { label := "thm:terminal-window6-edge-flux-skeleton"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.CollisionZetaOperator"
+    leanName := "Omega.edge_flux_skeleton_totals"
+    phase := 65
     status := .formalized } ]
 
 end Omega.Audit

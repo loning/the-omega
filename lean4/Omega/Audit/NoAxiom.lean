@@ -1725,6 +1725,12 @@ def coreAuditTargets : List String :=
   , "Omega.moment_anomaly_ratio_proxy"
   , "Omega.anomaly_channel_count"
   , "Omega.group_inverse_vieta_proxy"
-  , "Omega.symmetric_group_orders" ]
+  , "Omega.symmetric_group_orders"
+  -- Round 59: 里程碑99% — lumpability谱刚性 + 非均匀纤维非lumpable + 后继唯一分支 + 边通量骨架
+  -- (CollisionZetaOperator.lean:405-424)
+  , "Omega.lumpability_spectral_rigidity"
+  , "Omega.nonlumpable_by_nonuniform_fibers"
+  , "Omega.succ_unique_branch_partial"
+  , "Omega.edge_flux_skeleton_totals" ]
 
 end Omega.Audit
