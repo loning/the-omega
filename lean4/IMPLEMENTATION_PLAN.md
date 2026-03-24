@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~16,889 |
-| 定理/定义数 | ~1,672 |
+| 总行数 | ~17,018 |
+| 定理/定义数 | ~1,675 |
 | 论文接口包装 | 346 |
 | 文件数 | 47 |
 | 公理数 | 0 |
@@ -43,6 +43,7 @@
 **隐藏位计数理论（Round 68）**：Folding/MaxFiberTwoStep.lean（拓展至208行）——hiddenBitCount（def:pom-hidden-bit-count，定义：weight ≥ fib(m+2) 的 Word m 个数）; hiddenBitCount_zero/one（基例 B_0=B_1=0，decide 验证）; hiddenBitCount_recurrence（thm:pom-hidden-bit-count 递推：B_{m+2}=2^m+B_m，通过 BF/BT 分划 + 双射证明，BF↔Word m（截断双射），BT↔Word m（snoc double-true 双射））; hiddenBitCount_closed（闭式：B_m·3+δ=2^m，其中 δ=1 若 m 偶，δ=2 若 m 奇，强归纳证明）——辅助引理：last_true_of_heavy（weight≥fib(m+4) → 末位为 true，private）; ofNat_last_false_of_lt（n < fib(m+3) 时末位为 false，Phase 71 infra）; ofNat_last_true_of_ge（fib(m+3) ≤ n < fib(m+4) 时末位为 true，Phase 71 infra）——POM 覆盖率 ~16% → ~16.2%（+7 条目，thm:pom-hidden-bit-count 完整覆盖）（Phase 71）
 **单隐藏位分解（Round 69，Phase 72）**：Folding/MaxFiberTwoStep.lean（拓展至273行）——hiddenBit（def:pom-hidden-bit，定义：weight ≥ fib(m+2) 时为 1，否则为 0）; hiddenBit_le_one（隐藏位 ≤ 1）; ofNat_sub_fib_of_ge（lem:pom-ofNat-sub-fib：fib(m+2) ≤ n < fib(m+3) 时 ofNat m n = ofNat m (n - fib(m+2))，Zeckendorf 头指标 m+2 在 m 层不可见）; weight_eq_stableValue_add_hiddenBit（lem:pom-one-bit 主定理：weight w = stableValue(Fold w) + hiddenBit(w)·fib(m+2)，按 b=0/b=1 两支证明，b=1 用 ofNat_sub_fib_of_ge + stableValue_ofNat_lt）——POM 覆盖率 ~16.2% → ~17.1%（+4 条目）（Phase 72）
 **Fold 模同余定理（Round 70，Phase 73）**：Folding/MaxFiberTwoStep.lean（拓展至304行）——stableValue_Fold_mod（stableValue(Fold w) = weight w % fib(m+2)，由 weight_eq_stableValue_add_hiddenBit + add_mul_mod_self_right + mod_eq_of_lt 推导）; Fold_eq_iff_weight_mod（lem:pom-fold-congruence 主定理：Fold w = Fold w' ↔ weight w % F_{m+2} = weight w' % F_{m+2}，← 方向用 stableValueFin_injective）——POM 覆盖率 ~17.1% → ~17.3%（+2 条目）（Phase 73）
+**纤维同余特征化 + pointwise 递推不等式（Round 71，Phase 74）**：Folding/MaxFiberTwoStep.lean（拓展至433行）——mem_fiber_iff_weight_mod（cor:pom-mem-fiber-weight-mod：w ∈ fiber(x) ↔ weight w % F_{m+2} = stableValue x，由 Fold_eq_iff_weight_mod + Fold_stable 推导）; fiberMultiplicity_eq_weight_congr_count（cor:pom-fiberMultiplicity-weight-congr：fiberMultiplicity x = #{w | weight w % F = stableValue x}，由 mem_fiber_iff_weight_mod 直接改写 card）; fiberMultiplicity_le_restrict_add（thm:pom-max-fiber 上界基础：d_{m+2}(x) ≤ d_{m+1}(restrict x) + d_m(restrict² x)，通过 false-ending/true-ending 分划 + card_le_card_of_injOn 分别建立上界，true 分支用 weight_expand' + ofNat_add_fib 处理进位，合并用 Nat.add_le_add）——辅助私有引理：weight_expand'（末位为 true 时 weight 展开式，private）——POM 覆盖率 ~17.3% → ~17.4%（+3 条目）（Phase 74）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -97,15 +98,15 @@
 
 ### Lean4 形式化状态
 
-- **935 个论文标签已注册**到 SourceMap
-- ~1,773+ 个 Lean4 定理（含内部引理）
+- **938 个论文标签已注册**到 SourceMap
+- ~1,776+ 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 935/10,588 = **8.8%** |
+| 全局覆盖率 | 938/10,588 = **8.9%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -119,13 +120,13 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~263 | ~17.3% |
+| POM | 1,525 | ~266 | ~17.4% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **~935** | **8.8%** |
+| **总计** | **10,588** | **~938** | **8.9%** |
 
 **逐章覆盖率**：
 
@@ -135,13 +136,13 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~263 | ~17.3% |
+| POM | 1,525 | ~266 | ~17.4% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **~935** | **8.8%** |
+| **总计** | **10,588** | **~938** | **8.9%** |
 
 ## 3. 未来工作：30 条具体计划
 

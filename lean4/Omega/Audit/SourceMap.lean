@@ -6925,6 +6925,34 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.Fold_eq_iff_weight_mod"
     phase := 73
+    status := .formalized }
+-- Phase 74: 纤维同余特征化 + pointwise 递推不等式 (MaxFiberTwoStep.lean:306-431)
+-- cor:pom-fold-congruence → mem_fiber_iff_weight_mod（纤维 ↔ weight 同余特征化）
+-- (MaxFiberTwoStep.lean:306-323)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "cor:pom-mem-fiber-weight-mod"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.mem_fiber_iff_weight_mod"
+    phase := 74
+    status := .formalized }
+-- cor:pom-fold-congruence → fiberMultiplicity_eq_weight_congr_count（纤维大小 = weight 同余类大小）
+-- (MaxFiberTwoStep.lean:330-337)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "cor:pom-fiberMultiplicity-weight-congr"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.fiberMultiplicity_eq_weight_congr_count"
+    phase := 74
+    status := .formalized }
+-- thm:pom-max-fiber → fiberMultiplicity_le_restrict_add（pointwise 递推：d(x) ≤ d(restrict x) + d(restrict² x)）
+-- (MaxFiberTwoStep.lean:357-431)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-fiberMultiplicity-le-restrict-add"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.fiberMultiplicity_le_restrict_add"
+    phase := 74
     status := .formalized } ]
 
 end Omega.Audit

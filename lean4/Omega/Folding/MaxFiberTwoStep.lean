@@ -298,7 +298,136 @@ theorem Fold_eq_iff_weight_mod {m : Nat} (w w' : Word m) :
     have hsv : stableValue (Fold w) = stableValue (Fold w') := by
       rw [stableValue_Fold_mod w, stableValue_Fold_mod w', h]
     exact X.stableValueFin_injective m (by simp [X.stableValueFin, hsv])
+-- ══════════════════════════════════════════════════════════════
+-- Fiber membership via weight congruence
+-- ══════════════════════════════════════════════════════════════
 
+/-- The fiber of x is exactly {w : weight w % F_{m+2} = stableValue x}. -/
+theorem mem_fiber_iff_weight_mod (x : X m) (w : Word m) :
+    w ∈ X.fiber x ↔ weight w % Nat.fib (m + 2) = stableValue x := by
+  rw [X.mem_fiber]
+  constructor
+  · -- (→) Fold w = x → weight w % F = stableValue x
+    intro h
+    rw [← h, stableValue_Fold_mod]
+  · -- (←) weight w % F = stableValue x → Fold w = x
+    intro h
+    -- stableValue x = weight x.1, and weight x.1 < fib(m+2), so stableValue x % F = stableValue x
+    have hlt : stableValue x < Nat.fib (m + 2) := stableValue_lt_fib x
+    have hmod_x : weight x.1 % Nat.fib (m + 2) = stableValue x :=
+      Nat.mod_eq_of_lt hlt
+    -- So weight w % F = weight x.1 % F
+    rw [← hmod_x] at h
+    -- By Fold_eq_iff_weight_mod: Fold w = Fold x.1
+    rw [← Fold_stable x]
+    exact (Fold_eq_iff_weight_mod w x.1).mpr h
 
+-- ══════════════════════════════════════════════════════════════
+-- fiberMultiplicity as weight congruence count
+-- ══════════════════════════════════════════════════════════════
+
+/-- fiberMultiplicity x = #{w : weight w % F_{m+2} = stableValue x}. -/
+theorem fiberMultiplicity_eq_weight_congr_count (x : X m) :
+    X.fiberMultiplicity x =
+    (Finset.univ.filter (fun w : Word m =>
+      weight w % Nat.fib (m + 2) = stableValue x)).card := by
+  unfold X.fiberMultiplicity
+  congr 1; ext w
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact mem_fiber_iff_weight_mod x w
+
+-- ══════════════════════════════════════════════════════════════
+-- Pointwise fiber recurrence: d_{m+2}(x) ≤ d_{m+1}(restrict x) + d_m(restrict² x)
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight of a word with last bit true decomposes into double-truncate + mid-bit + last-fib. -/
+private theorem weight_expand' {m : Nat} (w : Word (m + 2)) (hLast : w ⟨m + 1, by omega⟩ = true) :
+    weight w = weight (truncate (truncate w)) +
+    (if w ⟨m, by omega⟩ = true then Nat.fib (m + 2) else 0) + Nat.fib (m + 3) := by
+  have h1 : weight w = weight (truncate w) + Nat.fib (m + 3) := by
+    rw [weight]; simp only [hLast, ↓reduceIte]
+  have h2 : weight (truncate w) = weight (truncate (truncate w)) +
+      (if (truncate w) ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0) := by
+    rw [weight]
+  have h3 : (truncate w) ⟨m, Nat.lt_succ_self m⟩ = w ⟨m, by omega⟩ := by
+    simp [truncate]
+  rw [h1, h2, h3]
+
+/-- Pointwise: d_{m+2}(x) ≤ d_{m+1}(restrict x) + d_m(restrict² x). -/
+theorem fiberMultiplicity_le_restrict_add (x : X (m + 2)) :
+    X.fiberMultiplicity x ≤
+    X.fiberMultiplicity (X.restrict x) + X.fiberMultiplicity (X.restrict (X.restrict x)) := by
+  classical
+  -- False-ending bound: #{w ∈ fiber(x) | w[m+1]=false} ≤ |fiber(restrict x)|
+  have hFalse : ((X.fiber x).filter (fun w => w ⟨m+1, by omega⟩ = false)).card ≤
+      (X.fiber (X.restrict x)).card :=
+    Finset.card_le_card_of_injOn truncate
+      (fun w hw => by
+        rw [Finset.mem_coe, Finset.mem_filter] at hw; rw [Finset.mem_coe, X.mem_fiber]
+        have hFold := X.mem_fiber.mp hw.1; have hLast := hw.2
+        rw [← X.snoc_truncate_last w] at hFold; rw [hLast] at hFold
+        rw [← restrict_Fold_snoc_false (truncate w)]; exact congrArg X.restrict hFold)
+      (fun w₁ hw₁ w₂ hw₂ hEq => by
+        rw [Finset.mem_coe, Finset.mem_filter] at hw₁ hw₂
+        rw [← X.snoc_truncate_last w₁, ← X.snoc_truncate_last w₂, hEq, hw₁.2, hw₂.2])
+  -- True-ending bound: #{w ∈ fiber(x) | w[m+1]=true} ≤ |fiber(restrict(restrict x))|
+  have hTrue : ((X.fiber x).filter (fun w => w ⟨m+1, by omega⟩ = true)).card ≤
+      (X.fiber (X.restrict (X.restrict x))).card :=
+    Finset.card_le_card_of_injOn (fun w => truncate (truncate w))
+      (fun w hw => by
+        rw [Finset.mem_coe, Finset.mem_filter] at hw; rw [Finset.mem_coe, X.mem_fiber]
+        have hFold := X.mem_fiber.mp hw.1; have hLast := hw.2
+        have hWT := X.weight_lt_fib (truncate (truncate w))
+        show Fold (truncate (truncate w)) = X.restrict (X.restrict x)
+        rw [← hFold]; simp only [Fold, restrict_ofNat]
+        rw [weight_expand' w hLast]
+        cases hMid : w ⟨m, by omega⟩
+        · simp only [Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
+          exact (X.ofNat_add_fib (m + 2) (le_refl _) _ hWT).symm
+        · simp only [↓reduceIte]
+          rw [show weight (truncate (truncate w)) + Nat.fib (m + 2) + Nat.fib (m + 3) =
+              weight (truncate (truncate w)) + (Nat.fib (m + 3) + Nat.fib (m + 2)) from by ring,
+              fib_add_succ (m + 1)]
+          exact (X.ofNat_add_fib (m + 3) (by omega) _
+            (Nat.lt_of_lt_of_le hWT (Nat.fib_mono (by omega)))).symm)
+      (fun w₁ hw₁ w₂ hw₂ hEq => by
+        rw [Finset.mem_coe, Finset.mem_filter] at hw₁ hw₂
+        have hL1 := hw₁.2; have hL2 := hw₂.2
+        have hWT := X.weight_lt_fib (truncate (truncate w₁))
+        have hMidEq : w₁ ⟨m, by omega⟩ = w₂ ⟨m, by omega⟩ := by
+          by_contra hne
+          have hFE : X.ofNat (m + 2) (weight w₁) = X.ofNat (m + 2) (weight w₂) := by
+            change Fold w₁ = Fold w₂
+            exact (X.mem_fiber.mp hw₁.1).trans (X.mem_fiber.mp hw₂.1).symm
+          have hWEq : weight (truncate (truncate w₁)) = weight (truncate (truncate w₂)) :=
+            congr_arg weight hEq
+          rw [weight_expand' w₁ hL1, weight_expand' w₂ hL2, hWEq] at hFE
+          cases h₁ : w₁ ⟨m, by omega⟩ <;> cases h₂ : w₂ ⟨m, by omega⟩
+          <;> simp only [h₁, h₂, Bool.false_eq_true, ↓reduceIte, Nat.add_zero] at hFE
+          · exact absurd (by rw [h₁, h₂]) hne
+          · exfalso
+            apply X.ofNat_ne_of_shift (weight (truncate (truncate w₂))) (hWEq ▸ hWT)
+            have hRec : Nat.fib (m + 3) + Nat.fib (m + 2) = Nat.fib (m + 4) :=
+              fib_add_succ (m + 1)
+            exact hFE.trans (congr_arg (X.ofNat (m + 2)) (by omega))
+          · exfalso
+            apply X.ofNat_ne_of_shift (weight (truncate (truncate w₂))) (hWEq ▸ hWT)
+            have hRec : Nat.fib (m + 3) + Nat.fib (m + 2) = Nat.fib (m + 4) :=
+              fib_add_succ (m + 1)
+            exact hFE.symm.trans (congr_arg (X.ofNat (m + 2)) (by omega))
+          · exact absurd (by rw [h₁, h₂]) hne
+        have hTrEq : truncate w₁ = truncate w₂ := by
+          rw [← X.snoc_truncate_last (truncate w₁), ← X.snoc_truncate_last (truncate w₂)]
+          exact congr_arg₂ snoc hEq hMidEq
+        rw [← X.snoc_truncate_last w₁, ← X.snoc_truncate_last w₂, hL1, hL2, hTrEq])
+  -- Combine
+  calc X.fiberMultiplicity x = (X.fiber x).card := rfl
+    _ = ((X.fiber x).filter (fun w => w ⟨m+1, by omega⟩ = false)).card +
+        ((X.fiber x).filter (fun w => w ⟨m+1, by omega⟩ = true)).card := by
+      rw [← Finset.card_union_of_disjoint (Finset.disjoint_filter.mpr fun w _ h1 h2 => by
+        rw [h1] at h2; exact Bool.false_ne_true h2)]
+      congr 1; ext w; simp only [Finset.mem_union, Finset.mem_filter]
+      exact ⟨fun h => by cases w ⟨m+1, by omega⟩ <;> simp_all, fun h => h.elim And.left And.left⟩
+    _ ≤ _ := Nat.add_le_add hFalse hTrue
 
 end Omega

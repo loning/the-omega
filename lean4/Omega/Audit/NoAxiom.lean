@@ -1776,6 +1776,10 @@ def coreAuditTargets : List String :=
   , "Omega.weight_eq_stableValue_add_hiddenBit"
   -- Phase 73: lem:pom-fold-congruence — Fold 等价 ↔ weight 模同余 (MaxFiberTwoStep.lean:278-300)
   , "Omega.stableValue_Fold_mod"
-  , "Omega.Fold_eq_iff_weight_mod" ]
+  , "Omega.Fold_eq_iff_weight_mod"
+  -- Phase 74: 纤维同余特征化 + pointwise 递推不等式 (MaxFiberTwoStep.lean:306-431)
+  , "Omega.mem_fiber_iff_weight_mod"
+  , "Omega.fiberMultiplicity_eq_weight_congr_count"
+  , "Omega.fiberMultiplicity_le_restrict_add" ]
 
 end Omega.Audit
