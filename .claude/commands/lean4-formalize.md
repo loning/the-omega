@@ -191,12 +191,35 @@ Agent(
    SendMessage(to = "registrar", message = {type: "shutdown_request"})
    ```
 
+### Phase 4.5：性能优化（每5轮触发）
+
+**触发条件**：`round_count % 5 == 0`（team lead 从启动起维护 round_count 计数器）
+
+- 不满足条件 → 跳过，直接进入 Phase 5
+- 满足条件 → spawn optimizer：
+
+```
+Agent(
+  name = "optimizer",
+  subagent_type = "lean4-optimizer",
+  team_name = "lean4-formalization",
+  description = "编译性能深度优化（按需）",
+  mode = "bypassPermissions",
+  prompt = "请对 lean4/ 项目执行深度 native_decide 缓存优化。
+  扫描 native_decide 数量 top 3 文件，提取可缓存项为 @[simp] 引理，
+  替换原 native_decide，lake build 验证通过后报告。"
+)
+```
+
+**停下来，等待 optimizer 回复。** 收到报告后 shutdown optimizer，进入 Phase 5。
+
 ### Phase 5：循环控制（永不停止）
 
 1. 输出本轮进度报告
-2. **永远回到 Phase 0+1**，发消息给 analyst 选取下一个目标
-3. **禁止建议暂停或关闭团队**——即使产出递减，也继续尝试更高难度的目标
-4. 如果连续 3 轮产出 ≤ 2 定理，team lead 应主动要求 analyst 选取中/高难度目标（而非继续低难度扫尾），并在 formalizer 遇到阻塞时积极 spawn codex-consultant
+2. `round_count += 1`
+3. **永远回到 Phase 0+1**，发消息给 analyst 选取下一个目标
+4. **禁止建议暂停或关闭团队**——即使产出递减，也继续尝试更高难度的目标
+5. 如果连续 3 轮产出 ≤ 2 定理，team lead 应主动要求 analyst 选取中/高难度目标（而非继续低难度扫尾），并在 formalizer 遇到阻塞时积极 spawn codex-consultant
 
 ### Phase 6：里程碑审查（每达到里程碑触发）
 
@@ -278,6 +301,7 @@ Agent(
 | analyst | lean4-analyst | **持久** | 团队启动时 spawn，全程保留上下文，跨轮复用 |
 | formalizer | lean4-formalizer | **持久** | 团队启动时 spawn，修复循环中复用上下文 |
 | reviewer | lean4-reviewer | 按需 | Phase 3 spawn，审核完 shutdown |
+| optimizer | lean4-optimizer | 按需（每5轮） | Phase 4.5 spawn，优化完 shutdown |
 | codex-reviewer | lean4-codex-reviewer | 按需（默认不启动） | 仅用户显式请求时 Phase 3 spawn |
 | codex-consultant | lean4-codex-consultant | 按需 | Phase 2 阻塞时 spawn，咨询完 shutdown |
 | registrar | lean4-registrar | 按需 | Phase 4 spawn，登记完 shutdown |
@@ -307,6 +331,7 @@ Agent(
 |------|------|
 | formalizer 失败 | SendMessage 给 analyst 选取下一目标 |
 | reviewer 反复失败（3轮） | shutdown reviewers，通知 formalizer 回退代码，跳过 |
+| optimizer 失败 | shutdown optimizer，跳过本轮优化，进入 Phase 5（优化失败不阻断主流程） |
 | registrar 失败 | shutdown registrar，检查 git 状态，重新 spawn registrar |
 | teammate 异常/无响应 | shutdown 该 teammate，重新 spawn（持久角色需重建上下文） |
 
