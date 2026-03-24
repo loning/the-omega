@@ -1241,6 +1241,21 @@ def coreAuditTargets : List String :=
   , "Omega.jones_index_lower_six"
   , "Omega.window6_information_certificate"
   , "Omega.tqft_triple_six"
-  , "Omega.collision_ratio_bounds_six" ]
+  , "Omega.collision_ratio_bounds_six"
+  -- Round 28: 结论章节深化 (Phase 33)
+  -- thm:conclusion-window6-hidden-reflection-invariant-polynomial-ring
+  -- cor:conclusion-window6-reflection-discriminant-degree-poincare
+  -- prop:conclusion-watatani-handle-identity-trace-moment
+  -- cor:conclusion-sector-resolved-collision-moments-by-genus
+  , "Omega.invariant_ring_generator_count"
+  , "Omega.invariant_ring_from_histogram"
+  , "Omega.poincare_A2_coeffs"
+  , "Omega.poincare_A3_coeffs"
+  , "Omega.total_free_generators_eq_hidden_dim"
+  , "Omega.sector_sum_six_q3"
+  , "Omega.cauchy_schwarz_gap_six"
+  , "Omega.tqft_genus_values_six"
+  , "Omega.weyl_orders"
+  , "Omega.gauge_group_order_factored" ]
 
 end Omega.Audit

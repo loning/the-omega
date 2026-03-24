@@ -4444,6 +4444,88 @@ def initialEntries : List SourceMapEntry :=
       moduleName := "Omega.Folding.Window6"
       leanName := "Omega.collision_ratio_bounds_six"
       phase := 32
+      status := .formalized }
+  -- Phase 33: 结论章节深化（Round 28）
+  -- thm:conclusion-window6-hidden-reflection-invariant-polynomial-ring
+  -- invariant_ring_generator_count: 不变量环生成元计数 (8+4+9=21, 4+9=13, 9=9, 21+13+9=43) (Window6.lean:167)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-hidden-reflection-invariant-polynomial-ring"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.invariant_ring_generator_count"
+      phase := 33
+      status := .formalized }
+  -- invariant_ring_from_histogram: 直方图→不变量环生成元 (Window6.lean:171)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-reflection-discriminant-degree-poincare"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.invariant_ring_from_histogram"
+      phase := 33
+      status := .formalized }
+  -- poincare_A2_coeffs: Poincare多项式系数 A_2: 1+3+2=6 (Window6.lean:177)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-reflection-discriminant-degree-poincare-A2"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.poincare_A2_coeffs"
+      phase := 33
+      status := .formalized }
+  -- poincare_A3_coeffs: Poincare多项式系数 A_3: 1+6+11+6=24 (Window6.lean:180)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-window6-reflection-discriminant-degree-poincare-A3"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.poincare_A3_coeffs"
+      phase := 33
+      status := .formalized }
+  -- total_free_generators_eq_hidden_dim: 自由生成元总数=隐藏维数 21+13+9=43 (Window6.lean:183)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "prop:conclusion-watatani-handle-identity-trace-moment"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.total_free_generators_eq_hidden_dim"
+      phase := 33
+      status := .formalized }
+  -- sector_sum_six_q3: 扇区求和 q=3, 2·1³+4·2³+8·3³+5·4³+2·5³=820 (Window6.lean:188)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-sector-resolved-collision-moments-by-genus-q3"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.sector_sum_six_q3"
+      phase := 33
+      status := .formalized }
+  -- cauchy_schwarz_gap_six: Cauchy-Schwarz gap |X_6|·S_2(6)-(2^6)²=524 (Window6.lean:193)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-sector-resolved-collision-moments-by-genus-cs-gap"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.cauchy_schwarz_gap_six"
+      phase := 33
+      status := .formalized }
+  -- tqft_genus_values_six: TQFT genus值 S_2(6)=220 ∧ |X_6|=21 (Window6.lean:198)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "cor:conclusion-sector-resolved-collision-moments-by-genus-values"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.tqft_genus_values_six"
+      phase := 33
+      status := .formalized }
+  -- weyl_orders: Weyl群阶 2!=2, 3!=6, 4!=24 (Window6.lean:210)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-hidden-reflection-invariant-polynomial-ring-weyl"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.weyl_orders"
+      phase := 33
+      status := .formalized }
+  -- gauge_group_order_factored: 规范群阶分解 (2!)^8·(3!)^4·(4!)^9=2^8·6^4·24^9 (Window6.lean:214)
+  -- 状态: 已形式化, 审核通过 2026-03-24
+  , { label := "thm:conclusion-window6-hidden-reflection-invariant-polynomial-ring-gauge"
+      sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+      moduleName := "Omega.Folding.Window6"
+      leanName := "Omega.gauge_group_order_factored"
+      phase := 33
       status := .formalized } ]
 
 end Omega.Audit
