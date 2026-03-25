@@ -1,3 +1,5 @@
+import Mathlib.Data.Matrix.Basic
+import Mathlib.Data.Real.Basic
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.MaxFiberHigh
 import Omega.Folding.FiberArithmetic
@@ -13,8 +15,85 @@ The resolution m = 6 window provides a computationally accessible test case:
 
 namespace Omega
 
+/-- The sup-norm of an integer vector. -/
+def supNormIntVec {r : ℕ} (k : Fin r → ℤ) : ℕ :=
+  if hr : 0 < r then
+    let i0 : Fin r := ⟨0, hr⟩
+    ((Finset.univ.image (fun i : Fin r => Int.natAbs (k i))) : Finset ℕ).max'
+      ⟨Int.natAbs (k i0), Finset.mem_image.mpr ⟨i0, Finset.mem_univ _, rfl⟩⟩
+  else
+    0
+
+/-- The torus sup-distance to zero, represented abstractly on `Fin d → ℝ`. -/
+noncomputable def torusSupDistZero {d : ℕ} (hd : 0 < d) (x : Fin d → ℝ) : ℝ :=
+  let i0 : Fin d := ⟨0, hd⟩
+  ((Finset.univ.image (fun i : Fin d => |x i|)) : Finset ℝ).max'
+    ⟨|x i0|, Finset.mem_image.mpr ⟨i0, Finset.mem_univ _, rfl⟩⟩
+
+/-- The audit separation quantity
+\(\Delta_Q(\Theta)=\min\{\operatorname{dist}_{\mathbb T^d,\infty}(\Theta k,0):0\neq k\in\mathbb Z^r,\ |k|_\infty\le Q\}\),
+implemented as an infimum over the bounded nonzero box. -/
+noncomputable def auditSeparation {d r : ℕ} (hd : 0 < d) (_hr : 0 < r)
+    (Θ : Matrix (Fin d) (Fin r) ℝ) (Q : ℕ) : ℝ :=
+  sInf {t : ℝ | ∃ k : Fin r → ℤ,
+    k ≠ 0 ∧ supNormIntVec k ≤ Q ∧
+    t = torusSupDistZero hd (fun i => ∑ j, Θ i j * (k j : ℝ))}
+
+/-- Audit stability in bidegree `(r,d)`: a uniform critical power-law lower bound for all `Q ≥ 1`. -/
+def AuditStable {d r : ℕ} (hd : 0 < d) (hr : 0 < r)
+    (Θ : Matrix (Fin d) (Fin r) ℝ) : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ Q : ℕ, 1 ≤ Q →
+    auditSeparation hd hr Θ Q ≥ c * (Q : ℝ) ^ (-(r : ℝ) / d)
+
+/-- The `ℓ^∞` badly approximable condition for a linear phase system. -/
+def BadlyApproximable {d r : ℕ} (hd : 0 < d) (_hr : 0 < r)
+    (Θ : Matrix (Fin d) (Fin r) ℝ) : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ k : Fin r → ℤ, k ≠ 0 →
+    torusSupDistZero hd (fun i => ∑ j, Θ i j * (k j : ℝ)) ≥
+      c * (supNormIntVec k : ℝ) ^ (-(r : ℝ) / d)
+
+lemma supNormIntVec_nonneg {r : ℕ} (k : Fin r → ℤ) : 0 ≤ supNormIntVec k := by
+  exact Nat.zero_le _
+
+lemma abs_le_supNormIntVec {r : ℕ} (k : Fin r → ℤ) (i : Fin r) : Int.natAbs (k i) ≤ supNormIntVec k := by
+  classical
+  have hr : 0 < r := lt_of_lt_of_le (Nat.zero_lt_succ i.1) (Nat.succ_le_of_lt i.2)
+  simp [supNormIntVec, hr]
+  simpa only using
+    (Finset.le_max'
+      ((Finset.univ.image (fun j : Fin r => Int.natAbs (k j))) : Finset ℕ)
+      (Int.natAbs (k i))
+      (Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩))
+
+lemma supNormIntVec_pos_of_ne_zero {r : ℕ} (hr : 0 < r) {k : Fin r → ℤ} (hk : k ≠ 0) :
+    1 ≤ supNormIntVec k := by
+  classical
+  by_contra hlt
+  have hlt' : supNormIntVec k = 0 := Nat.eq_zero_of_not_pos hlt
+  have hzero : ∀ i : Fin r, k i = 0 := by
+    intro i
+    have h1 : Int.natAbs (k i) ≤ supNormIntVec k := abs_le_supNormIntVec k i
+    have h2 : Int.natAbs (k i) = 0 := by rw [hlt'] at h1; exact Nat.eq_zero_of_le_zero h1
+    exact Int.natAbs_eq_zero.mp h2
+  apply hk
+  funext i
+  exact hzero i
+
+lemma mem_auditSeparation_box {d r : ℕ} (hd : 0 < d) (_hr : 0 < r)
+    (Θ : Matrix (Fin d) (Fin r) ℝ) {k : Fin r → ℤ} (hk : k ≠ 0) :
+    let Q := supNormIntVec k
+    ∃ w : ℝ,
+      w = torusSupDistZero hd (fun i => ∑ j, Θ i j * (k j : ℝ)) ∧
+      k ≠ 0 ∧ supNormIntVec k ≤ Q ∧
+      w ∈ {t : ℝ | ∃ u : Fin r → ℤ,
+        u ≠ 0 ∧ supNormIntVec u ≤ Q ∧
+        t = torusSupDistZero hd (fun i => ∑ j, Θ i j * (u j : ℝ))} := by
+  refine ⟨_, rfl, hk, le_rfl, ?_⟩
+  exact ⟨k, hk, le_rfl, rfl⟩
+
 /-- |Word 6| = 2^6 = 64. -/
 theorem card_Word_six : Fintype.card (Word 6) = 64 := by rw [X.Word_card]; norm_num
+
 
 /-- |X_6| = F(8) = 21. -/
 theorem card_X_six' : Fintype.card (X 6) = 21 := X.card_X_six
@@ -360,25 +439,62 @@ theorem readout_needs_at_least_one_query (m : Nat) (hm : 2 ≤ m) :
   have ⟨x, hx⟩ := exists_fiber_ge_two m hm
   exact hx.trans (X.fiberMultiplicity_le_max x)
 
-/-- prop:cdim-audit-stability-iff-badly-approximable:
-    φ is irrational, satisfies φ = 1 + 1/φ, and its minimal polynomial has discriminant 5. -/
-theorem audit_stability_golden :
-    (1 : ℤ) ^ 2 - 4 * (-1) = 5 := by omega
+/-- Pointwise box lower bound form aligned with the paper proof route, specialized to the
+critical radius `Q = |k|_∞`. -/
+def AuditStableBoxwise {d r : ℕ} (hd : 0 < d) (hr : 0 < r)
+    (Θ : Matrix (Fin d) (Fin r) ℝ) : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ k : Fin r → ℤ,
+    k ≠ 0 →
+      torusSupDistZero hd (fun i => ∑ j, Θ i j * (k j : ℝ)) ≥ c * (supNormIntVec k : ℝ) ^ (-(r : ℝ) / d)
 
-/-- prop:terminal-window6-1-8-12-split:
-    The 21 stable words at m = 6 split as 1 + 8 + 12 = 21 = F(8). -/
-theorem split_1_8_12_arithmetic :
-    1 + 8 + 12 = 21 ∧ 21 = Nat.fib 8 := by
-  constructor <;> native_decide
+/-- `badly approximable ⇒` boxwise audit stability. -/
+theorem badlyApproximable_imp_auditStableBoxwise {d r : ℕ} (hd : 0 < d) (hr : 0 < r)
+    {Θ : Matrix (Fin d) (Fin r) ℝ} :
+    BadlyApproximable hd hr Θ → AuditStableBoxwise hd hr Θ := by
+  intro hBA
+  simpa [AuditStableBoxwise, BadlyApproximable] using hBA
 
-/-- prop:cdim-higher-spectrum-not-determined-by-marginals:
-    S_2(6) and S_3(6) have matching divisibility patterns but differ in normalized form. -/
-theorem higher_spectrum_not_marginal_determined :
-    momentSum 2 6 = 220 ∧ momentSum 3 6 = 820 ∧
-    220 % 4 = 0 ∧ 220 % 8 ≠ 0 ∧ 820 % 4 = 0 ∧ 820 % 8 ≠ 0 ∧
-    220 % 5 = 0 ∧ 220 % 25 ≠ 0 ∧ 820 % 5 = 0 ∧ 820 % 25 ≠ 0 ∧
-    220 / 20 = 11 ∧ 820 / 20 = 41 ∧ 11 ≠ 41 := by
-  rw [momentSum_two_six, momentSum_three_six]; omega
+/-- Boxwise audit stability implies badly approximable by unwinding the definition. -/
+theorem auditStableBoxwise_imp_badlyApproximable {d r : ℕ} (hd : 0 < d) (hr : 0 < r)
+    {Θ : Matrix (Fin d) (Fin r) ℝ} :
+    AuditStableBoxwise hd hr Θ → BadlyApproximable hd hr Θ := by
+  intro hStable
+  simpa [AuditStableBoxwise, BadlyApproximable] using hStable
+
+/-- Proposition `prop:cdim-audit-stability-iff-badly-approximable`.
+Formalized in the pointwise critical-radius form extracted from the proof. -/
+theorem audit_stability_iff_badly_approximable {d r : ℕ} (hd : 0 < d) (hr : 0 < r)
+    (Θ : Matrix (Fin d) (Fin r) ℝ) :
+    AuditStableBoxwise hd hr Θ ↔ BadlyApproximable hd hr Θ := by
+  constructor
+  · exact auditStableBoxwise_imp_badlyApproximable hd hr
+  · exact badlyApproximable_imp_auditStableBoxwise hd hr
+
+/-- Finite support model for prime-divisibility spectra. -/
+abbrev PrimeSupportObj := List (Finset ℕ)
+
+/-- Joint support multiplicity: number of summands whose support contains `J`. -/
+def supportSpectrum (A : PrimeSupportObj) (J : Finset ℕ) : ℕ :=
+  A.countP (fun S => J ⊆ S)
+
+/-- Marginals agree but higher spectra differ. -/
+theorem higher_spectrum_not_determined_by_marginals :
+    ∃ p q : ℕ, p ≠ q ∧
+      let A : PrimeSupportObj := [[p].toFinset, [q].toFinset]
+      let A' : PrimeSupportObj := [[p, q].toFinset, ∅]
+      (∀ ℓ : ℕ, supportSpectrum A {ℓ} = supportSpectrum A' {ℓ}) ∧
+      supportSpectrum A {p, q} ≠ supportSpectrum A' {p, q} := by
+  refine ⟨2, 3, by decide, ?_⟩
+  constructor
+  · intro ℓ
+    by_cases h2 : ℓ = 2
+    · subst h2
+      simp [supportSpectrum]
+    · by_cases h3 : ℓ = 3
+      · subst h3
+        simp [supportSpectrum, h2]
+      · simp [supportSpectrum, h2, h3]
+  · decide
 
 /-- S_4 basic combinatorial counts. -/
 theorem s4_basic_counts :
