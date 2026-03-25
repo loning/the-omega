@@ -260,4 +260,82 @@ theorem momentSum_two_succ_excess (m : Nat) (hm : 2 ≤ m) :
   simp only [show k + 2 - 2 = k from by omega, show k + 2 - 1 = k + 1 from by omega]
   exact momentSum_two_recurrence k
 
+-- ══════════════════════════════════════════════════════════════
+-- S_2 divisibility
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m) is odd iff m = 0. -/
+theorem momentSum_two_odd_iff (m : Nat) :
+    ¬ (2 ∣ momentSum 2 m) ↔ m = 0 := by
+  constructor
+  · intro h; by_contra hne; exact h (momentSum_two_even m (Nat.pos_of_ne_zero hne))
+  · intro h; rw [h, momentSum_two_zero]; omega
+
+/-- 4 ∣ S_2(m) for m ≥ 4. -/
+theorem momentSum_two_mod_four (m : Nat) (hm : 4 ≤ m) : 4 ∣ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 | 2 | 3 => omega
+    | 4 => exact ⟨9, by rw [momentSum_two_four]⟩
+    | 5 => exact ⟨22, by rw [momentSum_two_five]⟩
+    | 6 => exact ⟨55, by rw [momentSum_two_six]⟩
+    | m + 7 =>
+      have hrec := momentSum_two_recurrence (m + 4)
+      have h4 := ih (m + 4) (by omega) (by omega)
+      have h5 := ih (m + 5) (by omega) (by omega)
+      have h6 := ih (m + 6) (by omega) (by omega)
+      -- S(m+7) + 2S(m+4) = 2S(m+6) + 2S(m+5)
+      -- 4|S(m+4), 4|S(m+5), 4|S(m+6)
+      -- So 4 | (2S(m+6) + 2S(m+5) - 2S(m+4)) = S(m+7)
+      obtain ⟨a, ha⟩ := h4; obtain ⟨b, hb⟩ := h5; obtain ⟨c, hc⟩ := h6
+      -- S(m+7) + 8a = 8c + 8b, so S(m+7) = 8(c+b) - 8a = 4·(2(c+b) - 2a)
+      -- Need: 4 | S(m+7), i.e., ∃ k, S(m+7) = 4k
+      -- S(m+7) + 8a = 8c + 8b → S(m+7) = 8c + 8b - 8a
+      -- Since a ≤ b (from monotonicity S(m+4) ≤ S(m+5)), 8a ≤ 8b ≤ 8b + 8c
+      suffices h : momentSum 2 (m + 7) + 4 * (2 * a) = 4 * (2 * c + 2 * b) by
+        exact ⟨2 * c + 2 * b - 2 * a, by omega⟩
+      linarith
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 vs E00 comparison
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00(m) ≤ S_2(m) for m ≥ 1. -/
+theorem momentSum_two_ge_exactWeightCollision (m : Nat) (hm : 1 ≤ m) :
+    exactWeightCollision m ≤ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => omega
+    | 1 =>
+      rw [exactWeightCollision_eq_sum, momentSum_two_one]
+      simp [Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty, momentSum_two_zero]
+    | 2 =>
+      have he := exactWeightCollision_eq_sum 2
+      simp [Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty,
+        momentSum_two_zero, momentSum_two_one] at he
+      rw [momentSum_two_two]; omega
+    | m + 3 =>
+      have hes := exactWeightCollision_succ (m + 2)
+      have hge := momentSum_two_succ_ge_double (m + 2) (by omega)
+      have him := ih (m + 2) (by omega) (by omega)
+      linarith
+
+/-- E00(m+1) ≥ 2·E00(m) for m ≥ 1. -/
+theorem exactWeightCollision_double (m : Nat) (hm : 1 ≤ m) :
+    2 * exactWeightCollision m ≤ exactWeightCollision (m + 1) := by
+  rw [exactWeightCollision_succ]
+  have := momentSum_two_ge_exactWeightCollision m hm
+  omega
+
+/-- E00(m) ≥ m for all m. -/
+theorem exactWeightCollision_ge_linear (m : Nat) : m ≤ exactWeightCollision m := by
+  induction m with
+  | zero => omega
+  | succ m ih =>
+    rw [exactWeightCollision_succ]
+    have := momentSum_pos' 2 m
+    omega
+
 end Omega

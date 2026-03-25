@@ -1863,6 +1863,12 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_succ_half"
   , "Omega.momentSum_two_succ_ge_double"
   , "Omega.momentSum_two_succ_le_quadruple"
-  , "Omega.momentSum_two_succ_excess" ]
+  , "Omega.momentSum_two_succ_excess"
+  -- Phase 89: S_2 整除性 + E00 比较 (MomentRecurrence.lean:263-341)
+  , "Omega.momentSum_two_odd_iff"
+  , "Omega.momentSum_two_mod_four"
+  , "Omega.momentSum_two_ge_exactWeightCollision"
+  , "Omega.exactWeightCollision_double"
+  , "Omega.exactWeightCollision_ge_linear" ]
 
 end Omega.Audit

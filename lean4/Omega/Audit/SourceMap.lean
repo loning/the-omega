@@ -7489,6 +7489,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.momentSum_two_succ_excess"
     phase := 88
+    status := .formalized }
+-- Phase 89: S_2 整除性 + E00 比较 (MomentRecurrence.lean:263-341)
+, { label := "thm:pom-s2-odd-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_odd_iff"
+    phase := 89
+    status := .formalized }
+, { label := "thm:pom-s2-mod-four"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_mod_four"
+    phase := 89
+    status := .formalized }
+, { label := "thm:pom-s2-ge-e00"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_ge_exactWeightCollision"
+    phase := 89
+    status := .formalized }
+, { label := "thm:pom-e00-double"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.exactWeightCollision_double"
+    phase := 89
+    status := .formalized }
+, { label := "thm:pom-e00-ge-linear"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.exactWeightCollision_ge_linear"
+    phase := 89
     status := .formalized } ]
 
 end Omega.Audit
