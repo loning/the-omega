@@ -271,4 +271,102 @@ theorem momentSum_three_ge_pow (m : Nat) : 2 ^ m ≤ momentSum 3 m :=
 theorem momentSum_three_ge_two (m : Nat) : momentSum 2 m ≤ momentSum 3 m :=
   momentSum_le_succ' 2 m
 
+-- ══════════════════════════════════════════════════════════════
+-- S_2 difference recurrence
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2 difference recurrence: Δ(m+2) = S_2(m+2) + 2·Δ(m)
+    where Δ(k) = S_2(k+1) - S_2(k). -/
+theorem momentSum_two_diff_recurrence (m : Nat) :
+    momentSum 2 (m + 3) - momentSum 2 (m + 2) =
+    momentSum 2 (m + 2) + 2 * (momentSum 2 (m + 1) - momentSum 2 m) := by
+  -- From recurrence: S(m+3) + 2S(m) = 2S(m+2) + 2S(m+1)
+  -- So S(m+3) - S(m+2) = S(m+2) + 2S(m+1) - 2S(m) - S(m+2)... wait
+  -- S(m+3) = 2S(m+2) + 2S(m+1) - 2S(m) [recurrence_sub]
+  -- S(m+3) - S(m+2) = S(m+2) + 2S(m+1) - 2S(m)
+  -- = S(m+2) + 2(S(m+1) - S(m))
+  have hrec := momentSum_two_recurrence m
+  have hmono := momentSum_two_mono' m
+  omega
+
+/-- S_2 difference sequence is strictly increasing for m ≥ 1. -/
+theorem momentSum_two_diff_strict_mono (m : Nat) (hm : 1 ≤ m) :
+    momentSum 2 (m + 1) - momentSum 2 m <
+    momentSum 2 (m + 2) - momentSum 2 (m + 1) := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => omega
+    | 1 => rw [momentSum_two_one, momentSum_two_two, momentSum_two_three]; omega
+    | m + 2 =>
+      -- Δ(m+3) = S(m+3) + 2·Δ(m+1) [diff_recurrence at m+1]
+      -- Δ(m+2) = S(m+2) + 2·Δ(m) [diff_recurrence at m]
+      -- Need: Δ(m+2) < Δ(m+3)
+      -- Δ(m+3) - Δ(m+2) = (S(m+3) + 2·Δ(m+1)) - (S(m+2) + 2·Δ(m))
+      --                   = (S(m+3) - S(m+2)) + 2·(Δ(m+1) - Δ(m))
+      -- Wait, that's circular. Let me use the recurrence directly.
+      -- Use the additive recurrence directly: S(m+3) + 2S(m) = 2S(m+2) + 2S(m+1)
+      have hrec := momentSum_two_recurrence m
+      have hrec1 := momentSum_two_recurrence (m + 1)
+      -- Monotonicity gives all S values are increasing
+      have hm0 := momentSum_two_mono' m
+      have hm1 := momentSum_two_mono' (m + 1)
+      have hm2 := momentSum_two_mono' (m + 2)
+      have hm3 := momentSum_two_mono' (m + 3)
+      -- IH: S(m+2)-S(m+1) > S(m+1)-S(m)
+      have hih := ih (m + 1) (by omega) (by omega)
+      -- S(m+3)-S(m+2) > S(m+2)-S(m+1)
+      -- From hrec1: S(m+4) + 2S(m+1) = 2S(m+3) + 2S(m+2)
+      -- S(m+4)-S(m+3) = S(m+3) + 2S(m+2) - 2S(m+1) - S(m+3) ... hmm, wrong index
+      -- Let me use hrec at m: S(m+3) + 2S(m) = 2S(m+2) + 2S(m+1)
+      -- S(m+3) - S(m+2) = S(m+2) + 2S(m+1) - 2S(m) - S(m+2)... no
+      -- S(m+3) = 2S(m+2) + 2S(m+1) - 2S(m) [from hrec]
+      -- S(m+3) - S(m+2) = S(m+2) + 2(S(m+1) - S(m))
+      -- S(m+2) - S(m+1) = S(m+1) + 2(S(m) - S(m-1))... by diff_recurrence at m-1
+      -- So S(m+3)-S(m+2) - (S(m+2)-S(m+1)) = S(m+2)-S(m+1) + 2(S(m+1)-S(m)) - 2(S(m)-S(m-1))
+      -- Hmm, this uses diff_recurrence at m-1 which we might not have for m+2 case.
+      -- Simpler: from the additive recurrence:
+      -- Need: S(m+3)-S(m+2) > S(m+2)-S(m+1)
+      -- hrec: S(m+3) = 2S(m+2) + 2S(m+1) - 2S(m)
+      -- So S(m+3)-S(m+2) = S(m+2) + 2S(m+1) - 2S(m) = S(m+2) + 2(S(m+1)-S(m))
+      -- And S(m+2)-S(m+1) is what we compare against.
+      -- Need: S(m+2) + 2(S(m+1)-S(m)) > S(m+2)-S(m+1)
+      -- i.e., 2(S(m+1)-S(m)) > -(S(m+1))
+      -- i.e., 2S(m+1)-2S(m) + S(m+1) > 0
+      -- i.e., 3S(m+1) > 2S(m), which follows from S(m+1) ≥ S(m) [mono].
+      -- Actually need: 3S(m+1) - 2S(m) > S(m+2) - S(m+1)... wait.
+      -- Let me redo. Need: S(m+2)+2(S(m+1)-S(m)) > S(m+2)-S(m+1)
+      -- ↔ 2S(m+1)-2S(m) > -S(m+1) ↔ 3S(m+1) > 2S(m)
+      -- True since S(m+1) ≥ S(m) implies 3S(m+1) ≥ 3S(m) > 2S(m). ✓
+      -- But omega has Nat subtraction issues. Let me restate without subtraction.
+      -- Need: S(m+2) + S(m+1) + S(m+3) > 2*S(m+2) + S(m+1)... hmm
+      -- Actually the goal IS about Nat subtraction:
+      -- S(m+2+1) - S(m+2) > S(m+2) - S(m+1+1)... let me just try linarith
+      -- Actually goal with show m+2 = m+2: S(m+3)-S(m+2) > S(m+2)-S(m+1)
+      -- i.e., S(m+3) + S(m+1) > 2*S(m+2) [equivalent without subtraction]
+      -- From hrec: S(m+3) + 2S(m) = 2S(m+2) + 2S(m+1)
+      -- So S(m+3) = 2S(m+2) + 2S(m+1) - 2S(m)
+      -- S(m+3) + S(m+1) = 2S(m+2) + 3S(m+1) - 2S(m) > 2S(m+2) [iff 3S(m+1) > 2S(m)]
+      -- 3S(m+1) > 2S(m): since S(m+1) ≥ S(m), 3S(m+1) ≥ 3S(m) > 2S(m). ✓
+      -- The goal after match m+2 is: S(m+3)-S(m+2) < S(m+4)-S(m+3)
+      -- Use recurrence at m+1: S(m+4) + 2S(m+1) = 2S(m+3) + 2S(m+2)
+      have hrec1 := momentSum_two_recurrence (m + 1)
+      have hmono_m1 := momentSum_two_mono' (m + 1)
+      have hmono_m2 := momentSum_two_mono' (m + 2)
+      have hmono_m3 := momentSum_two_mono' (m + 3)
+      have hpos := momentSum_two_pos' (m + 1)
+      -- Additive form: S(m+4) + S(m+2) > 2*S(m+3)
+      -- From hrec1: S(m+4) = 2S(m+3) + 2S(m+2) - 2S(m+1)
+      -- S(m+4) + S(m+2) = 2S(m+3) + 3S(m+2) - 2S(m+1) > 2S(m+3) iff 3S(m+2) > 2S(m+1)
+      have hkey : momentSum 2 (m + 4) + momentSum 2 (m + 2) > 2 * momentSum 2 (m + 3) := by
+        linarith
+      -- a - b < c - d when a + d < b + c and b ≤ a and d ≤ c
+      -- Here a = S(m+3), b = S(m+2), c = S(m+4), d = S(m+3)
+      -- a + d = 2S(m+3) < S(m+4) + S(m+2) = b + c [from hkey]
+      -- b ≤ a: S(m+2) ≤ S(m+3) [hmono_m2]
+      -- d ≤ c: S(m+3) ≤ S(m+4) [hmono_m3]
+      -- Convert: S(m+3)-S(m+2) < S(m+4)-S(m+3)
+      -- Cast to ℤ where subtraction works
+      zify [hmono_m2, hmono_m3]; linarith
+
 end Omega
