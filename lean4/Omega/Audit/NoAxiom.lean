@@ -1941,6 +1941,10 @@ def coreAuditTargets : List String :=
   , "Omega.weight_stable_eq_stableValue"
   , "Omega.ewc_stableValue_pos"
   , "Omega.fiberMultiplicity_one_imp_ewc_zero"
-  , "Omega.fiberMultiplicity_ge_ewc" ]
+  , "Omega.fiberMultiplicity_ge_ewc"
+  -- Phase 103: weight 满射与 ewc 正性 (Combinatorics/FibonacciCube.lean:165-203)
+  , "Omega.weight_surjective"
+  , "Omega.ewc_pos_of_le"
+  , "Omega.fiberMultiplicity_ge_two_of_sv_le" ]
 
 end Omega.Audit

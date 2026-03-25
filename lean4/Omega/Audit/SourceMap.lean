@@ -7887,6 +7887,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.fiberMultiplicity_ge_ewc"
     phase := 102
+    status := .formalized }
+-- Phase 103: weight 满射与 ewc 正性 (Combinatorics/FibonacciCube.lean:165-203)
+, { label := "thm:pom-weight-surjective"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.weight_surjective"
+    phase := 103
+    status := .formalized }
+, { label := "thm:pom-ewc-pos-of-le"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.ewc_pos_of_le"
+    phase := 103
+    status := .formalized }
+, { label := "thm:pom-fiberMultiplicity-ge-two-of-sv-le"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.fiberMultiplicity_ge_two_of_sv_le"
+    phase := 103
     status := .formalized } ]
 
 end Omega.Audit
