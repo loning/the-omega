@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~29,127 |
-| 定理/定义数 | ~2,276 |
+| 定理/定义数 | ~2,277 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**圆维度 Fibonacci–Poisson 半群分解（Round 118）**：fib_semigroup_factorization（Fibonacci 时间满足 $T_{F_{m+2}}=T_{F_{m+1}}\circ T_{F_m}=T_{F_m}\circ T_{F_{m+1}}$ 的双向因子分解）
+**圆维度 Fibonacci–Poisson 右端半群分解（Round 119）**：fib_semigroup_factorization_right（由左端分解与对易性推出右端分解）; fib_semigroup_factorization_right'（由加法半群律与逐对对易性独立推出右端分解）
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -126,15 +128,15 @@
 
 ### Lean4 形式化状态
 
-- **1,151 个论文标签已注册**到 SourceMap
-- ~2,276 个 Lean4 定理（含内部引理）
+- **1,154 个论文标签已注册**到 SourceMap
+- ~2,279 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1151/10,588 = **10.9%** |
+| 全局覆盖率 | 1154/10,588 = **10.9%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -149,12 +151,12 @@
 | Folding | 317 | ~83 | ~26% |
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~407 | ~26.7% |
-| 圆维度 | 342 | 50 | 14.6% |
+| 圆维度 | 342 | 53 | 15.5% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 66 | 3.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1151** | **10.9%** |
+| **总计** | **10,588** | **1154** | **10.9%** |
 
 ## 3. 未来工作：30 条具体计划
 
