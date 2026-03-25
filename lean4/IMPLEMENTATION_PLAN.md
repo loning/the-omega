@@ -65,6 +65,7 @@
 **Fibonacci 求和恒等式（Round 90，Phase 93）**：Core/Fib.lean（173→257 行）——fib_partial_sum（thm:fib-partial-sum：Σ_{k<n} F_{k+1} = F_{n+2}-1，归纳，step 由 Nat.fib_add_two + fib_succ_pos 两次 + omega）; fib_partial_sum_from_two（thm:fib-partial-sum-from-two：Σ_{k<n} F_{k+2} = F_{n+3}-2，归纳，step 由 fib_add_two(n+2) + 三次 fib_succ_pos + omega）; fib_sq_sum（thm:fib-sq-sum：Σ_{k<n} F_{k+1}² = F_n·F_{n+1}，归纳，step 由 fib_add_two + ring，F_n·F_{n+1}+F_{n+1}²=F_{n+1}·F_{n+2}）; fib_even_sum（thm:fib-even-sum：Σ_{k<n} F_{2(k+1)} = F_{2n+1}-1，归纳，step 由 fib_add_two(2n+1) + fib_succ_pos × 2 + omega）; fib_odd_sum（thm:fib-odd-sum：Σ_{k<n} F_{2k+1} = F_{2n}，归纳，step 由 fib_add_two(2n) + omega）——新生算术覆盖率 ~43% → ~46%（+5 条目）（Phase 93）
 **权重极值（Round 91，Phase 94）**：Folding/MomentRecurrence.lean（拓展至 513 行）——weight_allTrue（thm:pom-weight-allTrue：全1词权重 = F_{m+3}-2，归纳，step 由 fib_succ_succ' × 2 + fib_succ_pos × 2 + omega，化简 truncate(allTrue) = allTrue）; weight_le_allTrue（thm:pom-weight-le-allTrue：weight w ≤ F_{m+3}-2，rw weight_allTrue + 归纳，逐位判 false/true 两支 + omega）; Fold_allTrue（thm:pom-fold-allTrue：Fold(allTrue) = X.ofNat m (F_{m+3}-2)，由 unfold Fold + weight_allTrue 直接）; exactWeightCount_zero_eq_one'（thm:pom-ewc-zero-one：ewc(m,0)=1，card_eq_one + witness allFalse + 双向：weight w=0 → 强归纳逐位 false，allFalse → weight_allFalse）——POM 覆盖率 ~21.9% → ~22.2%（+4 条目）（Phase 94）
 **complement 对称性（Round 92，Phase 95）**：Folding/MomentRecurrence.lean（拓展至 569 行）——complement（def：位取反映射 w↦!w）; complement_involution（thm:pom-complement-involution：complement(complement w) = w，funext + simp）; truncate_complement（thm:pom-truncate-complement：truncate(complement w) = complement(truncate w)，funext + simp）; complement_allFalse（thm:pom-complement-allFalse：complement(allFalse) = allTrue，funext + simp）; weight_complement（thm:pom-weight-complement：weight(comp w) + weight(w) = F_{m+3}-2，rw weight_allTrue + 归纳 + truncate_complement + 逐位 cases + omega）; exactWeightCount_symmetric（thm:pom-ewc-symmetric：ewc(m,n) = ewc(m, F_{m+3}-2-n) for n≤F_{m+3}-2，card_bij complement + weight_complement + complement_involution）——POM 覆盖率 ~22.2% → ~22.5%（+5 条目）（Phase 95）
+**Fold complement 对偶 + Gauss 和（Round 93，Phase 96）**：Folding/MomentRecurrence.lean（拓展至 602 行）——weight_complement_sub（thm:pom-weight-complement-sub：weight(comp w) = F_{m+3}-2-weight(w)，由 weight_complement + weight_le_allTrue + omega 直接）; Fold_complement（thm:pom-fold-complement：Fold(comp w) = X.ofNat m (F_{m+3}-2-weight(w))，由 unfold Fold + weight_complement_sub）; stableValue_sum（thm:pom-stableValue-sum：Σ_{x:Xm} sv(x) = F_{m+2}·(F_{m+2}-1)/2，stableValueFin 双射 + sum_comp + Fin.sum_univ_eq_sum_range + Finset.sum_range_id，Gauss 公式）——POM 覆盖率 ~22.5% → ~22.7%（+3 条目）（Phase 96）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -128,7 +129,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1028/10,588 = **9.7%** |
+| 全局覆盖率 | 1031/10,588 = **9.7%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -142,7 +143,7 @@
 | 新生算术 | 151 | ~70 | ~46% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~344 | ~22.5% |
+| POM | 1,525 | ~347 | ~22.7% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |

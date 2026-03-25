@@ -7700,6 +7700,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.exactWeightCount_symmetric"
     phase := 95
+    status := .formalized }
+-- Phase 96: Fold complement 对偶 + Gauss 和 (MomentRecurrence.lean:569-602)
+, { label := "thm:pom-weight-complement-sub"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.weight_complement_sub"
+    phase := 96
+    status := .formalized }
+, { label := "thm:pom-fold-complement"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.Fold_complement"
+    phase := 96
+    status := .formalized }
+, { label := "thm:pom-stableValue-sum"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.stableValue_sum"
+    phase := 96
     status := .formalized } ]
 
 end Omega.Audit
