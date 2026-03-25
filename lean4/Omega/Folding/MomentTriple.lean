@@ -181,4 +181,49 @@ theorem momentSum_three_succ_three_term (m : Nat) :
   have h4 := tripleCollisionClass_swap23 m true false true    -- T101 = T110
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- E000 = exactWeightTriple (Σ ewc³)
+-- ══════════════════════════════════════════════════════════════
+
+/-- T(0,0,0) = Σ_n ewc(m,n)³: all three words share the same weight. -/
+theorem tripleCollisionClass_000_eq_ewcCube (m : Nat) :
+    (tripleCollisionClass m false false false).card = exactWeightTriple m := by
+  classical
+  unfold tripleCollisionClass
+  simp only [Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
+  -- Since weight < F_{m+3}, mod is identity
+  have hmod : ∀ v : Word m, weight v % Nat.fib (m + 3) = weight v :=
+    fun v => Nat.mod_eq_of_lt (X.weight_lt_fib v)
+  simp_rw [hmod]
+  unfold exactWeightTriple exactWeightCount
+  -- Now: |{(v1,v2,v3) : wt v1 = wt v2 ∧ wt v2 = wt v3}| = Σ_n ewc(n)³
+  -- ewc(n)³ = |{v1:wt=n}| · |{v2:wt=n}| · |{v3:wt=n}| = |{v1:wt=n} ×ˢ {v2:wt=n} ×ˢ {v3:wt=n}|
+  have hprod : ∀ n, (Finset.univ.filter (fun w : Word m => weight w = n)).card ^ 3 =
+      ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+       ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+        (Finset.univ.filter (fun w : Word m => weight w = n)))).card := by
+    intro n; rw [Finset.card_product, Finset.card_product]; ring
+  simp_rw [hprod]; symm
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨v1, v2, v3⟩
+    simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨n, _, h1, h2, h3⟩; exact ⟨h1 ▸ h2 ▸ rfl, h2 ▸ h3 ▸ rfl⟩
+    · intro ⟨h12, h23⟩
+      exact ⟨weight v1, X.weight_lt_fib v1, rfl, h12.symm, (h12.trans h23).symm⟩
+  · intro n _ n' _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    intro ⟨v1, _, _⟩ ⟨h1, _⟩ ⟨h2, _⟩; exact hne (h1.symm.trans h2)
+
+-- ══════════════════════════════════════════════════════════════
+-- E001 and E011 in ewc terms (definitions)
+-- ══════════════════════════════════════════════════════════════
+
+/-- Triple cross-correlation: Σ ewc(n)^a · ewc(n+d)^b. -/
+def tripleCorr (m d : Nat) (a b : Nat) : Nat :=
+  ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+    exactWeightCount m n ^ a * exactWeightCount m (n + d) ^ b
+
 end Omega
