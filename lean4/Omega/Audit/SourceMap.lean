@@ -8213,7 +8213,32 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.stableValue_eq_zeckRep_fib_sum"
     phase := 115
     status := .formalized }
--- Phase 116: Fibonacci radius Poisson identities (CircleDimension.lean:12-43)
+-- Phase 116: Fold 因式分解 + stableValue 零判定 + S_3 界 (FiberArithmeticProperties.lean:439-446, MomentTriple.lean:267-274)
+, { label := "prop:pom-fold-as-section"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.Fold_factorization"
+    phase := 116
+    status := .formalized }
+, { label := "thm:pom-max-fiber"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.stableValue_eq_zero_iff"
+    phase := 116
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_three_ge_pow"
+    phase := 116
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_three_ge_two"
+    phase := 116
+    status := .formalized }
+-- Phase 116b: Fibonacci radius Poisson identities (CircleDimension.lean:12-43)
 -- con:cdim-fibonacci-radius-time-conjugacy → fibRadius / poissonTimeOfRadius / poissonTimeOf_fibRadius /
 --   one_sub_sq_of_poissonTime_param / one_sub_fibRadius_sq / one_sub_sq_of_poissonTime_param_nat
 -- 状态: 已形式化, 审核通过 2026-03-26

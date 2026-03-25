@@ -2044,6 +2044,11 @@ def coreAuditTargets : List String :=
   , "Omega.crossCorrSqLow_eq_tripleCorr"
   -- Phase 115: zeckRep 单射 + stableValue-zeckRep 桥接 (FiberArithmetic.lean:479-485)
   , "Omega.zeckRep_injective"
-  , "Omega.stableValue_eq_zeckRep_fib_sum" ]
+  , "Omega.stableValue_eq_zeckRep_fib_sum"
+  -- Phase 116: Fold 因式分解 + stableValue 零判定 + S_3 界 (FiberArithmeticProperties.lean:439-446, MomentTriple.lean:267-274)
+  , "Omega.Fold_factorization"
+  , "Omega.stableValue_eq_zero_iff"
+  , "Omega.momentSum_three_ge_pow"
+  , "Omega.momentSum_three_ge_two" ]
 
 end Omega.Audit
