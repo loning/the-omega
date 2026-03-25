@@ -55,6 +55,7 @@ import Omega.Frontier.ConditionalSummary
 import Omega.Frontier.Conjectures
 import Omega.Frontier.Certificates
 import Omega.Combinatorics.PathIndSet
+import Omega.Combinatorics.FibonacciCube
 -- Audit files excluded from default build (large, no proof content)
 -- import Omega.Audit.SourceMap
 -- import Omega.Audit.Inventory
