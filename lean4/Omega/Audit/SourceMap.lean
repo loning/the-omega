@@ -7975,6 +7975,31 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.stableValue_Fold_snoc_true"
     phase := 106
+    status := .formalized }
+-- Phase 107: weight 分解 + fiber 包装 (Combinatorics/FibonacciCube.lean:203-243)
+, { label := "thm:pom-weight-truncate-add"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.weight_truncate_add"
+    phase := 107
+    status := .formalized }
+, { label := "thm:pom-weight-pos-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.weight_pos_iff"
+    phase := 107
+    status := .formalized }
+, { label := "thm:pom-Fold-of-stable"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.Fold_of_stable'"
+    phase := 107
+    status := .formalized }
+, { label := "thm:pom-fiber-self-mem"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.fiber_self_mem"
+    phase := 107
     status := .formalized } ]
 
 end Omega.Audit

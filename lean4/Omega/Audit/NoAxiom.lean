@@ -1959,6 +1959,11 @@ def coreAuditTargets : List String :=
   , "Omega.Fold_snoc_false_eq"
   , "Omega.Fold_snoc_true_eq"
   , "Omega.stableValue_Fold_snoc_false"
-  , "Omega.stableValue_Fold_snoc_true" ]
+  , "Omega.stableValue_Fold_snoc_true"
+  -- Phase 107: weight 分解 + fiber 包装 (Combinatorics/FibonacciCube.lean:203-243)
+  , "Omega.weight_truncate_add"
+  , "Omega.weight_pos_iff"
+  , "Omega.Fold_of_stable'"
+  , "Omega.fiber_self_mem" ]
 
 end Omega.Audit
