@@ -8408,6 +8408,13 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.momentSum_two_diff_strict_mono"
     phase := 120
+    status := .formalized }
+-- Phase 121: S_2 Fibonacci 增长下界 (MomentTriple.lean:373)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_fibonacci_growth"
+    phase := 121
     status := .formalized } ]
 
 end Omega.Audit

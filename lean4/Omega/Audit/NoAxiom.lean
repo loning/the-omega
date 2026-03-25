@@ -2074,6 +2074,8 @@ def coreAuditTargets : List String :=
   , "Omega.Fold_add_weight"
   -- Phase 120: S_2 差分递推 + 严格单调 (MomentTriple.lean:280-293)
   , "Omega.momentSum_two_diff_recurrence"
-  , "Omega.momentSum_two_diff_strict_mono" ]
+  , "Omega.momentSum_two_diff_strict_mono"
+  -- Phase 121: S_2 Fibonacci 增长下界 (MomentTriple.lean:373)
+  , "Omega.momentSum_two_fibonacci_growth" ]
 
 end Omega.Audit
