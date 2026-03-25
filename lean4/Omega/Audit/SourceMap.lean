@@ -8447,6 +8447,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.exactWeightCount_zero"
     phase := 123
+    status := .formalized }
+-- Phase 124: ewc 最大权重 + Lucas 平方 + Fold 补码模 (MomentTriple.lean:430/437, ShiftDynamics.lean:295)
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightCount_max"
+    phase := 124
+    status := .formalized }
+, { label := "bridge:lucas-fibonacci-square"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_sq"
+    phase := 124
+    status := .formalized }
+, { label := "lem:pom-fold-congruence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.Fold_complement_mod"
+    phase := 124
     status := .formalized } ]
 
 end Omega.Audit

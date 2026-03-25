@@ -2083,6 +2083,10 @@ def coreAuditTargets : List String :=
   -- Phase 123: Cauchy-Schwarz 矩 + Lucas 倍角 + ewc 零权重 (MomentTriple.lean:413/426, ShiftDynamics.lean:271)
   , "Omega.momentSum_cauchy_schwarz_general"
   , "Omega.lucasNum_double"
-  , "Omega.exactWeightCount_zero" ]
+  , "Omega.exactWeightCount_zero"
+  -- Phase 124: ewc 最大权重 + Lucas 平方 + Fold 补码模 (MomentTriple.lean:430/437, ShiftDynamics.lean:295)
+  , "Omega.exactWeightCount_max"
+  , "Omega.lucasNum_sq"
+  , "Omega.Fold_complement_mod" ]
 
 end Omega.Audit
