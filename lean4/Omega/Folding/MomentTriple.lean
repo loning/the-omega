@@ -614,4 +614,13 @@ theorem paper_s2_unique_three_state_certificate :
   ⟨momentSum_two_recurrence, momentSum_two_zero, momentSum_two_one, momentSum_two_two,
    @momentSum_two_determined⟩
 
+/-- Paper definition: S_2(m) = Σ d(x)². -/
+theorem paper_def_s2 (m : Nat) :
+    momentSum 2 m = ∑ x : X m, (X.fiberMultiplicity x) ^ 2 := rfl
+
+/-- Paper definition: S_3(m) = Σ d(x)³. -/
+theorem paper_def_s3 (m : Nat) :
+    momentSum 3 m = ∑ x : X m, (X.fiberMultiplicity x) ^ 3 := rfl
+
+
 end Omega

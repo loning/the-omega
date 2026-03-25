@@ -475,3 +475,9 @@ theorem paper_add_as_fold (w1 w2 : Word m) :
     stableAdd (Fold w1) (Fold w2) =
     X.ofNat m ((weight w1 + weight w2) % Nat.fib (m + 2)) :=
   Fold_add_weight w1 w2
+
+/-- Paper label: stableAdd has zero as identity. -/
+theorem paper_stable_add_no_null :
+    (∀ x : X m, stableAdd stableZero x = x) ∧
+    (∀ x : X m, stableAdd x stableZero = x) :=
+  ⟨stableAdd_zero_left, stableAdd_zero_right⟩
