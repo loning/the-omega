@@ -267,4 +267,28 @@ theorem lucasNum_cassini (n : Nat) (hn : 1 ≤ n) :
       push_cast; exact_mod_cast lucasNum_succ_succ k
     rw [hpow]; nlinarith
 
+/-- Lucas doubling: L(2n) = L(n)² - 2·(-1)^n for n ≥ 1. -/
+theorem lucasNum_double (n : Nat) (hn : 1 ≤ n) :
+    (lucasNum (2 * n) : ℤ) = (lucasNum n : ℤ) ^ 2 - 2 * (-1) ^ n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  rw [lucasNum_eq_fib (2 * (m + 1)) (by omega)]
+  rw [show 2 * (m + 1) - 1 = 2 * m + 1 from by omega]
+  rw [lucasNum_eq_fib (m + 1) (by omega)]
+  simp only [show m + 1 + 1 = m + 2 from by omega, show m + 1 - 1 = m from by omega]
+  rw [fib_double_plus_one (m + 1), fib_double_plus_one m]
+  -- Need Cassini: F(m+2)·F(m) - F(m+1)² = (-1)^(m+1)
+  suffices cassini : (Nat.fib (m + 2) : ℤ) * Nat.fib m - (Nat.fib (m + 1) : ℤ) ^ 2 = (-1) ^ (m + 1) by
+    push_cast; nlinarith
+  induction m with
+  | zero => native_decide
+  | succ k ih =>
+    have hrec1 : (Nat.fib (k + 3) : ℤ) = Nat.fib (k + 2) + Nat.fib (k + 1) := by
+      have := @Nat.fib_add_two (k + 1); push_cast; linarith
+    have hrec2 : (Nat.fib (k + 2) : ℤ) = Nat.fib (k + 1) + Nat.fib k := by
+      have := @Nat.fib_add_two k; push_cast; linarith
+    have hpow : ((-1 : ℤ) ^ (k + 2) : ℤ) = -((-1) ^ (k + 1)) := by ring
+    have ih' := ih (by omega)
+    rw [show k + 1 + 1 = k + 2 from by omega] at *
+    rw [hrec1, hpow]; nlinarith
+
 end Omega

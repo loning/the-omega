@@ -405,4 +405,25 @@ theorem momentSum_two_sq_le_card_mul_four (m : Nat) :
   convert this using 2 with x
   ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 123
+-- ══════════════════════════════════════════════════════════════
+
+/-- Generalized Cauchy-Schwarz: S_q(m)² ≤ F_{m+2} · S_{2q}(m). -/
+theorem momentSum_cauchy_schwarz_general (q m : Nat) :
+    momentSum q m ^ 2 ≤ Nat.fib (m + 2) * momentSum (2 * q) m := by
+  rw [← momentSum_zero]
+  simp only [momentSum, pow_zero, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one]
+  rw [← Finset.card_univ (α := X m)]
+  have : (∑ x : X m, X.fiberMultiplicity x ^ q) ^ 2 ≤
+      Finset.univ.card * ∑ x : X m, (X.fiberMultiplicity x ^ q) ^ 2 :=
+    sq_sum_le_card_mul_sum_sq
+  simp_rw [show ∀ x : X m, (X.fiberMultiplicity x ^ q) ^ 2 = X.fiberMultiplicity x ^ (2 * q) from
+    fun x => by rw [← pow_mul, Nat.mul_comm]] at this
+  exact this
+
+/-- ewc(m, 0) = 1 (public alias). -/
+theorem exactWeightCount_zero (m : Nat) : exactWeightCount m 0 = 1 :=
+  exactWeightCount_zero_eq_one' m
+
 end Omega
