@@ -8504,6 +8504,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.stableValue_max_achieved"
     phase := 126
+    status := .formalized }
+-- Phase 127: popcount ≤ weight + Fib 倍角 Lucas 乘积 (FibonacciCube.lean:435, ShiftDynamics.lean:356)
+, { label := "bridge:popcount-weight"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_le_weight"
+    phase := 127
+    status := .formalized }
+, { label := "bridge:fib-double-lucas"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.fib_double_eq_mul_lucas"
+    phase := 127
     status := .formalized } ]
 
 end Omega.Audit

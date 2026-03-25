@@ -2095,6 +2095,9 @@ def coreAuditTargets : List String :=
   -- Phase 126: Lucas-Fib 减法 + Fib 比率界 + stableValue 最大值存在 (ShiftDynamics.lean:345, Fib.lean:297, MomentTriple.lean:462)
   , "Omega.lucasNum_sub_fib"
   , "Omega.fib_succ_le_double"
-  , "Omega.stableValue_max_achieved" ]
+  , "Omega.stableValue_max_achieved"
+  -- Phase 127: popcount ≤ weight + Fib 倍角 Lucas 乘积 (FibonacciCube.lean:435, ShiftDynamics.lean:356)
+  , "Omega.popcount_le_weight"
+  , "Omega.fib_double_eq_mul_lucas" ]
 
 end Omega.Audit
