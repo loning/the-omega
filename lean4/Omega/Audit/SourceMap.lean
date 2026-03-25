@@ -7110,6 +7110,34 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.FiberWeightCount"
     leanName := "Omega.momentSum_two_eq_congr_sq_sum"
     phase := 78
+    status := .formalized }
+-- Phase 79: wcc 守恒 + S_2 末位4分裂 + 取消对称性 (FiberWeightCount.lean:414-546)
+-- prop:pom-moment-congruence-q → weightCongruenceCount_sum（Σ wcc(r) = 2^m，同余类划分守恒）
+-- (FiberWeightCount.lean:419)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-wcc-sum"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.weightCongruenceCount_sum"
+    phase := 79
+    status := .formalized }
+-- prop:pom-moment-congruence-q → momentSum_two_lastBit_split（S_2(m+1) = E(0,0)+E(0,1)+E(1,0)+E(1,1)）
+-- (FiberWeightCount.lean:440)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-lastbit-split"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.momentSum_two_lastBit_split"
+    phase := 79
+    status := .formalized }
+-- prop:pom-moment-congruence-q → collision_lastBit_cancel（E(1,1) = E(0,0)，末位取消）
+-- (FiberWeightCount.lean:532)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-collision-lastbit-cancel"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.collision_lastBit_cancel"
+    phase := 79
     status := .formalized } ]
 
 end Omega.Audit

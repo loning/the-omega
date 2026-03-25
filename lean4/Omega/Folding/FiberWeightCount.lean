@@ -1,5 +1,6 @@
 import Omega.Folding.MaxFiberTwoStep
 import Omega.Folding.MomentSum
+import Omega.Folding.CollisionZeta
 
 namespace Omega
 
@@ -409,5 +410,137 @@ theorem momentSum_two_eq_congr_sq_sum (m : Nat) :
       X.stableValueFin from by ext x; simp [X.stableValueFin]]
     exact hbij.sum_comp (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val ^ 2)
   rw [step, ← Fin.sum_univ_eq_sum_range]
+
+-- ══════════════════════════════════════════════════════════════
+-- wcc sum = 2^m (partition identity)
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight congruence classes partition Word m: Σ_r wcc(m,r) = 2^m. -/
+theorem weightCongruenceCount_sum (m : Nat) :
+    ∑ r ∈ Finset.range (Nat.fib (m + 2)), weightCongruenceCount m r = 2 ^ m := by
+  -- Σ_{x:X m} d(x) = 2^m
+  have h := X.fiberMultiplicity_sum_eq_pow m
+  -- d(x) = wcc(sv(x))
+  simp_rw [fiberMultiplicity_eq_wcc] at h
+  -- Reparametrize via stableValueFin bijection
+  have hbij := X.stableValueFin_bijective m
+  have step : ∑ x : X m, weightCongruenceCount m (stableValue x) =
+      ∑ r : Fin (Nat.fib (m + 2)), weightCongruenceCount m r.val := by
+    rw [show (fun x : X m => weightCongruenceCount m (stableValue x)) =
+      (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val) ∘
+      X.stableValueFin from by ext x; simp [X.stableValueFin]]
+    exact hbij.sum_comp (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val)
+  rw [step] at h; rw [← Fin.sum_univ_eq_sum_range]; exact h
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 last-bit split into 4 collision classes
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m+1) splits into 4 collision classes by last bits. -/
+theorem momentSum_two_lastBit_split (m : Nat) :
+    momentSum 2 (m + 1) =
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3))).card +
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) =
+      (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card +
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      (weight p.1 + Nat.fib (m + 2)) % Nat.fib (m + 3) =
+      weight p.2 % Nat.fib (m + 3))).card +
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      (weight p.1 + Nat.fib (m + 2)) % Nat.fib (m + 3) =
+      (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card := by
+  classical
+  rw [momentSum_two_eq_collision]
+  simp_rw [Fold_eq_iff_weight_mod]
+  rw [show Nat.fib ((m + 1) + 2) = Nat.fib (m + 3) from by ring_nf]
+  -- For each b1 b2 : Bool, the subset with last bits (b1,b2) bijects to the target via truncate
+  have key : ∀ b1 b2 : Bool,
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+        p.1 ⟨m, by omega⟩ = b1 ∧ p.2 ⟨m, by omega⟩ = b2)).card =
+      (Finset.univ.filter (fun p : Word m × Word m =>
+        (weight p.1 + if b1 then Nat.fib (m + 2) else 0) % Nat.fib (m + 3) =
+        (weight p.2 + if b2 then Nat.fib (m + 2) else 0) % Nat.fib (m + 3))).card := by
+    intro b1 b2
+    apply Finset.card_bij (fun (p : Word (m + 1) × Word (m + 1)) _ =>
+      (truncate p.1, truncate p.2))
+    · intro ⟨w1, w2⟩ hp
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+      rw [weight, hp.2.1, weight, hp.2.2] at hp; exact hp.1
+    · intro ⟨w1a, w2a⟩ ha ⟨w1b, w2b⟩ hb heq
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq] at ha hb heq ⊢
+      exact ⟨by rw [← X.snoc_truncate_last w1a, ← X.snoc_truncate_last w1b,
+                     heq.1, ha.2.1, hb.2.1],
+             by rw [← X.snoc_truncate_last w2a, ← X.snoc_truncate_last w2b,
+                     heq.2, ha.2.2, hb.2.2]⟩
+    · intro ⟨v1, v2⟩ hv
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+      exact ⟨(snoc v1 b1, snoc v2 b2),
+        ⟨by simp [weight_snoc]; exact hv, by simp, by simp⟩, by simp⟩
+  -- Partition and rewrite
+  have hdisj : ∀ b1 b2 b1' b2' : Bool, (b1, b2) ≠ (b1', b2') →
+      Disjoint
+        (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+          weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+          p.1 ⟨m, by omega⟩ = b1 ∧ p.2 ⟨m, by omega⟩ = b2))
+        (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+          weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+          p.1 ⟨m, by omega⟩ = b1' ∧ p.2 ⟨m, by omega⟩ = b2')) := by
+    intro b1 b2 b1' b2' hne
+    apply Finset.disjoint_filter.mpr
+    intro ⟨w1, w2⟩ _ ⟨_, hb1, hb2⟩ ⟨_, hb1', hb2'⟩
+    exact hne (Prod.ext (hb1.symm.trans hb1') (hb2.symm.trans hb2'))
+  have hunion : Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+      weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3)) =
+      Finset.univ.filter (fun p => weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+        p.1 ⟨m, by omega⟩ = false ∧ p.2 ⟨m, by omega⟩ = false) ∪
+      Finset.univ.filter (fun p => weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+        p.1 ⟨m, by omega⟩ = false ∧ p.2 ⟨m, by omega⟩ = true) ∪
+      Finset.univ.filter (fun p => weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+        p.1 ⟨m, by omega⟩ = true ∧ p.2 ⟨m, by omega⟩ = false) ∪
+      Finset.univ.filter (fun p => weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3) ∧
+        p.1 ⟨m, by omega⟩ = true ∧ p.2 ⟨m, by omega⟩ = true) := by
+    ext ⟨w1, w2⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+    constructor
+    · intro h
+      rcases Bool.eq_false_or_eq_true (w1 ⟨m, by omega⟩) with h1 | h1 <;>
+        rcases Bool.eq_false_or_eq_true (w2 ⟨m, by omega⟩) with h2 | h2 <;>
+        simp [h, h1, h2]
+    · rintro (((⟨h, _, _⟩ | ⟨h, _, _⟩) | ⟨h, _, _⟩) | ⟨h, _, _⟩) <;> exact h
+  rw [hunion]
+  -- Compute card of the 4-union using disjointness
+  have dAB := hdisj false false false true (by decide)
+  have dAC := hdisj false false true false (by decide)
+  have dAD := hdisj false false true true (by decide)
+  have dBC := hdisj false true true false (by decide)
+  have dBD := hdisj false true true true (by decide)
+  have dCD := hdisj true false true true (by decide)
+  simp only [Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr
+    ⟨Finset.disjoint_union_left.mpr ⟨dAD, dBD⟩, dCD⟩),
+    Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr ⟨dAC, dBC⟩),
+    Finset.card_union_of_disjoint dAB]
+  rw [key false false, key false true, key true false, key true true]
+  simp only [Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
+
+-- ══════════════════════════════════════════════════════════════
+-- E(1,1) = E(0,0): matching last bits cancel
+-- ══════════════════════════════════════════════════════════════
+
+/-- When both last bits match, the F_{m+2} terms cancel mod F_{m+3}. -/
+theorem collision_lastBit_cancel (m : Nat) :
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      (weight p.1 + Nat.fib (m + 2)) % Nat.fib (m + 3) =
+      (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card =
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3))).card := by
+  congr 1; ext ⟨v1, v2⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  -- (a + c) % n = (b + c) % n ↔ a % n = b % n
+  -- Use Nat.ModEq machinery
+  show Nat.ModEq (Nat.fib (m + 3)) (weight v1 + Nat.fib (m + 2)) (weight v2 + Nat.fib (m + 2)) ↔
+       Nat.ModEq (Nat.fib (m + 3)) (weight v1) (weight v2)
+  exact ⟨Nat.ModEq.add_right_cancel' _, fun h => h.add_right _⟩
 
 end Omega

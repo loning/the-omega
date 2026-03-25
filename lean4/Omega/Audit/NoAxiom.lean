@@ -1799,6 +1799,10 @@ def coreAuditTargets : List String :=
   -- Phase 78: weightCongruenceCount + S_2 同余矩表达 (FiberWeightCount.lean:346-413)
   , "Omega.weightCongruenceCount_eq_sum_ewc"
   , "Omega.fiberMultiplicity_eq_wcc"
-  , "Omega.momentSum_two_eq_congr_sq_sum" ]
+  , "Omega.momentSum_two_eq_congr_sq_sum"
+  -- Phase 79: wcc 守恒 + S_2 末位4分裂 + 取消对称性 (FiberWeightCount.lean:414-546)
+  , "Omega.weightCongruenceCount_sum"
+  , "Omega.momentSum_two_lastBit_split"
+  , "Omega.collision_lastBit_cancel" ]
 
 end Omega.Audit
