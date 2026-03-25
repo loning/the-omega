@@ -8050,6 +8050,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.momentSum_two_ge_maxFiber_sq"
     phase := 109
+    status := .formalized }
+-- Phase 110: S_2 三重界 + snoc 嵌入 + mod 8 整除性 (Folding/MomentBounds.lean:10-78)
+, { label := "thm:pom-momentSum-two-succ-le-triple"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_two_succ_le_triple"
+    phase := 110
+    status := .formalized }
+, { label := "thm:pom-fiberMultiplicity-ge-ewc-via-snoc"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.fiberMultiplicity_ge_ewc_via_snoc"
+    phase := 110
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-mod-eight"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_two_mod_eight"
+    phase := 110
     status := .formalized } ]
 
 end Omega.Audit

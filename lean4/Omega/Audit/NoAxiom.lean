@@ -1974,6 +1974,10 @@ def coreAuditTargets : List String :=
   , "Omega.maxFiberMultiplicity_ge_two"
   , "Omega.maxFiberMultiplicity_bounds"
   , "Omega.maxFiberMultiplicity_unbounded"
-  , "Omega.momentSum_two_ge_maxFiber_sq" ]
+  , "Omega.momentSum_two_ge_maxFiber_sq"
+  -- Phase 110: S_2 三重界 + snoc 嵌入 + mod 8 整除性 (Folding/MomentBounds.lean:10-78)
+  , "Omega.momentSum_two_succ_le_triple"
+  , "Omega.fiberMultiplicity_ge_ewc_via_snoc"
+  , "Omega.momentSum_two_mod_eight" ]
 
 end Omega.Audit
