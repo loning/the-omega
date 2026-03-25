@@ -8566,6 +8566,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.Entropy.plateau_rigidity_of_nonneg_dissipation"
     phase := 121
+    status := .formalized }
+-- Phase 129: E00 下界 + Lucas mod 4 整除 + E00 严格单调 (MomentTriple.lean:523/541, ShiftDynamics.lean:393)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightCollision_ge_fib"
+    phase := 129
+    status := .formalized }
+, { label := "bridge:lucas-three-divisibility"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_three_dvd"
+    phase := 129
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightCollision_strict_mono"
+    phase := 129
     status := .formalized } ]
 
 end Omega.Audit

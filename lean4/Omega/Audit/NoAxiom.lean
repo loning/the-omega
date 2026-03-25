@@ -2112,6 +2112,10 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_eleven_rec"
   , "Omega.momentSum_two_twelve_rec"
   , "Omega.lucasNum_even_iff"
-  , "Omega.momentSum_two_mod_sixteen" ]
+  , "Omega.momentSum_two_mod_sixteen"
+  -- Phase 129: E00 下界 + Lucas mod 4 整除 + E00 严格单调 (MomentTriple.lean:523/541, ShiftDynamics.lean:393)
+  , "Omega.exactWeightCollision_ge_fib"
+  , "Omega.lucasNum_three_dvd"
+  , "Omega.exactWeightCollision_strict_mono" ]
 
 end Omega.Audit
