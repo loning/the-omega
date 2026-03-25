@@ -481,3 +481,7 @@ theorem paper_stable_add_no_null :
     (∀ x : X m, stableAdd stableZero x = x) ∧
     (∀ x : X m, stableAdd x stableZero = x) :=
   ⟨stableAdd_zero_left, stableAdd_zero_right⟩
+
+/-- Paper label: one fold is the normal form (idempotent). -/
+theorem paper_one_fold_normal_form (w : Word m) :
+    Fold (Fold w).1 = Fold w := Fold_idempotent w

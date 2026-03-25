@@ -135,4 +135,9 @@ end
 
 end X
 
+/-- Paper label: carry indicator (κ) definition. -/
+theorem paper_kappa_def (x y : X (m + 1)) :
+    carryIndicator x y =
+    if stableValue x + stableValue y ≥ Nat.fib (m + 3) then 1 else 0 := rfl
+
 end Omega

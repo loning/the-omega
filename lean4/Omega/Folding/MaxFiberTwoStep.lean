@@ -508,4 +508,14 @@ theorem paper_hiddenBitCount_closed (m : Nat) :
     3 * hiddenBitCount m + (if m % 2 = 0 then 1 else 2) = 2 ^ m := by
   have := hiddenBitCount_closed m; omega
 
+/-- Fold + hiddenBit jointly determine weight. -/
+theorem fold_hiddenBit_determines_weight (w1 w2 : Word m)
+    (hFold : Fold w1 = Fold w2) (hBit : hiddenBit w1 = hiddenBit w2) :
+    weight w1 = weight w2 := by
+  have h1 := weight_eq_stableValue_add_hiddenBit w1
+  have h2 := weight_eq_stableValue_add_hiddenBit w2
+  rw [h1, h2]; congr 1
+  · exact congrArg stableValue hFold
+  · rw [hBit]
+
 end Omega
