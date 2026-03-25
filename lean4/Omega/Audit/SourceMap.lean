@@ -8019,6 +8019,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.maxFiberMultiplicity_sq_le_momentSum"
     phase := 108
+    status := .formalized }
+-- Phase 109: D(m) 下界 + 无界性 (Combinatorics/FibonacciCube.lean:278-310)
+, { label := "thm:pom-maxFiberMultiplicity-ge-half"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiberMultiplicity_ge_half"
+    phase := 109
+    status := .formalized }
+, { label := "thm:pom-maxFiberMultiplicity-ge-two"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiberMultiplicity_ge_two"
+    phase := 109
+    status := .formalized }
+, { label := "thm:pom-maxFiberMultiplicity-bounds"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiberMultiplicity_bounds"
+    phase := 109
+    status := .formalized }
+, { label := "thm:pom-maxFiberMultiplicity-unbounded"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiberMultiplicity_unbounded"
+    phase := 109
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-ge-maxFiber-sq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.momentSum_two_ge_maxFiber_sq"
+    phase := 109
     status := .formalized } ]
 
 end Omega.Audit

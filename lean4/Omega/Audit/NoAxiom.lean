@@ -1968,6 +1968,12 @@ def coreAuditTargets : List String :=
   -- Phase 108: D(m) 上界 (Combinatorics/FibonacciCube.lean:243-278)
   , "Omega.maxFiberMultiplicity_le_fib"
   , "Omega.fiberMultiplicity_le_fib"
-  , "Omega.maxFiberMultiplicity_sq_le_momentSum" ]
+  , "Omega.maxFiberMultiplicity_sq_le_momentSum"
+  -- Phase 109: D(m) 下界 + 无界性 (Combinatorics/FibonacciCube.lean:278-310)
+  , "Omega.maxFiberMultiplicity_ge_half"
+  , "Omega.maxFiberMultiplicity_ge_two"
+  , "Omega.maxFiberMultiplicity_bounds"
+  , "Omega.maxFiberMultiplicity_unbounded"
+  , "Omega.momentSum_two_ge_maxFiber_sq" ]
 
 end Omega.Audit
