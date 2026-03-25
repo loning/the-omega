@@ -74,6 +74,27 @@ theorem fib_platform_certificate_of_eq_succ_succ
   rw [← hEq]
   exact plateau_rigidity_of_nonneg_dissipation μ (diss (Nat.fib m)) hdiss_nonneg hdiss_int hdiss_zero
 
+/-- Sequence squeeze at zero: if `0 ≤ a_m ≤ b_m` for all `m` and `b_m → 0`, then `a_m → 0`. -/
+theorem tendsto_zero_of_nonneg_le_of_tendsto_zero
+    (a b : ℕ → ℝ)
+    (ha_nonneg : ∀ m, 0 ≤ a m)
+    (hab : ∀ m, a m ≤ b m)
+    (hb : Tendsto b atTop (𝓝 0)) :
+    Tendsto a atTop (𝓝 0) := by
+  exact squeeze_zero ha_nonneg hab hb
+
+/-- Fibonacci-radius discretization certificate: a defect bounded above by a vanishing envelope along
+`fibRadius` also vanishes along the same discretization. -/
+theorem fibRadius_discretization_of_le_tendsto_zero
+    (D : ℝ → ℝ)
+    (eps : ℕ → ℝ)
+    (h_nonneg : ∀ m, 0 ≤ D (fibRadius m))
+    (h_bound : ∀ m, D (fibRadius m) ≤ eps m)
+    (h_eps : Tendsto eps atTop (𝓝 0)) :
+    Tendsto (fun m : ℕ => D (fibRadius m)) atTop (𝓝 0) := by
+  exact tendsto_zero_of_nonneg_le_of_tendsto_zero
+    (fun m => D (fibRadius m)) eps h_nonneg h_bound h_eps
+
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
 normalizing log-partition term minus the average tilt. -/
 theorem kl_reverse_tilted_split
