@@ -21,7 +21,7 @@
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~37 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures, ConditionalSummary) | 5 | ~347 | 99% |
-| Combinatorics (PathIndSet, FibonacciCube) | 2 | ~109 | 100% |
+| Combinatorics (PathIndSet, FibonacciCube) | 2 | ~510 | 100% |
 | Audit (SourceMap, Inventory, NoAxiom) | 3 | ~5 | 同步 |
 
 ### 1.3 已完成的核心数学结果
@@ -144,13 +144,13 @@
 | 新生算术 | 151 | ~70 | ~46% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~352 | ~23.0% |
+| POM | 1,525 | ~358 | ~23.5% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **~951** | **9.0%** |
+| **总计** | **10,588** | **~957** | **9.0%** |
 
 ## 3. 未来工作：30 条具体计划
 

@@ -7750,6 +7750,44 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.xEquivPathIndSet"
     phase := 97
+    status := .formalized }
+-- Phase 98: popcount 定义与基值 (Combinatorics/FibonacciCube.lean:87-105)
+, { label := "thm:pom-popcount-allFalse"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_allFalse"
+    phase := 98
+    status := .formalized }
+, { label := "thm:pom-popcount-allTrue"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_allTrue"
+    phase := 98
+    status := .formalized }
+-- Phase 99: popcount 结构性质 + totalPopcount (Combinatorics/FibonacciCube.lean:105-160)
+, { label := "thm:pom-popcount-not"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_not"
+    phase := 99
+    status := .formalized }
+, { label := "thm:pom-popcount-eq-zero-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_eq_zero_iff"
+    phase := 99
+    status := .formalized }
+, { label := "thm:pom-popcount-truncate-le"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_truncate_le"
+    phase := 99
+    status := .formalized }
+, { label := "thm:pom-totalPopcount-zero"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.totalPopcount_zero"
+    phase := 99
     status := .formalized } ]
 
 end Omega.Audit

@@ -1909,11 +1909,19 @@ def coreAuditTargets : List String :=
   , "Omega.weight_complement_sub"
   , "Omega.Fold_complement"
   , "Omega.stableValue_sum"
-  -- Phase 97: Fibonacci Cube 路径独立集等价 (Folding/FibonacciCube.lean:1-87)
+  -- Phase 97: Fibonacci Cube 路径独立集等价 (Combinatorics/FibonacciCube.lean:1-87)
   , "Omega.wordSupport_isPathIndependent"
   , "Omega.indSetToWord_no11"
   , "Omega.wordSupport_indSetToWord"
   , "Omega.indSetToWord_wordSupport"
-  , "Omega.xEquivPathIndSet" ]
+  , "Omega.xEquivPathIndSet"
+  -- Phase 98: popcount 定义与基值 (Combinatorics/FibonacciCube.lean:87-105)
+  , "Omega.popcount_allFalse"
+  , "Omega.popcount_allTrue"
+  -- Phase 99: popcount 结构性质 + totalPopcount (Combinatorics/FibonacciCube.lean:105-160)
+  , "Omega.popcount_not"
+  , "Omega.popcount_eq_zero_iff"
+  , "Omega.popcount_truncate_le"
+  , "Omega.totalPopcount_zero" ]
 
 end Omega.Audit
