@@ -430,4 +430,46 @@ theorem fiberMultiplicity_le_restrict_add (x : X (m + 2)) :
       exact ⟨fun h => by cases w ⟨m+1, by omega⟩ <;> simp_all, fun h => h.elim And.left And.left⟩
     _ ≤ _ := Nat.add_le_add hFalse hTrue
 
+-- ══════════════════════════════════════════════════════════════
+-- Fold uniqueness
+-- ══════════════════════════════════════════════════════════════
+
+/-- Any retraction preserving weight congruence must equal Fold. -/
+theorem Fold_unique_of_weight_congr {m : Nat} (Φ : Word m → X m)
+    (hΦ : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2)) :
+    ∀ w, Φ w = Fold w := by
+  intro w
+  have hlt := stableValue_lt_fib (Φ w)
+  have hΦw := hΦ w
+  rw [Nat.mod_eq_of_lt hlt] at hΦw
+  have heq : stableValue (Φ w) = stableValue (Fold w) := by
+    rw [hΦw, stableValue_Fold_mod]
+  exact X.stableValueFin_injective m (by simp [X.stableValueFin, heq])
+
+/-- Fold uniqueness with explicit retraction hypothesis (corollary). -/
+theorem Fold_unique_of_retraction {m : Nat} (Φ : Word m → X m)
+    (hRetract : ∀ x : X m, Φ x.1 = x)
+    (hCongr : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2)) :
+    ∀ w, Φ w = Fold w :=
+  Fold_unique_of_weight_congr Φ hCongr
+
+/-- Two stable words with equal stableValue are equal. -/
+theorem X.eq_of_stableValue_eq' {x y : X m} (h : stableValue x = stableValue y) : x = y :=
+  X.stableValueFin_injective m (by simp [X.stableValueFin, h])
+
+/-- Any weight-congruence-preserving map is constant on fibers. -/
+theorem congr_map_fiber_const {m : Nat} (Φ : Word m → X m)
+    (hΦ : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2))
+    (w₁ w₂ : Word m) (h : Fold w₁ = Fold w₂) : Φ w₁ = Φ w₂ := by
+  rw [Fold_unique_of_weight_congr Φ hΦ w₁, Fold_unique_of_weight_congr Φ hΦ w₂, h]
+
+/-- The preimage of any weight-congruence map equals the Fold fiber. -/
+theorem fiber_independent_of_retraction {m : Nat} (Φ : Word m → X m)
+    (hΦ : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2))
+    (x : X m) : {w : Word m | Φ w = x} = {w : Word m | Fold w = x} := by
+  ext w; have huniq := Fold_unique_of_weight_congr Φ hΦ w
+  simp only [Set.mem_setOf_eq]; constructor
+  · intro h; rw [← huniq]; exact h
+  · intro h; rw [huniq]; exact h
+
 end Omega
