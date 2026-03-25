@@ -8958,6 +8958,54 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.fold_hiddenBit_determines_weight"
     phase := 140
     status := .formalized }
+-- Phase 140b: 零代码批量补登 5 个论文标签
+-- cor:foldm-order-indep → Fold_idempotent + Fold_surjective (Fold.lean:202,206)
+-- thm:pom-path-indset-poly-closed → pathIndSetPoly_eval_one + pathIndSetPoly_recurrence (FibonacciPolynomial.lean:33,55)
+-- prop:pom-collision-renyi-perron-closure → perron_A2_in_interval (CollisionZeta.lean:173)
+-- thm:pom-max-achievers-phase-stabilization → cMaxFiberAchievers (FiberSpectrum.lean:35)
+-- def:pom-fold-prime-lift → Fold_snoc_false_eq (MaxFiberTwoStep.lean:483) [追加实例]
+, { label := "cor:foldm-order-indep"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.Fold"
+    leanName := "Omega.X.Fold_idempotent"
+    phase := 140
+    status := .formalized }
+, { label := "cor:foldm-order-indep"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.Fold"
+    leanName := "Omega.X.Fold_surjective"
+    phase := 140
+    status := .formalized }
+, { label := "thm:pom-path-indset-poly-closed"
+    sourcePath := "sections/body/pom/parts/def__pom-ind-lyapunov-fingerprint.tex"
+    moduleName := "Omega.Folding.FibonacciPolynomial"
+    leanName := "Omega.pathIndSetPoly_eval_one"
+    phase := 140
+    status := .formalized }
+, { label := "thm:pom-path-indset-poly-closed"
+    sourcePath := "sections/body/pom/parts/def__pom-ind-lyapunov-fingerprint.tex"
+    moduleName := "Omega.Folding.FibonacciPolynomial"
+    leanName := "Omega.pathIndSetPoly_recurrence"
+    phase := 140
+    status := .formalized }
+, { label := "prop:pom-collision-renyi-perron-closure"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.perron_A2_in_interval"
+    phase := 140
+    status := .formalized }
+, { label := "thm:pom-max-achievers-phase-stabilization"
+    sourcePath := "sections/body/pom/parts/def__pom-ind-lyapunov-fingerprint.tex"
+    moduleName := "Omega.Folding.FiberSpectrum"
+    leanName := "Omega.cMaxFiberAchievers"
+    phase := 140
+    status := .formalized }
+, { label := "def:pom-fold-prime-lift"
+    sourcePath := "sections/body/pom/parts/subsec__pom-position.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.X.Fold_snoc_false_eq"
+    phase := 140
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

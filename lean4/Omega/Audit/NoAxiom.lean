@@ -2212,6 +2212,12 @@ def coreAuditTargets : List String :=
   -- Phase 140: 一次折叠正规形 + kappa 定义 + hiddenBit 决定权重 (FiberArithmeticProperties.lean:486, CarryDefect.lean:139, MaxFiberTwoStep.lean:512)
   , "Omega.paper_one_fold_normal_form"
   , "Omega.paper_kappa_def"
-  , "Omega.fold_hiddenBit_determines_weight" ]
+  , "Omega.fold_hiddenBit_determines_weight"
+  -- Phase 140b: 零代码批量补登 (Fold.lean:202,206, FibonacciPolynomial.lean:33,55, CollisionZeta.lean:173, FiberSpectrum.lean:35, MaxFiberTwoStep.lean:483)
+  , "Omega.pathIndSetPoly_eval_one"
+  , "Omega.pathIndSetPoly_recurrence"
+  , "Omega.perron_A2_in_interval"
+  , "Omega.cMaxFiberAchievers"
+  , "Omega.X.Fold_snoc_false_eq" ]
 
 end Omega.Audit
