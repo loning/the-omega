@@ -531,4 +531,17 @@ theorem paper_collision_det_universal :
     collisionKernel2.det = -2 ∧ collisionKernel3.det = -2 ∧ collisionKernel4.det = -2 :=
   ⟨collisionKernel2_det, collisionKernel3_det, collisionKernel4_det⟩
 
+/-- Paper: A_2 trace powers satisfy the recurrence. -/
+-- Paper aliases
+def paper_trace_recurrence_A2 := collisionKernel2_trace_recurrence
+def paper_primitive_orbit_A2 := primitive_orbit_A2
+
+/-- Paper: A_2 and A_3 characteristic polynomial discriminants are positive. -/
+theorem paper_discriminant_positive :
+    (-2 : ℤ) ^ 2 * (-2) ^ 2 - 4 * (-2) ^ 3 - 4 * (-2) ^ 3 * 2 +
+      18 * (-2) * (-2) * 2 - 27 * 2 ^ 2 = 148 ∧
+    (-2 : ℤ) ^ 2 * (-4) ^ 2 - 4 * (-2) ^ 3 * 2 - 4 * (-4) ^ 3 +
+      18 * (-2) * (-4) * 2 - 27 * 2 ^ 2 = 564 :=
+  ⟨charPoly_A2_discriminant_positive, charPoly_A3_discriminant_positive⟩
+
 end Omega
