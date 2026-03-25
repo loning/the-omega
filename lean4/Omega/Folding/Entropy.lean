@@ -41,6 +41,39 @@ theorem jeffreys_dissipation_rigidity
     J =ᵐ[μ] 0 := by
   exact plateau_rigidity_of_nonneg_dissipation μ J hJ_nonneg hJ_int hJ_zero
 
+/-- Fibonacci platform certificate, successor form: if two consecutive Fibonacci labels coincide,
+any nonnegative zero-mean dissipation indexed by that label must vanish almost everywhere. -/
+theorem fib_platform_certificate_of_eq_succ
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (diss : ℕ → α → ℝ)
+    (m : ℕ)
+    (hEq : Nat.fib m = Nat.fib (m + 1))
+    (hdiss_nonneg : 0 ≤ᵐ[μ] diss (Nat.fib m))
+    (hdiss_int : Integrable (diss (Nat.fib m)) μ)
+    (hdiss_zero : ∫ x, diss (Nat.fib m) x ∂μ = 0) :
+    diss (Nat.fib (m + 1)) =ᵐ[μ] 0 := by
+  rw [← hEq]
+  exact plateau_rigidity_of_nonneg_dissipation μ (diss (Nat.fib m)) hdiss_nonneg hdiss_int hdiss_zero
+
+/-- Fibonacci platform certificate, two-step form: under the conservative Lean-side hypothesis
+`m ≥ 2`, equality of the `m` and `m+2` Fibonacci labels forces the indexed nonnegative zero-mean
+dissipation to vanish almost everywhere. -/
+theorem fib_platform_certificate_of_eq_succ_succ
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (diss : ℕ → α → ℝ)
+    (m : ℕ)
+    (hm : 2 ≤ m)
+    (hEq : Nat.fib m = Nat.fib (m + 2))
+    (hdiss_nonneg : 0 ≤ᵐ[μ] diss (Nat.fib m))
+    (hdiss_int : Integrable (diss (Nat.fib m)) μ)
+    (hdiss_zero : ∫ x, diss (Nat.fib m) x ∂μ = 0) :
+    diss (Nat.fib (m + 2)) =ᵐ[μ] 0 := by
+  have hm_ge_two : 2 ≤ m := hm
+  rw [← hEq]
+  exact plateau_rigidity_of_nonneg_dissipation μ (diss (Nat.fib m)) hdiss_nonneg hdiss_int hdiss_zero
+
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
 normalizing log-partition term minus the average tilt. -/
 theorem kl_reverse_tilted_split
