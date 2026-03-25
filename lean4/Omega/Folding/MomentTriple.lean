@@ -369,4 +369,25 @@ theorem momentSum_two_diff_strict_mono (m : Nat) (hm : 1 ≤ m) :
       -- Cast to ℤ where subtraction works
       zify [hmono_m2, hmono_m3]; linarith
 
+/-- S_2(m+2) ≥ S_2(m+1) + S_2(m): Fibonacci-like growth. -/
+theorem momentSum_two_fibonacci_growth (m : Nat) :
+    momentSum 2 (m + 1) + momentSum 2 m ≤ momentSum 2 (m + 2) := by
+  match m with
+  | 0 => rw [momentSum_two_zero, momentSum_two_one, momentSum_two_two]; omega
+  | 1 => rw [momentSum_two_one, momentSum_two_two, momentSum_two_three]; omega
+  | m + 2 =>
+    -- From recurrence: S(m+4) + 2S(m+1) = 2S(m+3) + 2S(m+2)
+    -- So S(m+4) = 2S(m+3) + 2S(m+2) - 2S(m+1)
+    -- Need: S(m+3) + S(m+2) ≤ S(m+4) = 2S(m+3) + 2S(m+2) - 2S(m+1)
+    -- i.e., 2S(m+1) ≤ S(m+3) + S(m+2)
+    -- True since S(m+1) ≤ S(m+2) ≤ S(m+3).
+    have hrec := momentSum_two_recurrence (m + 1)
+    have hmono1 := momentSum_two_mono' (m + 1)
+    have hmono2 := momentSum_two_mono' (m + 2)
+    -- hrec: S(m+4) + 2S(m+1) = 2S(m+3) + 2S(m+2)
+    -- Need: S(m+3) + S(m+2) ≤ S(m+4)
+    -- i.e., S(m+3) + S(m+2) + 2S(m+1) ≤ S(m+4) + 2S(m+1) = 2S(m+3) + 2S(m+2)
+    -- i.e., 2S(m+1) ≤ S(m+3) + S(m+2), true by monotonicity
+    linarith
+
 end Omega
