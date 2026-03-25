@@ -8174,6 +8174,31 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.tripleCorr"
     phase := 113
+    status := .formalized }
+-- Phase 114: crossCorrSq 定义 + tripleCorr 等价 (MomentTriple.lean:242-259)
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.crossCorrSqHigh"
+    phase := 114
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.crossCorrSqLow"
+    phase := 114
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.crossCorrSqHigh_eq_tripleCorr"
+    phase := 114
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.crossCorrSqLow_eq_tripleCorr"
+    phase := 114
     status := .formalized } ]
 
 end Omega.Audit

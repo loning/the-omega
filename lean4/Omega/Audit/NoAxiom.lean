@@ -2008,6 +2008,11 @@ def coreAuditTargets : List String :=
   -- Phase 113: T000 = exactWeightTriple + ewt 形式 + tripleCorr 定义 (MomentTriple.lean:189-235)
   , "Omega.tripleCollisionClass_000_eq_ewcCube"
   , "Omega.momentSum_three_succ_ewt_form"
-  , "Omega.tripleCorr" ]
+  , "Omega.tripleCorr"
+  -- Phase 114: crossCorrSq 定义 + tripleCorr 等价 (MomentTriple.lean:242-259)
+  , "Omega.crossCorrSqHigh"
+  , "Omega.crossCorrSqLow"
+  , "Omega.crossCorrSqHigh_eq_tripleCorr"
+  , "Omega.crossCorrSqLow_eq_tripleCorr" ]
 
 end Omega.Audit
