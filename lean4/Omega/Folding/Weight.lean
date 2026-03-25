@@ -1,4 +1,5 @@
 import Omega.Folding.StableSyntax
+import Mathlib.Algebra.BigOperators.Fin
 
 namespace Omega
 
@@ -53,5 +54,14 @@ theorem weight_word_one (w : Word 1) :
   | succ m ih =>
     simp only [weight, Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
     convert ih using 2
+
+/-- weight(w) = Σ_{i : Fin m} (if w i then Nat.fib (i+2) else 0). -/
+theorem weight_eq_fib_sum {m : Nat} (w : Word m) :
+    weight w = ∑ i : Fin m, if w i then Nat.fib (i.val + 2) else 0 := by
+  induction m with
+  | zero => simp [weight]
+  | succ m ih =>
+    rw [weight, ih (truncate w), Fin.sum_univ_castSucc (n := m)]
+    congr 1
 
 end Omega
