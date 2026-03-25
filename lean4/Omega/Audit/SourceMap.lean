@@ -7788,6 +7788,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.totalPopcount_zero"
     phase := 99
+    status := .formalized }
+-- Phase 100: Fold 泛性质唯一性 (Folding/MaxFiberTwoStep.lean:437-475)
+, { label := "thm:fold-congruence-universal-property"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_unique_of_weight_congr"
+    phase := 100
+    status := .formalized }
+, { label := "thm:fold-unique-of-retraction"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_unique_of_retraction"
+    phase := 100
+    status := .formalized }
+, { label := "thm:pom-eq-of-stableValue-eq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.X.eq_of_stableValue_eq'"
+    phase := 100
+    status := .formalized }
+, { label := "thm:pom-congr-map-fiber-const"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.congr_map_fiber_const"
+    phase := 100
+    status := .formalized }
+, { label := "thm:pom-fiber-independent-of-retraction"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.fiber_independent_of_retraction"
+    phase := 100
     status := .formalized } ]
 
 end Omega.Audit

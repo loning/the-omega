@@ -1922,6 +1922,12 @@ def coreAuditTargets : List String :=
   , "Omega.popcount_not"
   , "Omega.popcount_eq_zero_iff"
   , "Omega.popcount_truncate_le"
-  , "Omega.totalPopcount_zero" ]
+  , "Omega.totalPopcount_zero"
+  -- Phase 100: Fold 泛性质唯一性 (Folding/MaxFiberTwoStep.lean:437-475)
+  , "Omega.Fold_unique_of_weight_congr"
+  , "Omega.Fold_unique_of_retraction"
+  , "Omega.X.eq_of_stableValue_eq'"
+  , "Omega.congr_map_fiber_const"
+  , "Omega.fiber_independent_of_retraction" ]
 
 end Omega.Audit
