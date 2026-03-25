@@ -8382,6 +8382,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.ShiftDynamics"
     leanName := "Omega.lucasNum_cassini"
     phase := 118
+    status := .formalized }
+-- Phase 119: stableValue 取负 + Fold 加法权重 (FiberArithmeticProperties.lean:454-459)
+, { label := "thm:finite-resolution-mod"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.stableValue_neg'"
+    phase := 119
+    status := .formalized }
+, { label := "thm:stable-add-value-consistency"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.Fold_add_weight"
+    phase := 119
     status := .formalized } ]
 
 end Omega.Audit

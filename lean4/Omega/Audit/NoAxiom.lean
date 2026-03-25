@@ -2068,6 +2068,9 @@ def coreAuditTargets : List String :=
   -- Phase 118: Lucas 数正性 + Lucas-Fibonacci 乘积恒等式 + Cassini (ShiftDynamics.lean:220-251)
   , "Omega.lucasNum_pos"
   , "Omega.lucasNum_mul_fib"
-  , "Omega.lucasNum_cassini" ]
+  , "Omega.lucasNum_cassini"
+  -- Phase 119: stableValue 取负 + Fold 加法权重 (FiberArithmeticProperties.lean:454-459)
+  , "Omega.stableValue_neg'"
+  , "Omega.Fold_add_weight" ]
 
 end Omega.Audit
