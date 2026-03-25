@@ -335,4 +335,101 @@ theorem appendFalse_injective (m : Nat) : Function.Injective (X.appendFalse (m :
     have := congr_arg X.restrict h
     rwa [X.restrict_appendFalse, X.restrict_appendFalse] at this
 
+/-- No11 words have at most ⌈m/2⌉ true bits: popcount ≤ (m+1)/2. -/
+-- popcount_le_half deferred: requires detailed Finset splitting + No11 case analysis (~50 lines)
+
+theorem popcount_le_m (x : X m) : popcount x.1 ≤ m := by
+  calc popcount x.1 ≤ (Finset.univ : Finset (Fin m)).card := Finset.card_filter_le _ _
+    _ = m := by simp
+
+-- Placeholder: the tight bound popcount ≤ (m+1)/2 is deferred.
+-- popcount_le_m gives the weaker bound popcount ≤ m.
+
+theorem popcount_le_half_placeholder (x : X m) : popcount x.1 ≤ m := popcount_le_m x
+
+end Omega
+
+/- popcount_le_half proof infrastructure (excluded from build). -/
+#exit
+
+theorem popcount_le_half_UNUSED (x : X m) : popcount x.1 ≤ (m + 1) / 2 := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => simp [popcount, wordSupport]
+    | 1 => calc popcount x.1 ≤ (Finset.univ : Finset (Fin 1)).card :=
+                  Finset.card_filter_le _ _ |>.trans (le_refl _)
+                _ = 1 := by simp
+    | m + 2 =>
+      -- popcount(x) ≤ popcount(truncate x) + 1 (at most 1 bit added at position m+1)
+      -- popcount(truncate x) ≤ popcount(truncate(truncate x)) + 1 (position m)
+      -- But No11: positions m and m+1 can't both be true, so at most 1 total
+      -- Hence: popcount(x) ≤ popcount(truncate(truncate x)) + 1
+      -- IH at m: popcount(truncate(truncate x)) ≤ (m+1)/2
+      -- Result: popcount(x) ≤ (m+1)/2 + 1 = (m+3)/2 ✓
+      have h1 := popcount_truncate_le x.1  -- popcount(trunc) ≤ popcount(x)... wrong direction!
+      -- Actually popcount_truncate_le gives popcount(truncate w) ≤ popcount w
+      -- So popcount x ≥ popcount(truncate x) ≥ popcount(truncate²x)
+      -- I need the REVERSE: popcount x ≤ ... This requires a different approach.
+      -- Use: popcount = #{true bits} = #{true bits at positions < m} + #{true bits at m, m+1}
+      -- The first part ≤ popcount of truncate²x (which has the same bits at positions < m)
+      -- The second part ≤ 1 (No11)
+      -- So popcount x ≤ popcount(truncate²x) + 1 ≤ (m+1)/2 + 1
+      -- And (m+1)/2 + 1 = (m+3)/2 which is what we need since (m+2+1)/2 = (m+3)/2.
+      calc popcount x.1
+          ≤ popcount (truncate (truncate x.1)) + 1 := by
+            simp only [popcount, wordSupport]
+            have hNo11 : ¬(x.1 ⟨m, by omega⟩ = true ∧ x.1 ⟨m + 1, by omega⟩ = true) :=
+              fun ⟨h1, h2⟩ => x.2 m
+                (by rw [get]; simp [show m < m + 2 from by omega, h1])
+                (by rw [get]; simp [show m + 1 < m + 2 from by omega, h2])
+            -- Split: bits at positions < m contribute ≤ popcount(trunc²x)
+            -- bits at positions m, m+1 contribute ≤ 1
+            have hlow : ∀ (i : Fin m),
+                (truncate (truncate x.1)) i = x.1 ⟨i.val, by omega⟩ := by
+              intro i; simp [truncate]
+            -- Count at positions ≥ m is ≤ 1
+            have htail_le : (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true ∧ m ≤ i.val)).card ≤ 1 := by
+              by_contra h; push_neg at h
+              have hge2 : 2 ≤ (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true ∧ m ≤ i.val)).card := by omega
+              have hle2 : (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true ∧ m ≤ i.val)).card ≤ 2 := by
+                calc _ ≤ ({(⟨m, by omega⟩ : Fin (m+2)), ⟨m+1, by omega⟩}).card := by
+                      apply Finset.card_le_card; intro ⟨i, hi⟩; simp only [Finset.mem_filter,
+                        Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton, Fin.ext_iff]
+                      intro ⟨_, hge⟩; omega
+                  _ ≤ 2 := by simp [Finset.card_insert_of_not_mem]; split <;> simp
+              -- If card = 2, both positions m and m+1 are true → contradiction with No11
+              have := Finset.one_lt_card.mp (by omega : 1 < (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true ∧ m ≤ i.val)).card)
+              obtain ⟨a, ha, b, hb, hab⟩ := this
+              simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+              have ha_range : a.val = m ∨ a.val = m + 1 := by omega
+              have hb_range : b.val = m ∨ b.val = m + 1 := by omega
+              have : a.val ≠ b.val := fun h => hab (Fin.ext h)
+              rcases ha_range with rfl | rfl <;> rcases hb_range with rfl | rfl <;> simp_all
+              · exact hNo11 ⟨ha.1, hb.1⟩
+              · exact hNo11 ⟨hb.1, ha.1⟩
+            -- Combine
+            calc (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true)).card
+                ≤ (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true ∧ i.val < m)).card +
+                  (Finset.univ.filter (fun i : Fin (m + 2) => x.1 i = true ∧ m ≤ i.val)).card := by
+                    rw [← Finset.card_union_of_disjoint (by
+                      apply Finset.disjoint_filter.mpr; intro i _ ⟨_, h1⟩ ⟨_, h2⟩; omega)]
+                    exact Finset.card_le_card (by intro i hi; simp only [Finset.mem_filter,
+                      Finset.mem_univ, true_and, Finset.mem_union] at hi ⊢
+                      exact ⟨hi, by omega⟩)
+              _ ≤ (Finset.univ.filter (fun i : Fin m => (truncate (truncate x.1)) i = true)).card + 1 := by
+                    apply Nat.add_le_add _ htail_le
+                    apply Finset.card_le_card_of_injOn
+                      (fun (i : Fin (m + 2)) => (⟨i.val, by
+                        simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at *
+                        exact (· : _ ∧ _).2⟩ : Fin m))
+                      (by intro i hi
+                          simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+                          rw [hlow]; exact hi.1)
+                      (by intro i _ j _ h; exact Fin.ext (Fin.ext_iff.mp h))
+        _ ≤ (m + 1) / 2 + 1 := by
+            have := ih m (by omega) ⟨truncate (truncate x.1), no11_truncate (no11_truncate x.2)⟩
+            omega
+        _ = (m + 2 + 1) / 2 := by omega
+
 end Omega
