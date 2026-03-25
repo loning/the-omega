@@ -2064,6 +2064,9 @@ def coreAuditTargets : List String :=
   , "Omega.card_pathIndSets"
   , "Omega.appendFalse_injective"
   -- Phase 117c: popcount 紧上界 (FibonacciCube.lean:339)
-  , "Omega.popcount_le_half" ]
+  , "Omega.popcount_le_half"
+  -- Phase 118: Lucas 数正性 + Lucas-Fibonacci 乘积恒等式 (ShiftDynamics.lean:220-226)
+  , "Omega.lucasNum_pos"
+  , "Omega.lucasNum_mul_fib" ]
 
 end Omega.Audit

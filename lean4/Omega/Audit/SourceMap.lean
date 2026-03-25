@@ -8363,6 +8363,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.popcount_le_half"
     phase := 117
+    status := .formalized }
+-- Phase 118: Lucas 数正性 + Lucas-Fibonacci 乘积恒等式 (ShiftDynamics.lean:220-226)
+, { label := "def:cdim-golden-angle"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_pos"
+    phase := 118
+    status := .formalized }
+, { label := "def:cdim-golden-angle"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_mul_fib"
+    phase := 118
     status := .formalized } ]
 
 end Omega.Audit
