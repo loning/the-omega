@@ -8746,6 +8746,42 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.stableValueRingEquiv"
     phase := 136
     status := .formalized }
+-- Phase 136c: 零代码批量补登（5 条新论文标签）
+-- def:val-on-D → stableValue (Value.lean:6)
+-- prop:val-invariant → stableValue_eq_sum_fib_zeckIndices (Zeckendorf.lean:102)
+-- cor:stable-add-computable → cBinFold (BinFold.lean:9)
+-- thm:stable-add-normalization-realization → stableAdd (FiberArithmetic.lean:10)
+-- prop:stable-add-finite-resolution-compatibility → modularProject_eq_restrict (ModularTower.lean:28)
+, { label := "def:val-on-D"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-fib-congruence.tex"
+    moduleName := "Omega.Folding.Value"
+    leanName := "Omega.stableValue"
+    phase := 136
+    status := .formalized }
+, { label := "prop:val-invariant"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-fib-congruence.tex"
+    moduleName := "Omega.Folding.Zeckendorf"
+    leanName := "Omega.X.stableValue_eq_sum_fib_zeckIndices"
+    phase := 136
+    status := .formalized }
+, { label := "cor:stable-add-computable"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.BinFold"
+    leanName := "Omega.cBinFold"
+    phase := 136
+    status := .formalized }
+, { label := "thm:stable-add-normalization-realization"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.FiberArithmetic"
+    leanName := "Omega.stableAdd"
+    phase := 136
+    status := .formalized }
+, { label := "prop:stable-add-finite-resolution-compatibility"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.ModularTower"
+    leanName := "Omega.modularProject_eq_restrict"
+    phase := 136
+    status := .formalized }
 -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
 , { label := "thm:pom-s2-rank-exact"
     sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"

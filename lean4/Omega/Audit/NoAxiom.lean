@@ -2160,6 +2160,12 @@ def coreAuditTargets : List String :=
   , "Omega.Fold_factorization"
   , "Omega.stableValue_eq_zeckRep_fib_sum"
   , "Omega.Fold_eq_iff_weight_mod"
-  , "Omega.stableValueRingEquiv" ]
+  , "Omega.stableValueRingEquiv"
+  -- Phase 136c: 零代码批量补登 (Value.lean:6, Zeckendorf.lean:102, BinFold.lean:9, FiberArithmetic.lean:10, ModularTower.lean:28)
+  , "Omega.stableValue"
+  , "Omega.X.stableValue_eq_sum_fib_zeckIndices"
+  , "Omega.cBinFold"
+  , "Omega.stableAdd"
+  , "Omega.modularProject_eq_restrict" ]
 
 end Omega.Audit
