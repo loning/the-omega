@@ -390,4 +390,19 @@ theorem momentSum_two_fibonacci_growth (m : Nat) :
     -- i.e., 2S(m+1) ≤ S(m+3) + S(m+2), true by monotonicity
     linarith
 
+/-- S_2(m)² ≤ F_{m+2} · S_4(m): Cauchy-Schwarz with f = d². -/
+theorem momentSum_two_sq_le_card_mul_four (m : Nat) :
+    momentSum 2 m ^ 2 ≤ Nat.fib (m + 2) * momentSum 4 m := by
+  -- S_2 = Σ d(x)², S_4 = Σ d(x)⁴, |X_m| = F_{m+2}
+  -- By Cauchy-Schwarz: (Σ f(x))² ≤ |X| · Σ f(x)² with f(x) = d(x)²
+  rw [← momentSum_zero]
+  simp only [momentSum, pow_zero, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one]
+  rw [← Finset.card_univ (α := X m)]
+  -- (Σ d²)² ≤ |X| · Σ d⁴
+  have : (∑ x : X m, X.fiberMultiplicity x ^ 2) ^ 2 ≤
+      Finset.univ.card * ∑ x : X m, (X.fiberMultiplicity x ^ 2) ^ 2 :=
+    sq_sum_le_card_mul_sum_sq
+  convert this using 2 with x
+  ring
+
 end Omega

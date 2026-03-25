@@ -430,4 +430,20 @@ theorem fiberMultiplicity_ge_ewc_via_snoc (m n : Nat) (hn : n < Nat.fib (m + 3))
     (fun w₁ _ w₂ _ h => by
       have := congr_arg truncate h; simp at this; exact this)
 
+/-- Σ ewc(m,n) = 2^m: exact weight counts partition the word space. -/
+theorem exactWeightCount_sum (m : Nat) :
+    ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n = 2 ^ m := by
+  -- Σ ewc(n) = Σ |{w : weight w = n}| = |Word m| = 2^m
+  unfold exactWeightCount
+  rw [← Finset.card_biUnion]
+  · -- The union of all weight-n subsets = all words
+    conv_rhs => rw [show 2 ^ m = Fintype.card (Word m) from by simp [Fintype.card_fin]]
+    rw [← Finset.card_univ]
+    congr 1; ext w; simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    exact ⟨fun ⟨_, _, h⟩ => True.intro, fun _ => ⟨weight w, X.weight_lt_fib w, rfl⟩⟩
+  · intro n _ n' _ hne
+    apply Finset.disjoint_filter.mpr
+    intro w _ h1 h2; exact hne (h1.symm.trans h2)
+
 end Omega
