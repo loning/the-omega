@@ -488,6 +488,16 @@ Run these commands manually during audit:
   #print axioms Omega.X.lucasNum_succ_succ
   #print axioms Omega.X.lucasNum_eq_fib
   #print axioms Omega.X.goldenMeanAdjacency_pow_trace
+  -- Phase 21: TransferMatrix — Perron-Frobenius 维度（阶段性通过）
+  #print axioms Omega.Graph.goldenMeanAdjacency_has_goldenRatio_eigenvector
+  #print axioms Omega.Graph.goldenMeanAdjacency_charpoly_eval_goldenRatio
+  #print axioms Omega.Graph.goldenMeanAdjacency_charpoly_eval_goldenConj
+  #print axioms Omega.Graph.goldenMeanAdjacencyℝ_sq
+  #print axioms Omega.Graph.eigenvalue_satisfies_quadratic
+  #print axioms Omega.Graph.eigenvalue_eq_goldenRatio_or_goldenConj
+  #print axioms Omega.Graph.goldenConj_abs_lt_goldenRatio
+  #print axioms Omega.Graph.goldenMeanAdjacency_dominates_all_real_eigenvalues
+  #print axioms Omega.Graph.goldenMeanAdjacency_pf_root_eq_goldenRatio
   -- Phase 22: FiberSpectrum — 纤维直方图定义与基值
   #print axioms Omega.cFiberHist
   #print axioms Omega.cFiberHist_4_1
@@ -1173,6 +1183,16 @@ def coreAuditTargets : List String :=
   , "Omega.X.lucasNum_succ_succ"
   , "Omega.X.lucasNum_eq_fib"
   , "Omega.X.goldenMeanAdjacency_pow_trace"
+  -- Phase 21: TransferMatrix — Perron-Frobenius 维度（阶段性通过）
+  , "Omega.Graph.goldenMeanAdjacency_has_goldenRatio_eigenvector"
+  , "Omega.Graph.goldenMeanAdjacency_charpoly_eval_goldenRatio"
+  , "Omega.Graph.goldenMeanAdjacency_charpoly_eval_goldenConj"
+  , "Omega.Graph.goldenMeanAdjacencyℝ_sq"
+  , "Omega.Graph.eigenvalue_satisfies_quadratic"
+  , "Omega.Graph.eigenvalue_eq_goldenRatio_or_goldenConj"
+  , "Omega.Graph.goldenConj_abs_lt_goldenRatio"
+  , "Omega.Graph.goldenMeanAdjacency_dominates_all_real_eigenvalues"
+  , "Omega.Graph.goldenMeanAdjacency_pf_root_eq_goldenRatio"
   -- Phase 23: ShiftDynamics — 周期轨道深化 (ShiftDynamics.lean:108-131)
   , "Omega.X.shift_period2_ne"
   , "Omega.X.period2_minimal"
