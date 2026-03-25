@@ -100,24 +100,22 @@ theorem momentSum_three_lastBit_split (m : Nat) :
   simp only [hf, h]; omega
 
 -- ══════════════════════════════════════════════════════════════
--- Bit-flip cancellations: E(b1⊕1,b2⊕1,b3⊕1) = E(b1,b2,b3)
+-- Bit-flip cancellation (Finset equality)
 -- ══════════════════════════════════════════════════════════════
 
-/-- E(1,1,1) = E(0,0,0): adding F_{m+2} to all three δ's cancels. -/
-theorem tripleCollisionClass_111_eq_000 (m : Nat) :
-    (tripleCollisionClass m true true true).card =
-    (tripleCollisionClass m false false false).card := by
-  unfold tripleCollisionClass; congr 1; ext ⟨v1, v2, v3⟩
+/-- T(1,1,1) = T(0,0,0): adding F_{m+2} to all three offsets cancels. -/
+theorem tripleCollisionClass_cancel_111 (m : Nat) :
+    tripleCollisionClass m true true true = tripleCollisionClass m false false false := by
+  unfold tripleCollisionClass; ext ⟨v1, v2, v3⟩
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, ↓reduceIte, Nat.add_zero]
   exact ⟨fun ⟨h1, h2⟩ => ⟨Nat.ModEq.add_right_cancel' _ h1, Nat.ModEq.add_right_cancel' _ h2⟩,
          fun ⟨h1, h2⟩ => ⟨Nat.ModEq.add_right _ h1, Nat.ModEq.add_right _ h2⟩⟩
 
-
 -- ══════════════════════════════════════════════════════════════
--- Permutation symmetry: E(0,0,1) = E(0,1,0) = E(1,0,0)
+-- Permutation symmetries (card equalities via bijection)
 -- ══════════════════════════════════════════════════════════════
 
-/-- Swapping (v1,v2,v3) → (v2,v1,v3) sends E(b1,b2,b3) → E(b2,b1,b3). -/
+/-- Swapping (v1,v2,v3) → (v2,v1,v3) sends T(b1,b2,b3).card = T(b2,b1,b3).card. -/
 theorem tripleCollisionClass_swap12 (m : Nat) (b1 b2 b3 : Bool) :
     (tripleCollisionClass m b1 b2 b3).card =
     (tripleCollisionClass m b2 b1 b3).card := by
@@ -132,7 +130,7 @@ theorem tripleCollisionClass_swap12 (m : Nat) (b1 b2 b3 : Bool) :
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
     exact ⟨(v2, v1, v3), ⟨hv.1.symm, hv.1.trans hv.2⟩, rfl⟩
 
-/-- Swapping (v1,v2,v3) → (v1,v3,v2) sends E(b1,b2,b3) → E(b1,b3,b2). -/
+/-- Swapping (v1,v2,v3) → (v1,v3,v2) sends T(b1,b2,b3).card = T(b1,b3,b2).card. -/
 theorem tripleCollisionClass_swap23 (m : Nat) (b1 b2 b3 : Bool) :
     (tripleCollisionClass m b1 b2 b3).card =
     (tripleCollisionClass m b1 b3 b2).card := by
@@ -147,48 +145,40 @@ theorem tripleCollisionClass_swap23 (m : Nat) (b1 b2 b3 : Bool) :
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
     exact ⟨(v1, v3, v2), ⟨hv.1.trans hv.2, hv.2.symm⟩, rfl⟩
 
-/-- E(0,0,1) = E(0,1,0) by swap23. -/
-theorem tripleCollisionClass_001_eq_010 (m : Nat) :
-    (tripleCollisionClass m false false true).card =
-    (tripleCollisionClass m false true false).card :=
-  tripleCollisionClass_swap23 m false false true
-
-/-- E(0,1,0) = E(1,0,0) by swap12. -/
-theorem tripleCollisionClass_010_eq_100 (m : Nat) :
-    (tripleCollisionClass m false true false).card =
-    (tripleCollisionClass m true false false).card :=
-  tripleCollisionClass_swap12 m false true false
-
-/-- E(0,1,1) = E(1,0,1) by swap12. -/
-theorem tripleCollisionClass_011_eq_101 (m : Nat) :
-    (tripleCollisionClass m false true true).card =
-    (tripleCollisionClass m true false true).card :=
-  tripleCollisionClass_swap12 m false true true
-
-/-- E(1,0,1) = E(1,1,0) by swap23. -/
-theorem tripleCollisionClass_101_eq_110 (m : Nat) :
-    (tripleCollisionClass m true false true).card =
-    (tripleCollisionClass m true true false).card :=
-  tripleCollisionClass_swap23 m true false true
+/-- Swapping (v1,v2,v3) → (v3,v2,v1) sends T(b1,b2,b3).card = T(b3,b2,b1).card. -/
+theorem tripleCollisionClass_swap13 (m : Nat) (b1 b2 b3 : Bool) :
+    (tripleCollisionClass m b1 b2 b3).card =
+    (tripleCollisionClass m b3 b2 b1).card := by
+  unfold tripleCollisionClass
+  apply Finset.card_bij (fun (p : Word m × Word m × Word m) _ => (p.2.2, p.2.1, p.1))
+  · intro ⟨v1, v2, v3⟩ hv
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+    exact ⟨hv.2.symm, hv.1.symm⟩
+  · intro ⟨a1, a2, a3⟩ _ ⟨b1', b2', b3'⟩ _ h
+    simp only [Prod.mk.injEq] at h; exact Prod.ext h.2.2 (Prod.ext h.2.1 h.1)
+  · intro ⟨v1, v2, v3⟩ hv
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+    exact ⟨(v3, v2, v1), ⟨hv.2.symm, hv.1.symm⟩, rfl⟩
 
 -- ══════════════════════════════════════════════════════════════
--- S_3(m+1) = 2·E(0,0,0) + 3·E(0,0,1) + 3·E(0,1,1)
+-- S_3(m+1) = 2·T(0,0,0) + 3·T(0,0,1) + 3·T(0,1,1)
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_3(m+1) reduces to 3 distinct collision classes. -/
+/-- S_3(m+1) reduces to 3 distinct collision classes via symmetry. -/
 theorem momentSum_three_succ_three_term (m : Nat) :
     momentSum 3 (m + 1) =
     2 * (tripleCollisionClass m false false false).card +
     3 * (tripleCollisionClass m false false true).card +
     3 * (tripleCollisionClass m false true true).card := by
   rw [momentSum_three_lastBit_split]
-  rw [tripleCollisionClass_111_eq_000]
-  -- Orbit {E001, E010, E100}: all equal to E001
-  have h1 := tripleCollisionClass_001_eq_010 m
-  have h2 := tripleCollisionClass_010_eq_100 m
-  -- Orbit {E011, E101, E110}: all equal to E011
-  have h3 := tripleCollisionClass_011_eq_101 m
-  have h4 := tripleCollisionClass_101_eq_110 m
+  -- T111 = T000 by Finset equality
+  rw [congrArg Finset.card (tripleCollisionClass_cancel_111 m)]
+  -- Orbit {T001, T010, T100}: T001 = T010 (swap23), T010 = T100 (swap12)
+  have h1 := tripleCollisionClass_swap23 m false false true   -- T001 = T010
+  have h2 := tripleCollisionClass_swap12 m false true false   -- T010 = T100
+  -- Orbit {T011, T101, T110}: T011 = T101 (swap12), T101 = T110 (swap23)
+  have h3 := tripleCollisionClass_swap12 m false true true    -- T011 = T101
+  have h4 := tripleCollisionClass_swap23 m true false true    -- T101 = T110
   omega
 
 end Omega
