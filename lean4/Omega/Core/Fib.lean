@@ -293,4 +293,13 @@ theorem fib_div_three_iff (n : Nat) : 3 ∣ Nat.fib n ↔ 4 ∣ n := by
     intro ⟨k, hk⟩; rw [hk]
     exact dvd_trans (show (3 : Nat) ∣ Nat.fib 4 from by decide) (Nat.fib_dvd 4 (4 * k) ⟨k, rfl⟩)
 
+/-- F(n+1) ≤ 2·F(n) for n ≥ 1. -/
+theorem fib_succ_le_double (n : Nat) (hn : 1 ≤ n) :
+    Nat.fib (n + 1) ≤ 2 * Nat.fib n := by
+  -- F(n+1) = F(n-1) + F(n) ≤ F(n) + F(n) = 2F(n)
+  have hrec := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at hrec
+  have hmono : Nat.fib (n - 1) ≤ Nat.fib n := Nat.fib_mono (by omega)
+  omega
+
 end Omega

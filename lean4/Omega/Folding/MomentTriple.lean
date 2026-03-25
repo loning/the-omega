@@ -458,4 +458,11 @@ theorem exactWeightCount_one (m : Nat) (hm : 1 ≤ m) : exactWeightCount m 1 = 1
       simp [hFib]
       exact ih (by omega)
 
+/-- The maximum stableValue F_{m+2}-1 is achieved by some stable word. -/
+theorem stableValue_max_achieved (m : Nat) (hm : 1 ≤ m) :
+    ∃ x : X m, stableValue x = Nat.fib (m + 2) - 1 := by
+  have hF : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  obtain ⟨x, hx⟩ := X.stableValueFin_surjective m ⟨Nat.fib (m + 2) - 1, by omega⟩
+  exact ⟨x, by simp [X.stableValueFin] at hx; omega⟩
+
 end Omega
