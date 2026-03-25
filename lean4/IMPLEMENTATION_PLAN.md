@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~17,123 |
-| 定理/定义数 | ~1,695 |
+| 定理/定义数 | ~1,699 |
 | 论文接口包装 | 346 |
 | 文件数 | 48 |
 | 公理数 | 0 |
@@ -49,6 +49,7 @@
 **ewc 双步递推 + allFalse 纤维闭式（Round 74，Phase 77）**：Folding/FiberWeightCount.lean（新增 FiberWeightCount.lean:230-344；MaxFiberTwoStep.lean 缩减至 433 行）——exactWeightCount_succ_succ（双步分裂递推：ewc(m+2,n) = ewc(m,n) + [F2≤n]ewc(m,n-F2) + [F3≤n]ewc(m,n-F3) + [F4≤n]ewc(m,n-F4)，通过两次 exactWeightCount_succ 展开 + case split）; exactWeightCount_fib_shift（ewc(m+2,F(m+4)) = ewc(m,F(m+2))+1，用 exactWeightCount_succ_succ + 各项化简 + exactWeightCount_zero_eq_one（private））; fiberMultiplicity_allFalse_recurrence（fM(allFalse,m+2) = fM(allFalse,m)+1，由 fiberMultiplicity_allFalse + exactWeightCount_fib_shift 组合推导）; fiberMultiplicity_allFalse_closed（fM(allFalse,m) = m/2+1，强归纳，base m=0/1 直接展开，step m+2 用递推 + omega）——工程变更：MaxFiberTwoStep.lean 拆分为 MaxFiberTwoStep.lean(433行) + FiberWeightCount.lean(345行)，Omega.lean 新增 FiberWeightCount import——POM 覆盖率 ~18.0% → ~18.3%（+4 条目）（Phase 77）
 **S_2 同余矩表达（Round 75，Phase 78）**：Folding/FiberWeightCount.lean（拓展至 413 行，新增 import MomentSum）——weightCongruenceCount（def:pom-wcc，定义：wcc(m,r) = #{w : Word m | weight w % F_{m+2} = r}，同余类计数）; weightCongruenceCount_eq_sum_ewc（thm:pom-wcc-eq-sum-ewc：wcc(m,r) = ewc(m,r) + ewc(m,r+F_{m+2})，同余类按商 0/1 分裂，range_split + interval_cases 推导）; fiberMultiplicity_eq_wcc（thm:pom-fiberMultiplicity-eq-wcc：d(x) = wcc(m, sv(x))，由 fiberMultiplicity_eq_weight_congr_count + weightCongruenceCount 定义对齐）; momentSum_two_eq_congr_sq_sum（prop:pom-moment-congruence-q q=2：S_2(m) = Σ_{r<F_{m+2}} wcc(m,r)^2，由 fiberMultiplicity_eq_wcc + momentSum 定义展开 + Finset.sum_congr + Finset.sum_nbij 重新指标化推导）——POM 覆盖率 ~18.3% → ~18.6%（+4 条目）（Phase 78）
 **wcc 守恒 + S_2 末位4分裂 + 取消对称性（Round 76，Phase 79）**：Folding/FiberWeightCount.lean（拓展至 546 行，新增 import CollisionZeta）——weightCongruenceCount_sum（thm:pom-wcc-sum：Σ_{r<F_{m+2}} wcc(m,r) = 2^m，同余类划分守恒，通过 fiberMultiplicity_sum_eq_pow + fiberMultiplicity_eq_wcc + stableValueFin 双射重新指标化推导）; momentSum_two_lastBit_split（thm:pom-s2-lastbit-split：S_2(m+1) = E(0,0)+E(0,1)+E(1,0)+E(1,1)，通过 momentSum_two_eq_collision + Fold_eq_iff_weight_mod + 末位 (b1,b2) 四类分划 + truncate 双射建立各类基数等式，disjoint union 合并）; collision_lastBit_cancel（thm:pom-collision-lastbit-cancel：E(1,1)=E(0,0)，(a+c)%n=(b+c)%n ↔ a%n=b%n，Nat.ModEq.add_right_cancel' + add_right）——POM 覆盖率 ~18.6% → ~18.8%（+3 条目）（Phase 79）
+**碰撞对称性 + S_2 两项分解 + exactWeightCollision（Round 77，Phase 80）**：Folding/FiberWeightCount.lean（拓展至 629 行）——collision_cross_symm（thm:pom-collision-cross-symm：E(0,1)=E(1,0)，通过 (v1,v2)↦(v2,v1) swap 双射，Finset.card_bij）; momentSum_two_succ_two_term（thm:pom-s2-two-term：S_2(m+1) = 2·E(0,0) + 2·E(0,1)，由 momentSum_two_lastBit_split + collision_lastBit_cancel + collision_cross_symm + ring 一步完成）; exactWeightCollision（def:pom-exactWeightCollision：Σ_{n<F_{m+3}} ewc(m,n)^2，精确重量碰撞数定义）; collision_same_eq_exactWeightCollision（thm:pom-collision-same-ewc-sq：E(0,0) = Σ ewc(n)^2，通过 weight < F_{m+3} 故 % 为恒等，将 {(v1,v2): wt v1 = wt v2} 按共同重量 n 分划为 disjoint union，各分量 = Sn ×ˢ Sn，Finset.card_biUnion 合并）——POM 覆盖率 ~18.8% → ~19.0%（+4 条目）（Phase 80）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -111,7 +112,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 958/10,588 = **9.0%** |
+| 全局覆盖率 | 962/10,588 = **9.1%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -125,7 +126,7 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~286 | ~18.8% |
+| POM | 1,525 | ~290 | ~19.0% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
@@ -141,7 +142,7 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~286 | ~18.8% |
+| POM | 1,525 | ~290 | ~19.0% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |

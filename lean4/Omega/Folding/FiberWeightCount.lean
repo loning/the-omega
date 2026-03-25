@@ -543,4 +543,87 @@ theorem collision_lastBit_cancel (m : Nat) :
        Nat.ModEq (Nat.fib (m + 3)) (weight v1) (weight v2)
   exact ⟨Nat.ModEq.add_right_cancel' _, fun h => h.add_right _⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- E(0,1) = E(1,0) by swap symmetry
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cross-collision terms are symmetric: E(0,1) = E(1,0). -/
+theorem collision_cross_symm (m : Nat) :
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) =
+      (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card =
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      (weight p.1 + Nat.fib (m + 2)) % Nat.fib (m + 3) =
+      weight p.2 % Nat.fib (m + 3))).card := by
+  apply Finset.card_bij (fun (p : Word m × Word m) _ => (p.2, p.1))
+  · intro ⟨v1, v2⟩ hv
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+    exact hv.symm
+  · intro ⟨a1, a2⟩ _ ⟨b1, b2⟩ _ h
+    simp only [Prod.mk.injEq] at h; exact Prod.ext h.2 h.1
+  · intro ⟨v1, v2⟩ hv
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+    exact ⟨(v2, v1), hv.symm, rfl⟩
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2(m+1) = 2·E(0,0) + 2·E(0,1)
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m+1) decomposes into two doubled terms. -/
+theorem momentSum_two_succ_two_term (m : Nat) :
+    momentSum 2 (m + 1) =
+    2 * (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3))).card +
+    2 * (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) =
+      (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card := by
+  rw [momentSum_two_lastBit_split, collision_lastBit_cancel, collision_cross_symm]; ring
+
+-- ══════════════════════════════════════════════════════════════
+-- E(0,0) = Σ ewc(m,n)² (exact weight collision)
+-- ══════════════════════════════════════════════════════════════
+
+/-- Sum of squared exact weight counts. -/
+def exactWeightCollision (m : Nat) : Nat :=
+  ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n ^ 2
+
+/-- E(0,0) equals the sum of squared exact weight counts. -/
+theorem collision_same_eq_exactWeightCollision (m : Nat) :
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3))).card =
+    exactWeightCollision m := by
+  classical
+  -- Since weight < F_{m+3}, mod is identity: condition simplifies to weight v1 = weight v2
+  have hmod_id : ∀ v : Word m, weight v % Nat.fib (m + 3) = weight v := by
+    intro v; exact Nat.mod_eq_of_lt (X.weight_lt_fib v)
+  simp_rw [hmod_id]
+  -- Now: |{(v1,v2) : weight v1 = weight v2}| = Σ_n ewc(m,n)²
+  -- Partition by the common weight value
+  unfold exactWeightCollision exactWeightCount
+  -- |{(v1,v2) : weight v1 = weight v2}| = Σ_n |{v1 : weight v1 = n}|²
+  -- = Σ_n |{v1 : weight v1 = n}| · |{v2 : weight v2 = n}|
+  -- = Σ_n |{(v1,v2) : weight v1 = n ∧ weight v2 = n}|
+  -- = |⊔_n {(v1,v2) : weight v1 = n ∧ weight v2 = n}|  (disjoint union)
+  -- = |{(v1,v2) : weight v1 = weight v2}|
+  -- Convert ewc(n)² = |{v1: wt=n} ×ˢ {v2: wt=n}|
+  have hprod : ∀ n, (Finset.univ.filter (fun w : Word m => weight w = n)).card ^ 2 =
+      ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+       (Finset.univ.filter (fun w : Word m => weight w = n))).card := by
+    intro n; rw [sq, ← Finset.card_product]
+  simp_rw [hprod]
+  -- Now: Σ_n |Sn ×ˢ Sn| = |⊔_n (Sn ×ˢ Sn)| = |{(v1,v2) : wt v1 = wt v2}|
+  symm
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨v1, v2⟩
+    simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨n, _, h1, h2⟩; rw [h1, h2]
+    · intro h; exact ⟨weight v1, X.weight_lt_fib v1, rfl, h.symm⟩
+  · intro n _ n' _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    intro ⟨v1, _⟩ ⟨h1, _⟩ ⟨h2, _⟩
+    exact hne (h1.symm.trans h2)
+
 end Omega

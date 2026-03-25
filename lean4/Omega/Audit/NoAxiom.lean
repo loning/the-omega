@@ -1803,6 +1803,10 @@ def coreAuditTargets : List String :=
   -- Phase 79: wcc 守恒 + S_2 末位4分裂 + 取消对称性 (FiberWeightCount.lean:414-546)
   , "Omega.weightCongruenceCount_sum"
   , "Omega.momentSum_two_lastBit_split"
-  , "Omega.collision_lastBit_cancel" ]
+  , "Omega.collision_lastBit_cancel"
+  -- Phase 80: 碰撞对称性 + S_2 两项分解 + exactWeightCollision (FiberWeightCount.lean:547-629)
+  , "Omega.collision_cross_symm"
+  , "Omega.momentSum_two_succ_two_term"
+  , "Omega.collision_same_eq_exactWeightCollision" ]
 
 end Omega.Audit

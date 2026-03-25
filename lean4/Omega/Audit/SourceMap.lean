@@ -7138,6 +7138,43 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.FiberWeightCount"
     leanName := "Omega.collision_lastBit_cancel"
     phase := 79
+    status := .formalized }
+-- Phase 80: 碰撞对称性 + S_2 两项分解 + exactWeightCollision (FiberWeightCount.lean:547-629)
+-- prop:pom-moment-congruence-q → collision_cross_symm（E(0,1) = E(1,0)，交换对称性）
+-- (FiberWeightCount.lean:551)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-collision-cross-symm"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.collision_cross_symm"
+    phase := 80
+    status := .formalized }
+-- prop:pom-moment-congruence-q → momentSum_two_succ_two_term（S_2(m+1) = 2·E(0,0) + 2·E(0,1)）
+-- (FiberWeightCount.lean:573)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-two-term"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.momentSum_two_succ_two_term"
+    phase := 80
+    status := .formalized }
+-- prop:pom-s2-plancherel → exactWeightCollision（定义：Σ ewc(m,n)^2）
+-- (FiberWeightCount.lean:587)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-exactWeightCollision"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.exactWeightCollision"
+    phase := 80
+    status := .formalized }
+-- prop:pom-s2-plancherel → collision_same_eq_exactWeightCollision（E(0,0) = Σ ewc(n)^2）
+-- (FiberWeightCount.lean:591)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-collision-same-ewc-sq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.collision_same_eq_exactWeightCollision"
+    phase := 80
     status := .formalized } ]
 
 end Omega.Audit
