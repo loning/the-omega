@@ -247,4 +247,24 @@ theorem lucasNum_mul_fib (n : Nat) (hn : 1 ≤ n) :
     push_cast; exact_mod_cast Nat.fib_add_two
   nlinarith
 
+/-- Lucas Cassini: L(n)² - L(n-1)·L(n+1) = 5·(-1)^n for n ≥ 1. -/
+theorem lucasNum_cassini (n : Nat) (hn : 1 ≤ n) :
+    (lucasNum n : ℤ) ^ 2 - (lucasNum (n - 1) : ℤ) * (lucasNum (n + 1) : ℤ) =
+    5 * (-1) ^ n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp only [show m + 1 - 1 = m from by omega]
+  induction m with
+  | zero => native_decide
+  | succ k ih =>
+    -- L(k+2)² - L(k+1)*L(k+3) = 5*(-1)^(k+2)
+    rw [show k + 1 + 1 = k + 2 from by omega, show k + 1 + 1 + 1 = k + 3 from by omega]
+    rw [show (lucasNum (k + 3) : ℤ) = lucasNum (k + 2) + lucasNum (k + 1) from by
+      push_cast; exact_mod_cast lucasNum_succ_succ (k + 1)]
+    rw [show k + 1 + 1 = k + 2 from by omega] at ih
+    have ih' := ih (by omega)
+    have hpow : ((-1 : ℤ) ^ (k + 2) : ℤ) = -((-1) ^ (k + 1)) := by ring
+    have hrec : (lucasNum (k + 2) : ℤ) = lucasNum (k + 1) + lucasNum k := by
+      push_cast; exact_mod_cast lucasNum_succ_succ k
+    rw [hpow]; nlinarith
+
 end Omega
