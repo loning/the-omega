@@ -430,3 +430,17 @@ theorem even_odd_card_sum (m : Nat) :
   congr 1; ext x
   simp only [Finset.mem_union, evenElements, oddElements, Finset.mem_filter, Finset.mem_univ, true_and]
   rcases Nat.mod_two_eq_zero_or_one (stableValue x) with h | h <;> simp [h]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 116: Fold factorization + stableValue characterizations
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fold factors through ofNat: Fold w = X.ofNat m (weight w). Named alias. -/
+theorem Fold_factorization (w : Word m) : Fold w = X.ofNat m (weight w) := rfl
+
+/-- stableValue x = 0 iff x is the all-false word. -/
+theorem stableValue_eq_zero_iff (x : X m) :
+    stableValue x = 0 ↔ x = ⟨fun _ => false, no11_allFalse⟩ := by
+  constructor
+  · intro h; exact eq_of_stableValue_eq (h.trans stableValue_allFalse.symm)
+  · intro h; rw [h]; exact stableValue_allFalse

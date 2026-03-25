@@ -259,4 +259,16 @@ theorem crossCorrSqLow_eq_tripleCorr (m : Nat) :
   unfold crossCorrSqLow tripleCorr; congr 1; ext n; ring
 
 
+-- ══════════════════════════════════════════════════════════════
+-- S_3 bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_3(m) ≥ 2^m (generalized from S_q ≥ 2^m for q ≥ 1). -/
+theorem momentSum_three_ge_pow (m : Nat) : 2 ^ m ≤ momentSum 3 m :=
+  momentSum_ge_pow' 3 m (by omega)
+
+/-- S_3(m) ≥ S_2(m) (moment monotonicity in q). -/
+theorem momentSum_three_ge_two (m : Nat) : momentSum 2 m ≤ momentSum 3 m :=
+  momentSum_le_succ' 2 m
+
 end Omega
