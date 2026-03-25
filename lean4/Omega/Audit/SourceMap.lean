@@ -8312,6 +8312,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.Entropy.one_sub_fibRadius_sq_isEquivalent"
     phase := 117
+    status := .formalized }
+-- Phase 117: PathIndSets Fintype + card + appendFalse 单射 (FibonacciCube.lean:323-338)
+, { label := "prop:folding-stable-syntax-fibonacci-count"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.instFintypePathIndSets"
+    phase := 117
+    status := .formalized }
+, { label := "prop:folding-stable-syntax-fibonacci-count"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.card_pathIndSets"
+    phase := 117
+    status := .formalized }
+, { label := "prop:folding-stable-syntax-terminal-recursion"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.appendFalse_injective"
+    phase := 117
     status := .formalized } ]
 
 end Omega.Audit
