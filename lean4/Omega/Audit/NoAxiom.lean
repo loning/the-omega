@@ -1881,6 +1881,18 @@ def coreAuditTargets : List String :=
   , "Omega.maxFiberMultiplicity_le_pow"
   , "Omega.fiberMultiplicity_le_pow"
   , "Omega.maxFiberMultiplicity_ge_one"
-  , "Omega.maxFiberMultiplicity_achievers_pos" ]
+  , "Omega.maxFiberMultiplicity_achievers_pos"
+  -- Phase 92: Fibonacci Pisano mod 2 (Core/Fib.lean:107-173)
+  , "Omega.fib_even_of_three_dvd"
+  , "Omega.three_dvd_of_fib_even"
+  , "Omega.fib_even_iff_three_dvd"
+  , "Omega.fib_mod_two_period"
+  , "Omega.fib_odd_iff_not_three_dvd"
+  -- Phase 93: Fibonacci 求和恒等式 (Core/Fib.lean:173-257)
+  , "Omega.fib_partial_sum"
+  , "Omega.fib_partial_sum_from_two"
+  , "Omega.fib_sq_sum"
+  , "Omega.fib_even_sum"
+  , "Omega.fib_odd_sum" ]
 
 end Omega.Audit

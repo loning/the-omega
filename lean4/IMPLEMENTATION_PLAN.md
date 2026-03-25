@@ -61,6 +61,8 @@
 **S_2 整除性 + E00 比较（Round 86，Phase 89）**：Folding/MomentRecurrence.lean（拓展至 341 行）——momentSum_two_odd_iff（thm:pom-s2-odd-iff：¬2∣S_2(m) ↔ m=0，由 momentSum_two_even + momentSum_two_zero 直接）; momentSum_two_mod_four（thm:pom-s2-mod-four：4∣S_2(m) for m≥4，强归纳，base m=4,5,6 直接展开，step m+7 由递推 + IH(m+4,m+5,m+6) + suffices h + linarith，利用 4∣S(m+4,m+5,m+6) 推出 4∣S(m+7)）; momentSum_two_ge_exactWeightCollision（thm:pom-s2-ge-e00：E00(m) ≤ S_2(m) for m≥1，强归纳，base m=1,2 直接展开，step m+3 由 exactWeightCollision_succ + succ_ge_double + IH(m+2) + linarith）; exactWeightCollision_double（thm:pom-e00-double：2·E00(m) ≤ E00(m+1) for m≥1，由 exactWeightCollision_succ + momentSum_two_ge_exactWeightCollision + omega）; exactWeightCollision_ge_linear（thm:pom-e00-ge-linear：m ≤ E00(m) for all m，归纳，step 由 exactWeightCollision_succ + momentSum_pos' + omega）——POM 覆盖率 ~21.0% → ~21.3%（+5 条目）（Phase 89）
 **递推唯一性 + S_2 高阶纯递推值（Round 87，Phase 90）**：Folding/MomentRecurrence.lean（拓展至 396 行）——recurrence_unique（thm:pom-s2-recurrence-unique：3阶线性递推由初值唯一确定，强归纳 + 两递推方程作差 + omega，适用于任意满足同一递推的 f,g）; momentSum_two_determined（thm:pom-s2-determined：S_2 是满足递推+初值(1,2,6)的唯一序列，由 recurrence_unique + momentSum_two_zero/one/two）; momentSum_two_seven_rec（thm:pom-s2-seven-rec：S_2(7)=544，由 momentSum_two_recurrence(4) + simp + omega，零 native_decide）; momentSum_two_eight_rec（thm:pom-s2-eight-rec：S_2(8)=1352，链式递推，同上手法）; momentSum_two_nine_rec（thm:pom-s2-nine-rec：S_2(9)=3352，链式递推）——POM 覆盖率 ~21.3% → ~21.6%（+5 条目）（Phase 90）
 **纤维结构界（Round 88，Phase 91）**：Folding/MomentRecurrence.lean（拓展至 436 行）——maxFiberMultiplicity_ge_avg（thm:pom-d-ge-avg：D(m)·F_{m+2} ≥ 2^m，通过 fiberMultiplicity_sum_eq_pow + fiberMultiplicity_le_max + sum_const + card_eq_fib 链式 calc）; maxFiberMultiplicity_le_pow（thm:pom-d-le-pow：D(m) ≤ 2^m，由 maxFiberMultiplicity_achieved 取 x + fiber.card ≤ univ.card + card_bool）; fiberMultiplicity_le_pow（thm:pom-fiber-le-pow：d(x) ≤ 2^m，由 fiberMultiplicity_le_max + maxFiberMultiplicity_le_pow 传递）; maxFiberMultiplicity_ge_one（thm:pom-d-ge-one：D(m) ≥ 1，直接由 maxFiberMultiplicity_pos）; maxFiberMultiplicity_achievers_pos（thm:pom-achievers-pos：达到者集合非空，由 maxFiberMultiplicity_achieved + Finset.mem_filter + card_pos）——POM 覆盖率 ~21.6% → ~21.9%（+5 条目）（Phase 91）
+**Fibonacci Pisano mod 2（Round 89，Phase 92）**：Core/Fib.lean（107→173 行）——fib_even_of_three_dvd（thm:fib-even-of-three-dvd：3∣n → 2∣F_n，由 Nat.fib_dvd + dvd_trans，F_3=2 是 3 的整除种子）; three_dvd_of_fib_even（thm:three-dvd-of-fib-even：2∣F_n → 3∣n，强归纳，base n=0 直接，n=1,2 exfalso，step n+3 分情况：F(n+1) 偶时推出 3|(n+1)∧3|(n+2) 矛盾，F(n+1) 奇时 F(n)=F(n+2)-F(n+1) 偶→IH→3|(n+3)）; fib_even_iff_three_dvd（thm:fib-even-iff-three-dvd：2∣F_n ↔ 3∣n，双向合并）; fib_mod_two_period（thm:fib-mod-two-period：F_n%2 = F_{n%3}%2，分 3∣n 和 3∤n 两支，后者 n%3∈{1,2}→F_{n%3}∈{1,1}→%2=1）; fib_odd_iff_not_three_dvd（thm:fib-odd-iff-not-three-dvd：¬2∣F_n ↔ ¬3∣n，由 fib_even_iff_three_dvd 直接改写）——新生算术覆盖率 ~40% → ~43%（+5 条目）（Phase 92）
+**Fibonacci 求和恒等式（Round 90，Phase 93）**：Core/Fib.lean（173→257 行）——fib_partial_sum（thm:fib-partial-sum：Σ_{k<n} F_{k+1} = F_{n+2}-1，归纳，step 由 Nat.fib_add_two + fib_succ_pos 两次 + omega）; fib_partial_sum_from_two（thm:fib-partial-sum-from-two：Σ_{k<n} F_{k+2} = F_{n+3}-2，归纳，step 由 fib_add_two(n+2) + 三次 fib_succ_pos + omega）; fib_sq_sum（thm:fib-sq-sum：Σ_{k<n} F_{k+1}² = F_n·F_{n+1}，归纳，step 由 fib_add_two + ring，F_n·F_{n+1}+F_{n+1}²=F_{n+1}·F_{n+2}）; fib_even_sum（thm:fib-even-sum：Σ_{k<n} F_{2(k+1)} = F_{2n+1}-1，归纳，step 由 fib_add_two(2n+1) + fib_succ_pos × 2 + omega）; fib_odd_sum（thm:fib-odd-sum：Σ_{k<n} F_{2k+1} = F_{2n}，归纳，step 由 fib_add_two(2n) + omega）——新生算术覆盖率 ~43% → ~46%（+5 条目）（Phase 93）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -124,7 +126,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1009/10,588 = **9.5%** |
+| 全局覆盖率 | 1019/10,588 = **9.6%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -135,23 +137,7 @@
 | 章节 | LaTeX 定理数 | SourceMap 注册 | 覆盖率 |
 |---|---|---|---|
 | SPG | 127 | ~70 | ~55% |
-| 新生算术 | 151 | ~60 | ~40% |
-| Folding | 317 | ~80 | ~25% |
-| 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~335 | ~21.9% |
-| 圆维度 | 342 | ~50 | ~15% |
-| Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | ~60 | ~3% |
-| 未追踪 body | 143 | 2 | ~1% |
-| 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **~951** | **9.0%** |
-
-**逐章覆盖率**：
-
-| 章节 | LaTeX 定理数 | SourceMap 注册 | 覆盖率 |
-|---|---|---|---|
-| SPG | 127 | ~70 | ~55% |
-| 新生算术 | 151 | ~60 | ~40% |
+| 新生算术 | 151 | ~70 | ~46% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~335 | ~21.9% |
