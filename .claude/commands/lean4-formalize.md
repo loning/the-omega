@@ -76,52 +76,55 @@ Agent(
 
 **spawn 完毕后等待三个 teammate idle，不做其他操作。**
 
+## 流水线核心原则
+
+**三个 agent 永不空闲**：在任何时刻，analyst、formalizer、registrar 都应该在工作或等待明确的前置条件完成。
+
+**流水线时序**（稳态运行时）：
+```
+时间 →
+analyst:     [分析 R(N+1)] ──────> [分析 R(N+2)] ──────> ...
+formalizer:  [实现 R(N)] ────────> [commit] → [实现 R(N+1)] ────> ...
+registrar:           [登记 R(N-1)] → [push]        [登记 R(N)] → ...
+```
+
+**触发规则**（team lead 每次收到任何消息时执行）：
+
+| 事件 | 立即动作 |
+|------|---------|
+| analyst 完成规格 R(N) | 如果 formalizer idle 且 registrar 无阻塞 → 立即发给 formalizer |
+| formalizer 完成 R(N) 并 commit | 同时：①将 R(N) 发给 registrar 登记 ②如果 analyst 已有 R(N+1) 规格 → 立即发给 formalizer ③如果 analyst 没有 R(N+1) → 发消息催 analyst |
+| registrar 完成登记 R(N) | 检查 formalizer 是否在等规格 → 如果 analyst 已有 → 转发 |
+| 任何 teammate idle | 检查是否有待分配任务 → 有则立即分配 |
+
 ## 每轮循环流程
 
-### Phase 0+1：选取目标 + 分析规格
+### Phase 0+1：选取目标 + 分析规格（仅首轮需要等待）
 
-1. 创建任务追踪：
-   ```
-   TaskCreate(title = "分析：[计划项名称]")
-   ```
+首轮或 analyst 规格缓存为空时：
+1. 发消息给 analyst 请求规格
+2. 等待 analyst 回复
+3. 检查规格完整性（论文证明过程 + 小值验证）
 
-2. 发消息给 analyst：
-   ```
-   SendMessage(to = "analyst", message = "请读取 lean4/IMPLEMENTATION_PLAN.md §4 执行优先级，选取最高优先级的未完成计划项，然后生成该计划项的完整Lean4形式化规格。
+稳态运行时：analyst 的规格应该已经提前准备好（流水线），直接使用。
 
-   **必须包含论文证明过程**：找到论文 .tex 文件中该定理的完整证明，逐步提取为 formalizer 可理解的数学步骤链。")
-   ```
+### Phase 2：实现（流水线核心）
 
-3. **停下来，等待 analyst 回复。不做任何其他操作。**
+**team lead 收到 analyst 的规格后，在一条消息中同时发送三条指令**：
 
-4. 收到 analyst 的规格后：
-   - **检查规格是否包含"论文证明过程"章节**。如果缺失，要求 analyst 补充
-   - **检查是否包含"小值验证"章节**。如果缺失，要求 analyst 补充
-   - 保存完整内容，标记任务完成
+```
+// 1. 发给 formalizer（开始实现）
+SendMessage(to = "formalizer", message = "请按照以下规格实现：[规格]
+完成后请 git commit（不 push）。")
 
-### Phase 2：实现
+// 2. 发给 analyst（提前分析下一轮）
+SendMessage(to = "analyst", message = "formalizer 正在实现第 N 轮。请提前设计第 N+1 轮规格。")
 
-1. 创建任务追踪：
-   ```
-   TaskCreate(title = "实现：[定理名]")
-   ```
+// 3. 发给 registrar（如果上一轮的代码已 commit 但还没登记）
+SendMessage(to = "registrar", message = "请登记上一轮成果。[详情]")
+```
 
-2. **同时做两件事**（流水线优化）：
-
-   a. 将 analyst 的规格转发给 formalizer：
-   ```
-   SendMessage(to = "formalizer", message = "请按照以下规格实现Lean4形式化：
-   [analyst 的完整规格原样粘贴]
-   硬约束：零sorry、零admit、零axiom、lake build必须通过、文件不超过800行、最多15轮编译循环
-   **证明路线要求**：请先理解论文的证明步骤，按论文路线翻译为 Lean4。")
-   ```
-
-   b. **同时通知 analyst 开始分析下一轮**（流水线：formalizer 实现第 N 轮时，analyst 提前分析第 N+1 轮）：
-   ```
-   SendMessage(to = "analyst", message = "formalizer 正在实现第 N 轮。请提前设计第 N+1 轮规格...")
-   ```
-
-3. **等待 formalizer 回复。** analyst 的下一轮分析可以在后台并行进行。
+**三条消息必须在同一个 turn 中发出，不要分批发送。**
 
 4. **如果 formalizer 报告技术阻塞或推迟任务**（API 不匹配、tactic 选择困难、数学路线疑问、proof engineering 复杂等）：
    - **积极 spawn codex-consultant**，不要轻易接受"推迟"——先让 Codex 提供独立技术建议

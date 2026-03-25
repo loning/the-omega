@@ -599,4 +599,63 @@ theorem stableValue_sum (m : Nat) :
     rw [← Fin.sum_univ_eq_sum_range]
   rw [this, Finset.sum_range_id]
 
+-- ══════════════════════════════════════════════════════════════
+-- S_2 cross-verification and growth bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2 recurrence matches the Cayley-Hamilton of the collision kernel. -/
+theorem momentSum_two_recurrence_matches_charpoly :
+    (∀ m, momentSum 2 (m + 3) + 2 * momentSum 2 m =
+      2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1)) ∧
+    collisionKernel2 ^ 3 = 2 • collisionKernel2 ^ 2 + 2 • collisionKernel2 - 2 • 1 :=
+  ⟨momentSum_two_recurrence, collisionKernel2_cayley_hamilton⟩
+
+/-- Complete S_2 value chain for m = 0..7. -/
+theorem momentSum_two_chain :
+    momentSum 2 0 = 1 ∧ momentSum 2 1 = 2 ∧ momentSum 2 2 = 6 ∧
+    momentSum 2 3 = 14 ∧ momentSum 2 4 = 36 ∧ momentSum 2 5 = 88 ∧
+    momentSum 2 6 = 220 ∧ momentSum 2 7 = 544 :=
+  ⟨momentSum_two_zero, momentSum_two_one, momentSum_two_two,
+    momentSum_two_three, momentSum_two_four, momentSum_two_five,
+    momentSum_two_six, momentSum_two_seven_rec⟩
+
+/-- S_2 growth ratio bounds: 2·S_2(m) ≤ S_2(m+1) ≤ 4·S_2(m) for m ≥ 2. -/
+theorem momentSum_two_ratio_bounds' (m : Nat) (hm : 2 ≤ m) :
+    2 * momentSum 2 m ≤ momentSum 2 (m + 1) ∧
+    momentSum 2 (m + 1) ≤ 4 * momentSum 2 m :=
+  ⟨momentSum_two_succ_ge_double m hm, momentSum_two_succ_le_quadruple m⟩
+
+/-- The excess: S_2(m+1) > 2·S_2(m) for m ≥ 3. -/
+theorem momentSum_two_excess_pos (m : Nat) (hm : 3 ≤ m) :
+    2 * momentSum 2 m < momentSum 2 (m + 1) := by
+  obtain ⟨k, rfl⟩ : ∃ k, m = k + 3 := ⟨m - 3, by omega⟩
+  have hrec := momentSum_two_recurrence (k + 1)
+  have hsmono := momentSum_two_strict_mono' (k + 1) (by omega)
+  linarith
+
+/-- S_2(m) ≥ 2·F_{m+1} for m ≥ 2. -/
+theorem momentSum_two_ge_two_fib (m : Nat) (hm : 2 ≤ m) :
+    2 * Nat.fib (m + 1) ≤ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 => omega
+    | 2 => rw [momentSum_two_two]; simp [Nat.fib]
+    | 3 => rw [momentSum_two_three]; simp [Nat.fib]
+    | m + 4 =>
+      -- S_2(m+4) ≥ 2·S_2(m+3) ≥ 4·F(m+2)
+      -- F(m+5) = F(m+4) + F(m+3)
+      -- Need: S_2(m+4) ≥ 2·F(m+5) = 2·F(m+4) + 2·F(m+3)
+      -- S_2(m+4) ≥ 2·S_2(m+3) [succ_ge_double] ≥ 2·(2·F(m+2)) = 4·F(m+2) [IH at m+3]
+      -- Need 4·F(m+2) ≥ 2·F(m+4) + 2·F(m+3)? No, that's wrong direction.
+      -- Better: S_2(m+4) ≥ 2·S_2(m+3) and S_2(m+3) ≥ 2·F(m+4)
+      -- So S_2(m+4) ≥ 4·F(m+4) ≥ 2·F(m+5)? No: 4F(m+4) vs 2F(m+5) = 2(F(m+4)+F(m+3)).
+      -- 4F(m+4) ≥ 2F(m+4)+2F(m+3) iff 2F(m+4) ≥ 2F(m+3) iff F(m+4) ≥ F(m+3). True!
+      have h3 := ih (m + 3) (by omega) (by omega)
+      have hge := momentSum_two_succ_ge_double (m + 3) (by omega)
+      have hfib := Nat.fib_add_two (n := m + 3)
+      rw [show m + 3 + 2 = m + 5 from rfl, show m + 3 + 1 = m + 4 from rfl] at hfib
+      have hmono : Nat.fib (m + 3) ≤ Nat.fib (m + 4) := Nat.fib_mono (by omega)
+      linarith
+
 end Omega
