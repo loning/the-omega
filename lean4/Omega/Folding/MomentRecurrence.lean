@@ -433,4 +433,137 @@ theorem maxFiberMultiplicity_achievers_pos (m : Nat) :
   obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
   exact ⟨x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Weight extremes
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight of all-true word = F_{m+3} - 2. -/
+theorem weight_allTrue (m : Nat) :
+    weight (fun (_ : Fin m) => true) = Nat.fib (m + 3) - 2 := by
+  induction m with
+  | zero => decide
+  | succ m ih =>
+    simp only [weight, ite_true]
+    have htr : truncate (fun (_ : Fin (m + 1)) => true) = (fun (_ : Fin m) => true) := by
+      funext i; simp [truncate]
+    rw [htr, ih]
+    -- Normalize Nat.fib argument forms
+    have e1 : Nat.fib (m + 1 + 1) = Nat.fib (m + 2) := rfl
+    have e2 : Nat.fib (m + 1 + 2) = Nat.fib (m + 3) := rfl
+    have e3 : Nat.fib (m + 1 + 3) = Nat.fib (m + 4) := rfl
+    rw [e1, e2, e3] at *
+    have hrec : Nat.fib (m + 4) = Nat.fib (m + 3) + Nat.fib (m + 2) := by
+      have := fib_succ_succ' (m + 2)
+      rw [show m + 2 + 2 = m + 4 from rfl, show m + 2 + 1 = m + 3 from rfl] at this; exact this
+    have hrec2 : Nat.fib (m + 3) = Nat.fib (m + 2) + Nat.fib (m + 1) := by
+      have := fib_succ_succ' (m + 1)
+      rw [show m + 1 + 2 = m + 3 from rfl, show m + 1 + 1 = m + 2 from rfl] at this; exact this
+    have h1 : 0 < Nat.fib (m + 1) := fib_succ_pos m
+    have h2 : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+    omega
+
+/-- Weight is bounded by F_{m+3} - 2. -/
+theorem weight_le_allTrue (w : Word m) :
+    weight w ≤ Nat.fib (m + 3) - 2 := by
+  rw [← weight_allTrue m]
+  induction m with
+  | zero => simp [weight]
+  | succ m ih =>
+    simp only [weight]
+    have htr : truncate (fun (_ : Fin (m + 1)) => true) = (fun (_ : Fin m) => true) := by
+      funext i; simp [truncate]
+    rw [htr]
+    have him := ih (truncate w)
+    cases hb : w ⟨m, Nat.lt_succ_self m⟩
+    · simp only [hb, Bool.false_eq_true, ↓reduceIte, Nat.add_zero]; omega
+    · simp only [hb, ↓reduceIte]; omega
+
+/-- Fold of all-true word. -/
+theorem Fold_allTrue (m : Nat) :
+    Fold (fun (_ : Fin m) => true) = X.ofNat m (Nat.fib (m + 3) - 2) := by
+  unfold Fold; rw [weight_allTrue]
+
+/-- ewc(m, 0) = 1 (only all-false has weight 0). -/
+theorem exactWeightCount_zero_eq_one' (m : Nat) : exactWeightCount m 0 = 1 := by
+  unfold exactWeightCount; rw [Finset.card_eq_one]
+  refine ⟨fun _ => false, ?_⟩
+  ext w; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+  constructor
+  · intro hw
+    -- weight w = 0 → w = allFalse (by induction on m)
+    induction m with
+    | zero => funext i; exact absurd i.isLt (Nat.not_lt_zero _)
+    | succ m ih =>
+      funext i
+      have hLast : w ⟨m, Nat.lt_succ_self m⟩ = false := by
+        by_contra h
+        have : w ⟨m, Nat.lt_succ_self m⟩ = true := by
+          cases hb : w ⟨m, Nat.lt_succ_self m⟩ <;> simp_all
+        have := weight_pos_of_bit_true this; omega
+      by_cases hi : i.val < m
+      · have htr : weight (truncate w) = 0 := by
+          rw [weight] at hw; simp only [hLast, Bool.false_eq_true, ↓reduceIte, Nat.add_zero] at hw; exact hw
+        have := congr_fun (ih (truncate w) htr) ⟨i.val, hi⟩
+        simp [truncate] at this; exact this
+      · have : i = ⟨m, Nat.lt_succ_self m⟩ := Fin.ext (Nat.eq_of_lt_succ_of_not_lt i.isLt hi)
+        rw [this, hLast]
+  · intro hw; rw [hw]; exact weight_allFalse
+
+
+-- ══════════════════════════════════════════════════════════════
+-- Complement map
+-- ══════════════════════════════════════════════════════════════
+
+/-- Bitwise complement of a word. -/
+def complement (w : Word m) : Word m := fun i => !w i
+
+theorem complement_involution (w : Word m) : complement (complement w) = w := by
+  funext i; simp [complement]
+
+theorem truncate_complement (w : Word (m + 1)) :
+    truncate (complement w) = complement (truncate w) := by
+  funext i; simp [truncate, complement]
+
+theorem complement_allFalse (m : Nat) :
+    complement (fun (_ : Fin m) => false) = fun _ => true := by
+  funext i; simp [complement]
+
+/-- weight(complement w) + weight(w) = F_{m+3} - 2. -/
+theorem weight_complement (w : Word m) :
+    weight (complement w) + weight w = Nat.fib (m + 3) - 2 := by
+  rw [← weight_allTrue]
+  induction m with
+  | zero => rfl
+  | succ m ih =>
+    simp only [weight]
+    rw [truncate_complement]
+    have htr : truncate (fun (_ : Fin (m + 1)) => true) = (fun (_ : Fin m) => true) := by
+      funext i; simp [truncate]
+    rw [htr]
+    have him := ih (truncate w)
+    cases hb : w ⟨m, Nat.lt_succ_self m⟩
+    · simp only [complement, hb, Bool.not_false, Bool.false_eq_true, ↓reduceIte, Nat.add_zero, ite_true]
+      omega
+    · simp only [complement, hb, Bool.not_true, Bool.false_eq_true, ↓reduceIte, Nat.add_zero, ite_true]
+      omega
+
+/-- ewc is symmetric: ewc(m, n) = ewc(m, F_{m+3}-2-n). -/
+theorem exactWeightCount_symmetric (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
+    exactWeightCount m n = exactWeightCount m (Nat.fib (m + 3) - 2 - n) := by
+  unfold exactWeightCount
+  apply Finset.card_bij (fun (w : Word m) _ => complement w)
+  · intro w hw
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+    have hcomp := weight_complement w
+    omega
+  · intro w1 _ w2 _ h
+    have := congr_arg complement h
+    rwa [complement_involution, complement_involution] at this
+  · intro w hw
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+    refine ⟨complement w, ?_, complement_involution w⟩
+    have hcomp := weight_complement (complement w)
+    rw [complement_involution] at hcomp
+    omega
+
 end Omega

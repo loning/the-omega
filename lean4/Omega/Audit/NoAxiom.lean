@@ -1893,6 +1893,17 @@ def coreAuditTargets : List String :=
   , "Omega.fib_partial_sum_from_two"
   , "Omega.fib_sq_sum"
   , "Omega.fib_even_sum"
-  , "Omega.fib_odd_sum" ]
+  , "Omega.fib_odd_sum"
+  -- Phase 94: 权重极值 (MomentRecurrence.lean:436-513)
+  , "Omega.weight_allTrue"
+  , "Omega.weight_le_allTrue"
+  , "Omega.Fold_allTrue"
+  , "Omega.exactWeightCount_zero_eq_one'"
+  -- Phase 95: complement 对称性 (MomentRecurrence.lean:513-569)
+  , "Omega.complement_involution"
+  , "Omega.truncate_complement"
+  , "Omega.complement_allFalse"
+  , "Omega.weight_complement"
+  , "Omega.exactWeightCount_symmetric" ]
 
 end Omega.Audit
