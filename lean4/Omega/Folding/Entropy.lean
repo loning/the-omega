@@ -95,6 +95,30 @@ theorem fibRadius_discretization_of_le_tendsto_zero
   exact tendsto_zero_of_nonneg_le_of_tendsto_zero
     (fun m => D (fibRadius m)) eps h_nonneg h_bound h_eps
 
+/-- A logarithmic defect upper bound yields a quantitative lower bound on the modulus, provided the
+underlying quantity is nonzero. -/
+theorem zero_modulus_lower_bound_of_log_defect_bound
+    (a defect : ℝ)
+    (ha : a ≠ 0)
+    (hdef : -Real.log |a| ≤ defect) :
+    Real.exp (-defect) ≤ |a| := by
+  have hlog : -defect ≤ Real.log |a| := by linarith
+  calc
+    Real.exp (-defect) ≤ Real.exp (Real.log |a|) := by
+      exact Real.exp_le_exp.mpr hlog
+    _ = |a| := by
+      rw [Real.exp_log (abs_pos.mpr ha)]
+
+/-- Fibonacci-radius packaging of `zero_modulus_lower_bound_of_log_defect_bound`. -/
+theorem fibRadius_zero_modulus_lower_bound_of_log_defect_bound
+    (A : ℝ → ℝ)
+    (eps : ℕ → ℝ)
+    (ha : ∀ m, A (fibRadius m) ≠ 0)
+    (hdef : ∀ m, -Real.log |A (fibRadius m)| ≤ eps m) :
+    ∀ m, Real.exp (-eps m) ≤ |A (fibRadius m)| := by
+  intro m
+  exact zero_modulus_lower_bound_of_log_defect_bound (A (fibRadius m)) (eps m) (ha m) (hdef m)
+
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
 normalizing log-partition term minus the average tilt. -/
 theorem kl_reverse_tilted_split
