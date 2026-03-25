@@ -8239,6 +8239,41 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CircleDimension"
     leanName := "Omega.one_sub_sq_of_poissonTime_param_nat"
     phase := 116
+    status := .formalized }
+-- Phase 117: Fibonacci radius asymptotics (Entropy.lean:312-449)
+-- con:cdim-fibonacci-radius-time-conjugacy 第 3 条 → phi_rpow_neg_nat_tendsto_zero /
+--   fib_mul_phi_neg_tendsto_inv_sqrt5 / fib_add_two_mul_phi_neg_tendsto_inv_sqrt5 /
+--   one_sub_fibRadius_sq_tendsto / one_sub_fibRadius_sq_isEquivalent
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.phi_rpow_neg_nat_tendsto_zero"
+    phase := 117
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.fib_mul_phi_neg_tendsto_inv_sqrt5"
+    phase := 117
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.fib_add_two_mul_phi_neg_tendsto_inv_sqrt5"
+    phase := 117
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.one_sub_fibRadius_sq_tendsto"
+    phase := 117
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.one_sub_fibRadius_sq_isEquivalent"
+    phase := 117
     status := .formalized } ]
 
 end Omega.Audit

@@ -761,6 +761,13 @@ Run these commands manually during audit:
   #print axioms Omega.one_sub_sq_of_poissonTime_param
   #print axioms Omega.one_sub_fibRadius_sq
   #print axioms Omega.one_sub_sq_of_poissonTime_param_nat
+  -- Round 117: Fibonacci radius asymptotics (Entropy.lean:312-449)
+  #print axioms Omega.Entropy.phi_rpow_neg_nat_tendsto_zero
+  #print axioms Omega.Entropy.fib_mul_phi_neg_tendsto_inv_sqrt5
+  #print axioms Omega.Entropy.fib_add_two_mul_phi_neg_tendsto_inv_sqrt5
+  #print axioms Omega.Entropy.one_sub_fibRadius_sq_tendsto
+  #print axioms Omega.Entropy.one_sub_fibRadius_sq_isEquivalent
+  #print axioms Omega.Entropy.psi_pow_mul_inv_phi_pow
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1683,6 +1690,13 @@ def coreAuditTargets : List String :=
   , "Omega.one_sub_sq_of_poissonTime_param"
   , "Omega.one_sub_fibRadius_sq"
   , "Omega.one_sub_sq_of_poissonTime_param_nat"
+  -- Round 117: Fibonacci radius asymptotics
+  , "Omega.Entropy.phi_rpow_neg_nat_tendsto_zero"
+  , "Omega.Entropy.fib_mul_phi_neg_tendsto_inv_sqrt5"
+  , "Omega.Entropy.fib_add_two_mul_phi_neg_tendsto_inv_sqrt5"
+  , "Omega.Entropy.one_sub_fibRadius_sq_tendsto"
+  , "Omega.Entropy.one_sub_fibRadius_sq_isEquivalent"
+  , "Omega.Entropy.psi_pow_mul_inv_phi_pow"
   , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
   -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
   -- (CollisionZeta.lean:503-549, Window6.lean:386-389)
