@@ -482,7 +482,7 @@ theorem collision_cross_eq_two_crossCorr (m : Nat) :
       simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_product, Finset.mem_filter,
         Finset.mem_univ, true_and]
       constructor
-      · rintro ⟨n, _, h1, h2⟩; omega
+      · intro ⟨n, hn, hv1, hv2⟩; omega
       · intro h; exact ⟨weight v1, X.weight_lt_fib v1, rfl, by omega⟩
     · intro n _ n' _ hne
       simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
@@ -501,5 +501,276 @@ theorem momentSum_two_succ_three_term (m : Nat) :
     2 * crossCorr m (Nat.fib (m + 1)) := by
   rw [momentSum_two_succ_two_term, collision_same_eq_exactWeightCollision,
       collision_cross_eq_two_crossCorr]; ring
+
+-- ══════════════════════════════════════════════════════════════
+-- crossCorr recurrence
+-- ══════════════════════════════════════════════════════════════
+
+/-- crossCorr(m+1, F_{m+2}) = 2·crossCorr(m, F_{m+2}) + E00(m).
+    Derived from S_2 decomposition and exactWeightCollision_succ. -/
+theorem crossCorr_fib_succ (m : Nat) :
+    crossCorr (m + 1) (Nat.fib (m + 2)) =
+    2 * crossCorr m (Nat.fib (m + 2)) + exactWeightCollision m := by
+  -- From momentSum_two_succ_three_term:
+  --   S_2(m+1) = 2·E00(m) + 2·crossCorr(m,F2) + 2·crossCorr(m,F1)
+  -- From exactWeightCollision_succ: E00(m+1) = E00(m) + S_2(m)
+  -- From momentSum_two_succ_three_term(m+1):
+  --   S_2(m+2) = 2·E00(m+1) + 2·crossCorr(m+1,F3) + 2·crossCorr(m+1,F2)
+  -- Also from collision_cross_eq_two_crossCorr:
+  --   E01(m) = crossCorr(m,F2) + crossCorr(m,F1)
+  -- From momentSum_two_succ_two_term:
+  --   S_2(m+1) = 2·E00(m) + 2·E01(m) = 2·E00(m) + 2·(crossCorr(m,F2)+crossCorr(m,F1))
+  -- And E00(m+1) = E00(m) + S_2(m) via 4-split showed:
+  --   E00(m+1) = 2·E00(m) + 2·E01_pair(m) where E01_pair = crossCorr(m,F2)+crossCorr(m,F1)
+  -- Wait, that's not what exactWeightCollision_succ showed. It showed
+  --   E00(m+1) = E00(m) + S_2(m).
+  -- And S_2(m) = 2·E00(m) + 2·(cc_F2 + cc_F1) - 2·E00(m) = ... no.
+  -- Actually from h3term: S_2(m+1) = 2E00(m) + 2cc_F2(m) + 2cc_F1(m)
+  -- From E00(m+1) = E00(m) + S_2(m)
+  -- So S_2(m+1) = 2·E00(m) + 2·cc_F2(m) + 2·cc_F1(m)
+  -- and E00(m+1) = E00(m) + S_2(m)
+  -- We want: cc_F2(m+1) = 2·cc_F2(m) + E00(m)
+  -- From h3term at m+1:
+  --   S_2(m+2) = 2·E00(m+1) + 2·cc_{F3}(m+1) + 2·cc_{F2}(m+1)
+  -- From exactWeightCollision_succ at m+1:
+  --   E00(m+2) = E00(m+1) + S_2(m+1)
+  -- This system has 2 unknowns: cc_{F3}(m+1) and cc_{F2}(m+1). Not enough.
+  -- I need another equation. Let me use crossCorr_fib_succ at m+1 for F3:
+  -- cc_{F3}(m+1) = crossCorr((m+1)+1, F_{(m+1)+2}) = crossCorr(m+2, F_{m+3})
+  -- By the same theorem (at m+1): cc_{F3}(m+2) = 2·cc_{F3}(m+1) + E00(m+1)
+  -- But this is circular since I'm trying to prove the theorem!
+  --
+  -- Let me just use the collision pair 4-split directly, same as exactWeightCollision_succ.
+  -- crossCorr(m+1, F2) = |{(v1,v2) : wt v1 + F2 = wt v2 in Word(m+1)²}|
+  -- Split by last bits → 4 terms. (ff)=cc(m,F2), (ft)=E00(m), (tf)=0, (tt)=cc(m,F2)
+  -- But I can't easily get from the Finset.sum definition of crossCorr to the collision pair form
+  -- without crossCorr_as_collision (which had the biUnion issue).
+  --
+  -- Let me try crossCorr_as_collision one more time with a different proof structure.
+  classical
+  have hcc_coll : ∀ m' d',
+      crossCorr m' d' = (Finset.univ.filter (fun p : Word m' × Word m' =>
+        weight p.1 + d' = weight p.2)).card := by
+    intro m' d'
+    unfold crossCorr exactWeightCount
+    symm; simp_rw [← Finset.card_product]; rw [← Finset.card_biUnion]
+    · congr 1; ext ⟨v1, v2⟩
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      constructor
+      · intro h
+        rw [Finset.mem_biUnion]
+        exact ⟨weight v1, Finset.mem_range.mpr (X.weight_lt_fib v1),
+          Finset.mem_product.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩,
+            Finset.mem_filter.mpr ⟨Finset.mem_univ _, h.symm⟩⟩⟩
+      · intro h
+        rw [Finset.mem_biUnion] at h
+        obtain ⟨n, _, hp⟩ := h
+        rw [Finset.mem_product] at hp
+        have h1 := (Finset.mem_filter.mp hp.1).2
+        have h2 := (Finset.mem_filter.mp hp.2).2
+        linarith [h1, h2]
+    · intro n _ n' _ hne
+      simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+        Finset.mem_univ, true_and]
+      intro ⟨v1, _⟩ ⟨h1, _⟩ ⟨h1', _⟩; exact hne (h1.symm.trans h1')
+  rw [hcc_coll (m + 1), ← collision_same_eq_exactWeightCollision m, hcc_coll m]
+  -- 4-split
+  have hmod_id : ∀ w : Word m, weight w % Nat.fib (m + 3) = weight w := by
+    intro w; exact Nat.mod_eq_of_lt (X.weight_lt_fib w)
+  have key : ∀ b1 b2 : Bool,
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 + Nat.fib (m + 2) = weight p.2 ∧
+        p.1 ⟨m, by omega⟩ = b1 ∧ p.2 ⟨m, by omega⟩ = b2)).card =
+      (Finset.univ.filter (fun p : Word m × Word m =>
+        weight p.1 + (if b1 then Nat.fib (m + 2) else 0) + Nat.fib (m + 2) =
+        weight p.2 + (if b2 then Nat.fib (m + 2) else 0))).card := by
+    intro b1 b2
+    apply Finset.card_bij (fun (p : Word (m + 1) × Word (m + 1)) _ => (truncate p.1, truncate p.2))
+    · intro ⟨w1, w2⟩ hp
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+      rw [weight, hp.2.1, weight, hp.2.2] at hp; exact hp.1
+    · intro ⟨w1a, w2a⟩ ha ⟨w1b, w2b⟩ hb heq
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq] at ha hb heq ⊢
+      exact ⟨by rw [← X.snoc_truncate_last w1a, ← X.snoc_truncate_last w1b, heq.1, ha.2.1, hb.2.1],
+             by rw [← X.snoc_truncate_last w2a, ← X.snoc_truncate_last w2b, heq.2, ha.2.2, hb.2.2]⟩
+    · intro ⟨v1, v2⟩ hv
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+      exact ⟨(snoc v1 b1, snoc v2 b2), ⟨by simp [weight_snoc]; exact hv, by simp, by simp⟩, by simp⟩
+  have hdisj : ∀ b1 b2 b1' b2' : Bool, (b1, b2) ≠ (b1', b2') → Disjoint
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 + Nat.fib (m + 2) = weight p.2 ∧ p.1 ⟨m, by omega⟩ = b1 ∧ p.2 ⟨m, by omega⟩ = b2))
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 + Nat.fib (m + 2) = weight p.2 ∧ p.1 ⟨m, by omega⟩ = b1' ∧ p.2 ⟨m, by omega⟩ = b2')) := by
+    intro b1 b2 b1' b2' hne; apply Finset.disjoint_filter.mpr
+    intro ⟨w1, w2⟩ _ ⟨_, hb1, hb2⟩ ⟨_, hb1', hb2'⟩
+    exact hne (Prod.ext (hb1.symm.trans hb1') (hb2.symm.trans hb2'))
+  have hunion : Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+      weight p.1 + Nat.fib (m + 2) = weight p.2) =
+      Finset.univ.filter (fun p => weight p.1 + Nat.fib (m + 2) = weight p.2 ∧ p.1 ⟨m, by omega⟩ = false ∧ p.2 ⟨m, by omega⟩ = false) ∪
+      Finset.univ.filter (fun p => weight p.1 + Nat.fib (m + 2) = weight p.2 ∧ p.1 ⟨m, by omega⟩ = false ∧ p.2 ⟨m, by omega⟩ = true) ∪
+      Finset.univ.filter (fun p => weight p.1 + Nat.fib (m + 2) = weight p.2 ∧ p.1 ⟨m, by omega⟩ = true ∧ p.2 ⟨m, by omega⟩ = false) ∪
+      Finset.univ.filter (fun p => weight p.1 + Nat.fib (m + 2) = weight p.2 ∧ p.1 ⟨m, by omega⟩ = true ∧ p.2 ⟨m, by omega⟩ = true) := by
+    ext ⟨w1, w2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+    constructor
+    · intro h; rcases Bool.eq_false_or_eq_true (w1 ⟨m, by omega⟩) with h1 | h1 <;>
+        rcases Bool.eq_false_or_eq_true (w2 ⟨m, by omega⟩) with h2 | h2 <;> simp [h, h1, h2]
+    · rintro (((⟨h, _, _⟩ | ⟨h, _, _⟩) | ⟨h, _, _⟩) | ⟨h, _, _⟩) <;> exact h
+  rw [hunion]
+  have dff_ft := hdisj false false false true (by decide)
+  have dff_tf := hdisj false false true false (by decide)
+  have dff_tt := hdisj false false true true (by decide)
+  have dft_tf := hdisj false true true false (by decide)
+  have dft_tt := hdisj false true true true (by decide)
+  have dtf_tt := hdisj true false true true (by decide)
+  rw [Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr
+      ⟨Finset.disjoint_union_left.mpr ⟨dff_tt, dft_tt⟩, dtf_tt⟩),
+    Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr ⟨dff_tf, dft_tf⟩),
+    Finset.card_union_of_disjoint dff_ft,
+    key false false, key false true, key true false, key true true]
+  simp only [Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
+  -- (ft): cancel F
+  have hft : (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 + Nat.fib (m + 2) = weight p.2 + Nat.fib (m + 2))).card =
+      (Finset.univ.filter (fun p : Word m × Word m =>
+        weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3))).card := by
+    congr 1; ext ⟨v1, v2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro h; rw [hmod_id, hmod_id]; omega
+    · intro h; rw [hmod_id, hmod_id] at h; omega
+  -- (tf): impossible
+  have htf : (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 + Nat.fib (m + 2) + Nat.fib (m + 2) = weight p.2)).card = 0 := by
+    apply Finset.card_eq_zero.mpr; rw [Finset.filter_eq_empty_iff]
+    intro ⟨v1, v2⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_and]
+    intro h
+    have : weight v2 < Nat.fib (m + 3) := X.weight_lt_fib v2
+    have : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+    have : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+    omega
+  -- (tt): cancel one F
+  have htt : (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 + Nat.fib (m + 2) + Nat.fib (m + 2) = weight p.2 + Nat.fib (m + 2))).card =
+      (Finset.univ.filter (fun p : Word m × Word m =>
+        weight p.1 + Nat.fib (m + 2) = weight p.2)).card := by
+    congr 1; ext ⟨v1, v2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and]; omega
+  rw [hft, htf, htt]; omega
+
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 = E00 + 2·crossCorr(F)
+-- ══════════════════════════════════════════════════════════════
+
+private theorem crossCorr_as_collision' (m d : Nat) :
+    crossCorr m d = (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 + d = weight p.2)).card := by
+  classical
+  unfold crossCorr exactWeightCount
+  symm; simp_rw [← Finset.card_product]; rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨v1, v2⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro h; rw [Finset.mem_biUnion]
+      exact ⟨weight v1, Finset.mem_range.mpr (X.weight_lt_fib v1),
+        Finset.mem_product.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩,
+          Finset.mem_filter.mpr ⟨Finset.mem_univ _, h.symm⟩⟩⟩
+    · intro h; rw [Finset.mem_biUnion] at h
+      obtain ⟨n, _, hp⟩ := h; rw [Finset.mem_product] at hp
+      have h1 := (Finset.mem_filter.mp hp.1).2
+      have h2 := (Finset.mem_filter.mp hp.2).2
+      linarith [h1, h2]
+  · intro n _ n' _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    intro ⟨v1, _⟩ ⟨h1, _⟩ ⟨h1', _⟩; exact hne (h1.symm.trans h1')
+
+/-- S_2(m) = E00(m) + 2·crossCorr(m, F_{m+2}). -/
+theorem momentSum_two_eq_exact_plus_crossCorr (m : Nat) :
+    momentSum 2 m = exactWeightCollision m + 2 * crossCorr m (Nat.fib (m + 2)) := by
+  classical
+  rw [momentSum_two_eq_collision, ← collision_same_eq_exactWeightCollision,
+      crossCorr_as_collision']
+  simp_rw [Fold_eq_iff_weight_mod]
+  have hmod_id : ∀ v : Word m, weight v % Nat.fib (m + 3) = weight v := by
+    intro v; exact Nat.mod_eq_of_lt (X.weight_lt_fib v)
+  simp_rw [hmod_id]
+  have hFpos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+  have hlt2F : ∀ v : Word m, weight v < 2 * Nat.fib (m + 2) := by
+    intro v
+    have hf3 : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+    have hmono : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+    have hwt := X.weight_lt_fib v; omega
+  have hsplit : Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 2) = weight p.2 % Nat.fib (m + 2)) =
+      Finset.univ.filter (fun p : Word m × Word m => weight p.1 = weight p.2) ∪
+      Finset.univ.filter (fun p => weight p.1 = weight p.2 + Nat.fib (m + 2)) ∪
+      Finset.univ.filter (fun p => weight p.1 + Nat.fib (m + 2) = weight p.2) := by
+    ext ⟨v1, v2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+    constructor
+    · intro hmod
+      have hdiv1 := Nat.div_add_mod (weight v1) (Nat.fib (m + 2))
+      have hdiv2 := Nat.div_add_mod (weight v2) (Nat.fib (m + 2))
+      have hq1 : weight v1 / Nat.fib (m + 2) < 2 := Nat.div_lt_of_lt_mul (by linarith [hlt2F v1])
+      have hq2 : weight v2 / Nat.fib (m + 2) < 2 := Nat.div_lt_of_lt_mul (by linarith [hlt2F v2])
+      rw [hmod] at hdiv1
+      interval_cases (weight v1 / Nat.fib (m + 2)) <;>
+        interval_cases (weight v2 / Nat.fib (m + 2)) <;> simp_all <;> omega
+    · rintro ((h | h) | h)
+      · rw [h]
+      · rw [h, Nat.add_mod_right]
+      · have : weight v2 = weight v1 + Nat.fib (m + 2) := by omega
+        rw [this, Nat.add_mod_right]
+  rw [hsplit,
+    Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr
+      ⟨Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 => by omega),
+       Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 => by omega)⟩),
+    Finset.card_union_of_disjoint (Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 => by omega))]
+  have hswap : (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 = weight p.2 + Nat.fib (m + 2))).card =
+      (Finset.univ.filter (fun p : Word m × Word m =>
+        weight p.1 + Nat.fib (m + 2) = weight p.2)).card := by
+    apply Finset.card_bij (fun (p : Word m × Word m) _ => (p.2, p.1))
+    · intro ⟨v1, v2⟩ hv; simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢; omega
+    · intro _ _ _ _ h; simp only [Prod.mk.injEq] at h; exact Prod.ext h.2 h.1
+    · intro ⟨v1, v2⟩ hv; simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+      exact ⟨(v2, v1), by simp; omega, rfl⟩
+  rw [hswap]; ring
+
+-- ══════════════════════════════════════════════════════════════
+-- crossCorr(m+1, F) = S_2(m) — algebraic
+-- ══════════════════════════════════════════════════════════════
+
+theorem crossCorr_fib_prev_eq_momentSum (m : Nat) :
+    crossCorr (m + 1) (Nat.fib (m + 2)) = momentSum 2 m := by
+  rw [crossCorr_fib_succ, momentSum_two_eq_exact_plus_crossCorr]; ring
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2(m+2) expansion and UNCONDITIONAL RECURRENCE
+-- ══════════════════════════════════════════════════════════════
+
+theorem momentSum_two_succ_succ_expand (m : Nat) :
+    momentSum 2 (m + 2) =
+    exactWeightCollision (m + 1) + momentSum 2 (m + 1) + 2 * momentSum 2 m := by
+  rw [momentSum_two_succ_three_term (m + 1),
+      show Nat.fib (m + 1 + 2) = Nat.fib (m + 3) from by ring_nf,
+      show Nat.fib (m + 1 + 1) = Nat.fib (m + 2) from by ring_nf]
+  -- 2·cc(m+1,F3) + E00(m+1) = S_2(m+1) [by crossCorr_fib_succ + crossCorr_fib_prev_eq_momentSum]
+  have hcf3_sum : 2 * crossCorr (m + 1) (Nat.fib (m + 3)) + exactWeightCollision (m + 1) =
+      momentSum 2 (m + 1) := by
+    have h1 := crossCorr_fib_prev_eq_momentSum (m + 1)
+    rw [show Nat.fib ((m + 1) + 2) = Nat.fib (m + 3) from by ring_nf] at h1
+    have h2 := crossCorr_fib_succ (m + 1)
+    rw [show Nat.fib ((m + 1) + 2) = Nat.fib (m + 3) from by ring_nf] at h2
+    linarith
+  rw [crossCorr_fib_prev_eq_momentSum]; linarith
+
+/-- S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1). UNCONDITIONAL. -/
+theorem momentSum_two_recurrence (m : Nat) :
+    momentSum 2 (m + 3) + 2 * momentSum 2 m =
+    2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1) := by
+  have h1 := momentSum_two_succ_succ_expand m
+  have h2 := momentSum_two_succ_succ_expand (m + 1)
+  have h3 := exactWeightCollision_succ (m + 1)
+  linarith
 
 end Omega

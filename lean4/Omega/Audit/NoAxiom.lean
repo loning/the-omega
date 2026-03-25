@@ -1814,6 +1814,12 @@ def coreAuditTargets : List String :=
   -- Phase 82: crossCorr + E(0,1) 分解 + S_2 三项展开 (CollisionDecomp.lean:362-505)
   , "Omega.crossCorr_zero_eq"
   , "Omega.collision_cross_eq_two_crossCorr"
-  , "Omega.momentSum_two_succ_three_term" ]
+  , "Omega.momentSum_two_succ_three_term"
+  -- Phase 83: S_2 递推里程碑 (CollisionDecomp.lean:506-776)
+  -- ★ 里程碑：prop:pom-s2-recurrence 无条件版本
+  , "Omega.momentSum_two_eq_exact_plus_crossCorr"
+  , "Omega.crossCorr_fib_prev_eq_momentSum"
+  , "Omega.momentSum_two_succ_succ_expand"
+  , "Omega.momentSum_two_recurrence" ]
 
 end Omega.Audit

@@ -7240,6 +7240,44 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionDecomp"
     leanName := "Omega.momentSum_two_succ_three_term"
     phase := 82
+    status := .formalized }
+-- Phase 83: S_2 递推里程碑 (CollisionDecomp.lean:506-776)
+-- ★ 里程碑：项目首个无条件非平凡无穷族递推定理
+-- prop:pom-s2-recurrence → momentSum_two_eq_exact_plus_crossCorr（S_2 = E00 + 2·C_F，关键分解）
+-- (CollisionDecomp.lean:688)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-exact-crossCorr"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.momentSum_two_eq_exact_plus_crossCorr"
+    phase := 83
+    status := .formalized }
+-- prop:pom-s2-recurrence → crossCorr_fib_prev_eq_momentSum（crossCorr(m+1,F_{m+2}) = S_2(m)）
+-- (CollisionDecomp.lean:743)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-crossCorr-fib-prev"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.crossCorr_fib_prev_eq_momentSum"
+    phase := 83
+    status := .formalized }
+-- prop:pom-s2-recurrence → momentSum_two_succ_succ_expand（S_2(m+2) = E00(m+1) + S_2(m+1) + 2·S_2(m)）
+-- (CollisionDecomp.lean:751)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-expand"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.momentSum_two_succ_succ_expand"
+    phase := 83
+    status := .formalized }
+-- ★ prop:pom-s2-recurrence → momentSum_two_recurrence（S_2(m+3)+2·S_2(m) = 2·S_2(m+2)+2·S_2(m+1)）
+-- (CollisionDecomp.lean:768)
+-- 状态: 已形式化, 审核通过 2026-03-25 ★ 里程碑：无条件递推，零 native_decide
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.momentSum_two_recurrence"
+    phase := 83
     status := .formalized } ]
 
 end Omega.Audit

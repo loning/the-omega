@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~17,123 |
-| 定理/定义数 | ~1,706 |
+| 定理/定义数 | ~1,710 |
 | 论文接口包装 | 346 |
 | 文件数 | 49 |
 | 公理数 | 0 |
@@ -52,6 +52,7 @@
 **碰撞对称性 + S_2 两项分解 + exactWeightCollision（Round 77，Phase 80）**：Folding/FiberWeightCount.lean（拓展至 629 行）——collision_cross_symm（thm:pom-collision-cross-symm：E(0,1)=E(1,0)，通过 (v1,v2)↦(v2,v1) swap 双射，Finset.card_bij）; momentSum_two_succ_two_term（thm:pom-s2-two-term：S_2(m+1) = 2·E(0,0) + 2·E(0,1)，由 momentSum_two_lastBit_split + collision_lastBit_cancel + collision_cross_symm + ring 一步完成）; exactWeightCollision（def:pom-exactWeightCollision：Σ_{n<F_{m+3}} ewc(m,n)^2，精确重量碰撞数定义）; collision_same_eq_exactWeightCollision（thm:pom-collision-same-ewc-sq：E(0,0) = Σ ewc(n)^2，通过 weight < F_{m+3} 故 % 为恒等，将 {(v1,v2): wt v1 = wt v2} 按共同重量 n 分划为 disjoint union，各分量 = Sn ×ˢ Sn，Finset.card_biUnion 合并）——POM 覆盖率 ~18.8% → ~19.0%（+4 条目）（Phase 80）
 **crossWeightCorrelation + E00 递推与望远镜和（Round 78，Phase 81）**：工程变更 FiberWeightCount.lean(764行) 拆分为 FiberWeightCount.lean(414行) + CollisionDecomp.lean(505行)，Omega.lean 新增 CollisionDecomp import——crossWeightCorrelation（def:pom-crossWeightCorrelation：Σ_{r<F_{m+2}} ewc(m,r)·ewc(m,r+F_{m+2})，交叉权重相关定义，CollisionDecomp.lean:226）; exactWeightCollision_succ（thm:pom-e00-succ：E00(m+1) = E00(m) + S_2(m)，CollisionDecomp.lean:235）; exactWeightCollision_eq_sum（thm:pom-e00-telescoping：E00(m) = 1 + Σ_{k<m} S_2(k)，CollisionDecomp.lean:344）——POM 覆盖率 ~19.0% → ~19.2%（+3 条目）（Phase 81）
 **crossCorr + E(0,1) 分解 + S_2 三项展开（Round 79，Phase 82）**：Folding/CollisionDecomp.lean（拓展至 505 行）——crossCorr（def:pom-crossCorr：C(m,d) = Σ_{r<F_{m+3}} ewc(m,r)·ewc(m,r+d)，广义交叉相关函数定义）; crossCorr_zero_eq（thm:pom-crossCorr-zero：C(m,0) = E00(m)，d=0 时退化为精确碰撞数）; collision_cross_eq_two_crossCorr（thm:pom-e01-crossCorr：E(0,1) = C(m,F_{m+2}) + C(m,F_{m+2}-1)，通过 weight < F_{m+3} 约束 + biUnion 分划展开计数，分两路 Fib 移位路段合并）; momentSum_two_succ_three_term（thm:pom-s2-three-term：S_2(m+1) = 2·E00 + 2·C_F + 2·C_{F-1}，由 momentSum_two_succ_two_term + collision_cross_eq_two_crossCorr + ring 合并）——POM 覆盖率 ~19.2% → ~19.5%（+4 条目）（Phase 82）
+**★ 里程碑：S_2 无条件递推（Round 80，Phase 83）**：Folding/CollisionDecomp.lean（拓展至 776 行）——momentSum_two_eq_exact_plus_crossCorr（thm:pom-s2-exact-crossCorr：S_2(m) = E00(m) + 2·C(m, F_{m+2})，关键分解，通过 momentSum_two_succ_three_term + crossCorr_zero_eq + ring，将三项展开化简为 E00 + 2C_F）; crossCorr_fib_prev_eq_momentSum（thm:pom-crossCorr-fib-prev：C(m+1, F_{m+2}) = S_2(m)，通过 ewc 双步递推 exactWeightCount_succ_succ + crossWeightCorrelation 定义展开，逐项匹配 momentSum_two_eq_exact_plus_crossCorr 等式）; momentSum_two_succ_succ_expand（thm:pom-s2-expand：S_2(m+2) = E00(m+1) + S_2(m+1) + 2·S_2(m)，由 momentSum_two_eq_exact_plus_crossCorr + crossCorr_fib_prev_eq_momentSum + ring）; **momentSum_two_recurrence**（**prop:pom-s2-recurrence**：S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1)，由 momentSum_two_succ_succ_expand(m) + momentSum_two_succ_succ_expand(m+1) + exactWeightCollision_succ(m+1) + linarith，四行证明，零 native_decide）——**项目首个无条件非平凡无穷族递推定理**——POM 覆盖率 ~19.5% → ~19.7%（+4 条目）（Phase 83）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -114,7 +115,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 969/10,588 = **9.2%** |
+| 全局覆盖率 | 973/10,588 = **9.2%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -128,7 +129,7 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~297 | ~19.5% |
+| POM | 1,525 | ~301 | ~19.7% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
@@ -144,7 +145,7 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~297 | ~19.5% |
+| POM | 1,525 | ~301 | ~19.7% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
