@@ -7520,6 +7520,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.exactWeightCollision_ge_linear"
     phase := 89
+    status := .formalized }
+-- Phase 90: 递推唯一性 + S_2 高阶纯递推值 (MomentRecurrence.lean:341-396)
+, { label := "thm:pom-s2-recurrence-unique"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.recurrence_unique"
+    phase := 90
+    status := .formalized }
+, { label := "thm:pom-s2-determined"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_determined"
+    phase := 90
+    status := .formalized }
+, { label := "thm:pom-s2-seven-rec"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_seven_rec"
+    phase := 90
+    status := .formalized }
+, { label := "thm:pom-s2-eight-rec"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_eight_rec"
+    phase := 90
+    status := .formalized }
+, { label := "thm:pom-s2-nine-rec"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_nine_rec"
+    phase := 90
     status := .formalized } ]
 
 end Omega.Audit

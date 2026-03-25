@@ -338,4 +338,59 @@ theorem exactWeightCollision_ge_linear (m : Nat) : m ≤ exactWeightCollision m 
     have := momentSum_pos' 2 m
     omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Recurrence uniqueness
+-- ══════════════════════════════════════════════════════════════
+
+/-- A 3rd-order recurrence is uniquely determined by its initial values. -/
+theorem recurrence_unique {f g : Nat → Nat}
+    (hf : ∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 2 * f (m + 1))
+    (hg : ∀ m, g (m + 3) + 2 * g m = 2 * g (m + 2) + 2 * g (m + 1))
+    (h0 : f 0 = g 0) (h1 : f 1 = g 1) (h2 : f 2 = g 2) :
+    ∀ m, f m = g m := by
+  intro m; induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => exact h0
+    | 1 => exact h1
+    | 2 => exact h2
+    | m + 3 =>
+      have := hf m; have := hg m
+      have := ih m (by omega); have := ih (m + 1) (by omega); have := ih (m + 2) (by omega)
+      omega
+
+/-- S_2 is the unique sequence satisfying the recurrence with initial values 1, 2, 6. -/
+theorem momentSum_two_determined {f : Nat → Nat}
+    (hrec : ∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 2 * f (m + 1))
+    (h0 : f 0 = 1) (h1 : f 1 = 2) (h2 : f 2 = 6) :
+    ∀ m, f m = momentSum 2 m :=
+  recurrence_unique hrec momentSum_two_recurrence
+    (by rw [h0, momentSum_two_zero])
+    (by rw [h1, momentSum_two_one])
+    (by rw [h2, momentSum_two_two])
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 high-order values by pure recurrence (no native_decide)
+-- ══════════════════════════════════════════════════════════════
+
+theorem momentSum_two_seven_rec : momentSum 2 7 = 544 := by
+  have h := momentSum_two_recurrence 4
+  simp only [show (4 : Nat) + 3 = 7 from rfl, show (4 : Nat) + 2 = 6 from rfl,
+    show (4 : Nat) + 1 = 5 from rfl, momentSum_two_four, momentSum_two_five, momentSum_two_six] at h
+  omega
+
+theorem momentSum_two_eight_rec : momentSum 2 8 = 1352 := by
+  have h := momentSum_two_recurrence 5
+  simp only [show (5 : Nat) + 3 = 8 from rfl, show (5 : Nat) + 2 = 7 from rfl,
+    show (5 : Nat) + 1 = 6 from rfl, momentSum_two_five, momentSum_two_six,
+    momentSum_two_seven_rec] at h
+  omega
+
+theorem momentSum_two_nine_rec : momentSum 2 9 = 3352 := by
+  have h := momentSum_two_recurrence 6
+  simp only [show (6 : Nat) + 3 = 9 from rfl, show (6 : Nat) + 2 = 8 from rfl,
+    show (6 : Nat) + 1 = 7 from rfl, momentSum_two_six, momentSum_two_seven_rec,
+    momentSum_two_eight_rec] at h
+  omega
+
 end Omega

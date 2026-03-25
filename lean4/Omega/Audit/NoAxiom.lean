@@ -1869,6 +1869,12 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_mod_four"
   , "Omega.momentSum_two_ge_exactWeightCollision"
   , "Omega.exactWeightCollision_double"
-  , "Omega.exactWeightCollision_ge_linear" ]
+  , "Omega.exactWeightCollision_ge_linear"
+  -- Phase 90: 递推唯一性 + S_2 高阶纯递推值 (MomentRecurrence.lean:341-396)
+  , "Omega.recurrence_unique"
+  , "Omega.momentSum_two_determined"
+  , "Omega.momentSum_two_seven_rec"
+  , "Omega.momentSum_two_eight_rec"
+  , "Omega.momentSum_two_nine_rec" ]
 
 end Omega.Audit
