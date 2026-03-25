@@ -2050,7 +2050,7 @@ def coreAuditTargets : List String :=
   , "Omega.stableValue_eq_zero_iff"
   , "Omega.momentSum_three_ge_pow"
   , "Omega.momentSum_three_ge_two"
-  -- Phase 117: PathIndSets Fintype + card + appendFalse 单射 (FibonacciCube.lean:323-338)
+  -- Phase 117b: PathIndSets Fintype + card + appendFalse 单射 (FibonacciCube.lean:323-338)
   , "Omega.card_pathIndSets"
   , "Omega.appendFalse_injective" ]
 

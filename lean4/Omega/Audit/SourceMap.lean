@@ -8313,7 +8313,7 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Entropy.one_sub_fibRadius_sq_isEquivalent"
     phase := 117
     status := .formalized }
--- Phase 117: PathIndSets Fintype + card + appendFalse 单射 (FibonacciCube.lean:323-338)
+-- Phase 117b: PathIndSets Fintype + card + appendFalse 单射 (FibonacciCube.lean:323-338)
 , { label := "prop:folding-stable-syntax-fibonacci-count"
     sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
     moduleName := "Omega.Combinatorics.FibonacciCube"
