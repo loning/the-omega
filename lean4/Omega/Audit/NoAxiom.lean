@@ -2027,6 +2027,9 @@ def coreAuditTargets : List String :=
   , "Omega.crossCorrSqHigh"
   , "Omega.crossCorrSqLow"
   , "Omega.crossCorrSqHigh_eq_tripleCorr"
-  , "Omega.crossCorrSqLow_eq_tripleCorr" ]
+  , "Omega.crossCorrSqLow_eq_tripleCorr"
+  -- Phase 115: zeckRep 单射 + stableValue-zeckRep 桥接 (FiberArithmetic.lean:479-485)
+  , "Omega.zeckRep_injective"
+  , "Omega.stableValue_eq_zeckRep_fib_sum" ]
 
 end Omega.Audit

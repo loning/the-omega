@@ -8200,6 +8200,19 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.crossCorrSqLow_eq_tripleCorr"
     phase := 114
     status := .formalized }
+-- Phase 115: zeckRep 单射 + stableValue-zeckRep 桥接 (FiberArithmetic.lean:479-485)
+, { label := "bridge:stable-value-zeck-indices"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.FiberArithmetic"
+    leanName := "Omega.zeckRep_injective"
+    phase := 115
+    status := .formalized }
+, { label := "bridge:stable-value-zeck-indices"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.FiberArithmetic"
+    leanName := "Omega.stableValue_eq_zeckRep_fib_sum"
+    phase := 115
+    status := .formalized }
 -- Phase 116: Fibonacci radius Poisson identities (CircleDimension.lean:12-43)
 -- con:cdim-fibonacci-radius-time-conjugacy → fibRadius / poissonTimeOfRadius / poissonTimeOf_fibRadius /
 --   one_sub_sq_of_poissonTime_param / one_sub_fibRadius_sq / one_sub_sq_of_poissonTime_param_nat
