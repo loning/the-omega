@@ -1995,6 +1995,9 @@ def coreAuditTargets : List String :=
   -- Phase 110: S_2 三重界 + snoc 嵌入 + mod 8 整除性 (Folding/MomentBounds.lean:10-78)
   , "Omega.momentSum_two_succ_le_triple"
   , "Omega.fiberMultiplicity_ge_ewc_via_snoc"
-  , "Omega.momentSum_two_mod_eight" ]
+  , "Omega.momentSum_two_mod_eight"
+  -- Phase 111: weight Fibonacci 展开 + S_3 末位8-分裂 (Weight.lean:59, MomentTriple.lean:49)
+  , "Omega.weight_eq_fib_ite_sum"
+  , "Omega.momentSum_three_lastBit_split" ]
 
 end Omega.Audit

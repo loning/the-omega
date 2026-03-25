@@ -8111,6 +8111,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentBounds"
     leanName := "Omega.momentSum_two_mod_eight"
     phase := 110
+    status := .formalized }
+-- Phase 111: weight Fibonacci 展开 + S_3 末位8-分裂 (Weight.lean:59, MomentTriple.lean:49)
+, { label := "bridge:weight-fib-sum"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.Weight"
+    leanName := "Omega.weight_eq_fib_ite_sum"
+    phase := 111
+    status := .formalized }
+, { label := "thm:pom-s3-triple-collision"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_three_lastBit_split"
+    phase := 111
     status := .formalized } ]
 
 end Omega.Audit
