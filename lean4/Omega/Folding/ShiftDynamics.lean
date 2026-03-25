@@ -291,4 +291,41 @@ theorem lucasNum_double (n : Nat) (hn : 1 ≤ n) :
     rw [show k + 1 + 1 = k + 2 from by omega] at *
     rw [hrec1, hpow]; nlinarith
 
+/-- L(n)² = 5·F(n)² + 4·(-1)^n for n ≥ 1. -/
+theorem lucasNum_sq (n : Nat) (hn : 1 ≤ n) :
+    (lucasNum n : ℤ) ^ 2 = 5 * (Nat.fib n : ℤ) ^ 2 + 4 * (-1) ^ n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  rw [lucasNum_eq_fib (m + 1) (by omega)]
+  simp only [show m + 1 + 1 = m + 2 from by omega, show m + 1 - 1 = m from by omega]
+  -- L = F(m+2) + F(m), need (F(m+2)+F(m))² = 5F(m+1)² + 4(-1)^(m+1)
+  -- Expand LHS = F(m+2)² + 2F(m+2)F(m) + F(m)²
+  -- Use Cassini: F(m+2)F(m) = F(m+1)² + (-1)^(m+1)
+  -- So LHS = F(m+2)² + 2(F(m+1)² + (-1)^(m+1)) + F(m)²
+  --        = F(m+2)² + F(m)² + 2F(m+1)² + 2(-1)^(m+1)
+  -- Also F(m+2) = F(m+1)+F(m), so F(m+2)² = F(m+1)² + 2F(m+1)F(m) + F(m)²
+  -- LHS = F(m+1)² + 2F(m+1)F(m) + F(m)² + F(m)² + 2F(m+1)² + 2(-1)^(m+1)
+  --      = 3F(m+1)² + 2F(m+1)F(m) + 2F(m)² + 2(-1)^(m+1)
+  -- RHS = 5F(m+1)² + 4(-1)^(m+1)
+  -- Need: 3F(m+1)² + 2F(m+1)F(m) + 2F(m)² + 2(-1)^(m+1) = 5F(m+1)² + 4(-1)^(m+1)
+  -- i.e., 2F(m+1)F(m) + 2F(m)² = 2F(m+1)² + 2(-1)^(m+1)
+  -- i.e., F(m)(F(m+1)+F(m)) = F(m+1)² + (-1)^(m+1) = F(m+2)F(m) [Cassini]
+  -- i.e., F(m)F(m+2) = F(m+2)F(m). ✓ Always true!
+  -- Let me just use nlinarith with Cassini and fib recurrence.
+  have cassini : (Nat.fib (m + 2) : ℤ) * Nat.fib m - (Nat.fib (m + 1) : ℤ) ^ 2 = (-1) ^ (m + 1) := by
+    -- Reuse the inline Cassini from lucasNum_double
+    induction m with
+    | zero => native_decide
+    | succ k ih =>
+      have hr1 : (Nat.fib (k + 3) : ℤ) = Nat.fib (k + 2) + Nat.fib (k + 1) := by
+        have := @Nat.fib_add_two (k + 1); push_cast; linarith
+      have hr2 : (Nat.fib (k + 2) : ℤ) = Nat.fib (k + 1) + Nat.fib k := by
+        have := @Nat.fib_add_two k; push_cast; linarith
+      have hp : ((-1 : ℤ) ^ (k + 2) : ℤ) = -((-1) ^ (k + 1)) := by ring
+      have ih' := ih (by omega)
+      rw [show k + 1 + 1 = k + 2 from by omega] at *
+      rw [hr1, hp]; nlinarith
+  have hrec : (Nat.fib (m + 2) : ℤ) = Nat.fib (m + 1) + Nat.fib m := by
+    have := @Nat.fib_add_two m; push_cast; linarith
+  push_cast; nlinarith
+
 end Omega

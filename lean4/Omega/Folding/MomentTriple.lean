@@ -426,4 +426,16 @@ theorem momentSum_cauchy_schwarz_general (q m : Nat) :
 theorem exactWeightCount_zero (m : Nat) : exactWeightCount m 0 = 1 :=
   exactWeightCount_zero_eq_one' m
 
+/-- ewc at max weight = 1 (only all-true has weight F_{m+3}-2). -/
+theorem exactWeightCount_max (m : Nat) :
+    exactWeightCount m (Nat.fib (m + 3) - 2) = 1 := by
+  have h := exactWeightCount_symmetric m 0 (by omega)
+  simp only [Nat.sub_zero] at h
+  rw [← h]; exact exactWeightCount_zero m
+
+/-- Fold(complement w) has weight (F_{m+3}-2-weight w) mod F_{m+2}. -/
+theorem Fold_complement_mod (w : Word m) :
+    stableValue (Fold (complement w)) = (Nat.fib (m + 3) - 2 - weight w) % Nat.fib (m + 2) := by
+  rw [stableValue_Fold_mod, weight_complement_sub]
+
 end Omega
