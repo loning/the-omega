@@ -226,4 +226,12 @@ def tripleCorr (m d : Nat) (a b : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)),
     exactWeightCount m n ^ a * exactWeightCount m (n + d) ^ b
 
+/-- S_3(m+1) = 2·exactWeightTriple(m) + 3·T001(m) + 3·T011(m). -/
+theorem momentSum_three_succ_ewt_form (m : Nat) :
+    momentSum 3 (m + 1) =
+    2 * exactWeightTriple m +
+    3 * (tripleCollisionClass m false false true).card +
+    3 * (tripleCollisionClass m false true true).card := by
+  rw [momentSum_three_succ_three_term, tripleCollisionClass_000_eq_ewcCube]
+
 end Omega
