@@ -626,4 +626,139 @@ theorem collision_same_eq_exactWeightCollision (m : Nat) :
     intro ⟨v1, _⟩ ⟨h1, _⟩ ⟨h2, _⟩
     exact hne (h1.symm.trans h2)
 
+-- ══════════════════════════════════════════════════════════════
+-- Cross-weight correlation
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cross-weight correlation: Σ_r ewc(m,r) · ewc(m,r+F). -/
+def crossWeightCorrelation (m : Nat) : Nat :=
+  ∑ r ∈ Finset.range (Nat.fib (m + 2)),
+    exactWeightCount m r * exactWeightCount m (r + Nat.fib (m + 2))
+
+
+-- ══════════════════════════════════════════════════════════════
+-- E(0,0)(m+1) = E(0,0)(m) + S_2(m)
+-- ══════════════════════════════════════════════════════════════
+
+theorem exactWeightCollision_succ (m : Nat) :
+    exactWeightCollision (m + 1) = exactWeightCollision m + momentSum 2 m := by
+  classical
+  rw [← collision_same_eq_exactWeightCollision (m + 1),
+      ← collision_same_eq_exactWeightCollision m, momentSum_two_eq_collision]
+  have hmod_id1 : ∀ w : Word (m + 1), weight w % Nat.fib (m + 4) = weight w := by
+    intro w; exact Nat.mod_eq_of_lt (X.weight_lt_fib w)
+  have hmod_id0 : ∀ w : Word m, weight w % Nat.fib (m + 3) = weight w := by
+    intro w; exact Nat.mod_eq_of_lt (X.weight_lt_fib w)
+  simp_rw [hmod_id1, hmod_id0, Fold_eq_iff_weight_mod]
+  have key : ∀ b1 b2 : Bool,
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = b1 ∧ p.2 ⟨m, by omega⟩ = b2)).card =
+      (Finset.univ.filter (fun p : Word m × Word m =>
+        weight p.1 + (if b1 then Nat.fib (m + 2) else 0) =
+        weight p.2 + (if b2 then Nat.fib (m + 2) else 0))).card := by
+    intro b1 b2
+    apply Finset.card_bij (fun (p : Word (m + 1) × Word (m + 1)) _ => (truncate p.1, truncate p.2))
+    · intro ⟨w1, w2⟩ hp
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+      rw [weight, hp.2.1, weight, hp.2.2] at hp; exact hp.1
+    · intro ⟨w1a, w2a⟩ ha ⟨w1b, w2b⟩ hb heq
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq] at ha hb heq ⊢
+      exact ⟨by rw [← X.snoc_truncate_last w1a, ← X.snoc_truncate_last w1b, heq.1, ha.2.1, hb.2.1],
+             by rw [← X.snoc_truncate_last w2a, ← X.snoc_truncate_last w2b, heq.2, ha.2.2, hb.2.2]⟩
+    · intro ⟨v1, v2⟩ hv
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢
+      exact ⟨(snoc v1 b1, snoc v2 b2), ⟨by simp [weight_snoc]; exact hv, by simp, by simp⟩, by simp⟩
+  have hdisj : ∀ b1 b2 b1' b2' : Bool, (b1, b2) ≠ (b1', b2') → Disjoint
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = b1 ∧ p.2 ⟨m, by omega⟩ = b2))
+      (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) =>
+        weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = b1' ∧ p.2 ⟨m, by omega⟩ = b2')) := by
+    intro b1 b2 b1' b2' hne; apply Finset.disjoint_filter.mpr
+    intro ⟨w1, w2⟩ _ ⟨_, hb1, hb2⟩ ⟨_, hb1', hb2'⟩
+    exact hne (Prod.ext (hb1.symm.trans hb1') (hb2.symm.trans hb2'))
+  have hunion : Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) => weight p.1 = weight p.2) =
+      Finset.univ.filter (fun p => weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = false ∧ p.2 ⟨m, by omega⟩ = false) ∪
+      Finset.univ.filter (fun p => weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = false ∧ p.2 ⟨m, by omega⟩ = true) ∪
+      Finset.univ.filter (fun p => weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = true ∧ p.2 ⟨m, by omega⟩ = false) ∪
+      Finset.univ.filter (fun p => weight p.1 = weight p.2 ∧ p.1 ⟨m, by omega⟩ = true ∧ p.2 ⟨m, by omega⟩ = true) := by
+    ext ⟨w1, w2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+    constructor
+    · intro h; rcases Bool.eq_false_or_eq_true (w1 ⟨m, by omega⟩) with h1 | h1 <;>
+        rcases Bool.eq_false_or_eq_true (w2 ⟨m, by omega⟩) with h2 | h2 <;> simp [h, h1, h2]
+    · rintro (((⟨h, _, _⟩ | ⟨h, _, _⟩) | ⟨h, _, _⟩) | ⟨h, _, _⟩) <;> exact h
+  rw [hunion]
+  have dAB := hdisj false false false true (by decide)
+  have dAC := hdisj false false true false (by decide)
+  have dAD := hdisj false false true true (by decide)
+  have dBC := hdisj false true true false (by decide)
+  have dBD := hdisj false true true true (by decide)
+  have dCD := hdisj true false true true (by decide)
+  rw [Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr
+      ⟨Finset.disjoint_union_left.mpr ⟨dAD, dBD⟩, dCD⟩),
+    Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr ⟨dAC, dBC⟩),
+    Finset.card_union_of_disjoint dAB,
+    key false false, key false true, key true false, key true true]
+  simp only [Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
+  have htt : (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 + Nat.fib (m + 2) = weight p.2 + Nat.fib (m + 2))).card =
+      (Finset.univ.filter (fun p : Word m × Word m => weight p.1 = weight p.2)).card := by
+    congr 1; ext ⟨v1, v2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and]; omega
+  rw [htt]
+  have hmod_split : (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 2) = weight p.2 % Nat.fib (m + 2))).card =
+      (Finset.univ.filter (fun p : Word m × Word m => weight p.1 = weight p.2)).card +
+      (Finset.univ.filter (fun p : Word m × Word m => weight p.1 = weight p.2 + Nat.fib (m + 2))).card +
+      (Finset.univ.filter (fun p : Word m × Word m => weight p.1 + Nat.fib (m + 2) = weight p.2)).card := by
+    have hlt2F : ∀ v : Word m, weight v < 2 * Nat.fib (m + 2) := by
+      intro v
+      have hf3 : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+      have hmono : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+      have hwt := X.weight_lt_fib v
+      omega
+    have hsplit : Finset.univ.filter (fun p : Word m × Word m =>
+        weight p.1 % Nat.fib (m + 2) = weight p.2 % Nat.fib (m + 2)) =
+        Finset.univ.filter (fun p : Word m × Word m => weight p.1 = weight p.2) ∪
+        Finset.univ.filter (fun p => weight p.1 = weight p.2 + Nat.fib (m + 2)) ∪
+        Finset.univ.filter (fun p => weight p.1 + Nat.fib (m + 2) = weight p.2) := by
+      ext ⟨v1, v2⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+      constructor
+      · intro hmod
+        have hdiv1 := Nat.div_add_mod (weight v1) (Nat.fib (m + 2))
+        have hdiv2 := Nat.div_add_mod (weight v2) (Nat.fib (m + 2))
+        have hq1 : weight v1 / Nat.fib (m + 2) < 2 :=
+          Nat.div_lt_of_lt_mul (show weight v1 < Nat.fib (m + 2) * 2 by linarith [hlt2F v1])
+        have hq2 : weight v2 / Nat.fib (m + 2) < 2 :=
+          Nat.div_lt_of_lt_mul (show weight v2 < Nat.fib (m + 2) * 2 by linarith [hlt2F v2])
+        rw [hmod] at hdiv1
+        interval_cases (weight v1 / Nat.fib (m + 2)) <;>
+          interval_cases (weight v2 / Nat.fib (m + 2)) <;> simp_all <;> omega
+      · rintro ((h | h) | h)
+        · rw [h]
+        · rw [h, Nat.add_mod_right]
+        · have : weight v2 = weight v1 + Nat.fib (m + 2) := by omega
+          rw [this, Nat.add_mod_right]
+    have hFpos : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
+    rw [hsplit,
+      Finset.card_union_of_disjoint (Finset.disjoint_union_left.mpr
+        ⟨Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 => by omega),
+         Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 => by omega)⟩),
+      Finset.card_union_of_disjoint (Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 => by omega))]
+  rw [hmod_split]; omega
+
+-- ══════════════════════════════════════════════════════════════
+-- E(0,0) telescoping sum
+-- ══════════════════════════════════════════════════════════════
+
+theorem exactWeightCollision_eq_sum (m : Nat) :
+    exactWeightCollision m = 1 + ∑ k ∈ Finset.range m, momentSum 2 k := by
+  induction m with
+  | zero =>
+    simp only [Finset.range_zero, Finset.sum_empty, Nat.add_zero]
+    unfold exactWeightCollision
+    simp only [show Nat.fib 3 = 2 from by simp [Nat.fib], Finset.sum_range_succ,
+      Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty]
+    rw [exactWeightCount_zero_zero, exactWeightCount_zero_succ]; simp
+  | succ m ih =>
+    rw [exactWeightCollision_succ, ih, Finset.sum_range_succ]; ring
+
 end Omega

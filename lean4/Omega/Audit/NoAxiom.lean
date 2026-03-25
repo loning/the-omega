@@ -1807,6 +1807,9 @@ def coreAuditTargets : List String :=
   -- Phase 80: 碰撞对称性 + S_2 两项分解 + exactWeightCollision (FiberWeightCount.lean:547-629)
   , "Omega.collision_cross_symm"
   , "Omega.momentSum_two_succ_two_term"
-  , "Omega.collision_same_eq_exactWeightCollision" ]
+  , "Omega.collision_same_eq_exactWeightCollision"
+  -- Phase 81: crossWeightCorrelation + E00 递推与望远镜和 (FiberWeightCount.lean:630-764)
+  , "Omega.exactWeightCollision_succ"
+  , "Omega.exactWeightCollision_eq_sum" ]
 
 end Omega.Audit

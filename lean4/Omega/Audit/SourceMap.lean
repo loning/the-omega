@@ -7175,6 +7175,34 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.FiberWeightCount"
     leanName := "Omega.collision_same_eq_exactWeightCollision"
     phase := 80
+    status := .formalized }
+-- Phase 81: crossWeightCorrelation + E00 递推与望远镜和 (FiberWeightCount.lean:630-764)
+-- prop:pom-s2-plancherel → crossWeightCorrelation（定义：Σ ewc(r)·ewc(r+F)，交叉权重相关）
+-- (FiberWeightCount.lean:634)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-crossWeightCorrelation"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.crossWeightCorrelation"
+    phase := 81
+    status := .formalized }
+-- prop:pom-s2-plancherel → exactWeightCollision_succ（E00(m+1) = E00(m) + S_2(m)）
+-- (FiberWeightCount.lean:643)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-e00-succ"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.exactWeightCollision_succ"
+    phase := 81
+    status := .formalized }
+-- prop:pom-s2-plancherel → exactWeightCollision_eq_sum（E00(m) = 1 + Σ_{k<m} S_2(k)）
+-- (FiberWeightCount.lean:752)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-e00-telescoping"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.exactWeightCollision_eq_sum"
+    phase := 81
     status := .formalized } ]
 
 end Omega.Audit
