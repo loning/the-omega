@@ -597,4 +597,10 @@ theorem exactWeightTriple_ge_collision (m : Nat) :
           Nat.mul_le_mul_left _ hpos
       _ = exactWeightCount m n ^ 3 := by ring
 
+theorem momentSum_two_two_mod_four : momentSum 2 2 % 4 = 2 := by
+  rw [momentSum_two_two]
+
+theorem momentSum_two_three_mod_four : momentSum 2 3 % 4 = 2 := by
+  rw [momentSum_two_three]
+
 end Omega

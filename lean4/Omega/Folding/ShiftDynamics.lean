@@ -478,4 +478,11 @@ theorem fib_succ_sq_sub_prod (n : Nat) (hn : 1 ≤ n) :
     have := Nat.fib_add_two (n := m); push_cast; linarith
   nlinarith
 
+/-- F(n)·F(n+2) = F(n+1)² + (-1)^(n+1). -/
+theorem fib_adjacent_product (n : Nat) (hn : 1 ≤ n) :
+    (Nat.fib n : ℤ) * Nat.fib (n + 2) = (Nat.fib (n + 1) : ℤ) ^ 2 + (-1) ^ (n + 1) := by
+  have h := fib_succ_sq_sub_prod n hn
+  have hpow : ((-1 : ℤ) ^ (n + 1)) = -((-1) ^ n) := by ring
+  linarith
+
 end Omega
