@@ -2166,6 +2166,10 @@ def coreAuditTargets : List String :=
   , "Omega.X.stableValue_eq_sum_fib_zeckIndices"
   , "Omega.cBinFold"
   , "Omega.stableAdd"
-  , "Omega.modularProject_eq_restrict" ]
+  , "Omega.modularProject_eq_restrict"
+  -- Phase 137: S_2/S_3 定义 + 稳定加法无零化子 (MomentTriple.lean:618,622, FiberArithmeticProperties.lean:480)
+  , "Omega.paper_def_s2"
+  , "Omega.paper_def_s3"
+  , "Omega.paper_stable_add_no_null" ]
 
 end Omega.Audit

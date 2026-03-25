@@ -8782,6 +8782,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.modularProject_eq_restrict"
     phase := 136
     status := .formalized }
+-- Phase 137: S_2/S_3 定义 + 稳定加法无零化子 (MomentTriple.lean:618,622, FiberArithmeticProperties.lean:480)
+, { label := "def:pom-s2"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.paper_def_s2"
+    phase := 137
+    status := .formalized }
+, { label := "def:pom-s3"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.paper_def_s3"
+    phase := 137
+    status := .formalized }
+, { label := "prop:stable-add-no-null-creation"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.paper_stable_add_no_null"
+    phase := 137
+    status := .formalized }
 -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
 , { label := "thm:pom-s2-rank-exact"
     sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
