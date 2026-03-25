@@ -41,6 +41,7 @@ Agent(
   name = "analyst",
   subagent_type = "lean4-analyst",
   team_name = "lean4-formalization",
+  mode = "bypassPermissions",
   description = "形式化分析师（常驻）",
   prompt = "你是 lean4-formalization 团队的分析师（常驻角色）。
 你将通过 SendMessage 收到 team lead 或其他 teammate 的分析任务。
