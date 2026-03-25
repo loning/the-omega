@@ -8684,6 +8684,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_collision_det_universal"
     phase := 134
     status := .formalized }
+-- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
+, { label := "thm:pom-s2-rank-exact"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.HankelSpectrum"
+    leanName := "Omega.paper_s2_hankel_rank_exact"
+    phase := 135
+    status := .formalized }
+, { label := "thm:pom-hidden-bit-count"
+    sourcePath := "sections/body/pom/parts/subsec__pom-hidden-bit.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.paper_hiddenBitCount_closed"
+    phase := 135
+    status := .formalized }
+, { label := "thm:pom-s2-rank-exact"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.paper_s2_unique_three_state_certificate"
+    phase := 135
+    status := .formalized }
 -- Phase 123: Fibonacci 平台有限证书（Entropy.lean:44-57, 59-75)
 -- con:cdim-fibonacci-kl-platform-finite-certificate → fib_platform_certificate_of_eq_succ
 -- 状态: 已形式化, 审核通过 2026-03-26

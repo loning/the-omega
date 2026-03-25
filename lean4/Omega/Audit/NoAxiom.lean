@@ -2145,6 +2145,10 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_three_mod_four"
   -- Phase 134: 隐藏比特计数递推 + 碰撞行列式普适 (MaxFiberTwoStep.lean:501, CollisionZeta.lean:530)
   , "Omega.paper_hiddenBitCount_recurrence"
-  , "Omega.paper_collision_det_universal" ]
+  , "Omega.paper_collision_det_universal"
+  -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
+  , "Omega.paper_s2_hankel_rank_exact"
+  , "Omega.paper_hiddenBitCount_closed"
+  , "Omega.paper_s2_unique_three_state_certificate" ]
 
 end Omega.Audit
