@@ -465,4 +465,54 @@ theorem stableValue_max_achieved (m : Nat) (hm : 1 ≤ m) :
   obtain ⟨x, hx⟩ := X.stableValueFin_surjective m ⟨Nat.fib (m + 2) - 1, by omega⟩
   exact ⟨x, by simp [X.stableValueFin] at hx; omega⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- S_2 high-order values by recurrence
+-- ══════════════════════════════════════════════════════════════
+
+theorem momentSum_two_ten_rec : momentSum 2 10 = 8320 := by
+  have h := momentSum_two_recurrence 7
+  simp only [show (7 : Nat) + 3 = 10 from rfl, show (7 : Nat) + 2 = 9 from rfl,
+    show (7 : Nat) + 1 = 8 from rfl, momentSum_two_seven_rec,
+    momentSum_two_eight_rec, momentSum_two_nine_rec] at h; omega
+
+theorem momentSum_two_eleven_rec : momentSum 2 11 = 20640 := by
+  have h := momentSum_two_recurrence 8
+  simp only [show (8 : Nat) + 3 = 11 from rfl, show (8 : Nat) + 2 = 10 from rfl,
+    show (8 : Nat) + 1 = 9 from rfl, momentSum_two_eight_rec,
+    momentSum_two_nine_rec, momentSum_two_ten_rec] at h; omega
+
+theorem momentSum_two_twelve_rec : momentSum 2 12 = 51216 := by
+  have h := momentSum_two_recurrence 9
+  simp only [show (9 : Nat) + 3 = 12 from rfl, show (9 : Nat) + 2 = 11 from rfl,
+    show (9 : Nat) + 1 = 10 from rfl, momentSum_two_nine_rec,
+    momentSum_two_ten_rec, momentSum_two_eleven_rec] at h; omega
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 mod 16 divisibility
+-- ══════════════════════════════════════════════════════════════
+
+/-- 16 ∣ S_2(m) for m ≥ 10. -/
+theorem momentSum_two_mod_sixteen (m : Nat) (hm : 10 ≤ m) : 16 ∣ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 => omega
+    | 10 => exact ⟨520, by rw [momentSum_two_ten_rec]⟩
+    | 11 => exact ⟨1290, by rw [momentSum_two_eleven_rec]⟩
+    | 12 => exact ⟨3201, by rw [momentSum_two_twelve_rec]⟩
+    | m + 13 =>
+      have hrec := momentSum_two_recurrence (m + 10)
+      rw [show (m + 10 + 3 : Nat) = m + 13 from rfl,
+        show (m + 10 + 2 : Nat) = m + 12 from rfl,
+        show (m + 10 + 1 : Nat) = m + 11 from rfl] at hrec
+      have h10 := ih (m + 10) (by omega) (by omega)
+      have h11 := ih (m + 11) (by omega) (by omega)
+      have h12 := ih (m + 12) (by omega) (by omega)
+      obtain ⟨a, ha⟩ := h10; obtain ⟨b, hb⟩ := h11; obtain ⟨c, hc⟩ := h12
+      rw [ha, hb, hc] at hrec
+      have hab : a ≤ b := by
+        have := momentSum_two_mono' (m + 10)
+        rw [ha, show (m + 10 + 1 : Nat) = m + 11 from rfl, hb] at this; omega
+      exact ⟨2 * (c + b) - 2 * a, by omega⟩
+
 end Omega

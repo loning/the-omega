@@ -357,4 +357,36 @@ theorem fib_double_eq_mul_lucas (n : Nat) (hn : 1 ≤ n) :
     Nat.fib (2 * n) = Nat.fib n * lucasNum n := by
   have := lucasNum_mul_fib n hn; linarith [Nat.mul_comm (Nat.fib n) (lucasNum n)]
 
+/-- Lucas number parity: L(n) is even iff 3 ∣ n. -/
+theorem lucasNum_even_iff (n : Nat) : 2 ∣ lucasNum n ↔ 3 ∣ n := by
+  -- L(n) mod 2 has period 3: L(0)=2(even), L(1)=1(odd), L(2)=3(odd), L(3)=4(even), ...
+  -- Pattern: even, odd, odd, even, odd, odd, ...
+  -- 2|L(n) ↔ n ≡ 0 (mod 3)
+  -- L(n) mod 2 has period 3: even, odd, odd, even, ...
+  -- Key lemma: L(n+3) = 2L(n+1) + L(n), so L(n+3) mod 2 = L(n) mod 2
+  have hperiod : ∀ k, 2 ∣ lucasNum (k + 3) ↔ 2 ∣ lucasNum k := by
+    intro k
+    have h1 : lucasNum (k + 3) = lucasNum (k + 2) + lucasNum (k + 1) := lucasNum_succ_succ (k + 1)
+    have h2 : lucasNum (k + 2) = lucasNum (k + 1) + lucasNum k := lucasNum_succ_succ k
+    constructor <;> intro h <;> omega
+  constructor
+  · -- Forward: 2|L(n) → 3|n. Strong induction.
+    induction n using Nat.strongRecOn with
+    | _ n ih =>
+      intro h
+      match n with
+      | 0 => exact dvd_zero 3
+      | 1 => exfalso; rw [lucasNum_one] at h; omega
+      | 2 => exfalso; rw [lucasNum_two] at h; omega
+      | n + 3 =>
+        have := ih n (by omega) ((hperiod n).mp h)
+        exact ⟨n / 3 + 1, by omega⟩
+  · -- Backward: 3|n → 2|L(n). Induction on k where n = 3k.
+    intro ⟨k, hk⟩; subst hk
+    induction k with
+    | zero => simp
+    | succ j ih =>
+      rw [show 3 * (j + 1) = 3 * j + 3 from by ring]
+      exact (hperiod (3 * j)).mpr ih
+
 end Omega
