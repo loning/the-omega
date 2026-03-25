@@ -8684,6 +8684,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_collision_det_universal"
     phase := 134
     status := .formalized }
+-- Phase 136: 稳定加法定义 + 交换环结构 + 加法折叠公式 (FiberArithmeticProperties.lean:469,474, FiberRing.lean:213)
+, { label := "def:stable-add"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.paper_stable_add_def"
+    phase := 136
+    status := .formalized }
+, { label := "thm:stable-add-commutative-monoid"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.FiberRing"
+    leanName := "Omega.paper_stable_commutative_ring"
+    phase := 136
+    status := .formalized }
+, { label := "cor:add-as-fold"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-add.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.paper_add_as_fold"
+    phase := 136
+    status := .formalized }
 -- Phase 136b: 零代码批量补登（已有定理，新论文标签）
 -- def:stable-mul → stableMul (FiberArithmetic.lean:61)
 -- prop:fold-rewrite-newman → Fold_stable (Fold.lean:198)

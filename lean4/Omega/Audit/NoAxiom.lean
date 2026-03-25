@@ -2150,6 +2150,10 @@ def coreAuditTargets : List String :=
   , "Omega.paper_s2_hankel_rank_exact"
   , "Omega.paper_hiddenBitCount_closed"
   , "Omega.paper_s2_unique_three_state_certificate"
+  -- Phase 136: 稳定加法定义 + 交换环结构 + 加法折叠公式 (FiberArithmeticProperties.lean:469,474, FiberRing.lean:213)
+  , "Omega.paper_stable_add_def"
+  , "Omega.paper_stable_commutative_ring"
+  , "Omega.paper_add_as_fold"
   -- Phase 136b: 零代码批量补登 (FiberArithmetic.lean:61, Fold.lean:198, FiberArithmeticProperties.lean:441, FiberArithmetic.lean:483, MaxFiberTwoStep.lean:292, FiberRing.lean:139)
   , "Omega.stableMul"
   , "Omega.X.Fold_stable"
