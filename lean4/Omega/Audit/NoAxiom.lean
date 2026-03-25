@@ -2079,6 +2079,10 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_fibonacci_growth"
   -- Phase 122: ewc 总和 + S_2^2 ≤ F*S_4 (FiberWeightCount.lean:434, MomentTriple.lean:394)
   , "Omega.exactWeightCount_sum"
-  , "Omega.momentSum_two_sq_le_card_mul_four" ]
+  , "Omega.momentSum_two_sq_le_card_mul_four"
+  -- Phase 123: Cauchy-Schwarz 矩 + Lucas 倍角 + ewc 零权重 (MomentTriple.lean:413/426, ShiftDynamics.lean:271)
+  , "Omega.momentSum_cauchy_schwarz_general"
+  , "Omega.lucasNum_double"
+  , "Omega.exactWeightCount_zero" ]
 
 end Omega.Audit

@@ -8428,6 +8428,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.momentSum_two_sq_le_card_mul_four"
     phase := 122
+    status := .formalized }
+-- Phase 123: Cauchy-Schwarz 矩 + Lucas 倍角 + ewc 零权重 (MomentTriple.lean:413/426, ShiftDynamics.lean:271)
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_cauchy_schwarz_general"
+    phase := 123
+    status := .formalized }
+, { label := "bridge:lucas-double"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_double"
+    phase := 123
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightCount_zero"
+    phase := 123
     status := .formalized } ]
 
 end Omega.Audit
