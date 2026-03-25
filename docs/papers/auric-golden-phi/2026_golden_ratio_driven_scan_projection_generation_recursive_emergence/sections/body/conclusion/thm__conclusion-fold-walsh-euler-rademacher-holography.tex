@@ -1,0 +1,182 @@
+\begin{theorem}[Walsh--Stokes 总荷守恒与退化度的精确 Parseval 反演]\label{thm:conclusion-fold-walsh-total-charge-parseval-degeneracy}
+固定分辨率 \(m\ge 1\)。对每个 \(I\subseteq[m]\) 与 \(x\in X_m\)，记
+\[
+W_x(I):=\sum_{\omega\in \Fold_m^{-1}(x)}\chi_I(\omega),
+\qquad
+\chi_I(\omega):=(-1)^{\sum_{i\in I}\omega_i}.
+\]
+则成立全息总荷守恒律
+\[
+\sum_{x\in X_m}W_x(I)=
+\begin{cases}
+2^m,& I=\varnothing,\\[1ex]
+0,& I\neq \varnothing,
+\end{cases}
+\]
+并且每条纤维的退化度满足严格谱反演公式
+\[
+\boxed{\;
+|\Fold_m^{-1}(x)|=2^{-m}\sum_{I\subseteq[m]}W_x(I)^2.\;}
+\]
+从而全体纤维的总 Walsh 能量满足
+\[
+\sum_{x\in X_m}\sum_{I\subseteq[m]}W_x(I)^2=4^m.
+\]
+\end{theorem}
+\begin{proof}
+对给定 \(I\subseteq[m]\)，令 \(\varepsilon^I\in\{\pm 1\}^m\) 为
+\[
+\varepsilon_i^I=
+\begin{cases}
+-1,& i\in I,\\
+1,& i\notin I.
+\end{cases}
+\]
+由定理 \ref{thm:pom-fiber-multivariate-holographic-conservation} 与定理 \ref{thm:pom-fiber-walsh-signature-rademacher}(1)，
+\[
+\sum_{x\in X_m}W_x(I)
+=\sum_{x\in X_m}\mathcal H_x(\varepsilon^I)
+=\prod_{i=1}^{m}(1+\varepsilon_i^I).
+\]
+若 \(I\neq\varnothing\)，则右端至少含一个零因子；若 \(I=\varnothing\)，则右端等于 \(2^m\)。故总荷守恒成立。
+
+另一方面，由推论 \ref{cor:pom-fiber-walsh-stokes-boundary-tomography-reconstruction}，
+\[
+\ind_{\Fold_m^{-1}(x)}(\omega)
+=2^{-m}\sum_{I\subseteq[m]}W_x(I)\chi_I(\omega)
+\qquad (\omega\in\Omega_m).
+\]
+两边平方后对 \(\omega\in\Omega_m\) 求和，并用 Walsh 正交关系
+\[
+\sum_{\omega\in\Omega_m}\chi_I(\omega)\chi_J(\omega)=2^m\delta_{IJ},
+\]
+得到
+\[
+|\Fold_m^{-1}(x)|
+=\sum_{\omega\in\Omega_m}\ind_{\Fold_m^{-1}(x)}(\omega)^2
+=2^{-m}\sum_{I\subseteq[m]}W_x(I)^2.
+\]
+最后对 \(x\in X_m\) 求和，并用 \(\sum_x|\Fold_m^{-1}(x)|=|\Omega_m|=2^m\)，即得
+\[
+\sum_{x\in X_m}\sum_{I\subseteq[m]}W_x(I)^2
+=2^m\sum_{x\in X_m}|\Fold_m^{-1}(x)|
+=4^m.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[odd-saturating Walsh 模态的 Euler--sphere 二分塌缩]\label{thm:conclusion-fold-odd-saturating-walsh-euler-sphere-collapse}
+固定 \(x\in X_m\)。称 \(I\subseteq[m]\) 为 \(x\)-odd-saturating，若对每个候选位点 \(v\in V(\Gamma_x)\) 都有
+\[
+|I\cap J_x(v)|\equiv 1\pmod 2.
+\]
+则对任意这样的 \(I\)，成立严格恒等式
+\[
+W_x(I)=(-1)^{|x\cap I|}Z_x(-1)
+=-(-1)^{|x\cap I|}\,\widetilde\chi(|K_x|).
+\]
+因此：
+\begin{enumerate}
+  \item 若 \(|K_x|\) 可缩，则
+  \[
+  W_x(I)=0
+  \qquad (\forall\,I\ \text{为 }x\text{-odd-saturating});
+  \]
+  \item 若 \(|K_x|\simeq S^{\tau(x)-1}\)，则
+  \[
+  W_x(I)=-(-1)^{|x\cap I|+\tau(x)-1},
+  \qquad
+  |W_x(I)|=1.
+  \]
+\end{enumerate}
+换言之，全部 odd-saturating Walsh 模态整层塌缩为纤维独立集复形的球面/可缩二分及其奇偶符号。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-walsh-signature-rademacher}(1)，
+\[
+W_x(I)=(-1)^{|x\cap I|}
+\sum_{S\in\mathsf{Ind}(\Gamma_x)}\prod_{v\in S}\sigma_x(I)_v.
+\]
+若 \(I\) 为 \(x\)-odd-saturating，则对每个 \(v\in V(\Gamma_x)\) 都有
+\[
+\sigma_x(I)_v=(-1)^{|I\cap J_x(v)|}=-1.
+\]
+故
+\[
+W_x(I)=(-1)^{|x\cap I|}
+\sum_{S\in\mathsf{Ind}(\Gamma_x)}(-1)^{|S|}
+=(-1)^{|x\cap I|}Z_x(-1).
+\]
+再由命题 \ref{prop:pom-fiber-witten-index-zx-minus-one}，
+\[
+\widetilde\chi(|K_x|)=-Z_x(-1),
+\]
+遂得第一条恒等式。
+
+若 \(|K_x|\) 可缩，则由推论 \ref{cor:pom-fiber-contractibility-sphere-parity-by-walsh} 等价地有 \(Z_x(-1)=0\)，从而 \(W_x(I)=0\)。
+若 \(|K_x|\simeq S^{\tau(x)-1}\)，则
+\[
+\widetilde\chi(|K_x|)=(-1)^{\tau(x)-1},
+\]
+代入即得
+\[
+W_x(I)=-(-1)^{|x\cap I|+\tau(x)-1},
+\]
+并且其模长等于 \(1\)。证毕。
+\end{proof}
+
+\begin{theorem}[签名随机化与退化度的 Rademacher 二次矩表示]\label{thm:conclusion-fold-rademacher-second-moment-degeneracy}
+固定 \(x\in X_m\)。令 \(I\) 在 \(\mathcal P([m])\) 上均匀抽样，并记
+\[
+\sigma_x(I)=\bigl(\sigma_x(I)_v\bigr)_{v\in V(\Gamma_x)}\in\{\pm 1\}^{V(\Gamma_x)}.
+\]
+则签名向量 \(\sigma_x(I)\) 在 \(\{\pm 1\}^{V(\Gamma_x)}\) 上严格均匀分布，且其坐标为相互独立的 Rademacher 变量。因而
+\[
+\boxed{\;
+d_m(x)
+=
+\mathbb E\!\left[
+\left(
+\sum_{S\in \mathsf{Ind}(\Gamma_x)}
+\prod_{v\in S}\sigma_v
+\right)^2
+\right],\;}
+\]
+其中期望取遍独立 Rademacher 族 \((\sigma_v)_{v\in V(\Gamma_x)}\)。等价地，
+\[
+2^{-m}\sum_{I\subseteq[m]}W_x(I)^2=d_m(x).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-walsh-signature-rademacher}(2)，\(I\mapsto \sigma_x(I)\) 在 \(\mathcal P([m])\) 的均匀测度下推前为 \(\{\pm 1\}^{V(\Gamma_x)}\) 上的严格均匀分布，因此各坐标是相互独立的 Rademacher 变量。
+
+再由定理 \ref{thm:pom-fiber-walsh-signature-rademacher}(1)，
+\[
+W_x(I)=(-1)^{|x\cap I|}
+\sum_{S\in\mathsf{Ind}(\Gamma_x)}
+\prod_{v\in S}\sigma_x(I)_v.
+\]
+平方后前导符号消失，因此
+\[
+2^{-m}\sum_{I\subseteq[m]}W_x(I)^2
+=
+\mathbb E_{\sigma}\!\left[
+\left(
+\sum_{S\in\mathsf{Ind}(\Gamma_x)}
+\prod_{v\in S}\sigma_v
+\right)^2
+\right].
+\]
+将平方展开得
+\[
+\sum_{S,T\in\mathsf{Ind}(\Gamma_x)}
+\mathbb E_{\sigma}\!\left[
+\prod_{v\in S\triangle T}\sigma_v
+\right].
+\]
+独立 Rademacher 变量的奇次混合矩为零，故仅当 \(S=T\) 时贡献 \(1\)。于是右端化为
+\[
+\#\mathsf{Ind}(\Gamma_x)=|\Fold_m^{-1}(x)|=d_m(x).
+\]
+而最后一个等价式正是定理 \ref{thm:conclusion-fold-walsh-total-charge-parseval-degeneracy} 的 Parseval 反演。证毕。
+\end{proof}
