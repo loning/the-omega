@@ -449,4 +449,33 @@ theorem lucasNum_cassini_odd (n : Nat) (hn : 1 ≤ n) (hodd : ¬ Even n) :
   have hpow : ((-1 : ℤ) ^ n) = -1 := Odd.neg_one_pow hoddN
   zify; linarith
 
+/-- F(n) ≤ L(n) for n ≥ 1. -/
+theorem fib_le_lucasNum (n : Nat) (hn : 1 ≤ n) : Nat.fib n ≤ lucasNum n := by
+  have h := lucasNum_add_fib n hn
+  -- L + F = 2F(n+1) ≥ 2F ≥ F + F ≥ F, so L ≥ 0 and F ≤ L+F = 2F(n+1)
+  -- Actually: L ≥ F ↔ L + F ≥ 2F ↔ 2F(n+1) ≥ 2F(n) ↔ F(n+1) ≥ F(n), which is true.
+  have := Nat.fib_mono (show n ≤ n + 1 from by omega)
+  omega
+
+/-- L(n) ≤ 2·F(n+1) for n ≥ 1. -/
+theorem lucasNum_le_two_fib_succ (n : Nat) (hn : 1 ≤ n) :
+    lucasNum n ≤ 2 * Nat.fib (n + 1) := by
+  have := lucasNum_add_fib n hn; omega
+
+/-- F(n+1)² - F(n)·F(n+2) = (-1)^n for n ≥ 1. -/
+theorem fib_succ_sq_sub_prod (n : Nat) (hn : 1 ≤ n) :
+    (Nat.fib (n + 1) : ℤ) ^ 2 - (Nat.fib n : ℤ) * (Nat.fib (n + 2) : ℤ) = (-1) ^ n := by
+  have hcas := Graph.fib_cassini n hn
+  have hfib : (Nat.fib (n + 2) : ℤ) = Nat.fib n + Nat.fib (n + 1) := by
+    have := Nat.fib_add_two (n := n); push_cast; linarith
+  -- F(n+1)² - F(n)*F(n+2) = F(n+1)² - F(n)*(F(n)+F(n+1))
+  -- = F(n+1)² - F(n)² - F(n)*F(n+1) = F(n+1)*(F(n+1)-F(n)) - F(n)²
+  -- Need F(n-1) = F(n+1) - F(n), i.e., F(n+1) = F(n) + F(n-1)
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  simp only [show m + 1 - 1 = m from by omega, show m + 1 + 1 = m + 2 from by omega,
+    show m + 1 + 2 = m + 3 from by omega] at *
+  have hfib2 : (Nat.fib (m + 2) : ℤ) = Nat.fib m + Nat.fib (m + 1) := by
+    have := Nat.fib_add_two (n := m); push_cast; linarith
+  nlinarith
+
 end Omega
