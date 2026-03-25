@@ -1837,6 +1837,12 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_le_succ'"
   , "Omega.momentSum_two_mul_card_ge"
   , "Omega.momentSum_ge_card'"
-  , "Omega.momentSum_upper_bound'" ]
+  , "Omega.momentSum_upper_bound'"
+  -- Phase 88: S_2 数论性质 (MomentRecurrence.lean:203-263)
+  , "Omega.momentSum_two_even"
+  , "Omega.momentSum_two_succ_half"
+  , "Omega.momentSum_two_succ_ge_double"
+  , "Omega.momentSum_two_succ_le_quadruple"
+  , "Omega.momentSum_two_succ_excess" ]
 
 end Omega.Audit

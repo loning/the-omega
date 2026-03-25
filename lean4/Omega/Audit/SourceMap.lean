@@ -7393,6 +7393,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.momentSum_upper_bound'"
     phase := 87
+    status := .formalized }
+-- Phase 88: S_2 数论性质 (MomentRecurrence.lean:203-263)
+, { label := "thm:pom-s2-even"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_even"
+    phase := 88
+    status := .formalized }
+, { label := "thm:pom-s2-succ-half"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_succ_half"
+    phase := 88
+    status := .formalized }
+, { label := "thm:pom-s2-succ-ge-double"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_succ_ge_double"
+    phase := 88
+    status := .formalized }
+, { label := "thm:pom-s2-succ-le-quadruple"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_succ_le_quadruple"
+    phase := 88
+    status := .formalized }
+, { label := "thm:pom-s2-succ-excess"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_succ_excess"
+    phase := 88
     status := .formalized } ]
 
 end Omega.Audit

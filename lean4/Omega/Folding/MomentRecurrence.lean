@@ -200,4 +200,64 @@ theorem momentSum_upper_bound' (q m : Nat) (hq : 1 ≤ q) :
     momentSum q m ≤ X.maxFiberMultiplicity m ^ (q - 1) * 2 ^ m :=
   momentSum_le_max_pow q m hq
 
+-- ══════════════════════════════════════════════════════════════
+-- S_2 number-theoretic properties
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m) is even for m ≥ 1. -/
+theorem momentSum_two_even (m : Nat) (hm : 1 ≤ m) : 2 ∣ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => omega
+    | 1 => exact ⟨1, by rw [momentSum_two_one]⟩
+    | 2 => exact ⟨3, by rw [momentSum_two_two]⟩
+    | m + 3 =>
+      have hrec := momentSum_two_recurrence m
+      have h1 := ih (m + 1) (by omega) (by omega)
+      have h2 := ih (m + 2) (by omega) (by omega)
+      -- S(m+3) + 2S(m) = 2S(m+2) + 2S(m+1), so S(m+3) = 2(S(m+2)+S(m+1)-S(m))
+      -- S(m+2) + S(m+1) ≥ S(m) by monotonicity
+      obtain ⟨a, ha⟩ := h1; obtain ⟨b, hb⟩ := h2
+      have hmono := momentSum_two_mono' m
+      have hmono2 := momentSum_two_mono' (m + 1)
+      exact ⟨2 * b + 2 * a - momentSum 2 m, by omega⟩
+
+/-- S_2(m+1) / 2 = E00(m) + E01(m) (collision pair halving). -/
+theorem momentSum_two_succ_half (m : Nat) :
+    momentSum 2 (m + 1) / 2 =
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) = weight p.2 % Nat.fib (m + 3))).card +
+    (Finset.univ.filter (fun p : Word m × Word m =>
+      weight p.1 % Nat.fib (m + 3) =
+      (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card := by
+  have h := momentSum_two_succ_two_term m; omega
+
+/-- S_2(m+1) ≥ 2·S_2(m) for m ≥ 2. -/
+theorem momentSum_two_succ_ge_double (m : Nat) (hm : 2 ≤ m) :
+    2 * momentSum 2 m ≤ momentSum 2 (m + 1) := by
+  obtain ⟨k, rfl⟩ : ∃ k, m = k + 2 := ⟨m - 2, by omega⟩
+  have hrec := momentSum_two_recurrence k
+  have hmono := momentSum_two_mono' k
+  linarith
+
+/-- S_2(m+1) ≤ 4·S_2(m). -/
+theorem momentSum_two_succ_le_quadruple (m : Nat) :
+    momentSum 2 (m + 1) ≤ 4 * momentSum 2 m := by
+  match m with
+  | 0 => rw [momentSum_two_zero, momentSum_two_one]; omega
+  | 1 => rw [momentSum_two_one, momentSum_two_two]; omega
+  | m + 2 =>
+    have hrec := momentSum_two_recurrence m
+    have hmono := momentSum_two_mono' (m + 1)
+    linarith
+
+/-- Additive form: S_2(m+1) + 2·S_2(m-2) = 2·S_2(m) + 2·S_2(m-1) for m ≥ 2. -/
+theorem momentSum_two_succ_excess (m : Nat) (hm : 2 ≤ m) :
+    momentSum 2 (m + 1) + 2 * momentSum 2 (m - 2) =
+    2 * momentSum 2 m + 2 * momentSum 2 (m - 1) := by
+  obtain ⟨k, rfl⟩ : ∃ k, m = k + 2 := ⟨m - 2, by omega⟩
+  simp only [show k + 2 - 2 = k from by omega, show k + 2 - 1 = k + 1 from by omega]
+  exact momentSum_two_recurrence k
+
 end Omega
