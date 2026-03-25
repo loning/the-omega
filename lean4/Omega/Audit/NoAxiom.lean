@@ -2149,6 +2149,13 @@ def coreAuditTargets : List String :=
   -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
   , "Omega.paper_s2_hankel_rank_exact"
   , "Omega.paper_hiddenBitCount_closed"
-  , "Omega.paper_s2_unique_three_state_certificate" ]
+  , "Omega.paper_s2_unique_three_state_certificate"
+  -- Phase 136b: 零代码批量补登 (FiberArithmetic.lean:61, Fold.lean:198, FiberArithmeticProperties.lean:441, FiberArithmetic.lean:483, MaxFiberTwoStep.lean:292, FiberRing.lean:139)
+  , "Omega.stableMul"
+  , "Omega.X.Fold_stable"
+  , "Omega.Fold_factorization"
+  , "Omega.stableValue_eq_zeckRep_fib_sum"
+  , "Omega.Fold_eq_iff_weight_mod"
+  , "Omega.stableValueRingEquiv" ]
 
 end Omega.Audit

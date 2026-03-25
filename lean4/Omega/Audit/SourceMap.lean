@@ -8684,6 +8684,49 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_collision_det_universal"
     phase := 134
     status := .formalized }
+-- Phase 136b: 零代码批量补登（已有定理，新论文标签）
+-- def:stable-mul → stableMul (FiberArithmetic.lean:61)
+-- prop:fold-rewrite-newman → Fold_stable (Fold.lean:198)
+-- cor:fold-as-section → Fold_factorization (FiberArithmeticProperties.lean:441)
+-- prop:val-invariant → stableValue_eq_zeckRep_fib_sum (FiberArithmetic.lean:483)
+-- def:fib-congruence → Fold_eq_iff_weight_mod (MaxFiberTwoStep.lean:292)
+-- thm:monoid-quotient-is-N → stableValueRingEquiv (FiberRing.lean:139)
+, { label := "def:stable-mul"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-stable-mul.tex"
+    moduleName := "Omega.Folding.FiberArithmetic"
+    leanName := "Omega.stableMul"
+    phase := 136
+    status := .formalized }
+, { label := "prop:fold-rewrite-newman"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.Fold"
+    leanName := "Omega.X.Fold_stable"
+    phase := 136
+    status := .formalized }
+, { label := "cor:fold-as-section"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-fib-congruence.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.Fold_factorization"
+    phase := 136
+    status := .formalized }
+, { label := "prop:val-invariant"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-fib-congruence.tex"
+    moduleName := "Omega.Folding.FiberArithmetic"
+    leanName := "Omega.stableValue_eq_zeckRep_fib_sum"
+    phase := 136
+    status := .formalized }
+, { label := "def:fib-congruence"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-fib-congruence.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_eq_iff_weight_mod"
+    phase := 136
+    status := .formalized }
+, { label := "thm:monoid-quotient-is-N"
+    sourcePath := "sections/body/emergent_arithmetic/subsec__emergent-arithmetic-fib-congruence.tex"
+    moduleName := "Omega.Folding.FiberRing"
+    leanName := "Omega.stableValueRingEquiv"
+    phase := 136
+    status := .formalized }
 -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
 , { label := "thm:pom-s2-rank-exact"
     sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
