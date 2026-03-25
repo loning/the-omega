@@ -9036,6 +9036,24 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.fib_platform_certificate_of_eq_succ_succ"
     phase := 123
+    status := .formalized }
+-- Phase 124: RH 缺陷离散承载压缩（Entropy.lean:77-84)
+-- con:cdim-rh-defect-fibonacci-discretization → tendsto_zero_of_nonneg_le_of_tendsto_zero
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-rh-defect-fibonacci-discretization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.tendsto_zero_of_nonneg_le_of_tendsto_zero"
+    phase := 124
+    status := .formalized }
+-- Phase 124: Fibonacci 半径离散化证书（Entropy.lean:86-96)
+-- con:cdim-rh-defect-fibonacci-discretization → fibRadius_discretization_of_le_tendsto_zero
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-rh-defect-fibonacci-discretization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.fibRadius_discretization_of_le_tendsto_zero"
+    phase := 124
     status := .formalized } ]
 
 end Omega.Audit

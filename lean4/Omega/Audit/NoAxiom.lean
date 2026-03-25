@@ -782,6 +782,9 @@ Run these commands manually during audit:
   -- Round 123: Fibonacci platform finite certificates (Entropy.lean:44-75)
   #print axioms Omega.fib_platform_certificate_of_eq_succ
   #print axioms Omega.fib_platform_certificate_of_eq_succ_succ
+  -- Round 124: RH defect Fibonacci discretization shell (Entropy.lean:77-96)
+  #print axioms Omega.tendsto_zero_of_nonneg_le_of_tendsto_zero
+  #print axioms Omega.fibRadius_discretization_of_le_tendsto_zero
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1725,6 +1728,9 @@ def coreAuditTargets : List String :=
   -- Round 123: Fibonacci platform finite certificates
   , "Omega.fib_platform_certificate_of_eq_succ"
   , "Omega.fib_platform_certificate_of_eq_succ_succ"
+  -- Round 124: RH defect Fibonacci discretization shell
+  , "Omega.tendsto_zero_of_nonneg_le_of_tendsto_zero"
+  , "Omega.fibRadius_discretization_of_le_tendsto_zero"
   , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
   -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
   -- (CollisionZeta.lean:503-549, Window6.lean:386-389)
