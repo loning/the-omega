@@ -1,8 +1,46 @@
 import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Data.Fintype.Card
+import Mathlib.Data.Real.Basic
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic
 
 namespace Omega
+
+noncomputable section
+
+/-- Fibonacci radius parameter appearing in the circle-dimension phase gate. -/
+def fibRadius (m : ℕ) : ℝ :=
+  (Nat.fib m : ℝ) / (Nat.fib m + 2)
+
+/-- Poisson time parameter associated to a radius. -/
+def poissonTimeOfRadius (ρ : ℝ) : ℝ :=
+  2 * ρ / (1 - ρ)
+
+/-- For the Poisson radius parametrization, the induced time equals the Fibonacci value. -/
+theorem poissonTimeOf_fibRadius (m : ℕ) :
+    poissonTimeOfRadius (fibRadius m) = Nat.fib m := by
+  unfold poissonTimeOfRadius fibRadius
+  have h : ((Nat.fib m : ℝ) + 2) ≠ 0 := by positivity
+  field_simp [h]
+  ring
+
+/-- General algebraic form of `1 - ρ^2` under the Poisson radius parametrization away from the pole `t = -2`. -/
+theorem one_sub_sq_of_poissonTime_param (t : ℝ) (ht : t + 2 ≠ 0) :
+    1 - (t / (t + 2)) ^ 2 = 4 * (t + 1) / (t + 2) ^ 2 := by
+  field_simp [ht]
+  ring
+
+/-- Algebraic identity for the squared complement of the Fibonacci radius. -/
+theorem one_sub_fibRadius_sq (m : ℕ) :
+    1 - (fibRadius m) ^ 2 = 4 * (Nat.fib m + 1) / (Nat.fib m + 2) ^ 2 := by
+  have ht : ((Nat.fib m : ℝ) + 2) ≠ 0 := by positivity
+  simpa [fibRadius] using one_sub_sq_of_poissonTime_param (Nat.fib m : ℝ) ht
+
+/-- Natural-number specialization of `one_sub_sq_of_poissonTime_param`. -/
+theorem one_sub_sq_of_poissonTime_param_nat (n : ℕ) :
+    1 - ((n : ℝ) / (n + 2)) ^ 2 = 4 * (n + 1) / (n + 2) ^ 2 := by
+  have ht : ((n : ℝ) + 2) ≠ 0 := by positivity
+  simpa using one_sub_sq_of_poissonTime_param (n : ℝ) ht
 
 /-- The fiber of a group homomorphism over a target point. -/
 def fiberAt {G H : Type*} [Group G] [Group H] (π : G →* H) (t : H) :=
@@ -28,8 +66,6 @@ theorem fiber_torsor_by_kernel
       have := congrArg (fun z : G => x.1⁻¹ * z) hk
       simpa [mul_assoc] using this
     exact hk'.symm
-
-noncomputable section
 
 /-- As finite sets, `ZMod (2^N)` and length-`N` bitstrings have the same cardinality. -/
 theorem zmodTwoPow_card_eq_bits (N : ℕ) :
