@@ -2185,6 +2185,12 @@ def coreAuditTargets : List String :=
   , "Omega.fib_dvd_mul"
   , "Omega.fib_gcd"
   , "Omega.X.instCommRing"
-  , "Omega.inverseLimitEquiv" ]
+  , "Omega.inverseLimitEquiv"
+  -- Phase 138c: 零代码批量补登 (CollisionZeta.lean:89, CollisionKernel.lean:39,103,116, FibonacciPolynomial.lean:9)
+  , "Omega.zeta_denom_A2_coefficients"
+  , "Omega.collisionKernel3_trace"
+  , "Omega.collisionKernel4_trace"
+  , "Omega.collision_kernels_shared_invariants_triple"
+  , "Omega.fibPoly" ]
 
 end Omega.Audit

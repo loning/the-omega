@@ -8884,6 +8884,42 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.inverseLimitEquiv"
     phase := 138
     status := .formalized }
+-- Phase 138c: 零代码批量补登 5 个论文标签
+-- def:pom-collision-zeta → zeta_denom_A2_coefficients (CollisionZeta.lean:89)
+-- def:pom-collision-zeta-a3 → collisionKernel3_trace (CollisionKernel.lean:39)
+-- def:pom-collision-zeta-a4 → collisionKernel4_trace (CollisionKernel.lean:103)
+-- thm:pom-collision-kernel-ak → collision_kernels_shared_invariants_triple (CollisionKernel.lean:116)
+-- def:pom-fibonacci-poly → fibPoly (FibonacciPolynomial.lean:9)
+, { label := "def:pom-collision-zeta"
+    sourcePath := "sections/body/pom/parts/rem__pom-renyi-gap-to-hinfty.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.zeta_denom_A2_coefficients"
+    phase := 138
+    status := .formalized }
+, { label := "def:pom-collision-zeta-a3"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.CollisionKernel"
+    leanName := "Omega.collisionKernel3_trace"
+    phase := 138
+    status := .formalized }
+, { label := "def:pom-collision-zeta-a4"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s4.tex"
+    moduleName := "Omega.Folding.CollisionKernel"
+    leanName := "Omega.collisionKernel4_trace"
+    phase := 138
+    status := .formalized }
+, { label := "thm:pom-collision-kernel-ak"
+    sourcePath := "sections/body/pom/parts/subsec__pom-state-evolution.tex"
+    moduleName := "Omega.Folding.CollisionKernel"
+    leanName := "Omega.collision_kernels_shared_invariants_triple"
+    phase := 138
+    status := .formalized }
+, { label := "def:pom-fibonacci-poly"
+    sourcePath := "sections/body/pom/parts/part__pom-fiber-leyang-cyclotomic-factorization.tex"
+    moduleName := "Omega.Folding.FibonacciPolynomial"
+    leanName := "Omega.fibPoly"
+    phase := 138
+    status := .formalized }
 -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
 , { label := "thm:pom-s2-rank-exact"
     sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
