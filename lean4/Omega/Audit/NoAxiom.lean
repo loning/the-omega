@@ -1934,6 +1934,13 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_chain"
   , "Omega.momentSum_two_ratio_bounds'"
   , "Omega.momentSum_two_excess_pos"
-  , "Omega.momentSum_two_ge_two_fib" ]
+  , "Omega.momentSum_two_ge_two_fib"
+  -- Phase 102: 纤维判别式 (Folding/MomentRecurrence.lean:665-696)
+  , "Omega.hiddenBit_stable"
+  , "Omega.Fold_eq_self_iff"
+  , "Omega.weight_stable_eq_stableValue"
+  , "Omega.ewc_stableValue_pos"
+  , "Omega.fiberMultiplicity_one_imp_ewc_zero"
+  , "Omega.fiberMultiplicity_ge_ewc" ]
 
 end Omega.Audit
