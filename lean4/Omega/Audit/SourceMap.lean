@@ -8395,6 +8395,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.FiberArithmeticProperties"
     leanName := "Omega.Fold_add_weight"
     phase := 119
+    status := .formalized }
+-- Phase 120: S_2 差分递推 + 严格单调 (MomentTriple.lean:280-293)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_diff_recurrence"
+    phase := 120
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_diff_strict_mono"
+    phase := 120
     status := .formalized } ]
 
 end Omega.Audit

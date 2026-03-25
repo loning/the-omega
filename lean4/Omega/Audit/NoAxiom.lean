@@ -2071,6 +2071,9 @@ def coreAuditTargets : List String :=
   , "Omega.lucasNum_cassini"
   -- Phase 119: stableValue 取负 + Fold 加法权重 (FiberArithmeticProperties.lean:454-459)
   , "Omega.stableValue_neg'"
-  , "Omega.Fold_add_weight" ]
+  , "Omega.Fold_add_weight"
+  -- Phase 120: S_2 差分递推 + 严格单调 (MomentTriple.lean:280-293)
+  , "Omega.momentSum_two_diff_recurrence"
+  , "Omega.momentSum_two_diff_strict_mono" ]
 
 end Omega.Audit
