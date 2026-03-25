@@ -8585,6 +8585,15 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.exactWeightCollision_strict_mono"
     phase := 129
+    status := .formalized }
+-- Phase 122: Jeffreys dissipation rigidity (Entropy.lean:31-42)
+-- con:cdim-poisson-jeffreys-dissipation-rigidity → jeffreys_dissipation_rigidity
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-poisson-jeffreys-dissipation-rigidity"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.jeffreys_dissipation_rigidity"
+    phase := 122
     status := .formalized } ]
 
 end Omega.Audit
