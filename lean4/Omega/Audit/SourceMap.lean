@@ -8939,6 +8939,48 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_collision_zeta_a3_invariants"
     phase := 139
     status := .formalized }
+-- Phase 139b: 零代码批量补登 5 个论文标签
+-- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
+-- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
+-- def:pom-carry-interference-graph → carryIndicator (Value.lean:83)
+-- def:pom-window-value → stableValue (Value.lean:6)
+-- cor:pom-order-bottleneck → Fold_surjective (Fold.lean:206)
+, { label := "thm:pom-one-fold-normal-form"
+    sourcePath := "sections/body/pom/parts/subsec__pom-spectral-gap.tex"
+    moduleName := "Omega.Folding.Fold"
+    leanName := "Omega.X.Fold_idempotent"
+    phase := 139
+    status := .formalized }
+, { label := "def:pom-fold-prime-lift"
+    sourcePath := "sections/body/pom/parts/subsec__pom-position.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.hiddenBit"
+    phase := 139
+    status := .formalized }
+, { label := "def:pom-fold-prime-lift"
+    sourcePath := "sections/body/pom/parts/subsec__pom-position.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.weight_eq_stableValue_add_hiddenBit"
+    phase := 139
+    status := .formalized }
+, { label := "def:pom-carry-interference-graph"
+    sourcePath := "sections/body/pom/parts/subsec__pom-projection-entropy.tex"
+    moduleName := "Omega.Folding.Value"
+    leanName := "Omega.carryIndicator"
+    phase := 139
+    status := .formalized }
+, { label := "def:pom-window-value"
+    sourcePath := "sections/body/pom/parts/subsec__pom-entropy-maxent.tex"
+    moduleName := "Omega.Folding.Value"
+    leanName := "Omega.stableValue"
+    phase := 139
+    status := .formalized }
+, { label := "cor:pom-order-bottleneck"
+    sourcePath := "sections/body/pom/parts/subsec__pom-order-bottleneck.tex"
+    moduleName := "Omega.Folding.Fold"
+    leanName := "Omega.X.Fold_surjective"
+    phase := 139
+    status := .formalized }
 -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
 , { label := "thm:pom-s2-rank-exact"
     sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"

@@ -2195,6 +2195,13 @@ def coreAuditTargets : List String :=
   -- Phase 139: 碰撞 zeta 不变量 + exactWeightCount 定义 + a3 不变量 (CollisionKernel.lean:123,132, MomentTriple.lean:630)
   , "Omega.paper_collision_zeta_invariants"
   , "Omega.paper_exactWeightCount_def"
-  , "Omega.paper_collision_zeta_a3_invariants" ]
+  , "Omega.paper_collision_zeta_a3_invariants"
+  -- Phase 139b: 零代码批量补登 (Fold.lean:202,206, MaxFiberTwoStep.lean:213,248, Value.lean:83,6)
+  , "Omega.X.Fold_idempotent"
+  , "Omega.hiddenBit"
+  , "Omega.weight_eq_stableValue_add_hiddenBit"
+  , "Omega.carryIndicator"
+  , "Omega.stableValue"
+  , "Omega.X.Fold_surjective" ]
 
 end Omega.Audit
