@@ -8939,6 +8939,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_collision_zeta_a3_invariants"
     phase := 139
     status := .formalized }
+-- Phase 140: 一次折叠正规形 + kappa 定义 + hiddenBit 决定权重 (FiberArithmeticProperties.lean:486, CarryDefect.lean:139, MaxFiberTwoStep.lean:512)
+, { label := "thm:pom-one-fold-normal-form"
+    sourcePath := "sections/body/pom/parts/subsec__pom-spectral-gap.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.paper_one_fold_normal_form"
+    phase := 140
+    status := .formalized }
+, { label := "def:pom-kappa"
+    sourcePath := "sections/body/pom/parts/subsec__pom-entropy-maxent.tex"
+    moduleName := "Omega.Folding.CarryDefect"
+    leanName := "Omega.paper_kappa_def"
+    phase := 140
+    status := .formalized }
+, { label := "prop:pom-fold-prime-lift-injective"
+    sourcePath := "sections/body/pom/parts/subsec__pom-position.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.fold_hiddenBit_determines_weight"
+    phase := 140
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

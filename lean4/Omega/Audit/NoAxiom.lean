@@ -2202,6 +2202,10 @@ def coreAuditTargets : List String :=
   , "Omega.weight_eq_stableValue_add_hiddenBit"
   , "Omega.carryIndicator"
   , "Omega.stableValue"
-  , "Omega.X.Fold_surjective" ]
+  , "Omega.X.Fold_surjective"
+  -- Phase 140: 一次折叠正规形 + kappa 定义 + hiddenBit 决定权重 (FiberArithmeticProperties.lean:486, CarryDefect.lean:139, MaxFiberTwoStep.lean:512)
+  , "Omega.paper_one_fold_normal_form"
+  , "Omega.paper_kappa_def"
+  , "Omega.fold_hiddenBit_determines_weight" ]
 
 end Omega.Audit
