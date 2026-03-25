@@ -209,4 +209,9 @@ instance instCharP : CharP (X m) (Nat.fib (m + 2)) where
 
 end
 
+/-- Paper label: X_m is a commutative ring isomorphic to ZMod F_{m+2}. -/
+theorem paper_stable_commutative_ring (m : Nat) :
+    Nonempty (X m ≃+* ZMod (Nat.fib (m + 2))) :=
+  ⟨stableValueRingEquiv m⟩
+
 end Omega.X

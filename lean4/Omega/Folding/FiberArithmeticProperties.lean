@@ -464,3 +464,14 @@ theorem Fold_add_weight (w1 w2 : Word m) :
   rw [stableValue_stableAdd, stableValue_ofNat_mod,
       stableValue_Fold_mod, stableValue_Fold_mod]
   simp [Nat.mod_mod, Nat.add_mod]
+
+/-- Paper label: stableAdd definition. -/
+theorem paper_stable_add_def (x y : X m) :
+    stableAdd x y = X.ofNat m ((stableValue x + stableValue y) % Nat.fib (m + 2)) := by
+  unfold stableAdd; rfl
+
+/-- Paper label: Fold addition. -/
+theorem paper_add_as_fold (w1 w2 : Word m) :
+    stableAdd (Fold w1) (Fold w2) =
+    X.ofNat m ((weight w1 + weight w2) % Nat.fib (m + 2)) :=
+  Fold_add_weight w1 w2
