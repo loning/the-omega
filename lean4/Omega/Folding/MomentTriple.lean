@@ -234,4 +234,33 @@ theorem momentSum_three_succ_ewt_form (m : Nat) :
     3 * (tripleCollisionClass m false true true).card := by
   rw [momentSum_three_succ_three_term, tripleCollisionClass_000_eq_ewcCube]
 
+-- ══════════════════════════════════════════════════════════════
+-- Cross-correlation-squared definitions (CCSH, CCSL)
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cross-correlation-squared high: Σ ewc(n)² · ewc(n + F_{m+2}). -/
+def crossCorrSqHigh (m : Nat) : Nat :=
+  ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+    exactWeightCount m n ^ 2 * exactWeightCount m (n + Nat.fib (m + 2))
+
+/-- Cross-correlation-squared low: Σ ewc(n) · ewc(n + F_{m+2})². -/
+def crossCorrSqLow (m : Nat) : Nat :=
+  ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+    exactWeightCount m n * exactWeightCount m (n + Nat.fib (m + 2)) ^ 2
+
+/-- CCSH = tripleCorr specialized to (2,1) at shift F_{m+2}. -/
+theorem crossCorrSqHigh_eq_tripleCorr (m : Nat) :
+    crossCorrSqHigh m = tripleCorr m (Nat.fib (m + 2)) 2 1 := by
+  unfold crossCorrSqHigh tripleCorr; congr 1; ext n; ring
+
+/-- CCSL = tripleCorr specialized to (1,2) at shift F_{m+2}. -/
+theorem crossCorrSqLow_eq_tripleCorr (m : Nat) :
+    crossCorrSqLow m = tripleCorr m (Nat.fib (m + 2)) 1 2 := by
+  unfold crossCorrSqLow tripleCorr; congr 1; ext n; ring
+
+-- ══════════════════════════════════════════════════════════════
+-- EWT telescoping: EWT(m+1) = 2·EWT(m) + 3·CCSH(m) + 3·CCSL(m)
+-- ══════════════════════════════════════════════════════════════
+
+
 end Omega
