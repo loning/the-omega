@@ -8613,6 +8613,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.ShiftDynamics"
     leanName := "Omega.lucasNum_cassini_odd"
     phase := 130
+    status := .formalized }
+-- Phase 131: E00 指数下界 + S_2 凸性 + EWT ≥ E00 (MomentTriple.lean:559/569/586)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightCollision_ge_pow"
+    phase := 131
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_convex"
+    phase := 131
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightTriple_ge_collision"
+    phase := 131
     status := .formalized } ]
 
 end Omega.Audit

@@ -2124,6 +2124,10 @@ def coreAuditTargets : List String :=
   -- Phase 130: S_2 链扩展 + Lucas Cassini Nat 版 (MomentTriple.lean:545, ShiftDynamics.lean:436-445)
   , "Omega.momentSum_two_chain_extended"
   , "Omega.lucasNum_cassini_even"
-  , "Omega.lucasNum_cassini_odd" ]
+  , "Omega.lucasNum_cassini_odd"
+  -- Phase 131: E00 指数下界 + S_2 凸性 + EWT ≥ E00 (MomentTriple.lean:559/569/586)
+  , "Omega.exactWeightCollision_ge_pow"
+  , "Omega.momentSum_two_convex"
+  , "Omega.exactWeightTriple_ge_collision" ]
 
 end Omega.Audit
