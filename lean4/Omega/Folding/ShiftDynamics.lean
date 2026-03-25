@@ -212,4 +212,39 @@ theorem goldenMeanAdjacency_pow_trace (n : Nat) (hn : 1 ≤ n) :
   rw [Fin.sum_univ_two]
   rw [Graph.goldenMeanAdjacency_pow_00, Graph.goldenMeanAdjacency_pow_11]
 
+-- ══════════════════════════════════════════════════════════════
+-- Lucas number identities
+-- ══════════════════════════════════════════════════════════════
+
+/-- Lucas numbers are positive. -/
+theorem lucasNum_pos : ∀ n : Nat, 0 < lucasNum n
+  | 0 => by simp
+  | 1 => by simp
+  | n + 2 => by rw [lucasNum_succ_succ]; exact Nat.add_pos_left (lucasNum_pos (n + 1)) _
+
+/-- L(n) * F(n) = F(2n) for n ≥ 1. -/
+theorem lucasNum_mul_fib (n : Nat) (hn : 1 ≤ n) :
+    lucasNum n * Nat.fib n = Nat.fib (2 * n) := by
+  -- Cast to ℤ where subtraction works, use fib_double identity
+  suffices h : (lucasNum n * Nat.fib n : ℤ) = (Nat.fib (2 * n) : ℤ) from Nat.cast_injective h
+  push_cast
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  rw [lucasNum_eq_fib (m + 1) (by omega)]
+  simp only [show m + 1 - 1 = m from by omega, show m + 1 + 1 = m + 2 from by omega]
+  push_cast
+  -- (F(m+2) + F(m)) * F(m+1) = F(2*(m+1))
+  -- F(2*(m+1)) = F(m+1) * (2*F(m+2) - F(m+1)) in ℤ
+  rw [show 2 * (m + 1) = 2 * m + 2 from by ring]
+  rw [show (Nat.fib (2 * m + 2) : ℤ) = Nat.fib (m + 1) * (2 * Nat.fib (m + 2) - Nat.fib (m + 1)) from by
+    have := Nat.fib_two_mul (m + 1)
+    rw [show 2 * (m + 1) = 2 * m + 2 from by ring] at this
+    have hge : Nat.fib (m + 1) ≤ 2 * Nat.fib (m + 2) := by
+      calc Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+        _ ≤ 2 * Nat.fib (m + 2) := Nat.le_mul_of_pos_left _ (by omega)
+    zify [hge] at this ⊢; linarith]
+  -- Now: (↑F(m+2) + ↑F(m)) * ↑F(m+1) = ↑F(m+1) * (2*↑F(m+2) - ↑F(m+1))
+  have hrec : (Nat.fib (m + 2) : ℤ) = Nat.fib m + Nat.fib (m + 1) := by
+    push_cast; exact_mod_cast Nat.fib_add_two
+  nlinarith
+
 end Omega
