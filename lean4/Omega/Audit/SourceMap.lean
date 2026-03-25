@@ -8340,6 +8340,22 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CircleDimension"
     leanName := "Omega.fib_semigroup_factorization"
     phase := 118
+    status := .formalized }
+-- Phase 119: Right-handed Fibonacci semigroup factorizations (CircleDimension.lean:61-84)
+-- con:cdim-fibonacci-poisson-semigroup-factorization → fib_semigroup_factorization_right
+-- con:cdim-fibonacci-poisson-semigroup-factorization → fib_semigroup_factorization_right'
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-fibonacci-poisson-semigroup-factorization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.fib_semigroup_factorization_right"
+    phase := 119
+    status := .formalized }
+, { label := "con:cdim-fibonacci-poisson-semigroup-factorization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.fib_semigroup_factorization_right'"
+    phase := 119
     status := .formalized } ]
 
 end Omega.Audit
