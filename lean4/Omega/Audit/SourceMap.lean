@@ -7913,6 +7913,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Core.Fib"
     leanName := "Omega.fib_div_three_iff"
     phase := 104
+    status := .formalized }
+-- Phase 105: Pisano 应用 + 奇偶性 (Folding/MomentRecurrence.lean:700-738)
+, { label := "thm:pom-fiberMultiplicity-allFalse-odd-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.fiberMultiplicity_allFalse_odd_iff"
+    phase := 105
+    status := .formalized }
+, { label := "thm:pom-hiddenBit-eq-one-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.hiddenBit_eq_one_iff"
+    phase := 105
+    status := .formalized }
+, { label := "thm:pom-hiddenBit-eq-zero-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.hiddenBit_eq_zero_iff"
+    phase := 105
+    status := .formalized }
+, { label := "thm:pom-fiber-hidden-bit-split"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.fiber_hidden_bit_split"
+    phase := 105
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-mod-six-base"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-recurrence.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_mod_six_base"
+    phase := 105
     status := .formalized } ]
 
 end Omega.Audit

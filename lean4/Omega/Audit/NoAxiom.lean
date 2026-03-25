@@ -1947,6 +1947,12 @@ def coreAuditTargets : List String :=
   , "Omega.ewc_pos_of_le"
   , "Omega.fiberMultiplicity_ge_two_of_sv_le"
   -- Phase 104: Fibonacci Pisano π(3) (Core/Fib.lean:260-296)
-  , "Omega.fib_div_three_iff" ]
+  , "Omega.fib_div_three_iff"
+  -- Phase 105: Pisano 应用 + 奇偶性 (Folding/MomentRecurrence.lean:700-738)
+  , "Omega.fiberMultiplicity_allFalse_odd_iff"
+  , "Omega.hiddenBit_eq_one_iff"
+  , "Omega.hiddenBit_eq_zero_iff"
+  , "Omega.fiber_hidden_bit_split"
+  , "Omega.momentSum_two_mod_six_base" ]
 
 end Omega.Audit
