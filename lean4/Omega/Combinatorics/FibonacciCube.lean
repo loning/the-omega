@@ -102,4 +102,59 @@ theorem popcount_allFalse : popcount (fun (_ : Fin m) => false) = 0 := by
 theorem popcount_allTrue : popcount (fun (_ : Fin m) => true) = m := by
   simp [popcount, wordSupport]
 
+-- ══════════════════════════════════════════════════════════════
+-- popcount complement + statistics
+-- ══════════════════════════════════════════════════════════════
+
+/-- popcount(bitwise complement) + popcount = m. -/
+theorem popcount_not (w : Word m) :
+    popcount (fun i => !w i) + popcount w = m := by
+  simp only [popcount, wordSupport]
+  have hsplit : (Finset.univ : Finset (Fin m)) =
+      Finset.univ.filter (fun i => (!w i) = true) ∪
+      Finset.univ.filter (fun i => w i = true) := by
+    ext i; simp only [Finset.mem_univ, Finset.mem_union, Finset.mem_filter, true_and]
+    cases w i <;> simp
+  have hdisj : Disjoint (Finset.univ.filter (fun i : Fin m => (!w i) = true))
+      (Finset.univ.filter (fun i : Fin m => w i = true)) := by
+    apply Finset.disjoint_filter.mpr; intro i _ h1 h2
+    cases hb : w i <;> simp [hb] at h1 h2
+  calc (Finset.univ.filter (fun i : Fin m => (!w i) = true)).card +
+      (Finset.univ.filter (fun i : Fin m => w i = true)).card
+      = (Finset.univ.filter (fun i => (!w i) = true) ∪
+        Finset.univ.filter (fun i => w i = true)).card :=
+          (Finset.card_union_of_disjoint hdisj).symm
+    _ = Finset.univ.card := by rw [← hsplit]
+    _ = Fintype.card (Fin m) := by rw [Finset.card_univ]
+    _ = m := Fintype.card_fin m
+
+/-- popcount = 0 iff word is all-false. -/
+theorem popcount_eq_zero_iff (x : X m) :
+    popcount x.1 = 0 ↔ x = ⟨fun _ => false, no11_allFalse⟩ := by
+  constructor
+  · intro h
+    have hempty : wordSupport x.1 = ∅ := Finset.card_eq_zero.mp h
+    apply Subtype.ext; funext i
+    have : i ∉ wordSupport x.1 := by rw [hempty]; simp
+    simp [wordSupport, Finset.mem_filter] at this; exact this
+  · intro h; rw [h]; exact popcount_allFalse
+
+/-- popcount(truncate w) ≤ popcount(w). -/
+theorem popcount_truncate_le (w : Word (m + 1)) : popcount (truncate w) ≤ popcount w := by
+  simp only [popcount, wordSupport]
+  -- Inject Fin m → Fin (m+1) via Fin.castSucc
+  apply Finset.card_le_card_of_injOn Fin.castSucc
+  · intro i hi
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+    simp [truncate] at hi; exact hi
+  · intro i _ j _ h; exact Fin.castSucc_injective _ h
+
+/-- Total popcount across X_m. -/
+noncomputable def totalPopcount (m : Nat) : Nat := ∑ x : X m, popcount x.1
+
+theorem totalPopcount_zero : totalPopcount 0 = 0 := by
+  simp [totalPopcount, popcount, wordSupport]
+
+-- totalPopcount_one deferred (noncomputable + decide incompatible)
+
 end Omega
