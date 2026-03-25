@@ -1998,6 +1998,13 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_mod_eight"
   -- Phase 111: weight Fibonacci 展开 + S_3 末位8-分裂 (Weight.lean:59, MomentTriple.lean:49)
   , "Omega.weight_eq_fib_ite_sum"
-  , "Omega.momentSum_three_lastBit_split" ]
+  , "Omega.momentSum_three_lastBit_split"
+  -- Phase 112: S_3 对称性简化 8→3 碰撞类 (MomentTriple.lean:107-193)
+  , "Omega.tripleCollisionClass_111_eq_000"
+  , "Omega.tripleCollisionClass_001_eq_010"
+  , "Omega.tripleCollisionClass_010_eq_100"
+  , "Omega.tripleCollisionClass_011_eq_101"
+  , "Omega.tripleCollisionClass_101_eq_110"
+  , "Omega.momentSum_three_succ_three_term" ]
 
 end Omega.Audit
