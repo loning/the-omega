@@ -8549,7 +8549,7 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_two_mod_sixteen"
     phase := 128
     status := .formalized }
--- Phase 120: Reverse KL tilted splitting (Entropy.lean:19-45)
+-- Phase 120: Reverse KL tilted splitting (Entropy.lean:44-70)
 -- con:cdim-jensen-average-reverse-kl-splitting → kl_reverse_tilted_split
 -- 状态: 已形式化, 审核通过 2026-03-26
 , { label := "con:cdim-jensen-average-reverse-kl-splitting"
@@ -8557,6 +8557,15 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.Entropy.kl_reverse_tilted_split"
     phase := 120
+    status := .formalized }
+-- Phase 121: Plateau rigidity shell (Entropy.lean:19-29)
+-- con:cdim-poisson-kl-plateau-rigidity → plateau_rigidity_of_nonneg_dissipation
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-poisson-kl-plateau-rigidity"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.Entropy.plateau_rigidity_of_nonneg_dissipation"
+    phase := 121
     status := .formalized } ]
 
 end Omega.Audit
