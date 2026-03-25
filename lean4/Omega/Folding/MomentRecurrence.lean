@@ -779,4 +779,22 @@ theorem momentSum_two_mod_eight (m : Nat) (hm : 7 ≤ m) : 8 ∣ momentSum 2 m :
         rw [ha, show (m + 7 + 1 : Nat) = m + 8 from rfl, hb] at this; omega
       exact ⟨2 * (c + b) - 2 * a, by omega⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Fold modular factorization + moment wrappers
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fold factors through weight mod F_{m+2}. -/
+theorem Fold_eq_ofNat_weight_mod (w : Word m) :
+    Fold w = X.ofNat m (weight w % Nat.fib (m + 2)) := by
+  conv_lhs => rw [← X.ofNat_stableValue (Fold w)]
+  rw [stableValue_Fold_mod]
+
+/-- S_3(m) > 0 for all m. -/
+theorem momentSum_three_pos (m : Nat) : 0 < momentSum 3 m :=
+  momentSum_pos' 3 m
+
+/-- S_3(m) ≤ S_4(m). -/
+theorem momentSum_four_ge_three (m : Nat) : momentSum 3 m ≤ momentSum 4 m :=
+  momentSum_le_succ' 3 m
+
 end Omega
