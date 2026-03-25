@@ -432,4 +432,21 @@ theorem lucasNum_three_dvd (n : Nat) : 3 ∣ lucasNum n ↔ n % 4 = 2 := by
         rw [hmod] at h
         exact (hperiod n).mpr (ih n (by omega) h)
 
+/-- Lucas Cassini (Nat, even): L(n)² = L(n-1)·L(n+1) + 5 when n even, n ≥ 2. -/
+theorem lucasNum_cassini_even (n : Nat) (hn : 2 ≤ n) (heven : Even n) :
+    lucasNum n ^ 2 = lucasNum (n - 1) * lucasNum (n + 1) + 5 := by
+  have hcas := lucasNum_cassini n (by omega)
+  have hpow : ((-1 : ℤ) ^ n) = 1 := Even.neg_one_pow heven
+  have hpos := lucasNum_pos (n - 1)
+  have hpos2 := lucasNum_pos (n + 1)
+  zify; linarith
+
+/-- Lucas Cassini (Nat, odd): L(n)² + 5 = L(n-1)·L(n+1) when n odd, n ≥ 1. -/
+theorem lucasNum_cassini_odd (n : Nat) (hn : 1 ≤ n) (hodd : ¬ Even n) :
+    lucasNum n ^ 2 + 5 = lucasNum (n - 1) * lucasNum (n + 1) := by
+  have hcas := lucasNum_cassini n hn
+  have hoddN : Odd n := by rwa [Nat.not_even_iff_odd] at hodd
+  have hpow : ((-1 : ℤ) ^ n) = -1 := Odd.neg_one_pow hoddN
+  zify; linarith
+
 end Omega

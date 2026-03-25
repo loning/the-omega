@@ -541,4 +541,18 @@ theorem exactWeightCollision_strict_mono (m : Nat) :
     exactWeightCollision m < exactWeightCollision (m + 1) := by
   rw [exactWeightCollision_succ]; exact Nat.lt_add_of_pos_right (momentSum_pos' 2 m)
 
+/-- Complete S_2 value chain for m = 0..12. -/
+theorem momentSum_two_chain_extended :
+    momentSum 2 0 = 1 ∧ momentSum 2 1 = 2 ∧ momentSum 2 2 = 6 ∧
+    momentSum 2 3 = 14 ∧ momentSum 2 4 = 36 ∧ momentSum 2 5 = 88 ∧
+    momentSum 2 6 = 220 ∧ momentSum 2 7 = 544 ∧ momentSum 2 8 = 1352 ∧
+    momentSum 2 9 = 3352 ∧ momentSum 2 10 = 8320 ∧ momentSum 2 11 = 20640 ∧
+    momentSum 2 12 = 51216 :=
+  ⟨momentSum_two_zero, momentSum_two_one, momentSum_two_two,
+    momentSum_two_three, momentSum_two_four, momentSum_two_five,
+    momentSum_two_six, momentSum_two_seven_rec, momentSum_two_eight_rec,
+    momentSum_two_nine_rec, momentSum_two_ten_rec, momentSum_two_eleven_rec,
+    momentSum_two_twelve_rec⟩
+
+
 end Omega
