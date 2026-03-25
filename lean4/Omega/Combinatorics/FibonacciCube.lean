@@ -275,4 +275,36 @@ theorem maxFiberMultiplicity_sq_le_momentSum (m : Nat) :
           (fun y _ => Nat.zero_le _) (Finset.mem_univ x)
     _ = momentSum 2 m := rfl
 
+-- ══════════════════════════════════════════════════════════════
+-- D(m) lower bounds + unboundedness
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(m) ≥ ⌊m/2⌋ + 1. -/
+theorem maxFiberMultiplicity_ge_half (m : Nat) :
+    m / 2 + 1 ≤ X.maxFiberMultiplicity m := by
+  calc m / 2 + 1
+      = X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m) :=
+        (fiberMultiplicity_allFalse_closed m).symm
+    _ ≤ X.maxFiberMultiplicity m := X.fiberMultiplicity_le_max _
+
+/-- D(m) ≥ 2 for m ≥ 2. -/
+theorem maxFiberMultiplicity_ge_two (m : Nat) (hm : 2 ≤ m) :
+    2 ≤ X.maxFiberMultiplicity m := by
+  have := maxFiberMultiplicity_ge_half m; omega
+
+/-- D(m) is sandwiched: ⌊m/2⌋+1 ≤ D(m) ≤ F(m+2). -/
+theorem maxFiberMultiplicity_bounds (m : Nat) :
+    m / 2 + 1 ≤ X.maxFiberMultiplicity m ∧
+    X.maxFiberMultiplicity m ≤ Nat.fib (m + 2) :=
+  ⟨maxFiberMultiplicity_ge_half m, maxFiberMultiplicity_le_fib m⟩
+
+/-- D(m) is unbounded. -/
+theorem maxFiberMultiplicity_unbounded : ∀ C, ∃ m, C < X.maxFiberMultiplicity m := by
+  intro C; exact ⟨2 * C, by have := maxFiberMultiplicity_ge_half (2 * C); omega⟩
+
+/-- S_2(m) ≥ D(m)² (named alias). -/
+theorem momentSum_two_ge_maxFiber_sq (m : Nat) :
+    X.maxFiberMultiplicity m ^ 2 ≤ momentSum 2 m :=
+  maxFiberMultiplicity_sq_le_momentSum m
+
 end Omega
