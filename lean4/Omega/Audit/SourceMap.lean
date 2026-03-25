@@ -8920,6 +8920,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.fibPoly"
     phase := 138
     status := .formalized }
+-- Phase 139: 碰撞 zeta 不变量 + exactWeightCount 定义 + a3 不变量 (CollisionKernel.lean:123,132, MomentTriple.lean:630)
+, { label := "def:pom-collision-zeta"
+    sourcePath := "sections/body/pom/parts/rem__pom-renyi-gap-to-hinfty.tex"
+    moduleName := "Omega.Folding.CollisionKernel"
+    leanName := "Omega.paper_collision_zeta_invariants"
+    phase := 139
+    status := .formalized }
+, { label := "def:pom-exactWeightCount"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.paper_exactWeightCount_def"
+    phase := 139
+    status := .formalized }
+, { label := "def:pom-collision-zeta-a3"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.CollisionKernel"
+    leanName := "Omega.paper_collision_zeta_a3_invariants"
+    phase := 139
+    status := .formalized }
 -- Phase 135: S_2 Hankel 秩精确 + 隐藏比特闭合 + S_2 三状态唯一性证书 (HankelSpectrum.lean:312, MaxFiberTwoStep.lean:507, MomentTriple.lean:608)
 , { label := "thm:pom-s2-rank-exact"
     sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"

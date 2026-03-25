@@ -2191,6 +2191,10 @@ def coreAuditTargets : List String :=
   , "Omega.collisionKernel3_trace"
   , "Omega.collisionKernel4_trace"
   , "Omega.collision_kernels_shared_invariants_triple"
-  , "Omega.fibPoly" ]
+  , "Omega.fibPoly"
+  -- Phase 139: 碰撞 zeta 不变量 + exactWeightCount 定义 + a3 不变量 (CollisionKernel.lean:123,132, MomentTriple.lean:630)
+  , "Omega.paper_collision_zeta_invariants"
+  , "Omega.paper_exactWeightCount_def"
+  , "Omega.paper_collision_zeta_a3_invariants" ]
 
 end Omega.Audit
