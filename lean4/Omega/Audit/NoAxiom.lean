@@ -743,6 +743,17 @@ Run these commands manually during audit:
   #print axioms Omega.pathIndCount_recurrence
   #print axioms Omega.path_independent_set_count
   #print axioms Omega.path_independent_set_count'
+  -- Round 102: Window6 审计稳定性 + 高阶谱 (Window6.lean:19-481)
+  #print axioms Omega.supNormIntVec
+  #print axioms Omega.torusSupDistZero
+  #print axioms Omega.auditSeparation
+  #print axioms Omega.AuditStable
+  #print axioms Omega.BadlyApproximable
+  #print axioms Omega.AuditStableBoxwise
+  #print axioms Omega.audit_stability_iff_badly_approximable
+  #print axioms Omega.PrimeSupportObj
+  #print axioms Omega.supportSpectrum
+  #print axioms Omega.higher_spectrum_not_determined_by_marginals
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1646,12 +1657,18 @@ def coreAuditTargets : List String :=
   , "Omega.readout_time_lower_bound_instances"
   , "Omega.readout_needs_at_least_one_query"
   -- prop:cdim-audit-stability-iff-badly-approximable
-  , "Omega.audit_stability_golden"
-  -- prop:terminal-window6-1-8-12-split
-  , "Omega.split_1_8_12_arithmetic"
+  , "Omega.supNormIntVec"
+  , "Omega.torusSupDistZero"
+  , "Omega.auditSeparation"
+  , "Omega.AuditStable"
+  , "Omega.BadlyApproximable"
+  , "Omega.audit_stability_iff_badly_approximable"
+  , "Omega.AuditStableBoxwise"
+  , "Omega.PrimeSupportObj"
+  , "Omega.supportSpectrum"
   -- Round 47: 圆维度高阶谱 + Zeta 迹线性递推证书
-  -- (Window6.lean:374, CollisionZeta.lean:486)
-  , "Omega.higher_spectrum_not_marginal_determined"
+  -- (Window6.lean:481, CollisionZeta.lean:486)
+  , "Omega.higher_spectrum_not_determined_by_marginals"
   , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
   -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
   -- (CollisionZeta.lean:503-549, Window6.lean:386-389)

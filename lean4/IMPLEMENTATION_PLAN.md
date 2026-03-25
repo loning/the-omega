@@ -1,4 +1,4 @@
-# Lean4 无公理形式化实施方案（2026-03-22 完整重建版）
+# Lean4 无公理形式化实施方案（2026-03-25 登记同步版）
 
 ## 1. 项目现状
 
@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~25,706 |
-| 定理/定义数 | ~2,371 |
+| 总行数 | 28,328 |
+| 定理/定义数 | ~2,182 |
 | 论文接口包装 | 346 |
-| 文件数 | 61 |
+| 文件数 | 62 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -31,6 +31,8 @@
 **SPG 扫描误差**：离散 + 测度双版本, Bayes 半界, 观测细化单调性, 补对称性
 **fiber 结构**：分割和 = 2^m, multiplicity, 不相交性
 **defect 结构**：零条件 ↔ Fold 可交换, 链代数, 离散 Stokes
+**圆维度审计稳定性（Round 102）**：supNormIntVec（整数向量 sup 范数）; torusSupDistZero（零点环面 sup 距离）; auditSeparation（审计分离函数）; AuditStable / AuditStableBoxwise（统一与 boxwise 审计稳定性）; BadlyApproximable（坏逼近矩阵定义）; audit_stability_iff_badly_approximable（boxwise 审计稳定性与坏逼近等价）
+**圆维度高阶谱（Round 102）**：PrimeSupportObj（素支撑对象）; supportSpectrum（支撑谱计数）; higher_spectrum_not_determined_by_marginals（高阶谱不由一维边缘决定）
 **modular 映射塔**：modularProject = restrict 等价, 进位缺陷加法形式, 乘法值恒等式, restrict 复合, 塔相容性, 传递性, 零保持, 满射, restrict 保零（restrict_zero）, restrict 保一（restrict_one）, restrict 满射（restrict_surjective）, restrict 纤维非空（restrict_fiber_nonempty）
 **fiber 融合不等式**：fib_fusion 恒等式, 严格次乘性链 (fib_prod < fib_fusion < fib_sum), 分量合并增益上下界
 **最大纤维多重度（部分完成）**：maxFiberMultiplicity 定义, achiever 存在性, 上界, 正性; 递推上界 D(m+2)≤D(m+1)+D(m)（maxFiberMultiplicity_le_add）; 基值 D_0..D_10（native_decide 验证，11个定理）; 偶数闭式 D(2k)=F_{k+2} 目前仅对 k=1..5 无条件成立（maxFiberMultiplicity_even）; 奇数闭式 D(2k+1)=2F_k 目前仅对 k=1..4 无条件成立（maxFiberMultiplicity_odd）; 一般闭式仍以 two-step recurrence 为条件（maxFiberMultiplicity_even_of_two_step / maxFiberMultiplicity_odd_of_two_step）
@@ -111,7 +113,7 @@
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
-## 2. 论文总覆盖率分析（2026-03-24 里程碑审计校准版）
+## 2. 论文总覆盖率分析（2026-03-25 登记同步版）
 
 ### 论文规模
 
@@ -122,15 +124,15 @@
 
 ### Lean4 形式化状态
 
-- **994 个论文标签已注册**到 SourceMap
-- ~2,371 个 Lean4 定理（含内部引理）
+- **1,114 个论文标签已注册**到 SourceMap
+- ~2,182 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1036/10,588 = **9.8%** |
+| 全局覆盖率 | 1114/10,588 = **10.5%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -145,12 +147,12 @@
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~400 | ~26.2% |
-| 圆维度 | 342 | ~50 | ~15% |
+| 圆维度 | 342 | 39 | 11.4% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | ~60 | ~3% |
+| 结论 | 1,727 | 66 | 3.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **~999** | **9.4%** |
+| **总计** | **10,588** | **1114** | **10.5%** |
 
 ## 3. 未来工作：30 条具体计划
 

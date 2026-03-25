@@ -5982,31 +5982,73 @@ def initialEntries : List SourceMapEntry :=
     phase := 52
     status := .formalized }
 -- prop:cdim-audit-stability-iff-badly-approximable
---   → audit_stability_golden (Window6.lean:363)
--- 状态: 已形式化, 审核通过 2026-03-24
+--   → audit_stability_iff_badly_approximable (Window6.lean:466)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:cdim-supnorm-intvec"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.supNormIntVec"
+    phase := 52
+    status := .formalized }
+, { label := "def:cdim-torus-sup-dist-zero"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.torusSupDistZero"
+    phase := 52
+    status := .formalized }
+, { label := "def:cdim-audit-separation"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.auditSeparation"
+    phase := 52
+    status := .formalized }
+, { label := "def:cdim-audit-stable"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.AuditStable"
+    phase := 52
+    status := .formalized }
+, { label := "def:cdim-badly-approximable"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.BadlyApproximable"
+    phase := 52
+    status := .formalized }
 , { label := "prop:cdim-audit-stability-iff-badly-approximable"
     sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
     moduleName := "Omega.Folding.Window6"
-    leanName := "Omega.audit_stability_golden"
+    leanName := "Omega.audit_stability_iff_badly_approximable"
     phase := 52
     status := .formalized }
 -- prop:terminal-window6-1-8-12-split
---   → split_1_8_12_arithmetic (Window6.lean:368)
--- 状态: 已形式化, 审核通过 2026-03-24
-, { label := "prop:terminal-window6-1-8-12-split"
-    sourcePath := "sections/body/conclusion/subsec__conclusion-atomic-toyrh-trigonal-resultant-unit-rigidity.tex"
+--   → AuditStableBoxwise, PrimeSupportObj, supportSpectrum (Window6.lean:444,474,477)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:cdim-audit-stability-boxwise"
+    sourcePath := "sections/body/circular-dim/subsec__cdim-audit-stability.tex"
     moduleName := "Omega.Folding.Window6"
-    leanName := "Omega.split_1_8_12_arithmetic"
+    leanName := "Omega.AuditStableBoxwise"
+    phase := 52
+    status := .formalized }
+, { label := "def:cdim-prime-support-object"
+    sourcePath := "sections/body/circle_dimension_phase_gate/prop__cdim-higher-spectrum-not-determined-by-marginals.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.PrimeSupportObj"
+    phase := 52
+    status := .formalized }
+, { label := "def:cdim-support-spectrum"
+    sourcePath := "sections/body/circle_dimension_phase_gate/prop__cdim-higher-spectrum-not-determined-by-marginals.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.supportSpectrum"
     phase := 52
     status := .formalized }
 -- Phase 53: Round 47 — 圆维度/Zeta 论文编号定理
 -- prop:cdim-higher-spectrum-not-determined-by-marginals
---   → higher_spectrum_not_marginal_determined (Window6.lean:374)
--- 状态: 已形式化, 审核通过 2026-03-24
+--   → higher_spectrum_not_determined_by_marginals (Window6.lean:481)
+-- 状态: 已形式化, 审核通过 2026-03-25
 , { label := "prop:cdim-higher-spectrum-not-determined-by-marginals"
-    sourcePath := "sections/body/circular-dim/subsec__cdim-spectrum.tex"
+    sourcePath := "sections/body/circle_dimension_phase_gate/prop__cdim-higher-spectrum-not-determined-by-marginals.tex"
     moduleName := "Omega.Folding.Window6"
-    leanName := "Omega.higher_spectrum_not_marginal_determined"
+    leanName := "Omega.higher_spectrum_not_determined_by_marginals"
     phase := 53
     status := .formalized }
 -- thm:zeta-syntax-trace-linear-recurrence
