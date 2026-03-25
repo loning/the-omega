@@ -2062,6 +2062,8 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_ge_two"
   -- Phase 117b: PathIndSets Fintype + card + appendFalse 单射 (FibonacciCube.lean:323-338)
   , "Omega.card_pathIndSets"
-  , "Omega.appendFalse_injective" ]
+  , "Omega.appendFalse_injective"
+  -- Phase 117c: popcount 紧上界 (FibonacciCube.lean:339)
+  , "Omega.popcount_le_half" ]
 
 end Omega.Audit

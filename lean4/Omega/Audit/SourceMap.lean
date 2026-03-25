@@ -8356,6 +8356,13 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CircleDimension"
     leanName := "Omega.fib_semigroup_factorization_right'"
     phase := 119
+    status := .formalized }
+-- Phase 117c: popcount 紧上界 (FibonacciCube.lean:339)
+, { label := "thm:pom-fiber-indset-factorization"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.popcount_le_half"
+    phase := 117
     status := .formalized } ]
 
 end Omega.Audit
