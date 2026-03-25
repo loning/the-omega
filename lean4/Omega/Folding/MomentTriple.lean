@@ -258,4 +258,5 @@ theorem crossCorrSqLow_eq_tripleCorr (m : Nat) :
     crossCorrSqLow m = tripleCorr m (Nat.fib (m + 2)) 1 2 := by
   unfold crossCorrSqLow tripleCorr; congr 1; ext n; ring
 
+
 end Omega
