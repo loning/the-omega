@@ -603,4 +603,15 @@ theorem momentSum_two_two_mod_four : momentSum 2 2 % 4 = 2 := by
 theorem momentSum_two_three_mod_four : momentSum 2 3 % 4 = 2 := by
   rw [momentSum_two_three]
 
+/-- Paper certificate: S_2 is the unique sequence satisfying the 3rd-order recurrence
+    with initial values 1, 2, 6. -/
+theorem paper_s2_unique_three_state_certificate :
+    (∀ m, momentSum 2 (m + 3) + 2 * momentSum 2 m =
+      2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1)) ∧
+    momentSum 2 0 = 1 ∧ momentSum 2 1 = 2 ∧ momentSum 2 2 = 6 ∧
+    (∀ f : Nat → Nat, (∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 2 * f (m + 1)) →
+      f 0 = 1 → f 1 = 2 → f 2 = 6 → ∀ m, f m = momentSum 2 m) :=
+  ⟨momentSum_two_recurrence, momentSum_two_zero, momentSum_two_one, momentSum_two_two,
+   @momentSum_two_determined⟩
+
 end Omega

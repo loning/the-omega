@@ -503,4 +503,9 @@ theorem paper_hiddenBitCount_recurrence :
     (∀ m, hiddenBitCount (m + 2) = 2 ^ m + hiddenBitCount m) :=
   ⟨hiddenBitCount_zero, hiddenBitCount_one, hiddenBitCount_recurrence⟩
 
+/-- Paper label: hidden bit count closed form. -/
+theorem paper_hiddenBitCount_closed (m : Nat) :
+    3 * hiddenBitCount m + (if m % 2 = 0 then 1 else 2) = 2 ^ m := by
+  have := hiddenBitCount_closed m; omega
+
 end Omega

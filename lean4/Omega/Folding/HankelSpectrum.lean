@@ -308,4 +308,9 @@ theorem momentSum_three_mono_resolution_verified :
     momentSum_three_six, momentSum_three_seven]
   omega
 
+/-- Paper label: S_2 Hankel rank is exactly 3. -/
+theorem paper_s2_hankel_rank_exact :
+    hankelS2_3x3.det ≠ 0 ∧ hankelS2_4x4.det = 0 :=
+  momentSum_two_minimal_recurrence_order
+
 end Omega
