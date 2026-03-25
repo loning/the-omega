@@ -7278,6 +7278,43 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.CollisionDecomp"
     leanName := "Omega.momentSum_two_recurrence"
     phase := 83
+    status := .formalized }
+-- Phase 84: S_2 递推推论族 (MomentRecurrence.lean:1-86)
+-- prop:pom-s2-recurrence → momentSum_two_recurrence_sub（S_2 递推减法形式）
+-- (MomentRecurrence.lean:10)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-recurrence-sub"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_recurrence_sub"
+    phase := 84
+    status := .formalized }
+-- prop:pom-s2-recurrence → momentSum_two_pos'（S_2(m) > 0，无条件正性）
+-- (MomentRecurrence.lean:19)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-pos"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_pos'"
+    phase := 84
+    status := .formalized }
+-- prop:pom-s2-recurrence → momentSum_two_mono'（S_2 无条件单调）
+-- (MomentRecurrence.lean:28)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-mono"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_mono'"
+    phase := 84
+    status := .formalized }
+-- prop:pom-s2-recurrence → momentSum_two_strict_mono'（S_2 严格单调 m≥1）
+-- (MomentRecurrence.lean:65)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-strict-mono"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_strict_mono'"
+    phase := 84
     status := .formalized } ]
 
 end Omega.Audit

@@ -1820,6 +1820,11 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_eq_exact_plus_crossCorr"
   , "Omega.crossCorr_fib_prev_eq_momentSum"
   , "Omega.momentSum_two_succ_succ_expand"
-  , "Omega.momentSum_two_recurrence" ]
+  , "Omega.momentSum_two_recurrence"
+  -- Phase 84: S_2 递推推论族 (MomentRecurrence.lean:1-86)
+  , "Omega.momentSum_two_recurrence_sub"
+  , "Omega.momentSum_two_pos'"
+  , "Omega.momentSum_two_mono'"
+  , "Omega.momentSum_two_strict_mono'" ]
 
 end Omega.Audit
