@@ -555,4 +555,46 @@ theorem momentSum_two_chain_extended :
     momentSum_two_twelve_rec⟩
 
 
+/-- E00(m) ≥ 2^m. -/
+theorem exactWeightCollision_ge_pow (m : Nat) : 2 ^ m ≤ exactWeightCollision m := by
+  induction m with
+  | zero => have := exactWeightCollision_ge_fib 0; simp [Nat.fib] at this; omega
+  | succ n ih =>
+    rw [exactWeightCollision_succ]
+    have hge := momentSum_two_ge_pow n
+    calc 2 ^ (n + 1) = 2 * 2 ^ n := by ring
+      _ ≤ exactWeightCollision n + momentSum 2 n := by linarith
+
+/-- S_2 is convex: 2·S_2(m+1) ≤ S_2(m) + S_2(m+2). -/
+theorem momentSum_two_convex (m : Nat) :
+    2 * momentSum 2 (m + 1) ≤ momentSum 2 m + momentSum 2 (m + 2) := by
+  match m with
+  | 0 => rw [momentSum_two_zero, momentSum_two_one, momentSum_two_two]; omega
+  | 1 => rw [momentSum_two_one, momentSum_two_two, momentSum_two_three]; omega
+  | m + 2 =>
+    -- From recurrence: S(m+4) + 2S(m+1) = 2S(m+3) + 2S(m+2)
+    -- Need: 2S(m+3) ≤ S(m+2) + S(m+4)
+    -- S(m+4) = 2S(m+3) + 2S(m+2) - 2S(m+1) [from recurrence at m+1]
+    -- S(m+2) + S(m+4) = S(m+2) + 2S(m+3) + 2S(m+2) - 2S(m+1) = 3S(m+2) + 2S(m+3) - 2S(m+1)
+    -- Need: 2S(m+3) ≤ 3S(m+2) + 2S(m+3) - 2S(m+1) ↔ 2S(m+1) ≤ 3S(m+2)
+    -- True since S(m+1) ≤ S(m+2) [monotonicity].
+    have hrec := momentSum_two_recurrence (m + 1)
+    have hmono := momentSum_two_mono' (m + 1)
+    linarith
+
+/-- EWT(m) ≥ E00(m): Σ ewc³ ≥ Σ ewc². -/
+theorem exactWeightTriple_ge_collision (m : Nat) :
+    exactWeightCollision m ≤ exactWeightTriple m := by
+  unfold exactWeightCollision exactWeightTriple
+  apply Finset.sum_le_sum; intro n _
+  -- ewc(n)² ≤ ewc(n)³: a² ≤ a³ for all Nat a (0² = 0 ≤ 0; a ≥ 1 → a² ≤ a³)
+  by_cases h : exactWeightCount m n = 0
+  · simp [h]
+  · have hpos : 1 ≤ exactWeightCount m n := by omega
+    calc exactWeightCount m n ^ 2
+        = exactWeightCount m n ^ 2 * 1 := (Nat.mul_one _).symm
+      _ ≤ exactWeightCount m n ^ 2 * exactWeightCount m n :=
+          Nat.mul_le_mul_left _ hpos
+      _ = exactWeightCount m n ^ 3 := by ring
+
 end Omega
