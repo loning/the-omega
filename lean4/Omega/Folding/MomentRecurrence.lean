@@ -566,4 +566,37 @@ theorem exactWeightCount_symmetric (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) 
     rw [complement_involution] at hcomp
     omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Fold complement duality
+-- ══════════════════════════════════════════════════════════════
+
+theorem weight_complement_sub (w : Word m) :
+    weight (complement w) = Nat.fib (m + 3) - 2 - weight w := by
+  have h := weight_complement w; have hle := weight_le_allTrue w; omega
+
+theorem Fold_complement (w : Word m) :
+    Fold (complement w) = X.ofNat m (Nat.fib (m + 3) - 2 - weight w) := by
+  unfold Fold; rw [weight_complement_sub]
+
+-- ══════════════════════════════════════════════════════════════
+-- Gauss sum of stableValues
+-- ══════════════════════════════════════════════════════════════
+
+theorem stableValue_sum (m : Nat) :
+    ∑ x : X m, stableValue x = Nat.fib (m + 2) * (Nat.fib (m + 2) - 1) / 2 := by
+  -- stableValueFin is a bijection X m → Fin(F_{m+2})
+  -- So Σ stableValue x = Σ_{i : Fin F} i.val = F*(F-1)/2
+  have hbij := X.stableValueFin_bijective m
+  have hsum : ∑ x : X m, stableValue x = ∑ i : Fin (Nat.fib (m + 2)), i.val := by
+    rw [show (fun x : X m => stableValue x) =
+      (fun i : Fin (Nat.fib (m + 2)) => i.val) ∘ X.stableValueFin from by
+        ext x; simp [X.stableValueFin]]
+    exact hbij.sum_comp _
+  rw [hsum]
+  -- ∑ i : Fin F, i.val = ∑ i ∈ range F, i = F*(F-1)/2
+  have : ∑ i : Fin (Nat.fib (m + 2)), (i : Nat) =
+      ∑ i ∈ Finset.range (Nat.fib (m + 2)), i := by
+    rw [← Fin.sum_univ_eq_sum_range]
+  rw [this, Finset.sum_range_id]
+
 end Omega
