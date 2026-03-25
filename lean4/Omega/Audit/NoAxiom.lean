@@ -1928,6 +1928,12 @@ def coreAuditTargets : List String :=
   , "Omega.Fold_unique_of_retraction"
   , "Omega.X.eq_of_stableValue_eq'"
   , "Omega.congr_map_fiber_const"
-  , "Omega.fiber_independent_of_retraction" ]
+  , "Omega.fiber_independent_of_retraction"
+  -- Phase 101: S_2 交叉验证与增长界 (Folding/MomentRecurrence.lean:606-661)
+  , "Omega.momentSum_two_recurrence_matches_charpoly"
+  , "Omega.momentSum_two_chain"
+  , "Omega.momentSum_two_ratio_bounds'"
+  , "Omega.momentSum_two_excess_pos"
+  , "Omega.momentSum_two_ge_two_fib" ]
 
 end Omega.Audit

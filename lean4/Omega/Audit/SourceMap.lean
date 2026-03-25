@@ -7819,6 +7819,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MaxFiberTwoStep"
     leanName := "Omega.fiber_independent_of_retraction"
     phase := 100
+    status := .formalized }
+-- Phase 101: S_2 交叉验证与增长界 (Folding/MomentRecurrence.lean:606-661)
+, { label := "thm:pom-momentSum-two-recurrence-matches-charpoly"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-recurrence.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_recurrence_matches_charpoly"
+    phase := 101
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-chain"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-recurrence.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_chain"
+    phase := 101
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-ratio-bounds"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-recurrence.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_ratio_bounds'"
+    phase := 101
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-excess-pos"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-recurrence.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_excess_pos"
+    phase := 101
+    status := .formalized }
+, { label := "thm:pom-momentSum-two-ge-two-fib"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-recurrence.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_ge_two_fib"
+    phase := 101
     status := .formalized } ]
 
 end Omega.Audit
