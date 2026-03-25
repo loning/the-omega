@@ -8199,6 +8199,46 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.crossCorrSqLow_eq_tripleCorr"
     phase := 114
+    status := .formalized }
+-- Phase 116: Fibonacci radius Poisson identities (CircleDimension.lean:12-43)
+-- con:cdim-fibonacci-radius-time-conjugacy → fibRadius / poissonTimeOfRadius / poissonTimeOf_fibRadius /
+--   one_sub_sq_of_poissonTime_param / one_sub_fibRadius_sq / one_sub_sq_of_poissonTime_param_nat
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.fibRadius"
+    phase := 116
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.poissonTimeOfRadius"
+    phase := 116
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.poissonTimeOf_fibRadius"
+    phase := 116
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.one_sub_sq_of_poissonTime_param"
+    phase := 116
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.one_sub_fibRadius_sq"
+    phase := 116
+    status := .formalized }
+, { label := "con:cdim-fibonacci-radius-time-conjugacy"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.one_sub_sq_of_poissonTime_param_nat"
+    phase := 116
     status := .formalized } ]
 
 end Omega.Audit
