@@ -430,4 +430,15 @@ theorem popcount_le_half (x : X m) : (wordSupport x.1).card ≤ (m + 1) / 2 := b
           _ ≤ ((m + 1) + 1) / 2 := htrunc
           _ ≤ ((m + 2) + 1) / 2 := by omega
 
+
+/-- popcount(w) ≤ weight(w): each true bit contributes F(i+2) ≥ 1 to weight. -/
+theorem popcount_le_weight (w : Word m) : popcount w ≤ weight w := by
+  rw [weight_eq_fib_sum]
+  simp only [popcount, wordSupport]
+  -- Σ_{i ∈ support} F(i+2) ≥ Σ_{i ∈ support} 1 = |support| = popcount
+  calc (Finset.univ.filter (fun i : Fin m => w i = true)).card
+      = ∑ _ ∈ Finset.univ.filter (fun i : Fin m => w i = true), 1 := by simp
+    _ ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin m => w i = true), Nat.fib (i.val + 2) := by
+        apply Finset.sum_le_sum; intro i _; exact fib_succ_pos (i.val + 1)
+
 end Omega

@@ -352,4 +352,9 @@ theorem lucasNum_sub_fib (n : Nat) (hn : 1 ≤ n) :
   have hrec : Nat.fib (m + 2) = Nat.fib m + Nat.fib (m + 1) := Nat.fib_add_two
   omega
 
+/-- F(2n) = F(n)·L(n) for n ≥ 1. -/
+theorem fib_double_eq_mul_lucas (n : Nat) (hn : 1 ≤ n) :
+    Nat.fib (2 * n) = Nat.fib n * lucasNum n := by
+  have := lucasNum_mul_fib n hn; linarith [Nat.mul_comm (Nat.fib n) (lucasNum n)]
+
 end Omega
