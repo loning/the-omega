@@ -2076,6 +2076,9 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_diff_recurrence"
   , "Omega.momentSum_two_diff_strict_mono"
   -- Phase 121: S_2 Fibonacci 增长下界 (MomentTriple.lean:373)
-  , "Omega.momentSum_two_fibonacci_growth" ]
+  , "Omega.momentSum_two_fibonacci_growth"
+  -- Phase 122: ewc 总和 + S_2^2 ≤ F*S_4 (FiberWeightCount.lean:434, MomentTriple.lean:394)
+  , "Omega.exactWeightCount_sum"
+  , "Omega.momentSum_two_sq_le_card_mul_four" ]
 
 end Omega.Audit

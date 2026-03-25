@@ -8415,6 +8415,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.momentSum_two_fibonacci_growth"
     phase := 121
+    status := .formalized }
+-- Phase 122: ewc 总和 + S_2^2 ≤ F*S_4 (FiberWeightCount.lean:434, MomentTriple.lean:394)
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.exactWeightCount_sum"
+    phase := 122
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_sq_le_card_mul_four"
+    phase := 122
     status := .formalized } ]
 
 end Omega.Audit
