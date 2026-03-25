@@ -7178,31 +7178,68 @@ def initialEntries : List SourceMapEntry :=
     status := .formalized }
 -- Phase 81: crossWeightCorrelation + E00 递推与望远镜和 (FiberWeightCount.lean:630-764)
 -- prop:pom-s2-plancherel → crossWeightCorrelation（定义：Σ ewc(r)·ewc(r+F)，交叉权重相关）
--- (FiberWeightCount.lean:634)
+-- (CollisionDecomp.lean:226)
 -- 状态: 已形式化, 审核通过 2026-03-25
 , { label := "def:pom-crossWeightCorrelation"
     sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
-    moduleName := "Omega.Folding.FiberWeightCount"
+    moduleName := "Omega.Folding.CollisionDecomp"
     leanName := "Omega.crossWeightCorrelation"
     phase := 81
     status := .formalized }
 -- prop:pom-s2-plancherel → exactWeightCollision_succ（E00(m+1) = E00(m) + S_2(m)）
--- (FiberWeightCount.lean:643)
+-- (CollisionDecomp.lean:235)
 -- 状态: 已形式化, 审核通过 2026-03-25
 , { label := "thm:pom-e00-succ"
     sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
-    moduleName := "Omega.Folding.FiberWeightCount"
+    moduleName := "Omega.Folding.CollisionDecomp"
     leanName := "Omega.exactWeightCollision_succ"
     phase := 81
     status := .formalized }
 -- prop:pom-s2-plancherel → exactWeightCollision_eq_sum（E00(m) = 1 + Σ_{k<m} S_2(k)）
--- (FiberWeightCount.lean:752)
+-- (CollisionDecomp.lean:344)
 -- 状态: 已形式化, 审核通过 2026-03-25
 , { label := "thm:pom-e00-telescoping"
     sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
-    moduleName := "Omega.Folding.FiberWeightCount"
+    moduleName := "Omega.Folding.CollisionDecomp"
     leanName := "Omega.exactWeightCollision_eq_sum"
     phase := 81
+    status := .formalized }
+-- Phase 82: crossCorr + E(0,1) 分解 + S_2 三项展开 (CollisionDecomp.lean:362-505)
+-- prop:pom-s2-plancherel → crossCorr（定义：交叉相关函数 C(m,d) = Σ ewc(r)·ewc(r+d)）
+-- (CollisionDecomp.lean:362)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-crossCorr"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.crossCorr"
+    phase := 82
+    status := .formalized }
+-- prop:pom-s2-plancherel → crossCorr_zero_eq（C_0 = E(0,0)，零位移交叉相关 = 精确碰撞数）
+-- (CollisionDecomp.lean:367)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-crossCorr-zero"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.crossCorr_zero_eq"
+    phase := 82
+    status := .formalized }
+-- prop:pom-s2-plancherel → collision_cross_eq_two_crossCorr（E(0,1) = C_F + C_{F-1}）
+-- (CollisionDecomp.lean:376)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-e01-crossCorr"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.collision_cross_eq_two_crossCorr"
+    phase := 82
+    status := .formalized }
+-- prop:pom-s2-plancherel → momentSum_two_succ_three_term（S_2(m+1) = 2E00 + 2C_F + 2C_{F-1}）
+-- (CollisionDecomp.lean:497)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s2-three-term"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.momentSum_two_succ_three_term"
+    phase := 82
     status := .formalized } ]
 
 end Omega.Audit
