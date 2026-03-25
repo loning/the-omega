@@ -240,4 +240,39 @@ theorem fiber_self_mem (x : X m) : x.1 ∈ X.fiber x := X.self_mem_fiber x
 
 -- fiberMultiplicity_eq_one_of_sv_ge deferred (ewc uniqueness proof complex)
 
+-- ══════════════════════════════════════════════════════════════
+-- D(m) bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(m) ≤ F(m+2). -/
+theorem maxFiberMultiplicity_le_fib (m : Nat) :
+    X.maxFiberMultiplicity m ≤ Nat.fib (m + 2) := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => rw [X.maxFiberMultiplicity_zero]; exact one_le_fib_succ 1
+    | 1 => rw [X.maxFiberMultiplicity_one]; exact one_le_fib_succ 2
+    | m + 2 =>
+      have h1 := ih (m + 1) (by omega)
+      have h2 := ih m (by omega)
+      have hle := X.maxFiberMultiplicity_le_add m
+      have hfib := fib_succ_succ' (m + 2)
+      rw [show m + 2 + 2 = m + 4 from rfl, show m + 2 + 1 = m + 3 from rfl] at hfib
+      linarith
+
+/-- d(x) ≤ F(m+2) for all x. -/
+theorem fiberMultiplicity_le_fib (x : X m) :
+    X.fiberMultiplicity x ≤ Nat.fib (m + 2) :=
+  (X.fiberMultiplicity_le_max x).trans (maxFiberMultiplicity_le_fib m)
+
+/-- D(m)² ≤ S_2(m). -/
+theorem maxFiberMultiplicity_sq_le_momentSum (m : Nat) :
+    X.maxFiberMultiplicity m ^ 2 ≤ momentSum 2 m := by
+  obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
+  calc X.maxFiberMultiplicity m ^ 2 = X.fiberMultiplicity x ^ 2 := by rw [hx]
+    _ ≤ ∑ y : X m, X.fiberMultiplicity y ^ 2 :=
+        Finset.single_le_sum (f := fun y => X.fiberMultiplicity y ^ 2)
+          (fun y _ => Nat.zero_le _) (Finset.mem_univ x)
+    _ = momentSum 2 m := rfl
+
 end Omega
