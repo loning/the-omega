@@ -1,5 +1,6 @@
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.MaxFiberTwoStep
+import Omega.Folding.FiberRing
 
 namespace Omega
 
@@ -450,15 +451,15 @@ theorem stableValue_eq_zero_iff (x : X m) :
 -- Phase 119: Ring corollaries
 -- ══════════════════════════════════════════════════════════════
 
-/-- stableValue of negation: sv(stableNeg x) = (F - sv(x)) % F. -/
-theorem stableValue_neg' (x : X m) :
-    stableValue (stableNeg x) = (Nat.fib (m + 2) - stableValue x) % Nat.fib (m + 2) :=
+/-- stableValue of negation: sv(-x) = (F - sv(x)) % F. -/
+theorem stableValue_neg (x : X m) :
+    stableValue (-x) = (Nat.fib (m + 2) - stableValue x) % Nat.fib (m + 2) :=
   stableValue_stableNeg x
 
-/-- Fold respects addition: stableAdd(Fold w1, Fold w2) = ofNat(m, (wt w1 + wt w2) % F). -/
+/-- Fold respects addition: Fold(w1) + Fold(w2) = ofNat(m, (wt w1 + wt w2) % F). -/
 theorem Fold_add_weight (w1 w2 : Word m) :
-    stableAdd (Fold w1) (Fold w2) =
-    X.ofNat m ((weight w1 + weight w2) % Nat.fib (m + 2)) := by
+    Fold w1 + Fold w2 = X.ofNat m ((weight w1 + weight w2) % Nat.fib (m + 2)) := by
+  show stableAdd (Fold w1) (Fold w2) = _
   apply eq_of_stableValue_eq
   rw [stableValue_stableAdd, stableValue_ofNat_mod,
       stableValue_Fold_mod, stableValue_Fold_mod]
