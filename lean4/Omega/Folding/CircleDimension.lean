@@ -58,6 +58,31 @@ theorem fib_semigroup_factorization
   · rw [hfib, h_add]
     exact h_comm _ _
 
+/-- Right-handed Fibonacci semigroup factorization obtained from the left factorization and commutativity. -/
+theorem fib_semigroup_factorization_right
+    {α : Type*}
+    (T : ℕ → α → α)
+    (h_left : ∀ m,
+      T (Nat.fib (m + 2)) = Function.comp (T (Nat.fib (m + 1))) (T (Nat.fib m)))
+    (h_comm : ∀ a b, Function.Commute (T a) (T b))
+    (m : ℕ) :
+    T (Nat.fib (m + 2)) = Function.comp (T (Nat.fib m)) (T (Nat.fib (m + 1))) := by
+  rw [h_left m]
+  funext x
+  exact h_comm _ _ x
+
+/-- Independent right-handed Fibonacci semigroup factorization from the additive law and pairwise commutativity. -/
+theorem fib_semigroup_factorization_right'
+    {α : Type*}
+    (T : ℕ → α → α)
+    (h_add : ∀ a b, T (a + b) = Function.comp (T a) (T b))
+    (h_comm : ∀ a b, Function.Commute (T a) (T b))
+    (m : ℕ) :
+    T (Nat.fib (m + 2)) = Function.comp (T (Nat.fib m)) (T (Nat.fib (m + 1))) := by
+  exact fib_semigroup_factorization_right T
+    (fun k => (fib_semigroup_factorization T h_add (fun a b => funext (h_comm a b)) k).1)
+    h_comm m
+
 /-- The fiber of a group homomorphism over a target point. -/
 def fiberAt {G H : Type*} [Group G] [Group H] (π : G →* H) (t : H) :=
   {g : G // π g = t}
