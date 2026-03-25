@@ -1,6 +1,7 @@
 import Omega.Combinatorics.PathIndSet
 import Omega.Folding.Weight
 import Omega.Folding.Fold
+import Omega.Folding.MaxFiber
 
 namespace Omega
 
@@ -83,5 +84,22 @@ noncomputable def xEquivPathIndSet (m : Nat) : X m ≃ PathIndSets m where
   left_inv x := Subtype.ext (indSetToWord_wordSupport x.1)
   right_inv S := Subtype.ext (wordSupport_indSetToWord S.1)
 
+
+
+-- ══════════════════════════════════════════════════════════════
+-- popcount
+-- ══════════════════════════════════════════════════════════════
+
+/-- Number of true bits in a word. -/
+def popcount (w : Word m) : Nat := (wordSupport w).card
+
+theorem popcount_eq_count_true (w : Word m) :
+    popcount w = (Finset.univ.filter (fun i : Fin m => w i = true)).card := rfl
+
+theorem popcount_allFalse : popcount (fun (_ : Fin m) => false) = 0 := by
+  simp [popcount, wordSupport]
+
+theorem popcount_allTrue : popcount (fun (_ : Fin m) => true) = m := by
+  simp [popcount, wordSupport]
 
 end Omega
