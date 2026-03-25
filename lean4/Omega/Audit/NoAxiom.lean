@@ -2098,6 +2098,12 @@ def coreAuditTargets : List String :=
   , "Omega.stableValue_max_achieved"
   -- Phase 127: popcount ≤ weight + Fib 倍角 Lucas 乘积 (FibonacciCube.lean:435, ShiftDynamics.lean:356)
   , "Omega.popcount_le_weight"
-  , "Omega.fib_double_eq_mul_lucas" ]
+  , "Omega.fib_double_eq_mul_lucas"
+  -- Phase 128: S_2 基值扩展 + Lucas 奇偶 + S_2 mod 16 (MomentTriple.lean:472-495, ShiftDynamics.lean:361)
+  , "Omega.momentSum_two_ten_rec"
+  , "Omega.momentSum_two_eleven_rec"
+  , "Omega.momentSum_two_twelve_rec"
+  , "Omega.lucasNum_even_iff"
+  , "Omega.momentSum_two_mod_sixteen" ]
 
 end Omega.Audit

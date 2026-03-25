@@ -8517,6 +8517,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.ShiftDynamics"
     leanName := "Omega.fib_double_eq_mul_lucas"
     phase := 127
+    status := .formalized }
+-- Phase 128: S_2 基值扩展 + Lucas 奇偶 + S_2 mod 16 (MomentTriple.lean:472-495, ShiftDynamics.lean:361)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_ten_rec"
+    phase := 128
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_eleven_rec"
+    phase := 128
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_twelve_rec"
+    phase := 128
+    status := .formalized }
+, { label := "bridge:lucas-parity"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_even_iff"
+    phase := 128
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_mod_sixteen"
+    phase := 128
     status := .formalized } ]
 
 end Omega.Audit
