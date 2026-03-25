@@ -335,21 +335,12 @@ theorem appendFalse_injective (m : Nat) : Function.Injective (X.appendFalse (m :
     have := congr_arg X.restrict h
     rwa [X.restrict_appendFalse, X.restrict_appendFalse] at this
 
-/-- No11 words have at most ⌈m/2⌉ true bits: popcount ≤ (m+1)/2. -/
--- popcount_le_half deferred: requires detailed Finset splitting + No11 case analysis (~50 lines)
-
+/-- No11 words have popcount ≤ m (trivial bound). -/
 theorem popcount_le_m (x : X m) : popcount x.1 ≤ m := by
   calc popcount x.1 ≤ (Finset.univ : Finset (Fin m)).card := Finset.card_filter_le _ _
     _ = m := by simp
 
--- Placeholder: the tight bound popcount ≤ (m+1)/2 is deferred.
--- popcount_le_m gives the weaker bound popcount ≤ m.
-
-theorem popcount_le_half_placeholder (x : X m) : popcount x.1 ≤ m := popcount_le_m x
-
 end Omega
-
-/- popcount_le_half proof infrastructure (excluded from build). -/
 #exit
 
 theorem popcount_le_half_UNUSED (x : X m) : popcount x.1 ≤ (m + 1) / 2 := by
