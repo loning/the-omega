@@ -1,6 +1,8 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecificLimits.Fibonacci
 import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
+import Mathlib.InformationTheory.KullbackLeibler.Basic
+import Mathlib.MeasureTheory.Measure.Tilted
 import Mathlib.NumberTheory.Real.GoldenRatio
 import Omega.Folding.CircleDimension
 import Omega.Folding.ShiftDynamics
@@ -9,6 +11,96 @@ open scoped goldenRatio
 open Filter Topology
 
 namespace Omega.Entropy
+
+open MeasureTheory InformationTheory
+
+/-! ### Reverse KL tilted splitting -/
+
+/-- Abstract plateau rigidity: a nonnegative dissipation with zero average vanishes almost
+everywhere. This is the minimal shell behind Poisson/KL plateau rigidity. -/
+theorem plateau_rigidity_of_nonneg_dissipation
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (diss : α → ℝ)
+    (hdiss_nonneg : 0 ≤ᵐ[μ] diss)
+    (hdiss_int : Integrable diss μ)
+    (hdiss_zero : ∫ x, diss x ∂μ = 0) :
+    diss =ᵐ[μ] 0 := by
+  exact (MeasureTheory.integral_eq_zero_iff_of_nonneg_ae hdiss_nonneg hdiss_int).1 hdiss_zero
+
+/-- Jeffreys dissipation rigidity: if a nonnegative Jeffreys dissipation has zero mean,
+then the dissipation vanishes almost everywhere. This is the minimal abstract wrapper used by
+Poisson/Jeffreys plateau arguments. -/
+theorem jeffreys_dissipation_rigidity
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (J : α → ℝ)
+    (hJ_nonneg : 0 ≤ᵐ[μ] J)
+    (hJ_int : Integrable J μ)
+    (hJ_zero : ∫ x, J x ∂μ = 0) :
+    J =ᵐ[μ] 0 := by
+  exact plateau_rigidity_of_nonneg_dissipation μ J hJ_nonneg hJ_int hJ_zero
+
+/-- Fibonacci platform certificate, successor form: if two consecutive Fibonacci labels coincide,
+any nonnegative zero-mean dissipation indexed by that label must vanish almost everywhere. -/
+theorem fib_platform_certificate_of_eq_succ
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (diss : ℕ → α → ℝ)
+    (m : ℕ)
+    (hEq : Nat.fib m = Nat.fib (m + 1))
+    (hdiss_nonneg : 0 ≤ᵐ[μ] diss (Nat.fib m))
+    (hdiss_int : Integrable (diss (Nat.fib m)) μ)
+    (hdiss_zero : ∫ x, diss (Nat.fib m) x ∂μ = 0) :
+    diss (Nat.fib (m + 1)) =ᵐ[μ] 0 := by
+  rw [← hEq]
+  exact plateau_rigidity_of_nonneg_dissipation μ (diss (Nat.fib m)) hdiss_nonneg hdiss_int hdiss_zero
+
+/-- Fibonacci platform certificate, two-step form: under the conservative Lean-side hypothesis
+`m ≥ 2`, equality of the `m` and `m+2` Fibonacci labels forces the indexed nonnegative zero-mean
+dissipation to vanish almost everywhere. -/
+theorem fib_platform_certificate_of_eq_succ_succ
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (diss : ℕ → α → ℝ)
+    (m : ℕ)
+    (hm : 2 ≤ m)
+    (hEq : Nat.fib m = Nat.fib (m + 2))
+    (hdiss_nonneg : 0 ≤ᵐ[μ] diss (Nat.fib m))
+    (hdiss_int : Integrable (diss (Nat.fib m)) μ)
+    (hdiss_zero : ∫ x, diss (Nat.fib m) x ∂μ = 0) :
+    diss (Nat.fib (m + 2)) =ᵐ[μ] 0 := by
+  have hm_ge_two : 2 ≤ m := hm
+  rw [← hEq]
+  exact plateau_rigidity_of_nonneg_dissipation μ (diss (Nat.fib m)) hdiss_nonneg hdiss_int hdiss_zero
+
+/-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
+normalizing log-partition term minus the average tilt. -/
+theorem kl_reverse_tilted_split
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) [MeasureTheory.IsProbabilityMeasure μ]
+    (f : α → ℝ)
+    (hf : Integrable (fun x => Real.exp (f x)) μ)
+    (hf_int : Integrable f μ) :
+    (klDiv μ (μ.tilted f)).toReal = Real.log (∫ x, Real.exp (f x) ∂μ) - ∫ x, f x ∂μ := by
+  have h_ac : μ ≪ μ.tilted f := MeasureTheory.absolutelyContinuous_tilted hf
+  have h_eq : μ (Set.univ) = μ.tilted f (Set.univ) := by
+    rw [MeasureTheory.IsProbabilityMeasure.measure_univ]
+    letI : MeasureTheory.IsProbabilityMeasure (μ.tilted f) :=
+      MeasureTheory.isProbabilityMeasure_tilted hf
+    rw [MeasureTheory.IsProbabilityMeasure.measure_univ]
+  have h_zero : Integrable (MeasureTheory.llr μ μ) μ := by
+    rw [MeasureTheory.integrable_congr (MeasureTheory.llr_self μ)]
+    exact (integrable_const (c := (0 : ℝ)) : Integrable (fun _ : α => (0 : ℝ)) μ)
+  rw [InformationTheory.toReal_klDiv_of_measure_eq h_ac h_eq]
+  rw [MeasureTheory.integral_llr_tilted_right (μ := μ) (ν := μ)
+    (hμν := MeasureTheory.Measure.AbsolutelyContinuous.rfl) (hfμ := hf_int) (hfν := hf)
+    (h_int := h_zero)]
+  have h_llr_self : ∫ x, MeasureTheory.llr μ μ x ∂μ = 0 := by
+    rw [MeasureTheory.integral_congr_ae (MeasureTheory.llr_self μ)]
+    simp
+  rw [h_llr_self]
+  ring
 
 /-! ### Binet corollaries: positivity of Fibonacci casts -/
 

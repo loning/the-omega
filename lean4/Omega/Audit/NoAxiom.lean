@@ -773,6 +773,10 @@ Run these commands manually during audit:
   -- Round 119: Right-handed Fibonacci semigroup factorizations (CircleDimension.lean:61-84)
   #print axioms Omega.fib_semigroup_factorization_right
   #print axioms Omega.fib_semigroup_factorization_right'
+  -- Round 120: Reverse KL tilted splitting (Entropy.lean:44-70)
+  #print axioms Omega.Entropy.kl_reverse_tilted_split
+  -- Round 121: Plateau rigidity shell (Entropy.lean:19-29)
+  #print axioms Omega.Entropy.plateau_rigidity_of_nonneg_dissipation
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1707,6 +1711,10 @@ def coreAuditTargets : List String :=
   -- Round 119: Right-handed Fibonacci semigroup factorizations
   , "Omega.fib_semigroup_factorization_right"
   , "Omega.fib_semigroup_factorization_right'"
+  -- Round 120: Reverse KL tilted splitting
+  , "Omega.Entropy.kl_reverse_tilted_split"
+  -- Round 121: Plateau rigidity shell
+  , "Omega.Entropy.plateau_rigidity_of_nonneg_dissipation"
   , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
   -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
   -- (CollisionZeta.lean:503-549, Window6.lean:386-389)

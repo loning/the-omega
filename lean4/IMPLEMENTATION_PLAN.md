@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~29,162 |
-| 定理/定义数 | ~2,282 |
+| 定理/定义数 | ~2,284 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -114,6 +114,8 @@
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
 **圆维度 Fibonacci–Poisson 半群分解（Round 118）**：fib_semigroup_factorization（Fibonacci 时间满足 $T_{F_{m+2}}=T_{F_{m+1}}\circ T_{F_m}=T_{F_m}\circ T_{F_{m+1}}$ 的双向因子分解）
 **圆维度 Fibonacci–Poisson 右端半群分解（Round 119）**：fib_semigroup_factorization_right（由左端分解与对易性推出右端分解）; fib_semigroup_factorization_right'（由加法半群律与逐对对易性独立推出右端分解）
+**圆维度 Jensen 圆周平均的逆向 KL 分解（Round 120）**：kl_reverse_tilted_split（逆向 KL 对指数倾斜测度分解为对数配分项减去平均倾斜项）
+**圆维度 Poisson 相对熵的平台刚性（Round 121）**：plateau_rigidity_of_nonneg_dissipation（非负耗散零均值蕴含几乎处处为零，作为 Poisson/KL 平台刚性的最小抽象壳层）
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -128,17 +130,17 @@
 
 ### Lean4 形式化状态
 
-- **1,172 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,308 个 Lean4 定理（含内部引理）
+- **1,174 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,310 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1172/10,588 = **11.1%** |
+| 全局覆盖率 | 1174/10,588 = **11.1%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
-| 中覆盖（有界 + 条件） | ~152 (1.4%) |
+| 中覆盖（有界 + 条件） | ~154 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
 | 未追踪（附录 + 新章节） | 1,505 个定理 |
 
@@ -151,12 +153,12 @@
 | Folding | 317 | ~86 | ~27% |
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~422 | ~27.7% |
-| 圆维度 | 342 | 53 | 15.5% |
+| 圆维度 | 342 | 55 | 16.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 66 | 3.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1172** | **11.1%** |
+| **总计** | **10,588** | **1174** | **11.1%** |
 
 ## 3. 未来工作：30 条具体计划
 
