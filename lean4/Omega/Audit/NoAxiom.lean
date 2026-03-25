@@ -779,6 +779,9 @@ Run these commands manually during audit:
   #print axioms Omega.Entropy.plateau_rigidity_of_nonneg_dissipation
   -- Round 122: Jeffreys dissipation rigidity (Entropy.lean:31-42)
   #print axioms Omega.Entropy.jeffreys_dissipation_rigidity
+  -- Round 123: Fibonacci platform finite certificates (Entropy.lean:44-75)
+  #print axioms Omega.fib_platform_certificate_of_eq_succ
+  #print axioms Omega.fib_platform_certificate_of_eq_succ_succ
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1719,6 +1722,9 @@ def coreAuditTargets : List String :=
   , "Omega.Entropy.plateau_rigidity_of_nonneg_dissipation"
   -- Round 122: Jeffreys dissipation rigidity
   , "Omega.Entropy.jeffreys_dissipation_rigidity"
+  -- Round 123: Fibonacci platform finite certificates
+  , "Omega.fib_platform_certificate_of_eq_succ"
+  , "Omega.fib_platform_certificate_of_eq_succ_succ"
   , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
   -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
   -- (CollisionZeta.lean:503-549, Window6.lean:386-389)

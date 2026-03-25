@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~29,162 |
-| 定理/定义数 | ~2,285 |
+| 定理/定义数 | ~2,287 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -117,6 +117,7 @@
 **圆维度 Jensen 圆周平均的逆向 KL 分解（Round 120）**：kl_reverse_tilted_split（逆向 KL 对指数倾斜测度分解为对数配分项减去平均倾斜项）
 **圆维度 Poisson 相对熵的平台刚性（Round 121）**：plateau_rigidity_of_nonneg_dissipation（非负耗散零均值蕴含几乎处处为零，作为 Poisson/KL 平台刚性的最小抽象壳层）
 **圆维度 Jeffreys 耗散刚性（Round 122）**：jeffreys_dissipation_rigidity（将非负零均值耗散壳层包装到对称 KL / Jeffreys 耗散，支撑双侧平台唯一性）
+**圆维度 Fibonacci 时间平台有限证书（Round 123）**：fib_platform_certificate_of_eq_succ / fib_platform_certificate_of_eq_succ_succ（把相邻或隔一层 Fibonacci 时间标签相等时的平台刚性压缩为有限证据判别，支撑论文中的有限证书等价形式）
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -141,7 +142,7 @@
 |---|---|
 | 全局覆盖率 | 1183/10,588 = **11.2%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
-| 中覆盖（有界 + 条件） | ~155 (1.5%) |
+| 中覆盖（有界 + 条件） | ~157 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
 | 未追踪（附录 + 新章节） | 1,505 个定理 |
 
@@ -154,7 +155,7 @@
 | Folding | 317 | ~86 | ~27% |
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~430 | ~28.2% |
-| 圆维度 | 342 | 56 | 16.4% |
+| 圆维度 | 342 | 58 | 17.0% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 66 | 3.8% |
 | 未追踪 body | 143 | 2 | ~1% |

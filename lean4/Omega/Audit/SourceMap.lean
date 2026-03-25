@@ -8670,6 +8670,24 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.momentSum_two_three_mod_four"
     phase := 133
+    status := .formalized }
+-- Phase 123: Fibonacci 平台有限证书（Entropy.lean:44-57, 59-75)
+-- con:cdim-fibonacci-kl-platform-finite-certificate → fib_platform_certificate_of_eq_succ
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-fibonacci-kl-platform-finite-certificate"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.fib_platform_certificate_of_eq_succ"
+    phase := 123
+    status := .formalized }
+-- Phase 123: Fibonacci 平台有限证书两步版（Entropy.lean:59-75)
+-- con:cdim-fibonacci-kl-platform-finite-certificate → fib_platform_certificate_of_eq_succ_succ
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-fibonacci-kl-platform-finite-certificate"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.fib_platform_certificate_of_eq_succ_succ"
+    phase := 123
     status := .formalized } ]
 
 end Omega.Audit
