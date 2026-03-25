@@ -254,4 +254,43 @@ theorem fib_odd_sum (n : Nat) :
     rw [show 2 * n + 2 = 2 * n + 2 from rfl] at this
     omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Advanced Fibonacci identities
+-- ══════════════════════════════════════════════════════════════
+
+/-- 3 ∣ F(n) ↔ 4 ∣ n. -/
+theorem fib_div_three_iff (n : Nat) : 3 ∣ Nat.fib n ↔ 4 ∣ n := by
+  constructor
+  · -- 3|F(n) → 4|n: by strong induction + Pisano period
+    intro h
+    induction n using Nat.strongRecOn with
+    | _ n ih =>
+      match n with
+      | 0 => exact dvd_zero 4
+      | 1 => simp [Nat.fib] at h
+      | 2 => simp [Nat.fib] at h
+      | 3 => simp [Nat.fib] at h
+      | n + 4 =>
+        -- F(n+4) = F(n+3)+F(n+2) = (F(n+2)+F(n+1))+F(n+2) = 2F(n+2)+F(n+1)
+        -- F(n+2) = F(n+1)+F(n)
+        -- F(n+4) = 2(F(n+1)+F(n))+F(n+1) = 3F(n+1)+2F(n)
+        -- If 3|F(n+4): 3|3F(n+1)+2F(n) → 3|2F(n) → 3|F(n) (since gcd(3,2)=1)
+        have hfib2 := Nat.fib_add_two (n := n)
+        have hfib3 := Nat.fib_add_two (n := n + 1)
+        have hfib4 := Nat.fib_add_two (n := n + 2)
+        rw [show n + 1 + 2 = n + 3 from rfl, show n + 1 + 1 = n + 2 from rfl] at hfib3
+        rw [show n + 2 + 2 = n + 4 from rfl, show n + 2 + 1 = n + 3 from rfl] at hfib4
+        have h3fn : 3 ∣ Nat.fib n := by
+          have : Nat.fib (n + 4) = 3 * Nat.fib (n + 1) + 2 * Nat.fib n := by
+            rw [hfib4, hfib3, hfib2]; ring
+          rw [this] at h
+          have h2fn : 3 ∣ 2 * Nat.fib n := by omega
+          have : 3 ∣ Nat.fib n * 2 := by rwa [Nat.mul_comm] at h2fn
+          exact (Nat.Coprime.dvd_of_dvd_mul_right (by decide : Nat.Coprime 3 2) this)
+        have := ih n (by omega) h3fn
+        omega
+  · -- 4|n → 3|F(n): F_4=3 divides F_{4k}
+    intro ⟨k, hk⟩; rw [hk]
+    exact dvd_trans (show (3 : Nat) ∣ Nat.fib 4 from by decide) (Nat.fib_dvd 4 (4 * k) ⟨k, rfl⟩)
+
 end Omega
