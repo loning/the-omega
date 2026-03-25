@@ -7944,6 +7944,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.momentSum_two_mod_six_base"
     phase := 105
+    status := .formalized }
+-- Phase 106: Fold-snoc 分解 (Folding/MaxFiberTwoStep.lean:475-498)
+, { label := "thm:pom-restrict-Fold-eq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.restrict_Fold_eq"
+    phase := 106
+    status := .formalized }
+, { label := "thm:pom-Fold-snoc-false-eq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_snoc_false_eq"
+    phase := 106
+    status := .formalized }
+, { label := "thm:pom-Fold-snoc-true-eq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.Fold_snoc_true_eq"
+    phase := 106
+    status := .formalized }
+, { label := "thm:pom-stableValue-Fold-snoc-false"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.stableValue_Fold_snoc_false"
+    phase := 106
+    status := .formalized }
+, { label := "thm:pom-stableValue-Fold-snoc-true"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.stableValue_Fold_snoc_true"
+    phase := 106
     status := .formalized } ]
 
 end Omega.Audit

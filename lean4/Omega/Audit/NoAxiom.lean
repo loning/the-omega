@@ -1953,6 +1953,12 @@ def coreAuditTargets : List String :=
   , "Omega.hiddenBit_eq_one_iff"
   , "Omega.hiddenBit_eq_zero_iff"
   , "Omega.fiber_hidden_bit_split"
-  , "Omega.momentSum_two_mod_six_base" ]
+  , "Omega.momentSum_two_mod_six_base"
+  -- Phase 106: Fold-snoc 分解 (Folding/MaxFiberTwoStep.lean:475-498)
+  , "Omega.restrict_Fold_eq"
+  , "Omega.Fold_snoc_false_eq"
+  , "Omega.Fold_snoc_true_eq"
+  , "Omega.stableValue_Fold_snoc_false"
+  , "Omega.stableValue_Fold_snoc_true" ]
 
 end Omega.Audit
