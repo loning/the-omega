@@ -446,4 +446,9 @@ theorem exactWeightCount_sum (m : Nat) :
     apply Finset.disjoint_filter.mpr
     intro w _ h1 h2; exact hne (h1.symm.trans h2)
 
+/-- For n < F_{m+2}, ewc(m+1,n) = ewc(m,n): no contribution from the last bit. -/
+theorem exactWeightCount_succ_of_lt (m n : Nat) (hn : n < Nat.fib (m + 2)) :
+    exactWeightCount (m + 1) n = exactWeightCount m n := by
+  rw [exactWeightCount_succ]; simp [show ¬(Nat.fib (m + 2) ≤ n) from by omega]
+
 end Omega

@@ -328,4 +328,17 @@ theorem lucasNum_sq (n : Nat) (hn : 1 ≤ n) :
     have := @Nat.fib_add_two m; push_cast; linarith
   push_cast; nlinarith
 
+/-- L(n) + F(n) = 2·F(n+1) for n ≥ 1. -/
+theorem lucasNum_add_fib (n : Nat) (hn : 1 ≤ n) :
+    lucasNum n + Nat.fib n = 2 * Nat.fib (n + 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  rw [lucasNum_eq_fib (m + 1) (by omega)]
+  simp only [show m + 1 + 1 = m + 2 from by omega, show m + 1 - 1 = m from by omega]
+  -- (F(m+2) + F(m)) + F(m+1) = 2·F(m+2)
+  -- F(m+2) = F(m+1) + F(m), so F(m+2) + F(m) + F(m+1) = F(m+1) + F(m) + F(m) + F(m+1) = 2F(m+1) + 2F(m)... no
+  -- F(m+2) + F(m) + F(m+1) = F(m+2) + (F(m) + F(m+1)) = F(m+2) + F(m+2) = 2F(m+2) ✓
+  have hrec : Nat.fib m + Nat.fib (m + 1) = Nat.fib (m + 2) := by
+    have := Nat.fib_add_two (n := m); omega
+  omega
+
 end Omega

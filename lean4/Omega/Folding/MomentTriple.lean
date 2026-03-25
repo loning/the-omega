@@ -438,4 +438,24 @@ theorem Fold_complement_mod (w : Word m) :
     stableValue (Fold (complement w)) = (Nat.fib (m + 3) - 2 - weight w) % Nat.fib (m + 2) := by
   rw [stableValue_Fold_mod, weight_complement_sub]
 
+/-- ewc(m, 1) = 1 for m ≥ 1: only the word with a single true at position 0 has weight 1. -/
+theorem exactWeightCount_one (m : Nat) (hm : 1 ≤ m) : exactWeightCount m 1 = 1 := by
+  induction m with
+  | zero => omega
+  | succ n ih =>
+    -- ewc(n+1, 1) = ewc(n, 1) + (if F_{n+2} ≤ 1 then ewc(n, 1-F) else 0)
+    -- F_{n+2} ≥ 1 always, and F_{n+2} ≤ 1 only when n+2 ≤ 2, i.e., n ≤ 0
+    rw [exactWeightCount_succ]
+    cases n with
+    | zero => native_decide
+    | succ k =>
+      have hFib : ¬(Nat.fib (k + 3) ≤ 1) := by
+        have := fib_succ_pos (k + 2)
+        have : Nat.fib (k + 3) ≥ 2 := by
+          calc Nat.fib (k + 3) = Nat.fib (k + 1) + Nat.fib (k + 2) := Nat.fib_add_two
+            _ ≥ 1 + 1 := Nat.add_le_add (fib_succ_pos k) (fib_succ_pos (k + 1))
+        omega
+      simp [hFib]
+      exact ih (by omega)
+
 end Omega
