@@ -8594,6 +8594,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.Entropy.jeffreys_dissipation_rigidity"
     phase := 122
+    status := .formalized }
+-- Phase 130: S_2 链扩展 + Lucas Cassini Nat 版 (MomentTriple.lean:545, ShiftDynamics.lean:436-445)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_chain_extended"
+    phase := 130
+    status := .formalized }
+, { label := "bridge:lucas-cassini-nat"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_cassini_even"
+    phase := 130
+    status := .formalized }
+, { label := "bridge:lucas-cassini-nat"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_cassini_odd"
+    phase := 130
     status := .formalized } ]
 
 end Omega.Audit

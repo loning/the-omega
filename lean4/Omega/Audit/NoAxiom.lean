@@ -2120,6 +2120,10 @@ def coreAuditTargets : List String :=
   -- Phase 129: E00 下界 + Lucas mod 4 整除 + E00 严格单调 (MomentTriple.lean:523/541, ShiftDynamics.lean:393)
   , "Omega.exactWeightCollision_ge_fib"
   , "Omega.lucasNum_three_dvd"
-  , "Omega.exactWeightCollision_strict_mono" ]
+  , "Omega.exactWeightCollision_strict_mono"
+  -- Phase 130: S_2 链扩展 + Lucas Cassini Nat 版 (MomentTriple.lean:545, ShiftDynamics.lean:436-445)
+  , "Omega.momentSum_two_chain_extended"
+  , "Omega.lucasNum_cassini_even"
+  , "Omega.lucasNum_cassini_odd" ]
 
 end Omega.Audit
