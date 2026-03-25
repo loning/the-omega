@@ -28,6 +28,19 @@ theorem plateau_rigidity_of_nonneg_dissipation
     diss =ᵐ[μ] 0 := by
   exact (MeasureTheory.integral_eq_zero_iff_of_nonneg_ae hdiss_nonneg hdiss_int).1 hdiss_zero
 
+/-- Jeffreys dissipation rigidity: if a nonnegative Jeffreys dissipation has zero mean,
+then the dissipation vanishes almost everywhere. This is the minimal abstract wrapper used by
+Poisson/Jeffreys plateau arguments. -/
+theorem jeffreys_dissipation_rigidity
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (J : α → ℝ)
+    (hJ_nonneg : 0 ≤ᵐ[μ] J)
+    (hJ_int : Integrable J μ)
+    (hJ_zero : ∫ x, J x ∂μ = 0) :
+    J =ᵐ[μ] 0 := by
+  exact plateau_rigidity_of_nonneg_dissipation μ J hJ_nonneg hJ_int hJ_zero
+
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
 normalizing log-partition term minus the average tilt. -/
 theorem kl_reverse_tilted_split
