@@ -2170,6 +2170,17 @@ def coreAuditTargets : List String :=
   -- Phase 137: S_2/S_3 定义 + 稳定加法无零化子 (MomentTriple.lean:618,622, FiberArithmeticProperties.lean:480)
   , "Omega.paper_def_s2"
   , "Omega.paper_def_s3"
-  , "Omega.paper_stable_add_no_null" ]
+  , "Omega.paper_stable_add_no_null"
+  -- Phase 138b: 零代码批量补登 10 个论文标签
+  , "Omega.cFiberSpectrum"
+  , "Omega.fib_even_iff_three_dvd"
+  , "Omega.hankelS2_3x3_det_ne_zero"
+  , "Omega.collisionKernel4"
+  , "Omega.cached_cMomentSum_5_0"
+  , "Omega.DigitCfg"
+  , "Omega.fib_dvd_mul"
+  , "Omega.fib_gcd"
+  , "Omega.X.instCommRing"
+  , "Omega.inverseLimitEquiv" ]
 
 end Omega.Audit
