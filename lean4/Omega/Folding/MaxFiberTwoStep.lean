@@ -497,4 +497,10 @@ theorem stableValue_Fold_snoc_true (w : Word m) :
     (weight w + Nat.fib (m + 2)) % Nat.fib (m + 3) := by
   rw [stableValue_Fold_mod, weight_snoc]; simp
 
+/-- Paper theorem: hidden bit count recurrence bundle. -/
+theorem paper_hiddenBitCount_recurrence :
+    hiddenBitCount 0 = 0 ∧ hiddenBitCount 1 = 0 ∧
+    (∀ m, hiddenBitCount (m + 2) = 2 ^ m + hiddenBitCount m) :=
+  ⟨hiddenBitCount_zero, hiddenBitCount_one, hiddenBitCount_recurrence⟩
+
 end Omega

@@ -526,4 +526,9 @@ theorem collision_pairs_count_verified :
     cCollisionPairsCount 4 = 36 := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
 
+/-- Paper theorem: all collision kernels have determinant -2. -/
+theorem paper_collision_det_universal :
+    collisionKernel2.det = -2 ∧ collisionKernel3.det = -2 ∧ collisionKernel4.det = -2 :=
+  ⟨collisionKernel2_det, collisionKernel3_det, collisionKernel4_det⟩
+
 end Omega

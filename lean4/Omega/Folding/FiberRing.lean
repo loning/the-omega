@@ -208,4 +208,5 @@ instance instCharP : CharP (X m) (Nat.fib (m + 2)) where
         rw [map_natCast, map_zero, h1])
 
 end
+
 end Omega.X
