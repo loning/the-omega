@@ -2132,6 +2132,10 @@ def coreAuditTargets : List String :=
   -- Phase 132: Fib-Lucas 界 + Cassini 变体 (ShiftDynamics.lean:453-466)
   , "Omega.fib_le_lucasNum"
   , "Omega.lucasNum_le_two_fib_succ"
-  , "Omega.fib_succ_sq_sub_prod" ]
+  , "Omega.fib_succ_sq_sub_prod"
+  -- Phase 133: Fib 相邻乘积 + S_2 mod 4 小基值 (ShiftDynamics.lean:482, MomentTriple.lean:600-603)
+  , "Omega.fib_adjacent_product"
+  , "Omega.momentSum_two_two_mod_four"
+  , "Omega.momentSum_two_three_mod_four" ]
 
 end Omega.Audit

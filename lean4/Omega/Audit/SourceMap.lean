@@ -8651,6 +8651,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.ShiftDynamics"
     leanName := "Omega.fib_succ_sq_sub_prod"
     phase := 132
+    status := .formalized }
+-- Phase 133: Fib 相邻乘积 + S_2 mod 4 小基值 (ShiftDynamics.lean:482, MomentTriple.lean:600-603)
+, { label := "bridge:fib-adjacent-product"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.fib_adjacent_product"
+    phase := 133
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_two_mod_four"
+    phase := 133
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_three_mod_four"
+    phase := 133
     status := .formalized } ]
 
 end Omega.Audit
