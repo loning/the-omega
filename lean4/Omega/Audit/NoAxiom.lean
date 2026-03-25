@@ -754,6 +754,13 @@ Run these commands manually during audit:
   #print axioms Omega.PrimeSupportObj
   #print axioms Omega.supportSpectrum
   #print axioms Omega.higher_spectrum_not_determined_by_marginals
+  -- Round 116: CircleDimension Fibonacci radius / Poisson time identities (CircleDimension.lean:12-43)
+  #print axioms Omega.fibRadius
+  #print axioms Omega.poissonTimeOfRadius
+  #print axioms Omega.poissonTimeOf_fibRadius
+  #print axioms Omega.one_sub_sq_of_poissonTime_param
+  #print axioms Omega.one_sub_fibRadius_sq
+  #print axioms Omega.one_sub_sq_of_poissonTime_param_nat
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
@@ -1669,6 +1676,13 @@ def coreAuditTargets : List String :=
   -- Round 47: 圆维度高阶谱 + Zeta 迹线性递推证书
   -- (Window6.lean:481, CollisionZeta.lean:486)
   , "Omega.higher_spectrum_not_determined_by_marginals"
+  -- Round 116: CircleDimension Fibonacci radius / Poisson time identities
+  , "Omega.fibRadius"
+  , "Omega.poissonTimeOfRadius"
+  , "Omega.poissonTimeOf_fibRadius"
+  , "Omega.one_sub_sq_of_poissonTime_param"
+  , "Omega.one_sub_fibRadius_sq"
+  , "Omega.one_sub_sq_of_poissonTime_param_nat"
   , "Omega.CollisionZeta.trace_linear_recurrence_certificate"
   -- Round 48: ζ 有理性 + DFA 密度二分法 + 终端分支合并 + Hurwitz 前置
   -- (CollisionZeta.lean:503-549, Window6.lean:386-389)
