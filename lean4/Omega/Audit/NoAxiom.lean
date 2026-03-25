@@ -2218,6 +2218,11 @@ def coreAuditTargets : List String :=
   , "Omega.pathIndSetPoly_recurrence"
   , "Omega.perron_A2_in_interval"
   , "Omega.cMaxFiberAchievers"
-  , "Omega.X.Fold_snoc_false_eq" ]
+  , "Omega.X.Fold_snoc_false_eq"
+  -- Phase 142: 追加 4 个定理实例 (FiberArithmeticProperties.lean:490, FibonacciCube.lean:449, FibonacciPolynomial.lean:60,63)
+  , "Omega.paper_fold_order_independent"
+  , "Omega.paper_fibonacci_cube"
+  , "Omega.pathIndSetPoly_zero_val"
+  , "Omega.pathIndSetPoly_one_val" ]
 
 end Omega.Audit

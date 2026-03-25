@@ -9006,6 +9006,34 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.X.Fold_snoc_false_eq"
     phase := 140
     status := .formalized }
+-- Phase 142: 追加 4 个定理实例（已有标签新实现）
+-- cor:foldm-order-indep → paper_fold_order_independent (FiberArithmeticProperties.lean:490)
+-- def:pom-fibonacci-cube → paper_fibonacci_cube (FibonacciCube.lean:449)
+-- thm:pom-path-indset-poly-closed → pathIndSetPoly_zero_val + pathIndSetPoly_one_val (FibonacciPolynomial.lean:60,63)
+, { label := "cor:foldm-order-indep"
+    sourcePath := "sections/body/folding/subsec__folding-map.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.paper_fold_order_independent"
+    phase := 142
+    status := .formalized }
+, { label := "def:pom-fibonacci-cube"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-fiber-indcomplex.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.paper_fibonacci_cube"
+    phase := 142
+    status := .formalized }
+, { label := "thm:pom-path-indset-poly-closed"
+    sourcePath := "sections/body/pom/parts/def__pom-ind-lyapunov-fingerprint.tex"
+    moduleName := "Omega.Folding.FibonacciPolynomial"
+    leanName := "Omega.pathIndSetPoly_zero_val"
+    phase := 142
+    status := .formalized }
+, { label := "thm:pom-path-indset-poly-closed"
+    sourcePath := "sections/body/pom/parts/def__pom-ind-lyapunov-fingerprint.tex"
+    moduleName := "Omega.Folding.FibonacciPolynomial"
+    leanName := "Omega.pathIndSetPoly_one_val"
+    phase := 142
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
