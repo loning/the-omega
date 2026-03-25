@@ -2128,6 +2128,10 @@ def coreAuditTargets : List String :=
   -- Phase 131: E00 指数下界 + S_2 凸性 + EWT ≥ E00 (MomentTriple.lean:559/569/586)
   , "Omega.exactWeightCollision_ge_pow"
   , "Omega.momentSum_two_convex"
-  , "Omega.exactWeightTriple_ge_collision" ]
+  , "Omega.exactWeightTriple_ge_collision"
+  -- Phase 132: Fib-Lucas 界 + Cassini 变体 (ShiftDynamics.lean:453-466)
+  , "Omega.fib_le_lucasNum"
+  , "Omega.lucasNum_le_two_fib_succ"
+  , "Omega.fib_succ_sq_sub_prod" ]
 
 end Omega.Audit

@@ -8632,6 +8632,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.exactWeightTriple_ge_collision"
     phase := 131
+    status := .formalized }
+-- Phase 132: Fib-Lucas 界 + Cassini 变体 (ShiftDynamics.lean:453-466)
+, { label := "bridge:fib-lucas-bound"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.fib_le_lucasNum"
+    phase := 132
+    status := .formalized }
+, { label := "bridge:lucas-upper-bound"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_le_two_fib_succ"
+    phase := 132
+    status := .formalized }
+, { label := "bridge:cassini-variant"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.fib_succ_sq_sub_prod"
+    phase := 132
     status := .formalized } ]
 
 end Omega.Audit
