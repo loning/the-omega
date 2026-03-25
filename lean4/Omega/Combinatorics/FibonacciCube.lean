@@ -2,6 +2,7 @@ import Omega.Combinatorics.PathIndSet
 import Omega.Folding.Weight
 import Omega.Folding.Fold
 import Omega.Folding.MaxFiber
+import Omega.Folding.MomentRecurrence
 
 namespace Omega
 
@@ -156,5 +157,47 @@ theorem totalPopcount_zero : totalPopcount 0 = 0 := by
   simp [totalPopcount, popcount, wordSupport]
 
 -- totalPopcount_one deferred (noncomputable + decide incompatible)
+
+-- ══════════════════════════════════════════════════════════════
+-- Weight surjectivity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Every weight value in [0, F_{m+3}-2] is achieved by some word. -/
+theorem weight_surjective (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
+    ∃ w : Word m, weight w = n := by
+  induction m generalizing n with
+  | zero =>
+    have : n = 0 := by simp [Nat.fib] at hn; omega
+    exact ⟨fun i => False.elim (Nat.not_lt_zero _ i.isLt), by simp [weight]; omega⟩
+  | succ m ih =>
+    by_cases hlt : n ≤ Nat.fib (m + 3) - 2
+    · obtain ⟨v, hv⟩ := ih n hlt
+      exact ⟨snoc v false, by simp [weight, weight_snoc, hv]⟩
+    · push_neg at hlt
+      have hfib4 := Nat.fib_add_two (n := m + 2)
+      rw [show m + 2 + 2 = m + 4 from rfl, show m + 2 + 1 = m + 3 from rfl] at hfib4
+      have hge : Nat.fib (m + 2) ≤ n := by
+        have hfib3 := Nat.fib_add_two (n := m + 1)
+        rw [show m + 1 + 2 = m + 3 from rfl, show m + 1 + 1 = m + 2 from rfl] at hfib3
+        have := fib_succ_pos m
+        omega
+      have hle : n - Nat.fib (m + 2) ≤ Nat.fib (m + 3) - 2 := by
+        have : Nat.fib (m + 1 + 3) = Nat.fib (m + 4) := rfl; omega
+      obtain ⟨v, hv⟩ := ih (n - Nat.fib (m + 2)) hle
+      exact ⟨snoc v true, by simp [weight, weight_snoc, hv]; omega⟩
+
+/-- ewc(m, n) > 0 for n ≤ F_{m+3}-2. -/
+theorem ewc_pos_of_le (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
+    0 < exactWeightCount m n := by
+  obtain ⟨w, hw⟩ := weight_surjective m n hn
+  exact Finset.card_pos.mpr ⟨w, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hw⟩⟩
+
+/-- d(x) ≥ 2 when sv(x) + F ≤ max weight. -/
+theorem fiberMultiplicity_ge_two_of_sv_le (x : X m)
+    (h : stableValue x + Nat.fib (m + 2) ≤ Nat.fib (m + 3) - 2) :
+    2 ≤ X.fiberMultiplicity x := by
+  rw [fiberMultiplicity_eq_two_ewc]
+  have h1 := ewc_stableValue_pos x
+  have h2 := ewc_pos_of_le m _ h; omega
 
 end Omega
