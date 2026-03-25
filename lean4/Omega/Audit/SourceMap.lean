@@ -8466,6 +8466,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.Fold_complement_mod"
     phase := 124
+    status := .formalized }
+-- Phase 125: ewc 单位权重 + ewc 层稳定 + Lucas-Fib 加法 (MomentTriple.lean:442, FiberWeightCount.lean:450, ShiftDynamics.lean:332)
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.exactWeightCount_one"
+    phase := 125
+    status := .formalized }
+, { label := "bridge:ewc-level-stability"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.exactWeightCount_succ_of_lt"
+    phase := 125
+    status := .formalized }
+, { label := "bridge:lucas-add-fib"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_add_fib"
+    phase := 125
     status := .formalized } ]
 
 end Omega.Audit

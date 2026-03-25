@@ -2087,6 +2087,10 @@ def coreAuditTargets : List String :=
   -- Phase 124: ewc 最大权重 + Lucas 平方 + Fold 补码模 (MomentTriple.lean:430/437, ShiftDynamics.lean:295)
   , "Omega.exactWeightCount_max"
   , "Omega.lucasNum_sq"
-  , "Omega.Fold_complement_mod" ]
+  , "Omega.Fold_complement_mod"
+  -- Phase 125: ewc 单位权重 + ewc 层稳定 + Lucas-Fib 加法 (MomentTriple.lean:442, FiberWeightCount.lean:450, ShiftDynamics.lean:332)
+  , "Omega.exactWeightCount_one"
+  , "Omega.exactWeightCount_succ_of_lt"
+  , "Omega.lucasNum_add_fib" ]
 
 end Omega.Audit
