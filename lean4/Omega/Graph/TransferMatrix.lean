@@ -2,6 +2,7 @@ import Mathlib.Data.Matrix.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.NumberTheory.Real.GoldenRatio
 import Omega.Core.Fib
 
 namespace Omega.Graph
@@ -179,5 +180,137 @@ theorem goldenMean_trace_recurrence_verified :
     (goldenMeanAdjacency ^ 5).trace = (goldenMeanAdjacency ^ 4).trace + (goldenMeanAdjacency ^ 3).trace ∧
     (goldenMeanAdjacency ^ 6).trace = (goldenMeanAdjacency ^ 5).trace + (goldenMeanAdjacency ^ 4).trace := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
+
+/-! ### Perron--Frobenius data for the golden-mean adjacency matrix -/
+
+open scoped goldenRatio
+
+/-- The golden-mean adjacency matrix over `ℝ`. -/
+noncomputable def goldenMeanAdjacencyℝ : Matrix (Fin 2) (Fin 2) ℝ :=
+  goldenMeanAdjacency.map fun z : ℤ => (z : ℝ)
+
+/-- The vector `(φ, 1)`. -/
+noncomputable def goldenMeanEigenvector : Fin 2 → ℝ
+  | 0 => Real.goldenRatio
+  | 1 => 1
+
+@[simp] theorem goldenMeanEigenvector_zero : goldenMeanEigenvector 0 = Real.goldenRatio := rfl
+@[simp] theorem goldenMeanEigenvector_one : goldenMeanEigenvector 1 = 1 := rfl
+
+/-- The golden-mean adjacency matrix over `ℝ`, written explicitly. -/
+theorem goldenMeanAdjacencyℝ_eq :
+    goldenMeanAdjacencyℝ = !![(1 : ℝ), 1; 1, 0] := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [goldenMeanAdjacencyℝ, goldenMeanAdjacency]
+
+/-- The vector `(φ,1)` is a concrete positive eigenvector candidate. -/
+theorem goldenMeanAdjacency_mul_goldenEigenvector :
+    Matrix.mulVec goldenMeanAdjacencyℝ goldenMeanEigenvector
+      = fun i => Real.goldenRatio * goldenMeanEigenvector i := by
+  rw [goldenMeanAdjacencyℝ_eq]
+  funext i
+  fin_cases i
+  · simp [goldenMeanEigenvector, Matrix.mulVec, dotProduct]
+    nlinarith [Real.goldenRatio_sq]
+  · simp [goldenMeanEigenvector, Matrix.mulVec, dotProduct]
+
+/-- Concrete witness form of the golden-ratio eigenvalue statement. -/
+theorem goldenMeanAdjacency_has_goldenRatio_eigenvector :
+    ∃ v : Fin 2 → ℝ, v ≠ 0 ∧
+      Matrix.mulVec goldenMeanAdjacencyℝ v = fun i => Real.goldenRatio * v i := by
+  refine ⟨goldenMeanEigenvector, ?_, goldenMeanAdjacency_mul_goldenEigenvector⟩
+  intro h
+  have h0 := congrFun h 0
+  have hphi : Real.goldenRatio = 0 := by simpa [goldenMeanEigenvector] using h0
+  exact Real.goldenRatio_ne_zero hphi
+
+/-- The scalar equation `φ² - φ - 1 = 0`. -/
+theorem goldenMeanAdjacency_charpoly_eval_goldenRatio :
+    Real.goldenRatio ^ 2 - Real.goldenRatio - 1 = 0 := by
+  nlinarith [Real.goldenRatio_sq]
+
+/-- The scalar equation `ψ² - ψ - 1 = 0`. -/
+theorem goldenMeanAdjacency_charpoly_eval_goldenConj :
+    Real.goldenConj ^ 2 - Real.goldenConj - 1 = 0 := by
+  nlinarith [Real.goldenConj_sq]
+
+/-- The real golden-mean adjacency matrix satisfies the same quadratic relation. -/
+theorem goldenMeanAdjacencyℝ_sq :
+    goldenMeanAdjacencyℝ ^ 2 = goldenMeanAdjacencyℝ + 1 := by
+  rw [goldenMeanAdjacencyℝ_eq, pow_two]
+  ext i j
+  fin_cases i <;> fin_cases j <;> norm_num [Matrix.mul_fin_two]
+
+/-- Any real eigenvalue of the golden-mean adjacency matrix satisfies `μ² = μ + 1`. -/
+theorem eigenvalue_satisfies_quadratic
+    {μ : ℝ} {w : Fin 2 → ℝ}
+    (hw : w ≠ 0)
+    (hμ : Matrix.mulVec goldenMeanAdjacencyℝ w = fun i => μ * w i) :
+    μ ^ 2 = μ + 1 := by
+  have h0 := congrFun hμ 0
+  have h1 := congrFun hμ 1
+  rw [goldenMeanAdjacencyℝ_eq] at h0 h1
+  simp [Matrix.mulVec, dotProduct] at h0 h1
+  by_cases hw1 : w 1 = 0
+  · have hw0 : w 0 ≠ 0 := by
+      intro hw0
+      apply hw
+      funext i
+      fin_cases i <;> simp [hw0, hw1]
+    have h00 : w 0 = 0 := by simpa [hw1] using h1
+    exact (hw0 h00).elim
+  · have hsub : (μ + 1) * w 1 = μ ^ 2 * w 1 := by
+      calc
+        (μ + 1) * w 1 = μ * w 1 + w 1 := by ring
+        _ = w 0 + w 1 := by rw [h1]
+        _ = μ * w 0 := by simpa using h0
+        _ = μ * (μ * w 1) := by rw [h1]
+        _ = μ ^ 2 * w 1 := by ring
+    have hquadw1 : (μ ^ 2 - μ - 1) * w 1 = 0 := by
+      nlinarith [hsub]
+    have hquad : μ ^ 2 - μ - 1 = 0 := by
+      have hquadw1' : (μ ^ 2 - μ - 1) * w 1 = 0 * w 1 := by simpa using hquadw1
+      exact mul_right_cancel₀ hw1 hquadw1'
+    nlinarith [hquad]
+
+/-- Any real eigenvalue is either `φ` or `ψ`. -/
+theorem eigenvalue_eq_goldenRatio_or_goldenConj
+    {μ : ℝ} (hμ : μ ^ 2 = μ + 1) :
+    μ = Real.goldenRatio ∨ μ = Real.goldenConj := by
+  have hfactor : (μ - Real.goldenRatio) * (μ - Real.goldenConj) = 0 := by
+    nlinarith [hμ, Real.goldenRatio_add_goldenConj, Real.goldenRatio_mul_goldenConj]
+  exact mul_eq_zero.mp hfactor |>.elim
+    (fun h => Or.inl <| sub_eq_zero.mp h)
+    (fun h => Or.inr <| sub_eq_zero.mp h)
+
+/-- The golden conjugate has strictly smaller modulus than `φ`. -/
+theorem goldenConj_abs_lt_goldenRatio :
+    |Real.goldenConj| < Real.goldenRatio := by
+  have hψ : |Real.goldenConj| < 1 := by
+    rw [abs_lt]
+    exact ⟨by linarith [Real.neg_one_lt_goldenConj], by linarith [Real.goldenConj_neg]⟩
+  exact lt_trans hψ Real.one_lt_goldenRatio
+
+/-- Every real eigenvalue is dominated in modulus by `φ`. -/
+theorem goldenMeanAdjacency_dominates_all_real_eigenvalues
+    {μ : ℝ}
+    (hμ : ∃ w : Fin 2 → ℝ, w ≠ 0 ∧ Matrix.mulVec goldenMeanAdjacencyℝ w = fun i => μ * w i) :
+    |μ| ≤ Real.goldenRatio := by
+  rcases hμ with ⟨w, hw, hwμ⟩
+  rcases eigenvalue_eq_goldenRatio_or_goldenConj (eigenvalue_satisfies_quadratic hw hwμ) with rfl | rfl
+  · rw [abs_of_pos Real.goldenRatio_pos]
+  · exact le_of_lt goldenConj_abs_lt_goldenRatio
+
+/-- Concrete Perron-root package for the golden-mean adjacency matrix. -/
+theorem goldenMeanAdjacency_pf_root_eq_goldenRatio :
+    ∃ v : Fin 2 → ℝ,
+      (0 < v 0 ∧ 0 < v 1) ∧
+      (Matrix.mulVec goldenMeanAdjacencyℝ v = fun i => Real.goldenRatio * v i) ∧
+      (∀ μ : ℝ, (∃ w : Fin 2 → ℝ, w ≠ 0 ∧ Matrix.mulVec goldenMeanAdjacencyℝ w = fun i => μ * w i) →
+        |μ| ≤ Real.goldenRatio) := by
+  refine ⟨goldenMeanEigenvector, ?_, goldenMeanAdjacency_mul_goldenEigenvector, ?_⟩
+  · exact ⟨Real.goldenRatio_pos, by norm_num⟩
+  · intro μ hμ
+    exact goldenMeanAdjacency_dominates_all_real_eigenvalues hμ
 
 end Omega.Graph

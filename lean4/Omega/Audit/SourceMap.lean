@@ -1860,6 +1860,71 @@ def initialEntries : List SourceMapEntry :=
       leanName := "Omega.Graph.goldenMeanAdjacency_det"
       phase := 14
       status := .formalized }
+  -- Phase 21: TransferMatrix — Perron-Frobenius 维度（阶段性通过）
+  -- thm:golden-mean-pf-root-eq-phi → goldenMeanAdjacency_pf_root_eq_goldenRatio (TransferMatrix.lean:305)
+  -- lem:golden-mean-has-phi-eigenvector → goldenMeanAdjacency_has_goldenRatio_eigenvector (TransferMatrix.lean:218)
+  -- aux:golden-mean-charpoly-eval-phi → goldenMeanAdjacency_charpoly_eval_goldenRatio (TransferMatrix.lean:228)
+  -- aux:golden-mean-charpoly-eval-psi → goldenMeanAdjacency_charpoly_eval_goldenConj (TransferMatrix.lean:233)
+  -- aux:golden-mean-adjacency-real-square → goldenMeanAdjacencyℝ_sq (TransferMatrix.lean:238)
+  -- lem:golden-mean-real-eigenvalue-quadratic → eigenvalue_satisfies_quadratic (TransferMatrix.lean:245)
+  -- lem:golden-mean-real-eigenvalue-classification → eigenvalue_eq_goldenRatio_or_goldenConj (TransferMatrix.lean:277)
+  -- lem:golden-conj-abs-lt-phi → goldenConj_abs_lt_goldenRatio (TransferMatrix.lean:287)
+  -- prop:golden-mean-real-eigenvalues-bounded-by-phi → goldenMeanAdjacency_dominates_all_real_eigenvalues (TransferMatrix.lean:295)
+  -- 状态: 已形式化, 审核通过 2026-03-25（阶段性；spectral radius / PF dimension API 待补）
+  , { label := "lem:golden-mean-has-phi-eigenvector"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_has_goldenRatio_eigenvector"
+      phase := 21
+      status := .formalized }
+  , { label := "aux:golden-mean-charpoly-eval-phi"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_charpoly_eval_goldenRatio"
+      phase := 21
+      status := .formalized }
+  , { label := "aux:golden-mean-charpoly-eval-psi"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_charpoly_eval_goldenConj"
+      phase := 21
+      status := .formalized }
+  , { label := "aux:golden-mean-adjacency-real-square"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacencyℝ_sq"
+      phase := 21
+      status := .formalized }
+  , { label := "lem:golden-mean-real-eigenvalue-quadratic"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.eigenvalue_satisfies_quadratic"
+      phase := 21
+      status := .formalized }
+  , { label := "lem:golden-mean-real-eigenvalue-classification"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.eigenvalue_eq_goldenRatio_or_goldenConj"
+      phase := 21
+      status := .formalized }
+  , { label := "lem:golden-conj-abs-lt-phi"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenConj_abs_lt_goldenRatio"
+      phase := 21
+      status := .formalized }
+  , { label := "prop:golden-mean-real-eigenvalues-bounded-by-phi"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_dominates_all_real_eigenvalues"
+      phase := 21
+      status := .formalized }
+  , { label := "thm:golden-mean-pf-root-eq-phi"
+      sourcePath := "sections/body/symbolic/subsec__folding-stable-compression.tex"
+      moduleName := "Omega.Graph.TransferMatrix"
+      leanName := "Omega.Graph.goldenMeanAdjacency_pf_root_eq_goldenRatio"
+      phase := 21
+      status := .formalized }
   -- Phase 23: 逆极限拓扑结构
   -- thm:fold-suite item 3 (逆极限拓扑，部分：compact + totally disconnected)
   --   → isClosed_no11Inf (Omega/Folding/InverseLimitTopology.lean:7)

@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~17,123 |
-| 定理/定义数 | ~1,729 |
+| 总行数 | ~25,706 |
+| 定理/定义数 | ~2,371 |
 | 论文接口包装 | 346 |
-| 文件数 | 50 |
+| 文件数 | 61 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -19,7 +19,7 @@
 | Core (Fib, Word, No11) | 3 | ~25 | 100% |
 | Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, CollisionZeta, CollisionZetaOperator, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial, HankelSpectrum, FiberArithmeticProperties, FiberSplit, BoundaryLayer, Window6, ZeckendorfSignature, BinFold, HammingDist, Entropy, MaxFiberTwoStep, FiberWeightCount, CollisionDecomp, MomentRecurrence) | 36 | ~584 | 100% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
-| Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~23 | 100% |
+| Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~37 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures, ConditionalSummary) | 5 | ~347 | 99% |
 | Combinatorics (PathIndSet) | 1 | ~22 | 100% |
 | Audit (SourceMap, Inventory, NoAxiom) | 3 | ~5 | 同步 |
@@ -85,6 +85,7 @@
 **Fibonacci 双倍公式与平方和（Phase 21）**：fib_double（F_{2n}=F_n·(2F_{n+1}-F_n)）; fib_double_plus_one（F_{2n+1}=F_{n+1}²+F_n²）; fib_sq_add_sq（F_n²+F_{n+1}²=F_{2n+1}）
 **转移矩阵幂次行列式与 Cassini 恒等式（Phase 21）**：goldenMeanAdjacency_pow_det（det(A^m)=(-1)^m）; fib_cassini（Cassini：F_{n+1}·F_{n-1}-F_n²=(-1)^n，由行列式公式推导）
 **Lucas 数与迹公式（Phase 21）**：lucasNum 定义（L_0=2, L_1=1, L_{n+2}=L_{n+1}+L_n）; lucasNum_zero/one/two/three/succ_succ（simp 引理）; lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1} for n≥1）; goldenMeanAdjacency_pow_trace（tr(A^n)=F_{n+1}+F_{n-1} for n≥1）
+**Perron-Frobenius 维度数学层（计划21，阶段性通过）**：goldenMeanAdjacency_has_goldenRatio_eigenvector（存在正特征向量候选 $(\varphi,1)$）; eigenvalue_satisfies_quadratic / eigenvalue_eq_goldenRatio_or_goldenConj（任意实特征值满足 $\mu^2=\mu+1$ 并分类为 $\varphi$ 或 $\psi$）; goldenConj_abs_lt_goldenRatio（$|\psi|<\varphi$）; goldenMeanAdjacency_dominates_all_real_eigenvalues（全部实特征值模长被 $\varphi$ 控制）; goldenMeanAdjacency_pf_root_eq_goldenRatio（具体 PF 根封装）；`spectralRadius = φ` 与 PF dimension API 封装仍待补
 **纤维直方图基值（Phase 22）**：cFiberHist 定义（稳定词 x 纤维多重度恰好为 k 的计数）; m=4 直方图基值（hist[1]=2, hist[2]=4, hist[3]=2）; m=6 直方图基值（hist[1]=2, hist[2]=4, hist[3]=8, hist[4]=5, hist[5]=2）
 **路径计数 Fibonacci 等式（Phase 22）**：goldenMean_path_count_from_true（row 1 sum = F_{m+1}，从状态 true 出发的路径数）; goldenMean_total_paths（total = F_{m+2}+F_{m+1}，所有路径总数）
 **逆极限序列区分引理（Phase 22）**：ne_of_bit_ne（XInfinity 中位差异→序列不同，位可分离性）
@@ -112,15 +113,15 @@
 
 ### Lean4 形式化状态
 
-- **951 个论文标签已注册**到 SourceMap
-- ~1,789+ 个 Lean4 定理（含内部引理）
+- **994 个论文标签已注册**到 SourceMap
+- ~2,371 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 992/10,588 = **9.4%** |
+| 全局覆盖率 | 994/10,588 = **9.4%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -136,7 +137,7 @@
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~320 | ~21.0% |
 | 圆维度 | 342 | ~50 | ~15% |
-| Zeta 有限部分 | 4,437 | ~250 | ~6% |
+| Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
@@ -152,7 +153,7 @@
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~320 | ~21.0% |
 | 圆维度 | 342 | ~50 | ~15% |
-| Zeta 有限部分 | 4,437 | ~250 | ~6% |
+| Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
@@ -191,7 +192,7 @@
 
 19. ✅ **转移矩阵特征多项式**：定义 golden-mean 邻接矩阵 A=[[1,1],[1,0]]，验证条目，证明 Cayley-Hamilton A²=A+I (特征多项式 x²-x-1)，tr(A)=1，det(A)=-1；幂次条目公式 $(A^m)_{00}=F_{m+1}$、$(A^m)_{01}=F_m$、$(A^m)_{10}=F_m$、$(A^{m+1})_{11}=F_m$（2026-03-24）；det(A^m)=(-1)^m（goldenMeanAdjacency_pow_det）；Cassini 恒等式 F_{n+1}·F_{n-1}-F_n²=(-1)^n（fib_cassini，Phase 21）
 20. ✅ **拓扑熵 = log φ**：证明 golden-mean 移位的拓扑熵 h_top = lim (1/n)·log|X_n| = log φ（前置：shift 映射 σ、连续性、满射性已形式化 2026-03-23；离散骨架 card_X_recurrence/ratio_bounds/matrix_sum 已形式化 2026-03-23；shift 动力学深化：allFalse 全零序列、shift_allFalse（σ(0)=0 固定点）、shift_fixed_iff（唯一固定点）、shift_not_injective（非单射）已形式化 2026-03-24；周期轨道：period3Seq/shiftN_three_period3/shift_period3_ne/period2Seq/shiftN_two_period2 已形式化 2026-03-24；周期轨道深化：shift_period2_ne/period2_minimal/period3_minimal/period4Seq/shiftN_four_period4 已形式化 Phase 23；Lucas 数 lucasNum 定义+基值+succ_succ + lucasNum_eq_fib（L_n=F_{n+1}+F_{n-1}）+ goldenMeanAdjacency_pow_trace（tr(A^n)=L_n）已形式化 Phase 21；Real.log 基础设施 Round 38 已建立：coe_fib_pos, stableSyntaxCount_pos, goldenRatio_gt_one, log_goldenRatio_pos, goldenRatio_lt_two, abs_goldenConj_lt_one, goldenConj_bounds, fib_ratio_tendsto, log_continuous_at_phi, log_fib_ratio_tendsto（per-step 收敛，核心突破）；**完整定理 topological_entropy_eq_log_phi（Phase 44，2026-03-24）：Fibonacci 比 → 对数连续性 → Cesaro 均值 → 望远镜求和 → h_top = log φ，cor:folding-stable-syntax-entropy-logqdim 完整版，项目首个 Real 分析极限定理**）
-21. **Perron-Frobenius 维度**：证明 golden-mean 移位的 PF 维度为 φ
+21. **[阶段性通过] Perron-Frobenius 维度**：TransferMatrix.concrete PF 数学层已闭合：`goldenMeanAdjacency_has_goldenRatio_eigenvector` 给出正特征向量候选，`eigenvalue_satisfies_quadratic` 与 `eigenvalue_eq_goldenRatio_or_goldenConj` 将任意实特征值约束到 $x^2-x-1=0$ 的两根，`goldenConj_abs_lt_goldenRatio` 证明次根模长严格小于 $\varphi$，`goldenMeanAdjacency_dominates_all_real_eigenvalues` 与 `goldenMeanAdjacency_pf_root_eq_goldenRatio` 形成“$\varphi$ 为正特征值且支配全部实特征值”的具体 Perron 包。**未完成部分**：`spectralRadius = φ`、论文接口 / PF dimension API 封装、自动 SourceMap/NoAxiom 闸门、仓级 warning 与 >800 行文件治理。
 22. **sofic 表示的唯一性**：证明最小 sofic 表示的范畴唯一性
 
 ### Phase E：逆极限与无穷结构（计划 23-26）
@@ -236,15 +237,17 @@
 1. ✅ **paperFib → Nat.fib 全局重构**：已完成。消除 `paperFib` 中间层，全局替换为 `Nat.fib (k+1)`；删除 `def paperFib`、`abbrev fib` 及 33 个桥接引理；新增 12 个 `Nat.fib` 便捷引理（`fib_succ_succ'`、`fib_succ_pos`、`one_le_fib_succ`、`fib_add_succ`、`fib_sub_succ`、`fib_mod_sum'`、`fib_lt_fib_succ`、`fib_succ_mod'`、`fib_gt_one_of_ge_two`、`fib_le_pow_two` 等）；`Fib.lean` 从 144 行缩减到 80 行；影响 17 个文件。
 2. **[部分完成] 计划 9**（定义+基值 Phase 0+1 已完成；下一步：$D_{2k}^{(3)} = F_{k+2} - F_{k-3}$ 闭合公式 Phase 2）
 3. **[深化完成-部分] S_2/S_3 递推公式归纳证明**（碰撞核矩阵 + Cayley-Hamilton 已形式化；数值验证 m=0..3 完成；有界版 m≤4 已形式化（Round 14）；条件性一般版已形式化（Round 14）；特征多项式 p(A)=0 + 系数 + Vieta 公式验证已形式化（Phase 26）；Hankel 行列式 + 最小阶数=3 已形式化（Phase 26）；S_2/S_3 严格单调 m≤6 + 条件性一般单调已形式化（Phase 26）；S_2: $S_2(m+3)+2S_2(m)=2S_2(m+2)+2S_2(m+1)$；S_3: $S_3(m+3)=2S_3(m+2)+4S_3(m+1)-2S_3(m)$；完整无界归纳步骤待实现）
-4. 计划 1（Zeckendorf 唯一性）
+4. **[阶段性通过] 计划 21 concrete PF 数学层**：`goldenMeanAdjacency_pf_root_eq_goldenRatio` 已给出 golden-mean 邻接矩阵在实矩阵层的具体 Perron 根封装；下一步优先补 `spectralRadius = φ` 与论文/API 包装，再与 PF dimension 主定理汇合。
+5. 计划 1（Zeckendorf 唯一性）
 
 ### 短期可执行（3-5 轮内完成）
 
 5. ✅ 计划 5（Fibonacci 整除性：fib_gcd, fib_coprime_succ, fib_dvd_mul 已完成）
-6. **[深化 Round 33] Zeta 有限部分深化**（CollisionKernel+CollisionZeta+TransferMatrix 已建立 ~60 定理：A_2/A_3/A_4 全系迹幂+递推+primitive 轨道+Hankel+det 幂+ζ 分母系数+golden-mean ζ 分母+迹递推+统一迹/det 证书+Perron 区间定位+S_5..S_8 基值 22 个；下一步：迹幂的 Weyl-Selberg 有理性、L-函数极点解析延拓骨架，thm:pom-zeta-finite-part-rationality）
+6. **[深化 Round 33 + 计划21阶段性] Zeta 有限部分深化**（CollisionKernel+CollisionZeta+TransferMatrix 已建立 ~60 定理：A_2/A_3/A_4 全系迹幂+递推+primitive 轨道+Hankel+det 幂+ζ 分母系数+golden-mean ζ 分母+迹递推+统一迹/det 证书+Perron 区间定位+S_5..S_8 基值 22 个；本轮新增 golden-mean concrete PF 数学层：正特征向量、实特征值二次约束、两根分类、次根模界、实特征值支配界、`goldenMeanAdjacency_pf_root_eq_goldenRatio`；下一步：`spectralRadius = φ`、Weyl-Selberg 有理性、L-函数极点解析延拓骨架，thm:pom-zeta-finite-part-rationality）
 7. 计划 13（条件期望型表达）
-8. 计划 20（拓扑熵 = log φ；shift 前置 + 离散骨架 + 周期轨道已完成，下一步：Real.log 极限论证）
-9. **[部分完成] 计划 27**（CRT 分解：crtDecomposition + X7/X10 具体实例已完成；一般合数情形待续）
+8. 计划 20（拓扑熵 = log φ；shift 前置 + 离散骨架 + 周期轨道 + Real.log 极限已完成）
+9. **[阶段性通过] 计划 21**（concrete PF 数学层已闭合；待补 `spectralRadius = φ`、PF dimension API、论文接口包装）
+10. **[部分完成] 计划 27**（CRT 分解：crtDecomposition + X7/X10 具体实例已完成；一般合数情形待续）
 
 ### 中期目标（需要新基础设施）
 
