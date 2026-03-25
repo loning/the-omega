@@ -8331,6 +8331,15 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.appendFalse_injective"
     phase := 117
+    status := .formalized }
+-- Phase 118: Fibonacci semigroup factorization (CircleDimension.lean:46-59)
+-- con:cdim-fibonacci-poisson-semigroup-factorization → fib_semigroup_factorization
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-fibonacci-poisson-semigroup-factorization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.CircleDimension"
+    leanName := "Omega.fib_semigroup_factorization"
+    phase := 118
     status := .formalized } ]
 
 end Omega.Audit
