@@ -1,6 +1,8 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecificLimits.Fibonacci
 import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
+import Mathlib.InformationTheory.KullbackLeibler.Basic
+import Mathlib.MeasureTheory.Measure.Tilted
 import Mathlib.NumberTheory.Real.GoldenRatio
 import Omega.Folding.CircleDimension
 import Omega.Folding.ShiftDynamics
@@ -9,6 +11,38 @@ open scoped goldenRatio
 open Filter Topology
 
 namespace Omega.Entropy
+
+open MeasureTheory InformationTheory
+
+/-! ### Reverse KL tilted splitting -/
+
+/-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
+normalizing log-partition term minus the average tilt. -/
+theorem kl_reverse_tilted_split
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α) [MeasureTheory.IsProbabilityMeasure μ]
+    (f : α → ℝ)
+    (hf : Integrable (fun x => Real.exp (f x)) μ)
+    (hf_int : Integrable f μ) :
+    (klDiv μ (μ.tilted f)).toReal = Real.log (∫ x, Real.exp (f x) ∂μ) - ∫ x, f x ∂μ := by
+  have h_ac : μ ≪ μ.tilted f := MeasureTheory.absolutelyContinuous_tilted hf
+  have h_eq : μ (Set.univ) = μ.tilted f (Set.univ) := by
+    rw [MeasureTheory.IsProbabilityMeasure.measure_univ]
+    letI : MeasureTheory.IsProbabilityMeasure (μ.tilted f) :=
+      MeasureTheory.isProbabilityMeasure_tilted hf
+    rw [MeasureTheory.IsProbabilityMeasure.measure_univ]
+  have h_zero : Integrable (MeasureTheory.llr μ μ) μ := by
+    rw [MeasureTheory.integrable_congr (MeasureTheory.llr_self μ)]
+    exact (integrable_const (c := (0 : ℝ)) : Integrable (fun _ : α => (0 : ℝ)) μ)
+  rw [InformationTheory.toReal_klDiv_of_measure_eq h_ac h_eq]
+  rw [MeasureTheory.integral_llr_tilted_right (μ := μ) (ν := μ)
+    (hμν := MeasureTheory.Measure.AbsolutelyContinuous.rfl) (hfμ := hf_int) (hfν := hf)
+    (h_int := h_zero)]
+  have h_llr_self : ∫ x, MeasureTheory.llr μ μ x ∂μ = 0 := by
+    rw [MeasureTheory.integral_congr_ae (MeasureTheory.llr_self μ)]
+    simp
+  rw [h_llr_self]
+  ring
 
 /-! ### Binet corollaries: positivity of Fibonacci casts -/
 
