@@ -693,4 +693,46 @@ theorem fiberMultiplicity_ge_ewc (x : X m) :
     exactWeightCount m (stableValue x) ≤ X.fiberMultiplicity x := by
   rw [fiberMultiplicity_eq_two_ewc]; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Pisano applications + parity
+-- ══════════════════════════════════════════════════════════════
+
+/-- allFalse fiber multiplicity is odd iff m ≡ 0,1 (mod 4). -/
+theorem fiberMultiplicity_allFalse_odd_iff (m : Nat) :
+    ¬ (2 ∣ X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m)) ↔
+    m % 4 = 0 ∨ m % 4 = 1 := by
+  rw [fiberMultiplicity_allFalse_closed]; omega
+
+/-- hiddenBit = 1 iff weight ≥ F_{m+2}. -/
+theorem hiddenBit_eq_one_iff (w : Word m) :
+    hiddenBit w = 1 ↔ Nat.fib (m + 2) ≤ weight w := by
+  unfold hiddenBit; constructor
+  · intro h; by_contra hlt; simp [not_le.mp hlt] at h
+  · intro h; simp [h]
+
+/-- hiddenBit = 0 iff weight < F_{m+2}. -/
+theorem hiddenBit_eq_zero_iff (w : Word m) :
+    hiddenBit w = 0 ↔ weight w < Nat.fib (m + 2) := by
+  unfold hiddenBit; constructor
+  · intro h; by_contra hge; push_neg at hge; simp [hge] at h
+  · intro h; exact if_neg (not_le.mpr h)
+
+/-- Fiber decomposition (named alias). -/
+theorem fiber_hidden_bit_split (x : X m) :
+    X.fiberMultiplicity x =
+    exactWeightCount m (stableValue x) +
+    exactWeightCount m (stableValue x + Nat.fib (m + 2)) :=
+  fiberMultiplicity_eq_two_ewc x
+
+/-- S_2 mod 6 base values. -/
+theorem momentSum_two_mod_six_base :
+    momentSum 2 0 % 6 = 1 ∧ momentSum 2 1 % 6 = 2 ∧
+    momentSum 2 2 % 6 = 0 ∧ momentSum 2 3 % 6 = 2 ∧
+    momentSum 2 4 % 6 = 0 ∧ momentSum 2 5 % 6 = 4 ∧
+    momentSum 2 6 % 6 = 4 ∧ momentSum 2 7 % 6 = 4 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [momentSum_two_zero, momentSum_two_one, momentSum_two_two,
+      momentSum_two_three, momentSum_two_four, momentSum_two_five,
+      momentSum_two_six, momentSum_two_seven_rec]
+
 end Omega
