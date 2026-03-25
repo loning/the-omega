@@ -315,4 +315,24 @@ theorem weight_eq_fib_sum (w : Word m) :
   rw [← Finset.sum_filter]
   rfl
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 117: popcount bound + PathIndSets card + appendFalse injective
+-- ══════════════════════════════════════════════════════════════
+
+/-- PathIndSets is finite (via equivalence with X m). -/
+noncomputable instance instFintypePathIndSets (m : Nat) : Fintype (PathIndSets m) :=
+  Fintype.ofEquiv (X m) (xEquivPathIndSet m)
+
+/-- |PathIndSets m| = F_{m+2}. -/
+theorem card_pathIndSets (m : Nat) :
+    Fintype.card (PathIndSets m) = Nat.fib (m + 2) := by
+  rw [← X.card_eq_fib m]
+  exact Fintype.card_congr (xEquivPathIndSet m).symm
+
+/-- X.appendFalse is injective. -/
+theorem appendFalse_injective (m : Nat) : Function.Injective (X.appendFalse (m := m)) :=
+  fun x y h => by
+    have := congr_arg X.restrict h
+    rwa [X.restrict_appendFalse, X.restrict_appendFalse] at this
+
 end Omega
