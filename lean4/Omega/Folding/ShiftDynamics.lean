@@ -389,4 +389,47 @@ theorem lucasNum_even_iff (n : Nat) : 2 ∣ lucasNum n ↔ 3 ∣ n := by
       rw [show 3 * (j + 1) = 3 * j + 3 from by ring]
       exact (hperiod (3 * j)).mpr ih
 
+/-- 3 ∣ L(n) iff n ≡ 2 (mod 4). -/
+theorem lucasNum_three_dvd (n : Nat) : 3 ∣ lucasNum n ↔ n % 4 = 2 := by
+  -- L(n) mod 3 has period 4: L(0)=2, L(1)=1, L(2)=3, L(3)=4, L(4)=7, ...
+  -- mod 3: 2, 1, 0, 1, 1, 2, 0, 2, 2, 1, 0, 1, ... period 8? Actually let me check:
+  -- L mod 3: 2,1,0,1,1,2,0,2,2,1,0,1,... period 8. Hmm, 3|L(n) when n%8=2 or n%8=6.
+  -- That's n%4=2. ✓
+  have hperiod : ∀ k, 3 ∣ lucasNum (k + 4) ↔ 3 ∣ lucasNum k := by
+    intro k
+    -- L(k+4) = L(k+3)+L(k+2) = (L(k+2)+L(k+1))+(L(k+1)+L(k)) = L(k+2)+2L(k+1)+L(k)
+    -- = (L(k+1)+L(k))+2L(k+1)+L(k) = 3L(k+1)+2L(k)
+    -- So L(k+4) ≡ 2L(k) mod 3. And gcd(2,3)=1, so 3|L(k+4) ↔ 3|L(k).
+    have h1 : lucasNum (k + 4) = lucasNum (k + 3) + lucasNum (k + 2) := lucasNum_succ_succ (k + 2)
+    have h2 : lucasNum (k + 3) = lucasNum (k + 2) + lucasNum (k + 1) := lucasNum_succ_succ (k + 1)
+    have h3 : lucasNum (k + 2) = lucasNum (k + 1) + lucasNum k := lucasNum_succ_succ k
+    -- L(k+4) = 3L(k+1) + 2L(k)
+    constructor
+    · intro h
+      have h2L : 3 ∣ lucasNum k * 2 := by omega
+      have hcop : Nat.Coprime 3 2 := by decide
+      exact (hcop.dvd_of_dvd_mul_right h2L)
+    · intro h; exact ⟨lucasNum (k + 1) + (2 * (lucasNum k / 3)), by omega⟩
+  constructor
+  · induction n using Nat.strongRecOn with
+    | _ n ih =>
+      intro h; match n with
+      | 0 => exfalso; rw [lucasNum_zero] at h; omega
+      | 1 => exfalso; rw [lucasNum_one] at h; omega
+      | 2 => rfl
+      | 3 => exfalso; rw [lucasNum_three] at h; omega
+      | n + 4 => have := ih n (by omega) ((hperiod n).mp h); omega
+  · intro h
+    induction n using Nat.strongRecOn with
+    | _ n ih =>
+      match n with
+      | 0 => omega
+      | 1 => omega
+      | 2 => rw [lucasNum_two]
+      | 3 => omega
+      | n + 4 =>
+        have hmod : (n + 4) % 4 = n % 4 := by omega
+        rw [hmod] at h
+        exact (hperiod n).mpr (ih n (by omega) h)
+
 end Omega

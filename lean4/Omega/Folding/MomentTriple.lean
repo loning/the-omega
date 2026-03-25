@@ -515,4 +515,30 @@ theorem momentSum_two_mod_sixteen (m : Nat) (hm : 10 ≤ m) : 16 ∣ momentSum 2
         rw [ha, show (m + 10 + 1 : Nat) = m + 11 from rfl, hb] at this; omega
       exact ⟨2 * (c + b) - 2 * a, by omega⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 129
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00(m) ≥ F_{m+2}. -/
+theorem exactWeightCollision_ge_fib (m : Nat) :
+    Nat.fib (m + 2) ≤ exactWeightCollision m := by
+  induction m with
+  | zero => exact le_of_eq (by native_decide)
+  | succ n ih =>
+    have hsucc := exactWeightCollision_succ n
+    have hge := momentSum_ge_card' 2 n
+    have hmono : Nat.fib (n + 1) ≤ Nat.fib (n + 2) := Nat.fib_mono (by omega)
+    have hfib : Nat.fib (n + 3) = Nat.fib (n + 1) + Nat.fib (n + 2) := Nat.fib_add_two
+    calc Nat.fib (n + 1 + 2) = Nat.fib (n + 3) := by rfl
+      _ = Nat.fib (n + 1) + Nat.fib (n + 2) := hfib
+      _ ≤ momentSum 2 n + Nat.fib (n + 2) := Nat.add_le_add_right (le_trans hmono hge) _
+      _ ≤ momentSum 2 n + exactWeightCollision n := Nat.add_le_add_left ih _
+      _ = exactWeightCollision n + momentSum 2 n := Nat.add_comm _ _
+      _ = exactWeightCollision (n + 1) := hsucc.symm
+
+/-- E00 is strictly monotone. -/
+theorem exactWeightCollision_strict_mono (m : Nat) :
+    exactWeightCollision m < exactWeightCollision (m + 1) := by
+  rw [exactWeightCollision_succ]; exact Nat.lt_add_of_pos_right (momentSum_pos' 2 m)
+
 end Omega
