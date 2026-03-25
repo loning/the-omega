@@ -622,5 +622,8 @@ theorem paper_def_s2 (m : Nat) :
 theorem paper_def_s3 (m : Nat) :
     momentSum 3 m = ∑ x : X m, (X.fiberMultiplicity x) ^ 3 := rfl
 
+/-- Paper definition: S_q(m) = Σ d(x)^q. -/
+theorem paper_def_moment_q (q m : Nat) :
+    momentSum q m = ∑ x : X m, (X.fiberMultiplicity x) ^ q := rfl
 
 end Omega

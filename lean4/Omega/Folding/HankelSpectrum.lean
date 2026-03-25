@@ -313,4 +313,9 @@ theorem paper_s2_hankel_rank_exact :
     hankelS2_3x3.det ≠ 0 ∧ hankelS2_4x4.det = 0 :=
   momentSum_two_minimal_recurrence_order
 
+/-- Paper label: S_2 Hankel 3×3 determinant. -/
+theorem paper_s2_hankel_det :
+    hankelS2_3x3.det = -4 ∧ hankelS2_3x3.det ≠ 0 :=
+  ⟨hankelS2_3x3_det, hankelS2_3x3_det_ne_zero⟩
+
 end Omega

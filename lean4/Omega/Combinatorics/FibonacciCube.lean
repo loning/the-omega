@@ -441,4 +441,8 @@ theorem popcount_le_weight (w : Word m) : popcount w ≤ weight w := by
     _ ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin m => w i = true), Nat.fib (i.val + 2) := by
         apply Finset.sum_le_sum; intro i _; exact fib_succ_pos (i.val + 1)
 
+/-- Paper label: X_m ≃ path-independent sets on P_m. -/
+theorem paper_fibonacci_cube_equiv (m : Nat) :
+    Nonempty (X m ≃ PathIndSets m) := ⟨xEquivPathIndSet m⟩
+
 end Omega
