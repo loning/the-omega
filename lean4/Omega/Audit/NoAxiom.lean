@@ -1875,6 +1875,12 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_determined"
   , "Omega.momentSum_two_seven_rec"
   , "Omega.momentSum_two_eight_rec"
-  , "Omega.momentSum_two_nine_rec" ]
+  , "Omega.momentSum_two_nine_rec"
+  -- Phase 91: 纤维结构界 (MomentRecurrence.lean:396-436)
+  , "Omega.maxFiberMultiplicity_ge_avg"
+  , "Omega.maxFiberMultiplicity_le_pow"
+  , "Omega.fiberMultiplicity_le_pow"
+  , "Omega.maxFiberMultiplicity_ge_one"
+  , "Omega.maxFiberMultiplicity_achievers_pos" ]
 
 end Omega.Audit

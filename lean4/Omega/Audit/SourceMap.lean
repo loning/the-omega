@@ -7551,6 +7551,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.momentSum_two_nine_rec"
     phase := 90
+    status := .formalized }
+-- Phase 91: 纤维结构界 (MomentRecurrence.lean:396-436)
+, { label := "thm:pom-d-ge-avg"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.maxFiberMultiplicity_ge_avg"
+    phase := 91
+    status := .formalized }
+, { label := "thm:pom-d-le-pow"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.maxFiberMultiplicity_le_pow"
+    phase := 91
+    status := .formalized }
+, { label := "thm:pom-fiber-le-pow"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.fiberMultiplicity_le_pow"
+    phase := 91
+    status := .formalized }
+, { label := "thm:pom-d-ge-one"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.maxFiberMultiplicity_ge_one"
+    phase := 91
+    status := .formalized }
+, { label := "thm:pom-achievers-pos"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.maxFiberMultiplicity_achievers_pos"
+    phase := 91
     status := .formalized } ]
 
 end Omega.Audit

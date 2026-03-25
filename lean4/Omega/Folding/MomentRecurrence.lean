@@ -393,4 +393,44 @@ theorem momentSum_two_nine_rec : momentSum 2 9 = 3352 := by
     momentSum_two_eight_rec] at h
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Fiber structure bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(m) · F_{m+2} ≥ 2^m (average fiber bound). -/
+theorem maxFiberMultiplicity_ge_avg (m : Nat) :
+    X.maxFiberMultiplicity m * Nat.fib (m + 2) ≥ 2 ^ m := by
+  calc 2 ^ m = ∑ x : X m, X.fiberMultiplicity x := (X.fiberMultiplicity_sum_eq_pow m).symm
+    _ ≤ ∑ _ : X m, X.maxFiberMultiplicity m :=
+        Finset.sum_le_sum (fun x _ => X.fiberMultiplicity_le_max x)
+    _ = X.maxFiberMultiplicity m * Fintype.card (X m) := by
+        simp [Finset.sum_const, Finset.card_univ, Nat.mul_comm]
+    _ = X.maxFiberMultiplicity m * Nat.fib (m + 2) := by rw [X.card_eq_fib]
+
+/-- D(m) ≤ 2^m. -/
+theorem maxFiberMultiplicity_le_pow (m : Nat) :
+    X.maxFiberMultiplicity m ≤ 2 ^ m := by
+  obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
+  rw [← hx]
+  calc X.fiberMultiplicity x = (X.fiber x).card := rfl
+    _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    _ = 2 ^ m := by simp [Fintype.card_fin, Fintype.card_bool]
+
+/-- d(x) ≤ 2^m for all x. -/
+theorem fiberMultiplicity_le_pow (x : X m) :
+    X.fiberMultiplicity x ≤ 2 ^ m :=
+  (X.fiberMultiplicity_le_max x).trans (maxFiberMultiplicity_le_pow m)
+
+/-- D(m) ≥ 1. -/
+theorem maxFiberMultiplicity_ge_one (m : Nat) :
+    1 ≤ X.maxFiberMultiplicity m := X.maxFiberMultiplicity_pos m
+
+/-- At least one element achieves the max fiber multiplicity. -/
+theorem maxFiberMultiplicity_achievers_pos (m : Nat) :
+    0 < ((Finset.univ : Finset (X m)).filter
+      (fun x => X.fiberMultiplicity x = X.maxFiberMultiplicity m)).card := by
+  rw [Finset.card_pos]
+  obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
+  exact ⟨x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩⟩
+
 end Omega
