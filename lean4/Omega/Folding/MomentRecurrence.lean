@@ -83,4 +83,43 @@ theorem momentSum_two_strict_mono' (m : Nat) (hm : 1 ≤ m) :
       -- Wait: S(m+4) = 2S(m+3) + 2(S(m+2)-S(m+1)) > 2S(m+3) > S(m+3). ✓
       linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- General S_q = Σ wcc^q
+-- ══════════════════════════════════════════════════════════════
+
+/-- General q-moment = Σ wcc^q. Generalizes momentSum_two_eq_congr_sq_sum to all q. -/
+theorem momentSum_eq_congr_pow_sum (q m : Nat) :
+    momentSum q m =
+    ∑ r ∈ Finset.range (Nat.fib (m + 2)), weightCongruenceCount m r ^ q := by
+  unfold momentSum
+  simp_rw [fiberMultiplicity_eq_wcc]
+  have hbij := X.stableValueFin_bijective m
+  have step : ∑ x : X m, weightCongruenceCount m (stableValue x) ^ q =
+      ∑ r : Fin (Nat.fib (m + 2)), weightCongruenceCount m r.val ^ q := by
+    rw [show (fun x : X m => weightCongruenceCount m (stableValue x) ^ q) =
+      (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val ^ q) ∘
+      X.stableValueFin from by ext x; simp [X.stableValueFin]]
+    exact hbij.sum_comp (fun r : Fin (Nat.fib (m + 2)) => weightCongruenceCount m r.val ^ q)
+  rw [step, ← Fin.sum_univ_eq_sum_range]
+
+-- ══════════════════════════════════════════════════════════════
+-- exactWeightTriple definition
+-- ══════════════════════════════════════════════════════════════
+
+/-- Sum of cubed exact weight counts. -/
+def exactWeightTriple (m : Nat) : Nat :=
+  ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n ^ 3
+
+-- ══════════════════════════════════════════════════════════════
+-- S_q positivity
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_q(m) > 0 for all q, m. -/
+theorem momentSum_pos' (q m : Nat) : 0 < momentSum q m := by
+  unfold momentSum
+  apply Finset.sum_pos
+  · intro x _
+    exact Nat.pos_of_ne_zero (pow_ne_zero q (Nat.pos_iff_ne_zero.mp (X.fiberMultiplicity_pos x)))
+  · exact ⟨⟨fun _ => false, no11_allFalse⟩, Finset.mem_univ _⟩
+
 end Omega

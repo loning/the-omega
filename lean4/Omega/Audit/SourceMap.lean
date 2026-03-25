@@ -7315,6 +7315,34 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.momentSum_two_strict_mono'"
     phase := 84
+    status := .formalized }
+-- Phase 85: S_q 一般化矩同余表达 + S_q 正性 (MomentRecurrence.lean:86-125)
+-- prop:pom-moment-congruence-q → momentSum_eq_congr_pow_sum（S_q(m) = Σ wcc(r)^q，完整一般化）
+-- (MomentRecurrence.lean:91)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "prop:pom-moment-congruence-q-general"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_eq_congr_pow_sum"
+    phase := 85
+    status := .formalized }
+-- prop:pom-moment-congruence-q → exactWeightTriple（定义：Σ ewc(m,n)^3，精确重量三次方和）
+-- (MomentRecurrence.lean:110)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "def:pom-exactWeightTriple"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.exactWeightTriple"
+    phase := 85
+    status := .formalized }
+-- prop:pom-moment-congruence-q → momentSum_pos'（S_q(m) > 0，对所有 q,m 成立）
+-- (MomentRecurrence.lean:118)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-sq-pos-general"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_pos'"
+    phase := 85
     status := .formalized } ]
 
 end Omega.Audit
