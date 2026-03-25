@@ -2,6 +2,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecificLimits.Fibonacci
 import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
 import Mathlib.NumberTheory.Real.GoldenRatio
+import Omega.Folding.CircleDimension
 import Omega.Folding.ShiftDynamics
 
 open scoped goldenRatio
@@ -307,6 +308,145 @@ theorem fib_growth_sandwich (n : Nat) :
   have h := fib_nearest_integer n
   rw [abs_lt] at h
   constructor <;> linarith [h.1, h.2]
+
+private theorem psi_pow_mul_inv_phi_pow (m : ℕ) :
+    ψ ^ m * (φ ^ m)⁻¹ = (ψ / φ) ^ m := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+      rw [pow_succ, pow_succ, pow_succ, mul_inv_rev]
+      calc
+        ψ ^ m * ψ * (φ⁻¹ * (φ ^ m)⁻¹)
+            = (ψ ^ m * (φ ^ m)⁻¹) * (ψ * φ⁻¹) := by ring
+        _ = (ψ / φ) ^ m * (ψ / φ) := by rw [ih, div_eq_mul_inv]
+        _ = (ψ / φ) ^ (m + 1) := by rw [pow_succ]
+
+/-! ### Circle-dimension Fibonacci radius asymptotics -/
+
+/-- `φ^{-m}` tends to `0` exponentially. -/
+theorem phi_rpow_neg_nat_tendsto_zero :
+    Tendsto (fun m : ℕ => φ ^ (-(m : ℝ))) atTop (𝓝 0) := by
+  have hpow : Tendsto (fun m : ℕ => (φ⁻¹ : ℝ) ^ m) atTop (𝓝 0) := by
+    have h : |(φ⁻¹ : ℝ)| < 1 := by
+      rw [Real.inv_goldenRatio, abs_neg]
+      exact abs_goldenConj_lt_one
+    simpa using tendsto_pow_atTop_nhds_zero_of_abs_lt_one h
+  have hEq : (fun m : ℕ => φ ^ (-(m : ℝ))) =ᶠ[atTop] fun m => (φ⁻¹ : ℝ) ^ m :=
+    Filter.Eventually.of_forall fun m => by
+      show φ ^ (-(m : ℝ)) = (φ⁻¹ : ℝ) ^ m
+      rw [Real.rpow_neg Real.goldenRatio_pos.le, Real.rpow_natCast, inv_pow]
+  exact Filter.Tendsto.congr' hEq.symm hpow
+
+/-- Binet-scaled Fibonacci numbers converge to `1 / √5`. -/
+theorem fib_mul_phi_neg_tendsto_inv_sqrt5 :
+    Tendsto (fun m : ℕ => (Nat.fib m : ℝ) * φ ^ (-(m : ℝ))) atTop
+      (𝓝 ((Real.sqrt 5)⁻¹)) := by
+  let r : ℝ := ψ / φ
+  have hsqrt5 : (Real.sqrt 5 : ℝ) ≠ 0 := ne_of_gt sqrt5_pos
+  have hr : |r| < 1 := by
+    dsimp [r]
+    rw [abs_div, abs_of_pos Real.goldenRatio_pos]
+    refine (div_lt_one (by positivity)).2 ?_
+    exact lt_trans abs_goldenConj_lt_one Real.one_lt_goldenRatio
+  have hpow : Tendsto (fun m : ℕ => r ^ m) atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_abs_lt_one hr
+  have hmain : Tendsto (fun m : ℕ => (1 - r ^ m) / Real.sqrt 5) atTop
+      (𝓝 ((1 - 0) / Real.sqrt 5)) :=
+    (tendsto_const_nhds.sub hpow).div tendsto_const_nhds hsqrt5
+  have hEq : (fun m : ℕ => (Nat.fib m : ℝ) * φ ^ (-(m : ℝ))) =ᶠ[atTop]
+      fun m => (1 - r ^ m) / Real.sqrt 5 :=
+    Filter.Eventually.of_forall fun m => by
+      calc
+        (Nat.fib m : ℝ) * φ ^ (-(m : ℝ)) = ((Nat.fib m : ℝ) * (φ ^ m)⁻¹) := by
+          rw [Real.rpow_neg Real.goldenRatio_pos.le, Real.rpow_natCast]
+        _ = (((φ ^ m - ψ ^ m) / Real.sqrt 5) * (φ ^ m)⁻¹) := by rw [binet_formula]
+        _ = ((1 - ψ ^ m * (φ ^ m)⁻¹) / Real.sqrt 5) := by
+          have hphi : (φ ^ m : ℝ) ≠ 0 := pow_ne_zero m Real.goldenRatio_ne_zero
+          field_simp [hphi, hsqrt5]
+        _ = ((1 - (ψ / φ) ^ m) / Real.sqrt 5) := by
+          rw [psi_pow_mul_inv_phi_pow]
+  exact Filter.Tendsto.congr' hEq.symm (by simpa [one_div] using hmain)
+
+/-- Adding a bounded constant does not change the Binet-scaled Fibonacci limit. -/
+theorem fib_add_two_mul_phi_neg_tendsto_inv_sqrt5 :
+    Tendsto (fun m : ℕ => ((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))) atTop
+      (𝓝 ((Real.sqrt 5)⁻¹)) := by
+  have htwo : Tendsto (fun m : ℕ => (2 : ℝ) * φ ^ (-(m : ℝ))) atTop (𝓝 0) := by
+    simpa using Filter.Tendsto.const_mul 2 phi_rpow_neg_nat_tendsto_zero
+  have hEq : (fun m : ℕ => ((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))) =ᶠ[atTop]
+      fun m => (Nat.fib m : ℝ) * φ ^ (-(m : ℝ)) + (2 : ℝ) * φ ^ (-(m : ℝ)) :=
+    Filter.Eventually.of_forall fun m => by ring
+  refine Filter.Tendsto.congr' hEq.symm ?_
+  simpa using fib_mul_phi_neg_tendsto_inv_sqrt5.add htwo
+
+/-- Normalized complement of the Fibonacci radius square tends to `1`. -/
+theorem one_sub_fibRadius_sq_tendsto :
+    Tendsto
+      (fun m : ℕ =>
+        (1 - (fibRadius m) ^ 2) /
+          (4 * Real.sqrt 5 * φ ^ (-(m : ℝ))))
+      atTop (𝓝 1) := by
+  have hsqrt5 : (Real.sqrt 5 : ℝ) ≠ 0 := ne_of_gt sqrt5_pos
+  have hFib1 : Tendsto (fun m : ℕ => ((Nat.fib m : ℝ) + 1) * φ ^ (-(m : ℝ))) atTop
+      (𝓝 ((Real.sqrt 5)⁻¹)) := by
+    have hone : Tendsto (fun m : ℕ => (1 : ℝ) * φ ^ (-(m : ℝ))) atTop (𝓝 0) := by
+      simpa using phi_rpow_neg_nat_tendsto_zero
+    have hEq : (fun m : ℕ => ((Nat.fib m : ℝ) + 1) * φ ^ (-(m : ℝ))) =ᶠ[atTop]
+        fun m => (Nat.fib m : ℝ) * φ ^ (-(m : ℝ)) + (1 : ℝ) * φ ^ (-(m : ℝ)) :=
+      Filter.Eventually.of_forall fun m => by ring
+    refine Filter.Tendsto.congr' hEq.symm ?_
+    simpa using fib_mul_phi_neg_tendsto_inv_sqrt5.add hone
+  have hRatio : Tendsto
+      (fun m : ℕ =>
+        (((Nat.fib m : ℝ) + 1) * φ ^ (-(m : ℝ))) /
+          (((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))))
+      atTop (𝓝 1) := by
+    have hne : ((Real.sqrt 5)⁻¹ : ℝ) ≠ 0 := inv_ne_zero hsqrt5
+    simpa [hne] using hFib1.div fib_add_two_mul_phi_neg_tendsto_inv_sqrt5 hne
+  have hInv : Tendsto
+      (fun m : ℕ => (Real.sqrt 5 * (((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))))⁻¹)
+      atTop (𝓝 1) := by
+    have hbase : Tendsto
+        (fun m : ℕ => Real.sqrt 5 * (((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))))
+        atTop (𝓝 (Real.sqrt 5 * (Real.sqrt 5)⁻¹)) :=
+      Filter.Tendsto.const_mul (Real.sqrt 5) fib_add_two_mul_phi_neg_tendsto_inv_sqrt5
+    have hone : Tendsto
+        (fun m : ℕ => Real.sqrt 5 * (((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))))
+        atTop (𝓝 (1 : ℝ)) := by
+      simpa [one_div, hsqrt5] using hbase
+    simpa using hone.inv₀ one_ne_zero
+  have hEq : (fun m : ℕ =>
+      (1 - (fibRadius m) ^ 2) / (4 * Real.sqrt 5 * φ ^ (-(m : ℝ)))) =ᶠ[atTop]
+      fun m =>
+        ((((Nat.fib m : ℝ) + 1) * φ ^ (-(m : ℝ))) /
+            (((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ)))) *
+          (Real.sqrt 5 * (((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))))⁻¹ :=
+    Filter.Eventually.of_forall fun m => by
+      simp only
+      rw [one_sub_fibRadius_sq]
+      have hphi : φ ^ (-(m : ℝ)) ≠ 0 := by positivity
+      have hfib : ((Nat.fib m : ℝ) + 2) ≠ 0 := by positivity
+      field_simp [hsqrt5, hphi, hfib]
+  refine Filter.Tendsto.congr' hEq.symm ?_
+  simpa using hRatio.mul hInv
+
+/-- `1 - fibRadius(m)^2` is asymptotic to `4 * √5 * φ^{-m}`. -/
+theorem one_sub_fibRadius_sq_isEquivalent :
+    Asymptotics.IsEquivalent atTop
+      (fun m : ℕ => 1 - (fibRadius m) ^ 2)
+      (fun m : ℕ => 4 * Real.sqrt 5 * φ ^ (-(m : ℝ))) := by
+  have hz : ∀ᶠ m : ℕ in atTop, 4 * Real.sqrt 5 * φ ^ (-(m : ℝ)) ≠ 0 :=
+    Filter.Eventually.of_forall fun m => by positivity
+  refine (Asymptotics.isEquivalent_iff_tendsto_one hz).2 ?_
+  have hEq :
+      (fun m : ℕ =>
+        (fun m : ℕ => 1 - (fibRadius m) ^ 2) m /
+          (fun m : ℕ => 4 * Real.sqrt 5 * φ ^ (-(m : ℝ))) m) =ᶠ[atTop]
+      (fun m : ℕ =>
+        (1 - (fibRadius m) ^ 2) /
+          (4 * Real.sqrt 5 * φ ^ (-(m : ℝ)))) :=
+    Filter.Eventually.of_forall fun _ => rfl
+  exact Filter.Tendsto.congr' hEq one_sub_fibRadius_sq_tendsto
 
 /-! ### Continued fraction convergence error -/
 
