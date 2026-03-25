@@ -89,14 +89,21 @@ formalizer:  [实现 R(N)] ────────> [commit] → [实现 R(N+1)
 registrar:           [登记 R(N-1)] → [push]        [登记 R(N)] → ...
 ```
 
-**触发规则**（team lead 每次收到任何消息时执行）：
+**触发规则——强制 checklist**（team lead 收到**任何消息**后，必须逐项检查并执行）：
 
-| 事件 | 立即动作 |
-|------|---------|
-| analyst 完成规格 R(N) | 如果 formalizer idle 且 registrar 无阻塞 → 立即发给 formalizer |
-| formalizer 完成 R(N) 并 commit | 同时：①将 R(N) 发给 registrar 登记 ②如果 analyst 已有 R(N+1) 规格 → 立即发给 formalizer ③如果 analyst 没有 R(N+1) → 发消息催 analyst |
-| registrar 完成登记 R(N) | 检查 formalizer 是否在等规格 → 如果 analyst 已有 → 转发 |
-| 任何 teammate idle | 检查是否有待分配任务 → 有则立即分配 |
+```
+□ analyst 是否空闲且没有下一轮任务？ → 发消息请求下一轮规格
+□ formalizer 是否空闲且有待实现的规格？ → 立即发送规格
+□ registrar 是否空闲且有未登记的 commit？ → 发送登记请求
+□ formalizer 刚完成并 commit？ → 同一条回复中同时发三条消息：
+    ① registrar：登记本轮
+    ② analyst：设计下一轮（如果还没在做）
+    ③ formalizer：如果 analyst 已有规格 → 发送；否则 → 告知等待
+□ analyst 刚完成规格？ → 如果 formalizer idle → 立即发送
+□ registrar 刚完成登记？ → 如果 formalizer 在等规格且 analyst 已有 → 转发
+```
+
+**关键：永远不要只回复一条消息就停下来。每次都检查所有三个 agent 的状态。**
 
 ## 每轮循环流程
 
