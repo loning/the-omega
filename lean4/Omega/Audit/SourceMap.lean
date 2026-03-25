@@ -8376,6 +8376,12 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.ShiftDynamics"
     leanName := "Omega.lucasNum_mul_fib"
     phase := 118
+    status := .formalized }
+, { label := "bridge:lucas-cassini"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_cassini"
+    phase := 118
     status := .formalized } ]
 
 end Omega.Audit
