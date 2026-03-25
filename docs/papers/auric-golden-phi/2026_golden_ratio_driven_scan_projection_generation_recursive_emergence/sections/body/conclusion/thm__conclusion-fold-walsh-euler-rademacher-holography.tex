@@ -180,3 +180,160 @@ W_x(I)=(-1)^{|x\cap I|}
 \]
 而最后一个等价式正是定理 \ref{thm:conclusion-fold-walsh-total-charge-parseval-degeneracy} 的 Parseval 反演。证毕。
 \end{proof}
+
+\begin{theorem}[纤维全息生成多项式的 Walsh 插值唯一化]\label{thm:conclusion-fold-fiber-hologram-walsh-interpolation-uniqueness}
+对每个 \(m\ge 1\) 与 \(x\in X_m\)，定义纤维全息生成多项式
+\[
+\mathcal H_x(z):=\sum_{\omega\in \Fold_m^{-1}(x)}\prod_{i=1}^{m}z_i^{\omega_i}\in \ZZ[z_1,\dots,z_m].
+\]
+则映射
+\[
+x\longmapsto \mathcal H_x
+\]
+为单射。更强地，若对一切 \(I\subseteq [m]\) 都有
+\[
+\mathcal H_x(\varepsilon^I)=\mathcal H_y(\varepsilon^I),
+\qquad
+\varepsilon_i^I=
+\begin{cases}
+-1,& i\in I,\\
+1,& i\notin I,
+\end{cases}
+\]
+则 \(x=y\)。
+\end{theorem}
+\begin{proof}
+由定义，\(\mathcal H_x\) 在每个变量上都至多一次，因此它由其在符号立方体 \(\{\pm 1\}^m\) 上的全部取值唯一决定。
+另一方面，对任意 \(I\subseteq [m]\)，
+\[
+\mathcal H_x(\varepsilon^I)
+=
+\sum_{\omega\in \Fold_m^{-1}(x)}\chi_I(\omega)
+=
+W_x(I).
+\]
+若 \(\mathcal H_x(\varepsilon^I)=\mathcal H_y(\varepsilon^I)\) 对全部 \(I\) 成立，则
+\[
+W_x(I)=W_y(I)\qquad (\forall I\subseteq [m]).
+\]
+由推论 \ref{cor:pom-fiber-walsh-stokes-boundary-tomography-reconstruction} 的 Walsh 逆变换，
+\[
+\ind_{\Fold_m^{-1}(x)}(\omega)
+=
+2^{-m}\sum_{I\subseteq [m]}W_x(I)\chi_I(\omega),
+\]
+故 \(\Fold_m^{-1}(x)\) 与 \(\Fold_m^{-1}(y)\) 的示性函数一致，从而两条纤维相同。
+不同稳定类型的纤维彼此不交，故 \(x=y\)。证毕。
+\end{proof}
+
+\begin{theorem}[边界 Walsh--Stokes 谱的完备层析]\label{thm:conclusion-fold-boundary-walsh-stokes-complete-tomography}
+对每个 \(x\in X_m\)，定义边界层析数据
+\[
+\mathfrak B_x:=
+\Bigl(
+|\Fold_m^{-1}(x)|,\ 
+\{\mathrm{Stokes}_I(\Fold_m^{-1}(x))\}_{\varnothing\neq I\subseteq [m]}
+\Bigr),
+\]
+其中 \(\mathrm{Stokes}_I(\Fold_m^{-1}(x))\) 表示与 Walsh 系数 \(W_x(I)\) 对应的离散 Stokes 边界通量。
+则 \(\mathfrak B_x\) 唯一决定整个纤维 \(\Fold_m^{-1}(x)\)。
+因此，一切仅依赖于纤维内部组合结构的不变量，例如
+\[
+Z_x(-1),\qquad \widetilde\chi(|K_x|),\qquad |K_x|\simeq *\ \text{或}\ S^{\tau(x)-1},
+\]
+都属于纯边界可观测量。
+\end{theorem}
+\begin{proof}
+由定义，\(\mathrm{Stokes}_I(\Fold_m^{-1}(x))\) 正是 \(W_x(I)\) 的边界表示；而
+\[
+W_x(\varnothing)=|\Fold_m^{-1}(x)|.
+\]
+故 \(\mathfrak B_x\) 等价于完整 Walsh 系数族 \(\{W_x(I)\}_{I\subseteq [m]}\)。
+由定理 \ref{thm:conclusion-fold-fiber-hologram-walsh-interpolation-uniqueness}，这组数据唯一决定 \(\Fold_m^{-1}(x)\)。
+其余结论只是把 \(\Fold_m^{-1}(x)\) 代入对应的函子性输出。证毕。
+\end{proof}
+
+\begin{theorem}[纤维热力学的边界全息封闭]\label{thm:conclusion-fold-fiber-thermodynamics-boundary-holographic-closure}
+对每个 \(x\in X_m\)，其一参数 hard-core 配分函数
+\[
+Z_x(t)=\sum_{S\in \mathsf{Ind}(\Gamma_x)} t^{|S|}
+\]
+以及由 Bernoulli 输入诱导的整条后验族
+\[
+\mu_{m,p}(\omega\mid x)=\frac{t^{r(\omega)}}{Z_x(t)},
+\qquad
+t=\frac{p}{1-p},
+\]
+都由边界层析数据 \(\mathfrak B_x\) 唯一决定。等价地，纤维上的一参数热力学在当前语义中完全闭合于边界可见域。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-fold-boundary-walsh-stokes-complete-tomography}，\(\mathfrak B_x\) 唯一决定 \(\Fold_m^{-1}(x)\)，因而也唯一决定稳定类型 \(x\) 本身。
+而 \(x\) 唯一决定候选图 \(\Gamma_x\)，并且文稿已给出规范双射
+\[
+\Theta_x:\Fold_m^{-1}(x)\longrightarrow \mathsf{Ind}(\Gamma_x),
+\qquad
+r(\omega)=|\Theta_x(\omega)|.
+\]
+故
+\[
+Z_x(t)=\sum_{\omega\in \Fold_m^{-1}(x)} t^{r(\omega)}
+\]
+由 \(\Fold_m^{-1}(x)\) 唯一确定。
+再由定理 \ref{thm:conclusion-fold-fiber-hardcore-annealed-conservation} 的条件后验公式，
+\[
+\mu_{m,p}(\omega\mid x)=\frac{t^{r(\omega)}}{Z_x(t)},
+\]
+整条后验族随之唯一确定。证毕。
+\end{proof}
+
+\begin{theorem}[边界拓扑读出的判别完备性]\label{thm:conclusion-fold-boundary-topology-readout-completeness}
+对任意 \(x\in X_m\)，定义全坐标 Walsh 交错和
+\[
+W(x):=\sum_{\omega\in \Fold_m^{-1}(x)}(-1)^{|\omega|_1}.
+\]
+则有严格恒等式
+\[
+\widetilde\chi(|K_x|)
+=
+-(-1)^{|x|_1}W(x).
+\]
+并且
+\[
+|K_x|\simeq *
+\iff
+W(x)=0.
+\]
+若
+\[
+|K_x|\simeq S^{\tau(x)-1},
+\]
+则
+\[
+(-1)^{\tau(x)-1}=-(-1)^{|x|_1}W(x).
+\]
+因此，单一标量 \(W(x)\) 已完成对纤维独立集复形之可缩/非可缩二分与球面维数奇偶的全部判别。
+\end{theorem}
+\begin{proof}
+取全坐标指标 \(I=[m]\)。由文稿中的 Walsh--hard-core 表示，
+\[
+W(x)=(-1)^{|x|_1}Z_x(-1).
+\]
+另一方面，由命题 \ref{prop:pom-fiber-witten-index-zx-minus-one}，
+\[
+\widetilde\chi(|K_x|)=-Z_x(-1).
+\]
+合并两式即得
+\[
+\widetilde\chi(|K_x|)=-(-1)^{|x|_1}W(x).
+\]
+再由推论 \ref{cor:pom-fiber-contractibility-sphere-parity-by-walsh}，
+\[
+Z_x(-1)=0 \iff |K_x|\simeq *.
+\]
+故 \(W(x)=0\) 当且仅当 \(|K_x|\) 可缩。
+若 \(|K_x|\simeq S^{\tau(x)-1}\)，则
+\[
+\widetilde\chi(|K_x|)=(-1)^{\tau(x)-1},
+\]
+代回上式即得球面维数奇偶公式。证毕。
+\end{proof}
