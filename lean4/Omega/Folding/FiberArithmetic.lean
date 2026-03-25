@@ -474,3 +474,12 @@ theorem eq_of_zeckIndices_eq {x y : X m} (h : X.zeckIndices x = X.zeckIndices y)
 /-- The Zeckendorf encoding is faithful: injective on stable words. -/
 theorem zeckIndices_injective (m : Nat) : Function.Injective (X.zeckIndices (m := m)) :=
   fun _ _ h => eq_of_zeckIndices_eq h
+
+/-- The Zeckendorf representation map is injective on X m. -/
+theorem zeckRep_injective (m : Nat) : Function.Injective (X.zeckRep (m := m)) :=
+  fun _ _ h => zeckIndices_injective m (Subtype.ext_iff.mp h)
+
+/-- stableValue equals the Fibonacci sum of the Zeckendorf representation. -/
+theorem stableValue_eq_zeckRep_fib_sum (x : X m) :
+    stableValue x = ((X.zeckRep x).val.map Nat.fib).sum :=
+  (X.sum_fib_zeckRep x).symm
