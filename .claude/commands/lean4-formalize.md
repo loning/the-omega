@@ -415,17 +415,42 @@ Agent(
 
 **回写流程**：
 1. team lead 在进度报告中标注"新发现"
-2. team lead 直接修改对应的论文 `.tex` 文件，将新发现以学术语言写入
-3. 新增内容必须保持论文学术严谨完整性（无修订痕迹、无口语）
-4. 如涉及定理陈述变更，同步更新论文中的定理编号和交叉引用
+2. team lead spawn 临时 paper-writer agent 执行回写：
+
+```
+Agent(
+  name = "paper-writer",
+  subagent_type = "general-purpose",
+  team_name = "lean4-formalization",
+  mode = "bypassPermissions",
+  description = "论文回写（按需）",
+  prompt = "你是论文回写 agent。请将以下形式化新发现写入论文 .tex 文件。
+
+  **新发现描述**：[具体内容]
+  **目标文件**：[论文 .tex 路径]
+  **回写要求**：
+  - 学术化语言，无口语，无修订痕迹
+  - 保持论文学术严谨完整性
+  - 如涉及定理陈述变更，同步更新交叉引用
+  - 使用 LaTeX 公式
+  - 不要在正文中出现任何修订痕迹
+
+  完成后 git commit + push，通过 SendMessage 通知 team lead。"
+)
+```
+
+3. paper-writer 完成后 shutdown，team lead 确认回写质量
 
 **回写内容类型**：
+
 | 类型 | 处理方式 |
 |------|---------|
 | 更优分解结构（如 orbit 2+3+3 vs 2+4+2） | 替换论文中的原分解，注明形式化验证 |
 | 新等式/不等式 | 作为推论或注记插入对应章节 |
-| 论文错误修正 | 先记 ERRATA.md，然后直接修改论文原文 |
+| 论文错误修正 | 先记 ERRATA.md，然后修改论文原文 |
 | 新定义/辅助结构 | 作为定义插入预备知识或对应章节 |
+
+**时机**：paper-writer 与主流水线并行工作（不涉及 Lean4 编译），不阻塞 formalizer/registrar
 
 ## 错误恢复
 
