@@ -7719,6 +7719,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.stableValue_sum"
     phase := 96
+    status := .formalized }
+-- Phase 97: Fibonacci Cube 路径独立集等价 (Combinatorics/FibonacciCube.lean:1-87)
+, { label := "thm:pom-wordSupport-pathInd"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.wordSupport_isPathIndependent"
+    phase := 97
+    status := .formalized }
+, { label := "thm:pom-indSetToWord-no11"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.indSetToWord_no11"
+    phase := 97
+    status := .formalized }
+, { label := "thm:pom-wordSupport-indSetToWord"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.wordSupport_indSetToWord"
+    phase := 97
+    status := .formalized }
+, { label := "thm:pom-indSetToWord-wordSupport"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.indSetToWord_wordSupport"
+    phase := 97
+    status := .formalized }
+, { label := "thm:pom-xEquivPathIndSet"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.xEquivPathIndSet"
+    phase := 97
     status := .formalized } ]
 
 end Omega.Audit

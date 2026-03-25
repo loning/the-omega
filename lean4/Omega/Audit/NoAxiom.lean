@@ -1908,6 +1908,12 @@ def coreAuditTargets : List String :=
   -- Phase 96: Fold complement 对偶 + Gauss 和 (MomentRecurrence.lean:569-602)
   , "Omega.weight_complement_sub"
   , "Omega.Fold_complement"
-  , "Omega.stableValue_sum" ]
+  , "Omega.stableValue_sum"
+  -- Phase 97: Fibonacci Cube 路径独立集等价 (Folding/FibonacciCube.lean:1-87)
+  , "Omega.wordSupport_isPathIndependent"
+  , "Omega.indSetToWord_no11"
+  , "Omega.wordSupport_indSetToWord"
+  , "Omega.indSetToWord_wordSupport"
+  , "Omega.xEquivPathIndSet" ]
 
 end Omega.Audit

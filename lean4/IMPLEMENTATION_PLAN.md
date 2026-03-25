@@ -17,11 +17,11 @@
 | 模块 | 文件 | 定理数 | 覆盖率 |
 |---|---|---|---|
 | Core (Fib, Word, No11) | 3 | ~25 | 100% |
-| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, CollisionZeta, CollisionZetaOperator, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial, HankelSpectrum, FiberArithmeticProperties, FiberSplit, BoundaryLayer, Window6, ZeckendorfSignature, BinFold, HammingDist, Entropy, MaxFiberTwoStep, FiberWeightCount, CollisionDecomp, MomentRecurrence) | 36 | ~584 | 100% |
+| Folding (StableSyntax, Weight, Value, Zeckendorf, Fold, Fiber, MaxFiber, FiberSpectrum, FibonacciField, FiberRing, MomentSum, CollisionKernel, CollisionZeta, CollisionZetaOperator, Rewrite, Defect, InverseLimit, InverseLimitTopology, CarryDefect, FiberFusion, ModularTower, ShiftDynamics, FibonacciPolynomial, HankelSpectrum, FiberArithmeticProperties, FiberSplit, BoundaryLayer, Window6, ZeckendorfSignature, BinFold, HammingDist, Entropy, MaxFiberTwoStep, FiberWeightCount, CollisionDecomp, MomentRecurrence) | 36 | ~591 | 100% |
 | SPG (Cylinder, PrefixMetric, Clopen, ScanErrorDiscrete, ScanErrorMeasure) | 5 | ~210 | 95% |
 | Graph (LabeledGraph, Sofic, TransferMatrix) | 3 | ~37 | 100% |
 | Frontier (Assumptions, Certificates, Conditional, Conjectures, ConditionalSummary) | 5 | ~347 | 99% |
-| Combinatorics (PathIndSet) | 1 | ~22 | 100% |
+| Combinatorics (PathIndSet, FibonacciCube) | 2 | ~109 | 100% |
 | Audit (SourceMap, Inventory, NoAxiom) | 3 | ~5 | 同步 |
 
 ### 1.3 已完成的核心数学结果
@@ -66,6 +66,7 @@
 **权重极值（Round 91，Phase 94）**：Folding/MomentRecurrence.lean（拓展至 513 行）——weight_allTrue（thm:pom-weight-allTrue：全1词权重 = F_{m+3}-2，归纳，step 由 fib_succ_succ' × 2 + fib_succ_pos × 2 + omega，化简 truncate(allTrue) = allTrue）; weight_le_allTrue（thm:pom-weight-le-allTrue：weight w ≤ F_{m+3}-2，rw weight_allTrue + 归纳，逐位判 false/true 两支 + omega）; Fold_allTrue（thm:pom-fold-allTrue：Fold(allTrue) = X.ofNat m (F_{m+3}-2)，由 unfold Fold + weight_allTrue 直接）; exactWeightCount_zero_eq_one'（thm:pom-ewc-zero-one：ewc(m,0)=1，card_eq_one + witness allFalse + 双向：weight w=0 → 强归纳逐位 false，allFalse → weight_allFalse）——POM 覆盖率 ~21.9% → ~22.2%（+4 条目）（Phase 94）
 **complement 对称性（Round 92，Phase 95）**：Folding/MomentRecurrence.lean（拓展至 569 行）——complement（def：位取反映射 w↦!w）; complement_involution（thm:pom-complement-involution：complement(complement w) = w，funext + simp）; truncate_complement（thm:pom-truncate-complement：truncate(complement w) = complement(truncate w)，funext + simp）; complement_allFalse（thm:pom-complement-allFalse：complement(allFalse) = allTrue，funext + simp）; weight_complement（thm:pom-weight-complement：weight(comp w) + weight(w) = F_{m+3}-2，rw weight_allTrue + 归纳 + truncate_complement + 逐位 cases + omega）; exactWeightCount_symmetric（thm:pom-ewc-symmetric：ewc(m,n) = ewc(m, F_{m+3}-2-n) for n≤F_{m+3}-2，card_bij complement + weight_complement + complement_involution）——POM 覆盖率 ~22.2% → ~22.5%（+5 条目）（Phase 95）
 **Fold complement 对偶 + Gauss 和（Round 93，Phase 96）**：Folding/MomentRecurrence.lean（拓展至 602 行）——weight_complement_sub（thm:pom-weight-complement-sub：weight(comp w) = F_{m+3}-2-weight(w)，由 weight_complement + weight_le_allTrue + omega 直接）; Fold_complement（thm:pom-fold-complement：Fold(comp w) = X.ofNat m (F_{m+3}-2-weight(w))，由 unfold Fold + weight_complement_sub）; stableValue_sum（thm:pom-stableValue-sum：Σ_{x:Xm} sv(x) = F_{m+2}·(F_{m+2}-1)/2，stableValueFin 双射 + sum_comp + Fin.sum_univ_eq_sum_range + Finset.sum_range_id，Gauss 公式）——POM 覆盖率 ~22.5% → ~22.7%（+3 条目）（Phase 96）
+**Fibonacci Cube 路径独立集等价（Round 94，Phase 97）**：Folding/FibonacciCube.lean（新文件，87 行）——wordSupport（def：Word m → Finset(Fin m)，支撑集为 true 位集合）; wordSupport_isPathIndependent（thm:pom-wordSupport-pathInd：support 满足 no11 路径独立条件，即无相邻 true 位，由 no11 定义展开）; indSetToWord（def：PathIndSet(m) → Word m，路径独立集→词的反向映射）; indSetToWord_no11（thm:pom-indSetToWord-no11：indSetToWord(S) 满足 no11，由 S 的路径独立性直接）; wordSupport_indSetToWord（thm:pom-wordSupport-indSetToWord：support(indSetToWord(S)) = S，left inverse，逐元素验证）; indSetToWord_wordSupport（thm:pom-indSetToWord-wordSupport：indSetToWord(support(w)) = w，right inverse，funext + no11 + 位等价）; xEquivPathIndSet（thm:pom-xEquivPathIndSet：X_m ≃ PathIndSets(m)，Equiv 结构，由两个互逆方向构造，thm:fibonacci-cube-bijection）——POM 覆盖率 ~22.7% → ~23.0%（+5 条目）（Phase 97）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -129,7 +130,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1031/10,588 = **9.7%** |
+| 全局覆盖率 | 1036/10,588 = **9.8%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -143,7 +144,7 @@
 | 新生算术 | 151 | ~70 | ~46% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~347 | ~22.7% |
+| POM | 1,525 | ~352 | ~23.0% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
