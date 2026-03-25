@@ -2171,6 +2171,10 @@ def coreAuditTargets : List String :=
   , "Omega.paper_def_s2"
   , "Omega.paper_def_s3"
   , "Omega.paper_stable_add_no_null"
+  -- Phase 138: q-重碰撞矩定义 + Fibonacci cube 等价 + S_2 Hankel 行列式 (MomentTriple.lean:626, FibonacciCube.lean:445, HankelSpectrum.lean:317)
+  , "Omega.paper_def_moment_q"
+  , "Omega.paper_fibonacci_cube_equiv"
+  , "Omega.paper_s2_hankel_det"
   -- Phase 138b: 零代码批量补登 10 个论文标签
   , "Omega.cFiberSpectrum"
   , "Omega.fib_even_iff_three_dvd"

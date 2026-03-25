@@ -8801,6 +8801,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_stable_add_no_null"
     phase := 137
     status := .formalized }
+-- Phase 138: q-重碰撞矩定义 + Fibonacci cube 等价 + S_2 Hankel 行列式 (MomentTriple.lean:626, Combinatorics/FibonacciCube.lean:445, HankelSpectrum.lean:317)
+, { label := "def:pom-moment-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-visibility.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.paper_def_moment_q"
+    phase := 138
+    status := .formalized }
+, { label := "def:pom-fibonacci-cube"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-fiber-indcomplex.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.paper_fibonacci_cube_equiv"
+    phase := 138
+    status := .formalized }
+, { label := "lem:pom-s2-hankel-det"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.HankelSpectrum"
+    leanName := "Omega.paper_s2_hankel_det"
+    phase := 138
+    status := .formalized }
 -- Phase 138b: 零代码批量补登 10 个论文标签
 -- POM: def:pom-fiber-spectrum, cor:pom-fiber-modq-pisano-invariant, thm:pom-moment-hankel, def:pom-s4, def:pom-s5
 -- 新生算术: def:fib-moves, lem:fib-divisibility-chain, lem:fib-divisibility-iff
