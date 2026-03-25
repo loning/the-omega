@@ -161,4 +161,43 @@ theorem triple_collision_iff_weight_mod (m : Nat) :
     fun ⟨h1, h2⟩ => ⟨(Fold_eq_iff_weight_mod w1 w2).mpr h1,
       (Fold_eq_iff_weight_mod w2 w3).mpr h2⟩⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- S_q universal inequalities
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_q(m) ≥ 2^m for q ≥ 1. -/
+theorem momentSum_ge_pow' (q m : Nat) (hq : 1 ≤ q) : 2 ^ m ≤ momentSum q m := by
+  calc 2 ^ m = ∑ x : X m, X.fiberMultiplicity x := (X.fiberMultiplicity_sum_eq_pow m).symm
+    _ ≤ ∑ x : X m, X.fiberMultiplicity x ^ q := by
+        apply Finset.sum_le_sum; intro x _
+        exact le_self_pow (X.fiberMultiplicity_pos x) (by omega)
+    _ = momentSum q m := rfl
+
+/-- S_q(m) ≤ S_{q+1}(m). -/
+theorem momentSum_le_succ' (q m : Nat) : momentSum q m ≤ momentSum (q + 1) m := by
+  simp only [momentSum]
+  apply Finset.sum_le_sum; intro x _
+  exact pow_le_pow_right' (X.fiberMultiplicity_pos x) (Nat.le_succ q)
+
+/-- Cauchy-Schwarz: S_2(m) · F_{m+2} ≥ 4^m. -/
+theorem momentSum_two_mul_card_ge (m : Nat) :
+    momentSum 2 m * Nat.fib (m + 2) ≥ 4 ^ m := by
+  have hcs := momentSum_cauchy_schwarz m
+  rw [show (2 ^ m) ^ 2 = 4 ^ m from by rw [← pow_mul, show 4 = 2 ^ 2 from by norm_num, ← pow_mul]; ring_nf] at hcs
+  linarith [Nat.mul_comm (momentSum 2 m) (Nat.fib (m + 2))]
+
+/-- S_q(m) ≥ F_{m+2} for all q. -/
+theorem momentSum_ge_card' (q m : Nat) : Nat.fib (m + 2) ≤ momentSum q m := by
+  calc Nat.fib (m + 2) = Fintype.card (X m) := (X.card_eq_fib m).symm
+    _ = ∑ _ : X m, 1 := by simp
+    _ ≤ ∑ x : X m, X.fiberMultiplicity x ^ q := by
+        apply Finset.sum_le_sum; intro x _
+        exact Nat.one_le_pow q _ (X.fiberMultiplicity_pos x)
+    _ = momentSum q m := rfl
+
+/-- S_q(m) ≤ D_m^{q-1} · 2^m (wrapper of momentSum_le_max_pow). -/
+theorem momentSum_upper_bound' (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ≤ X.maxFiberMultiplicity m ^ (q - 1) * 2 ^ m :=
+  momentSum_le_max_pow q m hq
+
 end Omega

@@ -7362,6 +7362,37 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.triple_collision_iff_weight_mod"
     phase := 86
+    status := .formalized }
+-- Phase 87: S_q 普适不等式 (MomentRecurrence.lean:164-203)
+, { label := "thm:pom-sq-ge-pow"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_ge_pow'"
+    phase := 87
+    status := .formalized }
+, { label := "thm:pom-sq-le-succ"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_le_succ'"
+    phase := 87
+    status := .formalized }
+, { label := "thm:pom-s2-cauchy-schwarz"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_two_mul_card_ge"
+    phase := 87
+    status := .formalized }
+, { label := "thm:pom-sq-ge-card"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_ge_card'"
+    phase := 87
+    status := .formalized }
+, { label := "thm:pom-sq-upper-bound"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_upper_bound'"
+    phase := 87
     status := .formalized } ]
 
 end Omega.Audit

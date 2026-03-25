@@ -1831,6 +1831,12 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_pos'"
   -- Phase 86: S_3 基础设施 (MomentRecurrence.lean:125-164)
   , "Omega.momentSum_three_eq_triple_collision"
-  , "Omega.triple_collision_iff_weight_mod" ]
+  , "Omega.triple_collision_iff_weight_mod"
+  -- Phase 87: S_q 普适不等式 (MomentRecurrence.lean:164-203)
+  , "Omega.momentSum_ge_pow'"
+  , "Omega.momentSum_le_succ'"
+  , "Omega.momentSum_two_mul_card_ge"
+  , "Omega.momentSum_ge_card'"
+  , "Omega.momentSum_upper_bound'" ]
 
 end Omega.Audit
