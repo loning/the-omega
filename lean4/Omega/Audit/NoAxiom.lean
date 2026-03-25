@@ -2142,6 +2142,9 @@ def coreAuditTargets : List String :=
   -- Phase 133: Fib 相邻乘积 + S_2 mod 4 小基值 (ShiftDynamics.lean:482, MomentTriple.lean:600-603)
   , "Omega.fib_adjacent_product"
   , "Omega.momentSum_two_two_mod_four"
-  , "Omega.momentSum_two_three_mod_four" ]
+  , "Omega.momentSum_two_three_mod_four"
+  -- Phase 134: 隐藏比特计数递推 + 碰撞行列式普适 (MaxFiberTwoStep.lean:501, CollisionZeta.lean:530)
+  , "Omega.paper_hiddenBitCount_recurrence"
+  , "Omega.paper_collision_det_universal" ]
 
 end Omega.Audit

@@ -8671,6 +8671,19 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_two_three_mod_four"
     phase := 133
     status := .formalized }
+-- Phase 134: 隐藏比特计数递推 + 碰撞行列式普适 (MaxFiberTwoStep.lean:501, CollisionZeta.lean:530)
+, { label := "thm:pom-hidden-bit-count"
+    sourcePath := "sections/body/pom/parts/subsec__pom-hidden-bit.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.paper_hiddenBitCount_recurrence"
+    phase := 134
+    status := .formalized }
+, { label := "prop:pom-collision-det"
+    sourcePath := "sections/body/pom/parts/subsec__pom-collision.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.paper_collision_det_universal"
+    phase := 134
+    status := .formalized }
 -- Phase 123: Fibonacci 平台有限证书（Entropy.lean:44-57, 59-75)
 -- con:cdim-fibonacci-kl-platform-finite-certificate → fib_platform_certificate_of_eq_succ
 -- 状态: 已形式化, 审核通过 2026-03-26
