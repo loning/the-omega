@@ -183,40 +183,34 @@ Agent(
 
 4. **可选：用户显式要求时才启动 codex-reviewer。**
 
-### Phase 4：登记
+### Phase 4：登记 + 并行启动下一轮分析
 
-**严格串行约束**：registrar 必须在 formalizer 完全停止后才能启动。formalizer 和 registrar 不得并行运行，因为两者都涉及 `lake build` 编译过程，并行会导致文件冲突。
+**编译串行约束**：formalizer 和 registrar 不得同时 `lake build`。registrar 必须在 formalizer 完全停止后才能开始编译。
+
+**并行优化**：registrar 登记期间，analyst 可以同时开始下一轮的规格设计（analyst 不涉及编译）。formalizer 在 registrar 完成前不得接收新的编译任务，但 analyst 分析可以提前进行。
 
 **流程**：
 1. 确认 formalizer 已暂停（收到其确认消息或 idle 通知）
-2. **然后才** spawn registrar：
+2. **同时发送两条消息**（并行启动登记和下一轮分析）：
 
+   a. 通知 registrar 开始登记：
    ```
-   Agent(
-     name = "registrar",
-     subagent_type = "lean4-registrar",
-     team_name = "lean4-formalization",
-     description = "登记并提交（按需）",
-     mode = "bypassPermissions",
-     prompt = "你是 lean4-formalization 团队的登记员。请立即执行登记：
-
-     新增定理：[清单]
-     对应论文标签：[标签列表]
-     修改文件：[文件列表]
-
-     更新 SourceMap/NoAxiom/IMPLEMENTATION_PLAN/Omega.lean，然后 git commit + push。
-     完成后将登记报告通过 SendMessage 发回 team lead。"
-   )
+   SendMessage(to = "registrar", message = "请登记本轮成果：[清单]...")
    ```
 
-3. **停下来，等待 registrar 回复。不要在此期间给 formalizer 发新任务。**
-
-4. 收到登记报告后：
+   b. 通知 analyst 开始下一轮分析（不等 registrar 完成）：
    ```
-   SendMessage(to = "registrar", message = {type: "shutdown_request"})
+   SendMessage(to = "analyst", message = "请设计下一轮规格...")
    ```
 
-5. **等待 registrar shutdown 确认后**，才可以给 formalizer 发送下一轮任务。
+3. **等待 registrar 和 analyst 都回复。**
+   - registrar 回复后确认 commit hash
+   - analyst 回复后保存规格
+   - **只有当 registrar 完成后**，才可以将 analyst 的规格发给 formalizer
+
+4. 收到 registrar 登记报告 + analyst 规格后，将规格转发给 formalizer，进入 Phase 2。
+   - 如果 analyst 先完成但 registrar 未完成：等待 registrar，然后再发给 formalizer
+   - 如果 registrar 先完成但 analyst 未完成：等待 analyst
 
 ### Phase 4.5：性能优化（每5轮触发）
 
@@ -246,7 +240,7 @@ Agent(
 
 1. 输出本轮进度报告
 2. `round_count += 1`
-3. **永远回到 Phase 0+1**，发消息给 analyst 选取下一个目标
+3. **进入下一轮**——如果 analyst 在 Phase 4 已经开始分析，直接等待其规格；否则发消息给 analyst 选取下一个目标
 4. **禁止建议暂停或关闭团队**——即使产出递减，也继续尝试更高难度的目标
 5. 如果连续 3 轮产出 ≤ 2 定理，team lead 应主动要求 analyst 选取中/高难度目标（而非继续低难度扫尾），并在 formalizer 遇到阻塞时积极 spawn codex-consultant
 
