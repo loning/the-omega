@@ -472,4 +472,29 @@ theorem fiber_independent_of_retraction {m : Nat} (Φ : Word m → X m)
   · intro h; rw [← huniq]; exact h
   · intro h; rw [huniq]; exact h
 
+-- ══════════════════════════════════════════════════════════════
+-- Fold-snoc decomposition
+-- ══════════════════════════════════════════════════════════════
+
+theorem restrict_Fold_eq (w : Word (m + 1)) :
+    X.restrict (Fold w) = X.ofNat m (weight w) := by
+  unfold Fold; exact restrict_ofNat m (weight w)
+
+theorem Fold_snoc_false_eq (w : Word m) :
+    Fold (snoc w false) = X.ofNat (m + 1) (weight w) := by
+  unfold Fold; congr 1; rw [weight_snoc]; simp
+
+theorem Fold_snoc_true_eq (w : Word m) :
+    Fold (snoc w true) = X.ofNat (m + 1) (weight w + Nat.fib (m + 2)) := by
+  unfold Fold; congr 1; rw [weight_snoc]; simp
+
+theorem stableValue_Fold_snoc_false (w : Word m) :
+    stableValue (Fold (snoc w false)) = weight w % Nat.fib (m + 3) := by
+  rw [stableValue_Fold_mod, weight_snoc]; simp
+
+theorem stableValue_Fold_snoc_true (w : Word m) :
+    stableValue (Fold (snoc w true)) =
+    (weight w + Nat.fib (m + 2)) % Nat.fib (m + 3) := by
+  rw [stableValue_Fold_mod, weight_snoc]; simp
+
 end Omega
