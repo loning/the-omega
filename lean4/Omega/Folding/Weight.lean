@@ -56,7 +56,7 @@ theorem weight_word_one (w : Word 1) :
     convert ih using 2
 
 /-- weight(w) = Σ_{i : Fin m} (if w i then Nat.fib (i+2) else 0). -/
-theorem weight_eq_fib_sum {m : Nat} (w : Word m) :
+theorem weight_eq_fib_ite_sum {m : Nat} (w : Word m) :
     weight w = ∑ i : Fin m, if w i then Nat.fib (i.val + 2) else 0 := by
   induction m with
   | zero => simp [weight]

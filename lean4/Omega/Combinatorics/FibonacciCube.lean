@@ -307,4 +307,12 @@ theorem momentSum_two_ge_maxFiber_sq (m : Nat) :
     X.maxFiberMultiplicity m ^ 2 ≤ momentSum 2 m :=
   maxFiberMultiplicity_sq_le_momentSum m
 
+/-- weight(w) = Σ_{i ∈ wordSupport(w)} Nat.fib(i.val + 2). -/
+theorem weight_eq_fib_sum (w : Word m) :
+    weight w = ∑ i ∈ wordSupport w, Nat.fib (i.val + 2) := by
+  rw [weight_eq_fib_ite_sum]
+  -- ∑_{i : Fin m} (if w i then fib(i+2) else 0) = ∑_{i ∈ support} fib(i+2)
+  rw [← Finset.sum_filter]
+  rfl
+
 end Omega
