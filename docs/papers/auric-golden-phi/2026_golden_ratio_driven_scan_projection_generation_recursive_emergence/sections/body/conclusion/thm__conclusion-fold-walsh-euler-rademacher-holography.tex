@@ -337,3 +337,168 @@ Z_x(-1)=0 \iff |K_x|\simeq *.
 \]
 代回上式即得球面维数奇偶公式。证毕。
 \end{proof}
+
+\begin{theorem}[折叠分划的全局 Walsh 平衡]\label{thm:conclusion-fold-partition-global-walsh-balance}
+对任意分辨率 \(m\ge 1\) 与任意非空指标集 \(I\subseteq [m]\)，都有严格恒等式
+\[
+\sum_{x\in X_m}W_x(I)=0,
+\]
+等价地，
+\[
+\sum_{x\in X_m}H_x(\varepsilon_I)=0.
+\]
+因此，折叠分划
+\[
+\Omega_m=\bigsqcup_{x\in X_m}\Fold_m^{-1}(x)
+\]
+在每一个非平凡 Walsh 模上都处于全局精确平衡状态。
+\end{theorem}
+
+\begin{proof}
+文稿已给出纤维全息守恒恒等式
+\[
+\sum_{x\in X_m}H_x(z)=\prod_{r=1}^{m}(1+z_r).
+\]
+令 \(z=\varepsilon_I\)。若 \(I\neq \varnothing\)，则存在 \(r\in I\) 使得 \(\varepsilon_I^r=-1\)，故右端含因子 \(1+\varepsilon_I^r=0\)。于是
+\[
+\sum_{x\in X_m}H_x(\varepsilon_I)=0.
+\]
+再由
+\[
+H_x(\varepsilon_I)=\sum_{\omega\in \Fold_m^{-1}(x)}\chi_I(\omega)=W_x(I)
+\]
+即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[边界线性读出的全局失明]\label{cor:conclusion-fold-boundary-linear-readout-global-blindness}
+设
+\[
+\mathcal L\bigl(\{\Fold_m^{-1}(x)\}_{x\in X_m}\bigr)
+:=
+\sum_{x\in X_m}\sum_{I\subseteq [m]} c_I\,W_x(I)
+\]
+为任意对纤维边界谱的全局线性读出，其中系数 \(c_I\) 与 \(x\) 无关。则恒有
+\[
+\mathcal L\bigl(\{\Fold_m^{-1}(x)\}_{x\in X_m}\bigr)=c_{\varnothing}2^m.
+\]
+特别地，若 \(c_{\varnothing}=0\)，则
+\[
+\mathcal L\bigl(\{\Fold_m^{-1}(x)\}_{x\in X_m}\bigr)\equiv 0.
+\]
+因此，碰撞矩、纤维直方图与碰撞谱极点等真正依赖分划几何的全局量，不可能由非平凡边界模的线性求和恢复。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-fold-partition-global-walsh-balance}，对任意 \(I\neq\varnothing\) 都有
+\[
+\sum_{x\in X_m}W_x(I)=0.
+\]
+而零模满足
+\[
+W_x(\varnothing)=|\Fold_m^{-1}(x)|,
+\qquad
+\sum_{x\in X_m}W_x(\varnothing)=\sum_{x\in X_m}|\Fold_m^{-1}(x)|=|\Omega_m|=2^m.
+\]
+故
+\[
+\mathcal L
+=
+c_{\varnothing}2^m+\sum_{I\neq\varnothing}c_I\sum_{x\in X_m}W_x(I)
+=
+c_{\varnothing}2^m.
+\]
+结论中关于碰撞矩与纤维直方图的断言只是指出：这些量在一般 \(m\) 上并不退化为 \(2^m\) 的常数倍，故不能由上述线性泛函给出。证毕。
+\end{proof}
+
+\begin{theorem}[边界全息到纤维直方图的精确重构]\label{thm:conclusion-fold-boundary-spectrum-fiber-histogram-reconstruction}
+对固定分辨率 \(m\)，记整族边界谱为
+\[
+\mathfrak B^{(m)}:=\{\mathfrak B_x\}_{x\in X_m},
+\]
+并定义纤维直方图
+\[
+h_d^{(m)}:=\#\{x\in X_m:|\Fold_m^{-1}(x)|=d\}
+\qquad (1\le d\le 2^m).
+\]
+则 \(\mathfrak B^{(m)}\) 唯一决定整条纤维直方图 \(\{h_d^{(m)}\}_{d\ge 1}\)。更强地，它唯一决定每个 \(x\in X_m\) 的具体纤维 \(\Fold_m^{-1}(x)\)，从而唯一决定全部退化度 \(d_m(x)=|\Fold_m^{-1}(x)|\)。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-fold-boundary-walsh-stokes-complete-tomography}，每个单纤维边界谱 \(\mathfrak B_x\) 唯一决定对应的纤维 \(\Fold_m^{-1}(x)\)。故整族 \(\mathfrak B^{(m)}\) 唯一决定全体退化度
+\[
+d_m(x)=|\Fold_m^{-1}(x)|=W_x(\varnothing).
+\]
+对这些退化度按取值分组统计，即得
+\[
+h_d^{(m)}=\#\{x\in X_m:d_m(x)=d\}.
+\]
+故结论成立。证毕。
+\end{proof}
+
+\begin{theorem}[碰撞分辨函数的有限极点]\label{thm:conclusion-fold-collision-resolvent-finite-pole}
+对固定分辨率 \(m\)，定义碰撞分辨函数
+\[
+\mathcal R_m(u):=\sum_{q\ge 0}S_q(m)u^q,
+\qquad
+S_q(m):=\sum_{x\in X_m} d_m(x)^q.
+\]
+则有严格有理闭式
+\[
+\mathcal R_m(u)=\sum_{d\ge 1}\frac{h_d^{(m)}}{1-du},
+\]
+其中求和仅遍历实际出现的纤维尺度 \(d\)。因此：
+\begin{enumerate}
+  \item \(\mathcal R_m\) 的极点集合恰为
+  \[
+  \{d^{-1}:h_d^{(m)}>0\};
+  \]
+  \item 每个极点都是单极点，且
+  \[
+  \Res_{u=d^{-1}}\mathcal R_m(u)=-\frac{h_d^{(m)}}{d};
+  \]
+  \item 整个有限尺度碰撞矩塔 \(\{S_q(m)\}_{q\ge 0}\) 与纤维直方图 \(\{h_d^{(m)}\}_{d\ge 1}\) 彼此等价。
+\end{enumerate}
+故有限尺度碰撞谱是一个“极点位置 = 纤维尺度、留数 = 纤维计数”的有理解析对象。
+\end{theorem}
+
+\begin{proof}
+由直方图分组，
+\[
+S_q(m)=\sum_{d\ge 1}h_d^{(m)}d^q.
+\]
+当 \(|u|<D_m^{-1}\) 且 \(D_m:=\max_x d_m(x)\) 时，
+\[
+\mathcal R_m(u)
+=\sum_{q\ge 0}\sum_{d\ge 1}h_d^{(m)}d^q u^q
+=\sum_{d\ge 1}h_d^{(m)}\sum_{q\ge 0}(du)^q
+=\sum_{d\ge 1}\frac{h_d^{(m)}}{1-du}.
+\]
+右端给出有理延拓，并立即读出极点与留数。最后，由幂级数系数唯一性，矩列与直方图彼此决定。再结合定理 \ref{thm:conclusion-fold-boundary-spectrum-fiber-histogram-reconstruction}，可知 \(\mathcal R_m\) 也由边界谱逆系统唯一决定。证毕。
+\end{proof}
+
+\begin{theorem}[边界数据决定整数射影压力骨架]\label{thm:conclusion-fold-boundary-determines-integer-projective-pressure-skeleton}
+设对每个整数 \(q\ge 2\)，极限
+\[
+r_q:=\lim_{m\to\infty} S_q(m)^{1/m}
+\]
+存在。则跨分辨率边界谱逆系统
+\[
+\{\mathfrak B^{(m)}\}_{m\ge 1}
+\]
+唯一决定整条整数谱骨架 \(\{r_q\}_{q\ge 2}\)。并且对每个整数 \(q\ge 2\)，有
+\[
+r_q=\rho(\mathcal L_q\vert_{\mathcal H_q})=\rho(\widetilde A_q),
+\]
+其中 \(\mathcal L_q\) 为射影压力算子，\(\mathcal H_q\) 为齐次次数 \(q\) 多项式扇区，\(\widetilde A_q\) 为对称幂商 moment-kernel。
+因此，边界 Walsh--Stokes 数据决定了整数点上的 projective-pressure 谱骨架。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-fold-boundary-spectrum-fiber-histogram-reconstruction} 与定理 \ref{thm:conclusion-fold-collision-resolvent-finite-pole}，\(\mathfrak B^{(m)}\) 唯一决定每个 \(m\) 的全部碰撞矩 \(S_q(m)\)。对固定整数 \(q\ge 2\) 取 \(m\to\infty\)，便唯一决定相应的指数极限 \(r_q\)。
+
+另一方面，由定理 \ref{thm:conclusion-projective-pressure-polynomial-sector-exact-closure}，
+\[
+\rho(\mathcal L_q\vert_{\mathcal H_q})=\rho(\widetilde A_q)=r_q.
+\]
+故整数射影压力骨架恰由边界谱逆系统决定。证毕。
+\end{proof}
