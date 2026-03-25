@@ -8155,6 +8155,19 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentTriple"
     leanName := "Omega.momentSum_three_succ_three_term"
     phase := 112
+    status := .formalized }
+-- Phase 113: T000 = exactWeightTriple + ewt 形式 (MomentTriple.lean:189-235)
+, { label := "thm:pom-s3-triple-collision"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.tripleCollisionClass_000_eq_ewcCube"
+    phase := 113
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_three_succ_ewt_form"
+    phase := 113
     status := .formalized } ]
 
 end Omega.Audit
