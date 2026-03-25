@@ -100,18 +100,22 @@ Agent(
    TaskCreate(title = "实现：[定理名]")
    ```
 
-2. 将 analyst 的完整规格原样转发给 formalizer（**包含论文证明过程**）：
+2. **同时做两件事**（流水线优化）：
+
+   a. 将 analyst 的规格转发给 formalizer：
    ```
    SendMessage(to = "formalizer", message = "请按照以下规格实现Lean4形式化：
-
-   [analyst 的完整规格原样粘贴——必须包含"论文证明过程"和"小值验证"章节]
-
+   [analyst 的完整规格原样粘贴]
    硬约束：零sorry、零admit、零axiom、lake build必须通过、文件不超过800行、最多15轮编译循环
-
-   **证明路线要求**：请先理解论文的证明步骤，按论文路线翻译为 Lean4。如果论文步骤在 Lean4 中不可行，报告具体哪一步无法翻译。")
+   **证明路线要求**：请先理解论文的证明步骤，按论文路线翻译为 Lean4。")
    ```
 
-3. **停下来，等待 formalizer 回复。不做任何其他操作。**
+   b. **同时通知 analyst 开始分析下一轮**（流水线：formalizer 实现第 N 轮时，analyst 提前分析第 N+1 轮）：
+   ```
+   SendMessage(to = "analyst", message = "formalizer 正在实现第 N 轮。请提前设计第 N+1 轮规格...")
+   ```
+
+3. **等待 formalizer 回复。** analyst 的下一轮分析可以在后台并行进行。
 
 4. **如果 formalizer 报告技术阻塞或推迟任务**（API 不匹配、tactic 选择困难、数学路线疑问、proof engineering 复杂等）：
    - **积极 spawn codex-consultant**，不要轻易接受"推迟"——先让 Codex 提供独立技术建议
