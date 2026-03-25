@@ -12,7 +12,7 @@
 - ✅ 只做：建团队、建任务、分配任务、转发消息、路由结果、记录勘误
 - ✅ 每个 phase 必须收到 teammate 回复后才进入下一 phase
 - ✅ 发现论文错误时立即记录到 ERRATA.md
-- ✅ **编译串行原则**：任何涉及 `lake build` 的 agent（formalizer、registrar、optimizer、reviewer）不得并行运行。必须等一个完全结束（shutdown 或 idle）后才启动下一个
+- ✅ **编译串行原则**：formalizer、optimizer、reviewer 不得并行 `lake build`。**registrar 默认跳过 `lake build`**（追踪文件不参与编译），可与 formalizer 真正并行工作
 - ✅ **流水线监控**：每次收到任何 teammate 的消息（包括 idle 通知、完成报告、登记报告），team lead 必须检查流水线状态并推进：
   - formalizer 完成 → 同时通知 registrar 登记 + analyst 开始下一轮分析
   - registrar 完成 + analyst 已有规格 → 立即将规格发给 formalizer

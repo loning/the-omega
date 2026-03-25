@@ -97,11 +97,23 @@ model: opus
    - 如果目标文件超过800行，必须拆分
    - 拆分后更新 `Omega.lean` 的import列表
 
-7. **提交结果后立即停止**
-   - 通过 SendMessage 将结果报告发回 team lead 后，**立即停止所有工作**
-   - 不要继续探索、优化、或尝试额外的定理
-   - 不要重复发送已发送的报告
-   - 等待 team lead 的下一条指令再行动
+7. **完成后立即 commit 代码**
+   - `lake build` 通过后，立即执行：
+     ```bash
+     cd /Users/auric/alltheory/the-omega
+     git add lean4/Omega/  # 只 add 代码文件，不含 Audit/
+     git commit -m "Phase N: [简要描述]
+
+     Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+     ```
+   - **不要 git push**（留给 registrar push）
+   - **不要 add Audit/ 或 IMPLEMENTATION_PLAN.md**（这些由 registrar 处理）
+   - commit 后通过 SendMessage 将结果报告发回 team lead
+   - 然后**可以立即接收下一轮任务**（不需要等 registrar）
+
+8. **提交结果后可立即接收下一轮**
+   - 代码已 commit，不会与 registrar 的追踪文件更新冲突
+   - 如果 team lead 同时发来了下一轮规格，直接开始实现
 
 ### 输出
 - 修改后的文件路径列表

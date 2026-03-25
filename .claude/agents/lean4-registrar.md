@@ -64,49 +64,42 @@ model: sonnet
 5. 如果某个计划项已完成，在 §3 中标注 ✅
 6. 更新 §4 执行优先级（已完成项移除，新可执行项补入）
 
-### 步骤5：编译验证
+### 步骤5：编译验证（可选，通常跳过）
 
-```bash
-cd /Users/auric/alltheory/the-omega/lean4 && lake build
-```
+**formalizer 已验证 `lake build` 通过。registrar 的追踪文件（SourceMap/NoAxiom/IMPLEMENTATION_PLAN）不参与编译（已从 Omega.lean 中排除），所以 registrar 修改不可能破坏编译。**
 
-确保追踪文件的修改不影响编译。
+- **默认跳过 `lake build`**：直接进入步骤6（提交）
+- **仅在以下情况运行 `lake build`**：registrar 修改了 Omega.lean 的 import 列表，或 formalizer 报告了非标准修改
 
 ### 步骤6：提交
 
-**关键：必须 add 所有相关文件，包括 formalizer 修改的代码文件，不仅仅是审计文件。**
+**新流程**：formalizer 已经 commit 了代码文件。registrar 只需 commit 追踪文件并 push。
 
 ```bash
 cd /Users/auric/alltheory/the-omega
 
-# 1. 先查看所有未暂存的变更，确认 formalizer 修改的文件
-git status
+# 1. 确认 formalizer 的代码 commit 已存在
+git log --oneline -3
 
-# 2. 添加 lean4/ 下所有修改和新增文件（包括 formalizer 的代码 + 审计文件）
-git add lean4/
+# 2. 只 add 追踪文件（不 add 代码文件——formalizer 已 commit）
+git add lean4/Omega/Audit/ lean4/IMPLEMENTATION_PLAN.md
 
-# 3. 确认暂存区包含 formalizer 修改的代码文件（不仅仅是 Audit/ 和 IMPLEMENTATION_PLAN.md）
-git diff --cached --stat
+# 3. 提交追踪文件
+git commit -m "Register Phase N: [简短描述]
 
-# 4. 提交
-git commit -m "Formalize [定理名]: [简短描述]
-
-- New theorems: [列表]
-- Paper coverage: [章节] [旧%] → [新%]
-- Files modified: [列表]
-- Reviewed: internal
-- Axioms: none (verified)
+- SourceMap: +N entries
+- Coverage: [章节] [旧%] → [新%]
 
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 
-# 5. 推送
+# 4. 推送（包含 formalizer 的代码 commit + registrar 的追踪 commit）
 git push
 
-# 6. 验证提交后无残留未暂存文件
+# 5. 验证
 git status
 ```
 
-**常见错误**：registrar 在 worktree 中工作时只能看到自己修改的文件（SourceMap/NoAxiom/IMPLEMENTATION_PLAN），看不到 formalizer 在主 worktree 中的修改。**必须在主 worktree（/Users/auric/alltheory/the-omega/）执行 git add lean4/ 和 git commit**，而非在隔离 worktree 中提交。
+**注意**：如果 formalizer 尚未 commit 代码（旧流程），则需要先 `git add lean4/Omega/` 包含代码文件。检查 `git status` 确认。
 
 ### 输出
 
@@ -143,9 +136,10 @@ git status
 
 ## 硬约束
 
-- ❌ 不在编译不过的状态下提交
 - ❌ 不遗漏SourceMap或NoAxiom的更新
 - ❌ 不虚报覆盖率数字
 - ❌ 不修改formalizer写的证明代码（只更新追踪文件）
-- ✅ 每次提交后验证 `lake build` 通过
+- ❌ 不运行 `lake build`（除非修改了 Omega.lean import）——追踪文件不参与编译，formalizer 已验证
 - ✅ commit message包含论文覆盖率变化
+- ✅ 可与 formalizer 并行工作——只要不运行 `lake build`，不会产生冲突
+- ✅ 在 formalizer 完成后立即 `git add lean4/ && git commit && git push`（包含 formalizer 的代码变更 + 追踪文件更新）
