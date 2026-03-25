@@ -8201,13 +8201,13 @@ def initialEntries : List SourceMapEntry :=
     phase := 114
     status := .formalized }
 -- Phase 115: zeckRep 单射 + stableValue-zeckRep 桥接 (FiberArithmetic.lean:479-485)
-, { label := "bridge:stable-value-zeck-indices"
+, { label := "thm:finite-resolution-mod"
     sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
     moduleName := "Omega.Folding.FiberArithmetic"
     leanName := "Omega.zeckRep_injective"
     phase := 115
     status := .formalized }
-, { label := "bridge:stable-value-zeck-indices"
+, { label := "thm:finite-resolution-mod"
     sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
     moduleName := "Omega.Folding.FiberArithmetic"
     leanName := "Omega.stableValue_eq_zeckRep_fib_sum"
