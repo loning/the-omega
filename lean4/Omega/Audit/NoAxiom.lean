@@ -2091,6 +2091,10 @@ def coreAuditTargets : List String :=
   -- Phase 125: ewc 单位权重 + ewc 层稳定 + Lucas-Fib 加法 (MomentTriple.lean:442, FiberWeightCount.lean:450, ShiftDynamics.lean:332)
   , "Omega.exactWeightCount_one"
   , "Omega.exactWeightCount_succ_of_lt"
-  , "Omega.lucasNum_add_fib" ]
+  , "Omega.lucasNum_add_fib"
+  -- Phase 126: Lucas-Fib 减法 + Fib 比率界 + stableValue 最大值存在 (ShiftDynamics.lean:345, Fib.lean:297, MomentTriple.lean:462)
+  , "Omega.lucasNum_sub_fib"
+  , "Omega.fib_succ_le_double"
+  , "Omega.stableValue_max_achieved" ]
 
 end Omega.Audit

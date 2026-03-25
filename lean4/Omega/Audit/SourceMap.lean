@@ -8485,6 +8485,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.ShiftDynamics"
     leanName := "Omega.lucasNum_add_fib"
     phase := 125
+    status := .formalized }
+-- Phase 126: Lucas-Fib 减法 + Fib 比率界 + stableValue 最大值存在 (ShiftDynamics.lean:345, Fib.lean:297, MomentTriple.lean:462)
+, { label := "bridge:lucas-sub-fib"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.ShiftDynamics"
+    leanName := "Omega.lucasNum_sub_fib"
+    phase := 126
+    status := .formalized }
+, { label := "bridge:fib-ratio-bound"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fib_succ_le_double"
+    phase := 126
+    status := .formalized }
+, { label := "thm:finite-resolution-mod"
+    sourcePath := "sections/body/folding/subsec__folding-fibonacci-stable-syntax.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.stableValue_max_achieved"
+    phase := 126
     status := .formalized } ]
 
 end Omega.Audit
