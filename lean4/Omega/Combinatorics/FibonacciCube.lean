@@ -200,4 +200,44 @@ theorem fiberMultiplicity_ge_two_of_sv_le (x : X m)
   have h1 := ewc_stableValue_pos x
   have h2 := ewc_pos_of_le m _ h; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Weight decomposition + fiber wrappers
+-- ══════════════════════════════════════════════════════════════
+
+theorem weight_truncate_add (w : Word (m + 1)) :
+    weight w = weight (truncate w) +
+    if w ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0 := rfl
+
+theorem weight_pos_iff (w : Word m) :
+    0 < weight w ↔ ∃ i : Fin m, w i = true := by
+  constructor
+  · intro hpos; by_contra h; push_neg at h
+    have hall : w = fun _ => false := funext (fun i => by
+      have := h i; simp only [ne_eq, Bool.not_eq_true] at this; exact this)
+    rw [hall, weight_allFalse] at hpos; omega
+  · intro ⟨i, hi⟩
+    -- weight ≥ F_{i+2} ≥ 1
+    calc 0 < 1 := by omega
+      _ ≤ Nat.fib (i.val + 2) := fib_succ_pos (i.val + 1)
+      _ ≤ weight w := by
+        -- The contribution of bit i is F_{i+2}, which is ≤ weight
+        induction m with
+        | zero => exact absurd i.isLt (Nat.not_lt_zero _)
+        | succ n ih =>
+          rw [weight_truncate_add]
+          by_cases hlt : i.val < n
+          · have : Nat.fib (i.val + 2) ≤ weight (truncate w) :=
+              ih (truncate w) ⟨i.val, hlt⟩ (by simp [truncate]; exact hi)
+            omega
+          · have : i.val = n := Nat.eq_of_lt_succ_of_not_lt i.isLt hlt
+            rw [this]; simp [show w ⟨n, Nat.lt_succ_self n⟩ = true from by
+              have : i = ⟨n, Nat.lt_succ_self n⟩ := Fin.ext this
+              rw [← this]; exact hi]
+
+theorem Fold_of_stable' (x : X m) : Fold x.1 = x := Fold_stable x
+
+theorem fiber_self_mem (x : X m) : x.1 ∈ X.fiber x := X.self_mem_fiber x
+
+-- fiberMultiplicity_eq_one_of_sv_ge deferred (ewc uniqueness proof complex)
+
 end Omega
