@@ -7906,6 +7906,13 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.fiberMultiplicity_ge_two_of_sv_le"
     phase := 103
+    status := .formalized }
+-- Phase 104: Fibonacci Pisano π(3) (Core/Fib.lean:260-296)
+, { label := "thm:pom-fib-div-three-iff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fibonacci.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fib_div_three_iff"
+    phase := 104
     status := .formalized } ]
 
 end Omega.Audit

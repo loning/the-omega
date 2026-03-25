@@ -1945,6 +1945,8 @@ def coreAuditTargets : List String :=
   -- Phase 103: weight 满射与 ewc 正性 (Combinatorics/FibonacciCube.lean:165-203)
   , "Omega.weight_surjective"
   , "Omega.ewc_pos_of_le"
-  , "Omega.fiberMultiplicity_ge_two_of_sv_le" ]
+  , "Omega.fiberMultiplicity_ge_two_of_sv_le"
+  -- Phase 104: Fibonacci Pisano π(3) (Core/Fib.lean:260-296)
+  , "Omega.fib_div_three_iff" ]
 
 end Omega.Audit
