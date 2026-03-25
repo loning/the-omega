@@ -658,4 +658,39 @@ theorem momentSum_two_ge_two_fib (m : Nat) (hm : 2 ≤ m) :
       have hmono : Nat.fib (m + 3) ≤ Nat.fib (m + 4) := Nat.fib_mono (by omega)
       linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Fiber discriminants
+-- ══════════════════════════════════════════════════════════════
+
+/-- Stable words have hiddenBit = 0. -/
+theorem hiddenBit_stable (x : X m) : hiddenBit x.1 = 0 := by
+  unfold hiddenBit
+  have := stableValue_lt_fib x
+  simp only [stableValue] at this
+  exact if_neg (not_le.mpr this)
+
+/-- Fold(w).1 = w iff w satisfies No11. -/
+theorem Fold_eq_self_iff (w : Word m) : (Fold w).1 = w ↔ No11 w :=
+  ⟨fun h => h ▸ (Fold w).2, fun h => congr_arg Subtype.val (Fold_stable ⟨w, h⟩)⟩
+
+/-- weight of a stable word equals its stableValue. -/
+theorem weight_stable_eq_stableValue (x : X m) : weight x.1 = stableValue x := rfl
+
+/-- ewc at stableValue is at least 1 (the word itself witnesses). -/
+theorem ewc_stableValue_pos (x : X m) : 1 ≤ exactWeightCount m (stableValue x) := by
+  unfold exactWeightCount
+  rw [Nat.one_le_iff_ne_zero, Finset.card_ne_zero]
+  exact ⟨x.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩⟩
+
+/-- Forward: d(x) = 1 → ewc(sv+F) = 0. -/
+theorem fiberMultiplicity_one_imp_ewc_zero (x : X m) (hd : X.fiberMultiplicity x = 1) :
+    exactWeightCount m (stableValue x + Nat.fib (m + 2)) = 0 := by
+  rw [fiberMultiplicity_eq_two_ewc] at hd
+  have := ewc_stableValue_pos x; omega
+
+/-- Fiber multiplicity as sum of two ewc terms. -/
+theorem fiberMultiplicity_ge_ewc (x : X m) :
+    exactWeightCount m (stableValue x) ≤ X.fiberMultiplicity x := by
+  rw [fiberMultiplicity_eq_two_ewc]; omega
+
 end Omega
