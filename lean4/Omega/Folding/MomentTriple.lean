@@ -262,5 +262,13 @@ theorem crossCorrSqLow_eq_tripleCorr (m : Nat) :
 -- EWT telescoping: EWT(m+1) = 2·EWT(m) + 3·CCSH(m) + 3·CCSL(m)
 -- ══════════════════════════════════════════════════════════════
 
+-- The proof uses the `exactWeightCount_succ` expansion:
+-- ewc(m+1, n) = ewc(m, n) + ewc(m, n - F_{m+2})  [0 when n < F_{m+2}]
+-- Expanding: (a + b)³ = a³ + 3a²b + 3ab² + b³
+-- and summing over n, re-indexing the shifted terms.
+-- The Σb³ re-indexes to EWT(m), giving 2·EWT(m) total.
+-- The Σa²b re-indexes to CCSL, and Σab² re-indexes to CCSH.
+-- This is a pure algebraic identity on Finset sums.
+-- Deferred to a future phase with codex-consultant for sum re-indexing API.
 
 end Omega
