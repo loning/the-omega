@@ -735,4 +735,48 @@ theorem momentSum_two_mod_six_base :
       momentSum_two_three, momentSum_two_four, momentSum_two_five,
       momentSum_two_six, momentSum_two_seven_rec]
 
+-- ══════════════════════════════════════════════════════════════
+-- S_2 triple bound
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m+1) ≤ 3·S_2(m). -/
+theorem momentSum_two_succ_le_triple (m : Nat) :
+    momentSum 2 (m + 1) ≤ 3 * momentSum 2 m := by
+  match m with
+  | 0 => rw [momentSum_two_one, momentSum_two_zero]; omega
+  | 1 => rw [momentSum_two_two, momentSum_two_one]
+  | 2 => rw [momentSum_two_three, momentSum_two_two]; omega
+  | m + 3 =>
+    have hrec := momentSum_two_recurrence (m + 1)
+    have hge := momentSum_two_succ_ge_double (m + 2) (by omega)
+    linarith
+
+-- ══════════════════════════════════════════════════════════════
+-- S_2 mod 8 divisibility
+-- ══════════════════════════════════════════════════════════════
+
+/-- 8 ∣ S_2(m) for m ≥ 7. -/
+theorem momentSum_two_mod_eight (m : Nat) (hm : 7 ≤ m) : 8 ∣ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 | 2 | 3 | 4 | 5 | 6 => omega
+    | 7 => exact ⟨68, by rw [momentSum_two_seven_rec]⟩
+    | 8 => exact ⟨169, by rw [momentSum_two_eight_rec]⟩
+    | 9 => exact ⟨419, by rw [momentSum_two_nine_rec]⟩
+    | m + 10 =>
+      have hrec := momentSum_two_recurrence (m + 7)
+      rw [show (m + 7 + 3 : Nat) = m + 10 from rfl,
+        show (m + 7 + 2 : Nat) = m + 9 from rfl,
+        show (m + 7 + 1 : Nat) = m + 8 from rfl] at hrec
+      have h7 := ih (m + 7) (by omega) (by omega)
+      have h8 := ih (m + 8) (by omega) (by omega)
+      have h9 := ih (m + 9) (by omega) (by omega)
+      obtain ⟨a, ha⟩ := h7; obtain ⟨b, hb⟩ := h8; obtain ⟨c, hc⟩ := h9
+      rw [ha, hb, hc] at hrec
+      have hab : a ≤ b := by
+        have := momentSum_two_mono' (m + 7)
+        rw [ha, show (m + 7 + 1 : Nat) = m + 8 from rfl, hb] at this; omega
+      exact ⟨2 * (c + b) - 2 * a, by omega⟩
+
 end Omega

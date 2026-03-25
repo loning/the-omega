@@ -411,4 +411,23 @@ theorem momentSum_two_eq_congr_sq_sum (m : Nat) :
   rw [step, ← Fin.sum_univ_eq_sum_range]
 
 
+-- ══════════════════════════════════════════════════════════════
+-- Snoc embedding: ewc(m,n) ≤ d_{m+1}(ofNat(m+1,n))
+-- ══════════════════════════════════════════════════════════════
+
+/-- snoc false embeds the exact-weight-n subfiber: d_{m+1}(ofNat(m+1,n)) ≥ ewc(m,n). -/
+theorem fiberMultiplicity_ge_ewc_via_snoc (m n : Nat) (hn : n < Nat.fib (m + 3)) :
+    X.fiberMultiplicity (X.ofNat (m + 1) n) ≥ exactWeightCount m n := by
+  classical
+  let y := X.ofNat (m + 1) n
+  show (X.fiber y).card ≥ (Finset.univ.filter (fun w : Word m => weight w = n)).card
+  apply Finset.card_le_card_of_injOn (fun w => snoc w false)
+    (fun w hw => by
+      have hwn : weight w = n := by simpa using hw
+      show snoc w false ∈ X.fiber y
+      rw [X.mem_fiber]
+      rw [Fold_snoc_false_eq, hwn])
+    (fun w₁ _ w₂ _ h => by
+      have := congr_arg truncate h; simp at this; exact this)
+
 end Omega
