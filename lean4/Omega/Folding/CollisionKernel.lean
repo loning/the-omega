@@ -119,4 +119,19 @@ theorem collision_kernels_shared_invariants_triple :
   ⟨collisionKernel2_trace, collisionKernel3_trace, collisionKernel4_trace,
    collisionKernel2_det, collisionKernel3_det, collisionKernel4_det⟩
 
+/-- Paper label: collision zeta invariants (trace=2, det=-2 for all q). -/
+theorem paper_collision_zeta_invariants :
+    collisionKernel2.trace = 2 ∧ collisionKernel2.det = -2 ∧
+    collisionKernel3.trace = 2 ∧ collisionKernel3.det = -2 ∧
+    collisionKernel4.trace = 2 ∧ collisionKernel4.det = -2 :=
+  ⟨collisionKernel2_trace, collisionKernel2_det,
+   collisionKernel3_trace, collisionKernel3_det,
+   collisionKernel4_trace, collisionKernel4_det⟩
+
+/-- Paper label: S_3 collision kernel Cayley-Hamilton + invariants. -/
+theorem paper_collision_zeta_a3_invariants :
+    collisionKernel3.trace = 2 ∧ collisionKernel3.det = -2 ∧
+    collisionKernel3 ^ 3 = 2 • collisionKernel3 ^ 2 + 4 • collisionKernel3 - 2 • 1 :=
+  ⟨collisionKernel3_trace, collisionKernel3_det, collisionKernel3_cayley_hamilton⟩
+
 end Omega

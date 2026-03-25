@@ -626,4 +626,9 @@ theorem paper_def_s3 (m : Nat) :
 theorem paper_def_moment_q (q m : Nat) :
     momentSum q m = ∑ x : X m, (X.fiberMultiplicity x) ^ q := rfl
 
+/-- Paper definition: exactWeightCount. -/
+theorem paper_exactWeightCount_def (m n : Nat) :
+    exactWeightCount m n =
+    (Finset.univ.filter (fun w : Word m => weight w = n)).card := rfl
+
 end Omega
