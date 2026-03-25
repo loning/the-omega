@@ -2223,6 +2223,10 @@ def coreAuditTargets : List String :=
   , "Omega.paper_fold_order_independent"
   , "Omega.paper_fibonacci_cube"
   , "Omega.pathIndSetPoly_zero_val"
-  , "Omega.pathIndSetPoly_one_val" ]
+  , "Omega.pathIndSetPoly_one_val"
+  -- Phase 143: 论文接口包装 (CollisionZeta.lean:536,537,540)
+  , "Omega.paper_trace_recurrence_A2"
+  , "Omega.paper_primitive_orbit_A2"
+  , "Omega.paper_discriminant_positive" ]
 
 end Omega.Audit

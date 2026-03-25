@@ -9034,6 +9034,28 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.pathIndSetPoly_one_val"
     phase := 142
     status := .formalized }
+-- Phase 143: 论文接口包装 (CollisionZeta.lean:536,537,540)
+-- prop:pom-s2-recurrence → paper_trace_recurrence_A2 (CollisionZeta.lean:536)
+-- def:pom-collision-zeta → paper_primitive_orbit_A2 (CollisionZeta.lean:537)
+-- cor:pom-s2-asymptotic → paper_discriminant_positive (CollisionZeta.lean:540)
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.paper_trace_recurrence_A2"
+    phase := 143
+    status := .formalized }
+, { label := "def:pom-collision-zeta"
+    sourcePath := "sections/body/pom/parts/subsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.paper_primitive_orbit_A2"
+    phase := 143
+    status := .formalized }
+, { label := "cor:pom-s2-asymptotic"
+    sourcePath := "sections/body/pom/parts/subsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.CollisionZeta"
+    leanName := "Omega.paper_discriminant_positive"
+    phase := 143
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
