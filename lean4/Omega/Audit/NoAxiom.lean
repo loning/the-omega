@@ -1964,6 +1964,10 @@ def coreAuditTargets : List String :=
   , "Omega.weight_truncate_add"
   , "Omega.weight_pos_iff"
   , "Omega.Fold_of_stable'"
-  , "Omega.fiber_self_mem" ]
+  , "Omega.fiber_self_mem"
+  -- Phase 108: D(m) 上界 (Combinatorics/FibonacciCube.lean:243-278)
+  , "Omega.maxFiberMultiplicity_le_fib"
+  , "Omega.fiberMultiplicity_le_fib"
+  , "Omega.maxFiberMultiplicity_sq_le_momentSum" ]
 
 end Omega.Audit

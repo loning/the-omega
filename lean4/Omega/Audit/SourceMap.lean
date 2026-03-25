@@ -8000,6 +8000,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Combinatorics.FibonacciCube"
     leanName := "Omega.fiber_self_mem"
     phase := 107
+    status := .formalized }
+-- Phase 108: D(m) 上界 (Combinatorics/FibonacciCube.lean:243-278)
+, { label := "thm:pom-maxFiberMultiplicity-le-fib"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiberMultiplicity_le_fib"
+    phase := 108
+    status := .formalized }
+, { label := "thm:pom-fiberMultiplicity-le-fib"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.fiberMultiplicity_le_fib"
+    phase := 108
+    status := .formalized }
+, { label := "thm:pom-maxFiberMultiplicity-sq-le-momentSum"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiberMultiplicity_sq_le_momentSum"
+    phase := 108
     status := .formalized } ]
 
 end Omega.Audit
