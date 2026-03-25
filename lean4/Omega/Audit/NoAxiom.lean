@@ -1828,6 +1828,9 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_two_strict_mono'"
   -- Phase 85: S_q 一般化矩同余表达 + S_q 正性 (MomentRecurrence.lean:86-125)
   , "Omega.momentSum_eq_congr_pow_sum"
-  , "Omega.momentSum_pos'" ]
+  , "Omega.momentSum_pos'"
+  -- Phase 86: S_3 基础设施 (MomentRecurrence.lean:125-164)
+  , "Omega.momentSum_three_eq_triple_collision"
+  , "Omega.triple_collision_iff_weight_mod" ]
 
 end Omega.Audit

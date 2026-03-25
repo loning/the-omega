@@ -122,4 +122,43 @@ theorem momentSum_pos' (q m : Nat) : 0 < momentSum q m := by
     exact Nat.pos_of_ne_zero (pow_ne_zero q (Nat.pos_iff_ne_zero.mp (X.fiberMultiplicity_pos x)))
   · exact ⟨⟨fun _ => false, no11_allFalse⟩, Finset.mem_univ _⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- S_3 = triple collision count
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_3(m) = #{(w1,w2,w3) : Fold w1 = Fold w2 = Fold w3}. -/
+theorem momentSum_three_eq_triple_collision (m : Nat) :
+    momentSum 3 m = (Finset.univ.filter
+      (fun p : Word m × Word m × Word m =>
+        Fold p.1 = Fold p.2.1 ∧ Fold p.2.1 = Fold p.2.2)).card := by
+  classical
+  simp only [momentSum]
+  -- d(x)³ = |fiber x ×ˢ (fiber x ×ˢ fiber x)|
+  simp_rw [show ∀ (x : X m), X.fiberMultiplicity x ^ 3 =
+    (X.fiber x ×ˢ (X.fiber x ×ˢ X.fiber x)).card from fun x => by
+      simp [X.fiberMultiplicity, Finset.card_product]; ring]
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨w1, w2, w3⟩
+    simp only [Finset.mem_biUnion, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and, X.mem_fiber]
+    exact ⟨fun ⟨x, hw1, hw2, hw3⟩ => ⟨hw1.trans hw2.symm, hw2.trans hw3.symm⟩,
+      fun ⟨h12, h23⟩ => ⟨Fold w1, rfl, h12.symm, (h12.trans h23).symm⟩⟩
+  · intro x _ y _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, X.mem_fiber]
+    intro ⟨w1, w2, w3⟩ ⟨hw1, _, _⟩ ⟨hw1', _, _⟩
+    exact hne (hw1.symm.trans hw1')
+
+/-- Triple collision ↔ weight triple congruence. -/
+theorem triple_collision_iff_weight_mod (m : Nat) :
+    (Finset.univ.filter (fun p : Word m × Word m × Word m =>
+      Fold p.1 = Fold p.2.1 ∧ Fold p.2.1 = Fold p.2.2)).card =
+    (Finset.univ.filter (fun p : Word m × Word m × Word m =>
+      weight p.1 % Nat.fib (m + 2) = weight p.2.1 % Nat.fib (m + 2) ∧
+      weight p.2.1 % Nat.fib (m + 2) = weight p.2.2 % Nat.fib (m + 2))).card := by
+  congr 1; ext ⟨w1, w2, w3⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact ⟨fun ⟨h1, h2⟩ => ⟨(Fold_eq_iff_weight_mod w1 w2).mp h1,
+      (Fold_eq_iff_weight_mod w2 w3).mp h2⟩,
+    fun ⟨h1, h2⟩ => ⟨(Fold_eq_iff_weight_mod w1 w2).mpr h1,
+      (Fold_eq_iff_weight_mod w2 w3).mpr h2⟩⟩
+
 end Omega

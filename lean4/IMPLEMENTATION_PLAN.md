@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~17,123 |
-| 定理/定义数 | ~1,717 |
+| 定理/定义数 | ~1,719 |
 | 论文接口包装 | 346 |
 | 文件数 | 50 |
 | 公理数 | 0 |
@@ -55,6 +55,7 @@
 **★ 里程碑：S_2 无条件递推（Round 80，Phase 83）**：Folding/CollisionDecomp.lean（拓展至 776 行）——momentSum_two_eq_exact_plus_crossCorr（thm:pom-s2-exact-crossCorr：S_2(m) = E00(m) + 2·C(m, F_{m+2})，关键分解，通过 momentSum_two_succ_three_term + crossCorr_zero_eq + ring，将三项展开化简为 E00 + 2C_F）; crossCorr_fib_prev_eq_momentSum（thm:pom-crossCorr-fib-prev：C(m+1, F_{m+2}) = S_2(m)，通过 ewc 双步递推 exactWeightCount_succ_succ + crossWeightCorrelation 定义展开，逐项匹配 momentSum_two_eq_exact_plus_crossCorr 等式）; momentSum_two_succ_succ_expand（thm:pom-s2-expand：S_2(m+2) = E00(m+1) + S_2(m+1) + 2·S_2(m)，由 momentSum_two_eq_exact_plus_crossCorr + crossCorr_fib_prev_eq_momentSum + ring）; **momentSum_two_recurrence**（**prop:pom-s2-recurrence**：S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1)，由 momentSum_two_succ_succ_expand(m) + momentSum_two_succ_succ_expand(m+1) + exactWeightCollision_succ(m+1) + linarith，四行证明，零 native_decide）——**项目首个无条件非平凡无穷族递推定理**——POM 覆盖率 ~19.5% → ~19.7%（+4 条目）（Phase 83）
 **S_2 递推推论族（Round 81，Phase 84）**：Folding/MomentRecurrence.lean（新文件，86 行）——momentSum_two_recurrence_sub（thm:pom-s2-recurrence-sub：S_2(m+3) = 2·S_2(m+2) + 2·S_2(m+1) - 2·S_2(m)，减法形式，momentSum_two_recurrence + omega）; momentSum_two_pos'（thm:pom-s2-pos：S_2(m) > 0，2^m > 0 + momentSum_two_ge_pow）; momentSum_two_mono'（thm:pom-s2-mono：S_2(m) ≤ S_2(m+1)，强归纳，base m=0/1/2 直接展开，step m+3 由递推 + IH(m+1) + IH(m+2) + linarith，利用 4·S_2(m+2) ≥ 2·S_2(m)）; momentSum_two_strict_mono'（thm:pom-s2-strict-mono：S_2(m) < S_2(m+1) for m≥1，强归纳，step m+3 由递推 + IH严格单调两次 + linarith）——POM 覆盖率 ~19.7% → ~20.0%（+4 条目）（Phase 84）
 **S_q 一般化矩同余表达 + S_q 正性（Round 82，Phase 85）**：Folding/MomentRecurrence.lean（拓展至 125 行）——momentSum_eq_congr_pow_sum（prop:pom-moment-congruence-q 完整一般化：S_q(m) = Σ_{r<F_{m+2}} wcc(m,r)^q，对所有 q 成立，通过 fiberMultiplicity_eq_wcc + stableValueFin 双射 hbij.sum_comp 重新指标化，与 q=2 的专化 momentSum_two_eq_congr_sq_sum 完全类比，一般化版本更简洁）; exactWeightTriple（def:pom-exactWeightTriple：Σ_{n<F_{m+3}} ewc(m,n)^3，精确重量三次方和，S_3 分析的基础设施）; momentSum_pos'（thm:pom-sq-pos-general：S_q(m) > 0 对所有 q,m，通过 Finset.sum_pos + fiberMultiplicity_pos + pow_ne_zero）——POM 覆盖率 ~20.0% → ~20.2%（+3 条目）（Phase 85）
+**S_3 基础设施（Round 83，Phase 86）**：Folding/MomentRecurrence.lean（拓展至 164 行）——momentSum_three_eq_triple_collision（thm:pom-s3-triple-collision：S_3(m) = #{(w1,w2,w3) | Fold w1=Fold w2=Fold w3}，通过 d(x)^3 = |fiber ×ˢ fiber ×ˢ fiber| + Finset.card_biUnion，纤维不相交性由 Fold 相等唯一性保证）; triple_collision_iff_weight_mod（thm:pom-triple-collision-weight-mod：三元碰撞 ↔ 权重同余 ∧ 权重同余，直接由 Fold_eq_iff_weight_mod 逐对改写）——POM 覆盖率 ~20.2% → ~20.3%（+2 条目）（Phase 86）
 **Cauchy-Schwarz 碰撞界 + S_q 单调性（Round 12）**：momentSum_mono_q（$S_q \le S_{q+1}$，d(x)≥1 的单调性）; momentSum_two_ge_pow（$2^m \le S_2(m)$，由单调性推导）; momentSum_ge_card（$F_{m+1} \le S_q(m)$，纤维多重度 ≥ 1 的下界）; momentSum_cauchy_schwarz（$(2^m)^2 \le F_{m+1} \cdot S_2(m)$，Cauchy-Schwarz 碰撞界，thm:fold-collision-convex-lower-bounds）
 **Frontier 接口包装（Round 17，工程层）**：stable_ring_isomorphism（thm:finite-resolution-mod，X_m ≃+* ZMod(F_{m+2})）; stable_field_of_prime（cor:field-phase-fib-prime，F_{m+2} 素数时 X_m 是域）; projection_entropy_cardinality（prop:pom-projection-entropy，|X_m|=F_{m+2}）; fiber_sum_eq_pow（prop:pom-fiber-sum-identity，Σd(x)=2^m）; cauchy_schwarz_collision_bound（thm:fold-collision-convex-lower-bounds）; moment_monotone（prop:pom-sq-monotone）; moment_ge_cardinality（prop:pom-sq-lower）; collision_sum_ge_pow（cor:pom-s2-lower）；注：该层主要是论文接口/命名包装，不应与底层新增数学结果重复计数
 
@@ -117,7 +118,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 980/10,588 = **9.3%** |
+| 全局覆盖率 | 982/10,588 = **9.3%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~152 (1.4%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -131,7 +132,7 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~308 | ~20.2% |
+| POM | 1,525 | ~310 | ~20.3% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |
@@ -147,7 +148,7 @@
 | 新生算术 | 151 | ~60 | ~40% |
 | Folding | 317 | ~80 | ~25% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~308 | ~20.2% |
+| POM | 1,525 | ~310 | ~20.3% |
 | 圆维度 | 342 | ~50 | ~15% |
 | Zeta 有限部分 | 4,437 | ~250 | ~6% |
 | 结论 | 1,727 | ~60 | ~3% |

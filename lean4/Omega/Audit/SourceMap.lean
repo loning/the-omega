@@ -7343,6 +7343,25 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.MomentRecurrence"
     leanName := "Omega.momentSum_pos'"
     phase := 85
+    status := .formalized }
+-- Phase 86: S_3 基础设施 (MomentRecurrence.lean:125-164)
+-- prop:pom-s3-recurrence → momentSum_three_eq_triple_collision（S_3 = 三元碰撞计数）
+-- (MomentRecurrence.lean:130)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-s3-triple-collision"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.momentSum_three_eq_triple_collision"
+    phase := 86
+    status := .formalized }
+-- prop:pom-s3-recurrence → triple_collision_iff_weight_mod（三元碰撞 ↔ 权重同余）
+-- (MomentRecurrence.lean:152)
+-- 状态: 已形式化, 审核通过 2026-03-25
+, { label := "thm:pom-triple-collision-weight-mod"
+    sourcePath := "sections/body/pom/parts/subsec__pom-max-fiber.tex"
+    moduleName := "Omega.Folding.MomentRecurrence"
+    leanName := "Omega.triple_collision_iff_weight_mod"
+    phase := 86
     status := .formalized } ]
 
 end Omega.Audit
