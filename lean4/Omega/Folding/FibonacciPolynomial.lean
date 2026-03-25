@@ -56,4 +56,10 @@ theorem pathIndSetPoly_recurrence (ℓ : Nat) :
     pathIndSetPoly (ℓ + 2) = pathIndSetPoly (ℓ + 1) + X * pathIndSetPoly ℓ := by
   simp [pathIndSetPoly, fibPoly_succ_succ]
 
+/-- Paper: pathIndSetPoly(0) = 1. -/
+theorem pathIndSetPoly_zero_val : pathIndSetPoly 0 = 1 := fibPoly_two
+
+/-- Paper: pathIndSetPoly(1) = 1 + X. -/
+theorem pathIndSetPoly_one_val : pathIndSetPoly 1 = 1 + Polynomial.X := fibPoly_three
+
 end Omega

@@ -485,3 +485,10 @@ theorem paper_stable_add_no_null :
 /-- Paper label: one fold is the normal form (idempotent). -/
 theorem paper_one_fold_normal_form (w : Word m) :
     Fold (Fold w).1 = Fold w := Fold_idempotent w
+
+/-- Paper: Fold is idempotent + stable + surjective. -/
+theorem paper_fold_order_independent :
+    (∀ w : Word m, Fold (Fold w).1 = Fold w) ∧
+    (∀ w : Word m, No11 (Fold w).1) ∧
+    Function.Surjective (Fold (m := m)) :=
+  ⟨Fold_idempotent, fun w => (Fold w).2, Fold_surjective m⟩

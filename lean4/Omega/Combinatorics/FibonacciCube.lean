@@ -445,4 +445,9 @@ theorem popcount_le_weight (w : Word m) : popcount w ≤ weight w := by
 theorem paper_fibonacci_cube_equiv (m : Nat) :
     Nonempty (X m ≃ PathIndSets m) := ⟨xEquivPathIndSet m⟩
 
+/-- Paper: |X_m| = F_{m+2} and X_m ≃ PathIndSets. -/
+theorem paper_fibonacci_cube (m : Nat) :
+    Fintype.card (X m) = Nat.fib (m + 2) ∧ Nonempty (X m ≃ PathIndSets m) :=
+  ⟨X.card_eq_fib m, ⟨xEquivPathIndSet m⟩⟩
+
 end Omega
