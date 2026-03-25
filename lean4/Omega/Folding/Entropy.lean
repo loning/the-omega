@@ -16,6 +16,18 @@ open MeasureTheory InformationTheory
 
 /-! ### Reverse KL tilted splitting -/
 
+/-- Abstract plateau rigidity: a nonnegative dissipation with zero average vanishes almost
+everywhere. This is the minimal shell behind Poisson/KL plateau rigidity. -/
+theorem plateau_rigidity_of_nonneg_dissipation
+    {α : Type*} [MeasurableSpace α]
+    (μ : MeasureTheory.Measure α)
+    (diss : α → ℝ)
+    (hdiss_nonneg : 0 ≤ᵐ[μ] diss)
+    (hdiss_int : Integrable diss μ)
+    (hdiss_zero : ∫ x, diss x ∂μ = 0) :
+    diss =ᵐ[μ] 0 := by
+  exact (MeasureTheory.integral_eq_zero_iff_of_nonneg_ae hdiss_nonneg hdiss_int).1 hdiss_zero
+
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
 normalizing log-partition term minus the average tilt. -/
 theorem kl_reverse_tilted_split
