@@ -681,4 +681,19 @@ theorem momentSum_four_strict_increasing_base :
 theorem exactWeightCollision_pos (m : Nat) : 0 < exactWeightCollision m := by
   have := exactWeightCollision_ge_succ m; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 187
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2² ≤ S_1·S_3 verified for m=0,2,4,6. -/
+theorem momentSum_log_convex_audit_base :
+    momentSum 2 0 ^ 2 ≤ momentSum 1 0 * momentSum 3 0 ∧
+    momentSum 2 2 ^ 2 ≤ momentSum 1 2 * momentSum 3 2 ∧
+    momentSum 2 4 ^ 2 ≤ momentSum 1 4 * momentSum 3 4 ∧
+    momentSum 2 6 ^ 2 ≤ momentSum 1 6 * momentSum 3 6 := by
+  simp only [momentSum_two_zero, momentSum_two_two, momentSum_two_four, momentSum_two_six,
+    momentSum_one, momentSum_three_zero, momentSum_three_two, momentSum_three_four,
+    momentSum_three_six]
+  omega
+
 end Omega

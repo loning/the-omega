@@ -678,4 +678,13 @@ theorem conclusion_window6_pimsner_popa_index :
     cBinFiberMax 6 ^ 2 = 16 ∧ X.maxFiberMultiplicity 6 ^ 2 = 25 := by
   rw [cBinFiberMax_six, X.maxFiberMultiplicity_six]; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 187
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(6)² = 25 < 64 = 2^6. -/
+theorem conclusion_window6_maxfiber_sq_lt_wordcount :
+    X.maxFiberMultiplicity 6 ^ 2 < 2 ^ 6 := by
+  rw [X.maxFiberMultiplicity_six]; omega
+
 end Omega

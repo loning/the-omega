@@ -551,4 +551,13 @@ theorem fib_sq_sub_sq (n : Nat) (hn : 1 ≤ n) :
   have h_n2 : Nat.fib (n + 2) = 2 * Nat.fib n + Nat.fib (n - 1) := by linarith
   rw [h_add1, h_n2]; ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 187
+-- ══════════════════════════════════════════════════════════════
+
+/-- F_{n+2} - F_{n+1} = F_n. -/
+theorem fib_succ_sub (n : Nat) :
+    Nat.fib (n + 2) - Nat.fib (n + 1) = Nat.fib n := by
+  have h := Nat.fib_add_two (n := n); omega
+
 end Omega
