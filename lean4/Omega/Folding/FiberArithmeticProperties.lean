@@ -492,3 +492,10 @@ theorem paper_fold_order_independent :
     (∀ w : Word m, No11 (Fold w).1) ∧
     Function.Surjective (Fold (m := m)) :=
   ⟨Fold_idempotent, fun w => (Fold w).2, Fold_surjective m⟩
+
+/-- Truncation does not commute with Fold in general:
+    there exists a word w such that Fold(truncate w) ≠ restrict(Fold w).
+    Witness: w = [false, true, true] at level 3. -/
+theorem paper_truncation_not_commute :
+    ∃ (w : Word 3), Fold (truncate w) ≠ X.restrict (Fold w) := by
+  native_decide

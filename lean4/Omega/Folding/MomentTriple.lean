@@ -654,4 +654,57 @@ theorem momentSum_two_excess_sum (m : Nat) :
   exact this
 
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 145: fiber counting + S_2² ≤ 2^m · S_3
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fiber counting identity: summing f(Fold w) over all words equals summing d(x)·f(x) over X m.
+    Each stable word x has d(x) preimages under Fold, each contributing f(x). -/
+theorem sum_word_eq_sum_fiber_mul (f : X m → Nat) :
+    ∑ w : Word m, f (Fold w) = ∑ x : X m, X.fiberMultiplicity x * f x := by
+  classical
+  have hDisjoint : (↑(Finset.univ : Finset (X m)) : Set (X m)).PairwiseDisjoint X.fiber := by
+    intro x _ y _ hxy
+    rw [Function.onFun, Finset.disjoint_left]
+    intro w hwx hwy
+    exact hxy ((X.mem_fiber.1 hwx).symm.trans (X.mem_fiber.1 hwy))
+  have hUnion : (Finset.univ : Finset (Word m)) = Finset.univ.biUnion X.fiber := by
+    ext w
+    simp only [Finset.mem_univ, Finset.mem_biUnion, true_iff]
+    exact ⟨Fold w, trivial, X.mem_fiber_Fold w⟩
+  -- LHS: ∑ w : Word m, f(Fold w) = ∑ w ∈ univ, f(Fold w)
+  change Finset.univ.sum (fun w => f (Fold w)) = _
+  rw [hUnion, Finset.sum_biUnion hDisjoint]
+  apply Finset.sum_congr rfl; intro x _
+  -- Within each fiber: all w satisfy Fold w = x, so f(Fold w) = f(x)
+  have : ∀ w ∈ X.fiber x, f (Fold w) = f x :=
+    fun w hw => by rw [X.mem_fiber.1 hw]
+  rw [Finset.sum_congr rfl this, Finset.sum_const, smul_eq_mul, X.fiberMultiplicity]
+
+/-- The q-th power moment over words equals the (q+1)-th moment sum:
+    Σ_w d(Fold w)^q = S_{q+1}(m). -/
+theorem sum_word_fiberMult_pow (q m : Nat) :
+    ∑ w : Word m, (X.fiberMultiplicity (Fold w)) ^ q = momentSum (q + 1) m := by
+  rw [show (fun w : Word m => (X.fiberMultiplicity (Fold w)) ^ q) =
+      (fun w => (fun x : X m => X.fiberMultiplicity x ^ q) (Fold w)) from rfl]
+  rw [sum_word_eq_sum_fiber_mul (fun x => X.fiberMultiplicity x ^ q)]
+  simp only [momentSum]
+  apply Finset.sum_congr rfl; intro x _
+  rw [show X.fiberMultiplicity x * X.fiberMultiplicity x ^ q =
+      X.fiberMultiplicity x ^ (q + 1) from by rw [pow_succ]; ring]
+
+/-- S_2(m)² ≤ 2^m · S_3(m): Cauchy-Schwarz over the word space.
+    Apply (Σ f)² ≤ |S|·Σf² with f(w) = d(Fold w), over Word m. -/
+theorem momentSum_two_sq_le_pow_mul_three (m : Nat) :
+    momentSum 2 m ^ 2 ≤ 2 ^ m * momentSum 3 m := by
+  -- Rewrite in terms of sums over Word m
+  rw [← sum_word_fiberMult_pow 1 m, ← sum_word_fiberMult_pow 2 m]
+  show (∑ w : Word m, X.fiberMultiplicity (Fold w) ^ 1) ^ 2 ≤
+    2 ^ m * ∑ w : Word m, X.fiberMultiplicity (Fold w) ^ 2
+  simp only [pow_one]
+  rw [show 2 ^ m = Fintype.card (Word m) from
+    (by rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin])]
+  rw [← Finset.card_univ (α := Word m)]
+  exact sq_sum_le_card_mul_sum_sq
+
 end Omega
