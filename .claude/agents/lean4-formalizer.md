@@ -33,6 +33,8 @@ model: opus
 - ❌ 用 `native_decide` 枚举 `Finset.univ` 或 `Fintype` 实例来验证命题
 - ❌ 用 `native_decide` 验证矩阵幂、行列式等可通过代数证明的性质
 - ❌ "先 native_decide 跑通再优化" — 不存在"以后再改"，必须一次到位
+- ❌ **严禁"验证信心"模式**：禁止先用 `native_decide` 做有界数值验证（如 `interval_cases m <;> native_decide` 验证 m ≤ N）来"确认代数恒等式正确"，再写代数证明。论文已给出推导，直接形式化代数证明即可。这种模式产生的 `_bounded` 脚手架定理会导致编译时间膨胀（实例：S3Recurrence.lean 曾因此编译 118 秒，清理后降至 4 秒）。
+- ❌ **严禁脚手架残留**：禁止提交仅用于临时验证的 `_bounded`/`_extended`/`_verified` 定理。如果当前无法完成无条件证明，应推迟该定理（标记 deferred），而非降级为有界验证占位。
 
 ### 允许的例外（仅限以下场景）
 - ✅ 基础情形种子值（m ≤ 2，即 X_m 元素数 ≤ 3），用于归纳法的 base case

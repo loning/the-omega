@@ -53,31 +53,6 @@ theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
     -- exact → mod: wt(v1)+F = wt(v2)+F → (wt(v1)+F)%F' = (wt(v2)+F)%F'
     refine ⟨?_, ?_⟩ <;> show _ % _ = _ % _ <;> congr 1 <;> omega
 
-/-- T_{fft} mod split verified for m ≤ 5. -/
-theorem tripleCollisionClass_fft_mod_split_bounded (m : Nat) (hm : m ≤ 5) :
-    (tripleCollisionClass m false false true).card =
-    crossCorrSqLow m + crossCorrSqHighPrev m := by
-  interval_cases m <;> native_decide
-
-/-- T_{ftt} mod split verified for m ≤ 5. -/
-theorem tripleCollisionClass_ftt_mod_split_bounded (m : Nat) (hm : m ≤ 5) :
-    (tripleCollisionClass m false true true).card =
-    crossCorrSqHigh m + crossCorrSqLowPrev m := by
-  interval_cases m <;> native_decide
-
-/-- S_3(m+1) decomposition verified for m ≤ 5. -/
-theorem momentSum_three_succ_decomposition_bounded (m : Nat) (hm : m ≤ 5) :
-    momentSum 3 (m + 1) =
-    2 * exactWeightTriple m + 3 * crossCorrSqHigh m + 3 * crossCorrSqLow m +
-    3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
-  interval_cases m <;> (rw [← cMomentSum_eq]; native_decide)
-
-/-- S_3(m+1) = EWT(m+1) + 3·CCSH' + 3·CCSL' verified for m ≤ 5. -/
-theorem momentSum_three_succ_ewt_form_bounded (m : Nat) (hm : m ≤ 5) :
-    momentSum 3 (m + 1) = exactWeightTriple (m + 1) +
-    3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
-  rw [exactWeightTriple_succ]; linarith [momentSum_three_succ_decomposition_bounded m hm]
-
 -- ══════════════════════════════════════════════════════════════
 -- Phase 155: T_fft mod split via weight-class summation
 -- ══════════════════════════════════════════════════════════════
@@ -381,24 +356,6 @@ theorem momentSum_three_eq_ewt_plus_ccs (m : Nat) :
   linarith [exactWeightTriple_succ m]
 
 -- ══════════════════════════════════════════════════════════════
--- Phase 159: CCS' telescope + S_3 recurrence extended verification
--- ══════════════════════════════════════════════════════════════
-
-set_option maxHeartbeats 1600000 in
-/-- CCS' telescope verified for m ≤ 7. -/
-theorem ccs_prime_succ_bounded (m : Nat) (hm : m ≤ 7) :
-    crossCorrSqHighPrev (m + 1) + crossCorrSqLowPrev (m + 1) =
-    2 * exactWeightTriple m + 4 * (crossCorrSqHigh m + crossCorrSqLow m) := by
-  interval_cases m <;> native_decide
-
-set_option maxHeartbeats 1600000 in
-/-- S_3 recurrence verified for m ≤ 7. -/
-theorem momentSum_three_recurrence_extended (m : Nat) (hm : m ≤ 7) :
-    momentSum 3 (m + 3) + 2 * momentSum 3 m =
-    2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) := by
-  interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
-
--- ══════════════════════════════════════════════════════════════
 -- Phase 161: shiftedTriple = Word³ counting version of CCS'
 -- ══════════════════════════════════════════════════════════════
 
@@ -455,23 +412,6 @@ theorem shiftedTriple_eq_ccs_prime (m : Nat) :
 -- Phase 154: S_3 conditional recurrence consequence chain
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_3 recurrence uniqueness: any sequence with the same recurrence and base values equals S_3. -/
-theorem recurrence_unique_three {f g : Nat → Nat}
-    (hf : ∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 4 * f (m + 1))
-    (hg : ∀ m, g (m + 3) + 2 * g m = 2 * g (m + 2) + 4 * g (m + 1))
-    (h0 : f 0 = g 0) (h1 : f 1 = g 1) (h2 : f 2 = g 2) :
-    ∀ m, f m = g m := by
-  intro m; induction m using Nat.strongRecOn with
-  | _ m ih =>
-    match m with
-    | 0 => exact h0
-    | 1 => exact h1
-    | 2 => exact h2
-    | m + 3 =>
-      have := hf m; have := hg m
-      have := ih m (by omega); have := ih (m + 1) (by omega); have := ih (m + 2) (by omega)
-      omega
-
 /-- S_3 subtraction form (conditional). -/
 theorem momentSum_three_recurrence_sub_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
@@ -490,9 +430,9 @@ theorem momentSum_three_strict_mono_of
   induction m using Nat.strongRecOn with
   | _ m ih =>
     match m with
-    | 0 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
-    | 1 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
-    | 2 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | 0 => rw [← cMomentSum_eq, ← cMomentSum_eq]; simp
+    | 1 => rw [← cMomentSum_eq, ← cMomentSum_eq]; simp
+    | 2 => rw [← cMomentSum_eq, ← cMomentSum_eq]; simp
     | m + 3 =>
       -- S_3(m+4) = 2·S_3(m+3) + 4·S_3(m+2) - 2·S_3(m+1)
       -- S_3(m+3) = 2·S_3(m+2) + 4·S_3(m+1) - 2·S_3(m)
@@ -518,9 +458,9 @@ theorem momentSum_three_double_of
     match m with
     | 0 => omega
     | 1 => omega
-    | 2 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
-    | 3 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
-    | 4 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | 2 => rw [← cMomentSum_eq, ← cMomentSum_eq]; simp
+    | 3 => rw [← cMomentSum_eq, ← cMomentSum_eq]; simp
+    | 4 => rw [← cMomentSum_eq, ← cMomentSum_eq]; simp
     | m + 5 =>
       -- S_3(m+6) = 2·S_3(m+5) + 4·S_3(m+4) - 2·S_3(m+3)
       have hrec2 := hrec (m + 3)
@@ -529,16 +469,6 @@ theorem momentSum_three_double_of
       have hmono := momentSum_three_strict_mono_of hrec (m + 3)
       nlinarith
 
-/-- S_3 determined by recurrence (conditional): if f satisfies the S_3 recurrence
-    with base values S_3(0..2), then f = S_3. -/
-theorem momentSum_three_determined_of
-    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
-      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
-    ∀ m, momentSum 3 m = momentSum 3 m := fun _ => rfl
-
--- ══════════════════════════════════════════════════════════════
--- Phase 156: S_3 high-order values + S_3 mod 2
--- ══════════════════════════════════════════════════════════════
 
 /-- S_3(8) = 7768 (by conditional recurrence from S_3(5..7)). -/
 theorem momentSum_three_eight_of
