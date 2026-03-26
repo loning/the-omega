@@ -571,4 +571,18 @@ theorem readout_binary_steps_window6 :
   have h8 : 2 ^ 3 ≤ 2 ^ T := Nat.pow_le_pow_right (by omega) h
   simp at h8; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 176
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 stable K₀-rank = |X_6| = 21 = F_8, and fiber histogram sums to 21.
+    thm:conclusion-foldbin-stable-collapse-ordered-k0-memory. -/
+theorem conclusion_foldbin_stable_k0_rank_six :
+    Fintype.card (X 6) = 21 ∧
+    21 = Nat.fib 8 ∧
+    cBinFiberHist 6 2 + cBinFiberHist 6 3 + cBinFiberHist 6 4 = 21 := by
+  refine ⟨?_, by native_decide, ?_⟩
+  · rw [X.card_eq_fib]; native_decide
+  · rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]
+
 end Omega

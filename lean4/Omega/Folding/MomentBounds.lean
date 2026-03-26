@@ -556,4 +556,25 @@ theorem readout_needs_at_least_two_steps (m : Nat) (hm : 4 ≤ m) :
   have := maxFiberMultiplicity_ge_half m
   simp; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 176
+-- ══════════════════════════════════════════════════════════════
+
+/-- Folding the all-false word gives the zero stable word. -/
+theorem Fold_allFalse (m : Nat) :
+    Fold (fun (_ : Fin m) => false) = X.ofNat m 0 := by
+  simp [Fold]
+
+/-- stableValue of the all-false folded word is 0. -/
+theorem stableValue_Fold_allFalse (m : Nat) :
+    stableValue (Fold (fun (_ : Fin m) => false)) = 0 := by
+  rw [Fold_allFalse]
+  exact X.stableValue_ofNat_lt 0 (fib_succ_pos (m + 1))
+
+/-- S_2(m) strictly exceeds 2^m for m ≥ 2: positive fiber variance. -/
+theorem momentSum_two_sub_pow_pos (m : Nat) (hm : 2 ≤ m) :
+    2 ^ m < momentSum 2 m := by
+  rw [← momentSum_one m]
+  exact momentSum_strict_mono_q 1 m (by omega) hm
+
 end Omega
