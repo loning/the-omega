@@ -649,4 +649,38 @@ theorem crossCorrSq_recurrence (m : Nat) :
   have he := exactWeightTriple_succ m
   linarith
 
+/-- CCS' satisfies the same three-step recurrence as S_3 and EWT. -/
+theorem ccs_prime_recurrence (m : Nat) :
+    crossCorrSqHighPrev (m + 3) + crossCorrSqLowPrev (m + 3) +
+    2 * (crossCorrSqHighPrev m + crossCorrSqLowPrev m) =
+    2 * (crossCorrSqHighPrev (m + 2) + crossCorrSqLowPrev (m + 2)) +
+    4 * (crossCorrSqHighPrev (m + 1) + crossCorrSqLowPrev (m + 1)) := by
+  have h0 := ccs_prime_succ m
+  have h1 : crossCorrSqHighPrev (m + 2) + crossCorrSqLowPrev (m + 2) =
+      2 * exactWeightTriple (m + 1) +
+      4 * (crossCorrSqHigh (m + 1) + crossCorrSqLow (m + 1)) := by
+    have := ccs_prime_succ (m + 1); linarith
+  have h2 : crossCorrSqHighPrev (m + 3) + crossCorrSqLowPrev (m + 3) =
+      2 * exactWeightTriple (m + 2) +
+      4 * (crossCorrSqHigh (m + 2) + crossCorrSqLow (m + 2)) := by
+    have := ccs_prime_succ (m + 2); linarith
+  -- CCS'(k) = CCS(k+1) by cc_succ. So the goal is CCS(m+4)+2CCS(m+1)=2CCS(m+3)+4CCS(m+2),
+  -- which is crossCorrSq_recurrence at m+1.
+  have hcc0 := cc_succ_eq_ccs_prime m
+  have hcc1 : crossCorrSqHigh (m + 2) + crossCorrSqLow (m + 2) =
+      crossCorrSqHighPrev (m + 1) + crossCorrSqLowPrev (m + 1) := by
+    have := cc_succ_eq_ccs_prime (m + 1); linarith
+  have hcc2 : crossCorrSqHigh (m + 3) + crossCorrSqLow (m + 3) =
+      crossCorrSqHighPrev (m + 2) + crossCorrSqLowPrev (m + 2) := by
+    have := cc_succ_eq_ccs_prime (m + 2); linarith
+  have hcc3 : crossCorrSqHigh (m + 4) + crossCorrSqLow (m + 4) =
+      crossCorrSqHighPrev (m + 3) + crossCorrSqLowPrev (m + 3) := by
+    have := cc_succ_eq_ccs_prime (m + 3); linarith
+  have ccs_rec : (crossCorrSqHigh (m + 4) + crossCorrSqLow (m + 4)) +
+      2 * (crossCorrSqHigh (m + 1) + crossCorrSqLow (m + 1)) =
+      2 * (crossCorrSqHigh (m + 3) + crossCorrSqLow (m + 3)) +
+      4 * (crossCorrSqHigh (m + 2) + crossCorrSqLow (m + 2)) := by
+    have := crossCorrSq_recurrence (m + 1); linarith
+  linarith
+
 end Omega
