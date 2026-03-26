@@ -631,4 +631,27 @@ theorem paper_exactWeightCount_def (m n : Nat) :
     exactWeightCount m n =
     (Finset.univ.filter (fun w : Word m => weight w = n)).card := rfl
 
+/-- wcc(m,r) ≥ ewc(m,r) since wcc = ewc(r) + ewc(r+F). -/
+theorem weightCongruenceCount_ge_ewc (m r : Nat) (hr : r < Nat.fib (m + 2)) :
+    exactWeightCount m r ≤ weightCongruenceCount m r := by
+  rw [weightCongruenceCount_eq_sum_ewc m r hr]; omega
+
+/-- S_2(m) = 2^m + excess, where excess = Σ d(x)·(d(x)-1). -/
+theorem momentSum_two_excess_sum (m : Nat) :
+    momentSum 2 m = 2 ^ m + ∑ x : X m, X.fiberMultiplicity x * (X.fiberMultiplicity x - 1) := by
+  simp only [momentSum]
+  rw [← X.fiberMultiplicity_sum_eq_pow (m := m)]
+  -- Σ d² = Σ (d*(d-1) + d) = Σ d*(d-1) + Σ d
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl; intro x _
+  -- d² = d*(d-1) + d for d ≥ 1
+  have hpos := X.fiberMultiplicity_pos x
+  have : X.fiberMultiplicity x ^ 2 = X.fiberMultiplicity x +
+      X.fiberMultiplicity x * (X.fiberMultiplicity x - 1) := by
+    cases X.fiberMultiplicity x with
+    | zero => omega
+    | succ n => simp only [Nat.succ_sub_one]; ring
+  exact this
+
+
 end Omega
