@@ -254,4 +254,55 @@ theorem momentSum_three_determined_of
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
     ∀ m, momentSum 3 m = momentSum 3 m := fun _ => rfl
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 156: S_3 high-order values + S_3 mod 2
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_3(8) = 7768 (by conditional recurrence from S_3(5..7)). -/
+theorem momentSum_three_eight_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
+    momentSum 3 8 = 7768 := by
+  have h := hrec 5
+  simp only [show (5 : Nat) + 3 = 8 from rfl, show (5 : Nat) + 2 = 7 from rfl,
+    show (5 : Nat) + 1 = 6 from rfl,
+    momentSum_three_five, momentSum_three_six, momentSum_three_seven] at h; omega
+
+/-- S_3(9) = 23912. -/
+theorem momentSum_three_nine_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
+    momentSum 3 9 = 23912 := by
+  have h := hrec 6
+  simp only [show (6 : Nat) + 3 = 9 from rfl, show (6 : Nat) + 2 = 8 from rfl,
+    show (6 : Nat) + 1 = 7 from rfl,
+    momentSum_three_six, momentSum_three_seven, momentSum_three_eight_of hrec] at h; omega
+
+/-- S_3(10) = 73888. -/
+theorem momentSum_three_ten_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
+    momentSum 3 10 = 73888 := by
+  have h := hrec 7
+  simp only [show (7 : Nat) + 3 = 10 from rfl, show (7 : Nat) + 2 = 9 from rfl,
+    show (7 : Nat) + 1 = 8 from rfl,
+    momentSum_three_seven, momentSum_three_eight_of hrec, momentSum_three_nine_of hrec] at h; omega
+
+/-- S_3(m) is even for m ≥ 1 (conditional). -/
+theorem momentSum_three_even_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
+    (m : Nat) (hm : 1 ≤ m) : 2 ∣ momentSum 3 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => omega
+    | 1 => exact ⟨1, by rw [momentSum_three_one]⟩
+    | 2 => exact ⟨5, by rw [momentSum_three_two]⟩
+    | m + 3 =>
+      have h := hrec m
+      have hmono := momentSum_three_strict_mono_of hrec m
+      have hmono2 := momentSum_three_strict_mono_of hrec (m + 1)
+      exact ⟨momentSum 3 (m + 2) + 2 * momentSum 3 (m + 1) - momentSum 3 m, by omega⟩
+
 end Omega
