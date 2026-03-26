@@ -415,4 +415,13 @@ theorem fib_cassini_odd (n : Nat) (hodd : ¬ Even n) :
       rw [show n + 2 + 2 = n + 4 from by omega, show n + 2 + 1 = n + 3 from by omega] at h3
       nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n + 1))]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 178
+-- ══════════════════════════════════════════════════════════════
+
+/-- Total Fibonacci weight sum (range form): Σ_{i<m} F_{i+2} = F_{m+3} - 2. -/
+theorem fib_weight_sum_range (m : Nat) :
+    ∑ i ∈ Finset.range m, Nat.fib (i + 2) = Nat.fib (m + 3) - 2 :=
+  fib_partial_sum_from_two m
+
 end Omega

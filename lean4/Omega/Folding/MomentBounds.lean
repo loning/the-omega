@@ -578,4 +578,19 @@ theorem momentSum_two_sub_pow_pos (m : Nat) (hm : 2 ≤ m) :
   exact momentSum_strict_mono_q 1 m (by omega) hm
 
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 178
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00(m) ≥ m + 1: exact weight collision grows at least linearly. -/
+theorem exactWeightCollision_ge_succ (m : Nat) :
+    m + 1 ≤ exactWeightCollision m := by
+  rw [exactWeightCollision_eq_sum]
+  -- E00(m) = 1 + Σ_{k<m} S_2(k). Each S_2(k) ≥ 1 by momentSum_pos'.
+  have : m ≤ ∑ k ∈ Finset.range m, momentSum 2 k := by
+    calc m = ∑ _k ∈ Finset.range m, 1 := by simp
+      _ ≤ ∑ k ∈ Finset.range m, momentSum 2 k :=
+          Finset.sum_le_sum fun k _ => momentSum_pos' 2 k
+  omega
+
 end Omega

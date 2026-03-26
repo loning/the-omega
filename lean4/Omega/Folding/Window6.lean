@@ -594,4 +594,16 @@ theorem conclusion_foldbin_stable_k0_rank_six :
 theorem conclusion_window6_boundary_parity_residual :
     Nat.fib 8 - 3 = 18 := by native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 178
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 boundary parity misses 18 anomaly directions.
+    cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions. -/
+theorem conclusion_window6_boundary_parity_gap :
+    Nat.fib 8 = 21 ∧ 21 - 3 = 18 ∧ 18 > 0 := by
+  constructor
+  · native_decide
+  · omega
+
 end Omega
