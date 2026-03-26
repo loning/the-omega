@@ -9189,6 +9189,49 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.exactWeightTriple_succ_bounded"
     phase := 149
     status := .formalized }
+-- Phase 150: 新文件 EWTTelescope.lean (EWTTelescope.lean:10,40,49,79,126,131)
+-- bridge:ewt-triple-exact → exactWeightTriple_eq_triple_exact (EWTTelescope.lean:10)
+-- bridge:ewt-class-def → exactTripleCollisionClass (EWTTelescope.lean:40)
+-- bridge:ewt-class-card → exactTripleClass_card_eq (EWTTelescope.lean:49)
+-- bridge:ewt-8-split → exactWeightTriple_lastBit_split (EWTTelescope.lean:79)
+-- bridge:ewt-fff → exactTripleClass_fff (EWTTelescope.lean:126)
+-- bridge:ewt-ttt → exactTripleClass_ttt (EWTTelescope.lean:131)
+, { label := "bridge:ewt-triple-exact"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactWeightTriple_eq_triple_exact"
+    phase := 150
+    status := .formalized }
+, { label := "bridge:ewt-class-def"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleCollisionClass"
+    phase := 150
+    status := .formalized }
+, { label := "bridge:ewt-class-card"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_card_eq"
+    phase := 150
+    status := .formalized }
+, { label := "bridge:ewt-8-split"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactWeightTriple_lastBit_split"
+    phase := 150
+    status := .formalized }
+, { label := "bridge:ewt-fff"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_fff"
+    phase := 150
+    status := .formalized }
+, { label := "bridge:ewt-ttt"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_ttt"
+    phase := 150
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

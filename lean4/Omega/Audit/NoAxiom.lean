@@ -2255,6 +2255,13 @@ def coreAuditTargets : List String :=
   , "Omega.weight_total_sum"
   -- Phase 149: 新定理 (MomentBounds.lean:88,97)
   , "Omega.momentSum_four_recurrence_sub_of"
-  , "Omega.exactWeightTriple_succ_bounded" ]
+  , "Omega.exactWeightTriple_succ_bounded"
+  -- Phase 150: 新文件 EWTTelescope.lean (EWTTelescope.lean:10,40,49,79,126,131)
+  , "Omega.exactWeightTriple_eq_triple_exact"
+  , "Omega.exactTripleCollisionClass"
+  , "Omega.exactTripleClass_card_eq"
+  , "Omega.exactWeightTriple_lastBit_split"
+  , "Omega.exactTripleClass_fff"
+  , "Omega.exactTripleClass_ttt" ]
 
 end Omega.Audit
