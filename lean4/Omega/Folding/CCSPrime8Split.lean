@@ -546,4 +546,41 @@ theorem momentSum_three_recurrence (m : Nat) :
     have er0 := exactWeightTriple_recurrence m
     linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 163: Unconditional S_3 consequence chain
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_3 is strictly monotone for m ≥ 1. -/
+theorem momentSum_three_strict_mono (m : Nat) (hm : 1 ≤ m) :
+    momentSum 3 m < momentSum 3 (m + 1) :=
+  momentSum_three_strict_mono_of momentSum_three_recurrence m
+
+/-- S_3(m+1) ≥ 2·S_3(m) for m ≥ 2. -/
+theorem momentSum_three_double (m : Nat) (hm : 2 ≤ m) :
+    2 * momentSum 3 m ≤ momentSum 3 (m + 1) :=
+  momentSum_three_double_of momentSum_three_recurrence m hm
+
+/-- S_3(m) is even for m ≥ 1. -/
+theorem momentSum_three_even (m : Nat) (hm : 1 ≤ m) :
+    2 ∣ momentSum 3 m :=
+  momentSum_three_even_of momentSum_three_recurrence m hm
+
+/-- S_3(8) = 7768. -/
+theorem momentSum_three_eight : momentSum 3 8 = 7768 :=
+  momentSum_three_eight_of momentSum_three_recurrence
+
+/-- S_3(9) = 23912. -/
+theorem momentSum_three_nine : momentSum 3 9 = 23912 :=
+  momentSum_three_nine_of momentSum_three_recurrence
+
+/-- S_3(10) = 73888. -/
+theorem momentSum_three_ten : momentSum 3 10 = 73888 :=
+  momentSum_three_ten_of momentSum_three_recurrence
+
+/-- S_3 subtraction form. -/
+theorem momentSum_three_recurrence_sub (m : Nat) :
+    momentSum 3 (m + 3) = 2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) -
+      2 * momentSum 3 m :=
+  momentSum_three_recurrence_sub_of momentSum_three_recurrence m
+
 end Omega
