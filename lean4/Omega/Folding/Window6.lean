@@ -669,4 +669,13 @@ theorem conclusion_window6_three_distinct_multiplicities :
   ⟨by rw [cBinFiberHist_6_2]; omega, by rw [cBinFiberHist_6_3]; omega,
     by rw [cBinFiberHist_6_4]; omega, cBinFiberHist_6_0, cBinFiberHist_6_1, by native_decide⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 186
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 Pimsner-Popa index: cBinFiberMax(6)²=16, D(6)²=25. -/
+theorem conclusion_window6_pimsner_popa_index :
+    cBinFiberMax 6 ^ 2 = 16 ∧ X.maxFiberMultiplicity 6 ^ 2 = 25 := by
+  rw [cBinFiberMax_six, X.maxFiberMultiplicity_six]; omega
+
 end Omega

@@ -485,4 +485,30 @@ theorem fib_adjacent_product (n : Nat) (hn : 1 ≤ n) :
   have hpow : ((-1 : ℤ) ^ (n + 1)) = -((-1) ^ n) := by ring
   linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 186
+-- ══════════════════════════════════════════════════════════════
+
+/-- Lucas-Fibonacci Wronskian (even): L_n·F_{n+1} = L_{n+1}·F_n + 2 for even n ≥ 2. -/
+theorem lucasNum_fib_wronskian_even (n : Nat) (hn : 2 ≤ n) (heven : Even n) :
+    lucasNum n * Nat.fib (n + 1) = lucasNum (n + 1) * Nat.fib n + 2 := by
+  rw [lucasNum_eq_fib n (by omega), lucasNum_eq_fib (n + 1) (by omega)]
+  rw [show n + 1 - 1 = n from by omega, show n + 1 + 1 = n + 2 from by omega]
+  have h1 := Nat.fib_add_two (n := n)
+  have h2 := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at h2
+  have hcas := fib_cassini_even n heven
+  nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n - 1))]
+
+/-- Lucas-Fibonacci Wronskian (odd): L_{n+1}·F_n = L_n·F_{n+1} + 2 for odd n ≥ 1. -/
+theorem lucasNum_fib_wronskian_odd (n : Nat) (hn : 1 ≤ n) (hodd : ¬ Even n) :
+    lucasNum (n + 1) * Nat.fib n = lucasNum n * Nat.fib (n + 1) + 2 := by
+  rw [lucasNum_eq_fib n hn, lucasNum_eq_fib (n + 1) (by omega)]
+  rw [show n + 1 - 1 = n from by omega, show n + 1 + 1 = n + 2 from by omega]
+  have h1 := Nat.fib_add_two (n := n)
+  have h2 := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at h2
+  have hcas := fib_cassini_odd n hodd
+  nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n - 1))]
+
 end Omega

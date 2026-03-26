@@ -450,4 +450,17 @@ theorem globalDefect_allFalse (h : m ≤ n) :
   simp only [X.restrictLE, xorWord]
   ext i; simp [zeroWord, restrictWord]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 186
+-- ══════════════════════════════════════════════════════════════
+
+/-- Two consecutive local defects compose to the global defect across two resolutions. -/
+theorem localDefect_compose (η : Word (m + 2)) :
+    globalDefect (Nat.le_of_succ_le (Nat.le_succ (m + 1))) η =
+    xorWord (restrictWord (Nat.le_succ m) (localDefect η))
+      (localDefect (truncate η)) := by
+  have h := globalDefect_step (h := Nat.le_succ m) (ω := η)
+  rw [localDefect_eq_globalDefect] at h
+  convert h using 2
+
 end Omega
