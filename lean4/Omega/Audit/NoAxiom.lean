@@ -2268,6 +2268,13 @@ def coreAuditTargets : List String :=
   , "Omega.exactTripleClass_swap23"
   , "Omega.exactTripleClass_fft_eq_ccsl"
   , "Omega.exactTripleClass_ftt_eq_ccsh"
-  , "Omega.exactWeightTriple_succ" ]
+  , "Omega.exactWeightTriple_succ"
+  -- Phase 152: 新文件 S3Recurrence.lean (S3Recurrence.lean:10,15,21,40,69,76)
+  , "Omega.crossCorrSqHighPrev"
+  , "Omega.crossCorrSqLowPrev"
+  , "Omega.tripleCollisionClass_fff_eq_exact"
+  , "Omega.tripleCollisionClass_ttt_eq_exact"
+  , "Omega.momentSum_three_succ_decomposition_bounded"
+  , "Omega.momentSum_three_succ_ewt_form_bounded" ]
 
 end Omega.Audit

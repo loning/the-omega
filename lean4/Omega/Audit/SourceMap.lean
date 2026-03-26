@@ -9268,6 +9268,49 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.exactWeightTriple_succ"
     phase := 151
     status := .formalized }
+-- Phase 152: 新文件 S3Recurrence.lean (S3Recurrence.lean:10,15,21,40,69,76)
+-- bridge:ccsh-prev → crossCorrSqHighPrev (S3Recurrence.lean:10)
+-- bridge:ccsl-prev → crossCorrSqLowPrev (S3Recurrence.lean:15)
+-- bridge:s3-fff-exact → tripleCollisionClass_fff_eq_exact (S3Recurrence.lean:21)
+-- bridge:s3-ttt-exact → tripleCollisionClass_ttt_eq_exact (S3Recurrence.lean:40)
+-- prop:pom-s3-recurrence → momentSum_three_succ_decomposition_bounded (S3Recurrence.lean:69)
+-- prop:pom-s3-recurrence → momentSum_three_succ_ewt_form_bounded (S3Recurrence.lean:76)
+, { label := "bridge:ccsh-prev"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.crossCorrSqHighPrev"
+    phase := 152
+    status := .formalized }
+, { label := "bridge:ccsl-prev"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.crossCorrSqLowPrev"
+    phase := 152
+    status := .formalized }
+, { label := "bridge:s3-fff-exact"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.tripleCollisionClass_fff_eq_exact"
+    phase := 152
+    status := .formalized }
+, { label := "bridge:s3-ttt-exact"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.tripleCollisionClass_ttt_eq_exact"
+    phase := 152
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_succ_decomposition_bounded"
+    phase := 152
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_succ_ewt_form_bounded"
+    phase := 152
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
