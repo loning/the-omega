@@ -583,4 +583,31 @@ theorem momentSum_three_recurrence_sub (m : Nat) :
       2 * momentSum 3 m :=
   momentSum_three_recurrence_sub_of momentSum_three_recurrence m
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 164: S_3 lower bound + high-order base values
+-- ══════════════════════════════════════════════════════════════
+
+/-- 2^m · S_3(m) ≥ S_2(m)² (log-convexity consequence). -/
+theorem momentSum_three_ge_sq_div (m : Nat) :
+    2 ^ m * momentSum 3 m ≥ momentSum 2 m ^ 2 := by
+  have := momentSum_log_convex 1 m
+  rw [momentSum_one] at this
+  linarith
+
+/-- S_3(11) = 227888. -/
+theorem momentSum_three_eleven : momentSum 3 11 = 227888 := by
+  have h : momentSum 3 11 + 2 * 7768 = 2 * 73888 + 4 * 23912 := by
+    have := momentSum_three_recurrence 8
+    change momentSum 3 11 + 2 * momentSum 3 8 = 2 * momentSum 3 10 + 4 * momentSum 3 9 at this
+    rw [momentSum_three_eight, momentSum_three_nine, momentSum_three_ten] at this; linarith
+  omega
+
+/-- S_3(12) = 703504. -/
+theorem momentSum_three_twelve : momentSum 3 12 = 703504 := by
+  have h : momentSum 3 12 + 2 * 23912 = 2 * 227888 + 4 * 73888 := by
+    have := momentSum_three_recurrence 9
+    change momentSum 3 12 + 2 * momentSum 3 9 = 2 * momentSum 3 11 + 4 * momentSum 3 10 at this
+    rw [momentSum_three_nine, momentSum_three_ten, momentSum_three_eleven] at this; linarith
+  omega
+
 end Omega
