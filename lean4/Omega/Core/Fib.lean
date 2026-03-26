@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.Fib.Basic
+import Mathlib.Tactic.Linarith
 
 /-! ### Convenience lemmas for `Nat.fib`
 
@@ -372,5 +373,46 @@ theorem fenceDet_eq_fib (k : Nat) : fenceDet k = Nat.fib (2 * k + 1) := by
           show 2 * (k + 1) + 1 = 2 * k + 3 from by ring,
           show 2 * k + 1 = 2 * k + 1 from rfl]
       exact (fib_odd_recurrence k).symm
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 177: Cassini identity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cassini identity (even case): F_n · F_{n+2} + 1 = F_{n+1}² for even n. -/
+theorem fib_cassini_even (n : Nat) (heven : Even n) :
+    Nat.fib n * Nat.fib (n + 2) + 1 = Nat.fib (n + 1) ^ 2 := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp [Nat.fib]
+    | 1 => exact absurd heven (by decide)
+    | n + 2 =>
+      have hn_even : Even n := by
+        rcases heven with ⟨k, hk⟩; exact ⟨k - 1, by omega⟩
+      have ih_n := ih n (by omega) hn_even
+      have h1 := Nat.fib_add_two (n := n)
+      have h2 := Nat.fib_add_two (n := n + 1)
+      have h3 := Nat.fib_add_two (n := n + 2)
+      rw [show n + 1 + 2 = n + 3 from by omega, show n + 1 + 1 = n + 2 from by omega] at h2
+      rw [show n + 2 + 2 = n + 4 from by omega, show n + 2 + 1 = n + 3 from by omega] at h3
+      nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n + 1))]
+
+/-- Cassini identity (odd case): F_n · F_{n+2} = F_{n+1}² + 1 for odd n. -/
+theorem fib_cassini_odd (n : Nat) (hodd : ¬ Even n) :
+    Nat.fib n * Nat.fib (n + 2) = Nat.fib (n + 1) ^ 2 + 1 := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => exact absurd ⟨0, rfl⟩ hodd
+    | 1 => simp [Nat.fib]
+    | n + 2 =>
+      have hn_odd : ¬ Even n := by intro ⟨k, hk⟩; exact hodd ⟨k + 1, by omega⟩
+      have ih_n := ih n (by omega) hn_odd
+      have h1 := Nat.fib_add_two (n := n)
+      have h2 := Nat.fib_add_two (n := n + 1)
+      have h3 := Nat.fib_add_two (n := n + 2)
+      rw [show n + 1 + 2 = n + 3 from by omega, show n + 1 + 1 = n + 2 from by omega] at h2
+      rw [show n + 2 + 2 = n + 4 from by omega, show n + 2 + 1 = n + 3 from by omega] at h3
+      nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n + 1))]
 
 end Omega

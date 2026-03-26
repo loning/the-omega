@@ -577,4 +577,5 @@ theorem momentSum_two_sub_pow_pos (m : Nat) (hm : 2 ≤ m) :
   rw [← momentSum_one m]
   exact momentSum_strict_mono_q 1 m (by omega) hm
 
+
 end Omega

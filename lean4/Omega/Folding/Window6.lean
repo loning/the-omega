@@ -585,4 +585,13 @@ theorem conclusion_foldbin_stable_k0_rank_six :
   · rw [X.card_eq_fib]; native_decide
   · rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 177
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 boundary parity residual: 21 - 3 = 18 anomaly directions.
+    cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial. -/
+theorem conclusion_window6_boundary_parity_residual :
+    Nat.fib 8 - 3 = 18 := by native_decide
+
 end Omega
