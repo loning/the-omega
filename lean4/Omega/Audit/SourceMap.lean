@@ -9071,6 +9071,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_two_excess_sum"
     phase := 144
     status := .formalized }
+-- Phase 145: 零代码注册 2 个新标签
+-- prop:pom-s3-orbit-decomposition → momentSum_three_succ_three_term (MomentTriple.lean:168)
+-- cor:crt-factorization → X.crtDecomposition (FiberRing.lean:179)
+, { label := "prop:pom-s3-orbit-decomposition"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_three_succ_three_term"
+    phase := 145
+    status := .formalized }
+, { label := "cor:crt-factorization"
+    sourcePath := "sections/body/arithmetic/subsec__folding-fibonacci-field.tex"
+    moduleName := "Omega.Folding.FiberRing"
+    leanName := "Omega.X.crtDecomposition"
+    phase := 145
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
