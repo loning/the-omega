@@ -166,8 +166,80 @@ theorem tripleCollisionClass_fft_eq_sum (m : Nat) :
     intro ⟨v1, _, _⟩ ⟨hw1, _⟩ ⟨hw1', _⟩
     exact hne (hw1.symm.trans hw1')
 
--- General T_{fft} mod split assembly (sum splitting + index shift) deferred.
--- The key building blocks modular_weight_count and tripleCollisionClass_fft_eq_sum are ready.
+-- ewc vanishes for weights ≥ F_{m+3}
+private theorem ewc_zero_of_ge (m n : Nat) (hn : Nat.fib (m + 3) ≤ n) :
+    exactWeightCount m n = 0 := by
+  simp only [exactWeightCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro w _; exact Nat.ne_of_lt (by linarith [X.weight_lt_fib w])
+
+/-- CCSL range truncates to F_{m+1}: for k ≥ F_{m+1}, ewc(k+F_{m+2}) = 0. -/
+theorem crossCorrSqLow_range_truncate (m : Nat) :
+    crossCorrSqLow m = ∑ k ∈ Finset.range (Nat.fib (m + 1)),
+      exactWeightCount m k * exactWeightCount m (k + Nat.fib (m + 2)) ^ 2 := by
+  unfold crossCorrSqLow
+  have hfib : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  symm; apply Finset.sum_subset (Finset.range_mono (Nat.fib_mono (show m + 1 ≤ m + 3 by omega)))
+  intro k hk hk'
+  simp only [Finset.mem_range] at hk hk'; push_neg at hk'
+  have : Nat.fib (m + 3) ≤ k + Nat.fib (m + 2) := by linarith [hfib]
+  rw [ewc_zero_of_ge m _ this]; simp
+
+/-- CCSH' range truncates to F_{m+2}: for n ≥ F_{m+2}, ewc(n+F_{m+1}) = 0. -/
+theorem crossCorrSqHighPrev_range_truncate (m : Nat) :
+    crossCorrSqHighPrev m = ∑ n ∈ Finset.range (Nat.fib (m + 2)),
+      exactWeightCount m n ^ 2 * exactWeightCount m (n + Nat.fib (m + 1)) := by
+  unfold crossCorrSqHighPrev
+  have hfib : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  symm; apply Finset.sum_subset (Finset.range_mono (Nat.fib_mono (show m + 2 ≤ m + 3 by omega)))
+  intro n hn hn'
+  simp only [Finset.mem_range] at hn hn'; push_neg at hn'
+  have : Nat.fib (m + 3) ≤ n + Nat.fib (m + 1) := by linarith [hfib]
+  rw [ewc_zero_of_ge m _ this]; simp
+
+set_option maxHeartbeats 800000 in
+/-- T_{fft}(mod) = CCSL + CCSH' (general, all m). -/
+theorem tripleCollisionClass_fft_mod_split (m : Nat) :
+    (tripleCollisionClass m false false true).card =
+    crossCorrSqLow m + crossCorrSqHighPrev m := by
+  rw [tripleCollisionClass_fft_eq_sum]
+  have hfib : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  -- Substitute modular_weight_count
+  have hsubst : ∀ n ∈ Finset.range (Nat.fib (m + 3)),
+      exactWeightCount m n ^ 2 *
+      (Finset.univ.filter (fun v : Word m =>
+        (weight v + Nat.fib (m + 2)) % Nat.fib (m + 3) = n)).card =
+      if Nat.fib (m + 2) ≤ n
+      then exactWeightCount m n ^ 2 * exactWeightCount m (n - Nat.fib (m + 2))
+      else exactWeightCount m n ^ 2 * exactWeightCount m (n + Nat.fib (m + 1)) := by
+    intro n hn; rw [modular_weight_count m n (Finset.mem_range.mp hn)]; split_ifs <;> rfl
+  rw [Finset.sum_congr rfl hsubst, Finset.sum_ite]
+  -- Goal: Σ_{n≥F₂} ewc(n)²·ewc(n-F₂) + Σ_{n<F₂} ewc(n)²·ewc(n+F₁) = CCSL + CCSH'
+  congr 1
+  · -- Σ_{n∈range(F₃), n≥F₂} ewc(n)²·ewc(n-F₂) = CCSL
+    rw [crossCorrSqLow_range_truncate]
+    -- Bijection: filter(range(F₃), ≥F₂) ↔ range(F₁) via n ↦ n - F₂
+    apply Finset.sum_bij (fun n _ => n - Nat.fib (m + 2))
+    · intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range] at hn
+      exact Finset.mem_range.mpr (by omega)
+    · intro n1 hn1 n2 hn2 h
+      simp only [Finset.mem_filter] at hn1 hn2; omega
+    · intro k hk
+      have hk' := Finset.mem_range.mp hk
+      exact ⟨k + Nat.fib (m + 2),
+        Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), by omega⟩,
+        by simp⟩
+    · intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range] at hn
+      rw [Nat.sub_add_cancel hn.2]; ring
+  · -- Σ_{n∈range(F₃), ¬(n≥F₂)} ewc(n)²·ewc(n+F₁) = CCSH'
+    rw [crossCorrSqHighPrev_range_truncate]
+    -- filter(range(F₃), ¬≥F₂) = range(F₂) (since F₂ ≤ F₃)
+    congr 1
+    ext n; simp only [Finset.mem_filter, Finset.mem_range, not_le]; omega
+
+-- T_{ftt} mod split and S_3 full decomposition: depend on T_{ftt}_eq_sum (mirror of fft).
+-- The fft proof is complete; ftt follows the same pattern. Deferred to next session.
 
 -- ══════════════════════════════════════════════════════════════
 -- Phase 154: S_3 conditional recurrence consequence chain
