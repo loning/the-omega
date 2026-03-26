@@ -694,4 +694,27 @@ theorem fenceDet_log_convex (k : Nat) (hk : 1 ≤ k) :
 theorem fenceDet_pos (k : Nat) : 1 ≤ fenceDet k := by
   rw [fenceDet_eq_fib]; exact Nat.fib_pos.mpr (by omega)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 193 — POM 500 milestone
+-- ══════════════════════════════════════════════════════════════
+
+/-- fenceDet is monotone: D_k ≤ D_{k+1}. -/
+private theorem fenceDet_mono (k : Nat) : fenceDet k ≤ fenceDet (k + 1) := by
+  simp only [fenceDet_eq_fib]; exact Nat.fib_mono (by omega)
+
+/-- fenceDet growth: D_{k+1} ≥ 2·D_k for k ≥ 1. cor:pom-Lk-surface-free-energy. -/
+theorem fenceDet_double_lower (k : Nat) (hk : 1 ≤ k) :
+    2 * fenceDet k ≤ fenceDet (k + 1) := by
+  -- D(k+1) = 3·D(k) - D(k-1) ≥ 3·D(k) - D(k) = 2·D(k)
+  obtain ⟨k, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  have hrec : fenceDet (k + 2) + fenceDet k = 3 * fenceDet (k + 1) := by
+    show 3 * fenceDet (k + 1) - fenceDet k + fenceDet k = 3 * fenceDet (k + 1)
+    have := fenceDet_mono k; omega
+  have hmono := fenceDet_mono k
+  linarith
+
+/-- F_6 and F_8 are coprime. prop:crt-235-min-depth framework. -/
+theorem fib_six_eight_coprime : Nat.Coprime (Nat.fib 6) (Nat.fib 8) := by
+  rw [Nat.Coprime, fib_gcd]; native_decide
+
 end Omega

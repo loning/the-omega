@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 192: Fib.lean + MomentSum.lean + Window6.lean — FenceDet正性 + 混合碰撞核可计算 + 碰撞概率证书
+  -- prop:pom-Lk-det-coeff-binomial（正性）→ fenceDet k ≥ 1 (Fib.lean)
+  #print axioms Omega.fenceDet_pos
+  -- prop:pom-mixed-collision-kernel-computable → momentSum q m = cMomentSum q m (MomentSum.lean)
+  #print axioms Omega.mixed_collision_kernel_computable
+  -- thm:conclusion-window6-groupoid-collision-dimension-identity（概率证书）→ 212·1024 = 53·4096 (Window6.lean)
+  #print axioms Omega.conclusion_window6_collision_prob_certificate
   -- Phase 191: Fib.lean + Window6.lean — FenceDet零点递推 + D_k(0)=1 + 对数凸性 + CRT因子分解
   -- def:pom-fence-det-zero → Fence det at t=0 递推 (Fib.lean)
   #print axioms Omega.fenceDetZero

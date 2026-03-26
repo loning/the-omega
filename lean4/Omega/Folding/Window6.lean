@@ -729,4 +729,9 @@ theorem conclusion_window6_crt_factorization :
 theorem conclusion_window6_collision_prob_certificate :
     212 * 1024 = 53 * 4096 := by omega
 
+/-- Prime factorization of F_8=21: 3,7 prime, 21 not prime. -/
+theorem conclusion_window6_prime_factorization :
+    Nat.Prime 3 ∧ Nat.Prime 7 ∧ ¬ Nat.Prime 21 ∧ Nat.fib 8 = 21 :=
+  ⟨by decide, by decide, by decide, by native_decide⟩
+
 end Omega

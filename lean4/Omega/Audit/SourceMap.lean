@@ -9728,6 +9728,29 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 192: Fib.lean + MomentSum.lean + Window6.lean（3 条，全部论文标签）
+-- prop:pom-Lk-det-coeff-binomial（正性）→ fenceDet_pos (Fib.lean)
+-- prop:pom-mixed-collision-kernel-computable → mixed_collision_kernel_computable (MomentSum.lean)
+-- thm:conclusion-window6-groupoid-collision-dimension-identity（概率证书）→ conclusion_window6_collision_prob_certificate (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-Lk-det-coeff-binomial"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_pos"
+    phase := 192
+    status := .formalized }
+, { label := "prop:pom-mixed-collision-kernel-computable"
+    sourcePath := "sections/body/pom/parts/subsec__pom-mixed-collision.tex"
+    moduleName := "Omega.Folding.MomentSum"
+    leanName := "Omega.mixed_collision_kernel_computable"
+    phase := 192
+    status := .formalized }
+, { label := "thm:conclusion-window6-groupoid-collision-dimension-identity"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_collision_prob_certificate"
+    phase := 192
+    status := .formalized }
 -- Phase 191: Fib.lean + Window6.lean（4 条，全部论文标签）
 -- def:pom-fence-det-zero → fenceDetZero (Fib.lean)
 -- prop:pom-Lk-det-coeff-binomial → fenceDetZero_eq_one (Fib.lean)
