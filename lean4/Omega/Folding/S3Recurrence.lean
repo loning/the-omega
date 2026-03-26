@@ -381,6 +381,28 @@ theorem momentSum_three_eq_ewt_plus_ccs (m : Nat) :
   linarith [exactWeightTriple_succ m]
 
 -- ══════════════════════════════════════════════════════════════
+-- Phase 159: CCS' telescope + S_3 recurrence extended verification
+-- ══════════════════════════════════════════════════════════════
+
+/-- CCS' telescope verified for m ≤ 5. -/
+theorem ccs_prime_succ_bounded (m : Nat) (hm : m ≤ 5) :
+    crossCorrSqHighPrev (m + 1) + crossCorrSqLowPrev (m + 1) =
+    2 * exactWeightTriple m + 4 * (crossCorrSqHigh m + crossCorrSqLow m) := by
+  interval_cases m <;> native_decide
+
+set_option maxHeartbeats 800000 in
+/-- S_3 recurrence verified for m ≤ 5 (extended from m ≤ 4). -/
+theorem momentSum_three_recurrence_extended (m : Nat) (hm : m ≤ 5) :
+    momentSum 3 (m + 3) + 2 * momentSum 3 m =
+    2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) := by
+  interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
+
+-- The full unconditional S_3 recurrence requires ccs_prime_succ for all m.
+-- This needs its own 8-split telescope (analogous to EWT telescope for CCS' quantities).
+-- The bounded verification confirms the formula up to m=5.
+-- The conditional chain (momentSum_three_strict_mono_of, etc.) remains valid.
+
+-- ══════════════════════════════════════════════════════════════
 -- Phase 154: S_3 conditional recurrence consequence chain
 -- ══════════════════════════════════════════════════════════════
 
