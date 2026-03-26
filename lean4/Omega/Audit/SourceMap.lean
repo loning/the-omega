@@ -9728,6 +9728,24 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 176: MomentBounds.lean + Window6.lean（4 条）
+-- bridge:fold-allFalse → Fold_allFalse (MomentBounds.lean:563)
+-- bridge:stableValue-fold-allFalse → stableValue_Fold_allFalse (MomentBounds.lean:568)
+-- prop:pom-moment-congruence-q（推论，正方差）→ momentSum_two_sub_pow_pos (MomentBounds.lean:573)
+-- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory → conclusion_foldbin_stable_k0_rank_six (Window6.lean:580)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-congruence.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_two_sub_pow_pos"
+    phase := 176
+    status := .formalized }
+, { label := "thm:conclusion-foldbin-stable-collapse-ordered-k0-memory"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_foldbin_stable_k0_rank_six"
+    phase := 176
+    status := .formalized }
 -- Phase 175: MomentBounds.lean + Defect.lean（3 条）
 -- prop:pom-power-sum-hankel-psd（幂均值推论）→ momentSum_power_mean_lower (MomentBounds.lean:541)
 -- thm:fold-discrete-stokes-defect（推论，allFalse 全局版）→ globalDefect_allFalse (Defect.lean:439)

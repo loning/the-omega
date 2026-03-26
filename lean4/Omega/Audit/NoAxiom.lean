@@ -817,6 +817,15 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 176: MomentBounds.lean + Window6.lean — Fold_allFalse桥接 + S_2>2^m正方差 + K0秩六结论
+  -- bridge:fold-allFalse → Fold(allFalse) = X.ofNat m 0 (MomentBounds.lean:563)
+  #print axioms Omega.Fold_allFalse
+  -- bridge:stableValue-fold-allFalse → stableValue(Fold(allFalse)) = 0 (MomentBounds.lean:568)
+  #print axioms Omega.stableValue_Fold_allFalse
+  -- prop:pom-moment-congruence-q（推论，正方差）→ 2^m < S_2(m) for m ≥ 2 (MomentBounds.lean:573)
+  #print axioms Omega.momentSum_two_sub_pow_pos
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory → |X_6|=21=F_8，直方图和=21 (Window6.lean:580)
+  #print axioms Omega.conclusion_foldbin_stable_k0_rank_six
   -- Phase 175: MomentBounds.lean + Defect.lean — 幂均值下界 + allFalse全局缺陷为零 + 至少两步readout
   -- prop:pom-power-sum-hankel-psd（幂均值推论）→ (2^m)^q ≤ F_{m+2}^{q-1}·S_q(m) for q ≥ 1 (MomentBounds.lean:541)
   #print axioms Omega.momentSum_power_mean_lower
