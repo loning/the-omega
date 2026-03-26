@@ -436,4 +436,100 @@ theorem maxFiberMultiplicity_lt_momentSum_two (m : Nat) (hm : 2 ≤ m) :
   have hSq := maxFiberMultiplicity_sq_le_momentSum m
   nlinarith [hSq]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 172
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fiber count reciprocity: d(ofNat r) = d(ofNat (F_{m+1}-2-r)).
+    prop:fold-fiber-count-reciprocity. -/
+theorem fiberMultiplicity_value_symmetric (m r : Nat)
+    (hr : r + Nat.fib (m + 2) ≤ Nat.fib (m + 3) - 2) :
+    X.fiberMultiplicity (X.ofNat m r) =
+    X.fiberMultiplicity (X.ofNat m (Nat.fib (m + 1) - 2 - r)) := by
+  -- F_{m+3} = F_{m+1} + F_{m+2}
+  have hfib3 : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  -- From hr: r ≤ F_{m+1} - 2
+  have hr_le : r ≤ Nat.fib (m + 1) - 2 := by omega
+  -- r < F_{m+2} (needed for stableValue_ofNat_lt)
+  have hr_lt : r < Nat.fib (m + 2) := by
+    have hle := Nat.fib_mono (show m + 1 ≤ m + 2 by omega)
+    have hpos := fib_succ_pos m
+    omega
+  -- F_{m+1}-2-r < F_{m+2}
+  have hr'_lt : Nat.fib (m + 1) - 2 - r < Nat.fib (m + 2) := by
+    have hle := Nat.fib_mono (show m + 1 ≤ m + 2 by omega)
+    have hpos := fib_succ_pos m
+    omega
+  -- stableValue (ofNat r) = r
+  have hsv_r := X.stableValue_ofNat_lt r hr_lt
+  -- stableValue (ofNat (F_{m+1}-2-r)) = F_{m+1}-2-r
+  have hsv_r' := X.stableValue_ofNat_lt (Nat.fib (m + 1) - 2 - r) hr'_lt
+  -- LHS = ewc(m,r) + ewc(m, r+F_{m+2})
+  rw [fiberMultiplicity_eq_two_ewc, hsv_r]
+  -- RHS = ewc(m, F_{m+1}-2-r) + ewc(m, (F_{m+1}-2-r)+F_{m+2})
+  rw [fiberMultiplicity_eq_two_ewc, hsv_r']
+  -- (F_{m+1}-2-r) + F_{m+2} = F_{m+3} - 2 - r
+  have hfib_pos := fib_succ_pos m
+  have hshift : Nat.fib (m + 1) - 2 - r + Nat.fib (m + 2) = Nat.fib (m + 3) - 2 - r := by
+    omega
+  rw [hshift]
+  -- By exactWeightCount_symmetric:
+  -- ewc(m, r) = ewc(m, F_{m+3}-2-r)
+  have hsym1 := exactWeightCount_symmetric m r (by omega)
+  -- ewc(m, r+F_{m+2}) = ewc(m, F_{m+3}-2-(r+F_{m+2})) = ewc(m, F_{m+1}-2-r)
+  have hsym2 := exactWeightCount_symmetric m (r + Nat.fib (m + 2)) hr
+  have hcomp : Nat.fib (m + 3) - 2 - (r + Nat.fib (m + 2)) = Nat.fib (m + 1) - 2 - r := by omega
+  rw [hcomp] at hsym2
+  -- LHS = ewc(r) + ewc(r+F) = ewc(F_{m+3}-2-r) + ewc(F_{m+1}-2-r)
+  -- RHS = ewc(F_{m+1}-2-r) + ewc(F_{m+3}-2-r)
+  omega
+
+/-- S_q(m) > F_{m+2} for q ≥ 1 and m ≥ 2. -/
+theorem momentSum_gt_fib (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
+    Nat.fib (m + 2) < momentSum q m := by
+  rw [← X.card_eq_fib, ← Finset.card_univ]
+  simp only [Finset.card_eq_sum_ones, momentSum]
+  apply Finset.sum_lt_sum
+  · intro x _
+    exact Nat.one_le_pow q _ (X.fiberMultiplicity_pos x)
+  · obtain ⟨x₀, hx₀⟩ := exists_fiber_ge_two m hm
+    refine ⟨x₀, Finset.mem_univ _, ?_⟩
+    have h2q : 2 ≤ X.fiberMultiplicity x₀ ^ q := by
+      calc 2 ≤ X.fiberMultiplicity x₀ := hx₀
+        _ = X.fiberMultiplicity x₀ ^ 1 := (pow_one _).symm
+        _ ≤ X.fiberMultiplicity x₀ ^ q :=
+            Nat.pow_le_pow_right (by omega) (by omega)
+    omega
+
+/-- D(m)^q ≤ S_q(m). -/
+theorem maxFiberMultiplicity_pow_le_momentSum (q m : Nat) :
+    X.maxFiberMultiplicity m ^ q ≤ momentSum q m := by
+  obtain ⟨x₀, hx₀⟩ := X.maxFiberMultiplicity_achieved m
+  simp only [momentSum]
+  calc X.maxFiberMultiplicity m ^ q
+      = X.fiberMultiplicity x₀ ^ q := by rw [hx₀]
+    _ ≤ ∑ x : X m, X.fiberMultiplicity x ^ q :=
+        Finset.single_le_sum (f := fun x => X.fiberMultiplicity x ^ q)
+          (fun x _ => Nat.zero_le _) (Finset.mem_univ x₀)
+
+/-- D(m) < S_q(m) for q ≥ 1 and m ≥ 2. -/
+theorem maxFiberMultiplicity_lt_momentSum (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
+    X.maxFiberMultiplicity m < momentSum q m := by
+  have hD := maxFiberMultiplicity_ge_two m hm
+  rcases q with _ | q
+  · omega
+  · cases q with
+    | zero =>
+      -- q = 1: D < 2^m = S_1
+      rw [momentSum_one]
+      exact maxFiber_lt_wordcount m hm
+    | succ q =>
+      -- q ≥ 2: D < D^{q+2} ≤ S_{q+2}
+      have hpow := maxFiberMultiplicity_pow_le_momentSum (q + 2) m
+      calc X.maxFiberMultiplicity m
+          < X.maxFiberMultiplicity m ^ 2 := by nlinarith
+        _ ≤ X.maxFiberMultiplicity m ^ (q + 2) :=
+            Nat.pow_le_pow_right (by omega) (by omega)
+        _ ≤ momentSum (q + 2) m := hpow
+
 end Omega
