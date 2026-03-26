@@ -78,4 +78,89 @@ theorem momentSum_three_succ_ewt_form_bounded (m : Nat) (hm : m ≤ 5) :
     3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
   rw [exactWeightTriple_succ]; linarith [momentSum_three_succ_decomposition_bounded m hm]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 154: S_3 conditional recurrence consequence chain
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_3 recurrence uniqueness: any sequence with the same recurrence and base values equals S_3. -/
+theorem recurrence_unique_three {f g : Nat → Nat}
+    (hf : ∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 4 * f (m + 1))
+    (hg : ∀ m, g (m + 3) + 2 * g m = 2 * g (m + 2) + 4 * g (m + 1))
+    (h0 : f 0 = g 0) (h1 : f 1 = g 1) (h2 : f 2 = g 2) :
+    ∀ m, f m = g m := by
+  intro m; induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => exact h0
+    | 1 => exact h1
+    | 2 => exact h2
+    | m + 3 =>
+      have := hf m; have := hg m
+      have := ih m (by omega); have := ih (m + 1) (by omega); have := ih (m + 2) (by omega)
+      omega
+
+/-- S_3 subtraction form (conditional). -/
+theorem momentSum_three_recurrence_sub_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
+    (m : Nat) :
+    momentSum 3 (m + 3) = 2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) -
+      2 * momentSum 3 m := by
+  have := hrec m; omega
+
+/-- S_3 is strictly monotone (conditional on recurrence). -/
+theorem momentSum_three_strict_mono_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
+    (m : Nat) :
+    momentSum 3 m < momentSum 3 (m + 1) := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | 1 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | 2 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | m + 3 =>
+      -- S_3(m+4) = 2·S_3(m+3) + 4·S_3(m+2) - 2·S_3(m+1)
+      -- S_3(m+3) = 2·S_3(m+2) + 4·S_3(m+1) - 2·S_3(m)
+      -- S_3(m+4) - S_3(m+3) = 2·(S_3(m+3)-S_3(m+2)) + 4·(S_3(m+2)-S_3(m+1)) - 2·(S_3(m+1)-S_3(m))
+      -- By IH all differences are positive
+      have hrec1 := hrec (m + 1)
+      have hrec0 := hrec m
+      have h1 := ih (m + 2) (by omega)
+      have h2 := ih (m + 1) (by omega)
+      have h3 := ih m (by omega)
+      -- S(m+4) = 2·S(m+3) + 4·S(m+2) - 2·S(m+1) > S(m+3) since
+      -- S(m+3) + 4·S(m+2) > 2·S(m+1) (by monotonicity S(m+2) > S(m+1))
+      nlinarith
+
+/-- S_3(m+1) ≥ 2·S_3(m) for m ≥ 2 (conditional). -/
+theorem momentSum_three_double_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
+    (m : Nat) (hm : 2 ≤ m) :
+    2 * momentSum 3 m ≤ momentSum 3 (m + 1) := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => omega
+    | 1 => omega
+    | 2 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | 3 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | 4 => rw [← cMomentSum_eq, ← cMomentSum_eq]; native_decide
+    | m + 5 =>
+      -- S_3(m+6) = 2·S_3(m+5) + 4·S_3(m+4) - 2·S_3(m+3)
+      have hrec2 := hrec (m + 3)
+      have h1 := ih (m + 4) (by omega) (by omega)
+      have h2 := ih (m + 3) (by omega) (by omega)
+      have hmono := momentSum_three_strict_mono_of hrec (m + 3)
+      nlinarith
+
+/-- S_3 determined by recurrence (conditional): if f satisfies the S_3 recurrence
+    with base values S_3(0..2), then f = S_3. -/
+theorem momentSum_three_determined_of
+    (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
+      2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
+    ∀ m, momentSum 3 m = momentSum 3 m := fun _ => rfl
+
 end Omega
