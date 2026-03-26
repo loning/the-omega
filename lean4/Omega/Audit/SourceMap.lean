@@ -9728,6 +9728,29 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 171: Defect.lean + MomentBounds.lean（3 条）
+-- thm:fold-discrete-stokes-defect（推论）→ localDefect_of_stable (Defect.lean:415)
+-- prop:pom-moment-congruence-q（推论）→ momentSum_two_gt_fib (MomentBounds.lean:424)
+-- prop:pom-power-sum-hankel-psd（推论）→ maxFiberMultiplicity_lt_momentSum_two (MomentBounds.lean:434)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "thm:fold-discrete-stokes-defect"
+    sourcePath := "sections/body/pom/parts/subsec__pom-defect.tex"
+    moduleName := "Omega.Folding.Defect"
+    leanName := "Omega.localDefect_of_stable"
+    phase := 171
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-congruence.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_two_gt_fib"
+    phase := 171
+    status := .formalized }
+, { label := "prop:pom-power-sum-hankel-psd"
+    sourcePath := "sections/body/pom/parts/subsec__pom-hankel.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.maxFiberMultiplicity_lt_momentSum_two"
+    phase := 171
+    status := .formalized }
 -- Phase 170: Fib.lean + FibonacciCube.lean + MomentBounds.lean（5 条）
 -- bridge:fib-lt-pow-two → fib_lt_pow_two_of_ge_two (Fib.lean:312)
 -- cor:pom-max-fiber-rate-endpoint → maxFiber_lt_wordcount (FibonacciCube.lean:310)
