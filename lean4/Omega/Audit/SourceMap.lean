@@ -9326,6 +9326,35 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.tripleCollisionClass_ftt_mod_split_bounded"
     phase := 153
     status := .formalized }
+-- Phase 154: S3Recurrence.lean 新定理 4 条 (S3Recurrence.lean:86,103,112,138)
+-- prop:pom-s3-recurrence → recurrence_unique_three (S3Recurrence.lean:86)
+-- prop:pom-s3-recurrence → momentSum_three_recurrence_sub_of (S3Recurrence.lean:103)
+-- prop:pom-s3-recurrence → momentSum_three_strict_mono_of (S3Recurrence.lean:112)
+-- prop:pom-s3-recurrence → momentSum_three_double_of (S3Recurrence.lean:138)
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.recurrence_unique_three"
+    phase := 154
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_recurrence_sub_of"
+    phase := 154
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_strict_mono_of"
+    phase := 154
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_double_of"
+    phase := 154
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

@@ -2278,6 +2278,11 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_succ_ewt_form_bounded"
   -- Phase 153: S3Recurrence.lean 新定理 (S3Recurrence.lean:60,66)
   , "Omega.tripleCollisionClass_fft_mod_split_bounded"
-  , "Omega.tripleCollisionClass_ftt_mod_split_bounded" ]
+  , "Omega.tripleCollisionClass_ftt_mod_split_bounded"
+  -- Phase 154: S3Recurrence.lean 新定理 (S3Recurrence.lean:86,103,112,138)
+  , "Omega.recurrence_unique_three"
+  , "Omega.momentSum_three_recurrence_sub_of"
+  , "Omega.momentSum_three_strict_mono_of"
+  , "Omega.momentSum_three_double_of" ]
 
 end Omega.Audit
