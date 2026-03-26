@@ -795,6 +795,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_snoc_false_ne_true
   -- prop:pom-s3-recurrence → 4 ∣ momentSum 3 m for m ≥ 4 (MomentBounds.lean:133)
   #print axioms Omega.momentSum_three_div_four
+  -- Phase 168: MomentBounds — S_3 增长率上界 + mod 8 整除性 + E00 倍增下界
+  -- prop:pom-s3-recurrence → momentSum 3 (m+1) ≤ 4 * momentSum 3 m for m ≥ 3 (MomentBounds.lean:161)
+  #print axioms Omega.momentSum_three_succ_le_quadruple
+  -- prop:pom-s3-recurrence → 8 ∣ momentSum 3 m for m ≥ 7 (MomentBounds.lean:175)
+  #print axioms Omega.momentSum_three_mod_eight
+  -- prop:pom-s2-plancherel → 2 * exactWeightCollision m ≤ exactWeightCollision (m+1) (MomentBounds.lean:199)
+  #print axioms Omega.exactWeightCollision_succ_ge_double
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

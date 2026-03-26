@@ -9671,6 +9671,29 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_div_four"
     phase := 167
     status := .formalized }
+-- Phase 168: MomentBounds.lean（3 条）(MomentBounds.lean:161,175,199)
+-- prop:pom-s3-recurrence → momentSum_three_succ_le_quadruple (MomentBounds.lean:161)
+-- prop:pom-s3-recurrence → momentSum_three_mod_eight (MomentBounds.lean:175)
+-- prop:pom-s2-plancherel → exactWeightCollision_succ_ge_double (MomentBounds.lean:199)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_three_succ_le_quadruple"
+    phase := 168
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_three_mod_eight"
+    phase := 168
+    status := .formalized }
+, { label := "prop:pom-s2-plancherel"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.exactWeightCollision_succ_ge_double"
+    phase := 168
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
