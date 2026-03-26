@@ -302,4 +302,30 @@ theorem fib_succ_le_double (n : Nat) (hn : 1 ≤ n) :
   have hmono : Nat.fib (n - 1) ≤ Nat.fib n := Nat.fib_mono (by omega)
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 170
+-- ══════════════════════════════════════════════════════════════
+
+/-- F_{m+2} < 2^m for m ≥ 2. -/
+theorem fib_lt_pow_two_of_ge_two (m : Nat) (hm : 2 ≤ m) :
+    Nat.fib (m + 2) < 2 ^ m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 => omega
+    | 2 => native_decide
+    | 3 => native_decide
+    | m + 4 =>
+      have hfib := fib_succ_succ' (m + 4)
+      rw [show m + 4 + 2 = m + 6 from by omega,
+          show m + 4 + 1 = m + 5 from by omega] at hfib
+      have ih3 := ih (m + 3) (by omega) (by omega)
+      have ih2 := ih (m + 2) (by omega) (by omega)
+      rw [hfib]
+      calc Nat.fib (m + 5) + Nat.fib (m + 4)
+          < 2 ^ (m + 3) + 2 ^ (m + 2) := Nat.add_lt_add ih3 ih2
+        _ ≤ 2 ^ (m + 3) + 2 ^ (m + 3) :=
+            Nat.add_le_add_left (Nat.pow_le_pow_right (by omega) (by omega)) _
+        _ = 2 ^ (m + 4) := by ring
+
 end Omega

@@ -390,4 +390,27 @@ theorem Fold_biresolving (v : Word m) :
     Fold (cons false v) ≠ Fold (cons true v) :=
   ⟨Fold_snoc_false_ne_true v, Fold_cons_false_ne_true v⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 170
+-- ══════════════════════════════════════════════════════════════
+
+/-- Strict q-monotonicity: S_q(m) < S_{q+1}(m) for m ≥ 2 and q ≥ 1. -/
+theorem momentSum_strict_mono_q (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
+    momentSum q m < momentSum (q + 1) m := by
+  simp only [momentSum]
+  -- Use Finset.sum_lt_sum: ∀ x, d^q ≤ d^{q+1}, and ∃ x₀, d^q < d^{q+1}
+  apply Finset.sum_lt_sum
+  · -- ∀ x, d(x)^q ≤ d(x)^{q+1} since d(x) ≥ 1
+    intro x _
+    exact Nat.pow_le_pow_right (X.fiberMultiplicity_pos x) (by omega)
+  · -- ∃ x₀ with d(x₀) ≥ 2, so d(x₀)^q < d(x₀)^{q+1}
+    obtain ⟨x₀, hx₀⟩ := exists_fiber_ge_two m hm
+    exact ⟨x₀, Finset.mem_univ _, Nat.pow_lt_pow_right (by omega) (by omega)⟩
+
+/-- Cauchy-Schwarz moment lower bound: (2^m)² ≤ F_{m+2} · S_2(m).
+    prop:pom-power-sum-hankel-psd 2x2 principal minor. -/
+theorem momentSum_two_cs_lower (m : Nat) :
+    (2 ^ m) ^ 2 ≤ Nat.fib (m + 2) * momentSum 2 m :=
+  momentSum_cauchy_schwarz m
+
 end Omega

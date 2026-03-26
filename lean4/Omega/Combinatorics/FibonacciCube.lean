@@ -450,4 +450,13 @@ theorem paper_fibonacci_cube (m : Nat) :
     Fintype.card (X m) = Nat.fib (m + 2) ∧ Nonempty (X m ≃ PathIndSets m) :=
   ⟨X.card_eq_fib m, ⟨xEquivPathIndSet m⟩⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 170
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(m) < 2^m for all m ≥ 2. cor:pom-max-fiber-rate-endpoint. -/
+theorem maxFiber_lt_wordcount (m : Nat) (hm : 2 ≤ m) :
+    X.maxFiberMultiplicity m < 2 ^ m :=
+  Nat.lt_of_le_of_lt (maxFiberMultiplicity_le_fib m) (fib_lt_pow_two_of_ge_two m hm)
+
 end Omega
