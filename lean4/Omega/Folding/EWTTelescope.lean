@@ -134,4 +134,119 @@ theorem exactTripleClass_ttt (m : Nat) :
   simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and, ite_true]
   constructor <;> intro ⟨h1, h2⟩ <;> constructor <;> omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 151: permutation symmetry + orbit identification + final merge
+-- ══════════════════════════════════════════════════════════════
+
+/-- Swap positions 1↔2 preserves collision class card. -/
+theorem exactTripleClass_swap12 (m : Nat) (b1 b2 b3 : Bool) :
+    (exactTripleCollisionClass m b1 b2 b3).card =
+    (exactTripleCollisionClass m b2 b1 b3).card := by
+  apply Finset.card_bij (fun p _ => (p.2.1, p.1, p.2.2))
+  · intro ⟨w1, w2, w3⟩ hp
+    simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+    exact ⟨hp.1.symm, hp.1.trans hp.2⟩
+  · intro ⟨a1, a2, a3⟩ _ ⟨b1', b2', b3'⟩ _ h
+    simp only [Prod.mk.injEq] at h
+    exact Prod.ext h.2.1 (Prod.ext h.1 h.2.2)
+  · intro ⟨w1, w2, w3⟩ hw
+    simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+    exact ⟨(w2, w1, w3), ⟨hw.1.symm, hw.1.trans hw.2⟩, rfl⟩
+
+/-- Swap positions 2↔3 preserves collision class card. -/
+theorem exactTripleClass_swap23 (m : Nat) (b1 b2 b3 : Bool) :
+    (exactTripleCollisionClass m b1 b2 b3).card =
+    (exactTripleCollisionClass m b1 b3 b2).card := by
+  apply Finset.card_bij (fun p _ => (p.1, p.2.2, p.2.1))
+  · intro ⟨w1, w2, w3⟩ hp
+    simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+    constructor
+    · exact hp.1.trans hp.2
+    · exact hp.2.symm
+  · intro ⟨a1, a2, a3⟩ _ ⟨b1', b2', b3'⟩ _ h
+    simp only [Prod.mk.injEq] at h
+    exact Prod.ext h.1 (Prod.ext h.2.2 h.2.1)
+  · intro ⟨w1, w2, w3⟩ hw
+    simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+    exact ⟨(w1, w3, w2), ⟨hw.1.trans hw.2, hw.2.symm⟩, rfl⟩
+
+/-- {fft} class = CCSL: Σ_n ewc(n) · ewc(n+F)². -/
+theorem exactTripleClass_fft_eq_ccsl (m : Nat) :
+    (exactTripleCollisionClass m false false true).card = crossCorrSqLow m := by
+  classical
+  -- fft: wt(v1) = wt(v2), wt(v2) = wt(v3) + F
+  -- Group by n = wt(v3): v1,v2 have weight n+F, v3 has weight n
+  simp only [crossCorrSqLow, exactWeightCount]
+  -- Need: |{(v1,v2,v3) : fft condition}| = Σ_n |{w:wt=n}| · |{w:wt=n+F}|²
+  -- RHS = Σ_n |{w:wt=n+F}|² · |{w:wt=n}| = Σ_n |{w:wt=n+F} ×ˢ ({w:wt=n+F} ×ˢ {w:wt=n})|
+  simp_rw [show ∀ n, (Finset.univ.filter (fun w : Word m => weight w = n)).card *
+    (Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 2))).card ^ 2 =
+    ((Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 2))) ×ˢ
+     ((Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 2))) ×ˢ
+      (Finset.univ.filter (fun w : Word m => weight w = n)))).card from
+    fun n => by simp [Finset.card_product]; ring]
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨v1, v2, v3⟩
+    simp only [exactTripleCollisionClass, Finset.mem_biUnion, Finset.mem_range,
+      Finset.mem_product, Finset.mem_filter, Finset.mem_univ, true_and,
+      Bool.false_eq_true, ite_false, Nat.add_zero, ite_true]
+    constructor
+    · intro ⟨h12, h2F⟩
+      exact ⟨weight v3, X.weight_lt_fib v3, by omega, by omega, rfl⟩
+    · rintro ⟨n, _, hw1, hw2, hw3⟩; exact ⟨by omega, by omega⟩
+  · intro n _ n' _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    intro ⟨_, _, v3⟩ ⟨_, _, hw3⟩ ⟨_, _, hw3'⟩
+    exact hne (hw3.symm.trans hw3')
+
+/-- {ftt} class = CCSH: Σ_n ewc(n)² · ewc(n+F). -/
+theorem exactTripleClass_ftt_eq_ccsh (m : Nat) :
+    (exactTripleCollisionClass m false true true).card = crossCorrSqHigh m := by
+  classical
+  -- ftt: wt(v1) = wt(v2) + F, wt(v2) = wt(v3)
+  -- Group by n = wt(v2) = wt(v3): v1 has weight n+F
+  simp only [crossCorrSqHigh, exactWeightCount]
+  simp_rw [show ∀ n, (Finset.univ.filter (fun w : Word m => weight w = n)).card ^ 2 *
+    (Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 2))).card =
+    ((Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 2))) ×ˢ
+     ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+      (Finset.univ.filter (fun w : Word m => weight w = n)))).card from
+    fun n => by simp [Finset.card_product]; ring]
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨v1, v2, v3⟩
+    simp only [exactTripleCollisionClass, Finset.mem_biUnion, Finset.mem_range,
+      Finset.mem_product, Finset.mem_filter, Finset.mem_univ, true_and,
+      Bool.false_eq_true, ite_false, Nat.add_zero, ite_true]
+    constructor
+    · intro ⟨h1F, h23⟩
+      exact ⟨weight v2, X.weight_lt_fib v2, by omega, rfl, by omega⟩
+    · rintro ⟨n, _, hw1, hw2, hw3⟩; exact ⟨by omega, by omega⟩
+  · intro n _ n' _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    intro ⟨_, v2, _⟩ ⟨_, hw2, _⟩ ⟨_, hw2', _⟩
+    exact hne (hw2.symm.trans hw2')
+
+/-- EWT(m+1) = 2·EWT(m) + 3·CCSH(m) + 3·CCSL(m). -/
+theorem exactWeightTriple_succ (m : Nat) :
+    exactWeightTriple (m + 1) = 2 * exactWeightTriple m +
+    3 * crossCorrSqHigh m + 3 * crossCorrSqLow m := by
+  rw [exactWeightTriple_lastBit_split, exactTripleClass_fff, exactTripleClass_ttt]
+  -- {fft,ftf,tff} → 3·CCSL
+  rw [exactTripleClass_fft_eq_ccsl]
+  rw [show (exactTripleCollisionClass m false true false).card = crossCorrSqLow m from by
+    rw [← exactTripleClass_swap23 m false false true]; exact exactTripleClass_fft_eq_ccsl m]
+  rw [show (exactTripleCollisionClass m true false false).card = crossCorrSqLow m from by
+    rw [← exactTripleClass_swap12 m false true false, ← exactTripleClass_swap23 m false false true]
+    exact exactTripleClass_fft_eq_ccsl m]
+  -- {ftt,tft,ttf} → 3·CCSH
+  rw [exactTripleClass_ftt_eq_ccsh]
+  rw [show (exactTripleCollisionClass m true false true).card = crossCorrSqHigh m from by
+    rw [← exactTripleClass_swap12 m false true true]; exact exactTripleClass_ftt_eq_ccsh m]
+  rw [show (exactTripleCollisionClass m true true false).card = crossCorrSqHigh m from by
+    rw [← exactTripleClass_swap23 m true false true, ← exactTripleClass_swap12 m false true true]
+    exact exactTripleClass_ftt_eq_ccsh m]
+  ring
+
 end Omega
