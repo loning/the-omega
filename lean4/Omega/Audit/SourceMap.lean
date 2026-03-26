@@ -9137,6 +9137,28 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.truncation_curvature_eq_hiddenBit"
     phase := 146
     status := .formalized }
+-- Phase 147: 新定理 3 条 (FiberWeightCount.lean:459, MomentTriple.lean:737,768)
+-- bridge:weight-fiber-counting → sum_word_apply_weight (FiberWeightCount.lean:459)
+-- prop:pom-moment-congruence-q → momentSum_log_convex (MomentTriple.lean:737)
+-- prop:pom-moment-congruence-q → momentSum_ratio_mono (MomentTriple.lean:768)
+, { label := "bridge:weight-fiber-counting"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.FiberWeightCount"
+    leanName := "Omega.sum_word_apply_weight"
+    phase := 147
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_log_convex"
+    phase := 147
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_ratio_mono"
+    phase := 147
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

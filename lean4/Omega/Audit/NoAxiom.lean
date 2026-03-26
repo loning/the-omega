@@ -2245,6 +2245,10 @@ def coreAuditTargets : List String :=
   -- Phase 146: 新定理 (MaxFiberTwoStep.lean:527,540, MomentTriple.lean:712)
   , "Omega.weight_truncate_mod"
   , "Omega.momentSum_cauchy_schwarz_word"
-  , "Omega.truncation_curvature_eq_hiddenBit" ]
+  , "Omega.truncation_curvature_eq_hiddenBit"
+  -- Phase 147: 新定理 (FiberWeightCount.lean:459, MomentTriple.lean:737,768)
+  , "Omega.sum_word_apply_weight"
+  , "Omega.momentSum_log_convex"
+  , "Omega.momentSum_ratio_mono" ]
 
 end Omega.Audit
