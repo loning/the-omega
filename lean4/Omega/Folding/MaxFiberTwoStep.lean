@@ -1,4 +1,5 @@
 import Omega.Folding.MaxFiber
+import Omega.Folding.Value
 
 namespace Omega
 
@@ -517,5 +518,127 @@ theorem fold_hiddenBit_determines_weight (w1 w2 : Word m)
   rw [h1, h2]; congr 1
   · exact congrArg stableValue hFold
   · rw [hBit]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 146: weight truncation mod + curvature = hiddenBit
+-- ══════════════════════════════════════════════════════════════
+
+/-- weight(truncate w) ≡ weight(w) mod F_{m+2}: the last bit contributes a full F_{m+2}. -/
+theorem weight_truncate_mod (w : Word (m + 1)) :
+    weight (truncate w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2) := by
+  have : weight w % Nat.fib (m + 2) = weight (truncate w) % Nat.fib (m + 2) := by
+    conv_lhs => rw [show weight w = weight (truncate w) +
+      if w ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0 from rfl]
+    split_ifs
+    · rw [Nat.add_mod, Nat.mod_self, Nat.add_zero, Nat.mod_mod]
+    · rfl
+  exact this.symm
+
+set_option maxHeartbeats 800000 in
+/-- thm:pom-truncation-curvature-equals-hidden-bit:
+    The curvature indicator (Fold ∘ truncate ≠ restrict ∘ Fold) equals the hidden bit. -/
+theorem truncation_curvature_eq_hiddenBit (w : Word (m + 1)) :
+    (if Fold (truncate w) = X.restrict (Fold w) then 0 else 1) = hiddenBit w := by
+  -- Key: Fold(truncate w) and X.restrict(Fold w) in X m agree iff stableValues match
+  -- stableValue(Fold(truncate w)) = weight(truncate w) % F_{m+2}
+  -- stableValue(restrict(Fold w)) = (weight w % F_{m+3}) % F_{m+2}
+  -- hiddenBit w = if F_{(m+1)+2} ≤ weight w then 1 else 0
+  have hlt_tr : weight (truncate w) < Nat.fib (m + 3) := X.weight_lt_fib (truncate w)
+  have hlt_w : weight w < Nat.fib (m + 4) := X.weight_lt_fib w
+  have hfib3 : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  have hwt_def : weight w = weight (truncate w) +
+      if w ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0 := rfl
+  -- Fold equality ↔ stableValue equality at level m
+  have fold_eq_iff_sv : Fold (truncate w) = X.restrict (Fold w) ↔
+      weight (truncate w) % Nat.fib (m + 2) =
+      (weight w % Nat.fib (m + 3)) % Nat.fib (m + 2) := by
+    constructor
+    · intro h
+      have := congr_arg stableValue h
+      rw [stableValue_Fold_mod] at this
+      have hrestr : stableValue (X.restrict (Fold w)) =
+          (weight w % Nat.fib (m + 3)) % Nat.fib (m + 2) := by
+        have h2 := stableValue_restrict_mod (Fold w)
+        rw [Nat.mod_eq_of_lt (stableValue_lt_fib (X.restrict (Fold w)))] at h2
+        rw [← h2, stableValue_Fold_mod]
+      rwa [hrestr] at this
+    · intro h
+      apply X.stableValueFin_injective m
+      simp only [X.stableValueFin, Fin.mk.injEq]
+      rw [stableValue_Fold_mod]
+      have hrestr : stableValue (X.restrict (Fold w)) =
+          (weight w % Nat.fib (m + 3)) % Nat.fib (m + 2) := by
+        have h2 := stableValue_restrict_mod (Fold w)
+        rw [Nat.mod_eq_of_lt (stableValue_lt_fib (X.restrict (Fold w)))] at h2
+        rw [← h2, stableValue_Fold_mod]
+      rwa [hrestr]
+  -- Case split on hiddenBit (= whether weight w ≥ F_{m+3})
+  -- Note: hiddenBit w uses F_{(m+1)+2} = F_{m+3}
+  show (if Fold (truncate w) = X.restrict (Fold w) then 0 else 1) =
+    if Nat.fib (m + 1 + 2) ≤ weight w then 1 else 0
+  by_cases hge : Nat.fib (m + 3) ≤ weight w
+  · -- hiddenBit = 1
+    have hge' : Nat.fib (m + 1 + 2) ≤ weight w := by omega
+    simp only [hge', ite_true]
+    -- Fold(truncate w) ≠ restrict(Fold w)
+    have hneq : ¬ (Fold (truncate w) = X.restrict (Fold w)) := by
+      rw [fold_eq_iff_sv]; intro hmod
+      -- weight w % F_{m+3} = weight w - F_{m+3} (since weight w < 2·F_{m+3})
+      have hfib4 : Nat.fib (m + 4) = Nat.fib (m + 2) + Nat.fib (m + 3) := Nat.fib_add_two
+      have hrem : weight w - Nat.fib (m + 3) < Nat.fib (m + 2) := by omega
+      have hrem2 : weight w - Nat.fib (m + 3) < Nat.fib (m + 3) := by omega
+      have : weight w % Nat.fib (m + 3) = weight w - Nat.fib (m + 3) := by
+        rw [Nat.mod_eq_sub_mod hge]; exact Nat.mod_eq_of_lt hrem2
+      rw [this, Nat.mod_eq_of_lt hrem] at hmod
+      -- hmod: wt_tr % F_{m+2} = weight w - F_{m+3}
+      -- Express weight w - F_{m+3} in terms of weight(truncate w)
+      -- weight w = weight(truncate w) + (last ? F_{m+2} : 0)
+      -- If last=false: weight w = weight(truncate w) < F_{m+3}, contradicts hge
+      -- If last=true: weight w - F_{m+3} = weight(truncate w) + F_{m+2} - (F_{m+1}+F_{m+2}) = wt_tr - F_{m+1}
+      by_cases hlast : w ⟨m, Nat.lt_succ_self m⟩ = true
+      · simp only [hlast, ite_true] at hwt_def
+        -- weight w - F_{m+3} = weight(truncate w) - F_{m+1}
+        have hge_m1 : Nat.fib (m + 1) ≤ weight (truncate w) := by omega
+        have : weight w - Nat.fib (m + 3) = weight (truncate w) - Nat.fib (m + 1) := by omega
+        rw [this] at hmod
+        -- wt_tr % F_{m+2} = wt_tr - F_{m+1} with F_{m+1} > 0
+        have hfib1_pos : 0 < Nat.fib (m + 1) := Nat.fib_pos.mpr (by omega)
+        have hfib_mono : Nat.fib (m + 1) ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
+        by_cases hlt2 : weight (truncate w) < Nat.fib (m + 2)
+        · rw [Nat.mod_eq_of_lt hlt2] at hmod; omega
+        · push_neg at hlt2
+          have hsub_lt : weight (truncate w) - Nat.fib (m + 2) < Nat.fib (m + 2) := by omega
+          rw [Nat.mod_eq_sub_mod hlt2, Nat.mod_eq_of_lt hsub_lt] at hmod
+          -- hmod: wt - F_{m+2} = wt - F_{m+1}, so F_{m+2} = F_{m+1}
+          -- But F_{m+2} = F_{m+1} + F_m with F_m ≥ 0, and hfib_mono shows F_{m+1} ≤ F_{m+2}
+          -- Need: F_{m+2} > F_{m+1} (which requires F_m > 0, i.e., m > 0)
+          -- For m=0: weight(truncate w) = weight(Word 0) = 0, but hge_m1: F_1=1 ≤ 0, contradiction
+          -- F_{m+2} = F_m + F_{m+1}, so F_{m+2} ≠ F_{m+1} unless F_m = 0
+          have hfib2 : Nat.fib (m + 2) = Nat.fib m + Nat.fib (m + 1) := Nat.fib_add_two
+          have hfib_m_pos : 0 < Nat.fib m := by
+            rcases m with _ | m
+            · -- m = 0: weight(truncate w : Word 0) = 0, hge_m1: F_1 ≤ 0, contradiction
+              simp [weight] at hge_m1
+            · exact Nat.fib_pos.mpr (by omega)
+          omega
+      · -- last = false: weight w = weight(truncate w), contradicts hge
+        exfalso
+        have hf : w ⟨m, Nat.lt_succ_self m⟩ = false := Bool.eq_false_iff.mpr hlast
+        have hwt_false : weight w = weight (truncate w) := by
+          show weight (truncate w) + (if w ⟨m, Nat.lt_succ_self m⟩ = true then _ else 0) =
+            weight (truncate w)
+          simp [hf]
+        omega
+    simp only [hneq, ite_false]
+  · -- hiddenBit = 0
+    push_neg at hge
+    have hge' : ¬ (Nat.fib (m + 1 + 2) ≤ weight w) := by
+      show ¬ (Nat.fib (m + 3) ≤ weight w); omega
+    simp only [hge', ite_false]
+    -- Fold(truncate w) = restrict(Fold w)
+    have heq : Fold (truncate w) = X.restrict (Fold w) := by
+      rw [fold_eq_iff_sv, Nat.mod_eq_of_lt (by omega : weight w < Nat.fib (m + 3))]
+      exact weight_truncate_mod w
+    simp only [heq, ite_true]
 
 end Omega

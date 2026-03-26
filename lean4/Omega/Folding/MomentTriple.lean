@@ -707,4 +707,23 @@ theorem momentSum_two_sq_le_pow_mul_three (m : Nat) :
   rw [← Finset.card_univ (α := Word m)]
   exact sq_sum_le_card_mul_sum_sq
 
+/-- Generalized word-space Cauchy-Schwarz: S_q(m)² ≤ 2^m · S_{2q-1}(m) for q ≥ 1.
+    Apply (Σ f)² ≤ |S|·Σf² with f(w) = d(Fold w)^(q-1), over Word m. -/
+theorem momentSum_cauchy_schwarz_word (q m : Nat) (hq : 1 ≤ q) :
+    momentSum q m ^ 2 ≤ 2 ^ m * momentSum (2 * q - 1) m := by
+  -- q = (q-1) + 1 and 2*q - 1 = 2*(q-1) + 1
+  have hq2 : 2 * q - 1 = 2 * (q - 1) + 1 := by omega
+  conv_lhs => rw [show q = q - 1 + 1 from by omega]
+  rw [hq2]
+  rw [← sum_word_fiberMult_pow (q - 1) m, ← sum_word_fiberMult_pow (2 * (q - 1)) m]
+  show (∑ w : Word m, X.fiberMultiplicity (Fold w) ^ (q - 1)) ^ 2 ≤
+    2 ^ m * ∑ w : Word m, X.fiberMultiplicity (Fold w) ^ (2 * (q - 1))
+  simp_rw [show ∀ w : Word m, X.fiberMultiplicity (Fold w) ^ (2 * (q - 1)) =
+      (X.fiberMultiplicity (Fold w) ^ (q - 1)) ^ 2 from
+      fun w => by rw [← pow_mul, Nat.mul_comm]]
+  rw [show 2 ^ m = Fintype.card (Word m) from
+    (by rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin])]
+  rw [← Finset.card_univ (α := Word m)]
+  exact sq_sum_le_card_mul_sum_sq
+
 end Omega
