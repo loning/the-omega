@@ -817,6 +817,17 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 194: Fib.lean + Window6.lean — FenceDet严格单调 + Pisano mod 8 + unit group φ(21)=12
+  -- cor:pom-Lk-surface-free-energy（严格单调）→ D_k < D_{k+1} for k ≥ 1 (Fib.lean)
+  #print axioms Omega.fenceDet_strict_mono
+  -- bridge:six-dvd-of-fib-eight → 8|F_n → 6|n (Fib.lean, private)
+  #print axioms Omega.six_dvd_of_fib_eight_dvd
+  -- bridge:fib-eight-dvd-of-six → 6|n → 8|F_n (Fib.lean, private)
+  #print axioms Omega.fib_eight_dvd_of_six_dvd
+  -- bridge:fib-eight-dvd-iff（Pisano mod 8）→ 8|F_n ↔ 6|n (Fib.lean)
+  #print axioms Omega.fib_eight_dvd_iff
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（unit group）→ φ(21)=12=2×6=(3-1)(7-1) (Window6.lean)
+  #print axioms Omega.conclusion_window6_unit_group_structure
   -- Phase 193: Fib.lean + Window6.lean — FenceDet双倍下界 + Fib互素 + 质因子分解
   -- bridge:fenceDet-mono → D_k ≤ D_{k+1} (Fib.lean, private)
   #print axioms Omega.fenceDet_mono

@@ -9728,6 +9728,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 194: Fib.lean + Window6.lean（2 条论文标签 + 3 bridge）
+-- cor:pom-Lk-surface-free-energy（严格单调）→ fenceDet_strict_mono (Fib.lean)
+-- bridge:six-dvd-of-fib-eight → six_dvd_of_fib_eight_dvd (Fib.lean, private)
+-- bridge:fib-eight-dvd-of-six → fib_eight_dvd_of_six_dvd (Fib.lean, private)
+-- bridge:fib-eight-dvd-iff（Pisano mod 8）→ fib_eight_dvd_iff (Fib.lean)
+-- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（unit group）→ conclusion_window6_unit_group_structure (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:pom-Lk-surface-free-energy"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_strict_mono"
+    phase := 194
+    status := .formalized }
+, { label := "thm:conclusion-foldbin-stable-collapse-ordered-k0-memory"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_unit_group_structure"
+    phase := 194
+    status := .formalized }
 -- Phase 193: Fib.lean + Window6.lean（3 条论文标签 + 1 bridge）
 -- bridge:fenceDet-mono → fenceDet_mono (Fib.lean, private)
 -- cor:pom-Lk-surface-free-energy → fenceDet_double_lower (Fib.lean)
