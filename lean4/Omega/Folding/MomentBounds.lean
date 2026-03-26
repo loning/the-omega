@@ -153,4 +153,57 @@ theorem momentSum_three_div_four (m : Nat) (hm : 4 ≤ m) :
       rw [ha, hb, hc] at hrec
       exact ⟨2 * c + 4 * b - 2 * a, by omega⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 168
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_3 growth rate upper bound: S_3(m+1) ≤ 4·S_3(m) for m ≥ 3. -/
+theorem momentSum_three_succ_le_quadruple (m : Nat) (hm : 3 ≤ m) :
+    momentSum 3 (m + 1) ≤ 4 * momentSum 3 m := by
+  match m with
+  | 3 => rw [momentSum_three_four, momentSum_three_three]; omega
+  | 4 => rw [momentSum_three_five, momentSum_three_four]; omega
+  | m + 5 =>
+    have hrec := momentSum_three_recurrence (m + 3)
+    rw [show (m + 3) + 3 = m + 6 from by omega,
+        show (m + 3) + 2 = m + 5 from by omega,
+        show (m + 3) + 1 = m + 4 from by omega] at hrec
+    have hdbl := momentSum_three_double (m + 4) (by omega)
+    linarith
+
+/-- 8 ∣ S_3(m) for m ≥ 7. -/
+theorem momentSum_three_mod_eight (m : Nat) (hm : 7 ≤ m) :
+    8 ∣ momentSum 3 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 | 2 | 3 | 4 | 5 | 6 => omega
+    | 7 => exact ⟨313, by rw [momentSum_three_seven]⟩
+    | 8 => exact ⟨971, by rw [momentSum_three_eight]⟩
+    | 9 => exact ⟨2989, by rw [momentSum_three_nine]⟩
+    | m + 10 =>
+      have hrec := momentSum_three_recurrence (m + 7)
+      rw [show (m + 7) + 3 = m + 10 from by omega,
+          show (m + 7) + 2 = m + 9 from by omega,
+          show (m + 7) + 1 = m + 8 from by omega] at hrec
+      have ih7 := ih (m + 7) (by omega) (by omega)
+      have ih8 := ih (m + 8) (by omega) (by omega)
+      have ih9 := ih (m + 9) (by omega) (by omega)
+      obtain ⟨a, ha⟩ := ih7
+      obtain ⟨b, hb⟩ := ih8
+      obtain ⟨c, hc⟩ := ih9
+      rw [ha, hb, hc] at hrec
+      exact ⟨2 * c + 4 * b - 2 * a, by omega⟩
+
+/-- E00 doubling: E00(m+1) ≥ 2·E00(m) for all m. -/
+theorem exactWeightCollision_succ_ge_double (m : Nat) :
+    2 * exactWeightCollision m ≤ exactWeightCollision (m + 1) := by
+  match m with
+  | 0 => native_decide
+  | 1 => native_decide
+  | m + 2 =>
+    have hrec := exactWeightCollision_recurrence m
+    have hmono := Nat.le_of_lt (exactWeightCollision_strict_mono m)
+    linarith
+
 end Omega
