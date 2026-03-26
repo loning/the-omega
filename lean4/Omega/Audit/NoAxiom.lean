@@ -2286,6 +2286,11 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_double_of"
   -- Phase 155: S3Recurrence.lean 新定理 (S3Recurrence.lean:86,125)
   , "Omega.modular_weight_count"
-  , "Omega.tripleCollisionClass_fft_eq_sum" ]
+  , "Omega.tripleCollisionClass_fft_eq_sum"
+  -- Phase 156: S3Recurrence.lean 新定理 (S3Recurrence.lean:262,272,282,292)
+  , "Omega.momentSum_three_eight_of"
+  , "Omega.momentSum_three_nine_of"
+  , "Omega.momentSum_three_ten_of"
+  , "Omega.momentSum_three_even_of" ]
 
 end Omega.Audit
