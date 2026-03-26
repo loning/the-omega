@@ -802,6 +802,21 @@ Run these commands manually during audit:
   #print axioms Omega.momentSum_three_mod_eight
   -- prop:pom-s2-plancherel → 2 * exactWeightCollision m ≤ exactWeightCollision (m+1) (MomentBounds.lean:199)
   #print axioms Omega.exactWeightCollision_succ_ge_double
+  -- Phase 169: MomentBounds — S_q 单调性链 + 广义对数凸性 + 奇偶整除性 + 左/双解析性
+  -- bridge:momentSum-ratio-mono-gap → S_{a+1}·S_b ≤ S_a·S_{b+1} for a ≤ b (MomentBounds.lean:215)
+  #print axioms Omega.momentSum_ratio_mono_gap
+  -- cor:pom-crossq-logconvex-chain → S_q² ≤ S_{q-r}·S_{q+r} 广义对数凸性 (MomentBounds.lean:286)
+  #print axioms Omega.momentSum_log_convex_gap
+  -- bridge:nat-pow-mod-two → n^q % 2 = n % 2 for q ≥ 1 (MomentBounds.lean:305)
+  #print axioms Nat.pow_mod_two
+  -- prop:pom-moment-congruence-q → 2 ∣ momentSum q m for q ≥ 1, m ≥ 1 (MomentBounds.lean:320)
+  #print axioms Omega.momentSum_even
+  -- bridge:weight-cons-diff → weight(cons true v) = weight(cons false v) + 1 (MomentBounds.lean:337)
+  #print axioms Omega.weight_cons_true_sub_false
+  -- thm:pom-left-resolving → Fold(cons false v) ≠ Fold(cons true v) (MomentBounds.lean:347)
+  #print axioms Omega.Fold_cons_false_ne_true
+  -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
+  #print axioms Omega.Fold_biresolving
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

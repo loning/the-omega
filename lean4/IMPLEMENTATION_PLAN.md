@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~29,162 |
-| 定理/定义数 | ~2,293 |
+| 定理/定义数 | ~2,301 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 169: S_q 单调性链 + 广义对数凸性 + 奇偶整除性 + 左/双解析性（Round 169）**：Folding/MomentBounds.lean（拓展至 393 行）——momentSum_ratio_mono_gap（bridge: S_{a+1}·S_b ≤ S_a·S_{b+1} for a ≤ b，MomentBounds.lean:215）; momentSum_log_convex_gap（cor:pom-crossq-logconvex-chain：S_q² ≤ S_{q-r}·S_{q+r} 广义对数凸性，MomentBounds.lean:286）; Nat.pow_mod_two（bridge: n^q % 2 = n % 2 for q ≥ 1，private，MomentBounds.lean:305）; momentSum_even（prop:pom-moment-congruence-q：2 ∣ S_q(m) for q ≥ 1, m ≥ 1，MomentBounds.lean:320）; cons（def:pom-cons：词头部追加 bit 定义，MomentBounds.lean:333）; weight_cons_true_sub_false（bridge: weight(cons true v) = weight(cons false v) + 1，MomentBounds.lean:337）; Fold_cons_false_ne_true（thm:pom-left-resolving：Fold(cons false v) ≠ Fold(cons true v) 左解析性，MomentBounds.lean:347）; Fold_biresolving（con:pom-fold-biresolving：Fold 双解析性（右+左），MomentBounds.lean:388）——POM 覆盖率 ~469 → ~473（+4 条目：cor:pom-crossq-logconvex-chain, prop:pom-moment-congruence-q, thm:pom-left-resolving, con:pom-fold-biresolving）（Phase 169）
 **圆维度 Fibonacci–Poisson 半群分解（Round 118）**：fib_semigroup_factorization（Fibonacci 时间满足 $T_{F_{m+2}}=T_{F_{m+1}}\circ T_{F_m}=T_{F_m}\circ T_{F_{m+1}}$ 的双向因子分解）
 **圆维度 Fibonacci–Poisson 右端半群分解（Round 119）**：fib_semigroup_factorization_right（由左端分解与对易性推出右端分解）; fib_semigroup_factorization_right'（由加法半群律与逐对对易性独立推出右端分解）
 **圆维度 Jensen 圆周平均的逆向 KL 分解（Round 120）**：kl_reverse_tilted_split（逆向 KL 对指数倾斜测度分解为对数配分项减去平均倾斜项）
@@ -134,15 +135,15 @@
 
 ### Lean4 形式化状态
 
-- **1,189 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,330 个 Lean4 定理（含内部引理）
+- **1,193 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,338 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1248/10,588 = **11.8%** |
+| 全局覆盖率 | 1252/10,588 = **11.8%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -156,7 +157,7 @@
 | 新生算术 | 151 | ~88 | ~58% |
 | Folding | 317 | ~90 | ~28% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~469 | ~30.7% |
+| POM | 1,525 | ~473 | ~31.0% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 66 | 3.8% |

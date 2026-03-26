@@ -9694,6 +9694,40 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.exactWeightCollision_succ_ge_double"
     phase := 168
     status := .formalized }
+-- Phase 169: MomentBounds.lean S_q 单调性 + 对数凸性 + 奇偶整除性 + cons 结构 + 左/双解析性（8 条）
+-- bridge:momentSum-ratio-mono-gap → momentSum_ratio_mono_gap (MomentBounds.lean:215)
+-- cor:pom-crossq-logconvex-chain → momentSum_log_convex_gap (MomentBounds.lean:286)
+-- bridge:nat-pow-mod-two → Nat.pow_mod_two (MomentBounds.lean:305)
+-- prop:pom-moment-congruence-q → momentSum_even (MomentBounds.lean:320)
+-- def:pom-cons → cons (MomentBounds.lean:333)
+-- bridge:weight-cons-diff → weight_cons_true_sub_false (MomentBounds.lean:337)
+-- thm:pom-left-resolving → Fold_cons_false_ne_true (MomentBounds.lean:347)
+-- con:pom-fold-biresolving → Fold_biresolving (MomentBounds.lean:388)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:pom-crossq-logconvex-chain"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_log_convex_gap"
+    phase := 169
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-congruence.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_even"
+    phase := 169
+    status := .formalized }
+, { label := "thm:pom-left-resolving"
+    sourcePath := "sections/body/pom/parts/subsec__pom-resolving.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.Fold_cons_false_ne_true"
+    phase := 169
+    status := .formalized }
+, { label := "con:pom-fold-biresolving"
+    sourcePath := "sections/body/pom/parts/subsec__pom-resolving.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.Fold_biresolving"
+    phase := 169
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
