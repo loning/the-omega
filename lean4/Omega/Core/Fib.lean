@@ -808,4 +808,30 @@ theorem fib_dvd_iff (a b : Nat) (ha : 3 ≤ a) : Nat.fib a ∣ Nat.fib b ↔ a �
     exact heq ▸ Nat.gcd_dvd_right a b
   · exact Nat.fib_dvd a b
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 196
+-- ══════════════════════════════════════════════════════════════
+
+/-- 2^k ≤ D_k for k ≥ 1. Completes 2^k ≤ D_k ≤ 3^k sandwich. -/
+theorem fenceDet_ge_pow_two (k : Nat) (hk : 1 ≤ k) : 2 ^ k ≤ fenceDet k := by
+  induction k with
+  | zero => omega
+  | succ k ih =>
+    cases k with
+    | zero => simp [fenceDet]
+    | succ k =>
+      calc 2 ^ (k + 2) = 2 * 2 ^ (k + 1) := by ring
+        _ ≤ 2 * fenceDet (k + 1) := Nat.mul_le_mul_left 2 (ih (by omega))
+        _ ≤ fenceDet (k + 2) := fenceDet_double_lower (k + 1) (by omega)
+
+/-- Unified Pisano entry point table for p=2,3,5,7,8. -/
+theorem pisano_entry_point_table :
+    (∀ n, 2 ∣ Nat.fib n ↔ 3 ∣ n) ∧
+    (∀ n, 3 ∣ Nat.fib n ↔ 4 ∣ n) ∧
+    (∀ n, 5 ∣ Nat.fib n ↔ 5 ∣ n) ∧
+    (∀ n, 7 ∣ Nat.fib n ↔ 8 ∣ n) ∧
+    (∀ n, 8 ∣ Nat.fib n ↔ 6 ∣ n) :=
+  ⟨fib_even_iff_three_dvd, fib_div_three_iff, fib_five_dvd_iff,
+   fib_seven_dvd_iff, fib_eight_dvd_iff⟩
+
 end Omega

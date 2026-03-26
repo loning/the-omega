@@ -745,4 +745,9 @@ theorem conclusion_window6_binfold_proper_coloring :
       cBinFold 6 N.val ≠ cBinFold 6 (N.val ^^^ (2 ^ k.val)) :=
   binFold6_edge_separation
 
+/-- 10 of 21 BinFold fibers are non-affine. -/
+theorem conclusion_window6_nonaffine_count :
+    cAffineFlatCount 6 = 11 ∧ Nat.fib 8 - cAffineFlatCount 6 = 10 :=
+  ⟨cAffineFlatCount_six, by rw [cAffineFlatCount_six]; native_decide⟩
+
 end Omega
