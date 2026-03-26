@@ -641,4 +641,13 @@ theorem conclusion_window6_fiber_nonuniform :
   ⟨by rw [cBinFiberMin_six, cBinFiberMax_six]; omega,
     cBinFiberMin_six, cBinFiberMax_six⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 183
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6: 8 ∤ 21, so no free (Z/2)^3-action on X_6.
+    cor:conclusion-window6-boundary-z6-no-global-free-extension. -/
+theorem conclusion_window6_no_free_boundary_extension :
+    ¬ (2 ^ 3 ∣ Nat.fib 8) := by native_decide
+
 end Omega

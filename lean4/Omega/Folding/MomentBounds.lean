@@ -656,4 +656,21 @@ theorem momentSum_three_strict_increasing_base :
       momentSum_three_six, momentSum_three_seven]
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 183
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_4 base values strictly increasing through m = 0..6. -/
+theorem momentSum_four_strict_increasing_base :
+    momentSum 4 0 < momentSum 4 1 ∧
+    momentSum 4 1 < momentSum 4 2 ∧
+    momentSum 4 2 < momentSum 4 3 ∧
+    momentSum 4 3 < momentSum 4 4 ∧
+    momentSum 4 4 < momentSum 4 5 ∧
+    momentSum 4 5 < momentSum 4 6 := by
+  rw [momentSum_four_zero, momentSum_four_one, momentSum_four_two,
+      momentSum_four_three, momentSum_four_four, momentSum_four_five,
+      momentSum_four_six]
+  omega
+
 end Omega

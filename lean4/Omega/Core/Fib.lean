@@ -471,4 +471,54 @@ private theorem fib_five_dvd_of_five_dvd (n : Nat) (h : 5 ∣ n) : 5 ∣ Nat.fib
 theorem fib_five_dvd_iff (n : Nat) : 5 ∣ Nat.fib n ↔ 5 ∣ n :=
   ⟨five_dvd_of_fib_five_dvd n, fib_five_dvd_of_five_dvd n⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 183
+-- ══════════════════════════════════════════════════════════════
+
+/-- 7 ∣ F_n → 8 ∣ n (by strong induction, Pisano entry point 8). -/
+private theorem eight_dvd_of_fib_seven_dvd (n : Nat) (h : 7 ∣ Nat.fib n) : 8 ∣ n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => exact dvd_zero 8
+    | 1 => simp [Nat.fib] at h
+    | 2 => simp [Nat.fib] at h
+    | 3 => simp [Nat.fib] at h
+    | 4 => simp [Nat.fib] at h
+    | 5 => simp [Nat.fib] at h
+    | 6 => simp [Nat.fib] at h
+    | 7 => simp [Nat.fib] at h
+    | n + 8 =>
+      -- F(n+8) = 21*F(n+1) + 13*F(n), so 7|F(n+8) → 7|13*F(n) → 7|F(n)
+      have h2 := Nat.fib_add_two (n := n)
+      have h3 := Nat.fib_add_two (n := n + 1)
+      have h4 := Nat.fib_add_two (n := n + 2)
+      have h5 := Nat.fib_add_two (n := n + 3)
+      have h6 := Nat.fib_add_two (n := n + 4)
+      have h7 := Nat.fib_add_two (n := n + 5)
+      have h8 := Nat.fib_add_two (n := n + 6)
+      rw [show n + 1 + 2 = n + 3 from by omega, show n + 1 + 1 = n + 2 from by omega] at h3
+      rw [show n + 2 + 2 = n + 4 from by omega, show n + 2 + 1 = n + 3 from by omega] at h4
+      rw [show n + 3 + 2 = n + 5 from by omega, show n + 3 + 1 = n + 4 from by omega] at h5
+      rw [show n + 4 + 2 = n + 6 from by omega, show n + 4 + 1 = n + 5 from by omega] at h6
+      rw [show n + 5 + 2 = n + 7 from by omega, show n + 5 + 1 = n + 6 from by omega] at h7
+      rw [show n + 6 + 2 = n + 8 from by omega, show n + 6 + 1 = n + 7 from by omega] at h8
+      have hkey : Nat.fib (n + 8) = 21 * Nat.fib (n + 1) + 13 * Nat.fib n := by linarith
+      rw [hkey] at h
+      have h13fn : 7 ∣ 13 * Nat.fib n := by omega
+      have hfn : 7 ∣ Nat.fib n :=
+        Nat.Coprime.dvd_of_dvd_mul_left (by decide : Nat.Coprime 7 13) h13fn
+      have := ih n (by omega) hfn
+      omega
+
+/-- 8 ∣ n → 7 ∣ F_n. -/
+private theorem fib_seven_dvd_of_eight_dvd (n : Nat) (h : 8 ∣ n) : 7 ∣ Nat.fib n := by
+  obtain ⟨k, rfl⟩ := h
+  exact dvd_trans (show (7 : Nat) ∣ Nat.fib 8 from by native_decide)
+    (Nat.fib_dvd 8 (8 * k) ⟨k, rfl⟩)
+
+/-- Pisano entry point mod 7 is 8: 7 | F_n ↔ 8 | n. -/
+theorem fib_seven_dvd_iff (n : Nat) : 7 ∣ Nat.fib n ↔ 8 ∣ n :=
+  ⟨eight_dvd_of_fib_seven_dvd n, fib_seven_dvd_of_eight_dvd n⟩
+
 end Omega
