@@ -773,4 +773,23 @@ theorem momentSum_two_recurrence (m : Nat) :
   have h3 := exactWeightCollision_succ (m + 1)
   linarith
 
+/-- E00 satisfies the S_2 three-step recurrence. -/
+theorem exactWeightCollision_recurrence (m : Nat) :
+    exactWeightCollision (m + 3) + 2 * exactWeightCollision m =
+    2 * exactWeightCollision (m + 2) + 2 * exactWeightCollision (m + 1) := by
+  induction m with
+  | zero => native_decide
+  | succ m ih =>
+    show exactWeightCollision (m + 4) + 2 * exactWeightCollision (m + 1) =
+        2 * exactWeightCollision (m + 3) + 2 * exactWeightCollision (m + 2)
+    have es0 := exactWeightCollision_succ m
+    have es1 : exactWeightCollision (m + 2) = exactWeightCollision (m + 1) +
+        momentSum 2 (m + 1) := by have := exactWeightCollision_succ (m + 1); linarith
+    have es2 : exactWeightCollision (m + 3) = exactWeightCollision (m + 2) +
+        momentSum 2 (m + 2) := by have := exactWeightCollision_succ (m + 2); linarith
+    have es3 : exactWeightCollision (m + 4) = exactWeightCollision (m + 3) +
+        momentSum 2 (m + 3) := by have := exactWeightCollision_succ (m + 3); linarith
+    have sr := momentSum_two_recurrence m
+    linarith
+
 end Omega
