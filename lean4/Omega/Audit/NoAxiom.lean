@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 190: Fib.lean + Window6.lean — Fence行列式Cassini-Pell + CRT最小模深度 + φ(21)=12
+  -- prop:pom-Lk-det-cassini-pell → D_{k+1}·D_{k-1} = D_k² + 1 (Fib.lean)
+  #print axioms Omega.fenceDet_cassini
+  -- prop:crt-235-min-depth → 30|F_60 且 ∀ 0<n<60, ¬(30|F_n) (Fib.lean)
+  #print axioms Omega.crt_235_min_depth
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（代数核心）→ φ(21) = 12 (Window6.lean)
+  #print axioms Omega.conclusion_window6_euler_totient
   -- Phase 189: Weight.lean + Fib.lean + Window6.lean — weight更新+F + Fib严格单调 + 21<64<220
   -- bridge:weight-update-true-add → 翻转 false→true 增加 F_{i+2} (Weight.lean)
   #print axioms Omega.weight_update_true_add

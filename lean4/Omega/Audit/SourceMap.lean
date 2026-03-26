@@ -9728,6 +9728,29 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 190: Fib.lean + Window6.lean（3 条，全部论文标签）
+-- prop:pom-Lk-det-cassini-pell → fenceDet_cassini (Fib.lean)
+-- prop:crt-235-min-depth → crt_235_min_depth (Fib.lean)
+-- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（代数核心）→ conclusion_window6_euler_totient (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-Lk-det-cassini-pell"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_cassini"
+    phase := 190
+    status := .formalized }
+, { label := "prop:crt-235-min-depth"
+    sourcePath := "sections/body/pom/parts/subsec__pom-crt.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.crt_235_min_depth"
+    phase := 190
+    status := .formalized }
+, { label := "thm:conclusion-foldbin-stable-collapse-ordered-k0-memory"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_euler_totient"
+    phase := 190
+    status := .formalized }
 -- Phase 189: Weight.lean + Fib.lean + Window6.lean（3 条，bridge only）
 -- bridge:weight-update-true-add → weight_update_true_add (Weight.lean)
 -- bridge:fib-strict-mono → fib_strict_mono (Fib.lean)

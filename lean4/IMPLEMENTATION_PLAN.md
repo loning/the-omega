@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 190: ★ 全论文标签 — Fence行列式Cassini-Pell + CRT最小模深度 + φ(21)=12（Round 190）**：两文件 Fib.lean + Window6.lean——fenceDet_cassini（prop:pom-Lk-det-cassini-pell：D_{k+1}·D_{k-1} = D_k² + 1，fence 行列式 Cassini-Pell 守恒律，Fib.lean）; crt_235_min_depth（prop:crt-235-min-depth：30|F_60 且 ∀ 0<n<60, ¬(30|F_n)，CRT 最小模深度=60，Fib.lean）; conclusion_window6_euler_totient（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory 代数核心：φ(21) = 12，Window6.lean）——POM ~494→~496, 结论 79→80（+3 条目：prop:pom-Lk-det-cassini-pell, prop:crt-235-min-depth, thm:conclusion-foldbin-stable-collapse-ordered-k0-memory）（Phase 190）
 **Phase 189: weight更新+F + Fib严格单调 + 21<64<220（Round 189）**：三文件 Weight.lean + Fib.lean + Window6.lean——weight_update_true_add（bridge: 翻转 false→true 增加 F_{i+2}，Weight.lean）; fib_strict_mono（bridge: F_n < F_{n+1} for n ≥ 2，Fib.lean）; conclusion_window6_moment_chain（bridge: 21 < 64 < 220，Window6.lean）——全为 bridge，无论文标签，覆盖率不变（Phase 189）
 **Phase 188: Fib平方和移位 + weight零iff全假 + S_2(6)=220≠212（Round 188）**：三文件 Fib.lean + Weight.lean + Window6.lean——fib_sq_sum_shifted（bridge: Σ_{k<n} F_{k+2}² = F_{n+1}·F_{n+2} - 1，Fib.lean）; weight_zero_iff_allFalse（bridge: weight w = 0 ↔ w = allFalse，Weight.lean）; conclusion_window6_standard_collision（bridge: S_2(6) = 220 ≠ 212，Window6.lean）——全为 bridge，无论文标签，覆盖率不变（Phase 188）
 **Phase 187: Fib后继差 + S_2²≤S_1·S_3审计证书 + D(6)²<2^6（Round 187）**：三文件 Fib.lean + MomentBounds.lean + Window6.lean——fib_succ_sub（bridge: F_{n+2} - F_{n+1} = F_n，Fib.lean）; momentSum_log_convex_audit_base（cor:pom-crossq-logconvex-chain 审计证书：S_2² ≤ S_1·S_3 for m=0,2,4,6，MomentBounds.lean）; conclusion_window6_maxfiber_sq_lt_wordcount（bridge: D(6)²=25 < 64=2^6，Window6.lean）——POM ~493→~494（+1 条目：cor:pom-crossq-logconvex-chain）（Phase 187）
@@ -155,15 +156,15 @@
 
 ### Lean4 形式化状态
 
-- **1,228 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,411 个 Lean4 定理（含内部引理）
+- **1,231 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,414 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1287/10,588 = **12.2%** |
+| 全局覆盖率 | 1290/10,588 = **12.2%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -177,13 +178,13 @@
 | 新生算术 | 151 | ~88 | ~58% |
 | Folding | 317 | ~91 | ~29% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~494 | ~32.4% |
+| POM | 1,525 | ~496 | ~32.5% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | 79 | 4.6% |
+| 结论 | 1,727 | 80 | 4.6% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1287** | **12.2%** |
+| **总计** | **10,588** | **1290** | **12.2%** |
 
 ## 3. 未来工作：30 条具体计划
 
