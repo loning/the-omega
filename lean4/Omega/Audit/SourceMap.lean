@@ -9728,6 +9728,25 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 183: Fib.lean + MomentBounds.lean + Window6.lean（5 条，2 论文标签）
+-- bridge:eight-dvd-of-fib-seven → eight_dvd_of_fib_seven_dvd (Fib.lean:479, private)
+-- bridge:fib-seven-dvd-of-eight → fib_seven_dvd_of_eight_dvd (Fib.lean:506, private)
+-- bridge:fib-seven-dvd-iff（Pisano mod 7）→ fib_seven_dvd_iff (Fib.lean:511)
+-- prop:pom-s4-recurrence（基例严格单调）→ momentSum_four_strict_increasing_base (MomentBounds.lean:664)
+-- cor:conclusion-window6-boundary-z6-no-global-free-extension → conclusion_window6_no_free_boundary_extension (Window6.lean:651)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-s4-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s4.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_four_strict_increasing_base"
+    phase := 183
+    status := .formalized }
+, { label := "cor:conclusion-window6-boundary-z6-no-global-free-extension"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_no_free_boundary_extension"
+    phase := 183
+    status := .formalized }
 -- Phase 182: Fib.lean + MomentBounds.lean（5 条，1 论文标签）
 -- bridge:fold-image-card → Fold_image_card (MomentBounds.lean:640)
 -- prop:pom-s3-recurrence（基例严格单调）→ momentSum_three_strict_increasing_base (MomentBounds.lean:645)

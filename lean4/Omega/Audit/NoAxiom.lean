@@ -817,6 +817,17 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 183: Fib.lean + MomentBounds.lean + Window6.lean — Pisano mod 7 + S_4基例严格单调 + 无自由边界扩展
+  -- bridge:eight-dvd-of-fib-seven → 7|F_n → 8|n (Fib.lean:479, private)
+  #print axioms Omega.eight_dvd_of_fib_seven_dvd
+  -- bridge:fib-seven-dvd-of-eight → 8|n → 7|F_n (Fib.lean:506, private)
+  #print axioms Omega.fib_seven_dvd_of_eight_dvd
+  -- bridge:fib-seven-dvd-iff（Pisano mod 7）→ 7|F_n ↔ 8|n (Fib.lean:511)
+  #print axioms Omega.fib_seven_dvd_iff
+  -- prop:pom-s4-recurrence（基例严格单调）→ S_4(0) < ... < S_4(6) (MomentBounds.lean:664)
+  #print axioms Omega.momentSum_four_strict_increasing_base
+  -- cor:conclusion-window6-boundary-z6-no-global-free-extension → 8 ∤ 21 (Window6.lean:651)
+  #print axioms Omega.conclusion_window6_no_free_boundary_extension
   -- Phase 182: Fib.lean + MomentBounds.lean — Pisano mod 5 + |image(Fold)| + S_3基例严格单调
   -- bridge:fold-image-card → |image(Fold)| = F_{m+2} (MomentBounds.lean:640)
   #print axioms Omega.Fold_image_card
