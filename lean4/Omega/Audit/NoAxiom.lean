@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 187: Fib.lean + MomentBounds.lean + Window6.lean — Fib后继差 + S_2²≤S_1·S_3审计证书 + D(6)²<2^6
+  -- bridge:fib-succ-sub → F_{n+2} - F_{n+1} = F_n (Fib.lean)
+  #print axioms Omega.fib_succ_sub
+  -- cor:pom-crossq-logconvex-chain（审计证书）→ S_2² ≤ S_1·S_3 for m=0,2,4,6 (MomentBounds.lean)
+  #print axioms Omega.momentSum_log_convex_audit_base
+  -- bridge:conclusion-window6-maxfiber-sq-lt → D(6)²=25 < 64=2^6 (Window6.lean)
+  #print axioms Omega.conclusion_window6_maxfiber_sq_lt_wordcount
   -- Phase 186: ShiftDynamics.lean + Defect.lean + Window6.lean — Lucas-Fib Wronskian + 两步缺陷组合 + Pimsner-Popa指数
   -- bridge:lucas-fib-wronskian-even → L_n·F_{n+1} = L_{n+1}·F_n + 2 for even n ≥ 2 (ShiftDynamics.lean:493)
   #print axioms Omega.lucasNum_fib_wronskian_even

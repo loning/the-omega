@@ -9728,6 +9728,17 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 187: Fib.lean + MomentBounds.lean + Window6.lean（3 条，1 论文标签）
+-- bridge:fib-succ-sub → fib_succ_sub (Fib.lean)
+-- cor:pom-crossq-logconvex-chain（审计证书）→ momentSum_log_convex_audit_base (MomentBounds.lean)
+-- bridge:conclusion-window6-maxfiber-sq-lt → conclusion_window6_maxfiber_sq_lt_wordcount (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:pom-crossq-logconvex-chain"
+    sourcePath := "sections/body/pom/parts/subsec__pom-crossq.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_log_convex_audit_base"
+    phase := 187
+    status := .formalized }
 -- Phase 186: ShiftDynamics.lean + Defect.lean + Window6.lean（4 条，1 论文标签）
 -- bridge:lucas-fib-wronskian-even → lucasNum_fib_wronskian_even (ShiftDynamics.lean:493)
 -- bridge:lucas-fib-wronskian-odd → lucasNum_fib_wronskian_odd (ShiftDynamics.lean:505)
