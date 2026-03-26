@@ -610,4 +610,43 @@ theorem momentSum_three_twelve : momentSum 3 12 = 703504 := by
     rw [momentSum_three_nine, momentSum_three_ten, momentSum_three_eleven] at this; linarith
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 165: EWT strict monotonicity + CCS recurrence
+-- ══════════════════════════════════════════════════════════════
+
+private theorem exactWeightTriple_pos (m : Nat) : 0 < exactWeightTriple m := by
+  unfold exactWeightTriple
+  have h0 : 0 ∈ Finset.range (Nat.fib (m + 3)) :=
+    Finset.mem_range.mpr (Nat.fib_pos.mpr (by omega))
+  have h1 : exactWeightCount m 0 ^ 3 = 1 := by rw [exactWeightCount_zero_eq_one']; norm_num
+  linarith [Finset.single_le_sum (fun _ _ => Nat.zero_le _) h0
+    (f := fun n => exactWeightCount m n ^ 3)]
+
+/-- EWT is strictly monotone for m ≥ 1. -/
+theorem exactWeightTriple_strict_mono (m : Nat) (hm : 1 ≤ m) :
+    exactWeightTriple m < exactWeightTriple (m + 1) := by
+  have h := exactWeightTriple_succ m
+  have hpos := exactWeightTriple_pos m
+  linarith
+
+/-- CCS(m+3) + 2·CCS(m) = 2·CCS(m+2) + 4·CCS(m+1), where CCS = CCSH+CCSL. -/
+theorem crossCorrSq_recurrence (m : Nat) :
+    (crossCorrSqHigh (m + 3) + crossCorrSqLow (m + 3)) +
+    2 * (crossCorrSqHigh m + crossCorrSqLow m) =
+    2 * (crossCorrSqHigh (m + 2) + crossCorrSqLow (m + 2)) +
+    4 * (crossCorrSqHigh (m + 1) + crossCorrSqLow (m + 1)) := by
+  have hcc2 : crossCorrSqHigh (m + 2) + crossCorrSqLow (m + 2) =
+      crossCorrSqHighPrev (m + 1) + crossCorrSqLowPrev (m + 1) := by
+    have := cc_succ_eq_ccs_prime (m + 1); linarith
+  have hcc3 : crossCorrSqHigh (m + 3) + crossCorrSqLow (m + 3) =
+      crossCorrSqHighPrev (m + 2) + crossCorrSqLowPrev (m + 2) := by
+    have := cc_succ_eq_ccs_prime (m + 2); linarith
+  have hcp1 := ccs_prime_succ m
+  have hcp2 : crossCorrSqHighPrev (m + 2) + crossCorrSqLowPrev (m + 2) =
+      2 * exactWeightTriple (m + 1) +
+      4 * (crossCorrSqHigh (m + 1) + crossCorrSqLow (m + 1)) := by
+    have := ccs_prime_succ (m + 1); linarith
+  have he := exactWeightTriple_succ m
+  linarith
+
 end Omega
