@@ -3,7 +3,7 @@ import Omega.Folding.EWTTelescope
 namespace Omega
 
 -- ══════════════════════════════════════════════════════════════
--- Phase 152: S_3 recurrence definitions + bounded verification
+-- Phase 152-153: S_3 recurrence definitions + verification
 -- ══════════════════════════════════════════════════════════════
 
 /-- Cross-correlation-squared high at previous shift F_{m+1}: Σ ewc(n)² · ewc(n + F_{m+1}). -/
@@ -36,23 +36,15 @@ theorem tripleCollisionClass_fff_eq_exact (m : Nat) :
     rw [Nat.mod_eq_of_lt h1, Nat.mod_eq_of_lt h2, Nat.mod_eq_of_lt h3]
     exact ⟨h12, h23⟩
 
-/-- tripleCollisionClass(ttt) = exactTripleCollisionClass(ttt) since +F cancels in mod. -/
+/-- tripleCollisionClass(ttt) = exactTripleCollisionClass(ttt). -/
 theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
     (tripleCollisionClass m true true true).card =
     (exactTripleCollisionClass m true true true).card := by
   congr 1; ext ⟨v1, v2, v3⟩
   simp only [tripleCollisionClass, exactTripleCollisionClass, Finset.mem_filter,
     Finset.mem_univ, true_and, ite_true]
-  -- Both conditions reduce to: wt(vi) + F mod F' = wt(vj) + F mod F'
-  -- ↔ (wt(vi) + F) mod F' = (wt(vj) + F) mod F'
-  -- ↔ wt(vi) + F = wt(vj) + F (when both < 2·F')
-  have hlt : ∀ w : Word m, weight w + Nat.fib (m + 2) < 2 * Nat.fib (m + 3) := by
-    intro w; have := X.weight_lt_fib w
-    have := Nat.fib_mono (show m + 2 ≤ m + 3 by omega)
-    omega
   constructor
-  · -- (→) mod → exact: cancel F_{m+2} from mod equality
-    intro ⟨h1, h2⟩
+  · intro ⟨h1, h2⟩
     have hmod1 : weight v1 % Nat.fib (m + 3) = weight v2 % Nat.fib (m + 3) :=
       Nat.ModEq.add_right_cancel' (Nat.fib (m + 2)) h1
     have hmod2 : weight v2 % Nat.fib (m + 3) = weight v3 % Nat.fib (m + 3) :=
@@ -60,10 +52,21 @@ theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
     rw [Nat.mod_eq_of_lt (X.weight_lt_fib v1), Nat.mod_eq_of_lt (X.weight_lt_fib v2)] at hmod1
     rw [Nat.mod_eq_of_lt (X.weight_lt_fib v2), Nat.mod_eq_of_lt (X.weight_lt_fib v3)] at hmod2
     exact ⟨by omega, by omega⟩
-  · -- (←) exact → mod: direct congruence
-    intro ⟨h1, h2⟩
+  · intro ⟨h1, h2⟩
     exact ⟨congr_arg (· % Nat.fib (m + 3)) h1,
            congr_arg (· % Nat.fib (m + 3)) h2⟩
+
+/-- T_{fft} mod split verified for m ≤ 5. -/
+theorem tripleCollisionClass_fft_mod_split_bounded (m : Nat) (hm : m ≤ 5) :
+    (tripleCollisionClass m false false true).card =
+    crossCorrSqLow m + crossCorrSqHighPrev m := by
+  interval_cases m <;> native_decide
+
+/-- T_{ftt} mod split verified for m ≤ 5. -/
+theorem tripleCollisionClass_ftt_mod_split_bounded (m : Nat) (hm : m ≤ 5) :
+    (tripleCollisionClass m false true true).card =
+    crossCorrSqHigh m + crossCorrSqLowPrev m := by
+  interval_cases m <;> native_decide
 
 /-- S_3(m+1) decomposition verified for m ≤ 5. -/
 theorem momentSum_three_succ_decomposition_bounded (m : Nat) (hm : m ≤ 5) :
@@ -72,7 +75,7 @@ theorem momentSum_three_succ_decomposition_bounded (m : Nat) (hm : m ≤ 5) :
     3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
   interval_cases m <;> (rw [← cMomentSum_eq]; native_decide)
 
-/-- S_3(m+1) in terms of EWT(m+1) and prev cross-correlations, verified for m ≤ 5. -/
+/-- S_3(m+1) = EWT(m+1) + 3·CCSH' + 3·CCSL' verified for m ≤ 5. -/
 theorem momentSum_three_succ_ewt_form_bounded (m : Nat) (hm : m ≤ 5) :
     momentSum 3 (m + 1) = exactWeightTriple (m + 1) +
     3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
