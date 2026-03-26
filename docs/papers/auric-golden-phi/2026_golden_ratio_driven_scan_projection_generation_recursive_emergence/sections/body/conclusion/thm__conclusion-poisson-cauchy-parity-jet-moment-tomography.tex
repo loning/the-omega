@@ -433,7 +433,109 @@ f_3''(1)&f_3^{(3)}(1)&f_3^{(4)}(1)
 即可唯一恢复 \(\mathcal J(\tilde\nu)\)。证毕。
 \end{proof}
 
+\begin{proposition}[固定一阶矩类中的二阶可见模空间是一维]\label{prop:conclusion-poisson-second-order-visible-moduli-one-dimensional}
+设 \(G_t,\widetilde G_t\) 为两条点状缺陷测度的 Poisson 粗粒化剖面，并假定它们具有相同总质量 \(M_0>0\) 与相同一阶矩 \(M_1\)。记共同重心为
+\[
+\bar\gamma:=\frac{M_1}{M_0},
+\]
+并令 \(\tilde\nu,\tilde\nu'\) 为相应的归一化权重测度，其方差分别记为
+\[
+\mathrm{Var}:=\int (\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma),
+\qquad
+\widetilde{\mathrm{Var}}:=\int (\gamma-\bar\gamma)^2\,\dd\tilde\nu'(\gamma).
+\]
+则存在一致展开
+\[
+G_t(x)-\widetilde G_t(x)
+=
+\frac{M_0\bigl(\mathrm{Var}-\widetilde{\mathrm{Var}}\bigr)}{\pi}\,
+\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3}
++O(t^{-4}),
+\]
+其中余项在 \(x\in\RR\) 上一致。因而，在固定 \((M_0,M_1)\) 的等矩类内，Poisson 粗粒化在二阶精度上的全部可见差异，仅由单个标量 \(\mathrm{Var}\) 参数化。
+\end{proposition}
+\begin{proof}
+由命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}，对每一条归一化权重测度都有展开
+\[
+h_t(x)=g_t(x)+\mathrm{Var}\cdot r_t(x)+O(t^{-4}),
+\qquad
+\widetilde h_t(x)=g_t(x)+\widetilde{\mathrm{Var}}\cdot r_t(x)+O(t^{-4}),
+\]
+其中
+\[
+g_t(x):=\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2},
+\qquad
+r_t(x):=\frac{1}{\pi}\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3}.
+\]
+而原始粗粒化剖面满足
+\[
+G_t=M_0h_t,
+\qquad
+\widetilde G_t=M_0\widetilde h_t.
+\]
+两式相减即得
+\[
+G_t(x)-\widetilde G_t(x)
+=
+M_0\bigl(\mathrm{Var}-\widetilde{\mathrm{Var}}\bigr)r_t(x)+O(t^{-4}),
+\]
+这正是所需展开。由右端可见，在固定 \((M_0,M_1)\) 的条件下，二阶可见差异只通过 \(\mathrm{Var}-\widetilde{\mathrm{Var}}\) 进入，故可见模空间是一维的。证毕。
+\end{proof}
+
+\begin{corollary}[二阶剖面的双结点盲区与单点反演]\label{cor:conclusion-poisson-second-order-two-node-blindness}
+在命题 \ref{prop:conclusion-poisson-second-order-visible-moduli-one-dimensional} 的单测度情形下，令
+\[
+g_t(x):=\frac{M_0}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2},
+\qquad
+y:=\frac{x-\bar\gamma}{t},
+\]
+并定义二阶归一化剖面
+\[
+\mathcal R_t(y):=
+t^2\left(\frac{G_t(\bar\gamma+ty)}{g_t(\bar\gamma+ty)}-1\right).
+\]
+则有一致极限
+\[
+\mathcal R_t(y)=\frac{\mathrm{Var}}{2}\,\mathcal H(y)+O(t^{-1}),
+\qquad
+\mathcal H(y):=\frac{2(3y^2-1)}{(1+y^2)^2}.
+\]
+因此 \(\mathcal H\) 恰有两个零点
+\[
+y=\pm \frac{1}{\sqrt3}.
+\]
+特别地：
+\begin{enumerate}
+\item 二阶方差信号只有这两个相似变量位置完全不可见；
+\item 对任意 \(y_0\neq \pm 1/\sqrt3\)，单点观测已可恢复方差，
+\[
+\mathrm{Var}
+=
+\lim_{t\to\infty}\frac{2\mathcal R_t(y_0)}{\mathcal H(y_0)}.
+\]
+\end{enumerate}
+换言之，Poisson--Cauchy 二阶校正的观测盲区并非连续族，而是严格退化为两个离散结点。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:xi-cauchy-poisson-density-ratio-second-order-profile}，
+\[
+\mathcal R_t(y)=\frac{\mathrm{Var}}{2}\,\mathcal H(y)+O(t^{-1})
+\qquad\text{一致于 }y\in\RR.
+\]
+而定理 \ref{thm:xi-cauchy-poisson-second-order-shape-limit-node-rigidity} 已给出 \(\mathcal H(y)\) 的零点仅为
+\[
+y=\pm \frac{1}{\sqrt3}.
+\]
+故除这两个结点外，\(\mathcal H(y_0)\neq 0\)，从而
+\[
+\mathrm{Var}
+=
+\lim_{t\to\infty}\frac{2\mathcal R_t(y_0)}{\mathcal H(y_0)}.
+\]
+这便得到二阶盲区与单点反演公式。证毕。
+\end{proof}
+
 \noindent
-以上结果把高阶 Poisson--Cauchy 信息渐近压成一条完整的喷流几何链：首先，轮廓函数的奇偶性强制一切 \(f\)-散度的奇次喷流全局消隐，并由此诱导出绕均值镜像的完整喷流盲性；其次，KL 与 R\'enyi 的六阶校正项都被迫为严格负项，从而六阶主导常数总以单侧方式逼近其四阶极限；再次，\((\mu_2,|\mu_3|,\mu_4)\) 作为三常数层析坐标完全控制全部六阶 universality class；最后，所有八阶 \(f\)-散度又统一坍缩为三维 moment--jet 向量的线性层析问题。于是，\S\ref{subsec:conclusion-poisson-cauchy-high-order-entropy-fiber-rigidity} 中分散的高阶展开在结论层被压接为同一条 parity--jet--tomography 刚性链。
+以上结果把 Poisson--Cauchy 信息渐近压成一条由低阶至高阶的喷流几何链：在二阶层面，固定 \((M_0,M_1)\) 的粗粒化可见模空间严格退化为单一方差参数，并且观测盲区只剩 \(\pm 1/\sqrt3\) 两个离散结点；在更高阶层面，轮廓函数的奇偶性又强制一切 \(f\)-散度的奇次喷流全局消隐，并由此诱导出绕均值镜像的完整喷流盲性。进一步，KL 与 R\'enyi 的六阶校正项都被迫为严格负项，从而六阶主导常数总以单侧方式逼近其四阶极限；\((\mu_2,|\mu_3|,\mu_4)\) 则作为三常数层析坐标完全控制全部六阶 universality class；最后，所有八阶 \(f\)-散度又统一坍缩为三维 moment--jet 向量的线性层析问题。于是，\S\ref{subsec:conclusion-poisson-cauchy-high-order-entropy-fiber-rigidity} 中分散的二阶与高阶展开在结论层被压接为同一条 parity--jet--tomography 刚性链。
 
 \endinput

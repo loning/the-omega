@@ -328,3 +328,198 @@ d_{\mathrm{FP}}(X)=\varphi.
 \]
 与定理 \ref{thm:conclusion-fiber-multiplicity-diameter-cubedim-rigidity} 的直接合并。证毕。
 \end{proof}
+
+\begin{theorem}[单偏置后验的刚性完备性]\label{thm:conclusion-single-bias-posterior-complete-fiber-statistic}
+固定 \(m\ge 2\) 与 \(x\in X_m\)。取任意 \(p\in(0,1)\)，并记
+\[
+t:=\frac{p}{1-p},
+\qquad
+Z_x(z):=\sum_{\omega\in \Fold_m^{-1}(x)} z^{r(\omega)}.
+\]
+令 \(R_{x,p}\) 表示纤维后验 \(\mu_{m,p}(\,\cdot\mid x)\) 下的逆代换次数随机变量。则单个边缘分布 \(\mathcal L(R_{x,p})\) 已唯一决定以下全部对象：
+\begin{enumerate}
+  \item 纤维生成多项式 \(Z_x(z)\)；
+  \item \(Z_x\) 的负实根多重集 \(\{\alpha_{x,j}\}_j\)；
+  \item 路径长度多重集 \(\{\ell_i(x)\}_{i=1}^{r(x)}\)；
+  \item 纤维格
+  \[
+  \mathcal L_x\cong \prod_{i=1}^{r(x)}J(Z_{\ell_i(x)}).
+  \]
+\end{enumerate}
+换言之，对固定 \(x\) 而言，任一单一非平凡偏置的后验逆代换次数分布，已是该纤维全部离散几何的完备统计量。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-biased-posterior-poisson-binomial}，
+\[
+\EE[s^{R_{x,p}}\mid x]=\frac{Z_x(ts)}{Z_x(t)}.
+\]
+因此 \(\mathcal L(R_{x,p})\) 唯一决定概率母函数
+\[
+G_{x,p}(s):=\EE[s^{R_{x,p}}\mid x].
+\]
+又由 \(Z_x(0)=1\) 可知
+\[
+G_{x,p}(0)=\frac{1}{Z_x(t)},
+\]
+从而
+\[
+Z_x(z)=\frac{G_{x,p}(z/t)}{G_{x,p}(0)}.
+\]
+故 \(Z_x\) 被唯一恢复。
+
+再由定理 \ref{thm:pom-fiber-rewrite-realroot-ulc}，\(Z_x\) 的全部零点皆为负实根，且可写为
+\[
+Z_x(z)=\prod_{j}\left(1+\frac{z}{\alpha_{x,j}}\right),
+\qquad
+\alpha_{x,j}>0.
+\]
+于是 \(G_{x,p}(s)\) 的零点恰为 \(-\alpha_{x,j}/t\)，故 \(\mathcal L(R_{x,p})\) 亦唯一决定根多重集 \(\{\alpha_{x,j}\}_j\)。
+
+最后，由定理 \ref{thm:pom-fiber-psi-exponent-mobius-reconstruct}，\(Z_x\) 的 cyclotomic 指数向量唯一恢复路径长度多重集 \(\{\ell_i(x)\}\)；再由定理 \ref{thm:pom-fiber-birkhoff-fence-ideal-lattice}，该长度多重集唯一决定纤维格
+\[
+\mathcal L_x\cong \prod_{i=1}^{r(x)}J(Z_{\ell_i(x)}).
+\]
+故四项对象均由 \(\mathcal L(R_{x,p})\) 唯一决定。证毕。
+\end{proof}
+
+\begin{theorem}[纤维 canonical rowmotion 的精确周期公式]\label{thm:conclusion-fiber-canonical-rowmotion-order-law}
+对任意 \(x\in X_m\)，设
+\[
+\Gamma_x\cong \bigsqcup_{i=1}^{r(x)}P_{\ell_i(x)},
+\qquad
+\mathcal L_x\cong \prod_{i=1}^{r(x)}J(Z_{\ell_i(x)}).
+\]
+把每个因子 \(J(Z_{\ell_i(x)})\) 通过规范同构识别为 \(\mathsf{Ind}(P_{\ell_i(x)})\)，并定义纤维上的 canonical rowmotion
+\[
+\operatorname{Row}_x:=\prod_{i=1}^{r(x)}\operatorname{Row}_{P_{\ell_i(x)}}.
+\]
+则其精确周期满足
+\[
+\operatorname{ord}(\operatorname{Row}_x)=\mathrm{lcm}_{1\le i\le r(x)}\bigl(\ell_i(x)+2\bigr).
+\]
+若记
+\[
+m_d(x):=\#\{\,i:\ d\mid (\ell_i(x)+2)\,\}
+\qquad (d\ge 3),
+\]
+则等价地
+\[
+\operatorname{ord}(\operatorname{Row}_x)
+=
+\mathrm{lcm}\{\,d\ge 3:\ m_d(x)>0\,\}.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-birkhoff-fence-ideal-lattice}，\(\mathcal L_x\) 分解为路径锯齿理想格的 Cartesian 乘积；再经 Joseph--Roby 关于路径独立集 rowmotion 的周期公式 \cite{JosephRoby2018TogglingIndependentSetsPath}，每个路径因子上的 canonical rowmotion 满足
+\[
+\operatorname{ord}(\operatorname{Row}_{P_{\ell_i(x)}})=\ell_i(x)+2.
+\]
+直积动力系统的周期即各因子周期的最小公倍数，故得
+\[
+\operatorname{ord}(\operatorname{Row}_x)=\mathrm{lcm}_{1\le i\le r(x)}(\ell_i(x)+2).
+\]
+而一个整数 \(d\ge 3\) 出现在该最小公倍数的约束中，当且仅当存在某个 \(i\) 使 \(d\mid(\ell_i(x)+2)\)，亦即 \(m_d(x)>0\)。故第二式只是第一式的整除指纹改写。证毕。
+\end{proof}
+
+\begin{corollary}[三扭结与奇偶平衡的等价判据]\label{cor:conclusion-fiber-parity-balance-rowmotion-three-torsion}
+在纤维均匀测度下，逆代换次数 \(R_x\) 的奇偶严格均匀，即
+\[
+\PP(R_x\equiv 0\!\!\!\pmod 2\mid x)
+=
+\PP(R_x\equiv 1\!\!\!\pmod 2\mid x),
+\]
+当且仅当
+\[
+3\mid \operatorname{ord}(\operatorname{Row}_x).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-signed-index-periodicity}，
+\[
+\PP(R_x\equiv 0\!\!\!\pmod 2\mid x)
+=
+\PP(R_x\equiv 1\!\!\!\pmod 2\mid x)
+\iff
+Z_x(-1)=0,
+\]
+而该定理同时给出
+\[
+Z_x(-1)=0
+\iff
+\exists i,\ \ell_i(x)\equiv 1\pmod 3.
+\]
+又
+\[
+\ell_i(x)\equiv 1\pmod 3
+\iff
+3\mid (\ell_i(x)+2),
+\]
+再由定理 \ref{thm:conclusion-fiber-canonical-rowmotion-order-law}，
+\[
+3\mid \operatorname{ord}(\operatorname{Row}_x)
+\iff
+\exists i,\ 3\mid (\ell_i(x)+2).
+\]
+两者合并即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[单偏置后验决定 canonical 周期及其素因子]\label{cor:conclusion-single-bias-posterior-determines-rowmotion-order}
+对任意固定 \(x\in X_m\) 与任意 \(p\in(0,1)\)，单个后验分布 \(\mathcal L(R_{x,p})\) 已唯一决定
+\[
+\operatorname{ord}(\operatorname{Row}_x)
+\]
+以及该周期的全部素因子集合。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-single-bias-posterior-complete-fiber-statistic}，\(\mathcal L(R_{x,p})\) 唯一决定路径长度多重集 \(\{\ell_i(x)\}\)。再由定理 \ref{thm:conclusion-fiber-canonical-rowmotion-order-law}，
+\[
+\operatorname{ord}(\operatorname{Row}_x)=\mathrm{lcm}_{i}(\ell_i(x)+2),
+\]
+故该周期及其素因子集合均被唯一恢复。证毕。
+\end{proof}
+
+\begin{theorem}[cyclotomic 原始除子层的全局局部化律]\label{thm:conclusion-fiber-cyclotomic-primitive-divisor-global-localization}
+固定 \(m\ge 1\)。设 \(m_d(x)\) 为定理 \ref{thm:pom-fiber-psi-exponent-mobius-reconstruct} 中的 cyclotomic 指数，并写
+\[
+Z_x(t)=\prod_{d\ge 3}\Psi_d(t)^{\,m_d(x)}.
+\]
+令 \(D\ge 3\)，取 \(\tau\) 为 \(\Psi_D\) 的任一根。则成立精确恒等式
+\[
+\sum_{x:\,m_D(x)=0}\tau^{|x|_1}Z_x(\tau)=(1+\tau)^m.
+\]
+亦即，在全局守恒律中，凡含有 \(D\)-原始 cyclotomic 因子的纤维都在 \(t=\tau\) 处整体熄灭；剩余总和完全由 \(D\)-free 层承担。
+
+特别地，当 \(D=3\) 且 \(\tau=-1\) 时，
+\[
+\sum_{x:\,m_3(x)=0}(-1)^{|x|_1}Z_x(-1)=0.
+\]
+再由推论 \ref{cor:conclusion-fiber-parity-balance-rowmotion-three-torsion}，该式可重写为
+\[
+\sum_{x:\,3\nmid \operatorname{ord}(\operatorname{Row}_x)}(-1)^{|x|_1}Z_x(-1)=0.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-biased-weighted-partition-identity}，
+\[
+\sum_{x\in X_m} t^{|x|_1}Z_x(t)=(1+t)^m.
+\]
+在 \(t=\tau\) 处，若 \(m_D(x)>0\)，则因 \(\Psi_D(\tau)=0\) 有
+\[
+Z_x(\tau)=0.
+\]
+故全和自动局部化到 \(m_D(x)=0\) 的层上，从而得到
+\[
+\sum_{x:\,m_D(x)=0}\tau^{|x|_1}Z_x(\tau)=(1+\tau)^m.
+\]
+当 \(D=3\) 时，\(\Psi_3(t)=1+t\)，故可取 \(\tau=-1\)，右端即为 \(0\)。这便给出
+\[
+\sum_{x:\,m_3(x)=0}(-1)^{|x|_1}Z_x(-1)=0.
+\]
+最后，由推论 \ref{cor:conclusion-fiber-parity-balance-rowmotion-three-torsion}，
+\[
+m_3(x)>0
+\iff
+3\mid \operatorname{ord}(\operatorname{Row}_x),
+\]
+故最终的 rowmotion 版本随之成立。证毕。
+\end{proof}

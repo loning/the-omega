@@ -146,3 +146,74 @@ g_\ast+\alpha_\ast,& \beta\ge \beta_c.
 \begin{proof}
 由定理 \ref{thm:conclusion-budget-curve-exact-tail-difference-reconstruction}，第一分量 \((\mathrm{Succ}_m(s))_{s=0}^{2^m}\) 唯一恢复全部直方图 \(M_m(k)\)，从而完成 bulk 重构。由定理 \ref{thm:conclusion-toeplitz-endpoint-atom-dyadic-joint-verification}，第二分量 \((T_{2^k})_{k=0}^{K(D,\varepsilon)}\) 判定全层级 Toeplitz--PSD，可完成 global feasibility；第三分量 \(a_{2^{K(D,\varepsilon)}}\) 以误差不超过 \(\varepsilon\) 恢复 \(\mu(\{-1\})\)，完成 boundary extraction。三者合并即得结论。证毕。
 \end{proof}
+
+\begin{theorem}[纤维尾谱的 R\'enyi--压力上界]\label{thm:conclusion-fiber-tail-spectrum-renyi-pressure-upper-bound}
+定义尾计数函数
+\[
+N_m(\theta):=\#\{x\in X_m:\ d_m(x)\ge \theta\},
+\]
+其中 \(d_m(x)=|\Fold_m^{-1}(x)|\)。则对任意整数 \(q\ge 1\) 与任意 \(\gamma\ge 0\)，都有
+\[
+\limsup_{m\to\infty}\frac1m\log N_m(e^{\gamma m})
+\le
+\log r_q-q\gamma,
+\]
+其中
+\[
+r_q:=\lim_{m\to\infty}S_q(m)^{1/m},
+\qquad
+S_q(m):=\sum_{x\in X_m}d_m(x)^q.
+\]
+因此
+\[
+\limsup_{m\to\infty}\frac1m\log N_m(e^{\gamma m})
+\le
+\inf_{q\in \NN,\ q\ge 1}\bigl(\log r_q-q\gamma\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由 Markov 型估计，
+\[
+N_m(e^{\gamma m})\,e^{q\gamma m}
+\le
+\sum_{x:\,d_m(x)\ge e^{\gamma m}}d_m(x)^q
+\le
+\sum_{x\in X_m}d_m(x)^q
+=
+S_q(m).
+\]
+两边取对数并除以 \(m\)，再令 \(m\to\infty\)，得到
+\[
+\limsup_{m\to\infty}\frac1m\log N_m(e^{\gamma m})
+\le
+\lim_{m\to\infty}\frac1m\log S_q(m)-q\gamma
+=
+\log r_q-q\gamma.
+\]
+对所有整数 \(q\ge 1\) 取下确界，即得第二式。证毕。
+\end{proof}
+
+\begin{conjecture}[纤维尾谱的大偏差精确公式]\label{conj:conclusion-fiber-tail-spectrum-legendre-sharp}
+设文稿中的实参数 Perron 分支
+\[
+\Lambda(t):=\log \lambda(t+1)-\log |A_{\mathrm{out}}|
+\qquad (t\ge 0)
+\]
+存在、可微且本质严格凸。则对每个处于暴露斜率内部的 \(\gamma\)，应有精确极限
+\[
+\lim_{m\to\infty}\frac1m\log N_m(e^{\gamma m})
+=
+\inf_{t\ge 0}\bigl(\log|A_{\mathrm{out}}|+\Lambda(t)-(t+1)\gamma\bigr).
+\]
+换言之，定理 \ref{thm:conclusion-fiber-tail-spectrum-renyi-pressure-upper-bound} 的上界在热力学良性区间内应当是 sharp 的；纤维尾谱的指数函数恰为实参数压力的 Legendre--Fenchel 对偶。
+
+该猜想与文稿中的端点定理
+\[
+\lim_{q\to\infty}\frac{1}{q}\log r_q=\frac12\log\varphi
+\]
+一致；因此其右端的有效支撑应在
+\[
+\gamma\le \frac12\log\varphi
+\]
+处终止。
+\end{conjecture}
