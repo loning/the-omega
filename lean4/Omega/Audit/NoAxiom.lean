@@ -2296,6 +2296,12 @@ def coreAuditTargets : List String :=
   , "Omega.ewc_zero_of_ge"
   , "Omega.crossCorrSqLow_range_truncate"
   , "Omega.crossCorrSqHighPrev_range_truncate"
-  , "Omega.tripleCollisionClass_fft_mod_split" ]
+  , "Omega.tripleCollisionClass_fft_mod_split"
+  -- Phase 158: S_3 结构分解完全闭合 (S3Recurrence.lean:242,254,268,310,355)
+  , "Omega.crossCorrSqHigh_range_truncate"
+  , "Omega.crossCorrSqLowPrev_range_truncate"
+  , "Omega.tripleCollisionClass_ftt_eq_sum"
+  , "Omega.tripleCollisionClass_ftt_mod_split"
+  , "Omega.momentSum_three_eq_ewt_plus_ccs" ]
 
 end Omega.Audit

@@ -9428,6 +9428,42 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.tripleCollisionClass_fft_mod_split"
     phase := 157
     status := .formalized }
+-- Phase 158: S_3 结构分解完全闭合 (S3Recurrence.lean:242,254,268,310,355)
+-- bridge:ccsh-range-truncate → crossCorrSqHigh_range_truncate (S3Recurrence.lean:242)
+-- bridge:ccsl-prev-truncate → crossCorrSqLowPrev_range_truncate (S3Recurrence.lean:254)
+-- bridge:ftt-eq-sum → tripleCollisionClass_ftt_eq_sum (S3Recurrence.lean:268)
+-- prop:pom-s3-recurrence → tripleCollisionClass_ftt_mod_split (S3Recurrence.lean:310)
+-- prop:pom-s3-recurrence → momentSum_three_eq_ewt_plus_ccs (S3Recurrence.lean:355) [终极突破]
+, { label := "bridge:ccsh-range-truncate"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.crossCorrSqHigh_range_truncate"
+    phase := 158
+    status := .formalized }
+, { label := "bridge:ccsl-prev-truncate"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.crossCorrSqLowPrev_range_truncate"
+    phase := 158
+    status := .formalized }
+, { label := "bridge:ftt-eq-sum"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.tripleCollisionClass_ftt_eq_sum"
+    phase := 158
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.tripleCollisionClass_ftt_mod_split"
+    phase := 158
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_eq_ewt_plus_ccs"
+    phase := 158
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
