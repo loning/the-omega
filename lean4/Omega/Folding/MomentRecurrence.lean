@@ -797,4 +797,13 @@ theorem momentSum_three_pos (m : Nat) : 0 < momentSum 3 m :=
 theorem momentSum_four_ge_three (m : Nat) : momentSum 3 m ≤ momentSum 4 m :=
   momentSum_le_succ' 3 m
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 181
+-- ══════════════════════════════════════════════════════════════
+
+/-- weight(w) + weight(complement w) = F_{m+3} - 2 (total weight conservation). -/
+theorem weight_add_complement (w : Word m) :
+    weight w + weight (complement w) = Nat.fib (m + 3) - 2 := by
+  have := weight_complement w; omega
+
 end Omega

@@ -615,4 +615,21 @@ theorem exactWeightCollision_ge_double_hiddenBitCount (m : Nat) (hm : 2 ≤ m) :
   -- So E00(m) ≥ 2^m. And 2*(2^m/3) ≤ 2^m.
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 181
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2 base values strictly increasing through m = 0..7. -/
+theorem momentSum_two_strict_increasing_base :
+    momentSum 2 0 < momentSum 2 1 ∧
+    momentSum 2 1 < momentSum 2 2 ∧
+    momentSum 2 2 < momentSum 2 3 ∧
+    momentSum 2 3 < momentSum 2 4 ∧
+    momentSum 2 4 < momentSum 2 5 ∧
+    momentSum 2 5 < momentSum 2 6 ∧
+    momentSum 2 6 < momentSum 2 7 := by
+  rw [momentSum_two_zero, momentSum_two_one, momentSum_two_two, momentSum_two_three,
+      momentSum_two_four, momentSum_two_five, momentSum_two_six, momentSum_two_seven]
+  omega
+
 end Omega

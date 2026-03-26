@@ -630,4 +630,15 @@ theorem conclusion_window6_not_free_algebra :
   rw [cBinFiberHist_6_4, cBinFiberHist_6_3, cBinFiberHist_6_2]
   native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 181
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 fibers are non-uniform: min ≠ max, min=2, max=4. -/
+theorem conclusion_window6_fiber_nonuniform :
+    cBinFiberMin 6 ≠ cBinFiberMax 6 ∧
+    cBinFiberMin 6 = 2 ∧ cBinFiberMax 6 = 4 :=
+  ⟨by rw [cBinFiberMin_six, cBinFiberMax_six]; omega,
+    cBinFiberMin_six, cBinFiberMax_six⟩
+
 end Omega
