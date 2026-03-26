@@ -9617,6 +9617,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_twelve"
     phase := 164
     status := .formalized }
+-- Phase 165: CCSPrime8Split.lean 桥接定理（2 条）(CCSPrime8Split.lean:626,633)
+-- bridge:ewt-strict-mono → exactWeightTriple_strict_mono (CCSPrime8Split.lean:626)
+-- bridge:ccs-f-recurrence → crossCorrSq_recurrence (CCSPrime8Split.lean:633)
+, { label := "bridge:ewt-strict-mono"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.exactWeightTriple_strict_mono"
+    phase := 165
+    status := .formalized }
+, { label := "bridge:ccs-f-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.crossCorrSq_recurrence"
+    phase := 165
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
