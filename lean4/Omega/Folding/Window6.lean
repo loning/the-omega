@@ -513,4 +513,62 @@ theorem curvature_parenthesization :
     (∀ (a b : Word m), xorWord a b = xorWord b a) :=
   ⟨xorWord_assoc, xorWord_comm⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 174
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 three rigidity scales: |X_6|=21, max_BinFold_mult=4, 2^6=64, and 4 < 21 < 64.
+    cor:conclusion-window6-three-rigidity-scales. -/
+theorem conclusion_window6_three_rigidity_scales :
+    Nat.fib 8 = 21 ∧ cBinFiberMax 6 = 4 ∧ 2 ^ 6 = 64 ∧
+    cBinFiberMax 6 < Nat.fib 8 ∧ Nat.fib 8 < 2 ^ 6 := by
+  refine ⟨by native_decide, cBinFiberMax_six, by omega, ?_, ?_⟩
+  · rw [cBinFiberMax_six]; native_decide
+  · native_decide
+
+/-- Window-6 collision dimension: Σ d²_bin = 9·16 + 4·9 + 8·4 = 212.
+    thm:conclusion-window6-groupoid-collision-dimension-identity. -/
+theorem conclusion_window6_collision_dimension :
+    cBinFiberHist 6 4 * 4 ^ 2 + cBinFiberHist 6 3 * 3 ^ 2 +
+    cBinFiberHist 6 2 * 2 ^ 2 = 212 := by
+  rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
+
+/-- 212 = 4 * 53. -/
+theorem conclusion_window6_collision_prob_numerator :
+    212 = 4 * 53 := by omega
+
+/-- (2^6)^2 = 4096 = 4 * 1024. -/
+theorem conclusion_window6_collision_prob_denominator :
+    (2 ^ 6) ^ 2 = 4 * 1024 := by omega
+
+/-- For b ≥ 2: T < b^T. -/
+theorem lt_self_pow (b T : Nat) (hb : 2 ≤ b) : T < b ^ T := by
+  induction T with
+  | zero => simp
+  | succ T ih =>
+    cases T with
+    | zero =>
+      -- 1 < b^1 = b ≥ 2
+      simp; omega
+    | succ T =>
+      -- T+2 < b^{T+2}. IH: T+1 < b^{T+1}.
+      -- T+2 ≤ 2*(T+1) ≤ b*(T+1) < b*b^{T+1} = b^{T+2}
+      calc T + 2 ≤ 2 * (T + 1) := by omega
+        _ ≤ b * (T + 1) := Nat.mul_le_mul_right _ hb
+        _ < b * b ^ (T + 1) := by
+            exact Nat.mul_lt_mul_of_pos_left ih (by omega)
+        _ = b ^ (T + 1) * b := by ring
+        _ = b ^ (T + 2) := pow_succ b (T + 1)
+
+/-- At m=6, D(6)=5, so 2^T < 5 implies T < 3 (need at least 3 binary steps).
+    prop:conclusion-index-torsion-time-lower-bound (window-6 specialization). -/
+theorem readout_binary_steps_window6 :
+    ∀ T : Nat, 2 ^ T < X.maxFiberMultiplicity 6 → T < 3 := by
+  rw [X.maxFiberMultiplicity_six]
+  intro T hT
+  by_contra h; push_neg at h
+  -- T ≥ 3 → 2^T ≥ 2^3 = 8 > 5, contradicting hT
+  have h8 : 2 ^ 3 ≤ 2 ^ T := Nat.pow_le_pow_right (by omega) h
+  simp at h8; omega
+
 end Omega
