@@ -2,6 +2,7 @@ import Omega.Folding.MomentTriple
 import Omega.Folding.Weight
 import Omega.Core.Fib
 import Omega.Folding.CCSPrime8Split
+import Omega.Combinatorics.FibonacciCube
 import Mathlib.Logic.Function.Basic
 
 namespace Omega
@@ -412,5 +413,27 @@ theorem momentSum_strict_mono_q (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
 theorem momentSum_two_cs_lower (m : Nat) :
     (2 ^ m) ^ 2 ≤ Nat.fib (m + 2) * momentSum 2 m :=
   momentSum_cauchy_schwarz m
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 171
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m) strictly exceeds the type count F_{m+2} for m ≥ 2. -/
+theorem momentSum_two_gt_fib (m : Nat) (hm : 2 ≤ m) :
+    Nat.fib (m + 2) < momentSum 2 m := by
+  rw [← X.card_eq_fib, ← Finset.card_univ]
+  simp only [Finset.card_eq_sum_ones, momentSum]
+  apply Finset.sum_lt_sum
+  · intro x _
+    exact Nat.one_le_pow 2 _ (X.fiberMultiplicity_pos x)
+  · obtain ⟨x₀, hx₀⟩ := exists_fiber_ge_two m hm
+    exact ⟨x₀, Finset.mem_univ _, by nlinarith [X.fiberMultiplicity_pos x₀]⟩
+
+/-- D(m) < S_2(m) for m ≥ 2. Combines D² ≤ S_2 with D ≥ 2. -/
+theorem maxFiberMultiplicity_lt_momentSum_two (m : Nat) (hm : 2 ≤ m) :
+    X.maxFiberMultiplicity m < momentSum 2 m := by
+  have hD := maxFiberMultiplicity_ge_two m hm
+  have hSq := maxFiberMultiplicity_sq_le_momentSum m
+  nlinarith [hSq]
 
 end Omega

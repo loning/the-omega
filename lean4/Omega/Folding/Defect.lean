@@ -406,4 +406,20 @@ theorem defectChain_step_eq (m k : Nat) (ω : Word (m + k + 1)) :
         (defectChain m k (truncate ω)) :=
   rfl
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 171
+-- ══════════════════════════════════════════════════════════════
+
+/-- Stable words have zero local defect: Fold commutes with truncation on X_{m+1}. -/
+theorem localDefect_of_stable (x : X (m + 1)) :
+    localDefect x.1 = zeroWord m := by
+  -- localDefect x.1 = xorWord (Fold (truncate x.1)).1 (X.restrict (Fold x.1)).1
+  -- Fold x.1 = x (by Fold_stable), so X.restrict (Fold x.1) = X.restrict x
+  -- truncate x.1 = (X.restrict x).1, and X.restrict x is stable,
+  -- so Fold (truncate x.1) = X.restrict x
+  -- Thus both sides are equal → xorWord_self → zeroWord
+  rw [localDefect_eq_zero_iff_fold_commutes]
+  rw [Fold_stable x]
+  exact Fold_stable (X.restrict x)
+
 end Omega
