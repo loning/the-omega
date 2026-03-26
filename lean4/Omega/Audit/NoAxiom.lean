@@ -817,6 +817,11 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 180: Weight.lean + Window6.lean — weight正iff存在true + 群胚非自由代数
+  -- bridge:weight-pos-iff-exists-true → weight > 0 ↔ ∃ i, w i = true (Weight.lean:72)
+  #print axioms Omega.weight_pos_iff_exists_true
+  -- thm:conclusion-window6-groupoid-rather-than-free-quotient → 212 < 441 = 21² (Window6.lean:627)
+  #print axioms Omega.conclusion_window6_not_free_algebra
   -- Phase 179: MomentBounds.lean + Window6.lean — E00≥2·HBC联结推论 + BinFiberHist Wedderburn块
   -- thm:pom-hidden-bit-count + prop:pom-s2-plancherel（联结推论）→ E00(m) ≥ 2·hiddenBitCount(m) for m ≥ 2 (MomentBounds.lean:600)
   #print axioms Omega.exactWeightCollision_ge_double_hiddenBitCount

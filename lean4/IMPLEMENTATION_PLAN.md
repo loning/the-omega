@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 180: weight正iff存在true + 群胚非自由代数（Round 180）**：两文件 Weight.lean(72) + Window6.lean(627)——weight_pos_iff_exists_true（bridge: weight > 0 ↔ ∃ i, w i = true，Weight.lean:72）; conclusion_window6_not_free_algebra（thm:conclusion-window6-groupoid-rather-than-free-quotient：212 < 441 = 21²，群胚 < 自由代数维数，Window6.lean:627）——推迟：momentSum_fib_lower（与 strict_mono_m 同根本原因）——结论 74→75（+1 条目：thm:conclusion-window6-groupoid-rather-than-free-quotient）（Phase 180）
 **Phase 179: E00≥2·HBC联结推论 + BinFiberHist Wedderburn块（Round 179）**：两文件 MomentBounds.lean(600) + Window6.lean(615)——exactWeightCollision_ge_double_hiddenBitCount（thm:pom-hidden-bit-count + prop:pom-s2-plancherel 联结推论：E00(m) ≥ 2·hiddenBitCount(m) for m ≥ 2，MomentBounds.lean:600）; conclusion_window6_wedderburn_blocks（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory 数值核心：BinFiberHist 6: {2:8, 3:4, 4:9}, sum=21，Window6.lean:615）——推迟：stableAdd_iterate_one（需要 X.ofNat m n = X.ofNat m (n % F) 引理）——POM ~489→~490, 结论 73→74（+2 条目：thm:pom-hidden-bit-count, thm:conclusion-foldbin-stable-collapse-ordered-k0-memory）（Phase 179）
 **Phase 178: E00 线性下界 + Fib 权重求和范围 + 边界奇偶缺口结论（Round 178）**：三文件 MomentBounds.lean(585) + Fib.lean(423) + Window6.lean(602)——exactWeightCollision_ge_succ（prop:pom-s2-plancherel 推论，线性下界：E00(m) ≥ m+1，MomentBounds.lean:585）; fib_weight_sum_range（bridge: Σ_{i<m} F_{i+2} = F_{m+3}-2，Fib.lean:423）; conclusion_window6_boundary_parity_gap（cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions：F_8=21, 21-3=18, 18>0，Window6.lean:602）——POM ~488→~489, 结论 72→73（+2 条目：prop:pom-s2-plancherel, cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions）（Phase 178）
 **Phase 177: Cassini 奇偶分离 + 边界奇偶余量结论（Round 177）**：两文件 Fib.lean(382,400) + Window6.lean(594)——fib_cassini_even（bridge: F_n·F_{n+2}+1=F_{n+1}² for even n，Fib.lean:382）; fib_cassini_odd（bridge: F_n·F_{n+2}=F_{n+1}²+1 for odd n，Fib.lean:400）; conclusion_window6_boundary_parity_residual（cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial：F_8-3=18，Window6.lean:594）——推迟：momentSum_strict_mono_m（S_q m-严格单调，fiber injection across scales 需更深技术路线）——结论 71→72（+1 条目：cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial）（Phase 177）
@@ -145,15 +146,15 @@
 
 ### Lean4 形式化状态
 
-- **1,218 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,377 个 Lean4 定理（含内部引理）
+- **1,219 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,379 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1277/10,588 = **12.1%** |
+| 全局覆盖率 | 1278/10,588 = **12.1%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -170,10 +171,10 @@
 | POM | 1,525 | ~490 | ~32.1% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | 74 | 4.3% |
+| 结论 | 1,727 | 75 | 4.3% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1277** | **12.1%** |
+| **总计** | **10,588** | **1278** | **12.1%** |
 
 ## 3. 未来工作：30 条具体计划
 

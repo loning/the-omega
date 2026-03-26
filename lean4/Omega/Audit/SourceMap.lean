@@ -9728,6 +9728,17 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 180: Weight.lean + Window6.lean（2 条，1 推迟）
+-- bridge:weight-pos-iff-exists-true → weight_pos_iff_exists_true (Weight.lean:72)
+-- thm:conclusion-window6-groupoid-rather-than-free-quotient → conclusion_window6_not_free_algebra (Window6.lean:627)
+-- 推迟: momentSum_fib_lower（与 strict_mono_m 同根本原因）
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "thm:conclusion-window6-groupoid-rather-than-free-quotient"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_not_free_algebra"
+    phase := 180
+    status := .formalized }
 -- Phase 179: MomentBounds.lean + Window6.lean（2 条，1 推迟）
 -- thm:pom-hidden-bit-count + prop:pom-s2-plancherel（联结推论）→ exactWeightCollision_ge_double_hiddenBitCount (MomentBounds.lean:600)
 -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（数值核心）→ conclusion_window6_wedderburn_blocks (Window6.lean:615)
