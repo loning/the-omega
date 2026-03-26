@@ -2313,6 +2313,10 @@ def coreAuditTargets : List String :=
   , "Omega.crossCorrSqHigh_succ_eq_prev"
   , "Omega.crossCorrSqLow_succ_eq_prev"
   , "Omega.cc_succ_eq_ccs_prime"
-  , "Omega.momentSum_three_add_ewt" ]
+  , "Omega.momentSum_three_add_ewt"
+  -- Phase 162b: CCSPrime8Split.lean 新文件 — S_3 无条件递推 (CCSPrime8Split.lean:341,353,371)
+  , "Omega.ccs_prime_succ"
+  , "Omega.exactWeightTriple_recurrence"
+  , "Omega.momentSum_three_recurrence" ]
 
 end Omega.Audit
