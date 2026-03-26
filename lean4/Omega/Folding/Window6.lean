@@ -662,4 +662,11 @@ theorem conclusion_window6_dimension_not_divisible :
   rw [cBinFiberHist_6_4, cBinFiberHist_6_3, cBinFiberHist_6_2]
   native_decide
 
+/-- Window-6 has exactly 3 distinct fiber multiplicities (2,3,4). -/
+theorem conclusion_window6_three_distinct_multiplicities :
+    cBinFiberHist 6 2 > 0 ∧ cBinFiberHist 6 3 > 0 ∧ cBinFiberHist 6 4 > 0 ∧
+    cBinFiberHist 6 0 = 0 ∧ cBinFiberHist 6 1 = 0 ∧ cBinFiberHist 6 5 = 0 :=
+  ⟨by rw [cBinFiberHist_6_2]; omega, by rw [cBinFiberHist_6_3]; omega,
+    by rw [cBinFiberHist_6_4]; omega, cBinFiberHist_6_0, cBinFiberHist_6_1, by native_decide⟩
+
 end Omega
