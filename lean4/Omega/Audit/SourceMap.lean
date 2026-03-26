@@ -9632,6 +9632,14 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.crossCorrSq_recurrence"
     phase := 165
     status := .formalized }
+-- Phase 166: CCSPrime8Split.lean 桥接定理（1 条）(CCSPrime8Split.lean:653)
+-- bridge:ccs-prime-recurrence → ccs_prime_recurrence (CCSPrime8Split.lean:653)
+, { label := "bridge:ccs-prime-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.ccs_prime_recurrence"
+    phase := 166
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
