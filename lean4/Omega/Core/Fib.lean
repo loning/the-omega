@@ -665,4 +665,29 @@ theorem crt_235_min_depth :
     have h60 : 60 ∣ n := Nat.Coprime.mul_dvd_of_dvd_of_dvd (by decide) h12 hn5
     omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 191
+-- ══════════════════════════════════════════════════════════════
+
+/-- The fence det polynomial at t=0. prop:pom-Lk-det-coeff-binomial (endpoint). -/
+def fenceDetZero : Nat → Nat
+  | 0 => 1
+  | 1 => 1
+  | n + 2 => 2 * fenceDetZero (n + 1) - fenceDetZero n
+
+theorem fenceDetZero_eq_one (k : Nat) : fenceDetZero k = 1 := by
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    match k with
+    | 0 => rfl
+    | 1 => rfl
+    | k + 2 => simp [fenceDetZero, ih (k + 1) (by omega), ih k (by omega)]
+
+/-- Strict log-convexity: D_k² < D_{k-1}·D_{k+1} for k ≥ 1.
+    cor:pom-Lk-det-logconvex-ratio. -/
+theorem fenceDet_log_convex (k : Nat) (hk : 1 ≤ k) :
+    fenceDet k ^ 2 < fenceDet (k - 1) * fenceDet (k + 1) := by
+  have h := fenceDet_cassini k hk
+  rw [mul_comm]; omega
+
 end Omega

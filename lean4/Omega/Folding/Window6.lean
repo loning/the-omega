@@ -715,4 +715,13 @@ theorem conclusion_window6_moment_chain :
 theorem conclusion_window6_euler_totient :
     Nat.totient 21 = 12 := by native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 191
+-- ══════════════════════════════════════════════════════════════
+
+/-- F_8 = 21 = 3×7, gcd(3,7)=1. CRT core. -/
+theorem conclusion_window6_crt_factorization :
+    Nat.fib 8 = 3 * 7 ∧ Nat.Coprime 3 7 :=
+  ⟨by native_decide, by decide⟩
+
 end Omega
