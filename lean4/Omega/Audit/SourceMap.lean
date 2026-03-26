@@ -9728,6 +9728,30 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 193: Fib.lean + Window6.lean（3 条论文标签 + 1 bridge）
+-- bridge:fenceDet-mono → fenceDet_mono (Fib.lean, private)
+-- cor:pom-Lk-surface-free-energy → fenceDet_double_lower (Fib.lean)
+-- prop:crt-235-min-depth（框架）→ fib_six_eight_coprime (Fib.lean)
+-- cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions → conclusion_window6_prime_factorization (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:pom-Lk-surface-free-energy"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_double_lower"
+    phase := 193
+    status := .formalized }
+, { label := "prop:crt-235-min-depth"
+    sourcePath := "sections/body/pom/parts/subsec__pom-crt.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fib_six_eight_coprime"
+    phase := 193
+    status := .formalized }
+, { label := "cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_prime_factorization"
+    phase := 193
+    status := .formalized }
 -- Phase 192: Fib.lean + MomentSum.lean + Window6.lean（3 条，全部论文标签）
 -- prop:pom-Lk-det-coeff-binomial（正性）→ fenceDet_pos (Fib.lean)
 -- prop:pom-mixed-collision-kernel-computable → mixed_collision_kernel_computable (MomentSum.lean)

@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 193: ★ POM 500 里程碑 — FenceDet双倍下界 + Fib互素 + 质因子分解（Round 193）**：两文件 Fib.lean + Window6.lean——fenceDet_mono（bridge: D_k ≤ D_{k+1}，private，Fib.lean）; fenceDet_double_lower（cor:pom-Lk-surface-free-energy：2·D_k ≤ D_{k+1} for k ≥ 1，Fib.lean）; fib_six_eight_coprime（prop:crt-235-min-depth 框架：gcd(F_6, F_8) = 1，Fib.lean）; conclusion_window6_prime_factorization（cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions：3,7 prime, 21 not prime, F_8=21，Window6.lean）——POM ~501→~503, 结论 82→83（+3 条目：cor:pom-Lk-surface-free-energy, prop:crt-235-min-depth, cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions）（Phase 193）
 **Phase 192: ★ 全论文标签 — FenceDet正性 + 混合碰撞核可计算 + 碰撞概率证书（Round 192）**：两文件 Fib.lean + MomentSum.lean + Window6.lean——fenceDet_pos（prop:pom-Lk-det-coeff-binomial（正性）：fenceDet k ≥ 1 for all k，Fib.lean）; mixed_collision_kernel_computable（prop:pom-mixed-collision-kernel-computable：momentSum q m = cMomentSum q m 可计算桥接，MomentSum.lean）; conclusion_window6_collision_prob_certificate（thm:conclusion-window6-groupoid-collision-dimension-identity（概率证书）：212·1024 = 53·4096，Window6.lean）——POM ~499→~501, 结论 81→82（+3 条目：prop:pom-Lk-det-coeff-binomial（正性）, prop:pom-mixed-collision-kernel-computable, thm:conclusion-window6-groupoid-collision-dimension-identity）（Phase 192）
 **Phase 191: ★ 全论文标签 — FenceDet零点递推 + D_k(0)=1 + 对数凸性 + CRT因子分解（Round 191）**：两文件 Fib.lean + Window6.lean——fenceDetZero（def:pom-fence-det-zero：Fence det at t=0 递推，Fib.lean）; fenceDetZero_eq_one（prop:pom-Lk-det-coeff-binomial：D_k(0) = 1 for all k，Fib.lean）; fenceDet_log_convex（cor:pom-Lk-det-logconvex-ratio：D_k² < D_{k-1}·D_{k+1} for k ≥ 1，Fib.lean）; conclusion_window6_crt_factorization（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory CRT核心：F_8 = 3×7, gcd(3,7)=1，Window6.lean）——POM ~496→~499, 结论 80→81（+4 条目：def:pom-fence-det-zero, prop:pom-Lk-det-coeff-binomial, cor:pom-Lk-det-logconvex-ratio, thm:conclusion-foldbin-stable-collapse-ordered-k0-memory）（Phase 191）
 **Phase 190: ★ 全论文标签 — Fence行列式Cassini-Pell + CRT最小模深度 + φ(21)=12（Round 190）**：两文件 Fib.lean + Window6.lean——fenceDet_cassini（prop:pom-Lk-det-cassini-pell：D_{k+1}·D_{k-1} = D_k² + 1，fence 行列式 Cassini-Pell 守恒律，Fib.lean）; crt_235_min_depth（prop:crt-235-min-depth：30|F_60 且 ∀ 0<n<60, ¬(30|F_n)，CRT 最小模深度=60，Fib.lean）; conclusion_window6_euler_totient（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory 代数核心：φ(21) = 12，Window6.lean）——POM ~494→~496, 结论 79→80（+3 条目：prop:pom-Lk-det-cassini-pell, prop:crt-235-min-depth, thm:conclusion-foldbin-stable-collapse-ordered-k0-memory）（Phase 190）
@@ -158,15 +159,15 @@
 
 ### Lean4 形式化状态
 
-- **1,238 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,421 个 Lean4 定理（含内部引理）
+- **1,241 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,425 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1297/10,588 = **12.2%** |
+| 全局覆盖率 | 1300/10,588 = **12.3%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -180,13 +181,13 @@
 | 新生算术 | 151 | ~88 | ~58% |
 | Folding | 317 | ~91 | ~29% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~501 | ~32.8% |
+| POM | 1,525 | ~503 | ~33.0% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | 82 | 4.7% |
+| 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1297** | **12.2%** |
+| **总计** | **10,588** | **1300** | **12.3%** |
 
 ## 3. 未来工作：30 条具体计划
 

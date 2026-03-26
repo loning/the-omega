@@ -817,6 +817,15 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 193: Fib.lean + Window6.lean — FenceDet双倍下界 + Fib互素 + 质因子分解
+  -- bridge:fenceDet-mono → D_k ≤ D_{k+1} (Fib.lean, private)
+  #print axioms Omega.fenceDet_mono
+  -- cor:pom-Lk-surface-free-energy → 2·D_k ≤ D_{k+1} for k ≥ 1 (Fib.lean)
+  #print axioms Omega.fenceDet_double_lower
+  -- prop:crt-235-min-depth（框架）→ gcd(F_6, F_8) = 1 (Fib.lean)
+  #print axioms Omega.fib_six_eight_coprime
+  -- cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions → 3,7 prime, 21 not prime, F_8=21 (Window6.lean)
+  #print axioms Omega.conclusion_window6_prime_factorization
   -- Phase 192: Fib.lean + MomentSum.lean + Window6.lean — FenceDet正性 + 混合碰撞核可计算 + 碰撞概率证书
   -- prop:pom-Lk-det-coeff-binomial（正性）→ fenceDet k ≥ 1 (Fib.lean)
   #print axioms Omega.fenceDet_pos
