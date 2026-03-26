@@ -739,4 +739,10 @@ theorem conclusion_window6_unit_group_structure :
     Nat.totient 21 = 12 ∧ 12 = 2 * 6 ∧ 2 = 3 - 1 ∧ 6 = 7 - 1 ∧ 12 = (3 - 1) * (7 - 1) :=
   ⟨by native_decide, by omega, by omega, by omega, by omega⟩
 
+/-- Window-6 BinFold is a proper coloring of the 6-hypercube. -/
+theorem conclusion_window6_binfold_proper_coloring :
+    ∀ N : Fin 64, ∀ k : Fin 6,
+      cBinFold 6 N.val ≠ cBinFold 6 (N.val ^^^ (2 ^ k.val)) :=
+  binFold6_edge_separation
+
 end Omega

@@ -768,4 +768,44 @@ private theorem fib_eight_dvd_of_six_dvd (n : Nat) (h : 6 ∣ n) : 8 ∣ Nat.fib
 theorem fib_eight_dvd_iff (n : Nat) : 8 ∣ Nat.fib n ↔ 6 ∣ n :=
   ⟨six_dvd_of_fib_eight_dvd n, fib_eight_dvd_of_six_dvd n⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 195
+-- ══════════════════════════════════════════════════════════════
+
+/-- D_k ≤ 3^k. cor:pom-Lk-surface-free-energy (upper bound). -/
+theorem fenceDet_le_pow_three (k : Nat) : fenceDet k ≤ 3 ^ k := by
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    match k with
+    | 0 => simp [fenceDet]
+    | 1 => simp [fenceDet]
+    | k + 2 =>
+      have ih1 := ih (k + 1) (by omega)
+      calc fenceDet (k + 2)
+          ≤ 3 * fenceDet (k + 1) := by
+            have : fenceDet (k + 2) = 3 * fenceDet (k + 1) - fenceDet k := rfl
+            have := fenceDet_mono k; omega
+        _ ≤ 3 * 3 ^ (k + 1) := Nat.mul_le_mul_left 3 ih1
+        _ = 3 ^ (k + 2) := by ring
+
+/-- F_a | F_b ↔ a | b for a ≥ 3 (where F_a ≥ 2 ensures injectivity). -/
+theorem fib_dvd_iff (a b : Nat) (ha : 3 ≤ a) : Nat.fib a ∣ Nat.fib b ↔ a ∣ b := by
+  constructor
+  · intro hdvd
+    have hgcd_fib : Nat.fib (Nat.gcd a b) = Nat.fib a := by
+      rw [← fib_gcd]; exact Nat.gcd_eq_left hdvd
+    have hgcd_le : Nat.gcd a b ≤ a := Nat.gcd_le_left b (by omega)
+    -- gcd(a,b) = a by Fibonacci strict monotonicity (a ≥ 3 → F injective)
+    have heq : Nat.gcd a b = a := by
+      by_contra hne
+      have hlt : Nat.gcd a b < a := Nat.lt_of_le_of_ne hgcd_le hne
+      have : Nat.fib (Nat.gcd a b) < Nat.fib a := by
+        calc Nat.fib (Nat.gcd a b) ≤ Nat.fib (a - 1) := Nat.fib_mono (by omega)
+          _ < Nat.fib a := by
+              rw [show a = (a - 1) + 1 from by omega]
+              exact fib_strict_mono (a - 1) (by omega)
+      omega
+    exact heq ▸ Nat.gcd_dvd_right a b
+  · exact Nat.fib_dvd a b
+
 end Omega
