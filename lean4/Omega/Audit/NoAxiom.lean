@@ -817,6 +817,15 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 170: Fib.lean + FibonacciCube.lean + MomentBounds.lean — Fib增长率 + 最大纤维严格上界 + S_q严格单调 + Cauchy-Schwarz下界
+  -- bridge:fib-lt-pow-two → F_{m+2} < 2^m for m ≥ 2 (Fib.lean:312)
+  #print axioms Omega.fib_lt_pow_two_of_ge_two
+  -- cor:pom-max-fiber-rate-endpoint → D(m) < 2^m for m ≥ 2 (FibonacciCube.lean:310)
+  #print axioms Omega.maxFiber_lt_wordcount
+  -- prop:pom-moment-congruence-q（严格化）→ S_q(m) < S_{q+1}(m) for m ≥ 2, q ≥ 1 (MomentBounds.lean:398)
+  #print axioms Omega.momentSum_strict_mono_q
+  -- prop:pom-power-sum-hankel-psd → (2^m)² ≤ F_{m+2} · S_2(m) (MomentBounds.lean:412)
+  #print axioms Omega.momentSum_two_cs_lower
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/

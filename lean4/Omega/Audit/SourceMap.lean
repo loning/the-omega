@@ -9728,6 +9728,30 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 170: Fib.lean + FibonacciCube.lean + MomentBounds.lean（5 条）
+-- bridge:fib-lt-pow-two → fib_lt_pow_two_of_ge_two (Fib.lean:312)
+-- cor:pom-max-fiber-rate-endpoint → maxFiber_lt_wordcount (FibonacciCube.lean:310)
+-- prop:pom-moment-congruence-q（严格化）→ momentSum_strict_mono_q (MomentBounds.lean:398)
+-- prop:pom-power-sum-hankel-psd → momentSum_two_cs_lower (MomentBounds.lean:412)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:pom-max-fiber-rate-endpoint"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Combinatorics.FibonacciCube"
+    leanName := "Omega.maxFiber_lt_wordcount"
+    phase := 170
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-congruence.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_strict_mono_q"
+    phase := 170
+    status := .formalized }
+, { label := "prop:pom-power-sum-hankel-psd"
+    sourcePath := "sections/body/pom/parts/subsec__pom-hankel.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_two_cs_lower"
+    phase := 170
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
