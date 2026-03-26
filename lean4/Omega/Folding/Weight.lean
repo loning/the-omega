@@ -99,4 +99,23 @@ theorem weight_zero_iff_allFalse (w : Word m) :
     funext i; exact Bool.eq_false_iff.mpr (hno i)
   · intro h; rw [h, weight_allFalse]
 
+/-- Flipping a single bit from false to true increases weight by F_{i+2}. -/
+theorem weight_update_true_add (w : Word m) (i : Fin m) (hi : w i = false) :
+    weight (Function.update w i true) = weight w + Nat.fib (i.val + 2) := by
+  simp only [weight_eq_fib_ite_sum]
+  rw [show ∑ j : Fin m, (if Function.update w i true j then Nat.fib (j.val + 2) else 0) =
+      ∑ j : Fin m, (if w j then Nat.fib (j.val + 2) else 0) +
+      Nat.fib (i.val + 2) - 0 from by
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i),
+        ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+    simp only [Function.update_self]
+    have hrest : ∀ j ∈ Finset.univ.erase i,
+        (if Function.update w i true j then Nat.fib (j.val + 2) else 0) =
+        (if w j then Nat.fib (j.val + 2) else 0) := by
+      intro j hj
+      rw [Finset.mem_erase] at hj
+      rw [Function.update_of_ne hj.1]
+    rw [Finset.sum_congr rfl hrest, hi]; simp; omega]
+  omega
+
 end Omega

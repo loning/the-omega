@@ -696,4 +696,15 @@ theorem conclusion_window6_standard_collision :
     momentSum 2 6 = 220 ∧ 220 ≠ 212 :=
   ⟨momentSum_two_six, by omega⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 189
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 moment chain: 21 < 64 < 220. -/
+theorem conclusion_window6_moment_chain :
+    Nat.fib 8 < 2 ^ 6 ∧ 2 ^ 6 < momentSum 2 6 := by
+  constructor
+  · native_decide
+  · rw [momentSum_two_six]; omega
+
 end Omega

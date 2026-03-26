@@ -577,4 +577,16 @@ theorem fib_sq_sum_shifted (n : Nat) :
   rw [hshift, hsq]
   simp [Nat.fib]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 189
+-- ══════════════════════════════════════════════════════════════
+
+/-- F_n < F_{n+1} for n ≥ 2. -/
+theorem fib_strict_mono (n : Nat) (hn : 2 ≤ n) : Nat.fib n < Nat.fib (n + 1) := by
+  have h := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at h
+  have := fib_succ_pos (n - 2)
+  rw [show n - 2 + 1 = n - 1 from by omega] at this
+  omega
+
 end Omega
