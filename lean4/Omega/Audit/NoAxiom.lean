@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 181: MomentRecurrence.lean + MomentBounds.lean + Window6.lean — 补码权重和 + S_2基例严格单调 + 纤维非均匀
+  -- bridge:weight-add-complement → weight(w) + weight(complement w) = F_{m+3}-2 (MomentRecurrence.lean:801)
+  #print axioms Omega.weight_add_complement
+  -- prop:pom-s2-recurrence（基例严格单调）→ S_2(0) < S_2(1) < ... < S_2(7) (MomentBounds.lean:623)
+  #print axioms Omega.momentSum_two_strict_increasing_base
+  -- thm:conclusion-window6-groupoid-collision-dimension-identity（推论）→ BinFiber min≠max, min=2, max=4 (Window6.lean:639)
+  #print axioms Omega.conclusion_window6_fiber_nonuniform
   -- Phase 180: Weight.lean + Window6.lean — weight正iff存在true + 群胚非自由代数
   -- bridge:weight-pos-iff-exists-true → weight > 0 ↔ ∃ i, w i = true (Weight.lean:72)
   #print axioms Omega.weight_pos_iff_exists_true

@@ -9728,6 +9728,23 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 181: MomentRecurrence.lean + MomentBounds.lean + Window6.lean（3 条）
+-- bridge:weight-add-complement → weight_add_complement (MomentRecurrence.lean:801)
+-- prop:pom-s2-recurrence（基例严格单调）→ momentSum_two_strict_increasing_base (MomentBounds.lean:623)
+-- thm:conclusion-window6-groupoid-collision-dimension-identity（推论）→ conclusion_window6_fiber_nonuniform (Window6.lean:639)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_two_strict_increasing_base"
+    phase := 181
+    status := .formalized }
+, { label := "thm:conclusion-window6-groupoid-collision-dimension-identity"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_fiber_nonuniform"
+    phase := 181
+    status := .formalized }
 -- Phase 180: Weight.lean + Window6.lean（2 条，1 推迟）
 -- bridge:weight-pos-iff-exists-true → weight_pos_iff_exists_true (Weight.lean:72)
 -- thm:conclusion-window6-groupoid-rather-than-free-quotient → conclusion_window6_not_free_algebra (Window6.lean:627)
