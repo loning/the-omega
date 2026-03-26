@@ -9464,6 +9464,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_eq_ewt_plus_ccs"
     phase := 158
     status := .formalized }
+-- Phase 159: S3Recurrence.lean 新定理 2 条 (S3Recurrence.lean:388,395)
+-- prop:pom-s3-recurrence → ccs_prime_succ_bounded (S3Recurrence.lean:388)
+-- prop:pom-s3-recurrence → momentSum_three_recurrence_extended (S3Recurrence.lean:395)
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.ccs_prime_succ_bounded"
+    phase := 159
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.momentSum_three_recurrence_extended"
+    phase := 159
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

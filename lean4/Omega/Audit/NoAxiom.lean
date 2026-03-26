@@ -2302,6 +2302,9 @@ def coreAuditTargets : List String :=
   , "Omega.crossCorrSqLowPrev_range_truncate"
   , "Omega.tripleCollisionClass_ftt_eq_sum"
   , "Omega.tripleCollisionClass_ftt_mod_split"
-  , "Omega.momentSum_three_eq_ewt_plus_ccs" ]
+  , "Omega.momentSum_three_eq_ewt_plus_ccs"
+  -- Phase 159: S3Recurrence.lean 新定理 (S3Recurrence.lean:388,395)
+  , "Omega.ccs_prime_succ_bounded"
+  , "Omega.momentSum_three_recurrence_extended" ]
 
 end Omega.Audit
