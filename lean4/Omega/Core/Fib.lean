@@ -589,4 +589,80 @@ theorem fib_strict_mono (n : Nat) (hn : 2 ≤ n) : Nat.fib n < Nat.fib (n + 1) :
   rw [show n - 2 + 1 = n - 1 from by omega] at this
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 190
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cassini-Pell for fenceDet: D_{k+1}·D_{k-1} = D_k² + 1.
+    prop:pom-Lk-det-cassini-pell at t=1. -/
+theorem fenceDet_cassini (k : Nat) (hk : 1 ≤ k) :
+    fenceDet (k + 1) * fenceDet (k - 1) = fenceDet k ^ 2 + 1 := by
+  -- Equivalent addition form: D(k)^2 + 1 = D(k+1)*D(k-1)
+  suffices h : fenceDet k ^ 2 + 1 = fenceDet (k + 1) * fenceDet (k - 1) by omega
+  obtain ⟨k, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  -- Goal: D(k+1)^2 + 1 = D(k+2)*D(k)
+  induction k with
+  | zero => simp [fenceDet]
+  | succ k ih =>
+    -- IH: D(k+1)^2 + 1 = D(k+2)*D(k)
+    -- Goal: D(k+2)^2 + 1 = D(k+3)*D(k+1)
+    -- Strategy: show both sides equal 3*D(k+2)*D(k+1) - D(k+1)^2
+    -- where D(k+1)^2 = D(k+2)*D(k) - 1 (from IH)
+    -- and D(k+3) = 3*D(k+2) - D(k+1), D(k+2) = 3*D(k+1) - D(k)
+    have hrec_add : fenceDet (k + 3) + fenceDet (k + 1) = 3 * fenceDet (k + 2) := by
+      show 3 * fenceDet (k + 2) - fenceDet (k + 1) + fenceDet (k + 1) = 3 * fenceDet (k + 2)
+      have : fenceDet (k + 1) ≤ fenceDet (k + 2) := by
+        simp only [fenceDet_eq_fib]; exact Nat.fib_mono (by omega)
+      omega
+    have hrec2_add : fenceDet (k + 2) + fenceDet k = 3 * fenceDet (k + 1) := by
+      show 3 * fenceDet (k + 1) - fenceDet k + fenceDet k = 3 * fenceDet (k + 1)
+      have : fenceDet k ≤ fenceDet (k + 1) := by
+        simp only [fenceDet_eq_fib]; exact Nat.fib_mono (by omega)
+      omega
+    -- Prove: D(k+2)^2 + D(k+2)*D(k) = 3*D(k+1)*D(k+2)
+    -- Because D(k+2) + D(k) = 3*D(k+1), so D(k+2)*(D(k+2)+D(k)) = 3*D(k+1)*D(k+2)
+    have hlhs : fenceDet (k + 2) ^ 2 + fenceDet (k + 2) * fenceDet k =
+        3 * fenceDet (k + 1) * fenceDet (k + 2) := by nlinarith
+    -- Prove: D(k+3)*D(k+1) + D(k+1)^2 = 3*D(k+1)*D(k+2)
+    -- Because D(k+3)+D(k+1) = 3*D(k+2), so D(k+1)*(D(k+3)+D(k+1)) = 3*D(k+1)*D(k+2)
+    have hrhs : fenceDet (k + 3) * fenceDet (k + 1) + fenceDet (k + 1) ^ 2 =
+        3 * fenceDet (k + 1) * fenceDet (k + 2) := by nlinarith
+    -- So D(k+2)^2 + D(k+2)*D(k) = D(k+3)*D(k+1) + D(k+1)^2
+    -- And D(k+1)^2 + 1 = D(k+2)*D(k) (IH), so D(k+2)*D(k) = D(k+1)^2 + 1
+    -- D(k+2)^2 + (D(k+1)^2+1) = D(k+3)*D(k+1) + D(k+1)^2
+    -- D(k+2)^2 + 1 = D(k+3)*D(k+1). ✓
+    rw [show k + 1 + 1 = k + 2 from by omega, show k + 1 - 1 = k from by omega] at ih
+    have hih := ih (by omega)
+    -- From hlhs = hrhs and hih:
+    -- D(k+2)^2 + D(k+2)*D(k) = D(k+3)*D(k+1) + D(k+1)^2
+    -- D(k+2)*D(k) = D(k+1)^2 + 1
+    -- → D(k+2)^2 + D(k+1)^2 + 1 = D(k+3)*D(k+1) + D(k+1)^2
+    -- → D(k+2)^2 + 1 = D(k+3)*D(k+1)
+    show fenceDet (k + 2) ^ 2 + 1 = fenceDet (k + 3) * fenceDet k.succ
+    linarith
+
+/-- CRT minimum depth: 30|F_n ↔ 60|n. -/
+theorem crt_235_min_depth :
+    (30 ∣ Nat.fib 60) ∧ (∀ n, 0 < n → n < 60 → ¬(30 ∣ Nat.fib n)) := by
+  constructor
+  · -- 30 = 2*3*5. 2|F_60 (3|60), 3|F_60 (4|60), 5|F_60 (5|60)
+    have h2 : 2 ∣ Nat.fib 60 := fib_even_of_three_dvd 60 ⟨20, by omega⟩
+    have h3 : 3 ∣ Nat.fib 60 := (fib_div_three_iff 60).mpr ⟨15, by omega⟩
+    have h5 : 5 ∣ Nat.fib 60 := (fib_five_dvd_iff 60).mpr ⟨12, by omega⟩
+    -- 30 = 2*3*5 with pairwise coprime factors
+    have : 6 ∣ Nat.fib 60 := Nat.Coprime.mul_dvd_of_dvd_of_dvd (by decide) h2 h3
+    exact Nat.Coprime.mul_dvd_of_dvd_of_dvd (by decide) this h5
+  · -- 30|F_n → 2|F_n ∧ 3|F_n ∧ 5|F_n → 3|n ∧ 4|n ∧ 5|n → 60|n
+    intro n hn hlt h30
+    have h2 : 2 ∣ Nat.fib n := dvd_trans ⟨15, by omega⟩ h30
+    have h3 : 3 ∣ Nat.fib n := dvd_trans ⟨10, by omega⟩ h30
+    have h5 : 5 ∣ Nat.fib n := dvd_trans ⟨6, by omega⟩ h30
+    have hn3 : 3 ∣ n := (fib_even_iff_three_dvd n).mp h2
+    have hn4 : 4 ∣ n := (fib_div_three_iff n).mp h3
+    have hn5 : 5 ∣ n := (fib_five_dvd_iff n).mp h5
+    -- 3|n, 4|n, 5|n → lcm(3,4,5) = 60 | n
+    have h12 : 12 ∣ n := Nat.Coprime.mul_dvd_of_dvd_of_dvd (by decide) hn3 hn4
+    have h60 : 60 ∣ n := Nat.Coprime.mul_dvd_of_dvd_of_dvd (by decide) h12 hn5
+    omega
+
 end Omega

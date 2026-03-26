@@ -707,4 +707,12 @@ theorem conclusion_window6_moment_chain :
   · native_decide
   · rw [momentSum_two_six]; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 190
+-- ══════════════════════════════════════════════════════════════
+
+/-- φ(21) = 12. thm:conclusion-foldbin-stable-collapse-ordered-k0-memory. -/
+theorem conclusion_window6_euler_totient :
+    Nat.totient 21 = 12 := by native_decide
+
 end Omega
