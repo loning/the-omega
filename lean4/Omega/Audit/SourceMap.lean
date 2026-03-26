@@ -9728,6 +9728,18 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 186: ShiftDynamics.lean + Defect.lean + Window6.lean（4 条，1 论文标签）
+-- bridge:lucas-fib-wronskian-even → lucasNum_fib_wronskian_even (ShiftDynamics.lean:493)
+-- bridge:lucas-fib-wronskian-odd → lucasNum_fib_wronskian_odd (ShiftDynamics.lean:505)
+-- thm:fold-discrete-stokes-defect（推论，两步组合）→ localDefect_compose (Defect.lean:458)
+-- bridge:conclusion-window6-pimsner-popa → conclusion_window6_pimsner_popa_index (Window6.lean:678)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "thm:fold-discrete-stokes-defect"
+    sourcePath := "sections/body/folding/subsec__folding-defect.tex"
+    moduleName := "Omega.Folding.Defect"
+    leanName := "Omega.localDefect_compose"
+    phase := 186
+    status := .formalized }
 -- Phase 185: TransferMatrix.lean + Fib.lean + Window6.lean（3 条，1 论文标签）
 -- bridge:golden-mean-cayley-hamilton → goldenMeanAdjacency_cayley_hamilton (TransferMatrix.lean:322)
 -- bridge:fib-sq-sub-sq → fib_sq_sub_sq (Fib.lean:538)

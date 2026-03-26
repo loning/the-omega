@@ -817,6 +817,15 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 186: ShiftDynamics.lean + Defect.lean + Window6.lean — Lucas-Fib Wronskian + 两步缺陷组合 + Pimsner-Popa指数
+  -- bridge:lucas-fib-wronskian-even → L_n·F_{n+1} = L_{n+1}·F_n + 2 for even n ≥ 2 (ShiftDynamics.lean:493)
+  #print axioms Omega.lucasNum_fib_wronskian_even
+  -- bridge:lucas-fib-wronskian-odd → L_{n+1}·F_n = L_n·F_{n+1} + 2 for odd n ≥ 1 (ShiftDynamics.lean:505)
+  #print axioms Omega.lucasNum_fib_wronskian_odd
+  -- thm:fold-discrete-stokes-defect（推论，两步组合）→ 连续两步局部缺陷组合为全局缺陷 (Defect.lean:458)
+  #print axioms Omega.localDefect_compose
+  -- bridge:conclusion-window6-pimsner-popa → cBinFiberMax(6)²=16, D(6)²=25 (Window6.lean:678)
+  #print axioms Omega.conclusion_window6_pimsner_popa_index
   -- Phase 185: TransferMatrix.lean + Fib.lean + Window6.lean — Cayley-Hamilton + Fib平方差 + 三种纤维大小
   -- bridge:golden-mean-cayley-hamilton → A² = A + I (TransferMatrix.lean:322)
   #print axioms Omega.goldenMeanAdjacency_cayley_hamilton
