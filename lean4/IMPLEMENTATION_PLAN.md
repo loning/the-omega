@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 188: Fib平方和移位 + weight零iff全假 + S_2(6)=220≠212（Round 188）**：三文件 Fib.lean + Weight.lean + Window6.lean——fib_sq_sum_shifted（bridge: Σ_{k<n} F_{k+2}² = F_{n+1}·F_{n+2} - 1，Fib.lean）; weight_zero_iff_allFalse（bridge: weight w = 0 ↔ w = allFalse，Weight.lean）; conclusion_window6_standard_collision（bridge: S_2(6) = 220 ≠ 212，Window6.lean）——全为 bridge，无论文标签，覆盖率不变（Phase 188）
 **Phase 187: Fib后继差 + S_2²≤S_1·S_3审计证书 + D(6)²<2^6（Round 187）**：三文件 Fib.lean + MomentBounds.lean + Window6.lean——fib_succ_sub（bridge: F_{n+2} - F_{n+1} = F_n，Fib.lean）; momentSum_log_convex_audit_base（cor:pom-crossq-logconvex-chain 审计证书：S_2² ≤ S_1·S_3 for m=0,2,4,6，MomentBounds.lean）; conclusion_window6_maxfiber_sq_lt_wordcount（bridge: D(6)²=25 < 64=2^6，Window6.lean）——POM ~493→~494（+1 条目：cor:pom-crossq-logconvex-chain）（Phase 187）
 **Phase 186: Lucas-Fib Wronskian + 两步缺陷组合 + Pimsner-Popa指数（Round 186）**：三文件 ShiftDynamics.lean(493,505) + Defect.lean(458) + Window6.lean(678)——lucasNum_fib_wronskian_even（bridge: L_n·F_{n+1} = L_{n+1}·F_n + 2 for even n ≥ 2，ShiftDynamics.lean:493）; lucasNum_fib_wronskian_odd（bridge: L_{n+1}·F_n = L_n·F_{n+1} + 2 for odd n ≥ 1，ShiftDynamics.lean:505）; localDefect_compose（thm:fold-discrete-stokes-defect 推论，两步组合：连续两步局部缺陷组合为全局缺陷，Defect.lean:458）; conclusion_window6_pimsner_popa_index（bridge: cBinFiberMax(6)²=16, D(6)²=25，Window6.lean:678）——Folding ~90→~91（+1 条目：thm:fold-discrete-stokes-defect）（Phase 186）
 **Phase 185: Cayley-Hamilton + Fib平方差 + 三种纤维大小（Round 185）**：三文件 TransferMatrix.lean(322) + Fib.lean(538) + Window6.lean(666)——goldenMeanAdjacency_cayley_hamilton（bridge: A² = A + I，TransferMatrix.lean:322）; fib_sq_sub_sq（bridge: F_{n+1}² - F_n² = F_{n-1}·F_{n+2} for n ≥ 1，Fib.lean:538）; conclusion_window6_three_distinct_multiplicities（thm:conclusion-window6-groupoid-collision-dimension-identity 推论：window-6 恰好 3 种纤维大小（2,3,4），无 0,1,5，Window6.lean:666）——结论 78→79（+1 条目：thm:conclusion-window6-groupoid-collision-dimension-identity）（Phase 185）
@@ -154,7 +155,7 @@
 ### Lean4 形式化状态
 
 - **1,228 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,405 个 Lean4 定理（含内部引理）
+- ~2,408 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
