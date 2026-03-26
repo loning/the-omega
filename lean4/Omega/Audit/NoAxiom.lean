@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 196: Fib.lean + Window6.lean — FenceDet指数下界 + Pisano统一表 + 非仿射纤维计数
+  -- cor:pom-Lk-surface-free-energy（指数下界）→ 2^k ≤ D_k for k ≥ 1 (Fib.lean)
+  #print axioms Omega.fenceDet_ge_pow_two
+  -- prop:crt-235-min-depth（Pisano 统一表）→ mod 2→3, mod 3→4, mod 5→5, mod 7→8, mod 8→6 (Fib.lean)
+  #print axioms Omega.pisano_entry_point_table
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（非仿射纤维）→ 11 affine + 10 non-affine = 21 (Window6.lean)
+  #print axioms Omega.conclusion_window6_nonaffine_count
   -- Phase 195: Fib.lean + Window6.lean — FenceDet指数上界 + Fib整除iff + BinFold正常着色
   -- cor:pom-Lk-surface-free-energy（指数上界）→ D_k ≤ 3^k (Fib.lean)
   #print axioms Omega.fenceDet_le_pow_three
