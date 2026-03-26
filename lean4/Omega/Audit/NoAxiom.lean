@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 189: Weight.lean + Fib.lean + Window6.lean — weight更新+F + Fib严格单调 + 21<64<220
+  -- bridge:weight-update-true-add → 翻转 false→true 增加 F_{i+2} (Weight.lean)
+  #print axioms Omega.weight_update_true_add
+  -- bridge:fib-strict-mono → F_n < F_{n+1} for n ≥ 2 (Fib.lean)
+  #print axioms Omega.fib_strict_mono
+  -- bridge:conclusion-window6-moment-chain → 21 < 64 < 220 (Window6.lean)
+  #print axioms Omega.conclusion_window6_moment_chain
   -- Phase 188: Fib.lean + Weight.lean + Window6.lean — Fib平方和移位 + weight零iff全假 + S_2(6)=220≠212
   -- bridge:fib-sq-sum-shifted → Σ_{k<n} F_{k+2}² = F_{n+1}·F_{n+2} - 1 (Fib.lean)
   #print axioms Omega.fib_sq_sum_shifted

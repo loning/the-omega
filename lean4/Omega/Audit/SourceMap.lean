@@ -9728,6 +9728,11 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 189: Weight.lean + Fib.lean + Window6.lean（3 条，bridge only）
+-- bridge:weight-update-true-add → weight_update_true_add (Weight.lean)
+-- bridge:fib-strict-mono → fib_strict_mono (Fib.lean)
+-- bridge:conclusion-window6-moment-chain → conclusion_window6_moment_chain (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
 -- Phase 188: Fib.lean + Weight.lean + Window6.lean（3 条，bridge only）
 -- bridge:fib-sq-sum-shifted → fib_sq_sum_shifted (Fib.lean)
 -- bridge:weight-zero-iff-allFalse → weight_zero_iff_allFalse (Weight.lean)
