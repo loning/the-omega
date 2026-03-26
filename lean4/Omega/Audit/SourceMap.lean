@@ -9728,6 +9728,32 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 174: Window6.lean 首批结论章节定理（6 条）(Window6.lean:523,530,535,539,543,560)
+-- cor:conclusion-window6-three-rigidity-scales → conclusion_window6_three_rigidity_scales (Window6.lean:523)
+-- thm:conclusion-window6-groupoid-collision-dimension-identity → conclusion_window6_collision_dimension (Window6.lean:530)
+-- bridge:conclusion-collision-prob-num → conclusion_window6_collision_prob_numerator (Window6.lean:535)
+-- bridge:conclusion-collision-prob-denom → conclusion_window6_collision_prob_denominator (Window6.lean:539)
+-- bridge:lt-self-pow → lt_self_pow (Window6.lean:543)
+-- prop:conclusion-index-torsion-time-lower-bound → readout_binary_steps_window6 (Window6.lean:560)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:conclusion-window6-three-rigidity-scales"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_three_rigidity_scales"
+    phase := 174
+    status := .formalized }
+, { label := "thm:conclusion-window6-groupoid-collision-dimension-identity"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_collision_dimension"
+    phase := 174
+    status := .formalized }
+, { label := "prop:conclusion-index-torsion-time-lower-bound"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.readout_binary_steps_window6"
+    phase := 174
+    status := .formalized }
 -- Phase 173: Fib.lean + Defect.lean + FibonacciCube.lean（5 条）
 -- def:pom-fence-det → fenceDet (Fib.lean:337)
 -- bridge:fib-odd-recurrence → fib_odd_recurrence (Fib.lean:344)

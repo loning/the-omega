@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~29,162 |
-| 定理/定义数 | ~2,318 |
+| 定理/定义数 | ~2,324 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 174: ★ 首批结论章节定理 — Window6 三刚性尺度 + groupoid 碰撞维数 + 二进制步数界（Round 174）**：Folding/Window6.lean(523,530,535,539,543,560)——conclusion_window6_three_rigidity_scales（cor:conclusion-window6-three-rigidity-scales：|X_6|=21, max_BinFold=4, 2^6=64, 4<21<64，三层刚性尺度联合，Window6.lean:523）; conclusion_window6_collision_dimension（thm:conclusion-window6-groupoid-collision-dimension-identity：9·16+4·9+8·4=212 groupoid 碰撞维数恒等式，Window6.lean:530）; conclusion_window6_collision_prob_numerator（bridge: 212=4·53，Window6.lean:535）; conclusion_window6_collision_prob_denominator（bridge: (2^6)²=4·1024，Window6.lean:539）; lt_self_pow（bridge: T < b^T for b ≥ 2，Window6.lean:543）; readout_binary_steps_window6（prop:conclusion-index-torsion-time-lower-bound：2^T < D(6) → T < 3，Window6.lean:560）——结论覆盖率 66 → 69（+3 条目：cor:conclusion-window6-three-rigidity-scales, thm:conclusion-window6-groupoid-collision-dimension-identity, prop:conclusion-index-torsion-time-lower-bound）（Phase 174）
 **Phase 173: Fence 行列式递推与 Fibonacci 等式 + allFalse 缺陷 + 权重 popcount 界（Round 173）**：三文件 Fib.lean(337,344,362) + Defect.lean(431) + FibonacciCube.lean(467)——fenceDet（def:pom-fence-det：Fence 行列式递推 D(0)=1, D(1)=2, D(k+2)=3D(k+1)-D(k)，Fib.lean:337）; fib_odd_recurrence（bridge: F_{2n+5}=3·F_{2n+3}-F_{2n+1}，Fib.lean:344）; fenceDet_eq_fib（cor:pom-Lk-t1-fibonacci-det-green：det(L_k+I)=F_{2k+1}，Fib.lean:362）; localDefect_allFalse（thm:fold-discrete-stokes-defect 推论 allFalse 特化：全零词局部缺陷为零，Defect.lean:431）; weight_le_popcount_mul_fib（bridge: weight(w) ≤ popcount(w)·F_{m+1}，FibonacciCube.lean:467）——POM 覆盖率 ~482 → ~485（+3 条目：def:pom-fence-det, cor:pom-Lk-t1-fibonacci-det-green, thm:fold-discrete-stokes-defect）（Phase 173）
 **Phase 172: 纤维反射对称性 + S_q > Fib（一般 q）+ D^q ≤ S_q + D < S_q（一般 q）（Round 172）**：Folding/MomentBounds.lean(445,487,502,512)——fiberMultiplicity_value_symmetric（prop:fold-fiber-count-reciprocity：d(ofNat r) = d(ofNat (F_{m+1}-2-r)) 纤维多重度反射对称性，注：因循环依赖放于 MomentBounds.lean，MomentBounds.lean:445）; momentSum_gt_fib（prop:pom-moment-congruence-q 推论一般化：S_q(m) > F_{m+2} for q ≥ 1, m ≥ 2，MomentBounds.lean:487）; maxFiberMultiplicity_pow_le_momentSum（bridge: D(m)^q ≤ S_q(m)，MomentBounds.lean:502）; maxFiberMultiplicity_lt_momentSum（prop:pom-power-sum-hankel-psd 推论一般化：D(m) < S_q(m) for q ≥ 1, m ≥ 2，MomentBounds.lean:512）——POM 覆盖率 ~479 → ~482（+3 条目：prop:fold-fiber-count-reciprocity, prop:pom-moment-congruence-q, prop:pom-power-sum-hankel-psd）（Phase 172）
 **Phase 171: 稳定词局部缺陷为零 + S_2 超越 Fibonacci + 最大纤维严格小于 S_2（Round 171）**：两文件 Defect.lean(415) + MomentBounds.lean(424,434)——localDefect_of_stable（thm:fold-discrete-stokes-defect 推论：稳定词局部缺陷为零，Defect.lean:415）; momentSum_two_gt_fib（prop:pom-moment-congruence-q 推论：F_{m+2} < S_2(m) for m ≥ 2，MomentBounds.lean:424）; maxFiberMultiplicity_lt_momentSum_two（prop:pom-power-sum-hankel-psd 推论：D(m) < S_2(m) for m ≥ 2，MomentBounds.lean:434）——POM 覆盖率 ~476 → ~479（+3 条目：thm:fold-discrete-stokes-defect, prop:pom-moment-congruence-q, prop:pom-power-sum-hankel-psd）（Phase 171）
@@ -139,15 +140,15 @@
 
 ### Lean4 形式化状态
 
-- **1,205 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,355 个 Lean4 定理（含内部引理）
+- **1,208 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,361 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1264/10,588 = **11.9%** |
+| 全局覆盖率 | 1267/10,588 = **12.0%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -164,10 +165,10 @@
 | POM | 1,525 | ~485 | ~31.8% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | 66 | 3.8% |
+| 结论 | 1,727 | 69 | 4.0% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1248** | **11.8%** |
+| **总计** | **10,588** | **1267** | **12.0%** |
 
 ## 3. 未来工作：30 条具体计划
 

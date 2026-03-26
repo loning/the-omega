@@ -817,6 +817,19 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 174: Window6.lean 首批结论章节 — 三刚性尺度 + groupoid碰撞维数 + 二进制步数界
+  -- cor:conclusion-window6-three-rigidity-scales → |X_6|=21, max_BinFold=4, 2^6=64, 4<21<64 (Window6.lean:523)
+  #print axioms Omega.conclusion_window6_three_rigidity_scales
+  -- thm:conclusion-window6-groupoid-collision-dimension-identity → 9·16+4·9+8·4=212 (Window6.lean:530)
+  #print axioms Omega.conclusion_window6_collision_dimension
+  -- bridge:conclusion-collision-prob-num → 212 = 4·53 (Window6.lean:535)
+  #print axioms Omega.conclusion_window6_collision_prob_numerator
+  -- bridge:conclusion-collision-prob-denom → (2^6)^2 = 4·1024 (Window6.lean:539)
+  #print axioms Omega.conclusion_window6_collision_prob_denominator
+  -- bridge:lt-self-pow → T < b^T for b ≥ 2 (Window6.lean:543)
+  #print axioms Omega.lt_self_pow
+  -- prop:conclusion-index-torsion-time-lower-bound → 2^T < D(6) → T < 3 (Window6.lean:560)
+  #print axioms Omega.readout_binary_steps_window6
   -- Phase 173: Fib.lean + Defect.lean + FibonacciCube.lean — Fence行列式递推 + fenceDet=Fib + allFalse缺陷为零 + 权重popcount界
   -- def:pom-fence-det → D(0)=1, D(1)=2, D(k+2)=3D(k+1)-D(k) (Fib.lean:337)
   #print axioms Omega.fenceDet
