@@ -9086,6 +9086,35 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.X.crtDecomposition"
     phase := 145
     status := .formalized }
+-- Phase 145b: 新定理 4 条 (FiberArithmeticProperties.lean:499, MomentTriple.lean:663,686,698)
+-- prop:pom-truncation-not-commute → paper_truncation_not_commute (FiberArithmeticProperties.lean:499)
+-- bridge:fiber-counting-identity → sum_word_eq_sum_fiber_mul (MomentTriple.lean:663)
+-- prop:pom-moment-congruence-q → sum_word_fiberMult_pow (MomentTriple.lean:686)
+-- prop:pom-moment-congruence-q → momentSum_two_sq_le_pow_mul_three (MomentTriple.lean:698)
+, { label := "prop:pom-truncation-not-commute"
+    sourcePath := "sections/body/pom/parts/subsec__pom-spectral-gap.tex"
+    moduleName := "Omega.Folding.FiberArithmeticProperties"
+    leanName := "Omega.paper_truncation_not_commute"
+    phase := 145
+    status := .formalized }
+, { label := "bridge:fiber-counting-identity"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.sum_word_eq_sum_fiber_mul"
+    phase := 145
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.sum_word_fiberMult_pow"
+    phase := 145
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_sq_le_pow_mul_three"
+    phase := 145
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

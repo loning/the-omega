@@ -2236,6 +2236,11 @@ def coreAuditTargets : List String :=
   , "Omega.paper_discriminant_positive"
   -- Phase 144: MomentTriple 新定理 (MomentTriple.lean:635,640)
   , "Omega.weightCongruenceCount_ge_ewc"
-  , "Omega.momentSum_two_excess_sum" ]
+  , "Omega.momentSum_two_excess_sum"
+  -- Phase 145b: 新定理 (FiberArithmeticProperties.lean:499, MomentTriple.lean:663,686,698)
+  , "Omega.paper_truncation_not_commute"
+  , "Omega.sum_word_eq_sum_fiber_mul"
+  , "Omega.sum_word_fiberMult_pow"
+  , "Omega.momentSum_two_sq_le_pow_mul_three" ]
 
 end Omega.Audit
