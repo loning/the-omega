@@ -9355,6 +9355,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_double_of"
     phase := 154
     status := .formalized }
+-- Phase 155: S3Recurrence.lean 新定理 2 条 (S3Recurrence.lean:86,125)
+-- bridge:modular-weight-count → modular_weight_count (S3Recurrence.lean:86)
+-- bridge:fft-eq-sum → tripleCollisionClass_fft_eq_sum (S3Recurrence.lean:125)
+, { label := "bridge:modular-weight-count"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.modular_weight_count"
+    phase := 155
+    status := .formalized }
+, { label := "bridge:fft-eq-sum"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.tripleCollisionClass_fft_eq_sum"
+    phase := 155
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
