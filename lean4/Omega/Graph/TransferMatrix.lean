@@ -313,4 +313,13 @@ theorem goldenMeanAdjacency_pf_root_eq_goldenRatio :
   · intro μ hμ
     exact goldenMeanAdjacency_dominates_all_real_eigenvalues hμ
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 185
+-- ══════════════════════════════════════════════════════════════
+
+/-- The golden mean adjacency matrix satisfies A² = A + I (Cayley-Hamilton). -/
+theorem goldenMeanAdjacency_cayley_hamilton :
+    goldenMeanAdjacency ^ 2 = goldenMeanAdjacency + 1 :=
+  goldenMeanAdjacency_sq
+
 end Omega.Graph

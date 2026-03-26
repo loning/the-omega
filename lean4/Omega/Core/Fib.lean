@@ -530,4 +530,25 @@ theorem fib_add_formula (m n : Nat) :
     Nat.fib (m + n + 1) = Nat.fib (m + 1) * Nat.fib (n + 1) + Nat.fib m * Nat.fib n := by
   rw [Nat.fib_add m n, Nat.add_comm]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 185
+-- ══════════════════════════════════════════════════════════════
+
+/-- F_{n+1}² - F_n² = F_{n-1} · F_{n+2} for n ≥ 1. -/
+theorem fib_sq_sub_sq (n : Nat) (hn : 1 ≤ n) :
+    Nat.fib (n + 1) ^ 2 - Nat.fib n ^ 2 = Nat.fib (n - 1) * Nat.fib (n + 2) := by
+  -- F_{n+2} = F_{n+1} + F_n, F_{n+1} = F_n + F_{n-1}
+  have h_add2 := Nat.fib_add_two (n := n)
+  rw [show n + 2 = n + 2 from rfl, show n + 1 = n + 1 from rfl] at h_add2
+  have h_add1 := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at h_add1
+  -- F_{n+1} = F_{n-1} + F_n, so F_{n+1}^2 - F_n^2 = F_{n-1}*(F_{n-1}+2*F_n)
+  -- F_{n+2} = F_n + F_{n+1} = F_{n-1} + 2*F_n, so RHS = F_{n-1}*(F_{n-1}+2*F_n)
+  -- Rewrite as equality with addition (no subtraction)
+  suffices Nat.fib (n + 1) ^ 2 =
+      Nat.fib n ^ 2 + Nat.fib (n - 1) * Nat.fib (n + 2) by omega
+  -- F_{n+1} = F_{n-1} + F_n, F_{n+2} = F_n + F_{n+1} = F_n + F_{n-1} + F_n = 2F_n + F_{n-1}
+  have h_n2 : Nat.fib (n + 2) = 2 * Nat.fib n + Nat.fib (n - 1) := by linarith
+  rw [h_add1, h_n2]; ring
+
 end Omega
