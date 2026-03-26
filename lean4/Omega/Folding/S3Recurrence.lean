@@ -16,25 +16,22 @@ def crossCorrSqLowPrev (m : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)),
     exactWeightCount m n * exactWeightCount m (n + Nat.fib (m + 1)) ^ 2
 
-/-- tripleCollisionClass(fff) = exactTripleCollisionClass(fff) since weights < F_{m+3}
-    means mod is identity. -/
+/-- tripleCollisionClass(fff) = exactTripleCollisionClass(fff). -/
 theorem tripleCollisionClass_fff_eq_exact (m : Nat) :
     (tripleCollisionClass m false false false).card =
     (exactTripleCollisionClass m false false false).card := by
   congr 1; ext ⟨v1, v2, v3⟩
   simp only [tripleCollisionClass, exactTripleCollisionClass, Finset.mem_filter,
     Finset.mem_univ, true_and, Bool.false_eq_true, ite_false, Nat.add_zero]
-  have h1 : weight v1 < Nat.fib (m + 3) := X.weight_lt_fib v1
-  have h2 : weight v2 < Nat.fib (m + 3) := X.weight_lt_fib v2
-  have h3 : weight v3 < Nat.fib (m + 3) := X.weight_lt_fib v3
   constructor
-  · intro ⟨hmod1, hmod2⟩
-    rw [Nat.mod_eq_of_lt h1, Nat.mod_eq_of_lt h2] at hmod1
-    rw [Nat.mod_eq_of_lt h2, Nat.mod_eq_of_lt h3] at hmod2
-    exact ⟨hmod1, hmod2⟩
-  · intro ⟨h12, h23⟩
-    rw [Nat.mod_eq_of_lt h1, Nat.mod_eq_of_lt h2, Nat.mod_eq_of_lt h3]
-    exact ⟨h12, h23⟩
+  · intro ⟨h1, h2⟩
+    rw [Nat.mod_eq_of_lt (X.weight_lt_fib v1), Nat.mod_eq_of_lt (X.weight_lt_fib v2)] at h1
+    rw [Nat.mod_eq_of_lt (X.weight_lt_fib v2), Nat.mod_eq_of_lt (X.weight_lt_fib v3)] at h2
+    exact ⟨h1, h2⟩
+  · intro ⟨h1, h2⟩
+    constructor <;> (rw [Nat.mod_eq_of_lt (X.weight_lt_fib _), Nat.mod_eq_of_lt (X.weight_lt_fib _)])
+    · exact h1
+    · exact h2
 
 /-- tripleCollisionClass(ttt) = exactTripleCollisionClass(ttt). -/
 theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
@@ -53,8 +50,8 @@ theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
     rw [Nat.mod_eq_of_lt (X.weight_lt_fib v2), Nat.mod_eq_of_lt (X.weight_lt_fib v3)] at hmod2
     exact ⟨by omega, by omega⟩
   · intro ⟨h1, h2⟩
-    exact ⟨congr_arg (· % Nat.fib (m + 3)) h1,
-           congr_arg (· % Nat.fib (m + 3)) h2⟩
+    -- exact → mod: wt(v1)+F = wt(v2)+F → (wt(v1)+F)%F' = (wt(v2)+F)%F'
+    refine ⟨?_, ?_⟩ <;> show _ % _ = _ % _ <;> congr 1 <;> omega
 
 /-- T_{fft} mod split verified for m ≤ 5. -/
 theorem tripleCollisionClass_fft_mod_split_bounded (m : Nat) (hm : m ≤ 5) :
