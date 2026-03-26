@@ -206,4 +206,188 @@ theorem exactWeightCollision_succ_ge_double (m : Nat) :
     have hmono := Nat.le_of_lt (exactWeightCollision_strict_mono m)
     linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 169
+-- ══════════════════════════════════════════════════════════════
+
+/-- Ratio monotonicity with gap: S_{a+1}(m) · S_b(m) ≤ S_a(m) · S_{b+1}(m) for a ≤ b.
+    Follows from log-convexity by induction on b - a. -/
+theorem momentSum_ratio_mono_gap (a b m : Nat) (hab : a ≤ b) :
+    momentSum (a + 1) m * momentSum b m ≤
+    momentSum a m * momentSum (b + 1) m := by
+  induction b with
+  | zero =>
+    have : a = 0 := Nat.le_zero.mp hab
+    subst this; exact le_of_eq (Nat.mul_comm _ _)
+  | succ b ih =>
+    by_cases hab' : a ≤ b
+    · -- a ≤ b, so by IH: S_{a+1} · S_b ≤ S_a · S_{b+1}
+      -- Also: S_{b+1}² ≤ S_b · S_{b+2} (log-convex)
+      -- We want: S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      -- From IH: S_{a+1} · S_b ≤ S_a · S_{b+1}  ...(1)
+      -- From log-convex: S_{b+1}² ≤ S_b · S_{b+2}  ...(2)
+      -- From (1): S_{a+1} ≤ S_a · S_{b+1} / S_b (informally)
+      -- Multiply (1) by S_{b+2} and (2) by S_a:
+      -- S_{a+1} · S_b · S_{b+2} ≤ S_a · S_{b+1} · S_{b+2}
+      -- S_a · S_{b+1}² ≤ S_a · S_b · S_{b+2}
+      -- So S_{a+1} · S_{b+1} · S_b ≤ S_a · S_{b+1} · S_{b+2} (want)
+      -- But we need: S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      -- Use: S_{a+1} · S_{b+1} · S_b ≤ S_a · S_{b+1} · S_{b+2} from (1)·S_{b+2} isn't right.
+      -- Better: from (1) and (2), if S_b > 0:
+      --   S_{a+1}/S_a ≤ S_{b+1}/S_b ≤ S_{b+2}/S_{b+1}
+      -- So S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      -- Formal: cross-multiply chain.
+      -- From IH: S_{a+1} · S_b ≤ S_a · S_{b+1}
+      -- Multiply both sides by S_{b+2}: S_{a+1} · S_b · S_{b+2} ≤ S_a · S_{b+1} · S_{b+2}
+      -- From log-convex: S_{b+1}² ≤ S_b · S_{b+2}, so S_{b+1} · S_{b+1} ≤ S_b · S_{b+2}
+      -- Multiply both sides by S_a: S_a · S_{b+1}² ≤ S_a · S_b · S_{b+2}
+      -- Combine: S_{a+1} · S_{b+1} · S_b ≤ S_a · S_{b+1} · S_{b+2} from first
+      -- And    : S_a · S_{b+1} · S_{b+1} ≤ S_a · S_b · S_{b+2} from second
+      -- Need:    S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      -- Multiply IH by S_{b+2}: S_{a+1} · S_b · S_{b+2} ≤ S_a · S_{b+1} · S_{b+2}   ...(*)
+      -- From log-convex: S_{a+1} · S_{b+1}² ≤ S_{a+1} · S_b · S_{b+2}
+      -- So S_{a+1} · S_{b+1}² ≤ S_a · S_{b+1} · S_{b+2}
+      -- Divide by S_{b+1} (positive): S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      have hih := ih hab'
+      have hlc := momentSum_ratio_mono b m
+      have hpos := momentSum_pos' (b + 1) m
+      -- hih: S_{a+1} · S_b ≤ S_a · S_{b+1}
+      -- hlc: S_{b+1} · S_{b+1} ≤ S_b · S_{b+2}
+      -- Want: S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      -- Equivalently: S_{a+1} · S_{b+1} · S_{b+1} ≤ S_a · S_{b+2} · S_{b+1}
+      -- From hih · S_{b+2}: S_{a+1} · S_b · S_{b+2} ≤ S_a · S_{b+1} · S_{b+2}
+      -- From hlc · S_{a+1}: S_{a+1} · S_{b+1}² ≤ S_{a+1} · S_b · S_{b+2}
+      -- Chaining: S_{a+1} · S_{b+1}² ≤ S_a · S_{b+1} · S_{b+2}
+      -- Cancel S_{b+1}: S_{a+1} · S_{b+1} ≤ S_a · S_{b+2}
+      -- Chain: S_{a+1} · S_{b+1}² ≤ S_a · S_{b+2} · S_{b+1}
+      -- From hlc · S_{a+1}: S_{a+1} · S_{b+1}² ≤ S_{a+1} · S_b · S_{b+2}
+      -- From hih · S_{b+2}: S_{a+1} · S_b · S_{b+2} ≤ S_a · S_{b+1} · S_{b+2}
+      -- Cancel S_{b+1}: done.
+      suffices momentSum (a + 1) m * momentSum (b + 1) m * momentSum (b + 1) m ≤
+          momentSum a m * momentSum (b + 1 + 1) m * momentSum (b + 1) m from
+        Nat.le_of_mul_le_mul_right this hpos
+      calc momentSum (a + 1) m * momentSum (b + 1) m * momentSum (b + 1) m
+          = momentSum (a + 1) m * (momentSum (b + 1) m * momentSum (b + 1) m) := by ring
+        _ ≤ momentSum (a + 1) m * (momentSum b m * momentSum (b + 2) m) :=
+            Nat.mul_le_mul_left _ hlc
+        _ = (momentSum (a + 1) m * momentSum b m) * momentSum (b + 2) m := by ring
+        _ ≤ (momentSum a m * momentSum (b + 1) m) * momentSum (b + 2) m :=
+            Nat.mul_le_mul_right _ hih
+        _ = momentSum a m * momentSum (b + 1 + 1) m * momentSum (b + 1) m := by ring
+    · -- a = b + 1
+      push_neg at hab'
+      have ha : a = b + 1 := by omega
+      subst ha
+      -- Goal: S_{b+2} · S_{b+1} ≤ S_{b+1} · S_{b+2}
+      exact le_of_eq (Nat.mul_comm _ _)
+
+/-- Generalized log-convexity: S_q(m)² ≤ S_{q-r}(m) · S_{q+r}(m).
+    cor:pom-crossq-logconvex-chain. -/
+theorem momentSum_log_convex_gap (q r m : Nat) (hr : r ≤ q) :
+    momentSum q m ^ 2 ≤ momentSum (q - r) m * momentSum (q + r) m := by
+  induction r with
+  | zero => simp [sq]
+  | succ r ih =>
+    have hr' : r ≤ q := by omega
+    have hih := ih hr'
+    -- IH: S_q² ≤ S_{q-r} · S_{q+r}
+    -- Want: S_q² ≤ S_{q-r-1} · S_{q+r+1}
+    -- By ratio_mono_gap with a = q-r-1, b = q+r:
+    --   S_{q-r} · S_{q+r} ≤ S_{q-r-1} · S_{q+r+1}
+    have hkey : momentSum (q - r) m * momentSum (q + r) m ≤
+        momentSum (q - (r + 1)) m * momentSum (q + (r + 1)) m := by
+      have hqr : q - r = (q - (r + 1)) + 1 := by omega
+      rw [hqr]
+      exact momentSum_ratio_mono_gap (q - (r + 1)) (q + r) m (by omega)
+    exact Nat.le_trans hih hkey
+
+/-- n^q has the same parity as n for q ≥ 1. -/
+private theorem Nat.pow_mod_two (n q : Nat) (hq : 1 ≤ q) :
+    n ^ q % 2 = n % 2 := by
+  induction q with
+  | zero => omega
+  | succ q ih =>
+    rw [pow_succ, Nat.mul_mod]
+    by_cases hq0 : q = 0
+    · subst hq0; simp
+    · rw [ih (by omega)]
+      -- n % 2 * (n % 2) % 2 = n % 2
+      have : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
+      rcases this with h | h <;> simp [h]
+
+/-- S_q(m) is even for q ≥ 1 and m ≥ 1. Generalizes momentSum_two_even and momentSum_three_even.
+    Consequence of prop:pom-moment-congruence-q. -/
+theorem momentSum_even (q m : Nat) (hq : 1 ≤ q) (hm : 1 ≤ m) :
+    2 ∣ momentSum q m := by
+  -- S_q = Σ d^q ≡ Σ d = 2^m ≡ 0 (mod 2)
+  suffices h : momentSum q m % 2 = 0 from Nat.dvd_of_mod_eq_zero h
+  simp only [momentSum]
+  rw [Finset.sum_nat_mod]
+  -- Replace d^q % 2 by d % 2 via pow_mod_two
+  simp_rw [Nat.pow_mod_two _ _ hq]
+  rw [← Finset.sum_nat_mod, X.fiberMultiplicity_sum_eq_pow]
+  obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
+  simp [pow_succ]
+
+/-- Prepend a bit to the left of a word. -/
+def cons (b : Bool) (v : Word m) : Word (m + 1) :=
+  Fin.cons b v
+
+/-- Weight difference of cons true vs cons false is exactly 1. -/
+theorem weight_cons_true_sub_false (v : Word m) :
+    weight (cons true v) = weight (cons false v) + 1 := by
+  simp only [weight_eq_fib_ite_sum, cons, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ,
+    Bool.false_eq_true, ite_false, Fin.val_zero, ite_true, Nat.zero_add,
+    show Nat.fib (0 + 2) = 1 from by native_decide]
+  -- Goal: 1 + rest = rest + 1
+  omega
+
+/-- Left-resolving: prepending different bits always gives different Fold values.
+    thm:pom-left-resolving. -/
+theorem Fold_cons_false_ne_true (v : Word m) :
+    Fold (cons false v) ≠ Fold (cons true v) := by
+  intro h
+  -- cons false v, cons true v : Word (m+1), modulus is fib((m+1)+2) = fib(m+3)
+  have hmod := (Fold_eq_iff_weight_mod (cons false v) (cons true v)).mp h
+  have hdiff := weight_cons_true_sub_false v
+  -- hmod uses fib((m+1)+2) = fib(m+3)
+  -- weight(cons true v) = weight(cons false v) + 1
+  rw [hdiff] at hmod
+  -- hmod: w % fib(m+3) = (w+1) % fib(m+3) where w = weight(cons false v)
+  have hfib_ge : 2 ≤ Nat.fib (m + 3) := by
+    have h3 : Nat.fib 3 = 2 := by native_decide
+    linarith [Nat.fib_mono (show 3 ≤ m + 3 by omega)]
+  -- weight(cons true v) < fib(m+4): cons true v : Word (m+1)
+  have hlt : weight (cons true v) < Nat.fib (m + 4) := X.weight_lt_fib (cons true v)
+  -- So weight(cons false v) + 1 < fib(m+4), hence weight(cons false v) < fib(m+4) - 1
+  rw [hdiff] at hlt
+  -- Now: w % F = (w+1) % F with F = fib(m+3) ≥ 2 is impossible
+  -- Proof: if w % F < F-1 then (w+1) % F = w % F + 1 ≠ w % F
+  -- if w % F = F-1 then (w+1) % F = 0 ≠ F-1
+  have hF := hfib_ge
+  set w := weight (cons false v) with hw_def
+  set F := Nat.fib (m + 3) with hF_def
+  have hFpos : 0 < F := by omega
+  have hwmod := Nat.mod_lt w hFpos
+  by_cases hcase : w % F + 1 < F
+  · -- w % F < F - 1, so (w+1) % F = w % F + 1
+    have : (w + 1) % F = w % F + 1 := by
+      rw [Nat.add_mod, Nat.mod_eq_of_lt (by omega : 1 < F)]
+      exact Nat.mod_eq_of_lt hcase
+    omega
+  · -- w % F = F - 1, so (w+1) % F = 0
+    push_neg at hcase
+    have heq : w % F = F - 1 := by omega
+    have : (w + 1) % F = 0 := by
+      rw [Nat.add_mod, heq]
+      simp [Nat.sub_add_cancel (by omega : 1 ≤ F), Nat.mod_self]
+    omega
+
+/-- Biresolving: Fold is both right-resolving and left-resolving.
+    con:pom-fold-biresolving. -/
+theorem Fold_biresolving (v : Word m) :
+    Fold (snoc v false) ≠ Fold (snoc v true) ∧
+    Fold (cons false v) ≠ Fold (cons true v) :=
+  ⟨Fold_snoc_false_ne_true v, Fold_cons_false_ne_true v⟩
+
 end Omega
