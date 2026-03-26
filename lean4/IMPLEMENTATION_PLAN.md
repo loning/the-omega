@@ -119,6 +119,7 @@
 **圆维度 Jeffreys 耗散刚性（Round 122）**：jeffreys_dissipation_rigidity（将非负零均值耗散壳层包装到对称 KL / Jeffreys 耗散，支撑双侧平台唯一性）
 **圆维度 Fibonacci 时间平台有限证书（Round 123）**：fib_platform_certificate_of_eq_succ / fib_platform_certificate_of_eq_succ_succ（把相邻或隔一层 Fibonacci 时间标签相等时的平台刚性压缩为有限证据判别，支撑论文中的有限证书等价形式）
 **圆维度 RH 缺陷的 Fibonacci 半径离散承载（Round 124）**：tendsto_zero_of_nonneg_le_of_tendsto_zero / fibRadius_discretization_of_le_tendsto_zero（把连续趋零判据压缩为 Fibonacci 半径链上的非负上界收敛证书，支撑 RH 缺陷离散承载结论）
+**圆维度零点模长下界证书（Round 125）**：zero_modulus_lower_bound_of_log_defect_bound / fibRadius_zero_modulus_lower_bound_of_log_defect_bound（把对数缺陷上界转为零点模长的定量下界，并包装到 Fibonacci 半径离散链上）
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
@@ -133,17 +134,17 @@
 
 ### Lean4 形式化状态
 
-- **1,185 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,328 个 Lean4 定理（含内部引理）
+- **1,187 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,330 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1239/10,588 = **11.7%** |
+| 全局覆盖率 | 1241/10,588 = **11.7%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
-| 中覆盖（有界 + 条件） | ~159 (1.5%) |
+| 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
 | 未追踪（附录 + 新章节） | 1,505 个定理 |
 
@@ -156,12 +157,12 @@
 | Folding | 317 | ~90 | ~28% |
 | 群统一 | 457 | ~100 | ~22% |
 | POM | 1,525 | ~463 | ~30.4% |
-| 圆维度 | 342 | 60 | 17.5% |
+| 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 66 | 3.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1239** | **11.7%** |
+| **总计** | **10,588** | **1241** | **11.7%** |
 
 ## 3. 未来工作：30 条具体计划
 

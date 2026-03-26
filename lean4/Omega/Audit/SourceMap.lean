@@ -9152,6 +9152,24 @@ def initialEntries : List SourceMapEntry :=
     moduleName := "Omega.Folding.Entropy"
     leanName := "Omega.fibRadius_discretization_of_le_tendsto_zero"
     phase := 124
+    status := .formalized }
+-- Phase 125: 零点模长下界证书（Entropy.lean:98-110)
+-- con:cdim-rh-defect-fibonacci-discretization → zero_modulus_lower_bound_of_log_defect_bound
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-rh-defect-fibonacci-discretization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.zero_modulus_lower_bound_of_log_defect_bound"
+    phase := 125
+    status := .formalized }
+-- Phase 125: Fibonacci 半径零点模长下界证书（Entropy.lean:112-120)
+-- con:cdim-rh-defect-fibonacci-discretization → fibRadius_zero_modulus_lower_bound_of_log_defect_bound
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "con:cdim-rh-defect-fibonacci-discretization"
+    sourcePath := "sections/body/circle_dimension_phase_gate/subsec__circle-dimension-phase-gate-fibonacci-poisson-kl-rh-discretization.tex"
+    moduleName := "Omega.Folding.Entropy"
+    leanName := "Omega.fibRadius_zero_modulus_lower_bound_of_log_defect_bound"
+    phase := 125
     status := .formalized } ]
 
 end Omega.Audit
