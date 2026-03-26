@@ -9728,6 +9728,29 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 195: Fib.lean + Window6.lean（3 条，标签均已注册）
+-- cor:pom-Lk-surface-free-energy（指数上界）→ fenceDet_le_pow_three (Fib.lean)
+-- prop:crt-235-min-depth（核心引理）→ fib_dvd_iff (Fib.lean)
+-- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（edge separation）→ conclusion_window6_binfold_proper_coloring (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:pom-Lk-surface-free-energy"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_le_pow_three"
+    phase := 195
+    status := .formalized }
+, { label := "prop:crt-235-min-depth"
+    sourcePath := "sections/body/pom/parts/subsec__pom-crt.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fib_dvd_iff"
+    phase := 195
+    status := .formalized }
+, { label := "thm:conclusion-foldbin-stable-collapse-ordered-k0-memory"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_binfold_proper_coloring"
+    phase := 195
+    status := .formalized }
 -- Phase 194: Fib.lean + Window6.lean（2 条论文标签 + 3 bridge）
 -- cor:pom-Lk-surface-free-energy（严格单调）→ fenceDet_strict_mono (Fib.lean)
 -- bridge:six-dvd-of-fib-eight → six_dvd_of_fib_eight_dvd (Fib.lean, private)

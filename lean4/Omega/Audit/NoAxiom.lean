@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 195: Fib.lean + Window6.lean — FenceDet指数上界 + Fib整除iff + BinFold正常着色
+  -- cor:pom-Lk-surface-free-energy（指数上界）→ D_k ≤ 3^k (Fib.lean)
+  #print axioms Omega.fenceDet_le_pow_three
+  -- prop:crt-235-min-depth（核心引理）→ F_a | F_b ↔ a | b for a ≥ 3 (Fib.lean)
+  #print axioms Omega.fib_dvd_iff
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（edge separation）→ BinFold 是 6-超立方体正常着色 (Window6.lean)
+  #print axioms Omega.conclusion_window6_binfold_proper_coloring
   -- Phase 194: Fib.lean + Window6.lean — FenceDet严格单调 + Pisano mod 8 + unit group φ(21)=12
   -- cor:pom-Lk-surface-free-energy（严格单调）→ D_k < D_{k+1} for k ≥ 1 (Fib.lean)
   #print axioms Omega.fenceDet_strict_mono
