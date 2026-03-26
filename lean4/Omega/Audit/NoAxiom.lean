@@ -2249,6 +2249,9 @@ def coreAuditTargets : List String :=
   -- Phase 147: 新定理 (FiberWeightCount.lean:459, MomentTriple.lean:737,768)
   , "Omega.sum_word_apply_weight"
   , "Omega.momentSum_log_convex"
-  , "Omega.momentSum_ratio_mono" ]
+  , "Omega.momentSum_ratio_mono"
+  -- Phase 148: 新文件 MomentBounds.lean (MomentBounds.lean:13,58)
+  , "Omega.card_true_at_bit"
+  , "Omega.weight_total_sum" ]
 
 end Omega.Audit

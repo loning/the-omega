@@ -9159,6 +9159,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_ratio_mono"
     phase := 147
     status := .formalized }
+-- Phase 148: 新文件 MomentBounds.lean (MomentBounds.lean:13,58)
+-- bridge:card-true-at-bit → card_true_at_bit (MomentBounds.lean:13)
+-- bridge:weight-total-sum → weight_total_sum (MomentBounds.lean:58)
+, { label := "bridge:card-true-at-bit"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.card_true_at_bit"
+    phase := 148
+    status := .formalized }
+, { label := "bridge:weight-total-sum"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.weight_total_sum"
+    phase := 148
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
