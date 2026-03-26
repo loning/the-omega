@@ -43,6 +43,7 @@ team lead 在每轮开始时问自己：
 - ✅ 每个 phase 必须收到 teammate 回复后才进入下一 phase
 - ✅ 发现论文错误时立即记录到 ERRATA.md
 - ✅ **编译串行原则**：formalizer、optimizer、reviewer 不得并行 `lake build`。**registrar 默认跳过 `lake build`**（追踪文件不参与编译），可与 formalizer 真正并行工作
+- ✅ **编译性能硬限制**（见下方"编译性能规范"）
 - ✅ **实时状态表**：每次收到任何 teammate 消息、发出路由指令、CronJob 检查后，**必须**输出流水线状态表（见下方格式）
 - ✅ **流水线监控**：每次收到任何 teammate 的消息（包括 idle 通知、完成报告、登记报告），team lead 必须检查流水线状态并推进：
   - formalizer 完成 → 同时通知 registrar 登记 + analyst 开始下一轮分析
@@ -50,6 +51,49 @@ team lead 在每轮开始时问自己：
   - analyst 完成规格 + registrar 已完成 → 立即将规格发给 formalizer
   - 任何 teammate idle 但有待处理任务 → 发送任务唤醒
   - **永远不要让任何 teammate 空等**——只要条件满足就立即推进下一步
+
+## 编译性能规范
+
+### 硬限制
+
+| 指标 | 限制 | 超标处理 |
+|------|------|---------|
+| 单文件 `lake build` | **≤ 5 分钟** | 立即停止，优化后重编译 |
+| `maxHeartbeats` | **≤ 400000**（2倍默认） | 禁止更高值 |
+| 单个 `native_decide` 引理 | **≤ 30 秒** | 降低有界范围或用递推推导 |
+
+### native_decide 使用规范
+
+**禁止在主定理证明中直接使用 `native_decide`。** 必须两步法：
+
+```lean
+-- 第一步：@[simp] 基值引理（native_decide 只出现在这里）
+@[simp] theorem momentSum_four_zero : momentSum 4 0 = 1 := by native_decide
+@[simp] theorem momentSum_four_one : momentSum 4 1 = 2 := by native_decide
+
+-- 第二步：主证明用 simp + omega（零心跳，编译飞快）
+theorem momentSum_four_strict_mono_bounded (m : Nat) (hm : m ≤ 5) :
+    momentSum 4 m < momentSum 4 (m + 1) := by
+  interval_cases m <;> simp <;> omega
+```
+
+### 编译超时处理流程
+
+formalizer 遇到编译超时时：
+1. `kill` 当前 `lake build` 进程
+2. 将所有 `native_decide` 提取为 `@[simp]` 基值引理
+3. 如果单个基值引理仍超时（>30秒），降低有界范围（如 m≤8→m≤5）
+4. 主证明改为 `interval_cases m <;> simp <;> omega`
+5. 用 `timeout 300 lake build` 验证不超过 5 分钟
+
+### formalizer 编译验证命令
+
+```bash
+# 标准验证（5分钟超时）
+timeout 300 lake env lean lean4/Omega/Folding/MomentBounds.lean
+
+# 如果超时，说明需要优化
+```
 
 ## 实时状态表
 
@@ -128,7 +172,14 @@ Agent(
 收到任务后按 lean4-formalizer 规格实现证明，完成后将结果通过 SendMessage 发回 team lead。
 实现完成后，可直接通知 registrar 进行登记（抄送 team lead）。
 遇到 API 不确定时，优先使用 lean_local_search / lean_leanfinder / lean_leansearch 搜索 mathlib。
-遇到 tactic 选择困难时，使用 lean_multi_attempt 并行测试多个方案。"
+遇到 tactic 选择困难时，使用 lean_multi_attempt 并行测试多个方案。
+
+**编译性能规范**（硬限制）：
+- 单文件编译 ≤ 5 分钟（用 timeout 300 lake build 验证）
+- 禁止 set_option maxHeartbeats > 400000
+- native_decide 只允许在 @[simp] 基值引理中使用，禁止在主定理证明中直接使用
+- 主证明统一用 interval_cases m <;> simp <;> omega
+- 单个 native_decide 基值引理编译 ≤ 30 秒，超时则降低有界范围或用递推推导"
 )
 
 Agent(
@@ -303,29 +354,16 @@ SendMessage(to = "registrar", message = "请登记上一轮成果。[详情]")
    - 如果 analyst 先完成但 registrar 未完成：等待 registrar，然后再发给 formalizer
    - 如果 registrar 先完成但 analyst 未完成：等待 analyst
 
-### Phase 4.5：性能优化（每5轮触发）
+### Phase 4.5：编译性能检查（每轮自动）
 
-**触发条件**：`round_count % 5 == 0`（team lead 从启动起维护 round_count 计数器）
+**已废弃事后 optimizer 模式。** 编译性能现在是 formalizer 的源头责任：
 
-**串行约束**：optimizer 必须在 registrar shutdown 后、formalizer 收到新任务前运行。不得与其他涉及编译的 agent 并行。
+- formalizer 必须用 `timeout 300 lake build` 验证每次提交
+- `native_decide` 只允许出现在 `@[simp]` 基值引理中
+- 主证明统一使用 `simp + omega`
+- 超时则当场优化，不等事后补救
 
-- 不满足条件 → 跳过，直接进入 Phase 5
-- 满足条件 → spawn optimizer：
-
-```
-Agent(
-  name = "optimizer",
-  subagent_type = "lean4-optimizer",
-  team_name = "lean4-formalization",
-  description = "编译性能深度优化（按需）",
-  mode = "bypassPermissions",
-  prompt = "请对 lean4/ 项目执行深度 native_decide 缓存优化。
-  扫描 native_decide 数量 top 3 文件，提取可缓存项为 @[simp] 引理，
-  替换原 native_decide，lake build 验证通过后报告。"
-)
-```
-
-**停下来，等待 optimizer 回复。** 收到报告后 shutdown optimizer，进入 Phase 5。
+**仅在存量代码编译变慢时**（如累积的旧 `native_decide` 导致全量编译超 5 分钟），team lead 才按需 spawn optimizer 做一次性清理。
 
 ### Phase 5：循环控制（永不停止）
 
