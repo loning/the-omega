@@ -451,4 +451,29 @@ theorem exactWeightCount_succ_of_lt (m n : Nat) (hn : n < Nat.fib (m + 2)) :
     exactWeightCount (m + 1) n = exactWeightCount m n := by
   rw [exactWeightCount_succ]; simp [show ¬(Nat.fib (m + 2) ≤ n) from by omega]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 147: sum over words grouped by weight
+-- ══════════════════════════════════════════════════════════════
+
+/-- Sum over words grouped by weight: Σ_w f(weight w) = Σ_n ewc(m,n) · f(n). -/
+theorem sum_word_apply_weight (f : Nat → Nat) :
+    ∑ w : Word m, f (weight w) =
+    ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n * f n := by
+  classical
+  let wsets := fun n => Finset.univ.filter (fun w : Word m => weight w = n)
+  have hDisjoint : (↑(Finset.range (Nat.fib (m + 3))) : Set Nat).PairwiseDisjoint wsets := by
+    intro n _ n' _ hne
+    exact Finset.disjoint_filter.mpr (fun w _ h1 h2 => hne (h1.symm.trans h2))
+  have hUnion : (Finset.univ : Finset (Word m)) =
+      (Finset.range (Nat.fib (m + 3))).biUnion wsets := by
+    ext w; simp only [wsets, Finset.mem_univ, Finset.mem_biUnion, Finset.mem_range,
+      Finset.mem_filter, true_and, true_iff]
+    exact ⟨weight w, X.weight_lt_fib w, rfl⟩
+  change Finset.univ.sum (fun w => f (weight w)) = _
+  rw [hUnion, Finset.sum_biUnion hDisjoint]
+  apply Finset.sum_congr rfl; intro n _
+  have : ∀ w ∈ wsets n, f (weight w) = f n :=
+    fun w hw => by rw [(Finset.mem_filter.mp hw).2]
+  rw [Finset.sum_congr rfl this, Finset.sum_const, smul_eq_mul, exactWeightCount]
+
 end Omega

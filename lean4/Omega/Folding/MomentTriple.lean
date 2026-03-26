@@ -1,4 +1,5 @@
 import Omega.Folding.MomentRecurrence
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 namespace Omega
 
@@ -725,5 +726,48 @@ theorem momentSum_cauchy_schwarz_word (q m : Nat) (hq : 1 ≤ q) :
     (by rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin])]
   rw [← Finset.card_univ (α := Word m)]
   exact sq_sum_le_card_mul_sum_sq
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 147: log-convexity of moment sums
+-- ══════════════════════════════════════════════════════════════
+
+/-- Log-convexity: S_{q+1}(m)² ≤ S_q(m) · S_{q+2}(m).
+    Even q = 2k: Cauchy-Schwarz (Σ d^k · d^{k+1})² ≤ (Σ d^{2k})(Σ d^{2k+2}) on X m.
+    Odd q = 2k+1: same CS but on Word m via fiber counting. -/
+theorem momentSum_log_convex (q m : Nat) :
+    momentSum (q + 1) m ^ 2 ≤ momentSum q m * momentSum (q + 2) m := by
+  -- Strategy: write S_{q+1} = Σ (d^a · d^b) where a+b = q+1, then apply CS
+  -- For even q=2k: a=k, b=k+1 over X m
+  -- For odd q=2k+1: a=k, b=k+1 over Word m (using fiber counting)
+  rcases Nat.even_or_odd q with ⟨k, hk⟩ | ⟨k, hk⟩
+  · -- Even case: q = 2k, so q = k + k
+    subst hk
+    -- S_{k+k+1} = Σ d^k · d^{k+1}; CS: (Σ fg)² ≤ (Σ f²)(Σ g²)
+    simp only [momentSum]
+    have hCS := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ
+      (fun x : X m => X.fiberMultiplicity x ^ k)
+      (fun x : X m => X.fiberMultiplicity x ^ (k + 1))
+    simp only [← pow_mul, ← pow_add] at hCS
+    convert hCS using 2 <;> (apply Finset.sum_congr rfl; intro x _; ring)
+  · -- Odd case: q = 2k+1
+    subst hk
+    -- Move to Word space via sum_word_fiberMult_pow
+    rw [show 2 * k + 1 + 1 = (2 * k + 1) + 1 from rfl]
+    rw [← sum_word_fiberMult_pow (2 * k + 1) m,
+        ← sum_word_fiberMult_pow (2 * k) m,
+        ← sum_word_fiberMult_pow (2 * k + 2) m]
+    -- CS on Word m with f(w) = d^k, g(w) = d^{k+1}
+    have hCS := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ
+      (fun w : Word m => X.fiberMultiplicity (Fold w) ^ k)
+      (fun w : Word m => X.fiberMultiplicity (Fold w) ^ (k + 1))
+    simp only [← pow_mul, ← pow_add] at hCS
+    convert hCS using 2 <;> (apply Finset.sum_congr rfl; intro w _; ring)
+
+/-- Ratio monotonicity: S_{q+1}/S_q ≤ S_{q+2}/S_{q+1}, i.e.,
+    S_{q+1}·S_{q+1} ≤ S_q·S_{q+2}. Direct corollary of log-convexity. -/
+theorem momentSum_ratio_mono (q m : Nat) :
+    momentSum (q + 1) m * momentSum (q + 1) m ≤
+    momentSum q m * momentSum (q + 2) m := by
+  have := momentSum_log_convex q m; rwa [sq] at this
 
 end Omega
