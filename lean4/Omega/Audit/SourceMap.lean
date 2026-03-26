@@ -9056,6 +9056,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.paper_discriminant_positive"
     phase := 143
     status := .formalized }
+-- Phase 144: MomentTriple 新定理 (MomentTriple.lean:635,640)
+-- prop:pom-moment-congruence-q → weightCongruenceCount_ge_ewc (MomentTriple.lean:635)
+-- prop:pom-s2-recurrence → momentSum_two_excess_sum (MomentTriple.lean:640)
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.weightCongruenceCount_ge_ewc"
+    phase := 144
+    status := .formalized }
+, { label := "prop:pom-s2-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_two_excess_sum"
+    phase := 144
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

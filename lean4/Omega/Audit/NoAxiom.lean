@@ -2233,6 +2233,9 @@ def coreAuditTargets : List String :=
   -- Phase 143: 论文接口包装 (CollisionZeta.lean:536,537,540)
   , "Omega.paper_trace_recurrence_A2"
   , "Omega.paper_primitive_orbit_A2"
-  , "Omega.paper_discriminant_positive" ]
+  , "Omega.paper_discriminant_positive"
+  -- Phase 144: MomentTriple 新定理 (MomentTriple.lean:635,640)
+  , "Omega.weightCongruenceCount_ge_ewc"
+  , "Omega.momentSum_two_excess_sum" ]
 
 end Omega.Audit
