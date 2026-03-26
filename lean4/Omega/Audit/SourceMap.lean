@@ -9728,6 +9728,18 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 177: Fib.lean + Window6.lean（3 条，1 推迟）
+-- bridge:fib-cassini-even → fib_cassini_even (Fib.lean:382)
+-- bridge:fib-cassini-odd → fib_cassini_odd (Fib.lean:400)
+-- cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial → conclusion_window6_boundary_parity_residual (Window6.lean:594)
+-- 推迟: momentSum_strict_mono_m（S_q m-严格单调）——fiber injection across scales 需更深技术路线
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_boundary_parity_residual"
+    phase := 177
+    status := .formalized }
 -- Phase 176: MomentBounds.lean + Window6.lean（4 条）
 -- bridge:fold-allFalse → Fold_allFalse (MomentBounds.lean:563)
 -- bridge:stableValue-fold-allFalse → stableValue_Fold_allFalse (MomentBounds.lean:568)

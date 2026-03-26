@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 177: Fib.lean + Window6.lean — Cassini 奇偶分离 + 边界奇偶余量结论
+  -- bridge:fib-cassini-even → F_n·F_{n+2}+1 = F_{n+1}² for even n (Fib.lean:382)
+  #print axioms Omega.fib_cassini_even
+  -- bridge:fib-cassini-odd → F_n·F_{n+2} = F_{n+1}²+1 for odd n (Fib.lean:400)
+  #print axioms Omega.fib_cassini_odd
+  -- cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial → F_8 - 3 = 18 (Window6.lean:594)
+  #print axioms Omega.conclusion_window6_boundary_parity_residual
   -- Phase 176: MomentBounds.lean + Window6.lean — Fold_allFalse桥接 + S_2>2^m正方差 + K0秩六结论
   -- bridge:fold-allFalse → Fold(allFalse) = X.ofNat m 0 (MomentBounds.lean:563)
   #print axioms Omega.Fold_allFalse

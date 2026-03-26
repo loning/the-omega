@@ -7,7 +7,7 @@
 | 指标 | 数值 |
 |---|---|
 | 总行数 | ~29,162 |
-| 定理/定义数 | ~2,331 |
+| 定理/定义数 | ~2,334 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 177: Cassini 奇偶分离 + 边界奇偶余量结论（Round 177）**：两文件 Fib.lean(382,400) + Window6.lean(594)——fib_cassini_even（bridge: F_n·F_{n+2}+1=F_{n+1}² for even n，Fib.lean:382）; fib_cassini_odd（bridge: F_n·F_{n+2}=F_{n+1}²+1 for odd n，Fib.lean:400）; conclusion_window6_boundary_parity_residual（cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial：F_8-3=18，Window6.lean:594）——推迟：momentSum_strict_mono_m（S_q m-严格单调，fiber injection across scales 需更深技术路线）——结论 71→72（+1 条目：cor:conclusion-window6-boundary-parity-residual-two-bits-nonfunctorial）（Phase 177）
 **Phase 176: Fold_allFalse 桥接 + S_2 正方差 + K0 秩六结论（Round 176）**：两文件 MomentBounds.lean(563,568,573) + Window6.lean(580)——Fold_allFalse（bridge: Fold(allFalse) = X.ofNat m 0，MomentBounds.lean:563）; stableValue_Fold_allFalse（bridge: stableValue(Fold(allFalse)) = 0，MomentBounds.lean:568）; momentSum_two_sub_pow_pos（prop:pom-moment-congruence-q 推论正方差：2^m < S_2(m) for m ≥ 2，MomentBounds.lean:573）; conclusion_foldbin_stable_k0_rank_six（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory：|X_6|=21=F_8，直方图和=21，Window6.lean:580）——POM ~487→~488, 结论 70→71（+2 条目：prop:pom-moment-congruence-q, thm:conclusion-foldbin-stable-collapse-ordered-k0-memory）（Phase 176）
 **Phase 175: 幂均值下界 + allFalse 全局缺陷为零 + 至少两步 readout（Round 175）**：两文件 MomentBounds.lean(541,553) + Defect.lean(439)——momentSum_power_mean_lower（prop:pom-power-sum-hankel-psd 幂均值推论：(2^m)^q ≤ F_{m+2}^{q-1}·S_q(m) for q ≥ 1，MomentBounds.lean:541）; globalDefect_allFalse（thm:fold-discrete-stokes-defect 推论 allFalse 全局版：全零词在任意分辨率对上全局缺陷为零，Defect.lean:439）; readout_needs_at_least_two_steps（prop:conclusion-index-torsion-time-lower-bound 推论：2^1 < D(m) for m ≥ 4，MomentBounds.lean:553）——POM ~485→~487, 结论 69→70（+3 条目：prop:pom-power-sum-hankel-psd, thm:fold-discrete-stokes-defect, prop:conclusion-index-torsion-time-lower-bound）（Phase 175）
 **Phase 174: ★ 首批结论章节定理 — Window6 三刚性尺度 + groupoid 碰撞维数 + 二进制步数界（Round 174）**：Folding/Window6.lean(523,530,535,539,543,560)——conclusion_window6_three_rigidity_scales（cor:conclusion-window6-three-rigidity-scales：|X_6|=21, max_BinFold=4, 2^6=64, 4<21<64，三层刚性尺度联合，Window6.lean:523）; conclusion_window6_collision_dimension（thm:conclusion-window6-groupoid-collision-dimension-identity：9·16+4·9+8·4=212 groupoid 碰撞维数恒等式，Window6.lean:530）; conclusion_window6_collision_prob_numerator（bridge: 212=4·53，Window6.lean:535）; conclusion_window6_collision_prob_denominator（bridge: (2^6)²=4·1024，Window6.lean:539）; lt_self_pow（bridge: T < b^T for b ≥ 2，Window6.lean:543）; readout_binary_steps_window6（prop:conclusion-index-torsion-time-lower-bound：2^T < D(6) → T < 3，Window6.lean:560）——结论覆盖率 66 → 69（+3 条目：cor:conclusion-window6-three-rigidity-scales, thm:conclusion-window6-groupoid-collision-dimension-identity, prop:conclusion-index-torsion-time-lower-bound）（Phase 174）
@@ -142,15 +143,15 @@
 
 ### Lean4 形式化状态
 
-- **1,213 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,368 个 Lean4 定理（含内部引理）
+- **1,214 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,371 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1272/10,588 = **12.0%** |
+| 全局覆盖率 | 1273/10,588 = **12.0%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -167,10 +168,10 @@
 | POM | 1,525 | ~488 | ~32.0% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | 71 | 4.1% |
+| 结论 | 1,727 | 72 | 4.2% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1272** | **12.0%** |
+| **总计** | **10,588** | **1273** | **12.0%** |
 
 ## 3. 未来工作：30 条具体计划
 
