@@ -690,4 +690,8 @@ theorem fenceDet_log_convex (k : Nat) (hk : 1 ≤ k) :
   have h := fenceDet_cassini k hk
   rw [mul_comm]; omega
 
+/-- fenceDet k ≥ 1 for all k. prop:pom-Lk-det-coeff-binomial (positivity). -/
+theorem fenceDet_pos (k : Nat) : 1 ≤ fenceDet k := by
+  rw [fenceDet_eq_fib]; exact Nat.fib_pos.mpr (by omega)
+
 end Omega

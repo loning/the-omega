@@ -724,4 +724,9 @@ theorem conclusion_window6_crt_factorization :
     Nat.fib 8 = 3 * 7 ∧ Nat.Coprime 3 7 :=
   ⟨by native_decide, by decide⟩
 
+/-- 212/4096 = 53/1024 cross-multiplication.
+    thm:conclusion-window6-groupoid-collision-dimension-identity. -/
+theorem conclusion_window6_collision_prob_certificate :
+    212 * 1024 = 53 * 4096 := by omega
+
 end Omega

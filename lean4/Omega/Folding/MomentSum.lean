@@ -288,4 +288,9 @@ theorem exists_fiber_ge_two (m : Nat) (hm : 2 ≤ m) : ∃ x : X m, 2 ≤ X.fibe
     exact key m hm
   omega
 
+/-- S_q(m) = cMomentSum q m. prop:pom-mixed-collision-kernel-computable. -/
+theorem mixed_collision_kernel_computable (q m : Nat) :
+    momentSum q m = cMomentSum q m :=
+  (cMomentSum_eq q m).symm
+
 end Omega
