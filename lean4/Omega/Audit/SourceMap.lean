@@ -9399,6 +9399,35 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_even_of"
     phase := 156
     status := .formalized }
+-- Phase 157: T_fft mod split 通用证明突破 (S3Recurrence.lean:170,176,188,201)
+-- bridge:ewc-zero-of-ge → ewc_zero_of_ge (S3Recurrence.lean:170)
+-- bridge:ccsl-range-truncate → crossCorrSqLow_range_truncate (S3Recurrence.lean:176)
+-- bridge:ccsh-prev-truncate → crossCorrSqHighPrev_range_truncate (S3Recurrence.lean:188)
+-- prop:pom-s3-recurrence → tripleCollisionClass_fft_mod_split (S3Recurrence.lean:201) [关键突破]
+, { label := "bridge:ewc-zero-of-ge"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.ewc_zero_of_ge"
+    phase := 157
+    status := .formalized }
+, { label := "bridge:ccsl-range-truncate"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.crossCorrSqLow_range_truncate"
+    phase := 157
+    status := .formalized }
+, { label := "bridge:ccsh-prev-truncate"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.crossCorrSqHighPrev_range_truncate"
+    phase := 157
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.tripleCollisionClass_fft_mod_split"
+    phase := 157
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

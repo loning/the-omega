@@ -2291,6 +2291,11 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_eight_of"
   , "Omega.momentSum_three_nine_of"
   , "Omega.momentSum_three_ten_of"
-  , "Omega.momentSum_three_even_of" ]
+  , "Omega.momentSum_three_even_of"
+  -- Phase 157: T_fft mod split 通用证明突破 (S3Recurrence.lean:170,176,188,201)
+  , "Omega.ewc_zero_of_ge"
+  , "Omega.crossCorrSqLow_range_truncate"
+  , "Omega.crossCorrSqHighPrev_range_truncate"
+  , "Omega.tripleCollisionClass_fft_mod_split" ]
 
 end Omega.Audit
