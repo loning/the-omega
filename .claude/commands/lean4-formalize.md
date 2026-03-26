@@ -299,6 +299,8 @@ Agent(
 3. **进入下一轮**——如果 analyst 在 Phase 4 已经开始分析，直接等待其规格；否则发消息给 analyst 选取下一个目标
 4. **禁止建议暂停或关闭团队**——即使产出递减，也继续尝试更高难度的目标
 5. 如果连续 3 轮产出 ≤ 2 定理，team lead 应主动要求 analyst 选取中/高难度目标（而非继续低难度扫尾），并在 formalizer 遇到阻塞时积极 spawn codex-consultant
+6. **禁止接受 "低垂果实耗尽" 作为停止理由**——当 analyst 报告耗尽时，team lead 必须立即要求转向更高难度方向（S_3 递推、fiber factorization、D(m) 闭式、结论章节、圆维度 Real 分析、SPG 测度扩展等）
+7. **禁止输出 "会话自然停止点"、"等待用户指令" 等暂停性语言**——流水线永远自动续轮
 
 ### Phase 6：里程碑审查（每达到里程碑触发）
 
@@ -373,11 +375,53 @@ Agent(
    - **中覆盖**：有界范围验证 + 条件性一般版本
    - **弱覆盖**：native_decide 数值实例 / 整数代理 / 占位注册
 
+### Phase 8：Analyst 强制刷新（每 10 轮触发）
+
+**触发条件**：`round_count % 10 == 0`（team lead 维护 round_count 计数器）
+
+**判断条件**（满足任一即触发，不等 10 轮）：
+1. `round_count % 10 == 0`（定期刷新）
+2. analyst 连续 2 轮提出的目标全部已存在于代码库中（重复提议）
+3. analyst 连续 3 轮提出的目标全部为 bridge 标签（无论文标签产出）
+4. analyst 声称"果实耗尽/饱和/无目标"但 team lead 认为仍有中高难度目标可做
+5. registrar 报告 analyst 提供的定理名在 SourceMap 中全部已注册（信息脱节）
+
+**刷新流程**：
+1. `SendMessage(to = "analyst", message = {type: "shutdown_request", reason: "定期刷新"})`
+2. 等待 shutdown 确认
+3. 重新 spawn：
+
+```
+Agent(
+  name = "analyst",
+  subagent_type = "lean4-analyst",
+  team_name = "lean4-formalization",
+  mode = "bypassPermissions",
+  description = "形式化分析师（刷新）",
+  prompt = "你是 lean4-formalization 团队的分析师（刷新后重新启动）。
+
+当前项目状态：
+- 全局覆盖率：[X]%（[N]/10,588 标签）
+- 最近完成的 Phase：[M]
+- 推迟清单：[列出未完成的中高难度目标]
+
+请重新扫描论文和 Lean4 代码，找到真正未注册且可形式化的目标。
+注意：你必须用 grep 对比 SourceMap.lean 确认目标不存在，避免提议已注册的定理。
+
+收到任务后按 lean4-analyst 规格执行分析，完成后将规格通过 SendMessage 发回 team lead。"
+)
+```
+
+4. 发送当前状态摘要给新 analyst（覆盖率、推迟清单、近期完成的 Phase 列表）
+5. `analyst_round_count` 重置为 0
+
+**关键**：新 analyst 的 prompt 中必须包含当前状态摘要，使其能从正确的起点开始工作。
+
 ## Teammate 生命周期
 
 | 角色 | agent 定义 | 生命周期 | 说明 |
 |------|-----------|----------|------|
-| analyst | lean4-analyst | **持久** | 团队启动时 spawn，全程保留上下文，跨轮复用 |
+| analyst | lean4-analyst | **每 10 轮刷新** | 团队启动时 spawn；每 10 轮或触发条件满足时强制 shutdown + 重新 spawn（清理累积的上下文偏差，防止重复提议已存在目标、低估剩余可做任务） |
 | formalizer | lean4-formalizer | **持久** | 团队启动时 spawn，修复循环中复用上下文 |
 | reviewer | lean4-reviewer | 按需 | Phase 3 spawn，审核完 shutdown |
 | optimizer | lean4-optimizer | 按需（每5轮） | Phase 4.5 spawn，优化完 shutdown |
@@ -386,15 +430,204 @@ Agent(
 | registrar | lean4-registrar | 按需 | Phase 4 spawn，登记完 shutdown |
 | milestone-reviewer | lean4-codex-reviewer | 按需 | Phase 6 里程碑审查时 spawn，审查完 shutdown |
 
-## 上下文传递规则
+## 通信协议
 
-持久 teammate 保留对话上下文，传递方式：
+### 消息格式规范
 
-1. **analyst → formalizer**：team lead 通过 SendMessage 将 analyst 的规格原样转发给 formalizer
-2. **formalizer 阻塞 → analyst/codex-consultant**：team lead 转发技术问题给 analyst（数学层面）或 spawn codex-consultant（API/语法层面），收到建议后转发给 formalizer
-3. **formalizer → reviewers**：team lead 在 spawn reviewer 时将 formalizer 结果嵌入初始 prompt（按需角色无历史上下文）
-4. **审核 FAIL → formalizer 修复**：team lead 通过 SendMessage 发送修复指令（formalizer 已有原始规格，只需增量指令）
-5. **审核 PASS → registrar**：team lead 在 spawn registrar 时将结果嵌入初始 prompt
+所有 agent 间通信使用 SendMessage，team lead 作为中心路由。消息内容必须包含足够信息使接收方无需额外查询即可执行任务。
+
+### 协议 1：team lead → analyst（规格请求）
+
+```
+SendMessage(to = "analyst", summary = "请设计 Phase N 规格", message = "
+Phase N-1 完成。formalizer idle。请设计 Phase N 规格。
+
+当前状态：
+- 全局覆盖率：X%（N/10,588 标签）
+- round_count = N
+- 最近完成：[Phase N-1 的简要描述]
+
+方向建议：[可选，team lead 建议的优先方向]
+
+要求：
+1. 选取 3 个可在本轮完成的目标
+2. 必须 grep 确认目标不存在于 SourceMap
+3. 优先选需要新数学证明的定理（非打包）
+4. 包含：论文标签、Lean4 签名、证明策略、难度评估、小值验证
+")
+```
+
+### 协议 2：analyst → team lead（规格回复）
+
+```
+SendMessage(to = "team-lead", summary = "Phase N spec: [简述]", message = "
+## Phase N 形式化规格
+
+### 概览
+- 目标数：3
+- 难度：低/中/高
+- grep 验证：全部通过
+
+### 定理 1：[名称]
+- 论文标签：[prop:xxx / thm:xxx]
+- grep 验证：[grep 命令 + 结果]
+- Lean4 签名：[完整签名]
+- 证明策略：[步骤]
+- 小值验证：[m=0,1,2 的值]
+- 难度：低/中/高
+- 行数：~N
+
+### 定理 2/3：[同上格式]
+
+### 批次摘要表
+| # | 论文标签 | Lean4 名称 | 难度 | 行数 | grep ✓ |
+")
+```
+
+### 协议 3：team lead → formalizer（实现任务）
+
+```
+SendMessage(to = "formalizer", summary = "Phase N：[简述]", message = "
+请实现 Phase N（Round N）——M 个定理：
+
+## 定理 1：[名称]（难度，~行数）
+**文件**：[目标文件路径]
+```lean
+[完整 Lean4 签名 + sorry]
+```
+**策略**：[证明步骤]
+**依赖**：[已有引理列表]
+
+## 定理 2/3：[同上]
+
+完成后 git commit（不 push），通知 team lead。
+")
+```
+
+### 协议 4：formalizer → team lead（完成报告）
+
+```
+SendMessage(to = "team-lead", summary = "Phase N complete: [简述]", message = "
+Phase N committed as [commit hash], zero sorry.
+
+**[M] theorems proved:**
+1. `[名称]` ([文件]:[行号])：[陈述简述]
+   Proof: [策略简述]
+
+**Deferred（如有）:**
+- `[名称]`：[阻塞原因]
+
+**Quality:** zero sorry, zero admit, zero axiom, [native_decide 数量].
+`lake build` passes ([job 数] jobs). [文件名] [行数] lines.
+Ready for Phase N+1.
+")
+```
+
+### 协议 5：team lead → registrar（登记任务）
+
+```
+SendMessage(to = "registrar", summary = "登记 Phase N 成果", message = "
+请登记 Phase N（Round N）成果。
+
+**Commit**: [hash]
+**修改/新建文件**: [文件列表 + 行数]
+
+**Phase 编号**: N
+**新增定理**（M 条）：
+
+1. `[Lean 名称]`（[文件]:[行号]）
+   - 论文标签：[prop:xxx / thm:xxx / bridge:xxx]
+   - 陈述：[一行描述]
+
+2. [同上]
+
+请更新 SourceMap、NoAxiom、IMPLEMENTATION_PLAN，然后 git commit + push。
+")
+```
+
+### 协议 6：registrar → team lead（登记报告）
+
+```
+SendMessage(to = "team-lead", summary = "Phase N 登记完成", message = "
+## 登记报告：Phase N
+
+### 新增登记
+- SourceMap: +M 条目
+- NoAxiom: +M 审计查询
+
+### 新增定理
+[表格：Lean 名称、标签、行号]
+
+### 覆盖率变化
+| 章节 | 旧 | 新 |
+
+### 提交
+- commit: [hash]
+- pushed: yes/no
+")
+```
+
+### 协议 7：team lead → registrar（批量注册）
+
+```
+SendMessage(to = "registrar", summary = "批量注册 N 个零代码标签", message = "
+请批量注册以下 N 个已有 Lean 定理的论文标签（先检查 SourceMap 避免重复）：
+
+| # | 论文标签 | Lean 定理名 | 文件 |
+|---|---------|------------|------|
+
+跳过已存在条目。批量更新 SourceMap + NoAxiom，一次 git commit + push。
+")
+```
+
+### 协议 8：formalizer 阻塞 → team lead → codex-consultant
+
+```
+// formalizer 报告阻塞
+SendMessage(to = "team-lead", summary = "Phase N blocked on [问题]", message = "
+[具体技术问题描述]
+Requesting codex-consultant for [具体 API/语法问题]
+")
+
+// team lead spawn codex-consultant
+Agent(name = "codex-consultant", subagent_type = "lean4-codex-consultant", ...)
+
+// codex-consultant 回复后 team lead 转发
+SendMessage(to = "formalizer", summary = "Codex 建议：[简述]", message = "
+[Codex 的具体代码建议，包含已验证编译的代码片段]
+")
+
+// team lead shutdown codex-consultant
+SendMessage(to = "codex-consultant", message = {type: "shutdown_request"})
+```
+
+### 允许的直接通信（peer-to-peer）
+
+成员之间可以直接发消息，无需经过 team lead。鼓励以下直接通信模式：
+
+| 发送方 | 接收方 | 场景 | 要求 |
+|--------|--------|------|------|
+| formalizer | registrar | 实现完成后直接通知登记 | 必须抄送 team lead（summary 中注明） |
+| formalizer | analyst | 遇到数学问题直接咨询 | 重要决策须报告 team lead |
+| analyst | formalizer | 规格补充说明 | 不改变 team lead 已批准的方向 |
+| registrar | analyst | 发现标签冲突需确认 | — |
+| analyst | registrar | 提供批量注册列表 | team lead 知悉即可 |
+
+**直接通信格式**：
+```
+SendMessage(to = "registrar", summary = "Phase N 完成，请登记",
+  message = "已 commit [hash]，定理列表：[...]。抄送 team lead。")
+```
+
+### 通信原则
+
+1. **team lead 是协调中心**——重要决策（方向变更、目标跳过、审核触发）必须经过 team lead，但执行层面的通信可以直接进行
+2. **消息自包含**——接收方不需要回读之前的消息即可执行任务
+3. **commit hash 必传**——registrar 需要 commit hash 定位代码变更
+4. **论文标签必传**——registrar 需要精确的论文标签（prop:/thm:/cor:/def:/bridge:）
+5. **行号必传**——registrar 需要文件名+行号写入 SourceMap
+6. **grep 验证必做**——analyst 提供的每个目标必须附带 grep 验证结果
+7. **抄送规则**——peer-to-peer 通信中涉及任务完成/方向变更的，必须在 summary 中注明已抄送 team lead
 
 ## 论文勘误记录
 
