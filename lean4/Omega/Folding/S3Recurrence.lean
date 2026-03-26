@@ -398,10 +398,58 @@ theorem momentSum_three_recurrence_extended (m : Nat) (hm : m ≤ 7) :
     2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) := by
   interval_cases m <;> (simp only [← cMomentSum_eq]; native_decide)
 
--- The full unconditional S_3 recurrence requires ccs_prime_succ for all m.
--- This needs its own 8-split telescope (analogous to EWT telescope for CCS' quantities).
--- The bounded verification confirms the formula up to m=5.
--- The conditional chain (momentSum_three_strict_mono_of, etc.) remains valid.
+-- ══════════════════════════════════════════════════════════════
+-- Phase 161: shiftedTriple = Word³ counting version of CCS'
+-- ══════════════════════════════════════════════════════════════
+
+/-- Shifted triple count: triples where weights differ by exactly F_{m+1}. -/
+def shiftedTriple (m : Nat) : Nat :=
+  (Finset.univ.filter (fun p : Word m × Word m × Word m =>
+    weight p.1 = weight p.2.1 ∧ weight p.2.2 = weight p.1 + Nat.fib (m + 1))).card +
+  (Finset.univ.filter (fun p : Word m × Word m × Word m =>
+    weight p.1 + Nat.fib (m + 1) = weight p.2.1 ∧ weight p.2.1 = weight p.2.2)).card
+
+/-- shiftedTriple = CCSH' + CCSL'. -/
+theorem shiftedTriple_eq_ccs_prime (m : Nat) :
+    shiftedTriple m = crossCorrSqHighPrev m + crossCorrSqLowPrev m := by
+  classical
+  simp only [shiftedTriple]; congr 1
+  · -- CCSH' = Σ_n ewc(n)²·ewc(n+F₁): group by n = wt(v1) = wt(v2)
+    simp only [crossCorrSqHighPrev, exactWeightCount]
+    simp_rw [show ∀ n, (Finset.univ.filter (fun w : Word m => weight w = n)).card ^ 2 *
+      (Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 1))).card =
+      ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+       ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+        (Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 1))))).card from
+      fun n => by simp only [Finset.card_product]; ring]
+    rw [← Finset.card_biUnion]
+    · congr 1; ext ⟨v1, v2, v3⟩
+      simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_product,
+        Finset.mem_filter, Finset.mem_univ, true_and]
+      exact ⟨fun ⟨h12, h3⟩ => ⟨weight v1, X.weight_lt_fib v1, rfl, h12.symm, by omega⟩,
+        fun ⟨n, _, hw1, hw2, hw3⟩ => ⟨by omega, by omega⟩⟩
+    · intro n _ n' _ hne
+      simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+        Finset.mem_univ, true_and]
+      intro ⟨v1, _, _⟩ ⟨hw1, _⟩ ⟨hw1', _⟩; exact hne (hw1.symm.trans hw1')
+  · -- CCSL' = Σ_n ewc(n)·ewc(n+F₁)²: group by n = wt(v1)
+    simp only [crossCorrSqLowPrev, exactWeightCount]
+    simp_rw [show ∀ n, (Finset.univ.filter (fun w : Word m => weight w = n)).card *
+      (Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 1))).card ^ 2 =
+      ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+       ((Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 1))) ×ˢ
+        (Finset.univ.filter (fun w : Word m => weight w = n + Nat.fib (m + 1))))).card from
+      fun n => by simp only [Finset.card_product]; ring]
+    rw [← Finset.card_biUnion]
+    · congr 1; ext ⟨v1, v2, v3⟩
+      simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_product,
+        Finset.mem_filter, Finset.mem_univ, true_and]
+      exact ⟨fun ⟨h1, h23⟩ => ⟨weight v1, X.weight_lt_fib v1, rfl, by omega, by omega⟩,
+        fun ⟨n, _, hw1, hw2, hw3⟩ => ⟨by omega, by omega⟩⟩
+    · intro n _ n' _ hne
+      simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+        Finset.mem_univ, true_and]
+      intro ⟨v1, _, _⟩ ⟨hw1, _⟩ ⟨hw1', _⟩; exact hne (hw1.symm.trans hw1')
 
 -- ══════════════════════════════════════════════════════════════
 -- Phase 154: S_3 conditional recurrence consequence chain
