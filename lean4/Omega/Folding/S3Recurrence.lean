@@ -238,8 +238,147 @@ theorem tripleCollisionClass_fft_mod_split (m : Nat) :
     congr 1
     ext n; simp only [Finset.mem_filter, Finset.mem_range, not_le]; omega
 
--- T_{ftt} mod split and S_3 full decomposition: depend on T_{ftt}_eq_sum (mirror of fft).
--- The fft proof is complete; ftt follows the same pattern. Deferred to next session.
+/-- CCSH range truncates to F_{m+1}. -/
+theorem crossCorrSqHigh_range_truncate (m : Nat) :
+    crossCorrSqHigh m = ∑ k ∈ Finset.range (Nat.fib (m + 1)),
+      exactWeightCount m k ^ 2 * exactWeightCount m (k + Nat.fib (m + 2)) := by
+  unfold crossCorrSqHigh
+  have hfib : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  symm; apply Finset.sum_subset (Finset.range_mono (Nat.fib_mono (show m + 1 ≤ m + 3 by omega)))
+  intro k hk hk'
+  simp only [Finset.mem_range] at hk hk'; push_neg at hk'
+  have : Nat.fib (m + 3) ≤ k + Nat.fib (m + 2) := by linarith
+  rw [ewc_zero_of_ge m _ this]; simp
+
+/-- CCSL' range truncates to F_{m+2}. -/
+theorem crossCorrSqLowPrev_range_truncate (m : Nat) :
+    crossCorrSqLowPrev m = ∑ n ∈ Finset.range (Nat.fib (m + 2)),
+      exactWeightCount m n * exactWeightCount m (n + Nat.fib (m + 1)) ^ 2 := by
+  unfold crossCorrSqLowPrev
+  have hfib : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  symm; apply Finset.sum_subset (Finset.range_mono (Nat.fib_mono (show m + 2 ≤ m + 3 by omega)))
+  intro n hn hn'
+  simp only [Finset.mem_range] at hn hn'; push_neg at hn'
+  have : Nat.fib (m + 3) ≤ n + Nat.fib (m + 1) := by linarith
+  rw [ewc_zero_of_ge m _ this]; simp
+
+set_option maxHeartbeats 800000 in
+/-- T_{ftt}(mod) expressed as sum over weight classes.
+    Group by n = wt(v2) = wt(v3): v1 satisfies wt(v1) = (n+F₂)%F. -/
+theorem tripleCollisionClass_ftt_eq_sum (m : Nat) :
+    (tripleCollisionClass m false true true).card =
+    ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+      exactWeightCount m ((n + Nat.fib (m + 2)) % Nat.fib (m + 3)) *
+      exactWeightCount m n ^ 2 := by
+  classical
+  simp only [tripleCollisionClass, exactWeightCount, Bool.false_eq_true, ite_false, ite_true,
+    Nat.add_zero]
+  simp_rw [show ∀ n,
+    (Finset.univ.filter (fun w : Word m =>
+      weight w = (n + Nat.fib (m + 2)) % Nat.fib (m + 3))).card *
+    (Finset.univ.filter (fun w : Word m => weight w = n)).card ^ 2 =
+    ((Finset.univ.filter (fun w : Word m =>
+      weight w = (n + Nat.fib (m + 2)) % Nat.fib (m + 3))) ×ˢ
+     ((Finset.univ.filter (fun w : Word m => weight w = n)) ×ˢ
+      (Finset.univ.filter (fun w : Word m => weight w = n)))).card from
+    fun n => by simp only [Finset.card_product]; ring]
+  rw [← Finset.card_biUnion]
+  · congr 1; ext ⟨v1, v2, v3⟩
+    simp only [Finset.mem_biUnion, Finset.mem_range, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    constructor
+    · intro ⟨h1, h2⟩
+      have hmod23 : weight v2 % Nat.fib (m + 3) = weight v3 % Nat.fib (m + 3) :=
+        Nat.ModEq.add_right_cancel' (Nat.fib (m + 2)) h2
+      rw [Nat.mod_eq_of_lt (X.weight_lt_fib v2),
+          Nat.mod_eq_of_lt (X.weight_lt_fib v3)] at hmod23
+      rw [Nat.mod_eq_of_lt (X.weight_lt_fib v1)] at h1
+      exact ⟨weight v2, X.weight_lt_fib v2, h1, rfl, hmod23.symm⟩
+    · rintro ⟨n, hn, hw1, hw2, hw3⟩
+      refine ⟨?_, ?_⟩
+      · show _ % _ = _ % _
+        rw [Nat.mod_eq_of_lt (X.weight_lt_fib v1), hw1, hw2]
+      · show _ % _ = _ % _; congr 1; omega
+  · intro n _ n' _ hne
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_product, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    intro ⟨_, v2, _⟩ ⟨_, hw2, _⟩ ⟨_, hw2', _⟩
+    exact hne (hw2.symm.trans hw2')
+
+set_option maxHeartbeats 800000 in
+/-- T_{ftt}(mod) = CCSH + CCSL' (general, all m). -/
+theorem tripleCollisionClass_ftt_mod_split (m : Nat) :
+    (tripleCollisionClass m false true true).card =
+    crossCorrSqHigh m + crossCorrSqLowPrev m := by
+  rw [tripleCollisionClass_ftt_eq_sum]
+  have hfib : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  -- Simplify ewc((n+F₂)%F) by case split on n < F₁ vs n ≥ F₁
+  have hsubst : ∀ n ∈ Finset.range (Nat.fib (m + 3)),
+      exactWeightCount m ((n + Nat.fib (m + 2)) % Nat.fib (m + 3)) *
+      exactWeightCount m n ^ 2 =
+      if n < Nat.fib (m + 1)
+      then exactWeightCount m (n + Nat.fib (m + 2)) * exactWeightCount m n ^ 2
+      else exactWeightCount m (n - Nat.fib (m + 1)) * exactWeightCount m n ^ 2 := by
+    intro n hn; have hn' := Finset.mem_range.mp hn
+    split_ifs with hlt
+    · rw [Nat.mod_eq_of_lt (by linarith)]
+    · push_neg at hlt
+      have hge : Nat.fib (m + 3) ≤ n + Nat.fib (m + 2) := by linarith
+      have hlt2 : n + Nat.fib (m + 2) - Nat.fib (m + 3) < Nat.fib (m + 3) := by omega
+      rw [Nat.mod_eq_sub_mod hge, Nat.mod_eq_of_lt hlt2, show n + Nat.fib (m + 2) - Nat.fib (m + 3) = n - Nat.fib (m + 1) from by omega]
+  rw [Finset.sum_congr rfl hsubst, Finset.sum_ite]
+  congr 1
+  · -- Σ_{n<F₁} ewc(n+F₂)·ewc(n)² = CCSH
+    rw [crossCorrSqHigh_range_truncate]
+    -- filter(range(F₃), <F₁) = range(F₁)
+    congr 1
+    · ext n; simp only [Finset.mem_filter, Finset.mem_range]; omega
+    · ext n; ring
+  · -- Σ_{n≥F₁} ewc(n-F₁)·ewc(n)² = CCSL'
+    rw [crossCorrSqLowPrev_range_truncate]
+    apply Finset.sum_bij (fun n _ => n - Nat.fib (m + 1))
+    · intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range, not_lt] at hn
+      exact Finset.mem_range.mpr (by omega)
+    · intro n1 hn1 n2 hn2 h
+      simp only [Finset.mem_filter, not_lt] at hn1 hn2; omega
+    · intro k hk
+      have hk' := Finset.mem_range.mp hk
+      exact ⟨k + Nat.fib (m + 1),
+        Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), by omega⟩,
+        by simp⟩
+    · intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range, not_lt] at hn
+      rw [Nat.sub_add_cancel hn.2]
+
+/-- S_3(m+1) = EWT(m+1) + 3·CCSH'(m) + 3·CCSL'(m) (general, for all m). -/
+theorem momentSum_three_eq_ewt_plus_ccs (m : Nat) :
+    momentSum 3 (m + 1) = exactWeightTriple (m + 1) +
+    3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
+  rw [momentSum_three_lastBit_split]
+  rw [tripleCollisionClass_fff_eq_exact, exactTripleClass_fff,
+      tripleCollisionClass_ttt_eq_exact, exactTripleClass_ttt]
+  rw [tripleCollisionClass_fft_mod_split]
+  rw [show (tripleCollisionClass m false true false).card =
+      crossCorrSqLow m + crossCorrSqHighPrev m from by
+    rw [← tripleCollisionClass_swap23 m false false true]
+    exact tripleCollisionClass_fft_mod_split m]
+  rw [show (tripleCollisionClass m true false false).card =
+      crossCorrSqLow m + crossCorrSqHighPrev m from by
+    rw [← tripleCollisionClass_swap12 m false true false,
+        ← tripleCollisionClass_swap23 m false false true]
+    exact tripleCollisionClass_fft_mod_split m]
+  rw [tripleCollisionClass_ftt_mod_split]
+  rw [show (tripleCollisionClass m true false true).card =
+      crossCorrSqHigh m + crossCorrSqLowPrev m from by
+    rw [← tripleCollisionClass_swap12 m false true true]
+    exact tripleCollisionClass_ftt_mod_split m]
+  rw [show (tripleCollisionClass m true true false).card =
+      crossCorrSqHigh m + crossCorrSqLowPrev m from by
+    rw [← tripleCollisionClass_swap23 m true false true,
+        ← tripleCollisionClass_swap12 m false true true]
+    exact tripleCollisionClass_ftt_mod_split m]
+  linarith [exactWeightTriple_succ m]
 
 -- ══════════════════════════════════════════════════════════════
 -- Phase 154: S_3 conditional recurrence consequence chain
