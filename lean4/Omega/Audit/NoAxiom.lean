@@ -2317,6 +2317,14 @@ def coreAuditTargets : List String :=
   -- Phase 162b: CCSPrime8Split.lean 新文件 — S_3 无条件递推 (CCSPrime8Split.lean:341,353,371)
   , "Omega.ccs_prime_succ"
   , "Omega.exactWeightTriple_recurrence"
-  , "Omega.momentSum_three_recurrence" ]
+  , "Omega.momentSum_three_recurrence"
+  -- Phase 163: CCSPrime8Split.lean 无条件定理补全 (CCSPrime8Split.lean:554,559,564,569,573,577,581)
+  , "Omega.momentSum_three_strict_mono"
+  , "Omega.momentSum_three_double"
+  , "Omega.momentSum_three_even"
+  , "Omega.momentSum_three_eight"
+  , "Omega.momentSum_three_nine"
+  , "Omega.momentSum_three_ten"
+  , "Omega.momentSum_three_recurrence_sub" ]
 
 end Omega.Audit

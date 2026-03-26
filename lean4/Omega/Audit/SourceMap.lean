@@ -9545,6 +9545,56 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_recurrence"
     phase := 162
     status := .formalized }
+-- Phase 163: CCSPrime8Split.lean 无条件定理补全 (CCSPrime8Split.lean:554,559,564,569,573,577,581)
+-- prop:pom-s3-recurrence → momentSum_three_strict_mono (CCSPrime8Split.lean:554)
+-- prop:pom-s3-recurrence → momentSum_three_double (CCSPrime8Split.lean:559)
+-- prop:pom-s3-recurrence → momentSum_three_even (CCSPrime8Split.lean:564)
+-- prop:pom-s3-recurrence → momentSum_three_eight (CCSPrime8Split.lean:569)
+-- prop:pom-s3-recurrence → momentSum_three_nine (CCSPrime8Split.lean:573)
+-- prop:pom-s3-recurrence → momentSum_three_ten (CCSPrime8Split.lean:577)
+-- prop:pom-s3-recurrence → momentSum_three_recurrence_sub (CCSPrime8Split.lean:581)
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_strict_mono"
+    phase := 163
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_double"
+    phase := 163
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_even"
+    phase := 163
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_eight"
+    phase := 163
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_nine"
+    phase := 163
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_ten"
+    phase := 163
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrime8Split"
+    leanName := "Omega.momentSum_three_recurrence_sub"
+    phase := 163
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
