@@ -734,4 +734,9 @@ theorem conclusion_window6_prime_factorization :
     Nat.Prime 3 ∧ Nat.Prime 7 ∧ ¬ Nat.Prime 21 ∧ Nat.fib 8 = 21 :=
   ⟨by decide, by decide, by decide, by native_decide⟩
 
+/-- φ(21)=12=2×6=(3-1)(7-1). Unit group structure. -/
+theorem conclusion_window6_unit_group_structure :
+    Nat.totient 21 = 12 ∧ 12 = 2 * 6 ∧ 2 = 3 - 1 ∧ 6 = 7 - 1 ∧ 12 = (3 - 1) * (7 - 1) :=
+  ⟨by native_decide, by omega, by omega, by omega, by omega⟩
+
 end Omega

@@ -717,4 +717,55 @@ theorem fenceDet_double_lower (k : Nat) (hk : 1 ≤ k) :
 theorem fib_six_eight_coprime : Nat.Coprime (Nat.fib 6) (Nat.fib 8) := by
   rw [Nat.Coprime, fib_gcd]; native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 194
+-- ══════════════════════════════════════════════════════════════
+
+/-- fenceDet strictly increasing: D_k < D_{k+1} for k ≥ 1. -/
+theorem fenceDet_strict_mono (k : Nat) (hk : 1 ≤ k) :
+    fenceDet k < fenceDet (k + 1) := by
+  have h := fenceDet_double_lower k hk
+  have hp := fenceDet_pos k
+  linarith
+
+/-- 8 ∣ F_n → 6 ∣ n (Pisano entry point mod 8 is 6). -/
+private theorem six_dvd_of_fib_eight_dvd (n : Nat) (h : 8 ∣ Nat.fib n) : 6 ∣ n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => exact dvd_zero 6
+    | 1 => simp [Nat.fib] at h
+    | 2 => simp [Nat.fib] at h
+    | 3 => simp [Nat.fib] at h
+    | 4 => simp [Nat.fib] at h
+    | 5 => simp [Nat.fib] at h
+    | n + 6 =>
+      -- F(n+6) = 8*F(n+1) + 5*F(n)
+      have h2 := Nat.fib_add_two (n := n)
+      have h3 := Nat.fib_add_two (n := n + 1)
+      have h4 := Nat.fib_add_two (n := n + 2)
+      have h5 := Nat.fib_add_two (n := n + 3)
+      have h6 := Nat.fib_add_two (n := n + 4)
+      rw [show n + 1 + 2 = n + 3 from by omega, show n + 1 + 1 = n + 2 from by omega] at h3
+      rw [show n + 2 + 2 = n + 4 from by omega, show n + 2 + 1 = n + 3 from by omega] at h4
+      rw [show n + 3 + 2 = n + 5 from by omega, show n + 3 + 1 = n + 4 from by omega] at h5
+      rw [show n + 4 + 2 = n + 6 from by omega, show n + 4 + 1 = n + 5 from by omega] at h6
+      have hkey : Nat.fib (n + 6) = 8 * Nat.fib (n + 1) + 5 * Nat.fib n := by linarith
+      rw [hkey] at h
+      have h5fn : 8 ∣ 5 * Nat.fib n := by omega
+      have hfn : 8 ∣ Nat.fib n :=
+        Nat.Coprime.dvd_of_dvd_mul_left (by decide : Nat.Coprime 8 5) h5fn
+      have := ih n (by omega) hfn
+      omega
+
+/-- 6 ∣ n → 8 ∣ F_n. -/
+private theorem fib_eight_dvd_of_six_dvd (n : Nat) (h : 6 ∣ n) : 8 ∣ Nat.fib n := by
+  obtain ⟨k, rfl⟩ := h
+  exact dvd_trans (show (8 : Nat) ∣ Nat.fib 6 from by native_decide)
+    (Nat.fib_dvd 6 (6 * k) ⟨k, rfl⟩)
+
+/-- Pisano entry point mod 8 is 6: 8 | F_n ↔ 6 | n. -/
+theorem fib_eight_dvd_iff (n : Nat) : 8 ∣ Nat.fib n ↔ 6 ∣ n :=
+  ⟨six_dvd_of_fib_eight_dvd n, fib_eight_dvd_of_six_dvd n⟩
+
 end Omega
