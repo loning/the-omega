@@ -650,4 +650,16 @@ theorem conclusion_window6_fiber_nonuniform :
 theorem conclusion_window6_no_free_boundary_extension :
     ¬ (2 ^ 3 ∣ Nat.fib 8) := by native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 184
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6: 21 ∤ 212 (anomaly structure not uniform).
+    thm:conclusion-window6-static-anomaly-ledger-dynamic-budget-bifurcation. -/
+theorem conclusion_window6_dimension_not_divisible :
+    ¬ (Nat.fib 8 ∣ (cBinFiberHist 6 4 * 4 ^ 2 + cBinFiberHist 6 3 * 3 ^ 2 +
+    cBinFiberHist 6 2 * 2 ^ 2)) := by
+  rw [cBinFiberHist_6_4, cBinFiberHist_6_3, cBinFiberHist_6_2]
+  native_decide
+
 end Omega

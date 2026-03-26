@@ -521,4 +521,13 @@ private theorem fib_seven_dvd_of_eight_dvd (n : Nat) (h : 8 ∣ n) : 7 ∣ Nat.f
 theorem fib_seven_dvd_iff (n : Nat) : 7 ∣ Nat.fib n ↔ 8 ∣ n :=
   ⟨eight_dvd_of_fib_seven_dvd n, fib_seven_dvd_of_eight_dvd n⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 184
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fibonacci addition formula: F_{m+n+1} = F_{m+1}·F_{n+1} + F_m·F_n. -/
+theorem fib_add_formula (m n : Nat) :
+    Nat.fib (m + n + 1) = Nat.fib (m + 1) * Nat.fib (n + 1) + Nat.fib m * Nat.fib n := by
+  rw [Nat.fib_add m n, Nat.add_comm]
+
 end Omega

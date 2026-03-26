@@ -673,4 +673,12 @@ theorem momentSum_four_strict_increasing_base :
       momentSum_four_six]
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 184
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00(m) > 0 for all m. -/
+theorem exactWeightCollision_pos (m : Nat) : 0 < exactWeightCollision m := by
+  have := exactWeightCollision_ge_succ m; omega
+
 end Omega
