@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 185: TransferMatrix.lean + Fib.lean + Window6.lean — Cayley-Hamilton + Fib平方差 + 三种纤维大小
+  -- bridge:golden-mean-cayley-hamilton → A² = A + I (TransferMatrix.lean:322)
+  #print axioms Omega.goldenMeanAdjacency_cayley_hamilton
+  -- bridge:fib-sq-sub-sq → F_{n+1}² - F_n² = F_{n-1}·F_{n+2} for n ≥ 1 (Fib.lean:538)
+  #print axioms Omega.fib_sq_sub_sq
+  -- thm:conclusion-window6-groupoid-collision-dimension-identity（推论）→ window-6 恰好 3 种纤维大小：2,3,4 (Window6.lean:666)
+  #print axioms Omega.conclusion_window6_three_distinct_multiplicities
   -- Phase 184: Fib.lean + MomentBounds.lean + Window6.lean — Fib加法公式 + E00>0 + 21∤212
   -- bridge:fib-add-formula → F_{m+n+1} = F_{m+1}·F_{n+1} + F_m·F_n (Fib.lean:529)
   #print axioms Omega.fib_add_formula

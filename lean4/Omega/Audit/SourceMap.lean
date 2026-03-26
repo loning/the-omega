@@ -9728,6 +9728,17 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 185: TransferMatrix.lean + Fib.lean + Window6.lean（3 条，1 论文标签）
+-- bridge:golden-mean-cayley-hamilton → goldenMeanAdjacency_cayley_hamilton (TransferMatrix.lean:322)
+-- bridge:fib-sq-sub-sq → fib_sq_sub_sq (Fib.lean:538)
+-- thm:conclusion-window6-groupoid-collision-dimension-identity（推论）→ conclusion_window6_three_distinct_multiplicities (Window6.lean:666)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "thm:conclusion-window6-groupoid-collision-dimension-identity"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_three_distinct_multiplicities"
+    phase := 185
+    status := .formalized }
 -- Phase 184: Fib.lean + MomentBounds.lean + Window6.lean（3 条，1 论文标签）
 -- bridge:fib-add-formula → fib_add_formula (Fib.lean:529)
 -- bridge:exactWeightCollision-pos → exactWeightCollision_pos (MomentBounds.lean:681)
