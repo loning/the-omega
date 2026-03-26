@@ -18,6 +18,7 @@ import Omega.Folding.MomentBounds
 import Omega.Folding.EWTTelescope
 import Omega.Folding.S3Recurrence
 import Omega.Folding.CCSPrimeTelescope
+import Omega.Folding.CCSPrime8Split
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FiberArithmeticProperties
