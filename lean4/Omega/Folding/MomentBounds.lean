@@ -532,4 +532,28 @@ theorem maxFiberMultiplicity_lt_momentSum (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤
             Nat.pow_le_pow_right (by omega) (by omega)
         _ ≤ momentSum (q + 2) m := hpow
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 175
+-- ══════════════════════════════════════════════════════════════
+
+
+/-- Power mean lower bound: (2^m)^q ≤ F_{m+2}^{q-1} · S_q(m).
+    Generalizes momentSum_two_cs_lower to all q ≥ 1. -/
+theorem momentSum_power_mean_lower (q m : Nat) (hq : 1 ≤ q) :
+    (2 ^ m) ^ q ≤ Nat.fib (m + 2) ^ (q - 1) * momentSum q m := by
+  -- Use pow_sum_le_card_mul_sum_pow: (Σ f)^{n+1} ≤ |s|^n * Σ f^{n+1}
+  obtain ⟨q, rfl⟩ : ∃ q', q = q' + 1 := ⟨q - 1, by omega⟩
+  simp only [Nat.add_sub_cancel]
+  rw [← momentSum_one m]
+  simp only [momentSum, pow_one]
+  rw [← X.card_eq_fib, ← Finset.card_univ (α := X m)]
+  exact pow_sum_le_card_mul_sum_pow (fun _ _ => Nat.zero_le _) q
+
+/-- Fiber readout at m ≥ 4 needs at least 2 binary query steps: 2^1 < D(m). -/
+theorem readout_needs_at_least_two_steps (m : Nat) (hm : 4 ≤ m) :
+    2 ^ 1 < X.maxFiberMultiplicity m := by
+  -- D(m) ≥ m/2 + 1 ≥ 3 > 2 = 2^1
+  have := maxFiberMultiplicity_ge_half m
+  simp; omega
+
 end Omega

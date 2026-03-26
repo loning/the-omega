@@ -431,4 +431,23 @@ theorem localDefect_allFalse (m : Nat) :
     localDefect (m := m) (fun _ => false) = zeroWord m :=
   localDefect_of_stable ⟨fun _ => false, no11_allFalse⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 175
+-- ══════════════════════════════════════════════════════════════
+
+/-- The all-false word has zero global defect at any resolution pair. -/
+theorem globalDefect_allFalse (h : m ≤ n) :
+    globalDefect h (fun _ : Fin n => false) = zeroWord m := by
+  simp only [globalDefect]
+  -- Fold allFalse = ⟨allFalse, _⟩ (stable)
+  have hFoldN := Fold_stable (⟨fun _ => false, no11_allFalse⟩ : X n)
+  have hFoldM := Fold_stable (⟨fun _ => false, no11_allFalse⟩ : X m)
+  -- restrictWord allFalse = allFalse
+  have hrestr : restrictWord h (fun _ : Fin n => false) = (fun _ : Fin m => false) := by
+    funext i; rfl
+  conv_lhs => rw [hrestr, hFoldM, hFoldN]
+  -- Now xorWord ⟨allFalse,_⟩.1 (X.restrictLE h ⟨allFalse,_⟩).1
+  simp only [X.restrictLE, xorWord]
+  ext i; simp [zeroWord, restrictWord]
+
 end Omega
