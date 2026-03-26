@@ -817,6 +817,17 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 173: Fib.lean + Defect.lean + FibonacciCube.lean — Fence行列式递推 + fenceDet=Fib + allFalse缺陷为零 + 权重popcount界
+  -- def:pom-fence-det → D(0)=1, D(1)=2, D(k+2)=3D(k+1)-D(k) (Fib.lean:337)
+  #print axioms Omega.fenceDet
+  -- bridge:fib-odd-recurrence → F_{2n+5} = 3·F_{2n+3} - F_{2n+1} (Fib.lean:344)
+  #print axioms Omega.fib_odd_recurrence
+  -- cor:pom-Lk-t1-fibonacci-det-green → det(L_k + I) = F_{2k+1} (Fib.lean:362)
+  #print axioms Omega.fenceDet_eq_fib
+  -- thm:fold-discrete-stokes-defect（推论，allFalse）→ localDefect allFalse = 0 (Defect.lean:431)
+  #print axioms Omega.localDefect_allFalse
+  -- bridge:weight-popcount-fib-bound → weight(w) ≤ popcount(w) · F_{m+1} (FibonacciCube.lean:467)
+  #print axioms Omega.weight_le_popcount_mul_fib
   -- Phase 172: MomentBounds.lean — 纤维反射对称性 + S_q>Fib（一般q）+ D^q≤S_q + D<S_q（一般q）
   -- prop:fold-fiber-count-reciprocity → d(ofNat r) = d(ofNat (F_{m+1}-2-r)) (MomentBounds.lean:445)
   #print axioms Omega.fiberMultiplicity_value_symmetric

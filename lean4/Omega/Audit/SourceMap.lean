@@ -9728,6 +9728,31 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 173: Fib.lean + Defect.lean + FibonacciCube.lean（5 条）
+-- def:pom-fence-det → fenceDet (Fib.lean:337)
+-- bridge:fib-odd-recurrence → fib_odd_recurrence (Fib.lean:344)
+-- cor:pom-Lk-t1-fibonacci-det-green → fenceDet_eq_fib (Fib.lean:362)
+-- thm:fold-discrete-stokes-defect（推论，allFalse）→ localDefect_allFalse (Defect.lean:431)
+-- bridge:weight-popcount-fib-bound → weight_le_popcount_mul_fib (FibonacciCube.lean:467)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "def:pom-fence-det"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet"
+    phase := 173
+    status := .formalized }
+, { label := "cor:pom-Lk-t1-fibonacci-det-green"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_eq_fib"
+    phase := 173
+    status := .formalized }
+, { label := "thm:fold-discrete-stokes-defect"
+    sourcePath := "sections/body/pom/parts/subsec__pom-defect.tex"
+    moduleName := "Omega.Folding.Defect"
+    leanName := "Omega.localDefect_allFalse"
+    phase := 173
+    status := .formalized }
 -- Phase 172: MomentBounds.lean（4 条）(MomentBounds.lean:445,487,502,512)
 -- prop:fold-fiber-count-reciprocity → fiberMultiplicity_value_symmetric (MomentBounds.lean:445)
 -- prop:pom-moment-congruence-q（推论，一般 q）→ momentSum_gt_fib (MomentBounds.lean:487)
