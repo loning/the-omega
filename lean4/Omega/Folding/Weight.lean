@@ -64,4 +64,29 @@ theorem weight_eq_fib_ite_sum {m : Nat} (w : Word m) :
     rw [weight, ih (truncate w), Fin.sum_univ_castSucc (n := m)]
     congr 1
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 180
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight is positive iff the word has at least one true bit. -/
+theorem weight_pos_iff_exists_true (w : Word m) :
+    0 < weight w ↔ ∃ i : Fin m, w i = true := by
+  constructor
+  · -- (→) weight > 0 → ∃ true bit. Contrapositive: all false → weight = 0.
+    intro hw
+    by_contra h; push_neg at h
+    have : w = fun _ => false := funext fun i => by
+      cases hi : w i
+      · rfl
+      · exact absurd hi (by simp [h i])
+    rw [this, weight_allFalse] at hw; omega
+  · -- (←) ∃ true bit → weight > 0.
+    rintro ⟨i, hi⟩
+    rw [weight_eq_fib_ite_sum]
+    -- Split sum at i: fib(i+2) + rest ≥ fib(i+2) > 0
+    calc 0 < Nat.fib (i.val + 2) := fib_succ_pos (i.val + 1)
+      _ ≤ ∑ j : Fin m, if w j then Nat.fib (j.val + 2) else 0 := by
+          rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+          simp [hi]
+
 end Omega

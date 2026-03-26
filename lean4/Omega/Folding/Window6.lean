@@ -618,4 +618,16 @@ theorem conclusion_window6_wedderburn_blocks :
   ⟨cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4,
     cBinFiberHist_6_0, cBinFiberHist_6_1, by omega⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 180
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 groupoid dimension (212) < free algebra dimension (441 = 21²).
+    thm:conclusion-window6-groupoid-rather-than-free-quotient. -/
+theorem conclusion_window6_not_free_algebra :
+    cBinFiberHist 6 4 * 4 ^ 2 + cBinFiberHist 6 3 * 3 ^ 2 +
+    cBinFiberHist 6 2 * 2 ^ 2 < Nat.fib 8 ^ 2 := by
+  rw [cBinFiberHist_6_4, cBinFiberHist_6_3, cBinFiberHist_6_2]
+  native_decide
+
 end Omega
