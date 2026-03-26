@@ -9232,6 +9232,42 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.exactTripleClass_ttt"
     phase := 150
     status := .formalized }
+-- Phase 151: EWT 望远镜完成 (EWTTelescope.lean:142,157,174,204,232)
+-- bridge:ewt-swap12 → exactTripleClass_swap12 (EWTTelescope.lean:142)
+-- bridge:ewt-swap23 → exactTripleClass_swap23 (EWTTelescope.lean:157)
+-- bridge:ewt-fft-ccsl → exactTripleClass_fft_eq_ccsl (EWTTelescope.lean:174)
+-- bridge:ewt-ftt-ccsh → exactTripleClass_ftt_eq_ccsh (EWTTelescope.lean:204)
+-- prop:pom-s3-recurrence → exactWeightTriple_succ (EWTTelescope.lean:232) [关键突破]
+, { label := "bridge:ewt-swap12"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_swap12"
+    phase := 151
+    status := .formalized }
+, { label := "bridge:ewt-swap23"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_swap23"
+    phase := 151
+    status := .formalized }
+, { label := "bridge:ewt-fft-ccsl"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_fft_eq_ccsl"
+    phase := 151
+    status := .formalized }
+, { label := "bridge:ewt-ftt-ccsh"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactTripleClass_ftt_eq_ccsh"
+    phase := 151
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.EWTTelescope"
+    leanName := "Omega.exactWeightTriple_succ"
+    phase := 151
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

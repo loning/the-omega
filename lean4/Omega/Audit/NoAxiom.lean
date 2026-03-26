@@ -2262,6 +2262,12 @@ def coreAuditTargets : List String :=
   , "Omega.exactTripleClass_card_eq"
   , "Omega.exactWeightTriple_lastBit_split"
   , "Omega.exactTripleClass_fff"
-  , "Omega.exactTripleClass_ttt" ]
+  , "Omega.exactTripleClass_ttt"
+  -- Phase 151: EWT 望远镜完成 (EWTTelescope.lean:142,157,174,204,232)
+  , "Omega.exactTripleClass_swap12"
+  , "Omega.exactTripleClass_swap23"
+  , "Omega.exactTripleClass_fft_eq_ccsl"
+  , "Omega.exactTripleClass_ftt_eq_ccsh"
+  , "Omega.exactWeightTriple_succ" ]
 
 end Omega.Audit
