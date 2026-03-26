@@ -9640,6 +9640,14 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.ccs_prime_recurrence"
     phase := 166
     status := .formalized }
+-- Phase 166 补充: CollisionDecomp.lean 桥接定理（1 条）(CollisionDecomp.lean:777)
+-- bridge:e00-recurrence → exactWeightCollision_recurrence (CollisionDecomp.lean:777)
+, { label := "bridge:e00-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CollisionDecomp"
+    leanName := "Omega.exactWeightCollision_recurrence"
+    phase := 166
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

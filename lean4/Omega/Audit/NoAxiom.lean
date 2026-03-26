@@ -2334,6 +2334,8 @@ def coreAuditTargets : List String :=
   , "Omega.exactWeightTriple_strict_mono"
   , "Omega.crossCorrSq_recurrence"
   -- Phase 166: CCSPrime8Split.lean 桥接定理 (CCSPrime8Split.lean:653)
-  , "Omega.ccs_prime_recurrence" ]
+  , "Omega.ccs_prime_recurrence"
+  -- Phase 166 补充: CollisionDecomp.lean 桥接定理 (CollisionDecomp.lean:777)
+  , "Omega.exactWeightCollision_recurrence" ]
 
 end Omega.Audit
