@@ -9728,6 +9728,23 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 178: MomentBounds.lean + Fib.lean + Window6.lean（3 条）
+-- prop:pom-s2-plancherel（推论，线性下界）→ exactWeightCollision_ge_succ (MomentBounds.lean:585)
+-- bridge:fib-weight-sum-range → fib_weight_sum_range (Fib.lean:423)
+-- cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions → conclusion_window6_boundary_parity_gap (Window6.lean:602)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-s2-plancherel"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.exactWeightCollision_ge_succ"
+    phase := 178
+    status := .formalized }
+, { label := "cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_boundary_parity_gap"
+    phase := 178
+    status := .formalized }
 -- Phase 177: Fib.lean + Window6.lean（3 条，1 推迟）
 -- bridge:fib-cassini-even → fib_cassini_even (Fib.lean:382)
 -- bridge:fib-cassini-odd → fib_cassini_odd (Fib.lean:400)

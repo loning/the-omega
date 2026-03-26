@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 178: MomentBounds.lean + Fib.lean + Window6.lean — E00线性下界 + Fib权重求和范围 + 边界奇偶缺口结论
+  -- prop:pom-s2-plancherel（推论，线性下界）→ E00(m) ≥ m+1 (MomentBounds.lean:585)
+  #print axioms Omega.exactWeightCollision_ge_succ
+  -- bridge:fib-weight-sum-range → Σ_{i<m} F_{i+2} = F_{m+3}-2 (Fib.lean:423)
+  #print axioms Omega.fib_weight_sum_range
+  -- cor:conclusion-window6-boundary-parity-misses-eighteen-anomaly-directions → F_8=21, 21-3=18, 18>0 (Window6.lean:602)
+  #print axioms Omega.conclusion_window6_boundary_parity_gap
   -- Phase 177: Fib.lean + Window6.lean — Cassini 奇偶分离 + 边界奇偶余量结论
   -- bridge:fib-cassini-even → F_n·F_{n+2}+1 = F_{n+1}² for even n (Fib.lean:382)
   #print axioms Omega.fib_cassini_even
