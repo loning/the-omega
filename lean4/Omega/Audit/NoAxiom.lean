@@ -2325,6 +2325,10 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_eight"
   , "Omega.momentSum_three_nine"
   , "Omega.momentSum_three_ten"
-  , "Omega.momentSum_three_recurrence_sub" ]
+  , "Omega.momentSum_three_recurrence_sub"
+  -- Phase 164: CCSPrime8Split.lean 新定理 (CCSPrime8Split.lean:591,598,606)
+  , "Omega.momentSum_three_ge_sq_div"
+  , "Omega.momentSum_three_eleven"
+  , "Omega.momentSum_three_twelve" ]
 
 end Omega.Audit
