@@ -1,4 +1,4 @@
-import Omega.Folding.MomentSum
+import Omega.Folding.MomentTriple
 import Omega.Folding.Weight
 import Omega.Core.Fib
 import Mathlib.Logic.Function.Basic
@@ -76,5 +76,27 @@ theorem weight_total_sum (m : Nat) (hm : 1 ≤ m) :
       ∑ i ∈ Finset.range m, Nat.fib (i + 2) from
     Fin.sum_univ_eq_sum_range (n := m) (fun i => Nat.fib (i + 2))]
   rw [fib_partial_sum_from_two, Nat.mul_comm]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 149
+-- ══════════════════════════════════════════════════════════════
+
+-- exactWeightCount_symmetric already exists in MomentRecurrence.lean:551
+
+/-- S_4 conditional recurrence: given the full recurrence as hypothesis,
+    express S_4(m+5) as a subtraction. -/
+theorem momentSum_four_recurrence_sub_of
+    (hrec : ∀ m, momentSum 4 (m + 5) + 2 * momentSum 4 m =
+      2 * momentSum 4 (m + 4) + 7 * momentSum 4 (m + 3) + 2 * momentSum 4 (m + 1))
+    (m : Nat) :
+    momentSum 4 (m + 5) = 2 * momentSum 4 (m + 4) + 7 * momentSum 4 (m + 3) +
+      2 * momentSum 4 (m + 1) - 2 * momentSum 4 m := by
+  have := hrec m; omega
+
+/-- EWT telescoping recurrence verified for m = 0..5. -/
+theorem exactWeightTriple_succ_bounded (m : Nat) (hm : m ≤ 5) :
+    exactWeightTriple (m + 1) = 2 * exactWeightTriple m +
+    3 * crossCorrSqHigh m + 3 * crossCorrSqLow m := by
+  interval_cases m <;> native_decide
 
 end Omega
