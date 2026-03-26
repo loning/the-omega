@@ -632,4 +632,28 @@ theorem momentSum_two_strict_increasing_base :
       momentSum_two_four, momentSum_two_five, momentSum_two_six, momentSum_two_seven]
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 182
+-- ══════════════════════════════════════════════════════════════
+
+/-- The image of Fold has cardinality F_{m+2}. -/
+theorem Fold_image_card (m : Nat) :
+    (Finset.univ.image (Fold (m := m))).card = Nat.fib (m + 2) := by
+  rw [Finset.image_univ_of_surjective (Fold_surjective m),
+      Finset.card_univ, X.card_eq_fib]
+
+/-- S_3 base values strictly increasing through m = 0..7. -/
+theorem momentSum_three_strict_increasing_base :
+    momentSum 3 0 < momentSum 3 1 ∧
+    momentSum 3 1 < momentSum 3 2 ∧
+    momentSum 3 2 < momentSum 3 3 ∧
+    momentSum 3 3 < momentSum 3 4 ∧
+    momentSum 3 4 < momentSum 3 5 ∧
+    momentSum 3 5 < momentSum 3 6 ∧
+    momentSum 3 6 < momentSum 3 7 := by
+  rw [momentSum_three_zero, momentSum_three_one, momentSum_three_two,
+      momentSum_three_three, momentSum_three_four, momentSum_three_five,
+      momentSum_three_six, momentSum_three_seven]
+  omega
+
 end Omega

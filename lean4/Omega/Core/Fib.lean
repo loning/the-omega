@@ -424,4 +424,51 @@ theorem fib_weight_sum_range (m : Nat) :
     ∑ i ∈ Finset.range m, Nat.fib (i + 2) = Nat.fib (m + 3) - 2 :=
   fib_partial_sum_from_two m
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 182
+-- ══════════════════════════════════════════════════════════════
+
+/-- 5 ∣ F_n → 5 ∣ n (by strong induction, Pisano period 5). -/
+private theorem five_dvd_of_fib_five_dvd (n : Nat) (h : 5 ∣ Nat.fib n) : 5 ∣ n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => exact dvd_zero 5
+    | 1 => simp [Nat.fib] at h
+    | 2 => simp [Nat.fib] at h
+    | 3 => simp [Nat.fib] at h
+    | 4 => simp [Nat.fib] at h
+    | n + 5 =>
+      -- F(n+5) = 5F(n+3) + 3F(n+2) = ... use F(n+5) = 5F(n+1) + 8F(n) + ... too complex
+      -- Simpler: F(n+5) ≡ F(n) (mod 5) by Pisano period
+      -- F(n+5) = F(n+4) + F(n+3)
+      --        = (F(n+3)+F(n+2)) + F(n+3) = 2F(n+3) + F(n+2)
+      --        = 2(F(n+2)+F(n+1)) + F(n+2) = 3F(n+2) + 2F(n+1)
+      --        = 3(F(n+1)+F(n)) + 2F(n+1) = 5F(n+1) + 3F(n)
+      -- So F(n+5) = 5F(n+1) + 3F(n), hence F(n+5) % 5 = 3F(n) % 5
+      -- If 5|F(n+5) then 5|3F(n), and gcd(5,3)=1 so 5|F(n), then by IH 5|n, hence 5|(n+5).
+      have hfib2 := Nat.fib_add_two (n := n)
+      have hfib3 := Nat.fib_add_two (n := n + 1)
+      have hfib4 := Nat.fib_add_two (n := n + 2)
+      have hfib5 := Nat.fib_add_two (n := n + 3)
+      rw [show n + 1 + 2 = n + 3 from by omega, show n + 1 + 1 = n + 2 from by omega] at hfib3
+      rw [show n + 2 + 2 = n + 4 from by omega, show n + 2 + 1 = n + 3 from by omega] at hfib4
+      rw [show n + 3 + 2 = n + 5 from by omega, show n + 3 + 1 = n + 4 from by omega] at hfib5
+      have hkey : Nat.fib (n + 5) = 5 * Nat.fib (n + 1) + 3 * Nat.fib n := by linarith
+      rw [hkey] at h
+      have h3fn : 5 ∣ 3 * Nat.fib n := by omega
+      have hfn : 5 ∣ Nat.fib n :=
+        (Nat.Coprime.dvd_of_dvd_mul_left (by decide : Nat.Coprime 5 3) h3fn)
+      have := ih n (by omega) hfn
+      omega
+
+/-- 5 ∣ n → 5 ∣ F_n. -/
+private theorem fib_five_dvd_of_five_dvd (n : Nat) (h : 5 ∣ n) : 5 ∣ Nat.fib n := by
+  obtain ⟨k, rfl⟩ := h
+  exact dvd_trans (show (5 : Nat) ∣ Nat.fib 5 from by native_decide) (Nat.fib_dvd 5 (5 * k) ⟨k, rfl⟩)
+
+/-- Pisano period mod 5: 5 | F_n ↔ 5 | n. -/
+theorem fib_five_dvd_iff (n : Nat) : 5 ∣ Nat.fib n ↔ 5 ∣ n :=
+  ⟨five_dvd_of_fib_five_dvd n, fib_five_dvd_of_five_dvd n⟩
+
 end Omega
