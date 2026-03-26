@@ -788,6 +788,13 @@ Run these commands manually during audit:
   -- Round 125: Zero-modulus lower-bound certificates (Entropy.lean:98-120)
   #print axioms Omega.zero_modulus_lower_bound_of_log_defect_bound
   #print axioms Omega.fibRadius_zero_modulus_lower_bound_of_log_defect_bound
+  -- Phase 167: MomentBounds — hidden bit count closed form + right-resolving + S_3 div four
+  -- cor:pom-hidden-bit-entropy (MomentBounds.lean:108)
+  #print axioms Omega.hiddenBitCount_eq_div
+  -- thm:pom-right-resolving (MomentBounds.lean:115)
+  #print axioms Omega.Fold_snoc_false_ne_true
+  -- prop:pom-s3-recurrence → 4 ∣ momentSum 3 m for m ≥ 4 (MomentBounds.lean:133)
+  #print axioms Omega.momentSum_three_div_four
 
 The goal of phase 0/1 is that these core theorems use no project-defined axioms.
 -/
