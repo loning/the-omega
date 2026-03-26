@@ -9728,6 +9728,29 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 175: MomentBounds.lean + Defect.lean（3 条）
+-- prop:pom-power-sum-hankel-psd（幂均值推论）→ momentSum_power_mean_lower (MomentBounds.lean:541)
+-- thm:fold-discrete-stokes-defect（推论，allFalse 全局版）→ globalDefect_allFalse (Defect.lean:439)
+-- prop:conclusion-index-torsion-time-lower-bound（推论）→ readout_needs_at_least_two_steps (MomentBounds.lean:553)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-power-sum-hankel-psd"
+    sourcePath := "sections/body/pom/parts/subsec__pom-hankel.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_power_mean_lower"
+    phase := 175
+    status := .formalized }
+, { label := "thm:fold-discrete-stokes-defect"
+    sourcePath := "sections/body/pom/parts/subsec__pom-defect.tex"
+    moduleName := "Omega.Folding.Defect"
+    leanName := "Omega.globalDefect_allFalse"
+    phase := 175
+    status := .formalized }
+, { label := "prop:conclusion-index-torsion-time-lower-bound"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.readout_needs_at_least_two_steps"
+    phase := 175
+    status := .formalized }
 -- Phase 174: Window6.lean 首批结论章节定理（6 条）(Window6.lean:523,530,535,539,543,560)
 -- cor:conclusion-window6-three-rigidity-scales → conclusion_window6_three_rigidity_scales (Window6.lean:523)
 -- thm:conclusion-window6-groupoid-collision-dimension-identity → conclusion_window6_collision_dimension (Window6.lean:530)

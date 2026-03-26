@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 175: MomentBounds.lean + Defect.lean — 幂均值下界 + allFalse全局缺陷为零 + 至少两步readout
+  -- prop:pom-power-sum-hankel-psd（幂均值推论）→ (2^m)^q ≤ F_{m+2}^{q-1}·S_q(m) for q ≥ 1 (MomentBounds.lean:541)
+  #print axioms Omega.momentSum_power_mean_lower
+  -- thm:fold-discrete-stokes-defect（推论，allFalse 全局版）→ globalDefect allFalse = 0 (Defect.lean:439)
+  #print axioms Omega.globalDefect_allFalse
+  -- prop:conclusion-index-torsion-time-lower-bound（推论）→ 2^1 < D(m) for m ≥ 4 (MomentBounds.lean:553)
+  #print axioms Omega.readout_needs_at_least_two_steps
   -- Phase 174: Window6.lean 首批结论章节 — 三刚性尺度 + groupoid碰撞维数 + 二进制步数界
   -- cor:conclusion-window6-three-rigidity-scales → |X_6|=21, max_BinFold=4, 2^6=64, 4<21<64 (Window6.lean:523)
   #print axioms Omega.conclusion_window6_three_rigidity_scales
