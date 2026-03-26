@@ -89,4 +89,14 @@ theorem weight_pos_iff_exists_true (w : Word m) :
           rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
           simp [hi]
 
+/-- The all-false word is the unique word of weight zero. -/
+theorem weight_zero_iff_allFalse (w : Word m) :
+    weight w = 0 ↔ w = fun _ => false := by
+  constructor
+  · intro hw
+    have hno := mt (weight_pos_iff_exists_true w).mpr (by omega)
+    push_neg at hno
+    funext i; exact Bool.eq_false_iff.mpr (hno i)
+  · intro h; rw [h, weight_allFalse]
+
 end Omega

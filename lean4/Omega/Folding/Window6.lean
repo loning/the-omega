@@ -687,4 +687,13 @@ theorem conclusion_window6_maxfiber_sq_lt_wordcount :
     X.maxFiberMultiplicity 6 ^ 2 < 2 ^ 6 := by
   rw [X.maxFiberMultiplicity_six]; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 188
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(6)=220 for standard Fold, distinct from BinFold collision dim 212. -/
+theorem conclusion_window6_standard_collision :
+    momentSum 2 6 = 220 ∧ 220 ≠ 212 :=
+  ⟨momentSum_two_six, by omega⟩
+
 end Omega

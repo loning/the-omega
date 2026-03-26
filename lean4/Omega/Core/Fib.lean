@@ -560,4 +560,21 @@ theorem fib_succ_sub (n : Nat) :
     Nat.fib (n + 2) - Nat.fib (n + 1) = Nat.fib n := by
   have h := Nat.fib_add_two (n := n); omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 188
+-- ══════════════════════════════════════════════════════════════
+
+/-- Σ_{k<n} F_{k+2}² = F_{n+1}·F_{n+2} - 1. -/
+theorem fib_sq_sum_shifted (n : Nat) :
+    ∑ k ∈ Finset.range n, Nat.fib (k + 2) ^ 2 = Nat.fib (n + 1) * Nat.fib (n + 2) - 1 := by
+  -- Σ_{k<n} F_{k+2}^2 = Σ_{j=1}^{n} F_{j+1}^2 = (Σ_{j<n+1} F_{j+1}^2) - F_1^2
+  have hsq : ∑ k ∈ Finset.range (n + 1), Nat.fib (k + 1) ^ 2 =
+      Nat.fib (n + 1) * Nat.fib (n + 2) := fib_sq_sum (n + 1)
+  have hshift : ∑ k ∈ Finset.range n, Nat.fib (k + 2) ^ 2 =
+      ∑ k ∈ Finset.range (n + 1), Nat.fib (k + 1) ^ 2 - Nat.fib 1 ^ 2 := by
+    rw [Finset.sum_range_succ' (f := fun k => Nat.fib (k + 1) ^ 2)]
+    simp [Nat.fib]
+  rw [hshift, hsq]
+  simp [Nat.fib]
+
 end Omega
