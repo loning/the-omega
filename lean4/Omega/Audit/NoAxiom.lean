@@ -2241,6 +2241,10 @@ def coreAuditTargets : List String :=
   , "Omega.paper_truncation_not_commute"
   , "Omega.sum_word_eq_sum_fiber_mul"
   , "Omega.sum_word_fiberMult_pow"
-  , "Omega.momentSum_two_sq_le_pow_mul_three" ]
+  , "Omega.momentSum_two_sq_le_pow_mul_three"
+  -- Phase 146: 新定理 (MaxFiberTwoStep.lean:527,540, MomentTriple.lean:712)
+  , "Omega.weight_truncate_mod"
+  , "Omega.momentSum_cauchy_schwarz_word"
+  , "Omega.truncation_curvature_eq_hiddenBit" ]
 
 end Omega.Audit

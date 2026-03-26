@@ -9115,6 +9115,28 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_two_sq_le_pow_mul_three"
     phase := 145
     status := .formalized }
+-- Phase 146: 新定理 3 条 (MaxFiberTwoStep.lean:527,540, MomentTriple.lean:712)
+-- bridge:weight-truncate-mod → weight_truncate_mod (MaxFiberTwoStep.lean:527)
+-- prop:pom-moment-congruence-q → momentSum_cauchy_schwarz_word (MomentTriple.lean:712)
+-- thm:pom-truncation-curvature-equals-hidden-bit → truncation_curvature_eq_hiddenBit (MaxFiberTwoStep.lean:540)
+, { label := "bridge:weight-truncate-mod"
+    sourcePath := "sections/body/pom/parts/subsec__pom-spectral-gap.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.weight_truncate_mod"
+    phase := 146
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsubsec__pom-collision-kernel-family.tex"
+    moduleName := "Omega.Folding.MomentTriple"
+    leanName := "Omega.momentSum_cauchy_schwarz_word"
+    phase := 146
+    status := .formalized }
+, { label := "thm:pom-truncation-curvature-equals-hidden-bit"
+    sourcePath := "sections/body/pom/parts/subsec__pom-spectral-gap.tex"
+    moduleName := "Omega.Folding.MaxFiberTwoStep"
+    leanName := "Omega.truncation_curvature_eq_hiddenBit"
+    phase := 146
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
