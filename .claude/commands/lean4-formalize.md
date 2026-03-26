@@ -77,6 +77,23 @@ theorem momentSum_four_strict_mono_bounded (m : Nat) (hm : m ≤ 5) :
   interval_cases m <;> simp <;> omega
 ```
 
+### 严禁"验证信心"模式（最高优先级）
+
+**禁止用 `native_decide` 做有界数值验证来"确认代数恒等式正确"。** 论文已给出代数推导，必须直接形式化代数证明。
+
+**历史教训**：S3Recurrence.lean 曾包含大量 `_bounded` 验证定理（如 `interval_cases m <;> native_decide` 验证 m ≤ 7 的递推），这些是无条件代数证明完成前的临时脚手架。结果：
+- 编译时间膨胀至 118 秒（清理后 4 秒）
+- 脚手架从未被清理，成为永久工程债务
+- 所有 `_bounded` 定理最终零外部引用——完全浪费
+
+**规则**：
+- ❌ 禁止 `_bounded`/`_extended`/`_verified` 后缀的临时验证定理
+- ❌ 禁止 "先 native_decide 验证 m ≤ N，再条件性推广" 的证明路线
+- ❌ 禁止 "论文给出了推导但我不确定，先验证一下" 的工作模式
+- ✅ 论文已给出推导 → 直接形式化代数证明
+- ✅ 无法完成无条件证明 → 标记 deferred 推迟，而非降级为有界验证
+- ✅ 需要建立信心 → 在 scratch file 中测试，不提交到主代码库
+
 ### 编译超时处理流程
 
 formalizer 遇到编译超时时：
