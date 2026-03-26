@@ -9728,6 +9728,23 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 179: MomentBounds.lean + Window6.lean（2 条，1 推迟）
+-- thm:pom-hidden-bit-count + prop:pom-s2-plancherel（联结推论）→ exactWeightCollision_ge_double_hiddenBitCount (MomentBounds.lean:600)
+-- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（数值核心）→ conclusion_window6_wedderburn_blocks (Window6.lean:615)
+-- 推迟: stableAdd_iterate_one（需要 X.ofNat m n = X.ofNat m (n % F) 引理）
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "thm:pom-hidden-bit-count"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s2.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.exactWeightCollision_ge_double_hiddenBitCount"
+    phase := 179
+    status := .formalized }
+, { label := "thm:conclusion-foldbin-stable-collapse-ordered-k0-memory"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_wedderburn_blocks"
+    phase := 179
+    status := .formalized }
 -- Phase 178: MomentBounds.lean + Fib.lean + Window6.lean（3 条）
 -- prop:pom-s2-plancherel（推论，线性下界）→ exactWeightCollision_ge_succ (MomentBounds.lean:585)
 -- bridge:fib-weight-sum-range → fib_weight_sum_range (Fib.lean:423)

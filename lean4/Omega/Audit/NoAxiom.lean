@@ -817,6 +817,11 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 179: MomentBounds.lean + Window6.lean — E00≥2·HBC联结推论 + BinFiberHist Wedderburn块
+  -- thm:pom-hidden-bit-count + prop:pom-s2-plancherel（联结推论）→ E00(m) ≥ 2·hiddenBitCount(m) for m ≥ 2 (MomentBounds.lean:600)
+  #print axioms Omega.exactWeightCollision_ge_double_hiddenBitCount
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（数值核心）→ BinFiberHist 6: {2:8,3:4,4:9}, sum=21 (Window6.lean:615)
+  #print axioms Omega.conclusion_window6_wedderburn_blocks
   -- Phase 178: MomentBounds.lean + Fib.lean + Window6.lean — E00线性下界 + Fib权重求和范围 + 边界奇偶缺口结论
   -- prop:pom-s2-plancherel（推论，线性下界）→ E00(m) ≥ m+1 (MomentBounds.lean:585)
   #print axioms Omega.exactWeightCollision_ge_succ
