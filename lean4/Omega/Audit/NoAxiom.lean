@@ -817,6 +817,17 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 182: Fib.lean + MomentBounds.lean — Pisano mod 5 + |image(Fold)| + S_3基例严格单调
+  -- bridge:fold-image-card → |image(Fold)| = F_{m+2} (MomentBounds.lean:640)
+  #print axioms Omega.Fold_image_card
+  -- prop:pom-s3-recurrence（基例严格单调）→ S_3(0) < S_3(1) < ... < S_3(7) (MomentBounds.lean:645)
+  #print axioms Omega.momentSum_three_strict_increasing_base
+  -- bridge:five-dvd-of-fib → 5|F_n → 5|n (Fib.lean:432, private)
+  #print axioms Omega.five_dvd_of_fib_five_dvd
+  -- bridge:fib-five-dvd-of → 5|n → 5|F_n (Fib.lean:461, private)
+  #print axioms Omega.fib_five_dvd_of_five_dvd
+  -- bridge:fib-five-dvd-iff（Pisano mod 5）→ 5|F_n ↔ 5|n (Fib.lean:466)
+  #print axioms Omega.fib_five_dvd_iff
   -- Phase 181: MomentRecurrence.lean + MomentBounds.lean + Window6.lean — 补码权重和 + S_2基例严格单调 + 纤维非均匀
   -- bridge:weight-add-complement → weight(w) + weight(complement w) = F_{m+3}-2 (MomentRecurrence.lean:801)
   #print axioms Omega.weight_add_complement

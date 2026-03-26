@@ -9728,6 +9728,19 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 182: Fib.lean + MomentBounds.lean（5 条，1 论文标签）
+-- bridge:fold-image-card → Fold_image_card (MomentBounds.lean:640)
+-- prop:pom-s3-recurrence（基例严格单调）→ momentSum_three_strict_increasing_base (MomentBounds.lean:645)
+-- bridge:five-dvd-of-fib → five_dvd_of_fib_five_dvd (Fib.lean:432, private)
+-- bridge:fib-five-dvd-of → fib_five_dvd_of_five_dvd (Fib.lean:461, private)
+-- bridge:fib-five-dvd-iff（Pisano mod 5）→ fib_five_dvd_iff (Fib.lean:466)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s3.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_three_strict_increasing_base"
+    phase := 182
+    status := .formalized }
 -- Phase 181: MomentRecurrence.lean + MomentBounds.lean + Window6.lean（3 条）
 -- bridge:weight-add-complement → weight_add_complement (MomentRecurrence.lean:801)
 -- prop:pom-s2-recurrence（基例严格单调）→ momentSum_two_strict_increasing_base (MomentBounds.lean:623)

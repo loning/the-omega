@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 182: Pisano mod 5 + |image(Fold)| + S_3基例严格单调（Round 182）**：两文件 Fib.lean(432,461,466) + MomentBounds.lean(640,645)——five_dvd_of_fib_five_dvd（bridge: 5|F_n → 5|n，private，Fib.lean:432）; fib_five_dvd_of_five_dvd（bridge: 5|n → 5|F_n，private，Fib.lean:461）; fib_five_dvd_iff（bridge: Pisano mod 5: 5|F_n ↔ 5|n，Fib.lean:466）; Fold_image_card（bridge: |image(Fold)| = F_{m+2}，MomentBounds.lean:640）; momentSum_three_strict_increasing_base（prop:pom-s3-recurrence 基例严格单调：S_3(0) < S_3(1) < ... < S_3(7)，MomentBounds.lean:645）——POM ~491→~492（+1 条目：prop:pom-s3-recurrence）（Phase 182）
 **Phase 181: 补码权重和 + S_2基例严格单调 + 纤维非均匀（Round 181）**：三文件 MomentRecurrence.lean(801) + MomentBounds.lean(623) + Window6.lean(639)——weight_add_complement（bridge: weight(w) + weight(complement w) = F_{m+3}-2，MomentRecurrence.lean:801）; momentSum_two_strict_increasing_base（prop:pom-s2-recurrence 基例严格单调：S_2(0) < S_2(1) < ... < S_2(7)，MomentBounds.lean:623）; conclusion_window6_fiber_nonuniform（thm:conclusion-window6-groupoid-collision-dimension-identity 推论：BinFiber min≠max, min=2, max=4，Window6.lean:639）——POM ~490→~491, 结论 75→76（+2 条目：prop:pom-s2-recurrence, thm:conclusion-window6-groupoid-collision-dimension-identity）（Phase 181）
 **Phase 180: weight正iff存在true + 群胚非自由代数（Round 180）**：两文件 Weight.lean(72) + Window6.lean(627)——weight_pos_iff_exists_true（bridge: weight > 0 ↔ ∃ i, w i = true，Weight.lean:72）; conclusion_window6_not_free_algebra（thm:conclusion-window6-groupoid-rather-than-free-quotient：212 < 441 = 21²，群胚 < 自由代数维数，Window6.lean:627）——推迟：momentSum_fib_lower（与 strict_mono_m 同根本原因）——结论 74→75（+1 条目：thm:conclusion-window6-groupoid-rather-than-free-quotient）（Phase 180）
 **Phase 179: E00≥2·HBC联结推论 + BinFiberHist Wedderburn块（Round 179）**：两文件 MomentBounds.lean(600) + Window6.lean(615)——exactWeightCollision_ge_double_hiddenBitCount（thm:pom-hidden-bit-count + prop:pom-s2-plancherel 联结推论：E00(m) ≥ 2·hiddenBitCount(m) for m ≥ 2，MomentBounds.lean:600）; conclusion_window6_wedderburn_blocks（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory 数值核心：BinFiberHist 6: {2:8, 3:4, 4:9}, sum=21，Window6.lean:615）——推迟：stableAdd_iterate_one（需要 X.ofNat m n = X.ofNat m (n % F) 引理）——POM ~489→~490, 结论 73→74（+2 条目：thm:pom-hidden-bit-count, thm:conclusion-foldbin-stable-collapse-ordered-k0-memory）（Phase 179）
@@ -147,15 +148,15 @@
 
 ### Lean4 形式化状态
 
-- **1,221 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,382 个 Lean4 定理（含内部引理）
+- **1,222 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,387 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1280/10,588 = **12.1%** |
+| 全局覆盖率 | 1281/10,588 = **12.1%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -169,13 +170,13 @@
 | 新生算术 | 151 | ~88 | ~58% |
 | Folding | 317 | ~90 | ~28% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~491 | ~32.2% |
+| POM | 1,525 | ~492 | ~32.3% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 76 | 4.4% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1280** | **12.1%** |
+| **总计** | **10,588** | **1281** | **12.1%** |
 
 ## 3. 未来工作：30 条具体计划
 
