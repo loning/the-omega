@@ -328,4 +328,49 @@ theorem fib_lt_pow_two_of_ge_two (m : Nat) (hm : 2 ≤ m) :
             Nat.add_le_add_left (Nat.pow_le_pow_right (by omega) (by omega)) _
         _ = 2 ^ (m + 4) := by ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 173
+-- ══════════════════════════════════════════════════════════════
+
+/-- The fence determinant recursion: D(k+2) = 3·D(k+1) - D(k), D(0)=1, D(1)=2. -/
+def fenceDet : Nat → Nat
+  | 0 => 1
+  | 1 => 2
+  | n + 2 => 3 * fenceDet (n + 1) - fenceDet n
+
+/-- Fibonacci identity: F_{2n+5} = 3·F_{2n+3} - F_{2n+1}. -/
+theorem fib_odd_recurrence (n : Nat) :
+    Nat.fib (2 * n + 5) = 3 * Nat.fib (2 * n + 3) - Nat.fib (2 * n + 1) := by
+  -- F_{2n+5} = F_{2n+4} + F_{2n+3}
+  have h5 := Nat.fib_add_two (n := 2 * n + 3)
+  -- F_{2n+4} = F_{2n+3} + F_{2n+2}
+  have h4 := Nat.fib_add_two (n := 2 * n + 2)
+  -- F_{2n+3} = F_{2n+2} + F_{2n+1}
+  have h3 := Nat.fib_add_two (n := 2 * n + 1)
+  -- From h3: F_{2n+2} = F_{2n+3} - F_{2n+1}
+  -- F_{2n+5} = 2·F_{2n+3} + F_{2n+2} = 2·F_{2n+3} + (F_{2n+3} - F_{2n+1}) = 3·F_{2n+3} - F_{2n+1}
+  have hpos : Nat.fib (2 * n + 1) ≤ Nat.fib (2 * n + 3) := Nat.fib_mono (by omega)
+  rw [show 2 * n + 3 + 2 = 2 * n + 5 from by omega,
+      show 2 * n + 3 + 1 = 2 * n + 4 from by omega] at h5
+  rw [show 2 * n + 2 + 2 = 2 * n + 4 from by omega,
+      show 2 * n + 2 + 1 = 2 * n + 3 from by omega] at h4
+  rw [show 2 * n + 1 + 2 = 2 * n + 3 from by omega,
+      show 2 * n + 1 + 1 = 2 * n + 2 from by omega] at h3
+  omega
+
+/-- The fence determinant equals the odd-indexed Fibonacci number: det(L_k + I) = F_{2k+1}.
+    cor:pom-Lk-t1-fibonacci-det-green. -/
+theorem fenceDet_eq_fib (k : Nat) : fenceDet k = Nat.fib (2 * k + 1) := by
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    match k with
+    | 0 => simp [fenceDet]
+    | 1 => simp [fenceDet]; native_decide
+    | k + 2 =>
+      rw [fenceDet, ih (k + 1) (by omega), ih k (by omega)]
+      rw [show 2 * (k + 2) + 1 = 2 * k + 5 from by ring,
+          show 2 * (k + 1) + 1 = 2 * k + 3 from by ring,
+          show 2 * k + 1 = 2 * k + 1 from rfl]
+      exact (fib_odd_recurrence k).symm
+
 end Omega

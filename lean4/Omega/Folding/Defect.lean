@@ -422,4 +422,13 @@ theorem localDefect_of_stable (x : X (m + 1)) :
   rw [Fold_stable x]
   exact Fold_stable (X.restrict x)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 173
+-- ══════════════════════════════════════════════════════════════
+
+/-- The all-false word has zero local defect. -/
+theorem localDefect_allFalse (m : Nat) :
+    localDefect (m := m) (fun _ => false) = zeroWord m :=
+  localDefect_of_stable ⟨fun _ => false, no11_allFalse⟩
+
 end Omega

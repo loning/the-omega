@@ -459,4 +459,36 @@ theorem maxFiber_lt_wordcount (m : Nat) (hm : 2 ≤ m) :
     X.maxFiberMultiplicity m < 2 ^ m :=
   Nat.lt_of_le_of_lt (maxFiberMultiplicity_le_fib m) (fib_lt_pow_two_of_ge_two m hm)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 173
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight ≤ popcount * F_{m+1} for m ≥ 1. -/
+theorem weight_le_popcount_mul_fib (w : Word m) (hm : 1 ≤ m) :
+    weight w ≤ popcount w * Nat.fib (m + 1) := by
+  rw [weight_eq_fib_ite_sum, popcount_eq_count_true]
+  -- Bound: Σ (if w i then fib(i+2) else 0) ≤ |support| * fib(m+1)
+  -- = Σ_{i ∈ support} fib(m+1)
+  -- Strategy: each contributing term fib(i+2) ≤ fib(m+1) since i < m
+  trans (∑ i : Fin m, if w i = true then Nat.fib (m + 1) else 0)
+  · apply Finset.sum_le_sum; intro i _
+    by_cases hi : w i = true
+    · simp [hi, Nat.fib_mono (show i.val + 2 ≤ m + 1 by omega)]
+    · simp [show w i = false from by cases hw : w i <;> simp_all]
+  · -- Σ (if w i = true then fib(m+1) else 0) = |support| * fib(m+1)
+    trans ((Finset.univ.filter (fun i : Fin m => w i = true)).sum
+        (fun _ => Nat.fib (m + 1)))
+    · rw [← Finset.sum_filter_add_sum_filter_not (s := Finset.univ)
+          (p := fun i : Fin m => w i = true)
+          (f := fun i : Fin m => if w i = true then Nat.fib (m + 1) else 0)]
+      have h1 : ∀ i ∈ Finset.univ.filter (fun i : Fin m => w i = true),
+          (if w i = true then Nat.fib (m + 1) else 0) = Nat.fib (m + 1) :=
+        fun i hi => by simp [Finset.mem_filter.mp hi |>.2]
+      have h2 : ∀ i ∈ Finset.univ.filter (fun i : Fin m => ¬w i = true),
+          (if w i = true then Nat.fib (m + 1) else 0) = 0 :=
+        fun i hi => by simp [Finset.mem_filter.mp hi |>.2]
+      rw [Finset.sum_congr rfl h1, Finset.sum_congr rfl h2]
+      simp [Finset.sum_const, smul_eq_mul]
+    · rw [Finset.sum_const, smul_eq_mul]
+
 end Omega
