@@ -9479,6 +9479,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.momentSum_three_recurrence_extended"
     phase := 159
     status := .formalized }
+-- Phase 161: S3Recurrence.lean 新定义+定理 (S3Recurrence.lean:406,413)
+-- bridge:shifted-triple-def → shiftedTriple (S3Recurrence.lean:406)
+-- bridge:shifted-triple-eq → shiftedTriple_eq_ccs_prime (S3Recurrence.lean:413)
+, { label := "bridge:shifted-triple-def"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.shiftedTriple"
+    phase := 161
+    status := .formalized }
+, { label := "bridge:shifted-triple-eq"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.S3Recurrence"
+    leanName := "Omega.shiftedTriple_eq_ccs_prime"
+    phase := 161
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
