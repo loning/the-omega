@@ -2252,6 +2252,9 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_ratio_mono"
   -- Phase 148: 新文件 MomentBounds.lean (MomentBounds.lean:13,58)
   , "Omega.card_true_at_bit"
-  , "Omega.weight_total_sum" ]
+  , "Omega.weight_total_sum"
+  -- Phase 149: 新定理 (MomentBounds.lean:88,97)
+  , "Omega.momentSum_four_recurrence_sub_of"
+  , "Omega.exactWeightTriple_succ_bounded" ]
 
 end Omega.Audit

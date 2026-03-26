@@ -9174,6 +9174,21 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.weight_total_sum"
     phase := 148
     status := .formalized }
+-- Phase 149: 新定理 2 条 (MomentBounds.lean:88,97)
+-- prop:pom-s4-recurrence → momentSum_four_recurrence_sub_of (MomentBounds.lean:88) [新标签]
+-- prop:pom-s3-recurrence → exactWeightTriple_succ_bounded (MomentBounds.lean:97)
+, { label := "prop:pom-s4-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_four_recurrence_sub_of"
+    phase := 149
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.exactWeightTriple_succ_bounded"
+    phase := 149
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)
