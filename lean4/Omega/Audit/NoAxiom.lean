@@ -817,6 +817,13 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 184: Fib.lean + MomentBounds.lean + Window6.lean — Fib加法公式 + E00>0 + 21∤212
+  -- bridge:fib-add-formula → F_{m+n+1} = F_{m+1}·F_{n+1} + F_m·F_n (Fib.lean:529)
+  #print axioms Omega.fib_add_formula
+  -- bridge:exactWeightCollision-pos → E00(m) > 0 (MomentBounds.lean:681)
+  #print axioms Omega.exactWeightCollision_pos
+  -- thm:conclusion-window6-static-anomaly-ledger-dynamic-budget-bifurcation → 21 ∤ 212 (Window6.lean:660)
+  #print axioms Omega.conclusion_window6_dimension_not_divisible
   -- Phase 183: Fib.lean + MomentBounds.lean + Window6.lean — Pisano mod 7 + S_4基例严格单调 + 无自由边界扩展
   -- bridge:eight-dvd-of-fib-seven → 7|F_n → 8|n (Fib.lean:479, private)
   #print axioms Omega.eight_dvd_of_fib_seven_dvd

@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 184: Fib加法公式 + E00>0 + 21∤212（Round 184）**：三文件 Fib.lean(529) + MomentBounds.lean(681) + Window6.lean(660)——fib_add_formula（bridge: F_{m+n+1} = F_{m+1}·F_{n+1} + F_m·F_n，Fib.lean:529）; exactWeightCollision_pos（bridge: E00(m) > 0，MomentBounds.lean:681）; conclusion_window6_dimension_not_divisible（thm:conclusion-window6-static-anomaly-ledger-dynamic-budget-bifurcation：21 ∤ 212，Window6.lean:660）——结论 77→78（+1 条目：thm:conclusion-window6-static-anomaly-ledger-dynamic-budget-bifurcation）（Phase 184）
 **Phase 183: Pisano mod 7 + S_4基例严格单调 + 无自由边界扩展（Round 183）**：三文件 Fib.lean(479,506,511) + MomentBounds.lean(664) + Window6.lean(651)——eight_dvd_of_fib_seven_dvd（bridge: 7|F_n → 8|n，private，Fib.lean:479）; fib_seven_dvd_of_eight_dvd（bridge: 8|n → 7|F_n，private，Fib.lean:506）; fib_seven_dvd_iff（bridge: Pisano mod 7: 7|F_n ↔ 8|n，Fib.lean:511）; momentSum_four_strict_increasing_base（prop:pom-s4-recurrence 基例严格单调：S_4(0) < ... < S_4(6)，MomentBounds.lean:664）; conclusion_window6_no_free_boundary_extension（cor:conclusion-window6-boundary-z6-no-global-free-extension：8 ∤ 21，Window6.lean:651）——POM ~492→~493, 结论 76→77（+2 条目：prop:pom-s4-recurrence, cor:conclusion-window6-boundary-z6-no-global-free-extension）（Phase 183）
 **Phase 182: Pisano mod 5 + |image(Fold)| + S_3基例严格单调（Round 182）**：两文件 Fib.lean(432,461,466) + MomentBounds.lean(640,645)——five_dvd_of_fib_five_dvd（bridge: 5|F_n → 5|n，private，Fib.lean:432）; fib_five_dvd_of_five_dvd（bridge: 5|n → 5|F_n，private，Fib.lean:461）; fib_five_dvd_iff（bridge: Pisano mod 5: 5|F_n ↔ 5|n，Fib.lean:466）; Fold_image_card（bridge: |image(Fold)| = F_{m+2}，MomentBounds.lean:640）; momentSum_three_strict_increasing_base（prop:pom-s3-recurrence 基例严格单调：S_3(0) < S_3(1) < ... < S_3(7)，MomentBounds.lean:645）——POM ~491→~492（+1 条目：prop:pom-s3-recurrence）（Phase 182）
 **Phase 181: 补码权重和 + S_2基例严格单调 + 纤维非均匀（Round 181）**：三文件 MomentRecurrence.lean(801) + MomentBounds.lean(623) + Window6.lean(639)——weight_add_complement（bridge: weight(w) + weight(complement w) = F_{m+3}-2，MomentRecurrence.lean:801）; momentSum_two_strict_increasing_base（prop:pom-s2-recurrence 基例严格单调：S_2(0) < S_2(1) < ... < S_2(7)，MomentBounds.lean:623）; conclusion_window6_fiber_nonuniform（thm:conclusion-window6-groupoid-collision-dimension-identity 推论：BinFiber min≠max, min=2, max=4，Window6.lean:639）——POM ~490→~491, 结论 75→76（+2 条目：prop:pom-s2-recurrence, thm:conclusion-window6-groupoid-collision-dimension-identity）（Phase 181）
@@ -149,15 +150,15 @@
 
 ### Lean4 形式化状态
 
-- **1,224 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,392 个 Lean4 定理（含内部引理）
+- **1,225 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,395 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1283/10,588 = **12.1%** |
+| 全局覆盖率 | 1284/10,588 = **12.1%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -174,10 +175,10 @@
 | POM | 1,525 | ~493 | ~32.3% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
-| 结论 | 1,727 | 77 | 4.5% |
+| 结论 | 1,727 | 78 | 4.5% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1283** | **12.1%** |
+| **总计** | **10,588** | **1284** | **12.1%** |
 
 ## 3. 未来工作：30 条具体计划
 

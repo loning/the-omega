@@ -9728,6 +9728,17 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 184: Fib.lean + MomentBounds.lean + Window6.lean（3 条，1 论文标签）
+-- bridge:fib-add-formula → fib_add_formula (Fib.lean:529)
+-- bridge:exactWeightCollision-pos → exactWeightCollision_pos (MomentBounds.lean:681)
+-- thm:conclusion-window6-static-anomaly-ledger-dynamic-budget-bifurcation → conclusion_window6_dimension_not_divisible (Window6.lean:660)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "thm:conclusion-window6-static-anomaly-ledger-dynamic-budget-bifurcation"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_dimension_not_divisible"
+    phase := 184
+    status := .formalized }
 -- Phase 183: Fib.lean + MomentBounds.lean + Window6.lean（5 条，2 论文标签）
 -- bridge:eight-dvd-of-fib-seven → eight_dvd_of_fib_seven_dvd (Fib.lean:479, private)
 -- bridge:fib-seven-dvd-of-eight → fib_seven_dvd_of_eight_dvd (Fib.lean:506, private)
