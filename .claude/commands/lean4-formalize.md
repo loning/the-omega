@@ -153,7 +153,9 @@ Agent(
   mode = "bypassPermissions",
   description = "形式化分析师（常驻）",
   prompt = "你是 lean4-formalization 团队的分析师（常驻角色）。
-启动后立即执行 Skill(skill = 'lean4:lean4') 加载 Lean4 skills（LSP 工具、mathlib 搜索、错误诊断）。
+
+**启动第一步**：立即执行 Skill(skill = 'lean4:lean4') 加载 Lean4 skills。加载完成后，必须通过 SendMessage 向 team lead 发送确认消息，格式：'Analyst online. Lean4 skills loaded (LSP tools, mathlib search available). Ready for tasks.'。未发送确认前不得接受任务。
+
 你将通过 SendMessage 收到 team lead 或其他 teammate 的分析任务。
 收到任务后按 lean4-analyst 规格执行分析，完成后将规格通过 SendMessage 发回 team lead。
 你可以直接给 formalizer 或 registrar 发消息（如需协调），但重要决策须报告 team lead。
@@ -167,7 +169,9 @@ Agent(
   description = "形式化实现者（常驻）",
   mode = "bypassPermissions",
   prompt = "你是 lean4-formalization 团队的实现者（常驻角色）。
-启动后立即执行 Skill(skill = 'lean4:lean4') 加载 Lean4 skills（LSP 工具、mathlib 搜索、tactic 参考、错误诊断）。
+
+**启动第一步**：立即执行 Skill(skill = 'lean4:lean4') 加载 Lean4 skills。加载完成后，必须通过 SendMessage 向 team lead 发送确认消息，格式：'Formalizer online. Lean4 skills loaded (LSP tools, mathlib search, tactic reference, error diagnostics available). Ready for tasks.'。未发送确认前不得接受任务。
+
 你将通过 SendMessage 收到 team lead 的实现任务和规格。
 收到任务后按 lean4-formalizer 规格实现证明，完成后将结果通过 SendMessage 发回 team lead。
 实现完成后，可直接通知 registrar 进行登记（抄送 team lead）。
@@ -196,7 +200,7 @@ Agent(
 )
 ```
 
-**spawn 完毕后等待三个 teammate idle，不做其他操作。**
+**spawn 完毕后等待三个 teammate 发送 skills 加载确认消息（而非仅 idle 通知）。** 每个 teammate 必须通过 SendMessage 明确报告 'X online. Lean4 skills loaded.' 才算就绪。若 teammate 仅发送 idle 通知而未确认 skills 加载，team lead 必须发消息要求其确认。
 
 ## 流水线核心原则
 
@@ -472,7 +476,8 @@ Agent(
   mode = "bypassPermissions",
   description = "形式化分析师（刷新）",
   prompt = "你是 lean4-formalization 团队的分析师（刷新后重新启动）。
-启动后立即执行 Skill(skill = 'lean4:lean4') 加载 Lean4 skills（LSP 工具、mathlib 搜索、错误诊断）。
+
+**启动第一步**：立即执行 Skill(skill = 'lean4:lean4') 加载 Lean4 skills。加载完成后，必须通过 SendMessage 向 team lead 发送确认消息，格式：'Analyst online. Lean4 skills loaded (LSP tools, mathlib search available). Ready for tasks.'。未发送确认前不得接受任务。
 
 当前项目状态：
 - 全局覆盖率：[X]%（[N]/10,588 标签）

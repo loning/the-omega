@@ -1,6 +1,7 @@
 import Omega.Folding.MomentTriple
 import Omega.Folding.Weight
 import Omega.Core.Fib
+import Omega.Folding.CCSPrime8Split
 import Mathlib.Logic.Function.Basic
 
 namespace Omega
@@ -98,5 +99,58 @@ theorem exactWeightTriple_succ_bounded (m : Nat) (hm : m ≤ 5) :
     exactWeightTriple (m + 1) = 2 * exactWeightTriple m +
     3 * crossCorrSqHigh m + 3 * crossCorrSqLow m := by
   interval_cases m <;> native_decide
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 167
+-- ══════════════════════════════════════════════════════════════
+
+/-- Hidden bit count equals floor(2^m / 3). Discrete version of cor:pom-hidden-bit-entropy. -/
+theorem hiddenBitCount_eq_div (m : Nat) :
+    hiddenBitCount m = 2 ^ m / 3 := by
+  have h := hiddenBitCount_closed m
+  split_ifs at h with heven <;> omega
+
+/-- Right-resolving: appending different bits to the same prefix always gives
+    different Fold values. thm:pom-right-resolving. -/
+theorem Fold_snoc_false_ne_true (v : Word m) :
+    Fold (snoc v false) ≠ Fold (snoc v true) := by
+  intro h
+  have hsv := congrArg stableValue h
+  rw [stableValue_Fold_snoc_false, stableValue_Fold_snoc_true] at hsv
+  have hlt : weight v < Nat.fib (m + 3) := X.weight_lt_fib v
+  rw [Nat.mod_eq_of_lt hlt] at hsv
+  have hfib3 : Nat.fib (m + 3) = Nat.fib (m + 1) + Nat.fib (m + 2) := Nat.fib_add_two
+  by_cases hcase : weight v + Nat.fib (m + 2) < Nat.fib (m + 3)
+  · rw [Nat.mod_eq_of_lt hcase] at hsv
+    have : 0 < Nat.fib (m + 2) := Nat.fib_pos.mpr (by omega)
+    omega
+  · push_neg at hcase
+    rw [Nat.mod_eq_sub_mod hcase, Nat.mod_eq_of_lt (by omega)] at hsv
+    have : 0 < Nat.fib (m + 1) := Nat.fib_pos.mpr (by omega)
+    omega
+
+/-- S_3(m) is divisible by 4 for m ≥ 4. Consequence of S_3 recurrence. -/
+theorem momentSum_three_div_four (m : Nat) (hm : 4 ≤ m) :
+    4 ∣ momentSum 3 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 | 2 | 3 => omega
+    | 4 => exact ⟨22, by rw [momentSum_three_four]⟩
+    | 5 => exact ⟨65, by rw [momentSum_three_five]⟩
+    | 6 => exact ⟨205, by rw [momentSum_three_six]⟩
+    | m + 7 =>
+      have hrec := momentSum_three_recurrence (m + 4)
+      rw [show (m + 4) + 3 = m + 7 from by omega,
+          show (m + 4) + 2 = m + 6 from by omega,
+          show (m + 4) + 1 = m + 5 from by omega] at hrec
+      have ih4 := ih (m + 4) (by omega) (by omega)
+      have ih5 := ih (m + 5) (by omega) (by omega)
+      have ih6 := ih (m + 6) (by omega) (by omega)
+      obtain ⟨a, ha⟩ := ih4
+      obtain ⟨b, hb⟩ := ih5
+      obtain ⟨c, hc⟩ := ih6
+      rw [ha, hb, hc] at hrec
+      exact ⟨2 * c + 4 * b - 2 * a, by omega⟩
 
 end Omega
