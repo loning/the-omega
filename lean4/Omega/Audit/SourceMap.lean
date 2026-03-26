@@ -9494,6 +9494,35 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.shiftedTriple_eq_ccs_prime"
     phase := 161
     status := .formalized }
+-- Phase 162: CCSPrimeTelescope.lean 新文件（CCSPrimeTelescope.lean:27,65,97,103）
+-- bridge:ccsh-succ-eq-prev → crossCorrSqHigh_succ_eq_prev (CCSPrimeTelescope.lean:27)
+-- bridge:ccsl-succ-eq-prev → crossCorrSqLow_succ_eq_prev (CCSPrimeTelescope.lean:65)
+-- bridge:cc-succ-ccs-prime → cc_succ_eq_ccs_prime (CCSPrimeTelescope.lean:97)
+-- prop:pom-s3-recurrence → momentSum_three_add_ewt (CCSPrimeTelescope.lean:103)
+, { label := "bridge:ccsh-succ-eq-prev"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrimeTelescope"
+    leanName := "Omega.crossCorrSqHigh_succ_eq_prev"
+    phase := 162
+    status := .formalized }
+, { label := "bridge:ccsl-succ-eq-prev"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrimeTelescope"
+    leanName := "Omega.crossCorrSqLow_succ_eq_prev"
+    phase := 162
+    status := .formalized }
+, { label := "bridge:cc-succ-ccs-prime"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrimeTelescope"
+    leanName := "Omega.cc_succ_eq_ccs_prime"
+    phase := 162
+    status := .formalized }
+, { label := "prop:pom-s3-recurrence"
+    sourcePath := "sections/body/pom/parts/subsec__pom-s5.tex"
+    moduleName := "Omega.Folding.CCSPrimeTelescope"
+    leanName := "Omega.momentSum_three_add_ewt"
+    phase := 162
+    status := .formalized }
 -- Phase 139b: 零代码批量补登 5 个论文标签
 -- thm:pom-one-fold-normal-form → Fold_idempotent (Fold.lean:202)
 -- def:pom-fold-prime-lift → hiddenBit + weight_eq_stableValue_add_hiddenBit (MaxFiberTwoStep.lean:213,248)

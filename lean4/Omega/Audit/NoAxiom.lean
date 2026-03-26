@@ -2308,6 +2308,11 @@ def coreAuditTargets : List String :=
   , "Omega.momentSum_three_recurrence_extended"
   -- Phase 161: S3Recurrence.lean 新定义+定理 (S3Recurrence.lean:406,413)
   , "Omega.shiftedTriple"
-  , "Omega.shiftedTriple_eq_ccs_prime" ]
+  , "Omega.shiftedTriple_eq_ccs_prime"
+  -- Phase 162: CCSPrimeTelescope.lean 新文件 (CCSPrimeTelescope.lean:27,65,97,103)
+  , "Omega.crossCorrSqHigh_succ_eq_prev"
+  , "Omega.crossCorrSqLow_succ_eq_prev"
+  , "Omega.cc_succ_eq_ccs_prime"
+  , "Omega.momentSum_three_add_ewt" ]
 
 end Omega.Audit
