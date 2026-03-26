@@ -9728,6 +9728,30 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 172: MomentBounds.lean（4 条）(MomentBounds.lean:445,487,502,512)
+-- prop:fold-fiber-count-reciprocity → fiberMultiplicity_value_symmetric (MomentBounds.lean:445)
+-- prop:pom-moment-congruence-q（推论，一般 q）→ momentSum_gt_fib (MomentBounds.lean:487)
+-- bridge:maxFiber-pow-le-momentSum → maxFiberMultiplicity_pow_le_momentSum (MomentBounds.lean:502)
+-- prop:pom-power-sum-hankel-psd（推论，一般 q）→ maxFiberMultiplicity_lt_momentSum (MomentBounds.lean:512)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "prop:fold-fiber-count-reciprocity"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fiber.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.fiberMultiplicity_value_symmetric"
+    phase := 172
+    status := .formalized }
+, { label := "prop:pom-moment-congruence-q"
+    sourcePath := "sections/body/pom/parts/subsec__pom-moment-congruence.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.momentSum_gt_fib"
+    phase := 172
+    status := .formalized }
+, { label := "prop:pom-power-sum-hankel-psd"
+    sourcePath := "sections/body/pom/parts/subsec__pom-hankel.tex"
+    moduleName := "Omega.Folding.MomentBounds"
+    leanName := "Omega.maxFiberMultiplicity_lt_momentSum"
+    phase := 172
+    status := .formalized }
 -- Phase 171: Defect.lean + MomentBounds.lean（3 条）
 -- thm:fold-discrete-stokes-defect（推论）→ localDefect_of_stable (Defect.lean:415)
 -- prop:pom-moment-congruence-q（推论）→ momentSum_two_gt_fib (MomentBounds.lean:424)

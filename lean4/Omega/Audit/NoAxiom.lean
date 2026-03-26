@@ -817,6 +817,15 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 172: MomentBounds.lean — 纤维反射对称性 + S_q>Fib（一般q）+ D^q≤S_q + D<S_q（一般q）
+  -- prop:fold-fiber-count-reciprocity → d(ofNat r) = d(ofNat (F_{m+1}-2-r)) (MomentBounds.lean:445)
+  #print axioms Omega.fiberMultiplicity_value_symmetric
+  -- prop:pom-moment-congruence-q（推论，一般q）→ S_q(m) > F_{m+2} for q ≥ 1, m ≥ 2 (MomentBounds.lean:487)
+  #print axioms Omega.momentSum_gt_fib
+  -- bridge:maxFiber-pow-le-momentSum → D(m)^q ≤ S_q(m) (MomentBounds.lean:502)
+  #print axioms Omega.maxFiberMultiplicity_pow_le_momentSum
+  -- prop:pom-power-sum-hankel-psd（推论，一般q）→ D(m) < S_q(m) for q ≥ 1, m ≥ 2 (MomentBounds.lean:512)
+  #print axioms Omega.maxFiberMultiplicity_lt_momentSum
   -- Phase 171: Defect.lean + MomentBounds.lean — 稳定词局部缺陷为零 + S_2 > Fib + D(m) < S_2
   -- thm:fold-discrete-stokes-defect（推论）→ 稳定词局部缺陷为零 (Defect.lean:415)
   #print axioms Omega.localDefect_of_stable
