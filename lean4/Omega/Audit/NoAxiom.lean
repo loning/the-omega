@@ -817,6 +817,15 @@ Run these commands manually during audit:
   #print axioms Omega.Fold_cons_false_ne_true
   -- con:pom-fold-biresolving → Fold 双解析性（右+左）(MomentBounds.lean:388)
   #print axioms Omega.Fold_biresolving
+  -- Phase 191: Fib.lean + Window6.lean — FenceDet零点递推 + D_k(0)=1 + 对数凸性 + CRT因子分解
+  -- def:pom-fence-det-zero → Fence det at t=0 递推 (Fib.lean)
+  #print axioms Omega.fenceDetZero
+  -- prop:pom-Lk-det-coeff-binomial → D_k(0) = 1 for all k (Fib.lean)
+  #print axioms Omega.fenceDetZero_eq_one
+  -- cor:pom-Lk-det-logconvex-ratio → D_k² < D_{k-1}·D_{k+1} for k ≥ 1 (Fib.lean)
+  #print axioms Omega.fenceDet_log_convex
+  -- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（CRT 核心）→ F_8 = 3×7, gcd(3,7)=1 (Window6.lean)
+  #print axioms Omega.conclusion_window6_crt_factorization
   -- Phase 190: Fib.lean + Window6.lean — Fence行列式Cassini-Pell + CRT最小模深度 + φ(21)=12
   -- prop:pom-Lk-det-cassini-pell → D_{k+1}·D_{k-1} = D_k² + 1 (Fib.lean)
   #print axioms Omega.fenceDet_cassini

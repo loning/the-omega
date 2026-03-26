@@ -9728,6 +9728,36 @@ def initialEntries : List SourceMapEntry :=
     leanName := "Omega.Fold_biresolving"
     phase := 169
     status := .formalized }
+-- Phase 191: Fib.lean + Window6.lean（4 条，全部论文标签）
+-- def:pom-fence-det-zero → fenceDetZero (Fib.lean)
+-- prop:pom-Lk-det-coeff-binomial → fenceDetZero_eq_one (Fib.lean)
+-- cor:pom-Lk-det-logconvex-ratio → fenceDet_log_convex (Fib.lean)
+-- thm:conclusion-foldbin-stable-collapse-ordered-k0-memory（CRT 核心）→ conclusion_window6_crt_factorization (Window6.lean)
+-- 状态: 已形式化, 审核通过 2026-03-26
+, { label := "def:pom-fence-det-zero"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDetZero"
+    phase := 191
+    status := .formalized }
+, { label := "prop:pom-Lk-det-coeff-binomial"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDetZero_eq_one"
+    phase := 191
+    status := .formalized }
+, { label := "cor:pom-Lk-det-logconvex-ratio"
+    sourcePath := "sections/body/pom/parts/subsec__pom-fence-det.tex"
+    moduleName := "Omega.Core.Fib"
+    leanName := "Omega.fenceDet_log_convex"
+    phase := 191
+    status := .formalized }
+, { label := "thm:conclusion-foldbin-stable-collapse-ordered-k0-memory"
+    sourcePath := "sections/body/conclusion/subsec__conclusion-window6-geometry-spectrum-arithmetic-information-obstructions.tex"
+    moduleName := "Omega.Folding.Window6"
+    leanName := "Omega.conclusion_window6_crt_factorization"
+    phase := 191
+    status := .formalized }
 -- Phase 190: Fib.lean + Window6.lean（3 条，全部论文标签）
 -- prop:pom-Lk-det-cassini-pell → fenceDet_cassini (Fib.lean)
 -- prop:crt-235-min-depth → crt_235_min_depth (Fib.lean)
