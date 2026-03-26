@@ -15,6 +15,7 @@ import Omega.Folding.CollisionDecomp
 import Omega.Folding.MomentRecurrence
 import Omega.Folding.MomentTriple
 import Omega.Folding.MomentBounds
+import Omega.Folding.EWTTelescope
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FiberArithmeticProperties
