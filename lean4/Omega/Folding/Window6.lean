@@ -606,4 +606,16 @@ theorem conclusion_window6_boundary_parity_gap :
   · native_decide
   · omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 179
+-- ══════════════════════════════════════════════════════════════
+
+/-- Window-6 Wedderburn block sizes: fiber multiplicities {2,3,4} with counts 8,4,9. -/
+theorem conclusion_window6_wedderburn_blocks :
+    cBinFiberHist 6 2 = 8 ∧ cBinFiberHist 6 3 = 4 ∧ cBinFiberHist 6 4 = 9 ∧
+    cBinFiberHist 6 0 = 0 ∧ cBinFiberHist 6 1 = 0 ∧
+    8 + 4 + 9 = 21 :=
+  ⟨cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4,
+    cBinFiberHist_6_0, cBinFiberHist_6_1, by omega⟩
+
 end Omega

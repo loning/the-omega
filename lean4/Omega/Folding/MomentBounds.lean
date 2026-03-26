@@ -593,4 +593,26 @@ theorem exactWeightCollision_ge_succ (m : Nat) :
           Finset.sum_le_sum fun k _ => momentSum_pos' 2 k
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 179
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00(m) ≥ 2 · hiddenBitCount(m) for m ≥ 2. -/
+theorem exactWeightCollision_ge_double_hiddenBitCount (m : Nat) (hm : 2 ≤ m) :
+    2 * hiddenBitCount m ≤ exactWeightCollision m := by
+  rw [hiddenBitCount_eq_div]
+  -- E00(m) = 1 + Σ S_2(k) ≥ 1 + Σ 2^k. Use: each S_2(k) ≥ 2^k.
+  have hE := exactWeightCollision_eq_sum m
+  have hge : ∑ k ∈ Finset.range m, 2 ^ k ≤ ∑ k ∈ Finset.range m, momentSum 2 k :=
+    Finset.sum_le_sum fun k _ => momentSum_two_ge_pow k
+  -- Σ_{k<m} 2^k + 1 ≥ 2^m
+  have hgeom : 2 ^ m ≤ 1 + ∑ k ∈ Finset.range m, 2 ^ k := by
+    suffices h : ∀ n, 2 ^ n ≤ 1 + ∑ k ∈ Finset.range n, 2 ^ k from h m
+    intro n; induction n with
+    | zero => simp
+    | succ n ihn =>
+      rw [Finset.sum_range_succ, pow_succ]; linarith
+  -- So E00(m) ≥ 2^m. And 2*(2^m/3) ≤ 2^m.
+  omega
+
 end Omega
