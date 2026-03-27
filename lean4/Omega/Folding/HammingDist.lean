@@ -108,4 +108,27 @@ theorem hammingDist_complement (w : Word m) :
     ext i; simp [complement]
   rw [h, Finset.card_univ, Fintype.card_fin]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 221: Hamming distance bounded by popcount sum
+-- ══════════════════════════════════════════════════════════════
+
+/-- Hamming distance ≤ sum of popcounts: d(a,b) ≤ popcount(a) + popcount(b).
+    If both a[i]=false and b[i]=false then a[i]=b[i], so differing positions are
+    contained in support(a) ∪ support(b).
+    thm:pom-hamming-popcount-bound -/
+theorem hammingDist_le_popcount_add (a b : Word m) :
+    hammingDist a b ≤ popcount a + popcount b := by
+  unfold hammingDist popcount wordSupport
+  calc (Finset.univ.filter (fun i => a i ≠ b i)).card
+      ≤ (Finset.univ.filter (fun i : Fin m => a i = true) ∪
+         Finset.univ.filter (fun i : Fin m => b i = true)).card := by
+        apply Finset.card_le_card
+        intro i
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+        intro hne
+        cases ha : a i <;> cases hb : b i <;> simp_all
+    _ ≤ (Finset.univ.filter (fun i : Fin m => a i = true)).card +
+        (Finset.univ.filter (fun i : Fin m => b i = true)).card :=
+      Finset.card_union_le _ _
+
 end Omega

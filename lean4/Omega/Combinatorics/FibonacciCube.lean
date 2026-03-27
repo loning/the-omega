@@ -170,6 +170,74 @@ theorem totalPopcount_zero : totalPopcount 0 = 0 := by
 -- totalPopcount_one deferred (noncomputable + decide incompatible)
 
 -- ══════════════════════════════════════════════════════════════
+-- Phase 221: popcount snoc
+-- ══════════════════════════════════════════════════════════════
+
+/-- popcount(snoc w false) = popcount(w). thm:pom-popcount-snoc -/
+theorem popcount_snoc_false (w : Word m) :
+    popcount (snoc w false) = popcount w := by
+  -- popcount + popcount_complement = m, and complement commutes with snoc
+  -- Simpler: use that popcount = m - popcount(!w) and work out directly
+  -- Direct proof: count of true bits in snoc w false = count in w
+  -- because the extra bit is false
+  have := popcount_not (snoc w false)
+  have := popcount_not w
+  -- popcount(!snoc w false) + popcount(snoc w false) = m + 1
+  -- popcount(!w) + popcount(w) = m
+  -- !snoc w false = snoc (!w) true (negate each bit, last is !false = true)
+  -- popcount(snoc (!w) true) = popcount(!w) + 1 (if we had popcount_snoc_true)
+  -- Circular! Let me try the card_bij approach one more time but correctly.
+  simp only [popcount, wordSupport]
+  -- Goal: (filter Fin(m+1) (snoc w false · = true)).card = (filter Fin m (w · = true)).card
+  -- Use card_bij in the ← direction (map RHS → LHS)
+  symm
+  apply Finset.card_bij (fun (i : Fin m) (_ : i ∈ Finset.univ.filter (fun j => w j = true)) =>
+    (⟨i.val, Nat.lt_succ_of_lt i.isLt⟩ : Fin (m + 1)))
+  · -- Map preserves membership
+    intro ⟨i, hi⟩ hmem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem ⊢
+    show snoc w false ⟨i, Nat.lt_succ_of_lt hi⟩ = true
+    simp [snoc, show i < m from hi, hmem]
+  · -- Injectivity
+    intro ⟨i₁, _⟩ _ ⟨i₂, _⟩ _ h
+    exact Fin.ext (Fin.mk.inj h)
+  · -- Surjectivity
+    intro ⟨j, hj⟩ hjmem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hjmem
+    have hjLt : j < m := by
+      rcases Nat.lt_or_ge j m with h | h
+      · exact h
+      · exfalso
+        have : get (snoc w false) j = false := snoc_get_false_of_ge w h
+        have : get (snoc w false) j = true := by rw [get_of_lt _ hj]; exact hjmem
+        simp_all
+    refine ⟨⟨j, hjLt⟩, ?_, Fin.ext rfl⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    have : snoc w false ⟨j, hj⟩ = w ⟨j, hjLt⟩ := by
+      show (fun i : Fin (m + 1) => if h : i.1 < m then w ⟨i.1, h⟩ else false) ⟨j, hj⟩ = _
+      simp [hjLt]
+    rw [← this]; exact hjmem
+
+/-- popcount(snoc w true) = popcount(w) + 1. thm:pom-popcount-snoc -/
+theorem popcount_snoc_true (w : Word m) :
+    popcount (snoc w true) = popcount w + 1 := by
+  -- Use complement: popcount(snoc w true) + popcount(!snoc w true) = m + 1
+  -- !snoc w true = snoc (!w) false (negate each: last = !true = false)
+  -- popcount(snoc (!w) false) = popcount(!w) = m - popcount w
+  -- So popcount(snoc w true) = m + 1 - (m - popcount w) = popcount w + 1
+  have h1 : popcount (fun i => !(snoc w true i)) + popcount (snoc w true) = m + 1 :=
+    popcount_not (snoc w true)
+  have h2 : (fun i : Fin (m + 1) => !(snoc w true i)) = snoc (fun i => !w i) false := by
+    funext ⟨j, hj⟩
+    simp only [snoc]
+    split
+    · rfl
+    · rename_i h; simp [show j = m from by omega]
+  rw [h2, popcount_snoc_false] at h1
+  have h3 : popcount (fun i : Fin m => !w i) + popcount w = m := popcount_not w
+  omega
+
+-- ══════════════════════════════════════════════════════════════
 -- Weight surjectivity
 -- ══════════════════════════════════════════════════════════════
 
