@@ -105,4 +105,39 @@ theorem fib_component_fusion_gain_ge (l l' : Nat) (hl : 1 ≤ l) (hl' : 1 ≤ l'
   rw [fib_component_fusion_gain l l' hl hl']
   exact fib_component_fusion_gain_lower l l' hl hl'
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 235: Splitting refinement gain
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(a+2)*F(b+2) < 2*F(a+b+1) for a,b ≥ 2.
+    prop:pom-multiplicity-fixed-r-extrema -/
+theorem fib_splitting_refinement_gain (a b : Nat) (ha : 2 ≤ a) (hb : 2 ≤ b) :
+    Nat.fib (a + 2) * Nat.fib (b + 2) < 2 * Nat.fib (a + b + 1) := by
+  -- From fib_add_formula: F(a+b+1) = F(a+1)*F(b+1) + F(a)*F(b)
+  have hadd := fib_add_formula a b
+  -- F(a+2) = F(a+1)+F(a), F(b+2) = F(b+1)+F(b)
+  have ha2 := Nat.fib_add_two (n := a)
+  have hb2 := Nat.fib_add_two (n := b)
+  -- F(a+b-1) = F(a)*F(b) + F(a-1)*F(b-1) from fib_fusion
+  have hfus := fib_fusion a b (by omega) (by omega)
+  -- F(a-1)*F(b-1) > 0
+  have hpos : 0 < Nat.fib (a - 1) * Nat.fib (b - 1) :=
+    Nat.mul_pos (Nat.fib_pos.mpr (by omega)) (Nat.fib_pos.mpr (by omega))
+  -- F(a+b+1) = F(a+b) + F(a+b-1)
+  have hrec := Nat.fib_add_two (n := a + b - 1)
+  rw [show a + b - 1 + 2 = a + b + 1 from by omega,
+      show a + b - 1 + 1 = a + b from by omega] at hrec
+  -- Key: F(a) < F(a+1) and F(b-1) > 0 (since a>=2, b>=2)
+  have ha_lt : Nat.fib a < Nat.fib (a + 1) := Nat.fib_lt_fib_succ (by omega)
+  have hb_rec := Nat.fib_add_two (n := b - 1)
+  rw [show b - 1 + 2 = b + 1 from by omega, show b - 1 + 1 = b from by omega] at hb_rec
+  -- F(b+1) = F(b-1) + F(b), so F(b+1) - F(b) = F(b-1) > 0
+  have hbm1_pos : 0 < Nat.fib (b - 1) := Nat.fib_pos.mpr (by omega)
+  -- F(a+2)*F(b+2) = (F(a)+F(a+1))*(F(b)+F(b+1))
+  -- 2*F(a+b+1) = 2*(F(a+1)*F(b+1) + F(a)*F(b))
+  -- Need: (F(a)+F(a+1))*(F(b)+F(b+1)) < 2*(F(a+1)*F(b+1) + F(a)*F(b))
+  -- i.e. F(a)*(F(b+1)-F(b)) < F(a+1)*(F(b+1)-F(b))
+  -- i.e. F(a)*F(b-1) < F(a+1)*F(b-1), from F(a) < F(a+1)
+  nlinarith [Nat.mul_lt_mul_of_pos_right ha_lt hbm1_pos]
+
 end Omega

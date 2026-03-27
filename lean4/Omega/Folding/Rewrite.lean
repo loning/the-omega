@@ -819,6 +819,10 @@ theorem weight_rigidity_fibonacci (w : Nat → Nat)
       have h3 := digitWeight_adj k
       omega
 
+/-- Value is invariant under all rewrite rules. prop:val-invariant -/
+theorem value_invariant_step (a b : DigitCfg) (h : Step a b) : value a = value b :=
+  (step_value h).symm
+
 end Rewrite
 
 end Omega

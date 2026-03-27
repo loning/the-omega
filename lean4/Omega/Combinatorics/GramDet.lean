@@ -72,4 +72,19 @@ theorem minMatrix_det_eq_one (k : Nat) (hk : 1 ≤ k) :
   rw [minMatrix_eq_mul_transpose, Matrix.det_mul, Matrix.det_transpose, lowerOnes_det]
   ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 235: min-matrix trace
+-- ══════════════════════════════════════════════════════════════
+
+/-- 2 * tr(K_k) = k*(k+1). cor:pom-Kk-sine-product-sum -/
+theorem minMatrix_trace_double (k : Nat) :
+    2 * ∑ i : Fin k, (min (i.val + 1) (i.val + 1) : ℤ) = k * (k + 1) := by
+  simp only [min_self]
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    rw [Fin.sum_univ_castSucc]
+    simp only [Fin.val_castSucc, Fin.val_last]
+    push_cast; linarith
+
 end Omega
