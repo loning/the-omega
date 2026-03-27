@@ -129,4 +129,13 @@ theorem three_alternative_two_bits_suffice :
     ∃ (f : Fin 3 → Fin 4), Function.Injective f :=
   ⟨Fin.castLE (by omega), Fin.castLE_injective _⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 225: Fibonacci square identity
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(2n+1) = F(n)² + F(n+1)². prop:bdry-fib-square-identity -/
+theorem bdry_square_identity (n : Nat) :
+    Nat.fib (2 * n + 1) = Nat.fib n ^ 2 + Nat.fib (n + 1) ^ 2 :=
+  (fib_sq_add_sq n).symm
+
 end Omega

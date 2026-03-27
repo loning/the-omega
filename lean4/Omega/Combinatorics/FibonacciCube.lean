@@ -809,6 +809,137 @@ def xReverse (x : X m) : X m := ⟨wordReverse x.1, no11_reverse x.2⟩
 theorem xReverse_involutive : Function.Involutive (xReverse (m := m)) := by
   intro x; exact Subtype.ext (wordReverse_involutive x.1)
 
+/-- Computable version of totalPopcount. -/
+private def cTotalPopcount (m : Nat) : Nat :=
+  (@Finset.univ (X m) (fintypeX m)).sum (fun x => popcount x.1)
+
+private theorem cTotalPopcount_eq (m : Nat) : cTotalPopcount m = totalPopcount m := by
+  simp only [cTotalPopcount, totalPopcount]
+  exact Finset.sum_congr (by ext; simp) (fun x _ => rfl)
+
+/-- totalPopcount 1 = 1. thm:pom-totalPopcount-one -/
+theorem totalPopcount_one : totalPopcount 1 = 1 := by
+  rw [← cTotalPopcount_eq]; native_decide
+
+/-- Embed X m into X (m+2) by appending "01" (false then true). -/
+private def embedFalseTrue (w : X m) : X (m + 2) :=
+  ⟨snoc (snoc w.1 false) true,
+    no11_snoc_true (no11_snoc_false w.2) (by
+      simp [get, snoc, show m < m + 1 from by omega])⟩
+
+private theorem embedFalseTrue_popcount (w : X m) :
+    popcount (embedFalseTrue w).1 = popcount w.1 + 1 := by
+  simp [embedFalseTrue, popcount_snoc_true, popcount_snoc_false]
+
+/-- totalPopcount(m+2) = totalPopcount(m+1) + totalPopcount(m) + F(m+2). -/
+private theorem totalPopcount_succ_succ (m : Nat) :
+    totalPopcount (m + 2) = totalPopcount (m + 1) + totalPopcount m + Nat.fib (m + 2) := by
+  classical
+  simp only [totalPopcount]
+  -- Split X(m+2) by last bit
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ
+    (fun x : X (m + 2) => x.1 ⟨m + 1, by omega⟩ = false) (fun x => popcount x.1)]
+  -- Part 1: {last=false} bijects with X(m+1), preserving popcount
+  have hfalse : ∑ x ∈ Finset.univ.filter (fun x : X (m + 2) =>
+      x.1 ⟨m + 1, by omega⟩ = false), popcount x.1 = ∑ x : X (m + 1), popcount x.1 := by
+    symm
+    refine Finset.sum_nbij' (X.appendFalse) (X.restrict) ?_ ?_ ?_ ?_ ?_
+    · intro x _
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      change snoc x.1 false ⟨m + 1, by omega⟩ = false
+      simp only [snoc, show ¬(m + 1 < m + 1) from by omega, dite_false]
+    · intro x hx
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
+      exact Finset.mem_univ _
+    · intro x _; exact X.restrict_appendFalse x
+    · intro x hx
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
+      exact X.appendFalse_reconstruct x (by
+        show Omega.last x.1 = false
+        simp only [Omega.last, Omega.get, show m + 1 < m + 2 from by omega, dite_true]; exact hx)
+    · intro x _; exact (popcount_snoc_false x.1).symm
+  -- Part 2: {last=true} bijects with X(m), popcount shifts by +1
+  have htrue_filter : Finset.univ.filter
+      (fun x : X (m + 2) => ¬x.1 ⟨m + 1, by omega⟩ = false) =
+      Finset.univ.filter (fun x : X (m + 2) => x.1 ⟨m + 1, by omega⟩ = true) := by
+    ext x; simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    cases x.1 ⟨m + 1, by omega⟩ <;> simp
+  have htrue : ∑ x ∈ Finset.univ.filter (fun x : X (m + 2) =>
+      ¬x.1 ⟨m + 1, by omega⟩ = false), popcount x.1 =
+      ∑ w : X m, popcount w.1 + Nat.fib (m + 2) := by
+    rw [htrue_filter]
+    have hbij : ∑ x ∈ Finset.univ.filter (fun x : X (m + 2) =>
+        x.1 ⟨m + 1, by omega⟩ = true), popcount x.1 = ∑ w : X m, (popcount w.1 + 1) := by
+      symm
+      refine Finset.sum_nbij' embedFalseTrue (fun x => X.restrict (X.restrict x)) ?_ ?_ ?_ ?_ ?_
+      · intro w _
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and, embedFalseTrue, snoc]
+        simp only [show ¬(m + 1) < m + 1 from by omega, dite_false]
+      · intro x _; exact Finset.mem_univ _
+      · -- left inverse: restrict(restrict(embedFalseTrue w)) = w
+        intro w _; apply Subtype.ext; funext ⟨i, hi⟩
+        show truncate (truncate (snoc (snoc w.1 false) true)) ⟨i, hi⟩ = w.1 ⟨i, hi⟩
+        simp only [truncate, snoc, show i < m + 1 from by omega, dite_true, show i < m from hi, dite_true]
+      · -- right inverse: embedFalseTrue(restrict(restrict x)) = x
+        intro x hx
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
+        have hPrev : x.1 ⟨m, by omega⟩ = false := by
+          by_contra hc; push_neg at hc
+          have ht : x.1 ⟨m, by omega⟩ = true := by
+            cases hb : x.1 ⟨m, by omega⟩ <;> simp_all
+          exact x.2 m (by rw [get]; simp [show m < m + 2 from by omega]; exact ht)
+            (by rw [get]; simp [show m + 1 < m + 2 from by omega]; exact hx)
+        apply Subtype.ext; funext ⟨i, hi⟩
+        simp only [embedFalseTrue, snoc, X.restrict, truncate]
+        by_cases h1 : i < m + 1
+        · by_cases h2 : i < m
+          · simp only [h1, dite_true, h2, dite_true]
+          · have him : i = m := by omega
+            simp only [him, show m < m + 1 from by omega, dite_true, show ¬m < m from by omega,
+              dite_false, hPrev]
+        · have him1 : i = m + 1 := by omega
+          simp only [him1, show ¬(m + 1) < m + 1 from by omega, dite_false, hx]
+      · intro w _; exact (embedFalseTrue_popcount w).symm
+    rw [hbij, Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul, Nat.mul_one,
+      Finset.card_univ, X.card_eq_fib]
+  rw [hfalse, htrue]; omega
+
+/-- Total popcount across X_m = Fibonacci cube edge count.
+    thm:pom-fibcube-theta-class-size -/
+theorem totalPopcount_eq_edgeCount (m : Nat) :
+    totalPopcount m = fibcubeEdgeCount m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 => rw [totalPopcount_zero, fibcubeEdgeCount_zero]
+    | 1 => rw [totalPopcount_one, fibcubeEdgeCount_one]
+    | m + 2 =>
+      rw [totalPopcount_succ_succ, ih (m + 1) (by omega), ih m (by omega),
+        fibcubeEdgeCount_succ_succ]
+
+/-- fibcubeEdgeCount is positive for n ≥ 1. -/
+private theorem fibcubeEdgeCount_pos (n : Nat) (hn : 1 ≤ n) : 0 < fibcubeEdgeCount n := by
+  induction n with
+  | zero => omega
+  | succ n ih =>
+    match n with
+    | 0 => simp
+    | n + 1 =>
+      rw [fibcubeEdgeCount_succ_succ]
+      have := fib_succ_pos (n + 1)
+      omega
+
+/-- Fibonacci cube edge count strictly increases for n ≥ 1.
+    cor:pom-fibcube-edge-closed-form -/
+theorem fibcubeEdgeCount_strict_mono (n : Nat) (hn : 1 ≤ n) :
+    fibcubeEdgeCount n < fibcubeEdgeCount (n + 1) := by
+  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
+  -- e(n+2) = e(n+1) + e(n) + F(n+2) > e(n+1)
+  show fibcubeEdgeCount (n + 1) < fibcubeEdgeCount (n + 1 + 1)
+  rw [fibcubeEdgeCount_succ_succ]
+  have hF := fib_succ_pos (n + 1)
+  linarith
+
 /-- Theta-class symmetry under index reversal: coordOneCount n i = coordOneCount n (n-1-i).
     thm:pom-fibcube-theta-class-size -/
 theorem coordOneCount_symm (n : Nat) (i : Fin n) :
