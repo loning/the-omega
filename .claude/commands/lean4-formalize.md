@@ -32,6 +32,55 @@ team lead 在每轮开始时问自己：
 - "基础设施引理（如 sum_word_eq_sum_fiber_mul）是否能解锁后续大量定理？"
 - "是否应该投入 1 轮做高难度基础设施，换取后续 10 轮的加速？"
 
+## 反退化机制（最高优先级）
+
+### 2 小时定时全刷新（CronJob 驱动）
+
+启动团队后，**必须创建 2 小时定时刷新 CronJob**：
+
+```
+CronCreate(
+  cron = "7 */2 * * *",
+  prompt = "lean4-formalization 2小时定时全刷新。
+
+  **无条件执行以下全部操作（不判断是否退化，每 2 小时必定执行）：**
+
+  1. **审计 git commit**：运行 `git log --oneline` 查看自上次刷新以来的所有 commit，逐条检查每个 commit 的实际数学内容（不是标签名），输出审计摘要
+  2. **shutdown 所有 agent**：SendMessage shutdown_request 给 analyst、formalizer、registrar，等待确认
+  3. **保存状态到 memory**：当前 Phase 编号、覆盖率、推迟项、审计发现
+  4. **重新 spawn 所有 agent**：用全新 prompt spawn analyst、formalizer、registrar（彻底清空 agent 上下文）
+  5. **重新加载流程文件**：Read lean4-formalize.md、IMPLEMENTATION_PLAN.md、MEMORY.md，刷新 team lead 对当前状态的理解
+  6. **输出审计报告**：汇总本周期 commit 的数学深度评估，然后自动续轮
+
+  注意：这是**无条件**全刷新——无论当前是否退化、产出是否正常，每 2 小时都必须执行。目的是预防性地清除所有 agent 和 team lead 的上下文累积偏差。"
+)
+```
+
+保存返回的 CronJob ID，在关闭流程中用 `CronDelete` 清理。
+
+### 数学深度门禁（每轮强制）
+
+team lead 在收到 analyst 规格后、发给 formalizer 之前，**必须检查每个定理**：
+
+| 检查项 | 通过标准 | 不通过处理 |
+| ------ | ------- | --------- |
+| 证明长度 | ≥5 行非平凡 tactic，或引用的核心引理组合中至少 1 个是本轮新证的 | 退回 analyst，要求替换 |
+| 重复检测 | 不得与已注册定理仅有 ∧ 组合顺序不同 | 退回 analyst |
+| 核心引理复用 | 同一核心引理（如 Fold_idempotent, card_eq_fib, momentSum_pos'）不得在 session 内被注册为论文标签超过 3 次 | 退回 analyst |
+| 数学新颖性 | 本轮必须建立至少 1 个前所未有的数学事实（非已有事实的重新包装） | 退回 analyst |
+
+**退化信号**（满足任一则立即暂停流水线并报告用户）：
+
+- 连续 3 轮所有定理都是 ≤2 行纯组装（`⟨existing_1, existing_2, existing_3⟩`）
+- 连续 3 轮编译时间 < 1 分钟（说明没有新的 proof search）
+- analyst 提供的 3 个定理的证明项完全由已有引理名组成，无 `by` tactic block
+
+### 禁止里程碑追逐
+
+- ❌ 禁止为了凑整数（1400→1500→POM 40%→45%）而降低数学质量
+- ❌ 禁止在进度报告中强调覆盖率数字而忽略数学深度
+- ✅ 进度报告必须同时包含：覆盖率变化 + 本轮关键数学贡献描述（非标签名列表）
+
 ## 纪律：严格等待
 
 - ❌ 不自己读论文、分析定理、写代码、跑编译、做审核
