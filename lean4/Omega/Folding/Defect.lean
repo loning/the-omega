@@ -74,6 +74,12 @@ theorem restrictLE_comp (h₁ : m ≤ n) (h₂ : n ≤ k) (x : X k) :
   apply Subtype.ext
   exact restrictWord_trans_succ h x.1
 
+/-- Restriction is functorial: restrictLE(m3→m1) = restrictLE(m2→m1) ∘ restrictLE(m3→m2).
+    lem:pi-functorial-golden -/
+theorem restrict_functorial (h₁ : m₁ ≤ m₂) (h₂ : m₂ ≤ m₃) (x : X m₃) :
+    restrictLE h₁ (restrictLE h₂ x) = restrictLE (Nat.le_trans h₁ h₂) x :=
+  restrictLE_comp h₁ h₂ x
+
 end X
 
 /-- The zero defect word. -/

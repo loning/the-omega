@@ -810,4 +810,23 @@ theorem fib_fusion_defect_cocycle (a b c : Nat) :
     push_cast [Nat.fib_add_two]; ring
   push_cast; rw [hc, ha]; nlinarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 234: Fib strict supermultiplicativity
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(a+2)*F(b+2) > F(a+b+2) when a,b ≥ 1.
+    prop:pom-path-component-multiplicity-refinement-monotone-extrema -/
+theorem fib_shifted_strict_supermul (a b : Nat) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    Nat.fib (a + b + 2) < Nat.fib (a + 2) * Nat.fib (b + 2) := by
+  have h := fib_shifted_fusion_defect a b
+  have hpos : 0 < Nat.fib a * Nat.fib b :=
+    Nat.mul_pos (Nat.fib_pos.mpr (by omega)) (Nat.fib_pos.mpr (by omega))
+  omega
+
+/-- L(n) ≥ F(n+1) for n ≥ 1. Tight bound from L = F(n+1) + F(n-1).
+    bridge:lucas-ge-fib-succ -/
+theorem lucasNum_ge_fib_succ (n : Nat) (hn : 1 ≤ n) :
+    Nat.fib (n + 1) ≤ lucasNum n := by
+  rw [lucasNum_eq_fib n hn]; omega
+
 end Omega
