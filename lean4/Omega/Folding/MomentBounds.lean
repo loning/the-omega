@@ -730,4 +730,40 @@ theorem momentSum_crossq_from_base (q m : Nat) (hq : 1 ≤ q) :
   have := momentSum_power_mean_lower q m hq
   linarith [Nat.mul_comm (Nat.fib (m + 2) ^ (q - 1)) (momentSum q m)]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 217: S_4 strict monotonicity (extended base)
+-- ══════════════════════════════════════════════════════════════
+
+@[simp] theorem momentSum_four_seven : momentSum 4 7 = 12208 := by
+  rw [← cMomentSum_eq]; native_decide
+@[simp] theorem momentSum_four_eight : momentSum 4 8 = 47480 := by
+  rw [← cMomentSum_eq]; native_decide
+@[simp] theorem momentSum_four_nine : momentSum 4 9 = 181576 := by
+  rw [← cMomentSum_eq]; native_decide
+@[simp] theorem momentSum_four_ten : momentSum 4 10 = 700384 := by
+  rw [← cMomentSum_eq]; native_decide
+
+/-- S_4 is strictly increasing for 2 ≤ m ≤ 10. prop:pom-s4-recurrence -/
+theorem momentSum_four_strict_mono (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 10) :
+    momentSum 4 m < momentSum 4 (m + 1) := by
+  have h23 : momentSum 4 2 < momentSum 4 3 := by
+    rw [momentSum_four_two, momentSum_four_three]; omega
+  have h34 : momentSum 4 3 < momentSum 4 4 := by
+    rw [momentSum_four_three, momentSum_four_four]; omega
+  have h45 : momentSum 4 4 < momentSum 4 5 := by
+    rw [momentSum_four_four, momentSum_four_five]; omega
+  have h56 : momentSum 4 5 < momentSum 4 6 := by
+    rw [momentSum_four_five, momentSum_four_six]; omega
+  have h67 : momentSum 4 6 < momentSum 4 7 := by
+    rw [momentSum_four_six, momentSum_four_seven]; omega
+  have h78 : momentSum 4 7 < momentSum 4 8 := by
+    rw [momentSum_four_seven, momentSum_four_eight]; omega
+  have h89 : momentSum 4 8 < momentSum 4 9 := by
+    rw [momentSum_four_eight, momentSum_four_nine]; omega
+  have h910 : momentSum 4 9 < momentSum 4 10 := by
+    rw [momentSum_four_nine, momentSum_four_ten]; omega
+  have h1011 : momentSum 4 10 < momentSum 4 11 := by
+    rw [momentSum_four_ten]; rw [← cMomentSum_eq]; native_decide
+  interval_cases m <;> assumption
+
 end Omega

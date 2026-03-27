@@ -620,4 +620,19 @@ theorem fibcubeFVector_one_recurrence (n : Nat) :
   simp only [fibcubeFVector_succ_succ, show (1 : Nat) ≠ 0 from by omega, ite_false,
     show 1 - 1 = 0 from rfl, fibcubeFVector_zero_eq_fib]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 217: Theta-class (coord-one) count
+-- ══════════════════════════════════════════════════════════════
+
+/-- Count of No11 words of length n with bit i set.
+    thm:pom-fibcube-theta-class-size -/
+noncomputable def coordOneCount (n : Nat) (i : Fin n) : Nat :=
+  haveI : DecidablePred (fun w : Word n => No11 w ∧ w i = true) := Classical.decPred _
+  (Finset.univ.filter (fun w : Word n => No11 w ∧ w i = true)).card
+
+-- Note: coordOneCount_eq_fib_prod (coordOneCount n i = F(i+1)*F(n-i)) deferred —
+-- requires bijective decomposition of No11 words with a fixed bit into
+-- independent left/right No11 segments, which needs Fin-embedding infrastructure
+-- not currently available.
+
 end Omega

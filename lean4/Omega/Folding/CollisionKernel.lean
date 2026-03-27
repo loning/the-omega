@@ -219,4 +219,23 @@ theorem collisionKernel4_e2 :
     collisionKernel4.trace ^ 2 - (collisionKernel4 ^ 2).trace = -14 := by
   rw [collisionKernel4_trace, collisionKernel4_trace_sq]; ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 217: Collision kernel family signatures
+-- ══════════════════════════════════════════════════════════════
+
+/-- Collision kernel trace signature: q=2..5. prop:pom-collision-kernel-family -/
+theorem collisionKernel_trace_family :
+    collisionKernel2.trace = 2 ∧ collisionKernel3.trace = 2 ∧
+    collisionKernel4.trace = 2 ∧ collisionKernel5.trace = -2 :=
+  ⟨collisionKernel2_trace, collisionKernel3_trace,
+   collisionKernel4_trace, collisionKernel5_trace⟩
+
+/-- Collision kernel det family: q=2..4 all have det=-2, q=5 has det=10.
+    prop:pom-collision-kernel-family -/
+theorem collisionKernel_det_family :
+    collisionKernel2.det = -2 ∧ collisionKernel3.det = -2 ∧
+    collisionKernel4.det = -2 ∧ collisionKernel5.det = 10 :=
+  ⟨collisionKernel2_det, collisionKernel3_det,
+   collisionKernel4_det, collisionKernel5_det⟩
+
 end Omega
