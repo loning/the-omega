@@ -1,6 +1,7 @@
 import Omega.Core.Fib
 import Mathlib.Data.Nat.Factorization.Defs
 import Mathlib.Data.Nat.Totient
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic.IntervalCases
 
 /-! ### Zeckendorf signatures of Lie algebra dimensions
@@ -378,5 +379,27 @@ theorem congruence_unitgroup_order12_bounded (m : Nat) (hm : 1 ≤ m) (hm_le : m
     (h : Nat.totient (Nat.fib (m + 2)) = 12) :
     m = 5 ∨ m = 6 := by
   interval_cases m <;> revert h <;> native_decide
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 199: Idempotents and Z/2-characters in ZMod
+-- ══════════════════════════════════════════════════════════════
+
+/-- The idempotents of Z/21Z are exactly {0, 1, 7, 15}, count = 4.
+    prop:congruence-m6-idempotents-four -/
+theorem zmod21_idempotent_count :
+    (Finset.univ.filter (fun x : ZMod 21 => x * x = x)).card = 4 := by
+  native_decide
+
+/-- In Z/13Z, solutions of x^2 = 1 number exactly 2.
+    prop:unitgroup-z2-character-count-m5-m6 (m=5 part) -/
+theorem zmod13_sq_eq_one_count :
+    (Finset.univ.filter (fun x : ZMod 13 => x * x = 1)).card = 2 := by
+  native_decide
+
+/-- In Z/21Z, solutions of x^2 = 1 number exactly 4.
+    prop:unitgroup-z2-character-count-m5-m6 (m=6 part) -/
+theorem zmod21_sq_eq_one_count :
+    (Finset.univ.filter (fun x : ZMod 21 => x * x = 1)).card = 4 := by
+  native_decide
 
 end Omega.ZeckSig
