@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~31,069 |
-| 定理/定义数 | ~2,463 |
+| 总行数 | ~31,123 |
+| 定理/定义数 | ~2,466 |
 | 论文接口包装 | 353 |
 | 文件数 | 68 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 235: minMatrix迹倍 + Fib分拆细化增益 + 值步不变量（Round 235）**：三文件 GramDet.lean（+15行）+ FiberFusion.lean（+35行）+ Rewrite.lean（+4行）——minMatrix_trace_double（cor:pom-Kk-sine-product-sum：minMatrix k×k 迹 = 2k，K_k 正弦乘积求和推论，GramDet.lean:80）; fib_splitting_refinement_gain（prop:pom-multiplicity-fixed-r-extrema：Fibonacci 分拆细化增益 F(a+b)·G ≥ F(a)·F(b)·G for a,b≥2，FiberFusion.lean:114）; value_invariant_step（prop:val-invariant：Step关系保持value不变，Rewrite.lean:823）——三个标签均为新注册——Folding ~103→~104, POM ~540→~542（+3 新标签：cor:pom-Kk-sine-product-sum, prop:pom-multiplicity-fixed-r-extrema, prop:val-invariant）（Phase 235）
 **Phase 234: Fib移位严格超乘性 + restrict函子性 + Lucas≥Fib_succ（Round 234）**：两文件 ShiftDynamics.lean（+19行）+ Defect.lean（+6行）——fib_shifted_strict_supermul（prop:pom-path-component-multiplicity-refinement-monotone-extrema：F(a+b) < F(a)·F(b) for a,b≥1，移位Fibonacci严格超乘性，ShiftDynamics.lean:819）; restrict_functorial（lem:pi-functorial-golden：restrict映射函子性 h₁≤h₂≤h₃ → restrict·restrict=restrict，Defect.lean:79）; lucasNum_ge_fib_succ（bridge：L(n) ≥ F(n+1) for n≥1，ShiftDynamics.lean:828）——两个新标签，bridge不计入论文覆盖——Folding ~102→~103, POM ~539→~540（+2 新标签：prop:pom-path-component-multiplicity-refinement-monotone-extrema, lem:pi-functorial-golden）（Phase 234）
 **Phase 233: 权重刚性Fibonacci + Fib行列式体积律 + 融合缺陷2-余循环（Round 233）**：两文件 Rewrite.lean（+23行）+ ShiftDynamics.lean（+61行）——weight_rigidity_fibonacci（lem:fold-local-weight-rigidity-fibonacci：权重刚性 Fibonacci 定理，Rewrite.lean:805）; fib_determinant_volume_law（cor:pom-fib-determinant-volume-law：Fibonacci 行列式体积律，ShiftDynamics.lean:758）; fib_fusion_defect_cocycle（prop:pom-fusion-defect-2cocycle-identity：融合缺陷 2-余循环恒等式，ShiftDynamics.lean:765）——三个标签均为新注册——Folding +1, POM ~537→~539（+3 新标签：lem:fold-local-weight-rigidity-fibonacci, cor:pom-fib-determinant-volume-law, prop:pom-fusion-defect-2cocycle-identity）（Phase 233）
 **Phase 232: Fib移位融合缺陷正性 + minMatrix行列式=1（Round 232）**：两文件 ShiftDynamics.lean（+16行）+ Combinatorics/GramDet.lean（新文件，75行）；Omega.lean +1 import——fib_shifted_fusion_defect（lem:pom-shifted-fib-fusion-defect-positive：F(a)+F(b)≥F(a+b) → F(a)+F(b)-F(a+b)≥0，移位Fibonacci融合缺陷正性，ShiftDynamics.lean:742）; minMatrix_det_eq_one（lem:pom-Kk-gram-det：minMatrix k×k 行列式=1 for k≥1，K_k Gram矩阵行列式，GramDet.lean:70）——两个标签均为新注册——注：lucasNum_mod_prime 推迟（需 Nat.fib_prime_dvd 基础设施）——POM ~535→~537（+2 新标签：lem:pom-shifted-fib-fusion-defect-positive, lem:pom-Kk-gram-det）（Phase 232）
@@ -214,15 +215,15 @@
 
 ### Lean4 形式化状态
 
-- **1,293 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,522 个 Lean4 定理（含内部引理）
+- **1,296 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,525 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1350/10,588 = **12.7%** |
+| 全局覆盖率 | 1353/10,588 = **12.8%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -234,15 +235,15 @@
 |---|---|---|---|
 | SPG | 127 | ~70 | ~55% |
 | 新生算术 | 151 | ~93 | ~61.6% |
-| Folding | 317 | ~103 | ~32.5% |
+| Folding | 317 | ~104 | ~32.8% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~540 | ~35.4% |
+| POM | 1,525 | ~542 | ~35.5% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1350** | **12.7%** |
+| **总计** | **10,588** | **1353** | **12.8%** |
 
 ## 3. 未来工作：30 条具体计划
 
