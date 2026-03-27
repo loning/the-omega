@@ -402,4 +402,32 @@ theorem zmod21_sq_eq_one_count :
     (Finset.univ.filter (fun x : ZMod 21 => x * x = 1)).card = 4 := by
   native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 200: Double-12 intersection
+-- ══════════════════════════════════════════════════════════════
+
+/-- Two independent "12" constraints uniquely intersect at m = 6.
+    Boundary: the even triple summing to 12 is (4,6,8).
+    Unit group: phi(F(m+2)) = 12 forces m in {5,6}.
+    cor:double-12-constraints-unique-intersection-m6 -/
+theorem double_12_constraints_intersection_m6
+    (m₁ m₂ m₃ : Nat)
+    (hm₁_even : 2 ∣ m₁) (hm₂_even : 2 ∣ m₂) (hm₃_even : 2 ∣ m₃)
+    (hm₁_ge : 2 ≤ m₁) (hm₂_ge : 2 ≤ m₂) (hm₃_ge : 2 ≤ m₃)
+    (hlt₁₂ : m₁ < m₂) (hlt₂₃ : m₂ < m₃)
+    (hsum : Nat.fib (m₁ - 2) + Nat.fib (m₂ - 2) + Nat.fib (m₃ - 2) = 12)
+    (m : Nat) (hm : 1 ≤ m) (hm_le : m ≤ 10)
+    (htot : Nat.totient (Nat.fib (m + 2)) = 12)
+    (hmem : m = m₁ ∨ m = m₂ ∨ m = m₃) :
+    m = 6 := by
+  have ⟨hm1, hm2, hm3⟩ := bdry_three_window_sum12_unique_even_triple
+    m₁ m₂ m₃ hm₁_even hm₂_even hm₃_even hm₁_ge hm₂_ge hm₃_ge hlt₁₂ hlt₂₃ hsum
+  have h56 := congruence_unitgroup_order12_bounded m hm hm_le htot
+  -- m ∈ {4, 6, 8} (from triple) and m ∈ {5, 6} (from totient) → m = 6
+  rcases h56 with rfl | rfl
+  · -- m = 5: must be in {4, 6, 8}, but 5 ∉ {4, 6, 8}
+    rcases hmem with h | h | h <;> omega
+  · -- m = 6: done
+    rfl
+
 end Omega.ZeckSig

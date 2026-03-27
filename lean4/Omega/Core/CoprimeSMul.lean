@@ -1,5 +1,6 @@
 import Mathlib.GroupTheory.GroupAction.Basic
 import Mathlib.Data.Int.GCD
+import Mathlib.Algebra.NoZeroSMulDivisors.Defs
 
 /-! ### Coprime scalar annihilation
 
@@ -28,5 +29,27 @@ theorem coprime_smul_eq_zero_of_both {G : Type*} [AddCommGroup G]
     rw [add_smul, mul_smul, mul_smul, smul_comm q₁, smul_comm q₂, h1, h2,
         smul_zero, smul_zero, add_zero]
   rwa [one_smul] at key
+
+/-- In a torsion-free additive group, q • a = 0 iff a = 0 (for q ≠ 0).
+    cor:pom-anom-one-point-zero-test -/
+theorem torsion_free_smul_eq_zero_iff {G : Type*} [AddCommGroup G]
+    [NoZeroSMulDivisors ℤ G]
+    (a : G) (q : ℤ) (hq : q ≠ 0) :
+    q • a = 0 ↔ a = 0 := by
+  constructor
+  · intro h; exact (smul_eq_zero.mp h).resolve_left hq
+  · rintro rfl; exact smul_zero q
+
+/-- Oracle collapse: "all moment orders >= 2 annihilate a" iff "some coprime pair does".
+    thm:pom-anom-all-moments-collapse-to-two -/
+theorem anom_oracle_collapse {G : Type*} [AddCommGroup G] (a : G) :
+    (∀ q : ℤ, 2 ≤ q → q • a = 0) ↔
+    (∃ q₁ q₂ : ℤ, 2 ≤ q₁ ∧ 2 ≤ q₂ ∧ Int.gcd q₁ q₂ = 1 ∧ q₁ • a = 0 ∧ q₂ • a = 0) := by
+  constructor
+  · intro h
+    exact ⟨2, 3, le_refl 2, by omega, by native_decide, h 2 (le_refl 2), h 3 (by omega)⟩
+  · rintro ⟨q₁, q₂, _, _, hcop, h1, h2⟩
+    have ha : a = 0 := coprime_smul_eq_zero_of_both a q₁ q₂ h1 h2 hcop
+    intro q _; rw [ha, smul_zero]
 
 end Omega
