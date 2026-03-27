@@ -553,4 +553,16 @@ theorem pow_le_maxFiberMultiplicity_mul_fib (m : Nat) :
     _ = X.maxFiberMultiplicity m * Nat.fib (m + 2) := by
         rw [X.card_eq_fib]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 227: weightCongruenceCount positivity
+-- ══════════════════════════════════════════════════════════════
+
+/-- wcc(m,r) > 0 for r < F(m+2). prop:pom-moment-congruence-q -/
+theorem weightCongruenceCount_pos (m : Nat) (r : Nat) (hr : r < Nat.fib (m + 2)) :
+    0 < weightCongruenceCount m r := by
+  -- wcc(m, r) = fiberMultiplicity(ofNat m r) which is always positive
+  rw [show r = stableValue (X.ofNat m r) from (X.stableValue_ofNat_lt r hr).symm,
+    ← fiberMultiplicity_eq_wcc]
+  exact X.fiberMultiplicity_pos _
+
 end Omega
