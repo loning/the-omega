@@ -306,4 +306,77 @@ theorem factorization_determines_nat (n m : Nat) (hn : 1 ≤ n) (hm : 1 ≤ m)
     (h : n.factorization = m.factorization) : n = m :=
   Nat.factorization_inj (by omega : n ≠ 0) (by omega : m ≠ 0) h
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 198: Boundary count, delta-34, unit group
+-- ══════════════════════════════════════════════════════════════
+
+/-- The unique even-window triple (m₁,m₂,m₃) with m₁ < m₂ < m₃, all even,
+    satisfying F(m₁-2) + F(m₂-2) + F(m₃-2) = 12 is (4,6,8).
+    thm:bdry-three-window-sum12-unique-even-triple -/
+theorem bdry_three_window_sum12_unique_even_triple
+    (m₁ m₂ m₃ : Nat)
+    (hm₁_even : 2 ∣ m₁) (hm₂_even : 2 ∣ m₂) (hm₃_even : 2 ∣ m₃)
+    (hm₁_ge : 2 ≤ m₁) (hm₂_ge : 2 ≤ m₂) (hm₃_ge : 2 ≤ m₃)
+    (hlt₁₂ : m₁ < m₂) (hlt₂₃ : m₂ < m₃)
+    (hsum : Nat.fib (m₁ - 2) + Nat.fib (m₂ - 2) + Nat.fib (m₃ - 2) = 12) :
+    m₁ = 4 ∧ m₂ = 6 ∧ m₃ = 8 := by
+  have hm₃_le : m₃ ≤ 9 := by
+    by_contra h; push_neg at h
+    have hge8 : 8 ≤ m₃ - 2 := by omega
+    have : 21 ≤ Nat.fib (m₃ - 2) := by
+      have : (21 : Nat) = Nat.fib 8 := by native_decide
+      linarith [Nat.fib_mono hge8]
+    omega
+  obtain ⟨k₃, rfl⟩ := hm₃_even
+  obtain ⟨k₂, rfl⟩ := hm₂_even
+  obtain ⟨k₁, rfl⟩ := hm₁_even
+  have hk₃_le : k₃ ≤ 4 := by omega
+  have hk₃_ge : 1 ≤ k₃ := by omega
+  have hk₂_le : k₂ ≤ 4 := by omega
+  have hk₂_ge : 1 ≤ k₂ := by omega
+  have hk₁_le : k₁ ≤ 4 := by omega
+  have hk₁_ge : 1 ≤ k₁ := by omega
+  interval_cases k₃ <;> interval_cases k₂ <;> interval_cases k₁ <;>
+    simp_all (config := { decide := true }) [Nat.fib]
+
+/-- F(m-2) = 34 has the unique solution m = 11 among m ≥ 3.
+    thm:bdry-delta34-m11-uniqueness -/
+theorem bdry_delta34_m11_uniqueness (m : Nat) (hm : 3 ≤ m)
+    (h : Nat.fib (m - 2) = 34) : m = 11 := by
+  have hm_le : m ≤ 11 := by
+    by_contra hc; push_neg at hc
+    have hge10 : 10 ≤ m - 2 := by omega
+    have : 55 ≤ Nat.fib (m - 2) := by
+      calc (55 : Nat) = Nat.fib 10 := by native_decide
+        _ ≤ Nat.fib (m - 2) := Nat.fib_mono hge10
+    omega
+  have hm_ge : 11 ≤ m := by
+    by_contra hc; push_neg at hc
+    have hmle8 : m - 2 ≤ 8 := by omega
+    have : Nat.fib (m - 2) ≤ Nat.fib 8 := Nat.fib_mono hmle8
+    have : Nat.fib 8 = 21 := by native_decide
+    omega
+  omega
+
+/-- F(9) = F(10) - F(8).
+    thm:bdry-delta34-m11-uniqueness (identity part) -/
+theorem bdry_delta34_identity : Nat.fib 9 = Nat.fib 10 - Nat.fib 8 := by native_decide
+
+/-- Euler totient of F(7) = 13 is 12.
+    thm:congruence-unitgroup-order12-m56 (seed value) -/
+@[simp] theorem totient_fib_7 : Nat.totient (Nat.fib 7) = 12 := by native_decide
+
+/-- Euler totient of F(8) = 21 is 12.
+    thm:congruence-unitgroup-order12-m56 (seed value) -/
+@[simp] theorem totient_fib_8 : Nat.totient (Nat.fib 8) = 12 := by native_decide
+
+/-- If φ(F(m+2)) = 12 and 1 ≤ m ≤ 10, then m ∈ {5, 6}.
+    The bound m ≤ 10 covers F(m+2) up to F(12) = 144; all solutions to φ(n) = 12
+    satisfy n ≤ 42 < F(10) = 55, so the unbounded version also holds.
+    thm:congruence-unitgroup-order12-m56 -/
+theorem congruence_unitgroup_order12_bounded (m : Nat) (hm : 1 ≤ m) (hm_le : m ≤ 10)
+    (h : Nat.totient (Nat.fib (m + 2)) = 12) :
+    m = 5 ∨ m = 6 := by
+  interval_cases m <;> revert h <;> native_decide
+
 end Omega.ZeckSig
