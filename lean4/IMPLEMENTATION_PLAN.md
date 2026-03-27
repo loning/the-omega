@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 207: Hamming度量三角不等式 + XOR表示 + 零条件（Round 207）**：一文件 HammingDist.lean（新建，+49行）——hammingDist_triangle（def:pom-hamming-metric：d(u,v) ≤ d(u,w) + d(w,v)，三角不等式，HammingDist.lean）; hammingDist_eq_popcount_xor（def:pom-defect-xor-metric：d(u,v) = popcount(u XOR v)，Hamming=XOR权重，HammingDist.lean）; hammingDist_eq_zero_iff（def:pom-hamming-metric：d(u,v)=0 ↔ u=v，HammingDist.lean）——POM ~508→~510（+2 论文条目：def:pom-hamming-metric, def:pom-defect-xor-metric）（Phase 207）
 **Phase 206: Lucas加法公式 + 部分和 + 路径多项式基值（Round 206）**：两文件 ShiftDynamics.lean（+39行）+ FibonacciPolynomial.lean（+19行）——lucasNum_add_formula（bridge:lucas-fib-addition-formula：L(m+n)=L(m)·L(n)-(-1)^n·L(m-n)，ShiftDynamics.lean）; lucasNum_partial_sum（bridge:lucas-partial-sum：Σ_{k≤n} L(k)=L(n+2)-3，ShiftDynamics.lean）; pathIndSetPoly_two_val（def:pom-fibonacci-polynomial：I₂(x) 基值验证，FibonacciPolynomial.lean）; pathIndSetPoly_three_val（def:pom-fibonacci-polynomial：I₃(x) 基值验证，FibonacciPolynomial.lean）; pathIndSetPoly_four_val（def:pom-fibonacci-polynomial：I₄(x) 基值验证，FibonacciPolynomial.lean）——全为 bridge 或已注册标签的实例验证，覆盖率不变，+5 Lean 定理（Phase 206）
 **Phase 205: Fibonacci多项式Cassini恒等式 + 迹=Lucas（Round 205）**：两文件 FibonacciPolynomial.lean（+34行）+ ShiftDynamics.lean（+7行）——fibPoly_cassini（thm:fold-gauge-anomaly-spectral-curve-fibonacci-polynomial-cassini：F_{n+2}(x)·F_n(x) - F_{n+1}(x)² = (-1)^(n+1)·x^n，Fibonacci 多项式 Cassini 恒等式，FibonacciPolynomial.lean:79）; goldenMeanAdjacency_pow_trace_lucas（thm:folding-stable-syntax-fib-fusion-ring：tr(A^m) = L(m)，黄金均值邻接矩阵迹等于 Lucas 数，ShiftDynamics.lean:584）——Folding ~93→~95（+2 论文条目：thm:fold-gauge-anomaly-spectral-curve-fibonacci-polynomial-cassini, thm:folding-stable-syntax-fib-fusion-ring）（Phase 205）
 **Phase 204: Fib交替隔位和 + stableValue单射性（Round 204）**：两文件 Fib.lean（+~74行，至~1044行）+ Value.lean（+~57行）——fib_alternating_skip_sum（prop:fold-endpoint-Mm-minus-one-unique：Σ_{k} F(n+1-2k) = F(n+2)-1，交替隔位 Fibonacci 和，Fib.lean:970）; stableValue_injective（thm:fold-zeckendorf-mod-decomposition-unique：stableValue 在 X m 上单射，Value.lean:121）——Folding ~91→~93（+2 论文条目：prop:fold-endpoint-Mm-minus-one-unique, thm:fold-zeckendorf-mod-decomposition-unique）；推迟：zero_fiber_weight_count（需 Word 权值分解基础设施）；注：Fib.lean 已达~1044 行，严重超 800 行限制，需拆分（Phase 204）
@@ -172,7 +173,7 @@
 
 ### Lean4 形式化状态
 
-- **1,249 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- **1,251 个论文标签已注册**到 SourceMap（bridge 标签另计）
 - ~2,436 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
@@ -180,7 +181,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1308/10,588 = **12.4%** |
+| 全局覆盖率 | 1310/10,588 = **12.4%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -194,13 +195,13 @@
 | 新生算术 | 151 | ~90 | ~60% |
 | Folding | 317 | ~95 | ~30% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~508 | ~33.3% |
+| POM | 1,525 | ~510 | ~33.4% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1308** | **12.4%** |
+| **总计** | **10,588** | **1310** | **12.4%** |
 
 ## 3. 未来工作：30 条具体计划
 
