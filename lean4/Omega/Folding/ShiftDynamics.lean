@@ -718,4 +718,19 @@ theorem lucasNum_sq_eq_int (n : Nat) :
   · simp [lucasNum_zero]
   · exact lucasNum_sq n hn
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 229: Lucas >= Fibonacci
+-- ══════════════════════════════════════════════════════════════
+
+/-- L_n >= F_n unconditionally. thm:pom-parry-limit-chain-explicit -/
+theorem lucasNum_ge_fib (n : Nat) : Nat.fib n ≤ lucasNum n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp
+    | 1 => simp
+    | n + 2 =>
+      rw [Nat.fib_add_two, lucasNum_succ_succ, Nat.add_comm (lucasNum (n + 1))]
+      exact Nat.add_le_add (ih n (by omega)) (ih (n + 1) (by omega))
+
 end Omega
