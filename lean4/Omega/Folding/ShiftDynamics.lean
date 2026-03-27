@@ -3,16 +3,19 @@ import Omega.Graph.TransferMatrix
 
 namespace Omega.X
 
-/-- The left shift on XInfinity: σ(a)(i) = a(i+1). -/
+/-- The left shift on XInfinity: σ(a)(i) = a(i+1).
+    cor:pom-shift-conjugacy-on-godel-image -/
 def shift (a : XInfinity) : XInfinity :=
   ⟨fun i => a.1 (i + 1), fun i h => a.2 (i + 1) h⟩
 
-/-- The shift map is continuous (composition of continuous projections). -/
+/-- The shift map is continuous (composition of continuous projections).
+    prop:shift-continuous -/
 theorem continuous_shift : Continuous shift := by
   apply Continuous.subtype_mk
   exact continuous_pi fun i => (continuous_apply (i + 1)).comp continuous_subtype_val
 
-/-- The shift map is surjective: prepend false to any sequence. -/
+/-- The shift map is surjective: prepend false to any sequence.
+    prop:shift-surjective -/
 theorem shift_surjective : Function.Surjective shift := by
   intro b
   refine ⟨⟨fun i => if i = 0 then false else b.1 (i - 1), fun i ⟨hi, hi1⟩ => ?_⟩, ?_⟩
@@ -25,7 +28,8 @@ theorem shift_surjective : Function.Surjective shift := by
   · -- shift of constructed sequence = b
     ext i; simp [shift]
 
-/-- Coordinate formula for the left shift: the i-th entry of σ(a) equals a(i+1). -/
+/-- Coordinate formula for the left shift: the i-th entry of σ(a) equals a(i+1).
+    lem:shift-val -/
 theorem shift_val (a : XInfinity) (i : Nat) : (shift a).1 i = a.1 (i + 1) := rfl
 
 /-- The n-fold iterate of the left shift. -/
@@ -44,13 +48,16 @@ theorem continuous_shiftN : ∀ (n : Nat), Continuous (shiftN n)
   | 0 => continuous_id
   | n + 1 => continuous_shift.comp (continuous_shiftN n)
 
-/-- The all-false infinite sequence (the unique fixed point of shift). -/
+/-- The all-false infinite sequence (the unique fixed point of shift).
+    def:shift-allFalse -/
 def allFalse : XInfinity := ⟨fun _ => false, fun _ h => by exact absurd h.1 Bool.false_ne_true⟩
 
+/-- prop:shift-allFalse-fixed -/
 @[simp] theorem shift_allFalse : shift allFalse = allFalse :=
   Subtype.ext (funext fun _ => rfl)
 
-/-- shift(a) = a iff a is the all-false sequence. -/
+/-- shift(a) = a iff a is the all-false sequence.
+    thm:shift-fixed-iff -/
 theorem shift_fixed_iff (a : XInfinity) : shift a = a ↔ a = allFalse := by
   constructor
   · intro h
@@ -65,7 +72,8 @@ theorem shift_fixed_iff (a : XInfinity) : shift a = a ↔ a = allFalse := by
     | true => exact absurd ⟨(hConst 0).symm ▸ h0, (hConst 1).symm ▸ h0⟩ (a.2 0)
   · intro h; rw [h, shift_allFalse]
 
-/-- The shift is not injective (both allFalse and (true,false,false,...) map to allFalse). -/
+/-- The shift is not injective (both allFalse and (true,false,false,...) map to allFalse).
+    prop:shift-not-injective -/
 theorem shift_not_injective : ¬ Function.Injective shift := by
   intro hInj
   have hNo11 : No11Inf (fun i => if i = 0 then true else false) := by
@@ -83,38 +91,46 @@ theorem shift_not_injective : ¬ Function.Injective shift := by
   change (if (0 : Nat) = 0 then true else false) = false at hab
   simp at hab
 
-/-- The period-3 sequence: true at positions 0, 3, 6, ... -/
+/-- The period-3 sequence: true at positions 0, 3, 6, ...
+    def:period3-seq -/
 def period3Seq : XInfinity :=
   ⟨fun i => decide (i % 3 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
 
-/-- The period-3 sequence has period 3 under shift. -/
+/-- The period-3 sequence has period 3 under shift.
+    thm:shiftN-three-period3 -/
 theorem shiftN_three_period3 : shiftN 3 period3Seq = period3Seq := by
   apply Subtype.ext; funext i; simp [shiftN, shift, period3Seq]; omega
 
-/-- The period-3 sequence is NOT a fixed point of shift. -/
+/-- The period-3 sequence is NOT a fixed point of shift.
+    thm:shift-period3-ne -/
 theorem shift_period3_ne : shift period3Seq ≠ period3Seq := by
   intro h; have := congr_fun (congr_arg Subtype.val h) 0
   simp [shift, period3Seq] at this
 
-/-- The period-2 sequence: true at positions 0, 2, 4, ... -/
+/-- The period-2 sequence: true at positions 0, 2, 4, ...
+    def:period2-seq -/
 def period2Seq : XInfinity :=
   ⟨fun i => decide (i % 2 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
 
-/-- The period-2 sequence has period 2 under shift. -/
+/-- The period-2 sequence has period 2 under shift.
+    thm:shiftN-two-period2 -/
 theorem shiftN_two_period2 : shiftN 2 period2Seq = period2Seq := by
   apply Subtype.ext; funext i; simp [shiftN, shift, period2Seq]; omega
 
-/-- The period-2 sequence is not a fixed point. -/
+/-- The period-2 sequence is not a fixed point.
+    cor:shift-period2-ne -/
 theorem shift_period2_ne : shift period2Seq ≠ period2Seq := by
   intro h; have := congr_fun (congr_arg Subtype.val h) 0
   simp [shift, period2Seq] at this
 
-/-- Period-2 is minimal: not fixed, but period 2. -/
+/-- Period-2 is minimal: not fixed, but period 2.
+    cor:shift-period2-minimal -/
 theorem period2_minimal :
     shift period2Seq ≠ period2Seq ∧ shiftN 2 period2Seq = period2Seq :=
   ⟨shift_period2_ne, shiftN_two_period2⟩
 
-/-- Period-3 is minimal: not fixed, not period 2, but period 3. -/
+/-- Period-3 is minimal: not fixed, not period 2, but period 3.
+    cor:shift-period3-minimal -/
 theorem period3_minimal :
     shift period3Seq ≠ period3Seq ∧ shiftN 2 period3Seq ≠ period3Seq ∧
     shiftN 3 period3Seq = period3Seq := by
@@ -122,11 +138,13 @@ theorem period3_minimal :
   intro h; have := congr_fun (congr_arg Subtype.val h) 0
   simp [shiftN, shift, period3Seq] at this
 
-/-- The period-4 sequence: true at positions 0, 4, 8, ... -/
+/-- The period-4 sequence: true at positions 0, 4, 8, ...
+    def:shift-period4-seq -/
 def period4Seq : XInfinity :=
   ⟨fun i => decide (i % 4 = 0), fun i ⟨hi, hi1⟩ => by simp at hi hi1; omega⟩
 
-/-- The period-4 sequence has period 4 under shift. -/
+/-- The period-4 sequence has period 4 under shift.
+    cor:shift-period4-orbit -/
 theorem shiftN_four_period4 : shiftN 4 period4Seq = period4Seq := by
   apply Subtype.ext; funext i; simp [shiftN, shift, period4Seq]; omega
 
@@ -142,13 +160,15 @@ The finite stable syntax spaces X_m satisfy:
 - Transfer matrix representation: |X_m| = (A^m)_{00} + (A^m)_{01}
 -/
 
-/-- |X_{m+2}| = |X_{m+1}| + |X_m| (Fibonacci recurrence for stable word counts). -/
+/-- |X_{m+2}| = |X_{m+1}| + |X_m| (Fibonacci recurrence for stable word counts).
+    cor:folding-stable-syntax-entropy-logqdim-card-recurrence -/
 theorem card_X_recurrence (m : Nat) :
     Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) := by
   simp only [X.card_eq_fib]
   exact fib_succ_succ' (m + 2)
 
-/-- |X_m| ≤ |X_{m+1}| ≤ 2 · |X_m| (Fibonacci ratio bounds). -/
+/-- |X_m| ≤ |X_{m+1}| ≤ 2 · |X_m| (Fibonacci ratio bounds).
+    cor:folding-stable-syntax-entropy-logqdim-ratio-bounds -/
 theorem card_X_ratio_bounds (m : Nat) :
     Fintype.card (X m) ≤ Fintype.card (X (m + 1)) ∧
     Fintype.card (X (m + 1)) ≤ 2 * Fintype.card (X m) := by
@@ -162,7 +182,8 @@ theorem card_X_ratio_bounds (m : Nat) :
           Nat.add_le_add_left (Nat.fib_mono (by omega)) _
       _ = 2 * Nat.fib (m + 2) := by omega
 
-/-- |X_m| = (A^m)_{00} + (A^m)_{01} where A is the golden-mean adjacency matrix. -/
+/-- |X_m| = (A^m)_{00} + (A^m)_{01} where A is the golden-mean adjacency matrix.
+    cor:folding-stable-syntax-entropy-logqdim-matrix-sum -/
 theorem card_X_eq_matrix_sum (m : Nat) :
     (Fintype.card (X m) : ℤ) =
       (Graph.goldenMeanAdjacency ^ m) 0 0 + (Graph.goldenMeanAdjacency ^ m) 0 1 := by
@@ -171,7 +192,8 @@ theorem card_X_eq_matrix_sum (m : Nat) :
 
 /-! ### Lucas numbers -/
 
-/-- The Lucas sequence: L_0 = 2, L_1 = 1, L_{n+2} = L_{n+1} + L_n. -/
+/-- The Lucas sequence: L_0 = 2, L_1 = 1, L_{n+2} = L_{n+1} + L_n.
+    def:lucas-number -/
 def lucasNum : Nat → Nat
   | 0 => 2
   | 1 => 1
@@ -196,14 +218,16 @@ private theorem lucasNum_eq_fib_aux :
     simp only [lucasNum_succ_succ, lucasNum_eq_fib_aux, fib_succ_succ']
     omega
 
-/-- L_n = F_{n+1} + F_{n-1} for n ≥ 1. -/
+/-- L_n = F_{n+1} + F_{n-1} for n ≥ 1.
+    prop:lucas-fibonacci-identity -/
 theorem lucasNum_eq_fib (n : Nat) (hn : 1 ≤ n) :
     lucasNum n = Nat.fib (n + 1) + Nat.fib (n - 1) := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
   simp only [show m + 1 - 1 = m from by omega]
   exact lucasNum_eq_fib_aux m
 
-/-- trace(A^n) = F_{n+1} + F_{n-1} for n ≥ 1 (= Lucas number). -/
+/-- trace(A^n) = F_{n+1} + F_{n-1} for n ≥ 1 (= Lucas number).
+    thm:transfer-matrix-pow-trace -/
 theorem goldenMeanAdjacency_pow_trace (n : Nat) (hn : 1 ≤ n) :
     (Graph.goldenMeanAdjacency ^ n).trace =
       (Nat.fib (n + 1) : ℤ) + Nat.fib (n - 1) := by
@@ -216,13 +240,15 @@ theorem goldenMeanAdjacency_pow_trace (n : Nat) (hn : 1 ≤ n) :
 -- Lucas number identities
 -- ══════════════════════════════════════════════════════════════
 
-/-- Lucas numbers are positive. -/
+/-- Lucas numbers are positive.
+    bridge:lucas-num-pos -/
 theorem lucasNum_pos : ∀ n : Nat, 0 < lucasNum n
   | 0 => by simp
   | 1 => by simp
   | n + 2 => by rw [lucasNum_succ_succ]; exact Nat.add_pos_left (lucasNum_pos (n + 1)) _
 
-/-- L(n) * F(n) = F(2n) for n ≥ 1. -/
+/-- L(n) * F(n) = F(2n) for n ≥ 1.
+    bridge:lucas-fibonacci-product -/
 theorem lucasNum_mul_fib (n : Nat) (hn : 1 ≤ n) :
     lucasNum n * Nat.fib n = Nat.fib (2 * n) := by
   -- Cast to ℤ where subtraction works, use fib_double identity
@@ -247,7 +273,8 @@ theorem lucasNum_mul_fib (n : Nat) (hn : 1 ≤ n) :
     push_cast; exact_mod_cast Nat.fib_add_two
   nlinarith
 
-/-- Lucas Cassini: L(n)² - L(n-1)·L(n+1) = 5·(-1)^n for n ≥ 1. -/
+/-- Lucas Cassini: L(n)² - L(n-1)·L(n+1) = 5·(-1)^n for n ≥ 1.
+    bridge:lucas-cassini -/
 theorem lucasNum_cassini (n : Nat) (hn : 1 ≤ n) :
     (lucasNum n : ℤ) ^ 2 - (lucasNum (n - 1) : ℤ) * (lucasNum (n + 1) : ℤ) =
     5 * (-1) ^ n := by
@@ -267,7 +294,8 @@ theorem lucasNum_cassini (n : Nat) (hn : 1 ≤ n) :
       push_cast; exact_mod_cast lucasNum_succ_succ k
     rw [hpow]; nlinarith
 
-/-- Lucas doubling: L(2n) = L(n)² - 2·(-1)^n for n ≥ 1. -/
+/-- Lucas doubling: L(2n) = L(n)² - 2·(-1)^n for n ≥ 1.
+    bridge:lucas-double -/
 theorem lucasNum_double (n : Nat) (hn : 1 ≤ n) :
     (lucasNum (2 * n) : ℤ) = (lucasNum n : ℤ) ^ 2 - 2 * (-1) ^ n := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -291,7 +319,8 @@ theorem lucasNum_double (n : Nat) (hn : 1 ≤ n) :
     rw [show k + 1 + 1 = k + 2 from by omega] at *
     rw [hrec1, hpow]; nlinarith
 
-/-- L(n)² = 5·F(n)² + 4·(-1)^n for n ≥ 1. -/
+/-- L(n)² = 5·F(n)² + 4·(-1)^n for n ≥ 1.
+    bridge:lucas-fibonacci-square -/
 theorem lucasNum_sq (n : Nat) (hn : 1 ≤ n) :
     (lucasNum n : ℤ) ^ 2 = 5 * (Nat.fib n : ℤ) ^ 2 + 4 * (-1) ^ n := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -328,7 +357,8 @@ theorem lucasNum_sq (n : Nat) (hn : 1 ≤ n) :
     have := @Nat.fib_add_two m; push_cast; linarith
   push_cast; nlinarith
 
-/-- L(n) + F(n) = 2·F(n+1) for n ≥ 1. -/
+/-- L(n) + F(n) = 2·F(n+1) for n ≥ 1.
+    bridge:lucas-add-fib -/
 theorem lucasNum_add_fib (n : Nat) (hn : 1 ≤ n) :
     lucasNum n + Nat.fib n = 2 * Nat.fib (n + 1) := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -341,7 +371,8 @@ theorem lucasNum_add_fib (n : Nat) (hn : 1 ≤ n) :
     have := Nat.fib_add_two (n := m); omega
   omega
 
-/-- L(n) - F(n) = 2·F(n-1) for n ≥ 1. -/
+/-- L(n) - F(n) = 2·F(n-1) for n ≥ 1.
+    bridge:lucas-sub-fib -/
 theorem lucasNum_sub_fib (n : Nat) (hn : 1 ≤ n) :
     lucasNum n - Nat.fib n = 2 * Nat.fib (n - 1) := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -352,12 +383,14 @@ theorem lucasNum_sub_fib (n : Nat) (hn : 1 ≤ n) :
   have hrec : Nat.fib (m + 2) = Nat.fib m + Nat.fib (m + 1) := Nat.fib_add_two
   omega
 
-/-- F(2n) = F(n)·L(n) for n ≥ 1. -/
+/-- F(2n) = F(n)·L(n) for n ≥ 1.
+    bridge:fib-double-lucas -/
 theorem fib_double_eq_mul_lucas (n : Nat) (hn : 1 ≤ n) :
     Nat.fib (2 * n) = Nat.fib n * lucasNum n := by
   have := lucasNum_mul_fib n hn; linarith [Nat.mul_comm (Nat.fib n) (lucasNum n)]
 
-/-- Lucas number parity: L(n) is even iff 3 ∣ n. -/
+/-- Lucas number parity: L(n) is even iff 3 ∣ n.
+    bridge:lucas-parity -/
 theorem lucasNum_even_iff (n : Nat) : 2 ∣ lucasNum n ↔ 3 ∣ n := by
   -- L(n) mod 2 has period 3: L(0)=2(even), L(1)=1(odd), L(2)=3(odd), L(3)=4(even), ...
   -- Pattern: even, odd, odd, even, odd, odd, ...
@@ -389,7 +422,8 @@ theorem lucasNum_even_iff (n : Nat) : 2 ∣ lucasNum n ↔ 3 ∣ n := by
       rw [show 3 * (j + 1) = 3 * j + 3 from by ring]
       exact (hperiod (3 * j)).mpr ih
 
-/-- 3 ∣ L(n) iff n ≡ 2 (mod 4). -/
+/-- 3 ∣ L(n) iff n ≡ 2 (mod 4).
+    bridge:lucas-three-divisibility -/
 theorem lucasNum_three_dvd (n : Nat) : 3 ∣ lucasNum n ↔ n % 4 = 2 := by
   -- L(n) mod 3 has period 4: L(0)=2, L(1)=1, L(2)=3, L(3)=4, L(4)=7, ...
   -- mod 3: 2, 1, 0, 1, 1, 2, 0, 2, 2, 1, 0, 1, ... period 8? Actually let me check:
@@ -432,7 +466,8 @@ theorem lucasNum_three_dvd (n : Nat) : 3 ∣ lucasNum n ↔ n % 4 = 2 := by
         rw [hmod] at h
         exact (hperiod n).mpr (ih n (by omega) h)
 
-/-- Lucas Cassini (Nat, even): L(n)² = L(n-1)·L(n+1) + 5 when n even, n ≥ 2. -/
+/-- Lucas Cassini (Nat, even): L(n)² = L(n-1)·L(n+1) + 5 when n even, n ≥ 2.
+    bridge:lucas-cassini-nat -/
 theorem lucasNum_cassini_even (n : Nat) (hn : 2 ≤ n) (heven : Even n) :
     lucasNum n ^ 2 = lucasNum (n - 1) * lucasNum (n + 1) + 5 := by
   have hcas := lucasNum_cassini n (by omega)
@@ -441,7 +476,8 @@ theorem lucasNum_cassini_even (n : Nat) (hn : 2 ≤ n) (heven : Even n) :
   have hpos2 := lucasNum_pos (n + 1)
   zify; linarith
 
-/-- Lucas Cassini (Nat, odd): L(n)² + 5 = L(n-1)·L(n+1) when n odd, n ≥ 1. -/
+/-- Lucas Cassini (Nat, odd): L(n)² + 5 = L(n-1)·L(n+1) when n odd, n ≥ 1.
+    bridge:lucas-cassini-nat -/
 theorem lucasNum_cassini_odd (n : Nat) (hn : 1 ≤ n) (hodd : ¬ Even n) :
     lucasNum n ^ 2 + 5 = lucasNum (n - 1) * lucasNum (n + 1) := by
   have hcas := lucasNum_cassini n hn
@@ -449,7 +485,8 @@ theorem lucasNum_cassini_odd (n : Nat) (hn : 1 ≤ n) (hodd : ¬ Even n) :
   have hpow : ((-1 : ℤ) ^ n) = -1 := Odd.neg_one_pow hoddN
   zify; linarith
 
-/-- F(n) ≤ L(n) for n ≥ 1. -/
+/-- F(n) ≤ L(n) for n ≥ 1.
+    bridge:fib-lucas-bound -/
 theorem fib_le_lucasNum (n : Nat) (hn : 1 ≤ n) : Nat.fib n ≤ lucasNum n := by
   have h := lucasNum_add_fib n hn
   -- L + F = 2F(n+1) ≥ 2F ≥ F + F ≥ F, so L ≥ 0 and F ≤ L+F = 2F(n+1)
@@ -457,12 +494,14 @@ theorem fib_le_lucasNum (n : Nat) (hn : 1 ≤ n) : Nat.fib n ≤ lucasNum n := b
   have := Nat.fib_mono (show n ≤ n + 1 from by omega)
   omega
 
-/-- L(n) ≤ 2·F(n+1) for n ≥ 1. -/
+/-- L(n) ≤ 2·F(n+1) for n ≥ 1.
+    bridge:lucas-upper-bound -/
 theorem lucasNum_le_two_fib_succ (n : Nat) (hn : 1 ≤ n) :
     lucasNum n ≤ 2 * Nat.fib (n + 1) := by
   have := lucasNum_add_fib n hn; omega
 
-/-- F(n+1)² - F(n)·F(n+2) = (-1)^n for n ≥ 1. -/
+/-- F(n+1)² - F(n)·F(n+2) = (-1)^n for n ≥ 1.
+    bridge:cassini-variant -/
 theorem fib_succ_sq_sub_prod (n : Nat) (hn : 1 ≤ n) :
     (Nat.fib (n + 1) : ℤ) ^ 2 - (Nat.fib n : ℤ) * (Nat.fib (n + 2) : ℤ) = (-1) ^ n := by
   have hcas := Graph.fib_cassini n hn
@@ -478,7 +517,8 @@ theorem fib_succ_sq_sub_prod (n : Nat) (hn : 1 ≤ n) :
     have := Nat.fib_add_two (n := m); push_cast; linarith
   nlinarith
 
-/-- F(n)·F(n+2) = F(n+1)² + (-1)^(n+1). -/
+/-- F(n)·F(n+2) = F(n+1)² + (-1)^(n+1).
+    bridge:fib-adjacent-product -/
 theorem fib_adjacent_product (n : Nat) (hn : 1 ≤ n) :
     (Nat.fib n : ℤ) * Nat.fib (n + 2) = (Nat.fib (n + 1) : ℤ) ^ 2 + (-1) ^ (n + 1) := by
   have h := fib_succ_sq_sub_prod n hn

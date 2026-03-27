@@ -222,7 +222,8 @@ theorem collision_same_eq_exactWeightCollision (m : Nat) :
 -- Cross-weight correlation
 -- ══════════════════════════════════════════════════════════════
 
-/-- Cross-weight correlation: Σ_r ewc(m,r) · ewc(m,r+F). -/
+/-- Cross-weight correlation: Σ_r ewc(m,r) · ewc(m,r+F).
+    def:pom-crossWeightCorrelation -/
 def crossWeightCorrelation (m : Nat) : Nat :=
   ∑ r ∈ Finset.range (Nat.fib (m + 2)),
     exactWeightCount m r * exactWeightCount m (r + Nat.fib (m + 2))
@@ -232,6 +233,7 @@ def crossWeightCorrelation (m : Nat) : Nat :=
 -- E(0,0)(m+1) = E(0,0)(m) + S_2(m)
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-e00-succ -/
 theorem exactWeightCollision_succ (m : Nat) :
     exactWeightCollision (m + 1) = exactWeightCollision m + momentSum 2 m := by
   classical
@@ -341,6 +343,7 @@ theorem exactWeightCollision_succ (m : Nat) :
 -- E(0,0) telescoping sum
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-e00-telescoping -/
 theorem exactWeightCollision_eq_sum (m : Nat) :
     exactWeightCollision m = 1 + ∑ k ∈ Finset.range m, momentSum 2 k := by
   induction m with
@@ -358,12 +361,14 @@ theorem exactWeightCollision_eq_sum (m : Nat) :
 -- Cross-correlation at shift d
 -- ══════════════════════════════════════════════════════════════
 
-/-- Cross-correlation at shift d. -/
+/-- Cross-correlation at shift d.
+    def:pom-crossCorr -/
 def crossCorr (m d : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)),
     exactWeightCount m n * exactWeightCount m (n + d)
 
-/-- C_0(m) = E(0,0)(m). -/
+/-- C_0(m) = E(0,0)(m).
+    thm:pom-crossCorr-zero -/
 theorem crossCorr_zero_eq (m : Nat) :
     crossCorr m 0 = exactWeightCollision m := by
   simp [crossCorr, exactWeightCollision, sq]
@@ -372,7 +377,8 @@ theorem crossCorr_zero_eq (m : Nat) :
 -- E(0,1) = crossCorr(F_{m+2}) + crossCorr(F_{m+1})
 -- ══════════════════════════════════════════════════════════════
 
-/-- E(0,1) = crossCorr(F) + crossCorr(F-1). -/
+/-- E(0,1) = crossCorr(F) + crossCorr(F-1).
+    thm:pom-e01-crossCorr -/
 theorem collision_cross_eq_two_crossCorr (m : Nat) :
     (Finset.univ.filter (fun p : Word m × Word m =>
       weight p.1 % Nat.fib (m + 3) =
@@ -493,7 +499,8 @@ theorem collision_cross_eq_two_crossCorr (m : Nat) :
 -- S_2(m+1) = 2E00 + 2·crossCorr(F) + 2·crossCorr(F-1)
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m+1) = 2·E00(m) + 2·crossCorr(m,F_{m+2}) + 2·crossCorr(m,F_{m+1}). -/
+/-- S_2(m+1) = 2·E00(m) + 2·crossCorr(m,F_{m+2}) + 2·crossCorr(m,F_{m+1}).
+    thm:pom-s2-three-term -/
 theorem momentSum_two_succ_three_term (m : Nat) :
     momentSum 2 (m + 1) =
     2 * exactWeightCollision m +
@@ -684,7 +691,8 @@ private theorem crossCorr_as_collision' (m d : Nat) :
       Finset.mem_univ, true_and]
     intro ⟨v1, _⟩ ⟨h1, _⟩ ⟨h1', _⟩; exact hne (h1.symm.trans h1')
 
-/-- S_2(m) = E00(m) + 2·crossCorr(m, F_{m+2}). -/
+/-- S_2(m) = E00(m) + 2·crossCorr(m, F_{m+2}).
+    thm:pom-s2-exact-crossCorr -/
 theorem momentSum_two_eq_exact_plus_crossCorr (m : Nat) :
     momentSum 2 m = exactWeightCollision m + 2 * crossCorr m (Nat.fib (m + 2)) := by
   classical
@@ -740,6 +748,7 @@ theorem momentSum_two_eq_exact_plus_crossCorr (m : Nat) :
 -- crossCorr(m+1, F) = S_2(m) — algebraic
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-crossCorr-fib-prev -/
 theorem crossCorr_fib_prev_eq_momentSum (m : Nat) :
     crossCorr (m + 1) (Nat.fib (m + 2)) = momentSum 2 m := by
   rw [crossCorr_fib_succ, momentSum_two_eq_exact_plus_crossCorr]; ring
@@ -748,6 +757,7 @@ theorem crossCorr_fib_prev_eq_momentSum (m : Nat) :
 -- S_2(m+2) expansion and UNCONDITIONAL RECURRENCE
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-s2-expand -/
 theorem momentSum_two_succ_succ_expand (m : Nat) :
     momentSum 2 (m + 2) =
     exactWeightCollision (m + 1) + momentSum 2 (m + 1) + 2 * momentSum 2 m := by
@@ -764,7 +774,8 @@ theorem momentSum_two_succ_succ_expand (m : Nat) :
     linarith
   rw [crossCorr_fib_prev_eq_momentSum]; linarith
 
-/-- S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1). UNCONDITIONAL. -/
+/-- S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1). UNCONDITIONAL.
+    prop:pom-s2-recurrence -/
 theorem momentSum_two_recurrence (m : Nat) :
     momentSum 2 (m + 3) + 2 * momentSum 2 m =
     2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1) := by
@@ -773,7 +784,8 @@ theorem momentSum_two_recurrence (m : Nat) :
   have h3 := exactWeightCollision_succ (m + 1)
   linarith
 
-/-- E00 satisfies the S_2 three-step recurrence. -/
+/-- E00 satisfies the S_2 three-step recurrence.
+    bridge:e00-recurrence -/
 theorem exactWeightCollision_recurrence (m : Nat) :
     exactWeightCollision (m + 3) + 2 * exactWeightCollision m =
     2 * exactWeightCollision (m + 2) + 2 * exactWeightCollision (m + 1) := by

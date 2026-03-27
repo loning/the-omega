@@ -6,7 +6,8 @@ namespace X
 
 noncomputable section
 
-/-- Stable addition on X m: wrap-around Fibonacci arithmetic. -/
+/-- Stable addition on X m: wrap-around Fibonacci arithmetic.
+    thm:stable-add-normalization-realization -/
 noncomputable def stableAdd (x y : X m) : X m :=
   X.ofNat m ((stableValue x + stableValue y) % Nat.fib (m + 2))
 
@@ -57,7 +58,8 @@ theorem stableAdd_assoc (x y z : X m) :
     rw [Nat.mod_add_mod_right _ _ _ hF, Nat.add_comm]
   rw [lhs, rhs, Nat.add_assoc]
 
-/-- Stable multiplication on X m: wrap-around Fibonacci arithmetic. -/
+/-- Stable multiplication on X m: wrap-around Fibonacci arithmetic.
+    def:stable-mul -/
 noncomputable def stableMul (x y : X m) : X m :=
   X.ofNat m ((stableValue x * stableValue y) % Nat.fib (m + 2))
 
@@ -475,11 +477,13 @@ theorem eq_of_zeckIndices_eq {x y : X m} (h : X.zeckIndices x = X.zeckIndices y)
 theorem zeckIndices_injective (m : Nat) : Function.Injective (X.zeckIndices (m := m)) :=
   fun _ _ h => eq_of_zeckIndices_eq h
 
-/-- The Zeckendorf representation map is injective on X m. -/
+/-- The Zeckendorf representation map is injective on X m.
+    thm:finite-resolution-mod -/
 theorem zeckRep_injective (m : Nat) : Function.Injective (X.zeckRep (m := m)) :=
   fun _ _ h => zeckIndices_injective m (Subtype.ext_iff.mp h)
 
-/-- stableValue equals the Fibonacci sum of the Zeckendorf representation. -/
+/-- stableValue equals the Fibonacci sum of the Zeckendorf representation.
+    thm:finite-resolution-mod -/
 theorem stableValue_eq_zeckRep_fib_sum (x : X m) :
     stableValue x = ((X.zeckRep x).val.map Nat.fib).sum :=
   (X.sum_fib_zeckRep x).symm

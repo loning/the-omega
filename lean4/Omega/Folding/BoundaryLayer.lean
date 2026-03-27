@@ -21,12 +21,14 @@ def cBoundaryCount : (m : Nat) → Nat
 theorem cBoundaryCount_three : cBoundaryCount 3 = 1 := by native_decide
 theorem cBoundaryCount_four : cBoundaryCount 4 = 1 := by native_decide
 theorem cBoundaryCount_five : cBoundaryCount 5 = 2 := by native_decide
+/-- cor:bdry-m6-square-instance -/
 theorem cBoundaryCount_six : cBoundaryCount 6 = 3 := by native_decide
 theorem cBoundaryCount_seven : cBoundaryCount 7 = 5 := by native_decide
 theorem cBoundaryCount_eight : cBoundaryCount 8 = 8 := by native_decide
 
 /-- The boundary count follows a Fibonacci pattern: b(m) = F(m-2) for m = 3..8.
-    b(3)=1=F(1), b(4)=1=F(2), b(5)=2=F(3), b(6)=3=F(4), b(7)=5=F(5), b(8)=8=F(6). -/
+    b(3)=1=F(1), b(4)=1=F(2), b(5)=2=F(3), b(6)=3=F(4), b(7)=5=F(5), b(8)=8=F(6).
+    prop:bdry-fib-square-identity -/
 theorem cBoundaryCount_eq_fib (m : Nat) (hm1 : 3 ≤ m) (hm : m ≤ 8) :
     cBoundaryCount m = Nat.fib (m - 2) := by
   interval_cases m <;> native_decide

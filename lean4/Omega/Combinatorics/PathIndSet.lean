@@ -15,7 +15,8 @@ on the path graph P_n equals the Fibonacci number F(n+2).
 namespace Omega
 
 /-- An independent set on the path graph P_n: a subset of Fin n
-    with no two adjacent elements. -/
+    with no two adjacent elements.
+    infra:path-ind-set-def -/
 def IsPathIndependent (n : Nat) (S : Finset (Fin n)) : Prop :=
   ∀ i ∈ S, ∀ j ∈ S, ¬ (i.val + 1 = j.val)
 
@@ -23,7 +24,8 @@ instance pathIndDecidable (n : Nat) (S : Finset (Fin n)) :
     Decidable (IsPathIndependent n S) := by
   unfold IsPathIndependent; exact inferInstance
 
-/-- The count of independent sets on P_n. -/
+/-- The count of independent sets on P_n.
+    infra:path-ind-count-def -/
 def pathIndCount (n : Nat) : Nat :=
   (Finset.univ.filter (fun S : Finset (Fin n) =>
     IsPathIndependent n S)).card
@@ -307,6 +309,7 @@ theorem card_containingLast (n : Nat) :
 -- The Fibonacci recurrence for pathIndCount
 -- ══════════════════════════════════════════════════════════════
 
+/-- infra:path-ind-count-recurrence -/
 theorem pathIndCount_recurrence (n : Nat) :
     pathIndCount (n + 2) = pathIndCount (n + 1) + pathIndCount n := by
   show (Finset.univ.filter (fun S : Finset (Fin (n + 2)) =>
@@ -328,7 +331,8 @@ theorem pathIndCount_one : pathIndCount 1 = 2 := by decide
 -- Main theorem
 -- ══════════════════════════════════════════════════════════════
 
-/-- The number of independent sets of the path graph P_n equals F(n+2). -/
+/-- The number of independent sets of the path graph P_n equals F(n+2).
+    infra:path-ind-set-count -/
 theorem path_independent_set_count (n : Nat) :
     pathIndCount n = Nat.fib (n + 2) := by
   induction n using Nat.strongRecOn with
@@ -341,7 +345,8 @@ theorem path_independent_set_count (n : Nat) :
       exact (fib_succ_succ' (n + 2)).symm
 
 /-- The number of independent sets of the path graph P_n equals F(n+2).
-    (Statement using Finset.filter directly.) -/
+    (Statement using Finset.filter directly.)
+    infra:path-ind-set-count-filter -/
 theorem path_independent_set_count' (n : Nat) :
     (Finset.univ.filter (fun S : Finset (Fin n) => IsPathIndependent n S)).card
     = Nat.fib (n + 2) :=

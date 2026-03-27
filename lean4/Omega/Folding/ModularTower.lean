@@ -24,7 +24,8 @@ private theorem stableValue_restrict_eq_mod_tower (z : X (m + 1)) :
 /-! ### Theorem 1: modularProject = restrict -/
 
 /-- modularProject equals restrict as functions X(m+1) → X(m).
-    Both produce the unique stable word with value stableValue(x) % F(m+2). -/
+    Both produce the unique stable word with value stableValue(x) % F(m+2).
+    thm:pom-modular-project-eq-restrict -/
 theorem modularProject_eq_restrict (x : X (m + 1)) :
     modularProject x = X.restrict x := by
   apply eq_of_stableValue_eq
@@ -43,13 +44,15 @@ theorem modularProject_stableAdd_carry (x y : X (m + 1)) :
 
 /-! ### Theorem 3: multiplicative projection value identity -/
 
-/-- Value-level identity for multiplicative projection through the tower. -/
+/-- Value-level identity for multiplicative projection through the tower.
+    thm:pom-modular-project-mul-value -/
 theorem stableValue_modularProject_stableMul (x y : X (m + 1)) :
     stableValue (modularProject (stableMul x y)) =
       (stableValue x * stableValue y) % Nat.fib (m + 3) % Nat.fib (m + 2) := by
   rw [stableValue_modularProject, stableValue_stableMul]
 
-/-- Multiplicative projection via restrict. -/
+/-- Multiplicative projection via restrict.
+    thm:pom-restrict-mul-value -/
 theorem stableValue_restrict_stableMul (x y : X (m + 1)) :
     stableValue (X.restrict (stableMul x y)) =
       (stableValue x * stableValue y) % Nat.fib (m + 3) % Nat.fib (m + 2) := by
@@ -57,7 +60,8 @@ theorem stableValue_restrict_stableMul (x y : X (m + 1)) :
 
 /-! ### Theorem 4: restrict compose equals restrictLE -/
 
-/-- Two applications of restrict equal the composed restrictLE. -/
+/-- Two applications of restrict equal the composed restrictLE.
+    thm:pom-restrict-comp-restrict -/
 theorem restrict_comp_restrict (x : X (m + 2)) :
     X.restrict (X.restrict x) =
       X.restrictLE (Nat.le_trans (Nat.le_succ m) (Nat.le_succ (m + 1))) x := by
@@ -71,14 +75,16 @@ theorem restrict_comp_restrict (x : X (m + 2)) :
 
 /-! ### Theorem 5: tower compatibility -/
 
-/-- The tower of restriction maps is compatible: restrict ∘ restrict = restrictLE. -/
+/-- The tower of restriction maps is compatible: restrict ∘ restrict = restrictLE.
+    thm:pom-tower-compatible -/
 theorem tower_compatible (x : X (m + 2)) :
     X.restrict (X.restrict x) = X.restrictLE (Nat.le_succ m) (X.restrict x) := by
   rw [X.restrictLE_succ]
 
 /-! ### Theorem 6: restrict transitivity -/
 
-/-- restrict composes correctly via restrictLE transitivity. -/
+/-- restrict composes correctly via restrictLE transitivity.
+    thm:pom-restrict-tower-transitivity -/
 theorem restrict_tower_transitivity (h₁ : m ≤ n) (x : X (n + 1)) :
     X.restrictLE h₁ (X.restrict x) =
       X.restrictLE (Nat.le_trans h₁ (Nat.le_succ n)) x := by
@@ -86,14 +92,16 @@ theorem restrict_tower_transitivity (h₁ : m ≤ n) (x : X (n + 1)) :
 
 /-! ### Theorem 7: modularProject preserves zero -/
 
-/-- modularProject preserves the zero element. -/
+/-- modularProject preserves the zero element.
+    thm:pom-modular-project-zero -/
 theorem modularProject_stableZero :
     modularProject (stableZero (m := m + 1)) = (stableZero : X m) :=
   modularProject_zero
 
 /-! ### Additional tower properties -/
 
-/-- Value-level carry defect for modularProject addition. -/
+/-- Value-level carry defect for modularProject addition.
+    thm:pom-modular-project-add-carry-value -/
 theorem stableValue_modularProject_stableAdd_carry (x y : X (m + 1)) :
     stableValue (modularProject (stableAdd x y)) =
       (stableValue (modularProject x) + stableValue (modularProject y) +
@@ -101,43 +109,50 @@ theorem stableValue_modularProject_stableAdd_carry (x y : X (m + 1)) :
   rw [modularProject_eq_restrict, modularProject_eq_restrict x, modularProject_eq_restrict y]
   exact stableValue_restrict_stableAdd_carry x y
 
-/-- modularProject composes through two levels via double mod. -/
+/-- modularProject composes through two levels via double mod.
+    thm:pom-modular-project-compose-value -/
 theorem stableValue_modularProject_compose (x : X (m + 2)) :
     stableValue (modularProject (m := m) (modularProject (m := m + 1) x)) =
       stableValue x % Nat.fib (m + 3) % Nat.fib (m + 2) := by
   rw [stableValue_modularProject, stableValue_modularProject]
 
-/-- The carry indicator is symmetric. -/
+/-- The carry indicator is symmetric.
+    thm:pom-carry-indicator-comm -/
 theorem carryIndicator_comm (x y : X (m + 1)) :
     carryIndicator x y = carryIndicator y x := by
   unfold carryIndicator; rw [Nat.add_comm]
 
-/-- The modularProject tower: surjectivity at every level. -/
+/-- The modularProject tower: surjectivity at every level.
+    thm:pom-modular-tower-surjective -/
 theorem modularProject_tower_surjective (m : Nat) :
     Function.Surjective (modularProject (m := m)) :=
   modularProject_surjective m
 
 end
 
-/-- restrict preserves zero: restrict(0) = 0. -/
+/-- restrict preserves zero: restrict(0) = 0.
+    restrict-zero -/
 theorem restrict_zero : X.restrict (0 : X (m + 1)) = (0 : X m) := by
   show X.restrict (stableZero) = stableZero
   apply Subtype.ext; funext i
   simp [stableZero, X.ofNat, X.ofIndices, X.wordOfIndices, X.restrict, truncate]
 
-/-- restrict preserves one: restrict(1) = 1. -/
+/-- restrict preserves one: restrict(1) = 1.
+    restrict-one -/
 theorem restrict_one : X.restrict (1 : X (m + 1)) = (1 : X m) := by
   show X.restrict (stableOne) = stableOne
   apply Subtype.ext; funext i
   simp [stableOne, X.ofNat, X.ofIndices, X.wordOfIndices, X.restrict, truncate]
 
-/-- restrict is surjective (from modularProject surjectivity). -/
+/-- restrict is surjective (from modularProject surjectivity).
+    prop:restrict-surjective -/
 theorem restrict_surjective : Function.Surjective (X.restrict (m := m)) := by
   intro y
   obtain ⟨x, hx⟩ := modularProject_surjective m y
   exact ⟨x, (modularProject_eq_restrict x).symm.trans hx⟩
 
-/-- The restrict fiber of y is nonempty (from surjectivity). -/
+/-- The restrict fiber of y is nonempty (from surjectivity).
+    cor:restrict-fiber-nonempty -/
 theorem restrict_fiber_nonempty (y : X m) :
     ∃ x : X (m + 1), X.restrict x = y :=
   restrict_surjective y

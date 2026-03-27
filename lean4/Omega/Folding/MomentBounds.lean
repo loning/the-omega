@@ -11,7 +11,8 @@ namespace Omega
 -- Phase 148: weight total sum
 -- ══════════════════════════════════════════════════════════════
 
-/-- For a fixed bit i : Fin m, |{w : Word m | w i = true}| = 2^{m-1}. -/
+/-- For a fixed bit i : Fin m, |{w : Word m | w i = true}| = 2^{m-1}.
+    bridge:card-true-at-bit -/
 theorem card_true_at_bit (m : Nat) (hm : 1 ≤ m) (i : Fin m) :
     (Finset.univ.filter (fun w : Word m => w i = true)).card = 2 ^ (m - 1) := by
   -- Define involution: negate bit i
@@ -56,7 +57,8 @@ theorem card_true_at_bit (m : Nat) (hm : 1 ≤ m) (i : Fin m) :
     simp [pow_succ, mul_comm]
   linarith
 
-/-- The total weight sum: Σ_w weight(w) = 2^{m-1} · (F_{m+3} - 2) for m ≥ 1. -/
+/-- The total weight sum: Σ_w weight(w) = 2^{m-1} · (F_{m+3} - 2) for m ≥ 1.
+    bridge:weight-total-sum -/
 theorem weight_total_sum (m : Nat) (hm : 1 ≤ m) :
     ∑ w : Word m, weight w = 2 ^ (m - 1) * (Nat.fib (m + 3) - 2) := by
   simp_rw [weight_eq_fib_ite_sum]
@@ -86,7 +88,8 @@ theorem weight_total_sum (m : Nat) (hm : 1 ≤ m) :
 -- exactWeightCount_symmetric already exists in MomentRecurrence.lean:551
 
 /-- S_4 conditional recurrence: given the full recurrence as hypothesis,
-    express S_4(m+5) as a subtraction. -/
+    express S_4(m+5) as a subtraction.
+    prop:pom-s4-recurrence -/
 theorem momentSum_four_recurrence_sub_of
     (hrec : ∀ m, momentSum 4 (m + 5) + 2 * momentSum 4 m =
       2 * momentSum 4 (m + 4) + 7 * momentSum 4 (m + 3) + 2 * momentSum 4 (m + 1))
@@ -95,7 +98,8 @@ theorem momentSum_four_recurrence_sub_of
       2 * momentSum 4 (m + 1) - 2 * momentSum 4 m := by
   have := hrec m; omega
 
-/-- EWT telescoping recurrence verified for m = 0..5. -/
+/-- EWT telescoping recurrence verified for m = 0..5.
+    prop:pom-s3-recurrence -/
 theorem exactWeightTriple_succ_bounded (m : Nat) (hm : m ≤ 5) :
     exactWeightTriple (m + 1) = 2 * exactWeightTriple m +
     3 * crossCorrSqHigh m + 3 * crossCorrSqLow m := by
@@ -130,7 +134,8 @@ theorem Fold_snoc_false_ne_true (v : Word m) :
     have : 0 < Nat.fib (m + 1) := Nat.fib_pos.mpr (by omega)
     omega
 
-/-- S_3(m) is divisible by 4 for m ≥ 4. Consequence of S_3 recurrence. -/
+/-- S_3(m) is divisible by 4 for m ≥ 4. Consequence of S_3 recurrence.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_div_four (m : Nat) (hm : 4 ≤ m) :
     4 ∣ momentSum 3 m := by
   induction m using Nat.strongRecOn with
@@ -158,7 +163,8 @@ theorem momentSum_three_div_four (m : Nat) (hm : 4 ≤ m) :
 -- Phase 168
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_3 growth rate upper bound: S_3(m+1) ≤ 4·S_3(m) for m ≥ 3. -/
+/-- S_3 growth rate upper bound: S_3(m+1) ≤ 4·S_3(m) for m ≥ 3.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_succ_le_quadruple (m : Nat) (hm : 3 ≤ m) :
     momentSum 3 (m + 1) ≤ 4 * momentSum 3 m := by
   match m with
@@ -172,7 +178,8 @@ theorem momentSum_three_succ_le_quadruple (m : Nat) (hm : 3 ≤ m) :
     have hdbl := momentSum_three_double (m + 4) (by omega)
     linarith
 
-/-- 8 ∣ S_3(m) for m ≥ 7. -/
+/-- 8 ∣ S_3(m) for m ≥ 7.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_mod_eight (m : Nat) (hm : 7 ≤ m) :
     8 ∣ momentSum 3 m := by
   induction m using Nat.strongRecOn with
@@ -196,7 +203,8 @@ theorem momentSum_three_mod_eight (m : Nat) (hm : 7 ≤ m) :
       rw [ha, hb, hc] at hrec
       exact ⟨2 * c + 4 * b - 2 * a, by omega⟩
 
-/-- E00 doubling: E00(m+1) ≥ 2·E00(m) for all m. -/
+/-- E00 doubling: E00(m+1) ≥ 2·E00(m) for all m.
+    prop:pom-s2-plancherel -/
 theorem exactWeightCollision_succ_ge_double (m : Nat) :
     2 * exactWeightCollision m ≤ exactWeightCollision (m + 1) := by
   match m with
@@ -385,7 +393,8 @@ theorem Fold_cons_false_ne_true (v : Word m) :
     omega
 
 /-- Biresolving: Fold is both right-resolving and left-resolving.
-    con:pom-fold-biresolving. -/
+    con:pom-fold-biresolving.
+    con:pom-fold-biresolving -/
 theorem Fold_biresolving (v : Word m) :
     Fold (snoc v false) ≠ Fold (snoc v true) ∧
     Fold (cons false v) ≠ Fold (cons true v) :=
@@ -395,7 +404,8 @@ theorem Fold_biresolving (v : Word m) :
 -- Phase 170
 -- ══════════════════════════════════════════════════════════════
 
-/-- Strict q-monotonicity: S_q(m) < S_{q+1}(m) for m ≥ 2 and q ≥ 1. -/
+/-- Strict q-monotonicity: S_q(m) < S_{q+1}(m) for m ≥ 2 and q ≥ 1.
+    prop:pom-moment-congruence-q -/
 theorem momentSum_strict_mono_q (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
     momentSum q m < momentSum (q + 1) m := by
   simp only [momentSum]
@@ -418,7 +428,8 @@ theorem momentSum_two_cs_lower (m : Nat) :
 -- Phase 171
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m) strictly exceeds the type count F_{m+2} for m ≥ 2. -/
+/-- S_2(m) strictly exceeds the type count F_{m+2} for m ≥ 2.
+    prop:pom-moment-congruence-q -/
 theorem momentSum_two_gt_fib (m : Nat) (hm : 2 ≤ m) :
     Nat.fib (m + 2) < momentSum 2 m := by
   rw [← X.card_eq_fib, ← Finset.card_univ]
@@ -429,7 +440,8 @@ theorem momentSum_two_gt_fib (m : Nat) (hm : 2 ≤ m) :
   · obtain ⟨x₀, hx₀⟩ := exists_fiber_ge_two m hm
     exact ⟨x₀, Finset.mem_univ _, by nlinarith [X.fiberMultiplicity_pos x₀]⟩
 
-/-- D(m) < S_2(m) for m ≥ 2. Combines D² ≤ S_2 with D ≥ 2. -/
+/-- D(m) < S_2(m) for m ≥ 2. Combines D² ≤ S_2 with D ≥ 2.
+    prop:pom-power-sum-hankel-psd -/
 theorem maxFiberMultiplicity_lt_momentSum_two (m : Nat) (hm : 2 ≤ m) :
     X.maxFiberMultiplicity m < momentSum 2 m := by
   have hD := maxFiberMultiplicity_ge_two m hm
@@ -484,7 +496,8 @@ theorem fiberMultiplicity_value_symmetric (m r : Nat)
   -- RHS = ewc(F_{m+1}-2-r) + ewc(F_{m+3}-2-r)
   omega
 
-/-- S_q(m) > F_{m+2} for q ≥ 1 and m ≥ 2. -/
+/-- S_q(m) > F_{m+2} for q ≥ 1 and m ≥ 2.
+    prop:pom-moment-congruence-q -/
 theorem momentSum_gt_fib (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
     Nat.fib (m + 2) < momentSum q m := by
   rw [← X.card_eq_fib, ← Finset.card_univ]
@@ -512,7 +525,8 @@ theorem maxFiberMultiplicity_pow_le_momentSum (q m : Nat) :
         Finset.single_le_sum (f := fun x => X.fiberMultiplicity x ^ q)
           (fun x _ => Nat.zero_le _) (Finset.mem_univ x₀)
 
-/-- D(m) < S_q(m) for q ≥ 1 and m ≥ 2. -/
+/-- D(m) < S_q(m) for q ≥ 1 and m ≥ 2.
+    prop:pom-power-sum-hankel-psd -/
 theorem maxFiberMultiplicity_lt_momentSum (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤ m) :
     X.maxFiberMultiplicity m < momentSum q m := by
   have hD := maxFiberMultiplicity_ge_two m hm
@@ -538,7 +552,8 @@ theorem maxFiberMultiplicity_lt_momentSum (q m : Nat) (hq : 1 ≤ q) (hm : 2 ≤
 
 
 /-- Power mean lower bound: (2^m)^q ≤ F_{m+2}^{q-1} · S_q(m).
-    Generalizes momentSum_two_cs_lower to all q ≥ 1. -/
+    Generalizes momentSum_two_cs_lower to all q ≥ 1.
+    prop:pom-power-sum-hankel-psd -/
 theorem momentSum_power_mean_lower (q m : Nat) (hq : 1 ≤ q) :
     (2 ^ m) ^ q ≤ Nat.fib (m + 2) ^ (q - 1) * momentSum q m := by
   -- Use pow_sum_le_card_mul_sum_pow: (Σ f)^{n+1} ≤ |s|^n * Σ f^{n+1}
@@ -549,7 +564,8 @@ theorem momentSum_power_mean_lower (q m : Nat) (hq : 1 ≤ q) :
   rw [← X.card_eq_fib, ← Finset.card_univ (α := X m)]
   exact pow_sum_le_card_mul_sum_pow (fun _ _ => Nat.zero_le _) q
 
-/-- Fiber readout at m ≥ 4 needs at least 2 binary query steps: 2^1 < D(m). -/
+/-- Fiber readout at m ≥ 4 needs at least 2 binary query steps: 2^1 < D(m).
+    prop:conclusion-index-torsion-time-lower-bound -/
 theorem readout_needs_at_least_two_steps (m : Nat) (hm : 4 ≤ m) :
     2 ^ 1 < X.maxFiberMultiplicity m := by
   -- D(m) ≥ m/2 + 1 ≥ 3 > 2 = 2^1
@@ -571,7 +587,8 @@ theorem stableValue_Fold_allFalse (m : Nat) :
   rw [Fold_allFalse]
   exact X.stableValue_ofNat_lt 0 (fib_succ_pos (m + 1))
 
-/-- S_2(m) strictly exceeds 2^m for m ≥ 2: positive fiber variance. -/
+/-- S_2(m) strictly exceeds 2^m for m ≥ 2: positive fiber variance.
+    prop:pom-moment-congruence-q -/
 theorem momentSum_two_sub_pow_pos (m : Nat) (hm : 2 ≤ m) :
     2 ^ m < momentSum 2 m := by
   rw [← momentSum_one m]
@@ -582,7 +599,8 @@ theorem momentSum_two_sub_pow_pos (m : Nat) (hm : 2 ≤ m) :
 -- Phase 178
 -- ══════════════════════════════════════════════════════════════
 
-/-- E00(m) ≥ m + 1: exact weight collision grows at least linearly. -/
+/-- E00(m) ≥ m + 1: exact weight collision grows at least linearly.
+    prop:pom-s2-plancherel -/
 theorem exactWeightCollision_ge_succ (m : Nat) :
     m + 1 ≤ exactWeightCollision m := by
   rw [exactWeightCollision_eq_sum]
@@ -597,7 +615,8 @@ theorem exactWeightCollision_ge_succ (m : Nat) :
 -- Phase 179
 -- ══════════════════════════════════════════════════════════════
 
-/-- E00(m) ≥ 2 · hiddenBitCount(m) for m ≥ 2. -/
+/-- E00(m) ≥ 2 · hiddenBitCount(m) for m ≥ 2.
+    thm:pom-hidden-bit-count -/
 theorem exactWeightCollision_ge_double_hiddenBitCount (m : Nat) (hm : 2 ≤ m) :
     2 * hiddenBitCount m ≤ exactWeightCollision m := by
   rw [hiddenBitCount_eq_div]
@@ -619,7 +638,8 @@ theorem exactWeightCollision_ge_double_hiddenBitCount (m : Nat) (hm : 2 ≤ m) :
 -- Phase 181
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2 base values strictly increasing through m = 0..7. -/
+/-- S_2 base values strictly increasing through m = 0..7.
+    prop:pom-s2-recurrence -/
 theorem momentSum_two_strict_increasing_base :
     momentSum 2 0 < momentSum 2 1 ∧
     momentSum 2 1 < momentSum 2 2 ∧
@@ -642,7 +662,8 @@ theorem Fold_image_card (m : Nat) :
   rw [Finset.image_univ_of_surjective (Fold_surjective m),
       Finset.card_univ, X.card_eq_fib]
 
-/-- S_3 base values strictly increasing through m = 0..7. -/
+/-- S_3 base values strictly increasing through m = 0..7.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_strict_increasing_base :
     momentSum 3 0 < momentSum 3 1 ∧
     momentSum 3 1 < momentSum 3 2 ∧
@@ -660,7 +681,8 @@ theorem momentSum_three_strict_increasing_base :
 -- Phase 183
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_4 base values strictly increasing through m = 0..6. -/
+/-- S_4 base values strictly increasing through m = 0..6.
+    prop:pom-s4-recurrence -/
 theorem momentSum_four_strict_increasing_base :
     momentSum 4 0 < momentSum 4 1 ∧
     momentSum 4 1 < momentSum 4 2 ∧
@@ -685,7 +707,8 @@ theorem exactWeightCollision_pos (m : Nat) : 0 < exactWeightCollision m := by
 -- Phase 187
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2² ≤ S_1·S_3 verified for m=0,2,4,6. -/
+/-- S_2² ≤ S_1·S_3 verified for m=0,2,4,6.
+    cor:pom-crossq-logconvex-chain -/
 theorem momentSum_log_convex_audit_base :
     momentSum 2 0 ^ 2 ≤ momentSum 1 0 * momentSum 3 0 ∧
     momentSum 2 2 ^ 2 ≤ momentSum 1 2 * momentSum 3 2 ∧

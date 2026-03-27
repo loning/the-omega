@@ -14,7 +14,8 @@ namespace Omega
 def wordSupport (w : Word m) : Finset (Fin m) :=
   Finset.univ.filter (fun i => w i = true)
 
-/-- No11 word's support is path-independent. -/
+/-- No11 word's support is path-independent.
+    thm:pom-wordSupport-pathInd -/
 theorem wordSupport_isPathIndependent {w : Word m} (hw : No11 w) :
     IsPathIndependent m (wordSupport w) := by
   intro i hi j hj hadj
@@ -35,7 +36,8 @@ theorem wordSupport_isPathIndependent {w : Word m} (hw : No11 w) :
 def indSetToWord (S : Finset (Fin m)) : Word m :=
   fun i => if i ∈ S then true else false
 
-/-- Independent set's word satisfies No11. -/
+/-- Independent set's word satisfies No11.
+    thm:pom-indSetToWord-no11 -/
 theorem indSetToWord_no11 {S : Finset (Fin m)} (hS : IsPathIndependent m S) :
     No11 (indSetToWord S) := by
   intro i hi hi1
@@ -57,14 +59,16 @@ theorem indSetToWord_no11 {S : Finset (Fin m)} (hS : IsPathIndependent m S) :
 -- Mutual inverses
 -- ══════════════════════════════════════════════════════════════
 
-/-- wordSupport ∘ indSetToWord = id. -/
+/-- wordSupport ∘ indSetToWord = id.
+    thm:pom-wordSupport-indSetToWord -/
 theorem wordSupport_indSetToWord (S : Finset (Fin m)) :
     wordSupport (indSetToWord S) = S := by
   ext i
   simp only [wordSupport, indSetToWord, Finset.mem_filter, Finset.mem_univ, true_and]
   split <;> simp_all
 
-/-- indSetToWord ∘ wordSupport = id. -/
+/-- indSetToWord ∘ wordSupport = id.
+    thm:pom-indSetToWord-wordSupport -/
 theorem indSetToWord_wordSupport (w : Word m) :
     indSetToWord (wordSupport w) = w := by
   funext i
@@ -78,7 +82,8 @@ theorem indSetToWord_wordSupport (w : Word m) :
 /-- The type of path-independent sets on Fin m. -/
 def PathIndSets (m : Nat) := { S : Finset (Fin m) // IsPathIndependent m S }
 
-/-- X_m ≃ independent sets on P_m. -/
+/-- X_m ≃ independent sets on P_m.
+    thm:pom-xEquivPathIndSet -/
 noncomputable def xEquivPathIndSet (m : Nat) : X m ≃ PathIndSets m where
   toFun x := ⟨wordSupport x.1, wordSupport_isPathIndependent x.2⟩
   invFun S := ⟨indSetToWord S.1, indSetToWord_no11 S.2⟩
@@ -97,9 +102,11 @@ def popcount (w : Word m) : Nat := (wordSupport w).card
 theorem popcount_eq_count_true (w : Word m) :
     popcount w = (Finset.univ.filter (fun i : Fin m => w i = true)).card := rfl
 
+/-- thm:pom-popcount-allFalse -/
 theorem popcount_allFalse : popcount (fun (_ : Fin m) => false) = 0 := by
   simp [popcount, wordSupport]
 
+/-- thm:pom-popcount-allTrue -/
 theorem popcount_allTrue : popcount (fun (_ : Fin m) => true) = m := by
   simp [popcount, wordSupport]
 
@@ -107,7 +114,8 @@ theorem popcount_allTrue : popcount (fun (_ : Fin m) => true) = m := by
 -- popcount complement + statistics
 -- ══════════════════════════════════════════════════════════════
 
-/-- popcount(bitwise complement) + popcount = m. -/
+/-- popcount(bitwise complement) + popcount = m.
+    thm:pom-popcount-not -/
 theorem popcount_not (w : Word m) :
     popcount (fun i => !w i) + popcount w = m := by
   simp only [popcount, wordSupport]
@@ -129,7 +137,8 @@ theorem popcount_not (w : Word m) :
     _ = Fintype.card (Fin m) := by rw [Finset.card_univ]
     _ = m := Fintype.card_fin m
 
-/-- popcount = 0 iff word is all-false. -/
+/-- popcount = 0 iff word is all-false.
+    thm:pom-popcount-eq-zero-iff -/
 theorem popcount_eq_zero_iff (x : X m) :
     popcount x.1 = 0 ↔ x = ⟨fun _ => false, no11_allFalse⟩ := by
   constructor
@@ -140,7 +149,8 @@ theorem popcount_eq_zero_iff (x : X m) :
     simp [wordSupport, Finset.mem_filter] at this; exact this
   · intro h; rw [h]; exact popcount_allFalse
 
-/-- popcount(truncate w) ≤ popcount(w). -/
+/-- popcount(truncate w) ≤ popcount(w).
+    thm:pom-popcount-truncate-le -/
 theorem popcount_truncate_le (w : Word (m + 1)) : popcount (truncate w) ≤ popcount w := by
   simp only [popcount, wordSupport]
   -- Inject Fin m → Fin (m+1) via Fin.castSucc
@@ -153,6 +163,7 @@ theorem popcount_truncate_le (w : Word (m + 1)) : popcount (truncate w) ≤ popc
 /-- Total popcount across X_m. -/
 noncomputable def totalPopcount (m : Nat) : Nat := ∑ x : X m, popcount x.1
 
+/-- thm:pom-totalPopcount-zero -/
 theorem totalPopcount_zero : totalPopcount 0 = 0 := by
   simp [totalPopcount, popcount, wordSupport]
 
@@ -162,7 +173,8 @@ theorem totalPopcount_zero : totalPopcount 0 = 0 := by
 -- Weight surjectivity
 -- ══════════════════════════════════════════════════════════════
 
-/-- Every weight value in [0, F_{m+3}-2] is achieved by some word. -/
+/-- Every weight value in [0, F_{m+3}-2] is achieved by some word.
+    thm:pom-weight-surjective -/
 theorem weight_surjective (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
     ∃ w : Word m, weight w = n := by
   induction m generalizing n with
@@ -186,13 +198,15 @@ theorem weight_surjective (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
       obtain ⟨v, hv⟩ := ih (n - Nat.fib (m + 2)) hle
       exact ⟨snoc v true, by simp [weight, weight_snoc, hv]; omega⟩
 
-/-- ewc(m, n) > 0 for n ≤ F_{m+3}-2. -/
+/-- ewc(m, n) > 0 for n ≤ F_{m+3}-2.
+    thm:pom-ewc-pos-of-le -/
 theorem ewc_pos_of_le (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
     0 < exactWeightCount m n := by
   obtain ⟨w, hw⟩ := weight_surjective m n hn
   exact Finset.card_pos.mpr ⟨w, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hw⟩⟩
 
-/-- d(x) ≥ 2 when sv(x) + F ≤ max weight. -/
+/-- d(x) ≥ 2 when sv(x) + F ≤ max weight.
+    thm:pom-fiberMultiplicity-ge-two-of-sv-le -/
 theorem fiberMultiplicity_ge_two_of_sv_le (x : X m)
     (h : stableValue x + Nat.fib (m + 2) ≤ Nat.fib (m + 3) - 2) :
     2 ≤ X.fiberMultiplicity x := by
@@ -204,10 +218,12 @@ theorem fiberMultiplicity_ge_two_of_sv_le (x : X m)
 -- Weight decomposition + fiber wrappers
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-weight-truncate-add -/
 theorem weight_truncate_add (w : Word (m + 1)) :
     weight w = weight (truncate w) +
     if w ⟨m, Nat.lt_succ_self m⟩ = true then Nat.fib (m + 2) else 0 := rfl
 
+/-- thm:pom-weight-pos-iff -/
 theorem weight_pos_iff (w : Word m) :
     0 < weight w ↔ ∃ i : Fin m, w i = true := by
   constructor
@@ -234,8 +250,10 @@ theorem weight_pos_iff (w : Word m) :
               have : i = ⟨n, Nat.lt_succ_self n⟩ := Fin.ext this
               rw [← this]; exact hi]
 
+/-- thm:pom-Fold-of-stable -/
 theorem Fold_of_stable' (x : X m) : Fold x.1 = x := Fold_stable x
 
+/-- thm:pom-fiber-self-mem -/
 theorem fiber_self_mem (x : X m) : x.1 ∈ X.fiber x := X.self_mem_fiber x
 
 -- fiberMultiplicity_eq_one_of_sv_ge deferred (ewc uniqueness proof complex)
@@ -244,7 +262,8 @@ theorem fiber_self_mem (x : X m) : x.1 ∈ X.fiber x := X.self_mem_fiber x
 -- D(m) bounds
 -- ══════════════════════════════════════════════════════════════
 
-/-- D(m) ≤ F(m+2). -/
+/-- D(m) ≤ F(m+2).
+    thm:pom-maxFiberMultiplicity-le-fib -/
 theorem maxFiberMultiplicity_le_fib (m : Nat) :
     X.maxFiberMultiplicity m ≤ Nat.fib (m + 2) := by
   induction m using Nat.strongRecOn with
@@ -260,12 +279,14 @@ theorem maxFiberMultiplicity_le_fib (m : Nat) :
       rw [show m + 2 + 2 = m + 4 from rfl, show m + 2 + 1 = m + 3 from rfl] at hfib
       linarith
 
-/-- d(x) ≤ F(m+2) for all x. -/
+/-- d(x) ≤ F(m+2) for all x.
+    thm:pom-fiberMultiplicity-le-fib -/
 theorem fiberMultiplicity_le_fib (x : X m) :
     X.fiberMultiplicity x ≤ Nat.fib (m + 2) :=
   (X.fiberMultiplicity_le_max x).trans (maxFiberMultiplicity_le_fib m)
 
-/-- D(m)² ≤ S_2(m). -/
+/-- D(m)² ≤ S_2(m).
+    thm:pom-maxFiberMultiplicity-sq-le-momentSum -/
 theorem maxFiberMultiplicity_sq_le_momentSum (m : Nat) :
     X.maxFiberMultiplicity m ^ 2 ≤ momentSum 2 m := by
   obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
@@ -279,7 +300,8 @@ theorem maxFiberMultiplicity_sq_le_momentSum (m : Nat) :
 -- D(m) lower bounds + unboundedness
 -- ══════════════════════════════════════════════════════════════
 
-/-- D(m) ≥ ⌊m/2⌋ + 1. -/
+/-- D(m) ≥ ⌊m/2⌋ + 1.
+    thm:pom-maxFiberMultiplicity-ge-half -/
 theorem maxFiberMultiplicity_ge_half (m : Nat) :
     m / 2 + 1 ≤ X.maxFiberMultiplicity m := by
   calc m / 2 + 1
@@ -287,22 +309,26 @@ theorem maxFiberMultiplicity_ge_half (m : Nat) :
         (fiberMultiplicity_allFalse_closed m).symm
     _ ≤ X.maxFiberMultiplicity m := X.fiberMultiplicity_le_max _
 
-/-- D(m) ≥ 2 for m ≥ 2. -/
+/-- D(m) ≥ 2 for m ≥ 2.
+    thm:pom-maxFiberMultiplicity-ge-two -/
 theorem maxFiberMultiplicity_ge_two (m : Nat) (hm : 2 ≤ m) :
     2 ≤ X.maxFiberMultiplicity m := by
   have := maxFiberMultiplicity_ge_half m; omega
 
-/-- D(m) is sandwiched: ⌊m/2⌋+1 ≤ D(m) ≤ F(m+2). -/
+/-- D(m) is sandwiched: ⌊m/2⌋+1 ≤ D(m) ≤ F(m+2).
+    thm:pom-maxFiberMultiplicity-bounds -/
 theorem maxFiberMultiplicity_bounds (m : Nat) :
     m / 2 + 1 ≤ X.maxFiberMultiplicity m ∧
     X.maxFiberMultiplicity m ≤ Nat.fib (m + 2) :=
   ⟨maxFiberMultiplicity_ge_half m, maxFiberMultiplicity_le_fib m⟩
 
-/-- D(m) is unbounded. -/
+/-- D(m) is unbounded.
+    thm:pom-maxFiberMultiplicity-unbounded -/
 theorem maxFiberMultiplicity_unbounded : ∀ C, ∃ m, C < X.maxFiberMultiplicity m := by
   intro C; exact ⟨2 * C, by have := maxFiberMultiplicity_ge_half (2 * C); omega⟩
 
-/-- S_2(m) ≥ D(m)² (named alias). -/
+/-- S_2(m) ≥ D(m)² (named alias).
+    thm:pom-momentSum-two-ge-maxFiber-sq -/
 theorem momentSum_two_ge_maxFiber_sq (m : Nat) :
     X.maxFiberMultiplicity m ^ 2 ≤ momentSum 2 m :=
   maxFiberMultiplicity_sq_le_momentSum m
@@ -319,23 +345,27 @@ theorem weight_eq_fib_sum (w : Word m) :
 -- Phase 117: popcount bound + PathIndSets card + appendFalse injective
 -- ══════════════════════════════════════════════════════════════
 
-/-- PathIndSets is finite (via equivalence with X m). -/
+/-- PathIndSets is finite (via equivalence with X m).
+    prop:folding-stable-syntax-fibonacci-count -/
 noncomputable instance instFintypePathIndSets (m : Nat) : Fintype (PathIndSets m) :=
   Fintype.ofEquiv (X m) (xEquivPathIndSet m)
 
-/-- |PathIndSets m| = F_{m+2}. -/
+/-- |PathIndSets m| = F_{m+2}.
+    prop:folding-stable-syntax-fibonacci-count -/
 theorem card_pathIndSets (m : Nat) :
     Fintype.card (PathIndSets m) = Nat.fib (m + 2) := by
   rw [← X.card_eq_fib m]
   exact Fintype.card_congr (xEquivPathIndSet m).symm
 
-/-- X.appendFalse is injective. -/
+/-- X.appendFalse is injective.
+    prop:folding-stable-syntax-terminal-recursion -/
 theorem appendFalse_injective (m : Nat) : Function.Injective (X.appendFalse (m := m)) :=
   fun x y h => by
     have := congr_arg X.restrict h
     rwa [X.restrict_appendFalse, X.restrict_appendFalse] at this
 
-/-- No11 words have at most ⌈m/2⌉ true bits. -/
+/-- No11 words have at most ⌈m/2⌉ true bits.
+    thm:pom-fiber-indset-factorization -/
 theorem popcount_le_half (x : X m) : (wordSupport x.1).card ≤ (m + 1) / 2 := by
   -- Proof by strong induction on m.
   -- Key: No11 means no two adjacent bits are true.
@@ -431,7 +461,8 @@ theorem popcount_le_half (x : X m) : (wordSupport x.1).card ≤ (m + 1) / 2 := b
           _ ≤ ((m + 2) + 1) / 2 := by omega
 
 
-/-- popcount(w) ≤ weight(w): each true bit contributes F(i+2) ≥ 1 to weight. -/
+/-- popcount(w) ≤ weight(w): each true bit contributes F(i+2) ≥ 1 to weight.
+    bridge:popcount-weight -/
 theorem popcount_le_weight (w : Word m) : popcount w ≤ weight w := by
   rw [weight_eq_fib_sum]
   simp only [popcount, wordSupport]
@@ -441,11 +472,13 @@ theorem popcount_le_weight (w : Word m) : popcount w ≤ weight w := by
     _ ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin m => w i = true), Nat.fib (i.val + 2) := by
         apply Finset.sum_le_sum; intro i _; exact fib_succ_pos (i.val + 1)
 
-/-- Paper label: X_m ≃ path-independent sets on P_m. -/
+/-- Paper label: X_m ≃ path-independent sets on P_m.
+    def:pom-fibonacci-cube -/
 theorem paper_fibonacci_cube_equiv (m : Nat) :
     Nonempty (X m ≃ PathIndSets m) := ⟨xEquivPathIndSet m⟩
 
-/-- Paper: |X_m| = F_{m+2} and X_m ≃ PathIndSets. -/
+/-- Paper: |X_m| = F_{m+2} and X_m ≃ PathIndSets.
+    def:pom-fibonacci-cube -/
 theorem paper_fibonacci_cube (m : Nat) :
     Fintype.card (X m) = Nat.fib (m + 2) ∧ Nonempty (X m ≃ PathIndSets m) :=
   ⟨X.card_eq_fib m, ⟨xEquivPathIndSet m⟩⟩

@@ -66,6 +66,7 @@ theorem fib_gt_one_of_ge_two (hm : 1 ≤ m) : 1 < Nat.fib (m + 2) := by
     _ ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
 
 /-- Upper bound: F(m+2) ≤ 2^(m+1) for all m.
+    fib-growth-upper-bound
     fib-growth-upper-bound -/
 theorem fib_le_pow_two : ∀ m : Nat, Nat.fib (m + 2) ≤ 2 ^ (m + 1)
   | 0 => by simp
@@ -86,6 +87,7 @@ theorem fib_gcd (m n : Nat) : Nat.gcd (Nat.fib m) (Nat.fib n) = Nat.fib (Nat.gcd
   (Nat.fib_gcd m n).symm
 
 /-- F_m and F_{m+1} are coprime.
+    fib-coprime-succ
     fib-coprime-succ -/
 theorem fib_coprime_succ (m : Nat) : Nat.Coprime (Nat.fib m) (Nat.fib (m + 1)) :=
   Nat.fib_coprime_fib_succ m

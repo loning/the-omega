@@ -47,7 +47,8 @@ theorem weight_word_one (w : Word 1) :
   simp [weight]
 
 
-/-- Weight of the all-false word is 0. -/
+/-- Weight of the all-false word is 0.
+    lem:weight-allFalse -/
 @[simp] theorem weight_allFalse : weight (fun _ : Fin m => false) = 0 := by
   induction m with
   | zero => rfl
@@ -55,7 +56,8 @@ theorem weight_word_one (w : Word 1) :
     simp only [weight, Bool.false_eq_true, ↓reduceIte, Nat.add_zero]
     convert ih using 2
 
-/-- weight(w) = Σ_{i : Fin m} (if w i then Nat.fib (i+2) else 0). -/
+/-- weight(w) = Σ_{i : Fin m} (if w i then Nat.fib (i+2) else 0).
+    def:pom-fiber-adm-path -/
 theorem weight_eq_fib_ite_sum {m : Nat} (w : Word m) :
     weight w = ∑ i : Fin m, if w i then Nat.fib (i.val + 2) else 0 := by
   induction m with

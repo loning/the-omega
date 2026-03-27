@@ -6,17 +6,20 @@ namespace Omega
 -- Phase 152-153: S_3 recurrence definitions + verification
 -- ══════════════════════════════════════════════════════════════
 
-/-- Cross-correlation-squared high at previous shift F_{m+1}: Σ ewc(n)² · ewc(n + F_{m+1}). -/
+/-- Cross-correlation-squared high at previous shift F_{m+1}: Σ ewc(n)² · ewc(n + F_{m+1}).
+    bridge:ccsh-prev -/
 def crossCorrSqHighPrev (m : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)),
     exactWeightCount m n ^ 2 * exactWeightCount m (n + Nat.fib (m + 1))
 
-/-- Cross-correlation-squared low at previous shift F_{m+1}: Σ ewc(n) · ewc(n + F_{m+1})². -/
+/-- Cross-correlation-squared low at previous shift F_{m+1}: Σ ewc(n) · ewc(n + F_{m+1})².
+    bridge:ccsl-prev -/
 def crossCorrSqLowPrev (m : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)),
     exactWeightCount m n * exactWeightCount m (n + Nat.fib (m + 1)) ^ 2
 
-/-- tripleCollisionClass(fff) = exactTripleCollisionClass(fff). -/
+/-- tripleCollisionClass(fff) = exactTripleCollisionClass(fff).
+    bridge:s3-fff-exact -/
 theorem tripleCollisionClass_fff_eq_exact (m : Nat) :
     (tripleCollisionClass m false false false).card =
     (exactTripleCollisionClass m false false false).card := by
@@ -33,7 +36,8 @@ theorem tripleCollisionClass_fff_eq_exact (m : Nat) :
     · exact h1
     · exact h2
 
-/-- tripleCollisionClass(ttt) = exactTripleCollisionClass(ttt). -/
+/-- tripleCollisionClass(ttt) = exactTripleCollisionClass(ttt).
+    bridge:s3-ttt-exact -/
 theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
     (tripleCollisionClass m true true true).card =
     (exactTripleCollisionClass m true true true).card := by
@@ -57,7 +61,8 @@ theorem tripleCollisionClass_ttt_eq_exact (m : Nat) :
 -- Phase 155: T_fft mod split via weight-class summation
 -- ══════════════════════════════════════════════════════════════
 
-/-- Count of words whose weight + F_{m+2} ≡ n (mod F_{m+3}). -/
+/-- Count of words whose weight + F_{m+2} ≡ n (mod F_{m+3}).
+    bridge:modular-weight-count -/
 theorem modular_weight_count (m n : Nat) (hn : n < Nat.fib (m + 3)) :
     (Finset.univ.filter (fun v : Word m =>
       (weight v + Nat.fib (m + 2)) % Nat.fib (m + 3) = n)).card =
@@ -96,7 +101,8 @@ theorem modular_weight_count (m n : Nat) (hn : n < Nat.fib (m + 3)) :
           Nat.add_mod, Nat.mod_self, Nat.add_zero, Nat.mod_mod, Nat.mod_eq_of_lt hn]
 
 set_option maxHeartbeats 800000 in
-/-- T_{fft}(mod) expressed as sum over weight classes. -/
+/-- T_{fft}(mod) expressed as sum over weight classes.
+    bridge:fft-eq-sum -/
 theorem tripleCollisionClass_fft_eq_sum (m : Nat) :
     (tripleCollisionClass m false false true).card =
     ∑ n ∈ Finset.range (Nat.fib (m + 3)),
@@ -142,12 +148,14 @@ theorem tripleCollisionClass_fft_eq_sum (m : Nat) :
     exact hne (hw1.symm.trans hw1')
 
 -- ewc vanishes for weights ≥ F_{m+3}
+/-- bridge:ewc-zero-of-ge -/
 private theorem ewc_zero_of_ge (m n : Nat) (hn : Nat.fib (m + 3) ≤ n) :
     exactWeightCount m n = 0 := by
   simp only [exactWeightCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
   intro w _; exact Nat.ne_of_lt (by linarith [X.weight_lt_fib w])
 
-/-- CCSL range truncates to F_{m+1}: for k ≥ F_{m+1}, ewc(k+F_{m+2}) = 0. -/
+/-- CCSL range truncates to F_{m+1}: for k ≥ F_{m+1}, ewc(k+F_{m+2}) = 0.
+    bridge:ccsl-range-truncate -/
 theorem crossCorrSqLow_range_truncate (m : Nat) :
     crossCorrSqLow m = ∑ k ∈ Finset.range (Nat.fib (m + 1)),
       exactWeightCount m k * exactWeightCount m (k + Nat.fib (m + 2)) ^ 2 := by
@@ -159,7 +167,8 @@ theorem crossCorrSqLow_range_truncate (m : Nat) :
   have : Nat.fib (m + 3) ≤ k + Nat.fib (m + 2) := by linarith [hfib]
   rw [ewc_zero_of_ge m _ this]; simp
 
-/-- CCSH' range truncates to F_{m+2}: for n ≥ F_{m+2}, ewc(n+F_{m+1}) = 0. -/
+/-- CCSH' range truncates to F_{m+2}: for n ≥ F_{m+2}, ewc(n+F_{m+1}) = 0.
+    bridge:ccsh-prev-truncate -/
 theorem crossCorrSqHighPrev_range_truncate (m : Nat) :
     crossCorrSqHighPrev m = ∑ n ∈ Finset.range (Nat.fib (m + 2)),
       exactWeightCount m n ^ 2 * exactWeightCount m (n + Nat.fib (m + 1)) := by
@@ -172,7 +181,8 @@ theorem crossCorrSqHighPrev_range_truncate (m : Nat) :
   rw [ewc_zero_of_ge m _ this]; simp
 
 set_option maxHeartbeats 800000 in
-/-- T_{fft}(mod) = CCSL + CCSH' (general, all m). -/
+/-- T_{fft}(mod) = CCSL + CCSH' (general, all m).
+    prop:pom-s3-recurrence -/
 theorem tripleCollisionClass_fft_mod_split (m : Nat) :
     (tripleCollisionClass m false false true).card =
     crossCorrSqLow m + crossCorrSqHighPrev m := by
@@ -213,7 +223,8 @@ theorem tripleCollisionClass_fft_mod_split (m : Nat) :
     congr 1
     ext n; simp only [Finset.mem_filter, Finset.mem_range, not_le]; omega
 
-/-- CCSH range truncates to F_{m+1}. -/
+/-- CCSH range truncates to F_{m+1}.
+    bridge:ccsh-range-truncate -/
 theorem crossCorrSqHigh_range_truncate (m : Nat) :
     crossCorrSqHigh m = ∑ k ∈ Finset.range (Nat.fib (m + 1)),
       exactWeightCount m k ^ 2 * exactWeightCount m (k + Nat.fib (m + 2)) := by
@@ -225,7 +236,8 @@ theorem crossCorrSqHigh_range_truncate (m : Nat) :
   have : Nat.fib (m + 3) ≤ k + Nat.fib (m + 2) := by linarith
   rw [ewc_zero_of_ge m _ this]; simp
 
-/-- CCSL' range truncates to F_{m+2}. -/
+/-- CCSL' range truncates to F_{m+2}.
+    bridge:ccsl-prev-truncate -/
 theorem crossCorrSqLowPrev_range_truncate (m : Nat) :
     crossCorrSqLowPrev m = ∑ n ∈ Finset.range (Nat.fib (m + 2)),
       exactWeightCount m n * exactWeightCount m (n + Nat.fib (m + 1)) ^ 2 := by
@@ -239,7 +251,8 @@ theorem crossCorrSqLowPrev_range_truncate (m : Nat) :
 
 set_option maxHeartbeats 800000 in
 /-- T_{ftt}(mod) expressed as sum over weight classes.
-    Group by n = wt(v2) = wt(v3): v1 satisfies wt(v1) = (n+F₂)%F. -/
+    Group by n = wt(v2) = wt(v3): v1 satisfies wt(v1) = (n+F₂)%F.
+    bridge:ftt-eq-sum -/
 theorem tripleCollisionClass_ftt_eq_sum (m : Nat) :
     (tripleCollisionClass m false true true).card =
     ∑ n ∈ Finset.range (Nat.fib (m + 3)),
@@ -281,7 +294,8 @@ theorem tripleCollisionClass_ftt_eq_sum (m : Nat) :
     exact hne (hw2.symm.trans hw2')
 
 set_option maxHeartbeats 800000 in
-/-- T_{ftt}(mod) = CCSH + CCSL' (general, all m). -/
+/-- T_{ftt}(mod) = CCSH + CCSL' (general, all m).
+    prop:pom-s3-recurrence -/
 theorem tripleCollisionClass_ftt_mod_split (m : Nat) :
     (tripleCollisionClass m false true true).card =
     crossCorrSqHigh m + crossCorrSqLowPrev m := by
@@ -326,7 +340,8 @@ theorem tripleCollisionClass_ftt_mod_split (m : Nat) :
       simp only [Finset.mem_filter, Finset.mem_range, not_lt] at hn
       rw [Nat.sub_add_cancel hn.2]
 
-/-- S_3(m+1) = EWT(m+1) + 3·CCSH'(m) + 3·CCSL'(m) (general, for all m). -/
+/-- S_3(m+1) = EWT(m+1) + 3·CCSH'(m) + 3·CCSL'(m) (general, for all m).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_eq_ewt_plus_ccs (m : Nat) :
     momentSum 3 (m + 1) = exactWeightTriple (m + 1) +
     3 * crossCorrSqHighPrev m + 3 * crossCorrSqLowPrev m := by
@@ -359,14 +374,16 @@ theorem momentSum_three_eq_ewt_plus_ccs (m : Nat) :
 -- Phase 161: shiftedTriple = Word³ counting version of CCS'
 -- ══════════════════════════════════════════════════════════════
 
-/-- Shifted triple count: triples where weights differ by exactly F_{m+1}. -/
+/-- Shifted triple count: triples where weights differ by exactly F_{m+1}.
+    bridge:shifted-triple-def -/
 def shiftedTriple (m : Nat) : Nat :=
   (Finset.univ.filter (fun p : Word m × Word m × Word m =>
     weight p.1 = weight p.2.1 ∧ weight p.2.2 = weight p.1 + Nat.fib (m + 1))).card +
   (Finset.univ.filter (fun p : Word m × Word m × Word m =>
     weight p.1 + Nat.fib (m + 1) = weight p.2.1 ∧ weight p.2.1 = weight p.2.2)).card
 
-/-- shiftedTriple = CCSH' + CCSL'. -/
+/-- shiftedTriple = CCSH' + CCSL'.
+    bridge:shifted-triple-eq -/
 theorem shiftedTriple_eq_ccs_prime (m : Nat) :
     shiftedTriple m = crossCorrSqHighPrev m + crossCorrSqLowPrev m := by
   classical
@@ -412,7 +429,8 @@ theorem shiftedTriple_eq_ccs_prime (m : Nat) :
 -- Phase 154: S_3 conditional recurrence consequence chain
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_3 subtraction form (conditional). -/
+/-- S_3 subtraction form (conditional).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_recurrence_sub_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
@@ -421,7 +439,8 @@ theorem momentSum_three_recurrence_sub_of
       2 * momentSum 3 m := by
   have := hrec m; omega
 
-/-- S_3 is strictly monotone (conditional on recurrence). -/
+/-- S_3 is strictly monotone (conditional on recurrence).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_strict_mono_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
@@ -447,7 +466,8 @@ theorem momentSum_three_strict_mono_of
       -- S(m+3) + 4·S(m+2) > 2·S(m+1) (by monotonicity S(m+2) > S(m+1))
       nlinarith
 
-/-- S_3(m+1) ≥ 2·S_3(m) for m ≥ 2 (conditional). -/
+/-- S_3(m+1) ≥ 2·S_3(m) for m ≥ 2 (conditional).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_double_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))
@@ -470,7 +490,8 @@ theorem momentSum_three_double_of
       nlinarith
 
 
-/-- S_3(8) = 7768 (by conditional recurrence from S_3(5..7)). -/
+/-- S_3(8) = 7768 (by conditional recurrence from S_3(5..7)).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_eight_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
@@ -480,7 +501,8 @@ theorem momentSum_three_eight_of
     show (5 : Nat) + 1 = 6 from rfl,
     momentSum_three_five, momentSum_three_six, momentSum_three_seven] at h; omega
 
-/-- S_3(9) = 23912. -/
+/-- S_3(9) = 23912.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_nine_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
@@ -490,7 +512,8 @@ theorem momentSum_three_nine_of
     show (6 : Nat) + 1 = 7 from rfl,
     momentSum_three_six, momentSum_three_seven, momentSum_three_eight_of hrec] at h; omega
 
-/-- S_3(10) = 73888. -/
+/-- S_3(10) = 73888.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_ten_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1)) :
@@ -500,7 +523,8 @@ theorem momentSum_three_ten_of
     show (7 : Nat) + 1 = 8 from rfl,
     momentSum_three_seven, momentSum_three_eight_of hrec, momentSum_three_nine_of hrec] at h; omega
 
-/-- S_3(m) is even for m ≥ 1 (conditional). -/
+/-- S_3(m) is even for m ≥ 1 (conditional).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_even_of
     (hrec : ∀ m, momentSum 3 (m + 3) + 2 * momentSum 3 m =
       2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1))

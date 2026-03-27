@@ -8,20 +8,23 @@ noncomputable section
 
 /-! ## Fibonacci auxiliary lemmas -/
 
-/-- F(m) + Nat.fib(m) = F(m+1), i.e., Nat.fib(m+1) + Nat.fib(m) = Nat.fib(m+2). -/
+/-- F(m) + Nat.fib(m) = F(m+1), i.e., Nat.fib(m+1) + Nat.fib(m) = Nat.fib(m+2).
+    aux:fib-succ-add-fib-eq -/
 theorem fib_succ_add_fib_eq (m : Nat) :
     Nat.fib (m + 1) + Nat.fib m = Nat.fib (m + 2) := by
   show Nat.fib (m + 1) + Nat.fib m = Nat.fib (m + 2)
   have := Nat.fib_add_two (n := m)
   omega
 
-/-- Nat.fib(m+2) - Nat.fib(m+1) = Nat.fib(m), from the Fibonacci recurrence. -/
+/-- Nat.fib(m+2) - Nat.fib(m+1) = Nat.fib(m), from the Fibonacci recurrence.
+    aux:fib-sub-eq -/
 theorem fib_sub_eq (m : Nat) :
     Nat.fib (m + 2) - Nat.fib (m + 1) = Nat.fib m := by
   have := Nat.fib_add_two (n := m)
   omega
 
-/-- Nat.fib m < F(m+1) for all m. -/
+/-- Nat.fib m < F(m+1) for all m.
+    aux:fib-lt-fib-succ-succ -/
 theorem fib_lt_fib_succ_succ (m : Nat) : Nat.fib m < Nat.fib (m + 2) := by
   show Nat.fib m < Nat.fib (m + 2)
   have := Nat.fib_add_two (n := m)
@@ -115,15 +118,18 @@ theorem restrict_stableAdd_carry_defect (x y : X (m + 1)) :
 theorem carryElement_m6_value : stableValue (carryElement 6) = 8 := by
   rw [stableValue_carryElement]; native_decide
 
-/-- Concrete: carryElement 5 has value Nat.fib 5 = 5. -/
+/-- Concrete: carryElement 5 has value Nat.fib 5 = 5.
+    cor:pom-carry-defect-m5-value -/
 theorem carryElement_m5_value : stableValue (carryElement 5) = 5 := by
   rw [stableValue_carryElement]; native_decide
 
-/-- Concrete: carryElement 7 has value Nat.fib 7 = 13. -/
+/-- Concrete: carryElement 7 has value Nat.fib 7 = 13.
+    cor:pom-carry-defect-m7-value -/
 theorem carryElement_m7_value : stableValue (carryElement 7) = 13 := by
   rw [stableValue_carryElement]; native_decide
 
-/-- The carry element is nonzero for m ≥ 2. -/
+/-- The carry element is nonzero for m ≥ 2.
+    prop:pom-carry-element-nonzero -/
 theorem carryElement_ne_zero (hm : 2 ≤ m) : carryElement m ≠ X.stableZero := by
   intro h
   have h1 := congr_arg stableValue h
@@ -135,7 +141,8 @@ end
 
 end X
 
-/-- Paper label: carry indicator (κ) definition. -/
+/-- Paper label: carry indicator (κ) definition.
+    def:pom-kappa -/
 theorem paper_kappa_def (x y : X (m + 1)) :
     carryIndicator x y =
     if stableValue x + stableValue y ≥ Nat.fib (m + 3) then 1 else 0 := rfl

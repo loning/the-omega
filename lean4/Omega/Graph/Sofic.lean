@@ -59,13 +59,15 @@ theorem no11_of_acceptsWord_goldenMean {w : Word m} :
     simpa [hIdx] using hAfter
   exact hEdgeNext.2 ⟨hBeforeNext, hWordNext⟩
 
+/-- thm:golden-mean-sofic-presentation -/
 theorem acceptsWord_goldenMean_iff_no11 (w : Word m) :
     AcceptsWord goldenMeanGraph false w ↔ No11 w := by
   constructor
   · exact no11_of_acceptsWord_goldenMean
   · exact acceptsWord_goldenMean_of_no11
 
-/-- The finite stable language is exactly the language accepted by the golden-mean graph. -/
+/-- The finite stable language is exactly the language accepted by the golden-mean graph.
+    cor:stable-language-explicit-sofic -/
 theorem stableLanguage_eq_goldenMean (m : Nat) :
     {w : Word m | No11 w} = {w : Word m | AcceptsWord goldenMeanGraph false w} := by
   ext w

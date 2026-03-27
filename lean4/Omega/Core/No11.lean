@@ -6,6 +6,7 @@ namespace Omega
 def No11 (w : Word m) : Prop :=
   ∀ i : Nat, get w i = true → get w (i + 1) = true → False
 
+/-- engine:no11-truncate -/
 @[simp] theorem no11_truncate {w : Word (m + 1)} (h : No11 w) : No11 (truncate w) := by
   intro i hi hi1
   have hiLt : i < m := lt_of_get_eq_true hi

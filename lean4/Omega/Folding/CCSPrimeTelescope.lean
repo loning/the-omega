@@ -23,7 +23,8 @@ private theorem ewc_succ_small (m n : Nat) (hn : n < Nat.fib (m + 2)) :
     exactWeightCount (m + 1) n = exactWeightCount m n := by
   rw [exactWeightCount_succ]; simp [show ¬(Nat.fib (m + 2) ≤ n) from by omega]
 
-/-- CCSH(m+1) = CCSH'(m). -/
+/-- CCSH(m+1) = CCSH'(m).
+    bridge:ccsh-succ-eq-prev -/
 theorem crossCorrSqHigh_succ_eq_prev (m : Nat) :
     crossCorrSqHigh (m + 1) = crossCorrSqHighPrev m := by
   simp only [crossCorrSqHigh, crossCorrSqHighPrev]
@@ -61,7 +62,8 @@ theorem crossCorrSqHigh_succ_eq_prev (m : Nat) :
   rw [show (m + 1) + 2 = m + 3 from by omega,
       ewc_succ_small m n hn', ewc_succ_shift m n hn']
 
-/-- CCSL(m+1) = CCSL'(m). -/
+/-- CCSL(m+1) = CCSL'(m).
+    bridge:ccsl-succ-eq-prev -/
 theorem crossCorrSqLow_succ_eq_prev (m : Nat) :
     crossCorrSqLow (m + 1) = crossCorrSqLowPrev m := by
   simp only [crossCorrSqLow, crossCorrSqLowPrev]
@@ -93,13 +95,15 @@ theorem crossCorrSqLow_succ_eq_prev (m : Nat) :
   rw [show (m + 1) + 2 = m + 3 from by omega,
       ewc_succ_small m n hn', ewc_succ_shift m n hn']
 
-/-- CCSH(m+1) + CCSL(m+1) = CCSH'(m) + CCSL'(m). -/
+/-- CCSH(m+1) + CCSL(m+1) = CCSH'(m) + CCSL'(m).
+    bridge:cc-succ-ccs-prime -/
 theorem cc_succ_eq_ccs_prime (m : Nat) :
     crossCorrSqHigh (m + 1) + crossCorrSqLow (m + 1) =
     crossCorrSqHighPrev m + crossCorrSqLowPrev m := by
   rw [crossCorrSqHigh_succ_eq_prev, crossCorrSqLow_succ_eq_prev]
 
-/-- S_3(m+1) + EWT(m+1) = EWT(m+2). -/
+/-- S_3(m+1) + EWT(m+1) = EWT(m+2).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_add_ewt (m : Nat) :
     momentSum 3 (m + 1) + exactWeightTriple (m + 1) = exactWeightTriple (m + 2) := by
   have h1 := momentSum_three_eq_ewt_plus_ccs m

@@ -18,11 +18,13 @@ namespace Omega.ZeckSig
 
 /-! ### Zeckendorf decompositions of simple Lie algebra dimensions -/
 
-/-- dim(so(10)) = 45 = F(9) + F(6) + F(4) = 34 + 8 + 3. -/
+/-- dim(so(10)) = 45 = F(9) + F(6) + F(4) = 34 + 8 + 3.
+    thm:zeckendorf-no-carry-additivity -/
 theorem dim_so10_zeckendorf : 45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 := by native_decide
 
 /-- dim(su(2) × su(2) × su(2)) = 12 via Wilson's standard model embedding:
-    12 = F(6) + F(4) + F(2) = 8 + 3 + 1. -/
+    12 = F(6) + F(4) + F(2) = 8 + 3 + 1.
+    thm:zeckendorf-sm-embedding -/
 theorem dim_sm_zeckendorf : 12 = Nat.fib 6 + Nat.fib 4 + Nat.fib 2 := by native_decide
 
 /-- dim(su(2)) = 3 = F(4). -/
@@ -78,13 +80,15 @@ Operationally: n cannot be written as 3 + 8 + r where r has no F(3), F(4), F(5),
 in its Zeckendorf representation. We verify this computationally for specific values. -/
 
 /-- dim(so(10)) = 45 has F(4) = 3 and F(6) = 8 in its Zeckendorf decomposition:
-    45 = 34 + 8 + 3 = F(9) + F(6) + F(4). -/
+    45 = 34 + 8 + 3 = F(9) + F(6) + F(4).
+    thm:nap-so10-analytic-minimality -/
 theorem so10_has_F4_and_F6 :
     45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧ Nat.fib 4 = 3 ∧ Nat.fib 6 = 8 := by
   native_decide
 
 /-- The SM embedding dimension 12 has F(4) and F(6):
-    12 = F(6) + F(4) + F(2) = 8 + 3 + 1. -/
+    12 = F(6) + F(4) + F(2) = 8 + 3 + 1.
+    thm:nap-sm-embedding -/
 theorem sm12_has_F4_and_F6 :
     12 = Nat.fib 6 + Nat.fib 4 + Nat.fib 2 ∧ Nat.fib 4 = 3 ∧ Nat.fib 6 = 8 := by
   native_decide
@@ -110,40 +114,48 @@ The Zeckendorf representations of SM and SO(10) dimensions satisfy carry-free
 addition properties: their constituent Fibonacci indices are non-adjacent,
 enabling clean algebraic decompositions. -/
 
-/-- SM triple: 12 = F(2) + F(4) + F(6), with explicit values and non-adjacency. -/
+/-- SM triple: 12 = F(2) + F(4) + F(6), with explicit values and non-adjacency.
+    thm:zeckendorf-no-carry-sm-triple -/
 theorem zeckendorf_no_carry_sm_triple :
     Nat.fib 2 + Nat.fib 4 + Nat.fib 6 = 12 ∧
     Nat.fib 2 = 1 ∧ Nat.fib 4 = 3 ∧ Nat.fib 6 = 8 := by native_decide
 
-/-- SO(10) triple: F(4) + F(6) + F(9) = 45. -/
+/-- SO(10) triple: F(4) + F(6) + F(9) = 45.
+    thm:zeckendorf-no-carry-so10-triple -/
 theorem zeckendorf_no_carry_so10_triple :
     Nat.fib 4 + Nat.fib 6 + Nat.fib 9 = 45 := by native_decide
 
-/-- SM signature union: the indices {2, 4, 6} are pairwise non-adjacent (gaps ≥ 2). -/
+/-- SM signature union: the indices {2, 4, 6} are pairwise non-adjacent (gaps ≥ 2).
+    cor:sm-signature-strict-union -/
 theorem sm_signature_union :
     (1 = Nat.fib 2) ∧ (3 = Nat.fib 4) ∧ (8 = Nat.fib 6) ∧
     (4 - 2 ≥ 2) ∧ (6 - 4 ≥ 2) ∧
     (Nat.fib 2 + Nat.fib 4 + Nat.fib 6 = 12) := by native_decide
 
-/-- The uplift gap: dim(SO(10)) - dim(SM) = 45 - 12 = 33 = F(9) - F(2). -/
+/-- The uplift gap: dim(SO(10)) - dim(SM) = 45 - 12 = 33 = F(9) - F(2).
+    prop:bdry-gap-33-so10-uplift -/
 theorem so10_uplift_gap : 45 - 12 = 33 ∧ 33 = Nat.fib 9 - Nat.fib 2 := by native_decide
 
-/-- Cassini-type factorization of the gap: F(9) - F(2) = F(4) · (F(6) + F(4)). -/
+/-- Cassini-type factorization of the gap: F(9) - F(2) = F(4) · (F(6) + F(4)).
+    prop:bdry-gap-33-cassini-factorization -/
 theorem cassini_gap_33_factorization :
     Nat.fib 9 - Nat.fib 2 = Nat.fib 4 * (Nat.fib 6 + Nat.fib 4) := by native_decide
 
-/-- Boundary square identity: F(2k+1) = F(k)² + F(k+1)² for k = 1, 2, 3, 4. -/
+/-- Boundary square identity: F(2k+1) = F(k)² + F(k+1)² for k = 1, 2, 3, 4.
+    cor:boundary-square-identity-instances -/
 theorem boundary_square_identity_instances :
     Nat.fib 5 = Nat.fib 2 ^ 2 + Nat.fib 3 ^ 2 ∧
     Nat.fib 7 = Nat.fib 3 ^ 2 + Nat.fib 4 ^ 2 ∧
     Nat.fib 9 = Nat.fib 4 ^ 2 + Nat.fib 5 ^ 2 := by native_decide
 
 /-- The Golden Ratio convergent bound: F(n+1)/F(n) → φ.
-    Verified: F(9) · F(7) - F(8)² = 1 (Cassini's identity for n = 8). -/
+    Verified: F(9) · F(7) - F(8)² = 1 (Cassini's identity for n = 8).
+    cor:cassini-identity-8 -/
 theorem cassini_identity_8 :
     Nat.fib 9 * Nat.fib 7 - Nat.fib 8 ^ 2 = 1 := by native_decide
 
-/-- The SM embedding dimension 12 splits as 3 · 4 = F(4) · (F(4) + 1). -/
+/-- The SM embedding dimension 12 splits as 3 · 4 = F(4) · (F(4) + 1).
+    cor:sm-dim-factorization -/
 theorem sm_dim_factorization : 12 = Nat.fib 4 * (Nat.fib 4 + 1) := by native_decide
 
 /-! ### Uplift three-branch structure
@@ -152,40 +164,47 @@ The GUT uplift maps SU(5) → SO(10) → E_6 correspond to the Fibonacci ladder
 F(8) = 21, F(9) = 34, F(10) = 55. The top Zeckendorf terms of their dimensions
 align along this ladder. -/
 
-/-- The Fibonacci uplift ladder: (F(8), F(9), F(10)) = (21, 34, 55). -/
+/-- The Fibonacci uplift ladder: (F(8), F(9), F(10)) = (21, 34, 55).
+    thm:terminal-window6-tail-three-branch -/
 theorem uplift_three_branch : (Nat.fib 8, Nat.fib 9, Nat.fib 10) = (21, 34, 55) := by
   native_decide
 
-/-- dim(SU(5)) = 24 = F(8) + F(4) = 21 + 3. -/
+/-- dim(SU(5)) = 24 = F(8) + F(4) = 21 + 3.
+    thm:terminal-family-uplift-lock-su5-top -/
 theorem dim_su5_top_term : 24 = Nat.fib 8 + Nat.fib 4 := by native_decide
 
 /-- GUT top terms align along the Fibonacci ladder:
-    SU(5): 24 = F(8) + F(4), SO(10): 45 = F(9) + F(6) + F(4), E_6: 78 = F(10) + F(8) + F(3). -/
+    SU(5): 24 = F(8) + F(4), SO(10): 45 = F(9) + F(6) + F(4), E_6: 78 = F(10) + F(8) + F(3).
+    thm:terminal-family-uplift-lock-gut-align -/
 theorem gut_top_terms_align :
     24 = Nat.fib 8 + Nat.fib 4 ∧
     45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧
     78 = Nat.fib 10 + Nat.fib 8 + Nat.fib 3 := by native_decide
 
 /-- Family lock: the three-family constraint selects specific Zeckendorf signatures.
-    30 = F(8) + F(6) + F(2), 45 = F(9) + F(6) + F(4), 60 = F(10) + F(5). -/
+    30 = F(8) + F(6) + F(2), 45 = F(9) + F(6) + F(4), 60 = F(10) + F(5).
+    thm:terminal-family-uplift-lock-family-zeck -/
 theorem family_lock_zeckendorf :
     30 = Nat.fib 8 + Nat.fib 6 + Nat.fib 2 ∧
     45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 ∧
     60 = Nat.fib 10 + Nat.fib 5 := by native_decide
 
-/-- Three families select SO(10): 15 × 3 = 45 = F(9) + F(6) + F(4). -/
+/-- Three families select SO(10): 15 × 3 = 45 = F(9) + F(6) + F(4).
+    thm:terminal-family-uplift-lock-nf3-so10 -/
 theorem family_three_selects_so10 :
     15 * 3 = 45 ∧ 45 = Nat.fib 9 + Nat.fib 6 + Nat.fib 4 := by native_decide
 
 /-- The dimension gaps between GUT groups follow Fibonacci arithmetic:
-    45 - 24 = 21 = F(8), 78 - 45 = 33 = F(9) - F(2). -/
+    45 - 24 = 21 = F(8), 78 - 45 = 33 = F(9) - F(2).
+    thm:terminal-family-uplift-lock-dim-gaps -/
 theorem gut_dimension_gaps :
     45 - 24 = 21 ∧ 21 = Nat.fib 8 ∧ 78 - 45 = 33 ∧ 33 = Nat.fib 9 - Nat.fib 2 := by
   native_decide
 
 /-! ### Exceptional Zeckendorf signatures -/
 
-/-- Zeckendorf decompositions of the five exceptional Lie algebra dimensions. -/
+/-- Zeckendorf decompositions of the five exceptional Lie algebra dimensions.
+    thm:terminal-family-uplift-lock-exceptional -/
 theorem exceptional_zeckendorf_signatures :
     14 = Nat.fib 7 + Nat.fib 2 ∧
     52 = Nat.fib 9 + Nat.fib 7 + Nat.fib 5 ∧
@@ -199,7 +218,8 @@ The complete certificate: all GUT-relevant dimensions decompose into Fibonacci
 components, the uplift ladder aligns, and the family structure is locked by the
 three-generation constraint. -/
 
-/-- Discrete unification certificate: the full set of alignment conditions. -/
+/-- Discrete unification certificate: the full set of alignment conditions.
+    thm:terminal-6d-microstate-golden-time-gut-branch-cert -/
 theorem discrete_unification_certificate :
     -- SM dimensions
     (3 = Nat.fib 4) ∧ (8 = Nat.fib 6) ∧ (12 = Nat.fib 6 + Nat.fib 4 + Nat.fib 2) ∧
@@ -214,7 +234,8 @@ theorem discrete_unification_certificate :
     -- Fibonacci ladder
     (Nat.fib 8, Nat.fib 9, Nat.fib 10) = (21, 34, 55) := by native_decide
 
-/-- The unification triple: SU(5) ⊂ SO(10) ⊂ E_6 with dimension alignment. -/
+/-- The unification triple: SU(5) ⊂ SO(10) ⊂ E_6 with dimension alignment.
+    thm:terminal-6d-microstate-golden-time-gut-branch-triple -/
 theorem unification_triple_dynamic :
     24 < 45 ∧ 45 < 78 ∧
     24 = Nat.fib 8 + Nat.fib 4 ∧
@@ -225,52 +246,60 @@ theorem unification_triple_dynamic :
 
 /-! ### GCD / median group instances -/
 
-/-- GCD instances relevant to the folding structure. -/
+/-- GCD instances relevant to the folding structure.
+    thm:conclusion-valuation-median-group -/
 theorem gcd_as_median_instances :
     Nat.gcd 6 10 = 2 ∧ Nat.gcd 12 18 = 6 ∧ Nat.gcd 21 34 = 1 ∧
     Nat.gcd (Nat.fib 8) (Nat.fib 6) = 1 ∧
     Nat.gcd (Nat.fib 8) (Nat.fib 4) = Nat.fib 4 := by native_decide
 
-/-- Coprimality of consecutive Fibonacci numbers: gcd(F(n), F(n+1)) = 1. -/
+/-- Coprimality of consecutive Fibonacci numbers: gcd(F(n), F(n+1)) = 1.
+    thm:conclusion-valuation-fib-coprime-consecutive -/
 theorem fib_coprime_consecutive :
     Nat.gcd (Nat.fib 7) (Nat.fib 8) = 1 ∧
     Nat.gcd (Nat.fib 8) (Nat.fib 9) = 1 ∧
     Nat.gcd (Nat.fib 9) (Nat.fib 10) = 1 := by native_decide
 
-/-- gcd(F(m), F(n)) = F(gcd(m,n)) instances. -/
+/-- gcd(F(m), F(n)) = F(gcd(m,n)) instances.
+    thm:conclusion-valuation-fib-gcd-instances -/
 theorem fib_gcd_instances :
     Nat.gcd (Nat.fib 6) (Nat.fib 8) = Nat.fib (Nat.gcd 6 8) ∧
     Nat.gcd (Nat.fib 4) (Nat.fib 8) = Nat.fib (Nat.gcd 4 8) ∧
     Nat.gcd (Nat.fib 6) (Nat.fib 9) = Nat.fib (Nat.gcd 6 9) := by native_decide
 
-/-- The phase space order 21 is coprime to its Fibonacci neighbors. -/
+/-- The phase space order 21 is coprime to its Fibonacci neighbors.
+    thm:conclusion-valuation-phase-space-coprimality -/
 theorem phase_space_coprimality :
     Nat.gcd 21 34 = 1 ∧ Nat.gcd 21 55 = 1 := by native_decide
 
 /-! ### Zeckendorf decompositions of 15·F(n) and 16·F(n) -/
 
-/-- 15·F(n) Zeckendorf decompositions for n = 8, 9, 10. -/
+/-- 15·F(n) Zeckendorf decompositions for n = 8, 9, 10.
+    thm:conclusion-zeckendorf-15-16-closed-fn -/
 theorem zeckendorf_15Fn_instances :
     15 * Nat.fib 8 = Nat.fib 13 + Nat.fib 10 + Nat.fib 8 + Nat.fib 5 + Nat.fib 2 ∧
     15 * Nat.fib 9 = Nat.fib 14 + Nat.fib 11 + Nat.fib 9 + Nat.fib 6 + Nat.fib 3 ∧
     15 * Nat.fib 10 = Nat.fib 15 + Nat.fib 12 + Nat.fib 10 + Nat.fib 7 + Nat.fib 4 := by
   native_decide
 
-/-- 16·F(n) Zeckendorf decompositions for n = 8, 9, 10. -/
+/-- 16·F(n) Zeckendorf decompositions for n = 8, 9, 10.
+    thm:conclusion-zeckendorf-15-16-closed-16fn -/
 theorem zeckendorf_16Fn_instances :
     16 * Nat.fib 8 = Nat.fib 13 + Nat.fib 11 + Nat.fib 7 + Nat.fib 2 ∧
     16 * Nat.fib 9 = Nat.fib 14 + Nat.fib 12 + Nat.fib 8 + Nat.fib 3 ∧
     16 * Nat.fib 10 = Nat.fib 15 + Nat.fib 13 + Nat.fib 9 + Nat.fib 4 := by
   native_decide
 
-/-- 15 and 16 Zeckendorf decompositions: 15 = F(7)+F(3), 16 = F(7)+F(4). -/
+/-- 15 and 16 Zeckendorf decompositions: 15 = F(7)+F(3), 16 = F(7)+F(4).
+    thm:conclusion-zeckendorf-15-16-closed-dim -/
 theorem dim_15_16_zeckendorf :
     15 = Nat.fib 7 + Nat.fib 3 ∧ 16 = Nat.fib 7 + Nat.fib 4 := by native_decide
 
 /-! ### Prime valuation metric -/
 
 /-- Factorization determines the natural number (for nonzero inputs):
-    if n.factorization = m.factorization and both ≥ 1, then n = m. -/
+    if n.factorization = m.factorization and both ≥ 1, then n = m.
+    thm:conclusion-valuation-isometry-classification-factorization -/
 theorem factorization_determines_nat (n m : Nat) (hn : 1 ≤ n) (hm : 1 ≤ m)
     (h : n.factorization = m.factorization) : n = m :=
   Nat.factorization_inj (by omega : n ≠ 0) (by omega : m ≠ 0) h

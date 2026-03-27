@@ -129,7 +129,8 @@ theorem eq_of_restrict_eq_last_eq {x y : X (m + 1)}
           cases hcompat
           rfl
 
-/-- The concrete inverse-limit equivalence used by the project. -/
+/-- The concrete inverse-limit equivalence used by the project.
+    thm:inverse-limit-golden -/
 def inverseLimitEquiv : CompatibleFamily ≃ XInfinity where
   toFun := ofFamily
   invFun := toFamily

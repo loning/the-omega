@@ -3,7 +3,8 @@ import Omega.Folding.Value
 
 namespace Omega
 
-/-- When n < fib(m+3), X.ofNat(m+2, n) has bit m+1 = false. -/
+/-- When n < fib(m+3), X.ofNat(m+2, n) has bit m+1 = false.
+    infra:ofNat-last-false -/
 theorem ofNat_last_false_of_lt (m n : Nat) (hn : n < Nat.fib (m + 3)) :
     (X.ofNat (m + 2) n).1 ⟨m + 1, by omega⟩ = false := by
   by_contra h
@@ -17,7 +18,8 @@ theorem ofNat_last_false_of_lt (m n : Nat) (hn : n < Nat.fib (m + 3)) :
   simp only [show m + 1 + 2 = m + 3 from by omega] at hle
   exact absurd hn (not_lt.mpr hle)
 
-/-- When fib(m+3) ≤ n < fib(m+4), X.ofNat(m+2, n) has bit m+1 = true. -/
+/-- When fib(m+3) ≤ n < fib(m+4), X.ofNat(m+2, n) has bit m+1 = true.
+    infra:ofNat-last-true -/
 theorem ofNat_last_true_of_ge (m n : Nat)
     (hlo : Nat.fib (m + 3) ≤ n) (hhi : n < Nat.fib (m + 4)) :
     (X.ofNat (m + 2) n).1 ⟨m + 1, by omega⟩ = true := by
@@ -38,12 +40,15 @@ theorem ofNat_last_true_of_ge (m n : Nat)
 -- Hidden bit count
 -- ══════════════════════════════════════════════════════════════
 
-/-- Count of words with weight ≥ fib(m+2). -/
+/-- Count of words with weight ≥ fib(m+2).
+    def:pom-hidden-bit-count -/
 def hiddenBitCount (m : Nat) : Nat :=
   (Finset.univ (α := Word m)).filter (fun w => Nat.fib (m + 2) ≤ weight w) |>.card
 
+/-- thm:pom-hidden-bit-count-zero -/
 theorem hiddenBitCount_zero : hiddenBitCount 0 = 0 := by decide
 
+/-- thm:pom-hidden-bit-count-one -/
 theorem hiddenBitCount_one : hiddenBitCount 1 = 0 := by decide
 
 -- ══════════════════════════════════════════════════════════════
@@ -64,6 +69,7 @@ private theorem last_true_of_heavy (m : Nat) (w : Word (m + 2))
 -- Recurrence: hiddenBitCount (m+2) = 2^m + hiddenBitCount m
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-hidden-bit-count-recurrence -/
 theorem hiddenBitCount_recurrence (m : Nat) :
     hiddenBitCount (m + 2) = 2 ^ m + hiddenBitCount m := by
   unfold hiddenBitCount
@@ -191,6 +197,7 @@ theorem hiddenBitCount_recurrence (m : Nat) :
 -- Closed form: hiddenBitCount m * 3 + δ = 2^m
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-hidden-bit-count-closed -/
 theorem hiddenBitCount_closed (m : Nat) :
     hiddenBitCount m * 3 + (if m % 2 = 0 then 1 else 2) = 2 ^ m := by
   induction m using Nat.strongRecOn with
@@ -210,15 +217,18 @@ theorem hiddenBitCount_closed (m : Nat) :
 -- lem:pom-one-bit: single hidden bit decomposition
 -- ══════════════════════════════════════════════════════════════
 
-/-- The hidden bit: 1 if weight w ≥ fib(m+2), else 0. -/
+/-- The hidden bit: 1 if weight w ≥ fib(m+2), else 0.
+    def:pom-hidden-bit -/
 def hiddenBit (w : Word m) : Nat :=
   if Nat.fib (m + 2) ≤ weight w then 1 else 0
 
+/-- lem:pom-hidden-bit-le-one -/
 theorem hiddenBit_le_one (w : Word m) : hiddenBit w ≤ 1 := by
   unfold hiddenBit; split <;> omega
 
 /-- When fib(m+2) ≤ n < fib(m+3), X.ofNat m n = X.ofNat m (n - fib(m+2)).
-    The Zeckendorf head index m+2 is invisible at level m. -/
+    The Zeckendorf head index m+2 is invisible at level m.
+    lem:pom-ofNat-sub-fib -/
 theorem ofNat_sub_fib_of_ge (m n : Nat)
     (hlo : Nat.fib (m + 2) ≤ n) (hhi : n < Nat.fib (m + 3)) :
     X.ofNat m n = X.ofNat m (n - Nat.fib (m + 2)) := by
@@ -275,7 +285,8 @@ theorem weight_eq_stableValue_add_hiddenBit (w : Word m) :
 -- stableValue of Fold as modular reduction
 -- ══════════════════════════════════════════════════════════════
 
-/-- stableValue of Fold w equals weight w mod F_{m+2}. -/
+/-- stableValue of Fold w equals weight w mod F_{m+2}.
+    lem:pom-stableValue-Fold-mod -/
 theorem stableValue_Fold_mod (w : Word m) :
     stableValue (Fold w) = weight w % Nat.fib (m + 2) := by
   have h := weight_eq_stableValue_add_hiddenBit w
@@ -303,7 +314,8 @@ theorem Fold_eq_iff_weight_mod {m : Nat} (w w' : Word m) :
 -- Fiber membership via weight congruence
 -- ══════════════════════════════════════════════════════════════
 
-/-- The fiber of x is exactly {w : weight w % F_{m+2} = stableValue x}. -/
+/-- The fiber of x is exactly {w : weight w % F_{m+2} = stableValue x}.
+    cor:pom-mem-fiber-weight-mod -/
 theorem mem_fiber_iff_weight_mod (x : X m) (w : Word m) :
     w ∈ X.fiber x ↔ weight w % Nat.fib (m + 2) = stableValue x := by
   rw [X.mem_fiber]
@@ -327,7 +339,8 @@ theorem mem_fiber_iff_weight_mod (x : X m) (w : Word m) :
 -- fiberMultiplicity as weight congruence count
 -- ══════════════════════════════════════════════════════════════
 
-/-- fiberMultiplicity x = #{w : weight w % F_{m+2} = stableValue x}. -/
+/-- fiberMultiplicity x = #{w : weight w % F_{m+2} = stableValue x}.
+    cor:pom-fiberMultiplicity-weight-congr -/
 theorem fiberMultiplicity_eq_weight_congr_count (x : X m) :
     X.fiberMultiplicity x =
     (Finset.univ.filter (fun w : Word m =>
@@ -354,7 +367,8 @@ private theorem weight_expand' {m : Nat} (w : Word (m + 2)) (hLast : w ⟨m + 1,
     simp [truncate]
   rw [h1, h2, h3]
 
-/-- Pointwise: d_{m+2}(x) ≤ d_{m+1}(restrict x) + d_m(restrict² x). -/
+/-- Pointwise: d_{m+2}(x) ≤ d_{m+1}(restrict x) + d_m(restrict² x).
+    thm:pom-fiberMultiplicity-le-restrict-add -/
 theorem fiberMultiplicity_le_restrict_add (x : X (m + 2)) :
     X.fiberMultiplicity x ≤
     X.fiberMultiplicity (X.restrict x) + X.fiberMultiplicity (X.restrict (X.restrict x)) := by
@@ -435,7 +449,8 @@ theorem fiberMultiplicity_le_restrict_add (x : X (m + 2)) :
 -- Fold uniqueness
 -- ══════════════════════════════════════════════════════════════
 
-/-- Any retraction preserving weight congruence must equal Fold. -/
+/-- Any retraction preserving weight congruence must equal Fold.
+    thm:fold-congruence-universal-property -/
 theorem Fold_unique_of_weight_congr {m : Nat} (Φ : Word m → X m)
     (hΦ : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2)) :
     ∀ w, Φ w = Fold w := by
@@ -447,24 +462,28 @@ theorem Fold_unique_of_weight_congr {m : Nat} (Φ : Word m → X m)
     rw [hΦw, stableValue_Fold_mod]
   exact X.stableValueFin_injective m (by simp [X.stableValueFin, heq])
 
-/-- Fold uniqueness with explicit retraction hypothesis (corollary). -/
+/-- Fold uniqueness with explicit retraction hypothesis (corollary).
+    thm:fold-unique-of-retraction -/
 theorem Fold_unique_of_retraction {m : Nat} (Φ : Word m → X m)
     (hRetract : ∀ x : X m, Φ x.1 = x)
     (hCongr : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2)) :
     ∀ w, Φ w = Fold w :=
   Fold_unique_of_weight_congr Φ hCongr
 
-/-- Two stable words with equal stableValue are equal. -/
+/-- Two stable words with equal stableValue are equal.
+    thm:pom-eq-of-stableValue-eq -/
 theorem X.eq_of_stableValue_eq' {x y : X m} (h : stableValue x = stableValue y) : x = y :=
   X.stableValueFin_injective m (by simp [X.stableValueFin, h])
 
-/-- Any weight-congruence-preserving map is constant on fibers. -/
+/-- Any weight-congruence-preserving map is constant on fibers.
+    thm:pom-congr-map-fiber-const -/
 theorem congr_map_fiber_const {m : Nat} (Φ : Word m → X m)
     (hΦ : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2))
     (w₁ w₂ : Word m) (h : Fold w₁ = Fold w₂) : Φ w₁ = Φ w₂ := by
   rw [Fold_unique_of_weight_congr Φ hΦ w₁, Fold_unique_of_weight_congr Φ hΦ w₂, h]
 
-/-- The preimage of any weight-congruence map equals the Fold fiber. -/
+/-- The preimage of any weight-congruence map equals the Fold fiber.
+    thm:pom-fiber-independent-of-retraction -/
 theorem fiber_independent_of_retraction {m : Nat} (Φ : Word m → X m)
     (hΦ : ∀ w, stableValue (Φ w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2))
     (x : X m) : {w : Word m | Φ w = x} = {w : Word m | Fold w = x} := by
@@ -477,39 +496,47 @@ theorem fiber_independent_of_retraction {m : Nat} (Φ : Word m → X m)
 -- Fold-snoc decomposition
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-restrict-Fold-eq -/
 theorem restrict_Fold_eq (w : Word (m + 1)) :
     X.restrict (Fold w) = X.ofNat m (weight w) := by
   unfold Fold; exact restrict_ofNat m (weight w)
 
+/-- thm:pom-Fold-snoc-false-eq -/
 theorem Fold_snoc_false_eq (w : Word m) :
     Fold (snoc w false) = X.ofNat (m + 1) (weight w) := by
   unfold Fold; congr 1; rw [weight_snoc]; simp
 
+/-- thm:pom-Fold-snoc-true-eq -/
 theorem Fold_snoc_true_eq (w : Word m) :
     Fold (snoc w true) = X.ofNat (m + 1) (weight w + Nat.fib (m + 2)) := by
   unfold Fold; congr 1; rw [weight_snoc]; simp
 
+/-- thm:pom-stableValue-Fold-snoc-false -/
 theorem stableValue_Fold_snoc_false (w : Word m) :
     stableValue (Fold (snoc w false)) = weight w % Nat.fib (m + 3) := by
   rw [stableValue_Fold_mod, weight_snoc]; simp
 
+/-- thm:pom-stableValue-Fold-snoc-true -/
 theorem stableValue_Fold_snoc_true (w : Word m) :
     stableValue (Fold (snoc w true)) =
     (weight w + Nat.fib (m + 2)) % Nat.fib (m + 3) := by
   rw [stableValue_Fold_mod, weight_snoc]; simp
 
-/-- Paper theorem: hidden bit count recurrence bundle. -/
+/-- Paper theorem: hidden bit count recurrence bundle.
+    thm:pom-hidden-bit-count -/
 theorem paper_hiddenBitCount_recurrence :
     hiddenBitCount 0 = 0 ∧ hiddenBitCount 1 = 0 ∧
     (∀ m, hiddenBitCount (m + 2) = 2 ^ m + hiddenBitCount m) :=
   ⟨hiddenBitCount_zero, hiddenBitCount_one, hiddenBitCount_recurrence⟩
 
-/-- Paper label: hidden bit count closed form. -/
+/-- Paper label: hidden bit count closed form.
+    thm:pom-hidden-bit-count -/
 theorem paper_hiddenBitCount_closed (m : Nat) :
     3 * hiddenBitCount m + (if m % 2 = 0 then 1 else 2) = 2 ^ m := by
   have := hiddenBitCount_closed m; omega
 
-/-- Fold + hiddenBit jointly determine weight. -/
+/-- Fold + hiddenBit jointly determine weight.
+    prop:pom-fold-prime-lift-injective -/
 theorem fold_hiddenBit_determines_weight (w1 w2 : Word m)
     (hFold : Fold w1 = Fold w2) (hBit : hiddenBit w1 = hiddenBit w2) :
     weight w1 = weight w2 := by
@@ -523,7 +550,8 @@ theorem fold_hiddenBit_determines_weight (w1 w2 : Word m)
 -- Phase 146: weight truncation mod + curvature = hiddenBit
 -- ══════════════════════════════════════════════════════════════
 
-/-- weight(truncate w) ≡ weight(w) mod F_{m+2}: the last bit contributes a full F_{m+2}. -/
+/-- weight(truncate w) ≡ weight(w) mod F_{m+2}: the last bit contributes a full F_{m+2}.
+    bridge:weight-truncate-mod -/
 theorem weight_truncate_mod (w : Word (m + 1)) :
     weight (truncate w) % Nat.fib (m + 2) = weight w % Nat.fib (m + 2) := by
   have : weight w % Nat.fib (m + 2) = weight (truncate w) % Nat.fib (m + 2) := by

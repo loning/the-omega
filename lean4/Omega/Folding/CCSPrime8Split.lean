@@ -337,7 +337,8 @@ private theorem lttf (m : Nat) : (sClassL m true true false).card = 0 := by
 
 -- ═══ Assembly ═══
 
-/-- CCS'(m+1) = 2·EWT(m) + 4·(CCSH(m) + CCSL(m)). -/
+/-- CCS'(m+1) = 2·EWT(m) + 4·(CCSH(m) + CCSL(m)).
+    prop:pom-s3-recurrence -/
 theorem ccs_prime_succ (m : Nat) :
     crossCorrSqHighPrev (m + 1) + crossCorrSqLowPrev (m + 1) =
     2 * exactWeightTriple m + 4 * (crossCorrSqHigh m + crossCorrSqLow m) := by
@@ -349,7 +350,8 @@ theorem ccs_prime_succ (m : Nat) :
       lfff, lfft, lftf, lftt, ltff, ltft, lttf, lttt]
   ring
 
-/-- EWT(m+3) + 2·EWT(m) = 2·EWT(m+2) + 4·EWT(m+1). -/
+/-- EWT(m+3) + 2·EWT(m) = 2·EWT(m+2) + 4·EWT(m+1).
+    prop:pom-s3-recurrence -/
 theorem exactWeightTriple_recurrence (m : Nat) :
     exactWeightTriple (m + 3) + 2 * exactWeightTriple m =
     2 * exactWeightTriple (m + 2) + 4 * exactWeightTriple (m + 1) := by
@@ -367,7 +369,8 @@ theorem exactWeightTriple_recurrence (m : Nat) :
   have hc := ccs_prime_succ m
   linarith
 
-/-- S_3(m+3) + 2·S_3(m) = 2·S_3(m+2) + 4·S_3(m+1) (unconditional). -/
+/-- S_3(m+3) + 2·S_3(m) = 2·S_3(m+2) + 4·S_3(m+1) (unconditional).
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_recurrence (m : Nat) :
     momentSum 3 (m + 3) + 2 * momentSum 3 m =
     2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) := by
@@ -550,34 +553,41 @@ theorem momentSum_three_recurrence (m : Nat) :
 -- Phase 163: Unconditional S_3 consequence chain
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_3 is strictly monotone for m ≥ 1. -/
+/-- S_3 is strictly monotone for m ≥ 1.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_strict_mono (m : Nat) (hm : 1 ≤ m) :
     momentSum 3 m < momentSum 3 (m + 1) :=
   momentSum_three_strict_mono_of momentSum_three_recurrence m
 
-/-- S_3(m+1) ≥ 2·S_3(m) for m ≥ 2. -/
+/-- S_3(m+1) ≥ 2·S_3(m) for m ≥ 2.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_double (m : Nat) (hm : 2 ≤ m) :
     2 * momentSum 3 m ≤ momentSum 3 (m + 1) :=
   momentSum_three_double_of momentSum_three_recurrence m hm
 
-/-- S_3(m) is even for m ≥ 1. -/
+/-- S_3(m) is even for m ≥ 1.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_even (m : Nat) (hm : 1 ≤ m) :
     2 ∣ momentSum 3 m :=
   momentSum_three_even_of momentSum_three_recurrence m hm
 
-/-- S_3(8) = 7768. -/
+/-- S_3(8) = 7768.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_eight : momentSum 3 8 = 7768 :=
   momentSum_three_eight_of momentSum_three_recurrence
 
-/-- S_3(9) = 23912. -/
+/-- S_3(9) = 23912.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_nine : momentSum 3 9 = 23912 :=
   momentSum_three_nine_of momentSum_three_recurrence
 
-/-- S_3(10) = 73888. -/
+/-- S_3(10) = 73888.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_ten : momentSum 3 10 = 73888 :=
   momentSum_three_ten_of momentSum_three_recurrence
 
-/-- S_3 subtraction form. -/
+/-- S_3 subtraction form.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_recurrence_sub (m : Nat) :
     momentSum 3 (m + 3) = 2 * momentSum 3 (m + 2) + 4 * momentSum 3 (m + 1) -
       2 * momentSum 3 m :=
@@ -587,14 +597,16 @@ theorem momentSum_three_recurrence_sub (m : Nat) :
 -- Phase 164: S_3 lower bound + high-order base values
 -- ══════════════════════════════════════════════════════════════
 
-/-- 2^m · S_3(m) ≥ S_2(m)² (log-convexity consequence). -/
+/-- 2^m · S_3(m) ≥ S_2(m)² (log-convexity consequence).
+    prop:pom-moment-congruence-q -/
 theorem momentSum_three_ge_sq_div (m : Nat) :
     2 ^ m * momentSum 3 m ≥ momentSum 2 m ^ 2 := by
   have := momentSum_log_convex 1 m
   rw [momentSum_one] at this
   linarith
 
-/-- S_3(11) = 227888. -/
+/-- S_3(11) = 227888.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_eleven : momentSum 3 11 = 227888 := by
   have h : momentSum 3 11 + 2 * 7768 = 2 * 73888 + 4 * 23912 := by
     have := momentSum_three_recurrence 8
@@ -602,7 +614,8 @@ theorem momentSum_three_eleven : momentSum 3 11 = 227888 := by
     rw [momentSum_three_eight, momentSum_three_nine, momentSum_three_ten] at this; linarith
   omega
 
-/-- S_3(12) = 703504. -/
+/-- S_3(12) = 703504.
+    prop:pom-s3-recurrence -/
 theorem momentSum_three_twelve : momentSum 3 12 = 703504 := by
   have h : momentSum 3 12 + 2 * 23912 = 2 * 227888 + 4 * 73888 := by
     have := momentSum_three_recurrence 9
@@ -622,14 +635,16 @@ private theorem exactWeightTriple_pos (m : Nat) : 0 < exactWeightTriple m := by
   linarith [Finset.single_le_sum (fun _ _ => Nat.zero_le _) h0
     (f := fun n => exactWeightCount m n ^ 3)]
 
-/-- EWT is strictly monotone for m ≥ 1. -/
+/-- EWT is strictly monotone for m ≥ 1.
+    bridge:ewt-strict-mono -/
 theorem exactWeightTriple_strict_mono (m : Nat) (hm : 1 ≤ m) :
     exactWeightTriple m < exactWeightTriple (m + 1) := by
   have h := exactWeightTriple_succ m
   have hpos := exactWeightTriple_pos m
   linarith
 
-/-- CCS(m+3) + 2·CCS(m) = 2·CCS(m+2) + 4·CCS(m+1), where CCS = CCSH+CCSL. -/
+/-- CCS(m+3) + 2·CCS(m) = 2·CCS(m+2) + 4·CCS(m+1), where CCS = CCSH+CCSL.
+    bridge:ccs-f-recurrence -/
 theorem crossCorrSq_recurrence (m : Nat) :
     (crossCorrSqHigh (m + 3) + crossCorrSqLow (m + 3)) +
     2 * (crossCorrSqHigh m + crossCorrSqLow m) =
@@ -649,7 +664,8 @@ theorem crossCorrSq_recurrence (m : Nat) :
   have he := exactWeightTriple_succ m
   linarith
 
-/-- CCS' satisfies the same three-step recurrence as S_3 and EWT. -/
+/-- CCS' satisfies the same three-step recurrence as S_3 and EWT.
+    bridge:ccs-prime-recurrence -/
 theorem ccs_prime_recurrence (m : Nat) :
     crossCorrSqHighPrev (m + 3) + crossCorrSqLowPrev (m + 3) +
     2 * (crossCorrSqHighPrev m + crossCorrSqLowPrev m) =

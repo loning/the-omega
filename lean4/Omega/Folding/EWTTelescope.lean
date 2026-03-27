@@ -6,7 +6,8 @@ namespace Omega
 -- Phase 150: EWT telescope via Word³ exact triple collision
 -- ══════════════════════════════════════════════════════════════
 
-/-- EWT(m) = |{(w1,w2,w3) : Word m³ | weight w1 = weight w2 = weight w3}|. -/
+/-- EWT(m) = |{(w1,w2,w3) : Word m³ | weight w1 = weight w2 = weight w3}|.
+    bridge:ewt-triple-exact -/
 theorem exactWeightTriple_eq_triple_exact (m : Nat) :
     exactWeightTriple m =
     (Finset.univ.filter (fun p : Word m × Word m × Word m =>
@@ -36,7 +37,8 @@ theorem exactWeightTriple_eq_triple_exact (m : Nat) :
 -- Exact triple collision class
 -- ══════════════════════════════════════════════════════════════
 
-/-- Exact triple collision class for given last-bit pattern. -/
+/-- Exact triple collision class for given last-bit pattern.
+    bridge:ewt-class-def -/
 def exactTripleCollisionClass (m : Nat) (b1 b2 b3 : Bool) : Finset (Word m × Word m × Word m) :=
   Finset.univ.filter (fun p : Word m × Word m × Word m =>
     weight p.1 + (if b1 then Nat.fib (m + 2) else 0) =
@@ -45,7 +47,8 @@ def exactTripleCollisionClass (m : Nat) (b1 b2 b3 : Bool) : Finset (Word m × Wo
     weight p.2.2 + (if b3 then Nat.fib (m + 2) else 0))
 
 set_option maxHeartbeats 400000 in
-/-- Each last-bit slice at level m+1 bijects to an exactTripleCollisionClass at level m. -/
+/-- Each last-bit slice at level m+1 bijects to an exactTripleCollisionClass at level m.
+    bridge:ewt-class-card -/
 private theorem exactTripleClass_card_eq (m : Nat) (b1 b2 b3 : Bool) :
     (Finset.univ.filter (fun p : Word (m + 1) × Word (m + 1) × Word (m + 1) =>
       weight p.1 = weight p.2.1 ∧ weight p.2.1 = weight p.2.2 ∧
@@ -75,7 +78,8 @@ private theorem exactTripleClass_card_eq (m : Nat) (b1 b2 b3 : Bool) :
     · rw [weight_snoc, weight_snoc]; exact hv.1
     · rw [weight_snoc, weight_snoc]; exact hv.2
 
-/-- EWT(m+1) = sum of 8 exact triple collision classes. -/
+/-- EWT(m+1) = sum of 8 exact triple collision classes.
+    bridge:ewt-8-split -/
 theorem exactWeightTriple_lastBit_split (m : Nat) :
     exactWeightTriple (m + 1) =
     (exactTripleCollisionClass m false false false).card +
@@ -122,12 +126,14 @@ theorem exactWeightTriple_lastBit_split (m : Nat) :
 -- Orbit identification
 -- ══════════════════════════════════════════════════════════════
 
-/-- exactTripleCollisionClass(fff) = exactWeightTriple. -/
+/-- exactTripleCollisionClass(fff) = exactWeightTriple.
+    bridge:ewt-fff -/
 theorem exactTripleClass_fff (m : Nat) :
     (exactTripleCollisionClass m false false false).card = exactWeightTriple m := by
   rw [exactWeightTriple_eq_triple_exact]; rfl
 
-/-- exactTripleCollisionClass(ttt) = exactWeightTriple. -/
+/-- exactTripleCollisionClass(ttt) = exactWeightTriple.
+    bridge:ewt-ttt -/
 theorem exactTripleClass_ttt (m : Nat) :
     (exactTripleCollisionClass m true true true).card = exactWeightTriple m := by
   rw [exactWeightTriple_eq_triple_exact]; congr 1; ext ⟨w1, w2, w3⟩
@@ -138,7 +144,8 @@ theorem exactTripleClass_ttt (m : Nat) :
 -- Phase 151: permutation symmetry + orbit identification + final merge
 -- ══════════════════════════════════════════════════════════════
 
-/-- Swap positions 1↔2 preserves collision class card. -/
+/-- Swap positions 1↔2 preserves collision class card.
+    bridge:ewt-swap12 -/
 theorem exactTripleClass_swap12 (m : Nat) (b1 b2 b3 : Bool) :
     (exactTripleCollisionClass m b1 b2 b3).card =
     (exactTripleCollisionClass m b2 b1 b3).card := by
@@ -153,7 +160,8 @@ theorem exactTripleClass_swap12 (m : Nat) (b1 b2 b3 : Bool) :
     simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
     exact ⟨(w2, w1, w3), ⟨hw.1.symm, hw.1.trans hw.2⟩, rfl⟩
 
-/-- Swap positions 2↔3 preserves collision class card. -/
+/-- Swap positions 2↔3 preserves collision class card.
+    bridge:ewt-swap23 -/
 theorem exactTripleClass_swap23 (m : Nat) (b1 b2 b3 : Bool) :
     (exactTripleCollisionClass m b1 b2 b3).card =
     (exactTripleCollisionClass m b1 b3 b2).card := by
@@ -170,7 +178,8 @@ theorem exactTripleClass_swap23 (m : Nat) (b1 b2 b3 : Bool) :
     simp only [exactTripleCollisionClass, Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
     exact ⟨(w1, w3, w2), ⟨hw.1.trans hw.2, hw.2.symm⟩, rfl⟩
 
-/-- {fft} class = CCSL: Σ_n ewc(n) · ewc(n+F)². -/
+/-- {fft} class = CCSL: Σ_n ewc(n) · ewc(n+F)².
+    bridge:ewt-fft-ccsl -/
 theorem exactTripleClass_fft_eq_ccsl (m : Nat) :
     (exactTripleCollisionClass m false false true).card = crossCorrSqLow m := by
   classical
@@ -200,7 +209,8 @@ theorem exactTripleClass_fft_eq_ccsl (m : Nat) :
     intro ⟨_, _, v3⟩ ⟨_, _, hw3⟩ ⟨_, _, hw3'⟩
     exact hne (hw3.symm.trans hw3')
 
-/-- {ftt} class = CCSH: Σ_n ewc(n)² · ewc(n+F). -/
+/-- {ftt} class = CCSH: Σ_n ewc(n)² · ewc(n+F).
+    bridge:ewt-ftt-ccsh -/
 theorem exactTripleClass_ftt_eq_ccsh (m : Nat) :
     (exactTripleCollisionClass m false true true).card = crossCorrSqHigh m := by
   classical
@@ -228,7 +238,8 @@ theorem exactTripleClass_ftt_eq_ccsh (m : Nat) :
     intro ⟨_, v2, _⟩ ⟨_, hw2, _⟩ ⟨_, hw2', _⟩
     exact hne (hw2.symm.trans hw2')
 
-/-- EWT(m+1) = 2·EWT(m) + 3·CCSH(m) + 3·CCSL(m). -/
+/-- EWT(m+1) = 2·EWT(m) + 3·CCSH(m) + 3·CCSL(m).
+    prop:pom-s3-recurrence -/
 theorem exactWeightTriple_succ (m : Nat) :
     exactWeightTriple (m + 1) = 2 * exactWeightTriple m +
     3 * crossCorrSqHigh m + 3 * crossCorrSqLow m := by

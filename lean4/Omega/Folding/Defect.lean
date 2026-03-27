@@ -142,7 +142,8 @@ theorem xorWord_cancel_far (a b c : Word m) :
     _ = xorWord c a := xorWord_cancel_middle c b a
     _ = xorWord a c := xorWord_comm _ _
 
-/-- The one-step local exchange defect `κ_{m+1→m}`. -/
+/-- The one-step local exchange defect `κ_{m+1→m}`.
+    def:fold-local-curvature-defect -/
 def localDefect (η : Word (m + 1)) : Word m :=
   xorWord (Fold (truncate η)).1 (X.restrict (Fold η)).1
 
@@ -150,7 +151,8 @@ def localDefect (η : Word (m + 1)) : Word m :=
 def localCurvature (η : Word (m + 1)) : Prop :=
   localDefect η ≠ zeroWord m
 
-/-- The global exchange defect `D_{n→m}`. -/
+/-- The global exchange defect `D_{n→m}`.
+    def:fold-global-stokes-defect -/
 def globalDefect (h : m ≤ n) (ω : Word n) : Word m :=
   xorWord (Fold (restrictWord h ω)).1 (X.restrictLE h (Fold ω)).1
 
@@ -181,7 +183,8 @@ def defectChain (m : Nat) : ∀ k : Nat, Word (m + k) → Word m
         (restrictWord (Nat.le_add_right m k) (localDefect ω))
         (defectChain m k (truncate ω))
 
-/-- Finite-layer discrete Stokes identity in recursive form. -/
+/-- Finite-layer discrete Stokes identity in recursive form.
+    thm:fold-discrete-stokes-defect -/
 theorem globalDefect_eq_defectChain (m k : Nat) (ω : Word (m + k)) :
     globalDefect (Nat.le_add_right m k) ω = defectChain m k ω := by
   induction k with
@@ -410,7 +413,8 @@ theorem defectChain_step_eq (m k : Nat) (ω : Word (m + k + 1)) :
 -- Phase 171
 -- ══════════════════════════════════════════════════════════════
 
-/-- Stable words have zero local defect: Fold commutes with truncation on X_{m+1}. -/
+/-- Stable words have zero local defect: Fold commutes with truncation on X_{m+1}.
+    thm:fold-discrete-stokes-defect -/
 theorem localDefect_of_stable (x : X (m + 1)) :
     localDefect x.1 = zeroWord m := by
   -- localDefect x.1 = xorWord (Fold (truncate x.1)).1 (X.restrict (Fold x.1)).1
@@ -426,7 +430,8 @@ theorem localDefect_of_stable (x : X (m + 1)) :
 -- Phase 173
 -- ══════════════════════════════════════════════════════════════
 
-/-- The all-false word has zero local defect. -/
+/-- The all-false word has zero local defect.
+    thm:fold-discrete-stokes-defect -/
 theorem localDefect_allFalse (m : Nat) :
     localDefect (m := m) (fun _ => false) = zeroWord m :=
   localDefect_of_stable ⟨fun _ => false, no11_allFalse⟩
@@ -435,7 +440,8 @@ theorem localDefect_allFalse (m : Nat) :
 -- Phase 175
 -- ══════════════════════════════════════════════════════════════
 
-/-- The all-false word has zero global defect at any resolution pair. -/
+/-- The all-false word has zero global defect at any resolution pair.
+    thm:fold-discrete-stokes-defect -/
 theorem globalDefect_allFalse (h : m ≤ n) :
     globalDefect h (fun _ : Fin n => false) = zeroWord m := by
   simp only [globalDefect]
@@ -454,7 +460,8 @@ theorem globalDefect_allFalse (h : m ≤ n) :
 -- Phase 186
 -- ══════════════════════════════════════════════════════════════
 
-/-- Two consecutive local defects compose to the global defect across two resolutions. -/
+/-- Two consecutive local defects compose to the global defect across two resolutions.
+    thm:fold-discrete-stokes-defect -/
 theorem localDefect_compose (η : Word (m + 2)) :
     globalDefect (Nat.le_of_succ_le (Nat.le_succ (m + 1))) η =
     xorWord (restrictWord (Nat.le_succ m) (localDefect η))

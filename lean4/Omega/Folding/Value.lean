@@ -2,7 +2,8 @@ import Omega.Folding.Weight
 
 namespace Omega
 
-/-- The Fibonacci-weighted value restricted to stable words. -/
+/-- The Fibonacci-weighted value restricted to stable words.
+    def:val-on-D -/
 def stableValue (x : X m) : Nat :=
   weight x.1
 
@@ -79,7 +80,8 @@ theorem stableValue_restrict_mod (x : X (m + 1)) :
       cases h : x.1 ⟨m, _⟩ <;> simp_all
     simp only [hFalse, Bool.false_eq_true, ite_false, Nat.add_zero]
 
-/-- The carry indicator for stable addition at resolution m+1. -/
+/-- The carry indicator for stable addition at resolution m+1.
+    def:pom-carry-interference-graph -/
 def carryIndicator (x y : X (m + 1)) : Nat :=
   if stableValue x + stableValue y ≥ Nat.fib (m + 3) then 1 else 0
 
@@ -105,12 +107,14 @@ theorem carryIndicator_one_of_ge (x y : X (m + 1))
 theorem stableValue_nonneg (x : X m) : 0 ≤ stableValue x :=
   Nat.zero_le _
 
-/-- stableValue of the all-false stable word is 0. -/
+/-- stableValue of the all-false stable word is 0.
+    lem:stableValue-allFalse -/
 @[simp] theorem stableValue_allFalse :
     stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) = 0 := by
   simp [stableValue, weight_allFalse]
 
-/-- stableValue equals weight of the underlying word. -/
+/-- stableValue equals weight of the underlying word.
+    lem:stableValue-eq-weight -/
 theorem stableValue_eq_weight (x : X m) : stableValue x = weight x.1 := rfl
 
 

@@ -186,7 +186,8 @@ def ofNat (m : Nat) (n : Nat) : X m :=
 end X
 
 /-- The paper's finite folding map: take the weighted value, normalize by Zeckendorf, then keep the
-first `m` digits. -/
+first `m` digits.
+    def:fold-word -/
 def Fold (w : Word m) : X m :=
   X.ofNat m (weight w)
 
@@ -194,15 +195,18 @@ def Fold (w : Word m) : X m :=
     get (Fold w).1 i = true ↔ i + 2 ∈ Nat.zeckendorf (weight w) :=
   X.get_ofNat_eq_true_iff (m := m) (n := weight w) h
 
-/-- Stable words are already in normal folded form. -/
+/-- Stable words are already in normal folded form.
+    prop:fold-rewrite-newman -/
 @[simp] theorem Fold_stable (x : X m) : Fold x.1 = x := by
   simpa [Fold, stableValue] using X.ofNat_stableValue x
 
-/-- The finite folding map is idempotent. -/
+/-- The finite folding map is idempotent.
+    prop:fold-idempotent -/
 @[simp] theorem Fold_idempotent (w : Word m) : Fold (Fold w).1 = Fold w :=
   Fold_stable (Fold w)
 
-/-- The finite folding map is surjective onto the stable syntax space. -/
+/-- The finite folding map is surjective onto the stable syntax space.
+    prop:fold-basic -/
 theorem Fold_surjective (m : Nat) : Function.Surjective (Fold (m := m)) := by
   intro x
   exact ⟨x.1, Fold_stable x⟩

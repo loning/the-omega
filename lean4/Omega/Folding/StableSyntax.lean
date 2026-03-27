@@ -38,7 +38,8 @@ noncomputable instance instFintypeEndsInOne (m : Nat) : Fintype {x : X m // Ends
   classical
   infer_instance
 
-/-- Forget the last bit of a stable word. -/
+/-- Forget the last bit of a stable word.
+    engine:x-restrict -/
 def restrict (x : X (m + 1)) : X m :=
   ⟨Omega.truncate x.1, no11_truncate x.2⟩
 
@@ -245,6 +246,7 @@ theorem card_eq_endsInZero_add_endsInOne (m : Nat) :
           Fintype.card {x : X m // EndsInOne x} := by
           simp [Fintype.card_sum]
 
+/-- prop:folding-stable-syntax-terminal-recursion -/
 theorem card_recurrence (m : Nat) :
     Fintype.card (X (m + 2)) = Fintype.card (X (m + 1)) + Fintype.card (X m) := by
   calc
@@ -267,6 +269,7 @@ theorem card_recurrence (m : Nat) :
           simp
     _ = 2 := by norm_num
 
+/-- prop:folding-stable-syntax-fibonacci-count -/
 theorem card_eq_fib : ∀ m : Nat, Fintype.card (X m) = Nat.fib (m + 2)
   | 0 => by simp
   | 1 => by exact card_one

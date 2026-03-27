@@ -17,7 +17,8 @@ open MeasureTheory InformationTheory
 /-! ### Reverse KL tilted splitting -/
 
 /-- Abstract plateau rigidity: a nonnegative dissipation with zero average vanishes almost
-everywhere. This is the minimal shell behind Poisson/KL plateau rigidity. -/
+everywhere. This is the minimal shell behind Poisson/KL plateau rigidity.
+    con:cdim-poisson-kl-plateau-rigidity -/
 theorem plateau_rigidity_of_nonneg_dissipation
     {α : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α)
@@ -30,7 +31,8 @@ theorem plateau_rigidity_of_nonneg_dissipation
 
 /-- Jeffreys dissipation rigidity: if a nonnegative Jeffreys dissipation has zero mean,
 then the dissipation vanishes almost everywhere. This is the minimal abstract wrapper used by
-Poisson/Jeffreys plateau arguments. -/
+Poisson/Jeffreys plateau arguments.
+    con:cdim-poisson-jeffreys-dissipation-rigidity -/
 theorem jeffreys_dissipation_rigidity
     {α : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α)
@@ -42,7 +44,8 @@ theorem jeffreys_dissipation_rigidity
   exact plateau_rigidity_of_nonneg_dissipation μ J hJ_nonneg hJ_int hJ_zero
 
 /-- Fibonacci platform certificate, successor form: if two consecutive Fibonacci labels coincide,
-any nonnegative zero-mean dissipation indexed by that label must vanish almost everywhere. -/
+any nonnegative zero-mean dissipation indexed by that label must vanish almost everywhere.
+    con:cdim-fibonacci-kl-platform-finite-certificate -/
 theorem fib_platform_certificate_of_eq_succ
     {α : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α)
@@ -58,7 +61,8 @@ theorem fib_platform_certificate_of_eq_succ
 
 /-- Fibonacci platform certificate, two-step form: under the conservative Lean-side hypothesis
 `m ≥ 2`, equality of the `m` and `m+2` Fibonacci labels forces the indexed nonnegative zero-mean
-dissipation to vanish almost everywhere. -/
+dissipation to vanish almost everywhere.
+    con:cdim-fibonacci-kl-platform-finite-certificate -/
 theorem fib_platform_certificate_of_eq_succ_succ
     {α : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α)
@@ -74,7 +78,8 @@ theorem fib_platform_certificate_of_eq_succ_succ
   rw [← hEq]
   exact plateau_rigidity_of_nonneg_dissipation μ (diss (Nat.fib m)) hdiss_nonneg hdiss_int hdiss_zero
 
-/-- Sequence squeeze at zero: if `0 ≤ a_m ≤ b_m` for all `m` and `b_m → 0`, then `a_m → 0`. -/
+/-- Sequence squeeze at zero: if `0 ≤ a_m ≤ b_m` for all `m` and `b_m → 0`, then `a_m → 0`.
+    con:cdim-rh-defect-fibonacci-discretization -/
 theorem tendsto_zero_of_nonneg_le_of_tendsto_zero
     (a b : ℕ → ℝ)
     (ha_nonneg : ∀ m, 0 ≤ a m)
@@ -84,7 +89,8 @@ theorem tendsto_zero_of_nonneg_le_of_tendsto_zero
   exact squeeze_zero ha_nonneg hab hb
 
 /-- Fibonacci-radius discretization certificate: a defect bounded above by a vanishing envelope along
-`fibRadius` also vanishes along the same discretization. -/
+`fibRadius` also vanishes along the same discretization.
+    con:cdim-rh-defect-fibonacci-discretization -/
 theorem fibRadius_discretization_of_le_tendsto_zero
     (D : ℝ → ℝ)
     (eps : ℕ → ℝ)
@@ -96,7 +102,8 @@ theorem fibRadius_discretization_of_le_tendsto_zero
     (fun m => D (fibRadius m)) eps h_nonneg h_bound h_eps
 
 /-- A logarithmic defect upper bound yields a quantitative lower bound on the modulus, provided the
-underlying quantity is nonzero. -/
+underlying quantity is nonzero.
+    con:cdim-rh-defect-fibonacci-discretization -/
 theorem zero_modulus_lower_bound_of_log_defect_bound
     (a defect : ℝ)
     (ha : a ≠ 0)
@@ -109,7 +116,8 @@ theorem zero_modulus_lower_bound_of_log_defect_bound
     _ = |a| := by
       rw [Real.exp_log (abs_pos.mpr ha)]
 
-/-- Fibonacci-radius packaging of `zero_modulus_lower_bound_of_log_defect_bound`. -/
+/-- Fibonacci-radius packaging of `zero_modulus_lower_bound_of_log_defect_bound`.
+    con:cdim-rh-defect-fibonacci-discretization -/
 theorem fibRadius_zero_modulus_lower_bound_of_log_defect_bound
     (A : ℝ → ℝ)
     (eps : ℕ → ℝ)
@@ -120,7 +128,8 @@ theorem fibRadius_zero_modulus_lower_bound_of_log_defect_bound
   exact zero_modulus_lower_bound_of_log_defect_bound (A (fibRadius m)) (eps m) (ha m) (hdef m)
 
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
-normalizing log-partition term minus the average tilt. -/
+normalizing log-partition term minus the average tilt.
+    con:cdim-jensen-average-reverse-kl-splitting -/
 theorem kl_reverse_tilted_split
     {α : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α) [MeasureTheory.IsProbabilityMeasure μ]
@@ -149,34 +158,41 @@ theorem kl_reverse_tilted_split
 
 /-! ### Binet corollaries: positivity of Fibonacci casts -/
 
-/-- Nat.fib n is positive for n ≥ 1 (cast to ℝ). -/
+/-- Nat.fib n is positive for n ≥ 1 (cast to ℝ).
+    aux:coe-fib-pos -/
 theorem coe_fib_pos (n : Nat) (hn : 1 ≤ n) : (0 : ℝ) < (Nat.fib n : ℝ) := by
   exact_mod_cast Nat.fib_pos.mpr (by omega)
 
-/-- |X_m| = F(m+2) is positive (cast to ℝ). -/
+/-- |X_m| = F(m+2) is positive (cast to ℝ).
+    aux:stable-syntax-count-pos -/
 theorem stableSyntaxCount_pos (n : Nat) : (0 : ℝ) < (Nat.fib (n + 2) : ℝ) :=
   coe_fib_pos (n + 2) (by omega)
 
 /-! ### Golden ratio properties -/
 
-/-- φ > 1. -/
+/-- φ > 1.
+    aux:golden-ratio-gt-one -/
 theorem goldenRatio_gt_one : φ > 1 := Real.one_lt_goldenRatio
 
-/-- log(φ) > 0: the topological entropy is positive. -/
+/-- log(φ) > 0: the topological entropy is positive.
+    aux:log-golden-ratio-pos -/
 theorem log_goldenRatio_pos : Real.log φ > 0 := Real.log_pos Real.one_lt_goldenRatio
 
-/-- φ < 2. -/
+/-- φ < 2.
+    aux:golden-ratio-lt-two -/
 theorem goldenRatio_lt_two : φ < 2 := by
   have : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
   -- φ < 2 ↔ φ² < 2φ (since φ > 0) ↔ φ+1 < 2φ ↔ 1 < φ, which is true
   nlinarith [Real.one_lt_goldenRatio]
 
-/-- |ψ| < 1: the golden conjugate is contractive. -/
+/-- |ψ| < 1: the golden conjugate is contractive.
+    aux:abs-golden-conj-lt-one -/
 theorem abs_goldenConj_lt_one : |ψ| < 1 := by
   rw [abs_lt]
   exact ⟨by linarith [Real.neg_one_lt_goldenConj], by linarith [Real.goldenConj_neg]⟩
 
-/-- ψ is between -1 and 0. -/
+/-- ψ is between -1 and 0.
+    aux:golden-conj-bounds -/
 theorem goldenConj_bounds : -1 < ψ ∧ ψ < 0 :=
   ⟨Real.neg_one_lt_goldenConj, Real.goldenConj_neg⟩
 
@@ -185,17 +201,20 @@ theorem goldenConj_bounds : -1 < ψ ∧ ψ < 0 :=
 The topological entropy of the golden-mean shift is h_top = log φ.
 Key ingredients: F(n+1)/F(n) → φ and continuity of log. -/
 
-/-- F(n+1)/F(n) → φ (from mathlib). -/
+/-- F(n+1)/F(n) → φ (from mathlib).
+    aux:fib-ratio-tendsto -/
 theorem fib_ratio_tendsto :
     Tendsto (fun n => (Nat.fib (n + 1) : ℝ) / Nat.fib n) atTop (𝓝 φ) :=
   tendsto_fib_succ_div_fib_atTop
 
-/-- log is continuous at φ (since φ > 0). -/
+/-- log is continuous at φ (since φ > 0).
+    aux:log-continuous-at-phi -/
 theorem log_continuous_at_phi : ContinuousAt Real.log φ :=
   Real.continuousAt_log (ne_of_gt Real.goldenRatio_pos)
 
 /-- log(F(n+2)/F(n+1)) → log φ as n → ∞.
-    This is the key per-step entropy convergence. -/
+    This is the key per-step entropy convergence.
+    cor:folding-stable-syntax-entropy-logqdim-perStep -/
 theorem log_fib_ratio_tendsto :
     Tendsto (fun n => Real.log ((Nat.fib (n + 2) : ℝ) / Nat.fib (n + 1)))
       atTop (𝓝 (Real.log φ)) := by
@@ -214,7 +233,8 @@ Proof: telescope log F(n+2) = Σ log(F(k+3)/F(k+2)) + log F(2), apply Cesaro to
 log_fib_ratio_tendsto, and simplify log F(2) = 0. -/
 
 /-- **Topological entropy of the golden-mean shift equals log φ.**
-    This is the central dynamical invariant of the No11-constrained system. -/
+    This is the central dynamical invariant of the No11-constrained system.
+    cor:folding-stable-syntax-entropy-logqdim -/
 theorem topological_entropy_eq_log_phi :
     Tendsto (fun n => Real.log (Nat.fib (n + 2) : ℝ) / (n : ℝ)) atTop (𝓝 (Real.log φ)) := by
   let u : ℕ → ℝ := fun k => Real.log ((Nat.fib (k + 3) : ℝ) / Nat.fib (k + 2))
@@ -245,7 +265,8 @@ theorem topological_entropy_eq_log_phi :
 
 /-! ### Golden ratio arithmetic-geometric properties -/
 
-/-- φ > 3/2. -/
+/-- φ > 3/2.
+    aux:cdim-phi-gt-three-half -/
 theorem goldenRatio_gt_three_half : φ > 3 / 2 := by
   have hsq : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
   -- φ > 3/2 ↔ φ² > (3/2)² = 9/4 (since φ > 0)
@@ -257,11 +278,13 @@ theorem goldenRatio_gt_three_half : φ > 3 / 2 := by
   -- Also φ² ≥ φ·(3/2) (if φ ≥ 3/2). Contradiction approach:
   nlinarith [Real.one_lt_goldenRatio, Real.goldenRatio_sq]
 
-/-- φ < 5/3. -/
+/-- φ < 5/3.
+    aux:cdim-phi-lt-five-thirds -/
 theorem goldenRatio_lt_five_thirds : φ < 5 / 3 := by
   nlinarith [Real.goldenRatio_sq, Real.one_lt_goldenRatio]
 
-/-- φ = 1 + 1/φ (the defining fixed-point equation). -/
+/-- φ = 1 + 1/φ (the defining fixed-point equation).
+    aux:cdim-phi-fixed-point -/
 theorem goldenRatio_eq_one_add_inv : φ = 1 + φ⁻¹ := by
   have hne : φ ≠ 0 := ne_of_gt Real.goldenRatio_pos
   have hsq : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
@@ -270,23 +293,27 @@ theorem goldenRatio_eq_one_add_inv : φ = 1 + φ⁻¹ := by
     nlinarith
   linarith
 
-/-- φ is irrational. -/
+/-- φ is irrational.
+    aux:cdim-phi-irrational -/
 theorem phi_irrational : Irrational φ := Real.goldenRatio_irrational
 
 /-! ### Entropy rate comparison -/
 
 /-- The topological entropy log φ is strictly less than log 2
-    (the entropy of the full shift). -/
+    (the entropy of the full shift).
+    aux:cdim-entropy-ordering-proxy -/
 theorem entropy_ordering_proxy : Real.log φ < Real.log 2 :=
   Real.log_lt_log Real.goldenRatio_pos goldenRatio_lt_two
 
-/-- The entropy gap: log 2 - log φ = log(2/φ) > 0. -/
+/-- The entropy gap: log 2 - log φ = log(2/φ) > 0.
+    aux:cdim-entropy-gap-pos -/
 theorem entropy_gap_pos : Real.log 2 - Real.log φ > 0 := by
   linarith [entropy_ordering_proxy]
 
 /-! ### Binet formula (from mathlib) -/
 
-/-- Binet formula: F(n) = (φ^n - ψ^n) / √5 (from mathlib). -/
+/-- Binet formula: F(n) = (φ^n - ψ^n) / √5 (from mathlib).
+    aux:cdim-binet-formula -/
 theorem binet_formula (n : Nat) : (Nat.fib n : ℝ) = (φ ^ n - ψ ^ n) / Real.sqrt 5 :=
   Real.coe_fib_eq n
 
@@ -309,17 +336,21 @@ private theorem sqrt5_lt_three : Real.sqrt 5 < 3 := by
 
 /-! ### φ/√5 precise bounds -/
 
-/-- √5 > 2 (from sq_sqrt5 and nlinarith). -/
+/-- √5 > 2 (from sq_sqrt5 and nlinarith).
+    aux:cdim-sqrt5-gt-two -/
 theorem sqrt5_gt_two' : Real.sqrt 5 > 2 := sqrt5_gt_two
 
-/-- √5 < 3 (from sq_sqrt5 and nlinarith). -/
+/-- √5 < 3 (from sq_sqrt5 and nlinarith).
+    aux:cdim-sqrt5-lt-three -/
 theorem sqrt5_lt_three' : Real.sqrt 5 < 3 := sqrt5_lt_three
 
-/-- φ < √5: since φ = (1+√5)/2 and √5 > 2, we have 2φ = 1+√5 < 2√5. -/
+/-- φ < √5: since φ = (1+√5)/2 and √5 > 2, we have 2φ = 1+√5 < 2√5.
+    aux:cdim-phi-lt-sqrt5 -/
 theorem phi_lt_sqrt5 : φ < Real.sqrt 5 := by
   rw [Real.goldenRatio]; linarith [sqrt5_gt_two]
 
-/-- φ+1 > √5: since φ+1 = (3+√5)/2 and √5 < 3, we have 2(φ+1) = 3+√5 > 2√5. -/
+/-- φ+1 > √5: since φ+1 = (3+√5)/2 and √5 < 3, we have 2(φ+1) = 3+√5 > 2√5.
+    aux:cdim-phi-add-one-gt-sqrt5 -/
 theorem phi_add_one_gt_sqrt5 : φ + 1 > Real.sqrt 5 := by
   rw [Real.goldenRatio]; linarith [sqrt5_lt_three]
 
@@ -328,15 +359,18 @@ theorem phi_add_one_gt_sqrt5 : φ + 1 > Real.sqrt 5 := by
 /-- The golden angle: 1/φ = φ - 1. -/
 noncomputable def goldenAngle : ℝ := φ⁻¹
 
-/-- The golden angle is positive. -/
+/-- The golden angle is positive.
+    aux:cdim-golden-angle-pos -/
 theorem goldenAngle_pos : 0 < goldenAngle :=
   inv_pos.mpr Real.goldenRatio_pos
 
-/-- The golden angle is less than 1. -/
+/-- The golden angle is less than 1.
+    aux:cdim-golden-angle-lt-one -/
 theorem goldenAngle_lt_one : goldenAngle < 1 :=
   inv_lt_one_of_one_lt₀ Real.one_lt_goldenRatio
 
-/-- The golden angle satisfies θ² = 1 - θ (dual of φ² = φ + 1). -/
+/-- The golden angle satisfies θ² = 1 - θ (dual of φ² = φ + 1).
+    aux:cdim-golden-angle-sq -/
 theorem goldenAngle_sq : goldenAngle ^ 2 = 1 - goldenAngle := by
   have hne : φ ≠ 0 := ne_of_gt Real.goldenRatio_pos
   have hsq : φ ^ 2 = φ + 1 := Real.goldenRatio_sq
@@ -357,7 +391,8 @@ theorem goldenAngle_sq : goldenAngle ^ 2 = 1 - goldenAngle := by
 
 /-! ### Binet nearest integer property -/
 
-/-- |ψ^n / √5| < 1/2 for all n ≥ 0 (since |ψ| < 1 and √5 > 2). -/
+/-- |ψ^n / √5| < 1/2 for all n ≥ 0 (since |ψ| < 1 and √5 > 2).
+    aux:cdim-abs-psi-pow-div-sqrt5-lt-half -/
 theorem abs_psi_pow_div_sqrt5_lt_half (n : Nat) :
     |ψ ^ n / Real.sqrt 5| < 1 / 2 := by
   rw [abs_div, abs_of_pos sqrt5_pos]
@@ -376,7 +411,8 @@ theorem abs_psi_pow_div_sqrt5_lt_half (n : Nat) :
   rw [div_lt_div_iff₀ hp5 (by norm_num : (0:ℝ) < 2)]
   linarith
 
-/-- Binet nearest integer: |F(n) - φ^n/√5| < 1/2 for all n. -/
+/-- Binet nearest integer: |F(n) - φ^n/√5| < 1/2 for all n.
+    prop:cdim-fibonacci-nearest-integer -/
 theorem fib_nearest_integer (n : Nat) :
     |(Nat.fib n : ℝ) - φ ^ n / Real.sqrt 5| < 1 / 2 := by
   rw [binet_formula, show (φ ^ n - ψ ^ n) / Real.sqrt 5 - φ ^ n / Real.sqrt 5 =
@@ -386,11 +422,13 @@ theorem fib_nearest_integer (n : Nat) :
 
 /-! ### Chebyshev phase -/
 
-/-- (φ/2)² = (φ+1)/4. -/
+/-- (φ/2)² = (φ+1)/4.
+    aux:cdim-chebyshev-phi-half-sq -/
 theorem goldenRatio_div_two_sq : (φ / 2) ^ 2 = (φ + 1) / 4 := by
   rw [div_pow, Real.goldenRatio_sq]; ring
 
-/-- Minimal polynomial of φ/2: 4x² - 2x - 1 = 0. -/
+/-- Minimal polynomial of φ/2: 4x² - 2x - 1 = 0.
+    aux:cdim-chebyshev-phi-half-minpoly -/
 theorem goldenRatio_half_minpoly : 4 * (φ / 2) ^ 2 - 2 * (φ / 2) - 1 = 0 := by
   have hsq := Real.goldenRatio_sq
   rw [goldenRatio_div_two_sq]
@@ -399,7 +437,8 @@ theorem goldenRatio_half_minpoly : 4 * (φ / 2) ^ 2 - 2 * (φ / 2) - 1 = 0 := by
 
 /-! ### Entropy comprehensive certificate -/
 
-/-- The complete entropy certificate: all key results in one theorem. -/
+/-- The complete entropy certificate: all key results in one theorem.
+    thm:entropy-comprehensive-certificate -/
 theorem entropy_comprehensive_certificate :
     Tendsto (fun n => Real.log (Nat.fib (n + 2) : ℝ) / (n : ℝ)) atTop (𝓝 (Real.log φ)) ∧
     Real.log φ > 0 ∧ Real.log φ < Real.log 2 ∧
@@ -410,14 +449,16 @@ theorem entropy_comprehensive_certificate :
 
 /-! ### Recursion order pattern -/
 
-/-- Recursion order pattern: order(S_q) = 2⌊q/2⌋+1 for q=2..5. -/
+/-- Recursion order pattern: order(S_q) = 2⌊q/2⌋+1 for q=2..5.
+    prop:pom-recursion-order-pattern -/
 theorem recursion_order_pattern :
     (3 = 2 * (2 / 2) + 1) ∧ (3 = 2 * (3 / 2) + 1) ∧
     (5 = 2 * (4 / 2) + 1) ∧ (5 = 2 * (5 / 2) + 1) := by omega
 
 /-! ### Fibonacci convergent alternation (Cassini identity instances) -/
 
-/-- Cassini identity alternation: F(n)² alternately exceeds and falls below F(n-1)F(n+1). -/
+/-- Cassini identity alternation: F(n)² alternately exceeds and falls below F(n-1)F(n+1).
+    aux:cdim-cassini-alternation -/
 theorem fib_convergent_alternation :
     Nat.fib 3 ^ 2 > Nat.fib 2 * Nat.fib 4 ∧
     Nat.fib 4 ^ 2 < Nat.fib 3 * Nat.fib 5 ∧
@@ -425,12 +466,14 @@ theorem fib_convergent_alternation :
 
 /-! ### ψ^n → 0 -/
 
-/-- |ψ|^n → 0 as n → ∞ (geometric decay since |ψ| < 1). -/
+/-- |ψ|^n → 0 as n → ∞ (geometric decay since |ψ| < 1).
+    prop:cdim-psi-pow-tendsto-zero -/
 theorem psi_pow_tendsto_zero :
     Tendsto (fun n => |ψ| ^ n) atTop (𝓝 0) :=
   tendsto_pow_atTop_nhds_zero_of_lt_one (abs_nonneg _) abs_goldenConj_lt_one
 
-/-- ψ^n → 0 as n → ∞. -/
+/-- ψ^n → 0 as n → ∞.
+    prop:cdim-psi-pow-tendsto-zero-real -/
 theorem psi_pow_tendsto_zero' :
     Tendsto (fun n => ψ ^ n) atTop (𝓝 0) :=
   tendsto_pow_atTop_nhds_zero_of_abs_lt_one abs_goldenConj_lt_one
@@ -438,7 +481,8 @@ theorem psi_pow_tendsto_zero' :
 /-! ### Fibonacci growth sandwich -/
 
 /-- Growth sandwich: φ^n/√5 - 1/2 < F(n) < φ^n/√5 + 1/2.
-    Direct consequence of the nearest integer property. -/
+    Direct consequence of the nearest integer property.
+    prop:cdim-binet-growth-sandwich -/
 theorem fib_growth_sandwich (n : Nat) :
     φ ^ n / Real.sqrt 5 - 1 / 2 < (Nat.fib n : ℝ) ∧
     (Nat.fib n : ℝ) < φ ^ n / Real.sqrt 5 + 1 / 2 := by
@@ -460,7 +504,8 @@ private theorem psi_pow_mul_inv_phi_pow (m : ℕ) :
 
 /-! ### Circle-dimension Fibonacci radius asymptotics -/
 
-/-- `φ^{-m}` tends to `0` exponentially. -/
+/-- `φ^{-m}` tends to `0` exponentially.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem phi_rpow_neg_nat_tendsto_zero :
     Tendsto (fun m : ℕ => φ ^ (-(m : ℝ))) atTop (𝓝 0) := by
   have hpow : Tendsto (fun m : ℕ => (φ⁻¹ : ℝ) ^ m) atTop (𝓝 0) := by
@@ -474,7 +519,8 @@ theorem phi_rpow_neg_nat_tendsto_zero :
       rw [Real.rpow_neg Real.goldenRatio_pos.le, Real.rpow_natCast, inv_pow]
   exact Filter.Tendsto.congr' hEq.symm hpow
 
-/-- Binet-scaled Fibonacci numbers converge to `1 / √5`. -/
+/-- Binet-scaled Fibonacci numbers converge to `1 / √5`.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem fib_mul_phi_neg_tendsto_inv_sqrt5 :
     Tendsto (fun m : ℕ => (Nat.fib m : ℝ) * φ ^ (-(m : ℝ))) atTop
       (𝓝 ((Real.sqrt 5)⁻¹)) := by
@@ -504,7 +550,8 @@ theorem fib_mul_phi_neg_tendsto_inv_sqrt5 :
           rw [psi_pow_mul_inv_phi_pow]
   exact Filter.Tendsto.congr' hEq.symm (by simpa [one_div] using hmain)
 
-/-- Adding a bounded constant does not change the Binet-scaled Fibonacci limit. -/
+/-- Adding a bounded constant does not change the Binet-scaled Fibonacci limit.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem fib_add_two_mul_phi_neg_tendsto_inv_sqrt5 :
     Tendsto (fun m : ℕ => ((Nat.fib m : ℝ) + 2) * φ ^ (-(m : ℝ))) atTop
       (𝓝 ((Real.sqrt 5)⁻¹)) := by
@@ -516,7 +563,8 @@ theorem fib_add_two_mul_phi_neg_tendsto_inv_sqrt5 :
   refine Filter.Tendsto.congr' hEq.symm ?_
   simpa using fib_mul_phi_neg_tendsto_inv_sqrt5.add htwo
 
-/-- Normalized complement of the Fibonacci radius square tends to `1`. -/
+/-- Normalized complement of the Fibonacci radius square tends to `1`.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem one_sub_fibRadius_sq_tendsto :
     Tendsto
       (fun m : ℕ =>
@@ -567,7 +615,8 @@ theorem one_sub_fibRadius_sq_tendsto :
   refine Filter.Tendsto.congr' hEq.symm ?_
   simpa using hRatio.mul hInv
 
-/-- `1 - fibRadius(m)^2` is asymptotic to `4 * √5 * φ^{-m}`. -/
+/-- `1 - fibRadius(m)^2` is asymptotic to `4 * √5 * φ^{-m}`.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem one_sub_fibRadius_sq_isEquivalent :
     Asymptotics.IsEquivalent atTop
       (fun m : ℕ => 1 - (fibRadius m) ^ 2)
@@ -587,12 +636,14 @@ theorem one_sub_fibRadius_sq_isEquivalent :
 
 /-! ### Continued fraction convergence error -/
 
-/-- F(n+1) - φ·F(n) = ψ^n (from mathlib). -/
+/-- F(n+1) - φ·F(n) = ψ^n (from mathlib).
+    prop:cdim-fib-ratio-error -/
 theorem fib_ratio_error (n : Nat) :
     (Nat.fib (n + 1) : ℝ) - φ * Nat.fib n = ψ ^ n :=
   Real.fib_succ_sub_goldenRatio_mul_fib n
 
-/-- |F(n+1) - φ·F(n)| < 1 for n ≥ 1 (since |ψ^n| ≤ |ψ| < 1). -/
+/-- |F(n+1) - φ·F(n)| < 1 for n ≥ 1 (since |ψ^n| ≤ |ψ| < 1).
+    prop:cdim-fib-ratio-error-lt-one -/
 theorem fib_ratio_error_lt_one (n : Nat) (hn : 1 ≤ n) :
     |(Nat.fib (n + 1) : ℝ) - φ * Nat.fib n| < 1 := by
   rw [fib_ratio_error]

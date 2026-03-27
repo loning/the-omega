@@ -8,35 +8,44 @@ import Omega.Core.Fib
 namespace Omega.Graph
 
 /-- The 2x2 adjacency (transfer) matrix of the golden-mean shift:
-    A = [[1,1],[1,0]], encoding allowed transitions in the No11 constraint. -/
+    A = [[1,1],[1,0]], encoding allowed transitions in the No11 constraint.
+    def:golden-mean-adjacency-matrix -/
 def goldenMeanAdjacency : Matrix (Fin 2) (Fin 2) ℤ :=
   !![1, 1; 1, 0]
 
-/-- Entry (0,0) = 1: transition 0 → 0 is allowed. -/
+/-- Entry (0,0) = 1: transition 0 → 0 is allowed.
+    prop:golden-mean-adjacency-entry-00 -/
 theorem goldenMeanAdjacency_entry_00 : goldenMeanAdjacency 0 0 = 1 := by native_decide
 
-/-- Entry (0,1) = 1: transition 0 → 1 is allowed. -/
+/-- Entry (0,1) = 1: transition 0 → 1 is allowed.
+    prop:golden-mean-adjacency-entry-01 -/
 theorem goldenMeanAdjacency_entry_01 : goldenMeanAdjacency 0 1 = 1 := by native_decide
 
-/-- Entry (1,0) = 1: transition 1 → 0 is allowed. -/
+/-- Entry (1,0) = 1: transition 1 → 0 is allowed.
+    prop:golden-mean-adjacency-entry-10 -/
 theorem goldenMeanAdjacency_entry_10 : goldenMeanAdjacency 1 0 = 1 := by native_decide
 
-/-- Entry (1,1) = 0: transition 1 → 1 is forbidden (No11 constraint). -/
+/-- Entry (1,1) = 0: transition 1 → 1 is forbidden (No11 constraint).
+    prop:golden-mean-adjacency-entry-11 -/
 theorem goldenMeanAdjacency_entry_11 : goldenMeanAdjacency 1 1 = 0 := by native_decide
 
-/-- Concrete Cayley-Hamilton identity: A² = A + I for the golden-mean adjacency matrix. -/
+/-- Concrete Cayley-Hamilton identity: A² = A + I for the golden-mean adjacency matrix.
+    thm:fold-suite-item3-cayley-hamilton -/
 theorem goldenMeanAdjacency_sq :
     goldenMeanAdjacency ^ 2 = goldenMeanAdjacency + 1 := by native_decide
 
-/-- Trace of the golden-mean adjacency matrix is 1. -/
+/-- Trace of the golden-mean adjacency matrix is 1.
+    prop:golden-mean-adjacency-trace -/
 theorem goldenMeanAdjacency_trace : goldenMeanAdjacency.trace = 1 := by native_decide
 
-/-- Determinant of the golden-mean adjacency matrix is -1. -/
+/-- Determinant of the golden-mean adjacency matrix is -1.
+    prop:golden-mean-adjacency-det -/
 theorem goldenMeanAdjacency_det : goldenMeanAdjacency.det = -1 := by native_decide
 
 /-! ### Transfer matrix and Fibonacci numbers -/
 
-/-- A^(m+2) = A^(m+1) + A^m (matrix Fibonacci recurrence from A² = A + I). -/
+/-- A^(m+2) = A^(m+1) + A^m (matrix Fibonacci recurrence from A² = A + I).
+    cor:folding-stable-syntax-entropy-logqdim-matrix-recurrence -/
 theorem goldenMeanAdjacency_pow_add_two (m : Nat) :
     goldenMeanAdjacency ^ (m + 2) =
       goldenMeanAdjacency ^ (m + 1) + goldenMeanAdjacency ^ m := by
@@ -44,7 +53,8 @@ theorem goldenMeanAdjacency_pow_add_two (m : Nat) :
     rw [← pow_add]
   rw [this, goldenMeanAdjacency_sq, mul_add, mul_one, pow_succ]
 
-/-- Row-sum of A^m equals Nat.fib(m+2) (cast to ℤ). -/
+/-- Row-sum of A^m equals Nat.fib(m+2) (cast to ℤ).
+    cor:folding-stable-syntax-entropy-logqdim-row-sum -/
 theorem goldenMeanAdjacency_row_sum :
     ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 0 + (goldenMeanAdjacency ^ m) 0 1 =
       (Nat.fib (m + 2) : ℤ)
@@ -71,7 +81,8 @@ private theorem pow_entry_add_two (m : Nat) (i j : Fin 2) :
   have := goldenMeanAdjacency_pow_add_two m
   exact congr_fun (congr_fun (congr_arg Matrix.of this) i) j
 
-/-- (A^m)_{00} = F_{m+1}. -/
+/-- (A^m)_{00} = F_{m+1}.
+    thm:golden-mean-pow-entry-00 -/
 theorem goldenMeanAdjacency_pow_00 :
     ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 0 = (Nat.fib (m + 1) : ℤ)
   | 0 => by native_decide
@@ -81,7 +92,8 @@ theorem goldenMeanAdjacency_pow_00 :
         goldenMeanAdjacency_pow_00 m, ← Nat.cast_add]
     congr 1; exact (Omega.fib_succ_succ' (m + 1)).symm
 
-/-- (A^m)_{01} = F_m. -/
+/-- (A^m)_{01} = F_m.
+    thm:golden-mean-pow-entry-01 -/
 theorem goldenMeanAdjacency_pow_01 :
     ∀ m : Nat, (goldenMeanAdjacency ^ m) 0 1 = (Nat.fib m : ℤ)
   | 0 => by native_decide
@@ -91,7 +103,8 @@ theorem goldenMeanAdjacency_pow_01 :
         goldenMeanAdjacency_pow_01 m, ← Nat.cast_add]
     congr 1; exact (Omega.fib_succ_succ' m).symm
 
-/-- (A^m)_{10} = F_m. -/
+/-- (A^m)_{10} = F_m.
+    thm:golden-mean-pow-entry-10 -/
 theorem goldenMeanAdjacency_pow_10 :
     ∀ m : Nat, (goldenMeanAdjacency ^ m) 1 0 = (Nat.fib m : ℤ)
   | 0 => by native_decide
@@ -101,7 +114,8 @@ theorem goldenMeanAdjacency_pow_10 :
         goldenMeanAdjacency_pow_10 m, ← Nat.cast_add]
     congr 1; exact (Omega.fib_succ_succ' m).symm
 
-/-- (A^m)_{11} = F_{m-1} for m ≥ 1. -/
+/-- (A^m)_{11} = F_{m-1} for m ≥ 1.
+    thm:golden-mean-pow-entry-11 -/
 theorem goldenMeanAdjacency_pow_11 :
     ∀ m : Nat, (goldenMeanAdjacency ^ (m + 1)) 1 1 = (Nat.fib m : ℤ)
   | 0 => by native_decide
@@ -113,12 +127,14 @@ theorem goldenMeanAdjacency_pow_11 :
         goldenMeanAdjacency_pow_11 (m + 1), goldenMeanAdjacency_pow_11 m, ← Nat.cast_add]
     congr 1; exact (Omega.fib_succ_succ' m).symm
 
-/-- det(A^m) = (-1)^m. -/
+/-- det(A^m) = (-1)^m.
+    thm:transfer-matrix-pow-det -/
 theorem goldenMeanAdjacency_pow_det (m : Nat) :
     (goldenMeanAdjacency ^ m).det = (-1 : ℤ) ^ m := by
   rw [Matrix.det_pow]; simp [goldenMeanAdjacency_det]
 
-/-- Cassini's identity: F_{n+1}·F_{n-1} - F_n² = (-1)^n for n ≥ 1. -/
+/-- Cassini's identity: F_{n+1}·F_{n-1} - F_n² = (-1)^n for n ≥ 1.
+    thm:fib-cassini-identity -/
 theorem fib_cassini (n : Nat) (hn : 1 ≤ n) :
     (Nat.fib (n + 1) : ℤ) * Nat.fib (n - 1) - (Nat.fib n : ℤ) ^ 2 = (-1 : ℤ) ^ n := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -133,7 +149,8 @@ theorem fib_cassini (n : Nat) (hn : 1 ≤ n) :
   -- Goal: ↑(F_{m+2}) * ↑(F_m) - ↑(F_{m+1})^2 = (-1)^(m+1)
   rw [sq]; exact hDet
 
-/-- Row 1 sum of A^m: paths starting from state 1. -/
+/-- Row 1 sum of A^m: paths starting from state 1.
+    thm:golden-mean-path-count-from-true -/
 theorem goldenMean_path_count_from_true (m : Nat) :
     (goldenMeanAdjacency ^ m) 1 0 + (goldenMeanAdjacency ^ m) 1 1 =
       (Nat.fib (m + 1) : ℤ) := by
@@ -143,36 +160,42 @@ theorem goldenMean_path_count_from_true (m : Nat) :
     rw [goldenMeanAdjacency_pow_10, goldenMeanAdjacency_pow_11, ← Nat.cast_add]
     congr 1; exact (Omega.fib_succ_succ' m).symm
 
-/-- Total paths of length m in the golden-mean shift. -/
+/-- Total paths of length m in the golden-mean shift.
+    thm:golden-mean-total-paths -/
 theorem goldenMean_total_paths (m : Nat) :
     (goldenMeanAdjacency ^ m) 0 0 + (goldenMeanAdjacency ^ m) 0 1 +
     ((goldenMeanAdjacency ^ m) 1 0 + (goldenMeanAdjacency ^ m) 1 1) =
       (Nat.fib (m + 2) + Nat.fib (m + 1) : ℤ) := by
   rw [goldenMeanAdjacency_row_sum, goldenMean_path_count_from_true, ← Nat.cast_add]
 
-/-- Specific power entries: (A^5)_{00} = F(6) = 8. -/
+/-- Specific power entries: (A^5)_{00} = F(6) = 8.
+    thm:transfer-matrix-pow-five-00 -/
 theorem goldenMeanAdjacency_pow_five_00 :
     (goldenMeanAdjacency ^ 5) 0 0 = (Nat.fib 6 : ℤ) :=
   goldenMeanAdjacency_pow_00 5
 
-/-- Specific power entries: (A^6)_{00} = F(7) = 13. -/
+/-- Specific power entries: (A^6)_{00} = F(7) = 13.
+    thm:transfer-matrix-pow-six-00 -/
 theorem goldenMeanAdjacency_pow_six_00 :
     (goldenMeanAdjacency ^ 6) 0 0 = (Nat.fib 7 : ℤ) :=
   goldenMeanAdjacency_pow_00 6
 
-/-- Specific power entries: (A^10)_{00} = F(11) = 89. -/
+/-- Specific power entries: (A^10)_{00} = F(11) = 89.
+    thm:transfer-matrix-pow-ten-00 -/
 theorem goldenMeanAdjacency_pow_ten_00 :
     (goldenMeanAdjacency ^ 10) 0 0 = (Nat.fib 11 : ℤ) :=
   goldenMeanAdjacency_pow_00 10
 
 /-! ### Golden-mean zeta function -/
 
-/-- Zeta denominator evaluation at z=1: 1 - tr(A) + det(A) = 1 - 1 + (-1) = -1. -/
+/-- Zeta denominator evaluation at z=1: 1 - tr(A) + det(A) = 1 - 1 + (-1) = -1.
+    prop:pom-zeta-golden-mean-denom-at-one -/
 theorem goldenMean_zeta_denom_at_one :
     (1 : ℤ) - goldenMeanAdjacency.trace + goldenMeanAdjacency.det = -1 := by
   rw [goldenMeanAdjacency_trace, goldenMeanAdjacency_det]; norm_num
 
-/-- Golden-mean trace recurrence verified for n = 0..4. -/
+/-- Golden-mean trace recurrence verified for n = 0..4.
+    prop:pom-trace-recurrence-verified -/
 theorem goldenMean_trace_recurrence_verified :
     (goldenMeanAdjacency ^ 2).trace = (goldenMeanAdjacency ^ 1).trace + (goldenMeanAdjacency ^ 0).trace ∧
     (goldenMeanAdjacency ^ 3).trace = (goldenMeanAdjacency ^ 2).trace + (goldenMeanAdjacency ^ 1).trace ∧
@@ -214,7 +237,8 @@ theorem goldenMeanAdjacency_mul_goldenEigenvector :
     nlinarith [Real.goldenRatio_sq]
   · simp [goldenMeanEigenvector, Matrix.mulVec, dotProduct]
 
-/-- Concrete witness form of the golden-ratio eigenvalue statement. -/
+/-- Concrete witness form of the golden-ratio eigenvalue statement.
+    lem:golden-mean-has-phi-eigenvector -/
 theorem goldenMeanAdjacency_has_goldenRatio_eigenvector :
     ∃ v : Fin 2 → ℝ, v ≠ 0 ∧
       Matrix.mulVec goldenMeanAdjacencyℝ v = fun i => Real.goldenRatio * v i := by
@@ -224,24 +248,28 @@ theorem goldenMeanAdjacency_has_goldenRatio_eigenvector :
   have hphi : Real.goldenRatio = 0 := by simpa [goldenMeanEigenvector] using h0
   exact Real.goldenRatio_ne_zero hphi
 
-/-- The scalar equation `φ² - φ - 1 = 0`. -/
+/-- The scalar equation `φ² - φ - 1 = 0`.
+    aux:golden-mean-charpoly-eval-phi -/
 theorem goldenMeanAdjacency_charpoly_eval_goldenRatio :
     Real.goldenRatio ^ 2 - Real.goldenRatio - 1 = 0 := by
   nlinarith [Real.goldenRatio_sq]
 
-/-- The scalar equation `ψ² - ψ - 1 = 0`. -/
+/-- The scalar equation `ψ² - ψ - 1 = 0`.
+    aux:golden-mean-charpoly-eval-psi -/
 theorem goldenMeanAdjacency_charpoly_eval_goldenConj :
     Real.goldenConj ^ 2 - Real.goldenConj - 1 = 0 := by
   nlinarith [Real.goldenConj_sq]
 
-/-- The real golden-mean adjacency matrix satisfies the same quadratic relation. -/
+/-- The real golden-mean adjacency matrix satisfies the same quadratic relation.
+    aux:golden-mean-adjacency-real-square -/
 theorem goldenMeanAdjacencyℝ_sq :
     goldenMeanAdjacencyℝ ^ 2 = goldenMeanAdjacencyℝ + 1 := by
   rw [goldenMeanAdjacencyℝ_eq, pow_two]
   ext i j
   fin_cases i <;> fin_cases j <;> norm_num [Matrix.mul_fin_two]
 
-/-- Any real eigenvalue of the golden-mean adjacency matrix satisfies `μ² = μ + 1`. -/
+/-- Any real eigenvalue of the golden-mean adjacency matrix satisfies `μ² = μ + 1`.
+    lem:golden-mean-real-eigenvalue-quadratic -/
 theorem eigenvalue_satisfies_quadratic
     {μ : ℝ} {w : Fin 2 → ℝ}
     (hw : w ≠ 0)
@@ -273,7 +301,8 @@ theorem eigenvalue_satisfies_quadratic
       exact mul_right_cancel₀ hw1 hquadw1'
     nlinarith [hquad]
 
-/-- Any real eigenvalue is either `φ` or `ψ`. -/
+/-- Any real eigenvalue is either `φ` or `ψ`.
+    lem:golden-mean-real-eigenvalue-classification -/
 theorem eigenvalue_eq_goldenRatio_or_goldenConj
     {μ : ℝ} (hμ : μ ^ 2 = μ + 1) :
     μ = Real.goldenRatio ∨ μ = Real.goldenConj := by
@@ -283,7 +312,8 @@ theorem eigenvalue_eq_goldenRatio_or_goldenConj
     (fun h => Or.inl <| sub_eq_zero.mp h)
     (fun h => Or.inr <| sub_eq_zero.mp h)
 
-/-- The golden conjugate has strictly smaller modulus than `φ`. -/
+/-- The golden conjugate has strictly smaller modulus than `φ`.
+    lem:golden-conj-abs-lt-phi -/
 theorem goldenConj_abs_lt_goldenRatio :
     |Real.goldenConj| < Real.goldenRatio := by
   have hψ : |Real.goldenConj| < 1 := by
@@ -291,7 +321,8 @@ theorem goldenConj_abs_lt_goldenRatio :
     exact ⟨by linarith [Real.neg_one_lt_goldenConj], by linarith [Real.goldenConj_neg]⟩
   exact lt_trans hψ Real.one_lt_goldenRatio
 
-/-- Every real eigenvalue is dominated in modulus by `φ`. -/
+/-- Every real eigenvalue is dominated in modulus by `φ`.
+    prop:golden-mean-real-eigenvalues-bounded-by-phi -/
 theorem goldenMeanAdjacency_dominates_all_real_eigenvalues
     {μ : ℝ}
     (hμ : ∃ w : Fin 2 → ℝ, w ≠ 0 ∧ Matrix.mulVec goldenMeanAdjacencyℝ w = fun i => μ * w i) :
@@ -301,7 +332,8 @@ theorem goldenMeanAdjacency_dominates_all_real_eigenvalues
   · rw [abs_of_pos Real.goldenRatio_pos]
   · exact le_of_lt goldenConj_abs_lt_goldenRatio
 
-/-- Concrete Perron-root package for the golden-mean adjacency matrix. -/
+/-- Concrete Perron-root package for the golden-mean adjacency matrix.
+    thm:golden-mean-pf-root-eq-phi -/
 theorem goldenMeanAdjacency_pf_root_eq_goldenRatio :
     ∃ v : Fin 2 → ℝ,
       (0 < v 0 ∧ 0 < v 1) ∧
