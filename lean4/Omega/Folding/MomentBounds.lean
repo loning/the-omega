@@ -719,4 +719,15 @@ theorem momentSum_log_convex_audit_base :
     momentSum_three_six]
   omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 213: Cross-order moment inequality
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cross-order moment inequality: (2^m)^q ≤ S_q(m) * F(m+2)^(q-1) for q≥1.
+    prop:pom-crossq-g-monotone -/
+theorem momentSum_crossq_from_base (q m : Nat) (hq : 1 ≤ q) :
+    (2 ^ m) ^ q ≤ momentSum q m * Nat.fib (m + 2) ^ (q - 1) := by
+  have := momentSum_power_mean_lower q m hq
+  linarith [Nat.mul_comm (Nat.fib (m + 2) ^ (q - 1)) (momentSum q m)]
+
 end Omega

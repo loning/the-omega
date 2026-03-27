@@ -250,6 +250,32 @@ theorem maxFiber_lt_half_wordcount (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 10) :
     maxFiberMultiplicity_five, maxFiberMultiplicity_six, maxFiberMultiplicity_seven,
     maxFiberMultiplicity_eight, maxFiberMultiplicity_nine, maxFiberMultiplicity_ten] <;> omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 213: Fibonacci gap recurrence + alternative second-max identity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fibonacci gap recurrence: F(k+2)-F(k-4) = (F(k+1)-F(k-5)) + (F(k)-F(k-6)) for k≥6.
+    lem:pom-forbidden-pair-fib-gap -/
+theorem fib_gap_recurrence (k : Nat) (hk : 6 ≤ k) :
+    Nat.fib (k + 2) - Nat.fib (k - 4) =
+    (Nat.fib (k + 1) - Nat.fib (k - 5)) + (Nat.fib k - Nat.fib (k - 6)) := by
+  have hrec1 := Nat.fib_add_two (n := k)
+  have hrec2 := Nat.fib_add_two (n := k - 6)
+  have hk4 : k - 4 = (k - 6) + 2 := by omega
+  have hk5 : k - 5 = (k - 6) + 1 := by omega
+  rw [hk4, hk5]
+  rw [Nat.fib_add_two (n := k - 6)] at *
+  -- Now all subtractions are safe due to Fibonacci monotonicity
+  have hle1 : Nat.fib (k - 6) + Nat.fib (k - 6 + 1) ≤ Nat.fib (k + 1) :=
+    Nat.fib_add_two ▸ Nat.fib_mono (by omega)
+  have hle2 : Nat.fib (k - 6 + 1) ≤ Nat.fib (k + 1) := Nat.fib_mono (by omega)
+  have hle3 : Nat.fib (k - 6) ≤ Nat.fib k := Nat.fib_mono (by omega)
+  omega
+
+-- Note: cSecondMaxFiberMult_even_closed deferred — requires recursive infrastructure
+-- for cSecondMaxFiberMult beyond base cases. The fib_gap_recurrence above provides
+-- the key Fibonacci identity needed for the eventual proof.
+
 end
 end X
 end Omega
