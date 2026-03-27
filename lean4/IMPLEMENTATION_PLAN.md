@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~29,476 |
-| 定理/定义数 | ~2,360 |
+| 总行数 | ~29,504 |
+| 定理/定义数 | ~2,363 |
 | 论文接口包装 | 346 |
 | 文件数 | 66 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 211: stableAdd 加法阶 + sofic 严格单调 + fibPoly 导数（Round 211）**：三文件 FiberRing.lean（+10行）+ FibonacciPolynomial.lean（+11行）+ Sofic.lean（+7行）——stableAdd_nsmul_one_eq_zero（thm:stable-add-commutative-monoid：F_{m+2}·1=0 in X m，加法元素阶整除 F_{m+2}，FiberRing.lean:250）; fibPoly_derivative（def:pom-fibonacci-polynomial：Fibonacci 多项式形式微分恒等式，FibonacciPolynomial.lean:143）; stableLanguage_strict_mono（cor:folding-stable-syntax-entropy-logqdim：|X_m| < |X_{m+1}| for m ≥ 1，Sofic.lean:183）——thm:stable-add-commutative-monoid 为新注册标签；def:pom-fibonacci-polynomial 已注册（Round 11）；cor:folding-stable-syntax-entropy-logqdim 已注册（Phase 44）——新生算术 ~91→~92（+1 新标签：thm:stable-add-commutative-monoid）（Phase 211）
 **Phase 210: 零进位 + 末假缺陷 + 前缀满射（Round 210）**：三文件 FiberArithmetic.lean（+12行）+ Defect.lean（+18行）+ InverseLimit.lean（+18行）——carryIndicator_stableZero_left（def:pom-carry-interference-graph：carry(0, x) = 0，加零不产生进位，FiberArithmetic.lean:497）; localDefect_lastFalse（prop:fold-rewrite-newman：末位为 false 时局部缺陷消失，Defect.lean:480）; prefixWord_surjective（prop:fold-inverse-limit-xm-xinfty：XInfinity → X m 前缀投影满射，InverseLimit.lean:214）——def:pom-carry-interference-graph, prop:fold-rewrite-newman 为新注册论文标签；prop:fold-inverse-limit-xm-xinfty 已在 Phase 208 注册——Folding ~98→~100，POM ~510→~511（+2 新标签：def:pom-carry-interference-graph, prop:fold-rewrite-newman）（Phase 210）
 **Phase 209: 转移矩阵行和 + 融合规则 + Lucas平方和（Round 209）**：两文件 TransferMatrix.lean（+14行）+ ShiftDynamics.lean（+42行）——goldenMeanAdjacency_pow_row0_sum（thm:folding-stable-syntax-fib-fusion-ring：A^m 第0行行和 = F(m+2)，TransferMatrix.lean）; goldenMeanAdjacency_fusion_rule（thm:folding-stable-syntax-fib-fusion-ring：融合规则 F(m+n+1)=F(m+1)·F(n+1)+F(m)·F(n)，TransferMatrix.lean）; lucasNum_sq_sum（bridge:lucas-sq-sum：Σ L(k)² 求和公式，ShiftDynamics.lean）; lucasNum_mul_succ_ge_two（内部辅助引理）——thm:folding-stable-syntax-fib-fusion-ring 已在 Phase 205 注册，覆盖率不变，+4 Lean 定理（Phase 209）
 **Phase 208: 逆极限相干 + Hamming补余 + 路径独立集严格单调（Round 208）**：三文件 InverseLimit.lean（+9行）+ HammingDist.lean（+11行）+ PathIndSet.lean（+8行）——prefixWord_stableValue_coherent（prop:fold-inverse-limit-xm-xinfty：前缀截断与 stableValue 的相干性，InverseLimit.lean）; hammingDist_complement（prop:fold-fiber-count-reciprocity：d(u, complement v) 的互补关系，HammingDist.lean）; pathIndCount_strict_mono（prop:folding-stable-syntax-fibonacci-count：路径独立集计数严格单调，PathIndSet.lean）——Folding ~95→~98（+3 论文条目：prop:fold-inverse-limit-xm-xinfty, prop:fold-fiber-count-reciprocity, prop:folding-stable-syntax-fibonacci-count）（Phase 208）
@@ -176,15 +177,15 @@
 
 ### Lean4 形式化状态
 
-- **1,256 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,439 个 Lean4 定理（含内部引理）
+- **1,257 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,442 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1315/10,588 = **12.4%** |
+| 全局覆盖率 | 1316/10,588 = **12.4%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -195,7 +196,7 @@
 | 章节 | LaTeX 定理数 | SourceMap 注册 | 覆盖率 |
 |---|---|---|---|
 | SPG | 127 | ~70 | ~55% |
-| 新生算术 | 151 | ~90 | ~60% |
+| 新生算术 | 151 | ~92 | ~60.9% |
 | Folding | 317 | ~100 | ~31.5% |
 | 群统一 | 457 | ~110 | ~24.1% |
 | POM | 1,525 | ~511 | ~33.5% |
@@ -204,7 +205,7 @@
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1315** | **12.4%** |
+| **总计** | **10,588** | **1316** | **12.4%** |
 
 ## 3. 未来工作：30 条具体计划
 
