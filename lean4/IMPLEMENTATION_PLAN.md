@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 204: Fib交替隔位和 + stableValue单射性（Round 204）**：两文件 Fib.lean（+~74行，至~1044行）+ Value.lean（+~57行）——fib_alternating_skip_sum（prop:fold-endpoint-Mm-minus-one-unique：Σ_{k} F(n+1-2k) = F(n+2)-1，交替隔位 Fibonacci 和，Fib.lean:970）; stableValue_injective（thm:fold-zeckendorf-mod-decomposition-unique：stableValue 在 X m 上单射，Value.lean:121）——Folding ~91→~93（+2 论文条目：prop:fold-endpoint-Mm-minus-one-unique, thm:fold-zeckendorf-mod-decomposition-unique）；推迟：zero_fiber_weight_count（需 Word 权值分解基础设施）；注：Fib.lean 已达~1044 行，严重超 800 行限制，需拆分（Phase 204）
 **Phase 203: 鸽巢位宽界 + Fib差分递推 + 连续互素（Round 203）**：两文件 BoundaryLayer.lean（+2 定理）+ Fib.lean（+4 定理，至 972 行）——three_alternative_needs_two_bits（cor:bdry-sheet-parity-extension-min-register：¬∃ injection Fin 3→Fin 2，鸽巢原理，BoundaryLayer.lean）; three_alternative_two_bits_suffice（cor:bdry-sheet-parity-extension-min-register：∃ injection Fin 3→Fin 4，2 位充分，BoundaryLayer.lean）; fib_sub_consecutive（thm:bdry-uplift-second-difference-residual-law：F(n+2)-F(n+1)=F(n)，Fib.lean）; bdry_uplift_second_diff_m7（thm:bdry-uplift-second-difference-residual-law (m=7)：F(11)-F(10)=F(9)=34，Fib.lean）; bdry_uplift_second_diff_m8（thm:bdry-uplift-second-difference-residual-law (m=8)：F(12)-F(11)=F(10)=55，Fib.lean）; fib_coprime_consecutive_general（bridge:fib-coprime-consecutive：gcd(F(n),F(n+1))=1，Fib.lean）——群统一 ~109→~110，新生算术 ~89→~90（+2 论文条目：cor:bdry-sheet-parity-extension-min-register, thm:bdry-uplift-second-difference-residual-law；bridge 不计）；注：Fib.lean 已达 972 行，超 800 行限制，后续需拆分（Phase 203）
 **Phase 202: Lucas²恒等式 + Sym不变分次阻断 + 扭阶整除性（Round 202）**：三文件 CoprimeSMul.lean（+30行）+ BoundaryLayer.lean（+19行）+ ShiftDynamics.lean（+29行）——smul_eq_zero_iff_order_dvd（thm:pom-anom-torsion-eliminability-min-order：q•a=0 ↔ ord(a)|q，极小阶整除刻画，CoprimeSMul.lean）; no_nontrivial_sym_invariant_grading_fin3（prop:bdry-sheet-parity-extension-obstruction-m7：Fin 3 上无非平凡 Sym 不变 Z₂-分次，BoundaryLayer.lean）; lucasNum_sq_even（bridge:lucas-fibonacci-identity：L(n)²=5F(n)²+4 for even n≥1，ShiftDynamics.lean）; lucasNum_sq_odd（bridge:lucas-fibonacci-identity：L(n)²+4=5F(n)² for odd n，ShiftDynamics.lean）——POM ~507→~508，群统一 ~108→~109（+2 论文条目：thm:pom-anom-torsion-eliminability-min-order, prop:bdry-sheet-parity-extension-obstruction-m7；bridge 不计）（Phase 202）
 **Phase 201: Fib尾矩阵行列式 + 对合阻断 + Lie共振稀缺性（Round 201）**：三文件 Fib.lean（+24行）+ BoundaryLayer.lean（+29行）+ ZeckendorfSignature.lean（+27行）——fib_tail_matrix_det_even（prop:fib-tail-reversibility：G_m行列式偶m时=1，Fib.lean）; fib_tail_matrix_det_odd（prop:fib-tail-reversibility：G_m行列式奇m时=-1，Fib.lean）; involution_no_fixedpoint_even（prop:bdry-three-layer-obstructs-free-z2：无不动点对合 → 偶基数，BoundaryLayer.lean）; odd_card_no_free_involution（prop:bdry-three-layer-obstructs-free-z2：奇基数集无无不动点对合，BoundaryLayer.lean）; fib_lie_resonance_su2（cor:fib-lie-resonance-scarcity-su2-su3：F(4)=3=dim(su(2))=2²-1，ZeckendorfSignature.lean）; fib_lie_resonance_su3（cor:fib-lie-resonance-scarcity-su2-su3：F(6)=8=dim(su(3))=3²-1，ZeckendorfSignature.lean）; fib_lie_no_resonance_m3_to_m8（cor:fib-lie-resonance-scarcity-su2-su3：m∈{3,5,6,7,8}时F(m+2)+1非完全平方数，ZeckendorfSignature.lean）——新生算术 ~88→~89，群统一 ~106→~108（+3 条目：prop:fib-tail-reversibility, prop:bdry-three-layer-obstructs-free-z2, cor:fib-lie-resonance-scarcity-su2-su3）（Phase 201）
@@ -169,7 +170,7 @@
 
 ### Lean4 形式化状态
 
-- **1,245 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- **1,247 个论文标签已注册**到 SourceMap（bridge 标签另计）
 - ~2,436 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
@@ -177,7 +178,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1304/10,588 = **12.3%** |
+| 全局覆盖率 | 1306/10,588 = **12.3%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -189,7 +190,7 @@
 |---|---|---|---|
 | SPG | 127 | ~70 | ~55% |
 | 新生算术 | 151 | ~90 | ~60% |
-| Folding | 317 | ~91 | ~29% |
+| Folding | 317 | ~93 | ~29.3% |
 | 群统一 | 457 | ~110 | ~24.1% |
 | POM | 1,525 | ~508 | ~33.3% |
 | 圆维度 | 342 | 62 | 18.1% |
@@ -197,7 +198,7 @@
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1304** | **12.3%** |
+| **总计** | **10,588** | **1306** | **12.3%** |
 
 ## 3. 未来工作：30 条具体计划
 
