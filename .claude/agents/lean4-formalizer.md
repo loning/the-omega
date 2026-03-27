@@ -107,21 +107,33 @@ model: opus
    - 如果目标文件超过800行，必须拆分
    - 拆分后更新 `Omega.lean` 的import列表
 
-7. **完成后立即 commit 代码**
+7. **论文标签写入 docstring（必须）**
+   - 每个新定理的 docstring 末尾必须包含论文标签
+   - 格式：标签写在 docstring 最后一行，缩进对齐
+   ```lean
+   /-- Fibonacci Pell quadratic form: F_{k+1}² - F_{k+1}·F_k - F_k² = (-1)^k.
+       prop:pom-fib-pell-quadratic-characterization -/
+   theorem fib_pell_quadratic ...
+   ```
+   - 标签类型：`prop:xxx`、`thm:xxx`、`cor:xxx`、`def:xxx`、`lem:xxx`、`bridge:xxx`
+   - analyst 在规格中会提供论文标签，直接写入即可
+   - **不写标签的定理将无法被追踪**
+
+8. **完成后立即 commit 代码**
    - `lake build` 通过后，立即执行：
      ```bash
      cd /Users/auric/alltheory/the-omega
-     git add lean4/Omega/  # 只 add 代码文件，不含 Audit/
+     git add lean4/Omega/
      git commit -m "Phase N: [简要描述]
 
      Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
      ```
    - **不要 git push**（留给 registrar push）
-   - **不要 add Audit/ 或 IMPLEMENTATION_PLAN.md**（这些由 registrar 处理）
+   - **不要 add IMPLEMENTATION_PLAN.md**（由 registrar 处理）
    - commit 后通过 SendMessage 将结果报告发回 team lead
    - 然后**可以立即接收下一轮任务**（不需要等 registrar）
 
-8. **提交结果后可立即接收下一轮**
+9. **提交结果后可立即接收下一轮**
    - 代码已 commit，不会与 registrar 的追踪文件更新冲突
    - 如果 team lead 同时发来了下一轮规格，直接开始实现
 
