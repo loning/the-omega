@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~30,370 |
-| 定理/定义数 | ~2,429 |
+| 总行数 | ~30,510 |
+| 定理/定义数 | ~2,436 |
 | 论文接口包装 | 351 |
 | 文件数 | 67 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 225: totalPopcount=edgeCount + 边数严格单调 + Fib平方恒等式（Round 225）**：两文件 FibonacciCube.lean（+131行）+ BoundaryLayer.lean（+9行）——totalPopcount_eq_edgeCount（thm:pom-fibcube-theta-class-size：总 popcount = 边数 Σ_{x∈Γ_m} popcount(x) = fibcubeEdgeCount(m)，FibonacciCube.lean:909）; fibcubeEdgeCount_strict_mono（cor:pom-fibcube-edge-closed-form：边数严格单调 fibcubeEdgeCount(n) < fibcubeEdgeCount(n+1) for n≥1，FibonacciCube.lean:934）; bdry_square_identity（prop:bdry-fib-square-identity：一般性定理 F(2n+1)=F(n)²+F(n+1)²，BoundaryLayer.lean:137）——三个论文标签均已注册（thm:pom-fibcube-theta-class-size: Phase 217, cor:pom-fibcube-edge-closed-form: Phase 212, prop:bdry-fib-square-identity: Phase 28），本轮为一般性强化证明——+7 Lean 定理（3论文+4辅助），覆盖率数字不变（Phase 225）
+
 **Phase 224: EWC上界 + 纤维求和 + 鸽巢定理 + 加法定义（Round 224）**：两文件 FiberWeightCount.lean（+57行）+ FiberArithmetic.lean（+5行）——exactWeightCount_le_pow（prop:pom-ewc-upper-bound：ewc(m,n) ≤ 2^(m-1) for m≥1，精确权重计数上界，FiberWeightCount.lean:530）; fiberMultiplicity_sum_eq_pow'（prop:pom-fold-partition：Σ_v d(v) = 2^m，纤维多重度求和等于 2^m，论文标签包装版，FiberWeightCount.lean:540）; pow_le_maxFiberMultiplicity_mul_fib（cor:pom-D-le-avg：2^m ≤ D(m)·F(m+2)，鸽巢原理下界，FiberWeightCount.lean:545）; stableValue_stableAdd_eq（thm:add-definitional：sv(x+y) = (sv(x)+sv(y)) % F(m+2)，加法定义等式，FiberArithmetic.lean:504）——四个标签均为新注册——POM ~528→~532（+4 新标签：prop:pom-ewc-upper-bound, prop:pom-fold-partition, cor:pom-D-le-avg, thm:add-definitional）（Phase 224）
 
 **Phase 223: A₄ Cayley-Hamilton + 总闭路径数=Lucas（Round 223）**：两文件 CollisionZeta.lean（+12行）+ ShiftDynamics.lean（+15行）——collisionKernel4_cayley_hamilton（prop:pom-s4-recurrence-trace：A₄ Cayley-Hamilton：A^5=2A^4+7A^3+2A-2·I，native_decide，CollisionZeta.lean:642）; goldenMean_total_closed_paths（thm:pom-parry-limit-chain-explicit：tr(A^m) = A^m[0,0]+A^m[1,1] = L(m) 总闭路径数等于 Lucas 数，ShiftDynamics.lean:700）——prop:pom-s4-recurrence-trace 为新注册标签；thm:pom-parry-limit-chain-explicit 已在 Phase 222 注册——POM ~527→~528（+1 新标签：prop:pom-s4-recurrence-trace）（Phase 223）
