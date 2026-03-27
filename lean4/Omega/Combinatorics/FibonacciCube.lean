@@ -971,4 +971,22 @@ theorem coordOneCount_symm (n : Nat) (i : Fin n) :
       show wordReverse w' i = true
       rw [wordReverse_apply]; exact hw'.2⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 226: f-vector k=2 strict monotonicity
+-- ══════════════════════════════════════════════════════════════
+
+/-- f-vector k=2 strictly increases for n ≥ 3. thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_two_strict_mono (n : Nat) (hn : 3 ≤ n) :
+    fibcubeFVector n 2 < fibcubeFVector (n + 1) 2 := by
+  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
+  -- f(n+2, 2) = f(n+1, 2) + f(n, 2) + f(n, 1)
+  -- So f(n+2, 2) > f(n+1, 2) iff f(n, 2) + f(n, 1) > 0
+  show fibcubeFVector (n + 1) 2 < fibcubeFVector (n + 1 + 1) 2
+  rw [fibcubeFVector_two_recurrence]
+  -- f(n, 1) = e(n) ≥ 1 for n ≥ 1
+  have hedge : 0 < fibcubeFVector n 1 := by
+    rw [fibcubeFVector_one_eq_edge]
+    exact fibcubeEdgeCount_pos n (by omega)
+  linarith
+
 end Omega

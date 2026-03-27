@@ -706,4 +706,16 @@ theorem goldenMean_total_closed_paths (m : Nat) (hm : 1 ≤ m) :
   simp only [show k + 1 - 1 = k from by omega]
   push_cast; ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 226: Lucas square identity (all n)
+-- ══════════════════════════════════════════════════════════════
+
+/-- L(n)² = 5·F(n)² + 4·(-1)^n in ℤ, for all n.
+    thm:pom-parry-limit-chain-explicit -/
+theorem lucasNum_sq_eq_int (n : Nat) :
+    (lucasNum n : ℤ) ^ 2 = 5 * (Nat.fib n : ℤ) ^ 2 + 4 * (-1) ^ n := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp [lucasNum_zero]
+  · exact lucasNum_sq n hn
+
 end Omega

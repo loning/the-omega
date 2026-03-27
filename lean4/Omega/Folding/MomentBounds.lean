@@ -786,4 +786,34 @@ theorem momentSum_two_pow_le (q m : Nat) (hq : 1 ≤ q) :
   rw [Nat.mul_comm] at h
   exact h
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 226: S_2 strict doubling
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m+1) > 2*S_2(m) for m ≥ 2. prop:pom-s2-recurrence -/
+theorem momentSum_two_succ_gt_double (m : Nat) (hm : 2 ≤ m) :
+    2 * momentSum 2 m < momentSum 2 (m + 1) := by
+  -- Base cases m=2,3,4 by values, then induction using the 3-step recurrence.
+  -- Recurrence: S_2(m+3) = 2*S_2(m+2) + 2*S_2(m+1) - 2*S_2(m)
+  -- So S_2(m+3) > 2*S_2(m+2) ⟺ 2*S_2(m+1) > 2*S_2(m) ⟺ S_2(m+1) > S_2(m),
+  -- which follows from IH since 2*S_2(m) < S_2(m+1) implies S_2(m) < S_2(m+1).
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 => omega
+    | 2 => rw [momentSum_two_two, momentSum_two_three]; omega
+    | 3 => rw [momentSum_two_three, momentSum_two_four]; omega
+    | 4 => rw [momentSum_two_four, momentSum_two_five]; omega
+    | m + 5 =>
+      -- Use recurrence for m+3: S_2(m+6) + 2*S_2(m+3) = 2*S_2(m+5) + 2*S_2(m+4)
+      have hrec := momentSum_two_recurrence (m + 3)
+      -- IH at m+3: 2*S_2(m+3) < S_2(m+4)
+      have h3 := ih (m + 3) (by omega) (by omega)
+      -- IH at m+4: 2*S_2(m+4) < S_2(m+5)
+      have h4 := ih (m + 4) (by omega) (by omega)
+      -- From hrec: S_2(m+6) = 2*S_2(m+5) + 2*S_2(m+4) - 2*S_2(m+3)
+      -- Need: 2*S_2(m+5) < S_2(m+6), i.e., 2*(S_2(m+4) - S_2(m+3)) > 0
+      -- From h3: S_2(m+4) > 2*S_2(m+3) > S_2(m+3)
+      linarith
+
 end Omega
