@@ -6,9 +6,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~30,281 |
-| 定理/定义数 | ~2,421 |
-| 论文接口包装 | 346 |
+| 总行数 | ~30,308 |
+| 定理/定义数 | ~2,423 |
+| 论文接口包装 | 347 |
 | 文件数 | 67 |
 | 公理数 | 0 |
 
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 223: A₄ Cayley-Hamilton + 总闭路径数=Lucas（Round 223）**：两文件 CollisionZeta.lean（+12行）+ ShiftDynamics.lean（+15行）——collisionKernel4_cayley_hamilton（prop:pom-s4-recurrence-trace：A₄ Cayley-Hamilton：A^5=2A^4+7A^3+2A-2·I，native_decide，CollisionZeta.lean:642）; goldenMean_total_closed_paths（thm:pom-parry-limit-chain-explicit：tr(A^m) = A^m[0,0]+A^m[1,1] = L(m) 总闭路径数等于 Lucas 数，ShiftDynamics.lean:700）——prop:pom-s4-recurrence-trace 为新注册标签；thm:pom-parry-limit-chain-explicit 已在 Phase 222 注册——POM ~527→~528（+1 新标签：prop:pom-s4-recurrence-trace）（Phase 223）
+
 **Phase 222: 转移矩阵对称性 + A₅ Cayley-Hamilton + Lucas严格单调（Round 222）**：三文件 TransferMatrix.lean（+15行）+ CollisionKernel.lean（+11行）+ ShiftDynamics.lean（+12行）——goldenMeanAdjacency_symmetric（prop:Phi_m-entropy：黄金均值邻接矩阵对称 A^T=A，TransferMatrix.lean）; goldenMeanAdjacency_pow_symmetric（prop:Phi_m-entropy：A^m 对称，归纳，TransferMatrix.lean）; collisionKernel5_cayley_hamilton（prop:pom-s5-recurrence：A₅ Cayley-Hamilton：A^5+2A^4+11A^3+8A^2+20A-10I=0，CollisionKernel.lean）; lucasNum_strict_mono（thm:pom-parry-limit-chain-explicit：L(n) < L(n+1) for n≥1，ShiftDynamics.lean）——prop:Phi_m-entropy, thm:pom-parry-limit-chain-explicit 为新注册标签；prop:pom-s5-recurrence 已在 Phase 214 注册——Folding/Graph +2 新标签（+2 新标签：prop:Phi_m-entropy, thm:pom-parry-limit-chain-explicit）（Phase 222）
 
 **Phase 221: popcount_snoc递推 + Hamming-popcount界（Round 221）**：两文件 FibonacciCube.lean（+68行）+ HammingDist.lean（+23行）——popcount_snoc_false（thm:pom-popcount-snoc：popcount(snoc w false)=popcount(w)，FibonacciCube.lean）; popcount_snoc_true（thm:pom-popcount-snoc：popcount(snoc w true)=popcount(w)+1，FibonacciCube.lean）; hammingDist_le_popcount_add（thm:pom-hamming-popcount-bound：d(a,b) ≤ popcount(a)+popcount(b)，HammingDist.lean）——推迟：fiberMultiplicity_stableNeg（需 Fold-complement-stableNeg 链接基础设施）——两个论文标签均为新注册——POM +2（+2 新标签：thm:pom-popcount-snoc, thm:pom-hamming-popcount-bound）（Phase 221）
@@ -194,15 +196,15 @@
 
 ### Lean4 形式化状态
 
-- **1,277 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,500 个 Lean4 定理（含内部引理）
+- **1,278 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,502 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1334/10,588 = **12.6%** |
+| 全局覆盖率 | 1335/10,588 = **12.6%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -216,13 +218,13 @@
 | 新生算术 | 151 | ~93 | ~61.6% |
 | Folding | 317 | ~101 | ~31.9% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~527 | ~34.6% |
+| POM | 1,525 | ~528 | ~34.6% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1334** | **12.6%** |
+| **总计** | **10,588** | **1335** | **12.6%** |
 
 ## 3. 未来工作：30 条具体计划
 
