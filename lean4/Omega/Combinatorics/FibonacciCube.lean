@@ -989,4 +989,25 @@ theorem fibcubeFVector_two_strict_mono (n : Nat) (hn : 3 ≤ n) :
     exact fibcubeEdgeCount_pos n (by omega)
   linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 228: f-vector k=3 recurrence + base values
+-- ══════════════════════════════════════════════════════════════
+
+/-- f(n+2,3) = f(n+1,3) + f(n,3) + f(n,2). thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_three_recurrence (n : Nat) :
+    fibcubeFVector (n + 2) 3 = fibcubeFVector (n + 1) 3 + fibcubeFVector n 3 +
+      fibcubeFVector n 2 := by
+  simp only [fibcubeFVector_succ_succ, show (3 : Nat) ≠ 0 from by omega, ite_false,
+    show 3 - 1 = 2 from rfl]
+
+@[simp] theorem fibcubeFVector_three_three : fibcubeFVector 3 3 = 0 := by
+  simp [fibcubeFVector]
+
+@[simp] theorem fibcubeFVector_three_four : fibcubeFVector 4 3 = 0 := by
+  simp [fibcubeFVector]
+
+@[simp] theorem fibcubeFVector_three_five : fibcubeFVector 5 3 = 1 := by native_decide
+
+@[simp] theorem fibcubeFVector_three_six : fibcubeFVector 6 3 = 4 := by native_decide
+
 end Omega
