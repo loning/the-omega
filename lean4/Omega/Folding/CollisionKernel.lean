@@ -154,4 +154,19 @@ theorem paper_collision_zeta_a3_invariants :
     collisionKernel3 ^ 3 = 2 • collisionKernel3 ^ 2 + 4 • collisionKernel3 - 2 • 1 :=
   ⟨collisionKernel3_trace, collisionKernel3_det, collisionKernel3_cayley_hamilton⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 214: S_5 companion matrix
+-- ══════════════════════════════════════════════════════════════
+
+/-- The 5x5 companion matrix for the S_5 recurrence.
+    prop:pom-s5-recurrence -/
+def collisionKernel5 : Matrix (Fin 5) (Fin 5) ℤ :=
+  !![0, 1, 0, 0, 0; 0, 0, 1, 0, 0; 0, 0, 0, 1, 0; 0, 0, 0, 0, 1; 10, -20, -8, -11, -2]
+
+/-- prop:pom-s5-recurrence (trace) -/
+theorem collisionKernel5_trace : collisionKernel5.trace = -2 := by native_decide
+
+/-- prop:pom-s5-recurrence (det) -/
+theorem collisionKernel5_det : collisionKernel5.det = 10 := by native_decide
+
 end Omega

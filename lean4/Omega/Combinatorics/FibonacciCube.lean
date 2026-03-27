@@ -559,4 +559,57 @@ theorem fibcubeEdgeCount_closed (n : Nat) :
       have hfib1 := Nat.fib_add_two (n := n + 1)
       nlinarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 214: FibCube f-vector
+-- ══════════════════════════════════════════════════════════════
+
+/-- The f-vector of the Fibonacci cube: f(n,k) counts k-dimensional faces.
+    thm:pom-fibcube-fvector-closed -/
+def fibcubeFVector : Nat → Nat → Nat
+  | 0, 0 => 1
+  | 0, _ + 1 => 0
+  | 1, 0 => 2
+  | 1, 1 => 1
+  | 1, _ + 2 => 0
+  | n + 2, k => fibcubeFVector (n + 1) k + fibcubeFVector n k +
+                  (if k = 0 then 0 else fibcubeFVector n (k - 1))
+
+@[simp] theorem fibcubeFVector_zero_zero : fibcubeFVector 0 0 = 1 := rfl
+@[simp] theorem fibcubeFVector_zero_succ (k : Nat) : fibcubeFVector 0 (k + 1) = 0 := rfl
+@[simp] theorem fibcubeFVector_one_zero : fibcubeFVector 1 0 = 2 := rfl
+@[simp] theorem fibcubeFVector_one_one : fibcubeFVector 1 1 = 1 := rfl
+@[simp] theorem fibcubeFVector_one_succ_succ (k : Nat) : fibcubeFVector 1 (k + 2) = 0 := rfl
+@[simp] theorem fibcubeFVector_succ_succ (n k : Nat) :
+    fibcubeFVector (n + 2) k = fibcubeFVector (n + 1) k + fibcubeFVector n k +
+      (if k = 0 then 0 else fibcubeFVector n (k - 1)) := rfl
+
+/-- f-vector at k=0 = F(n+2). thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_zero_eq_fib (n : Nat) :
+    fibcubeFVector n 0 = Nat.fib (n + 2) := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp
+    | 1 => simp [Nat.fib]
+    | n + 2 =>
+      simp only [fibcubeFVector_succ_succ, ite_true]
+      rw [ih (n + 1) (by omega), ih n (by omega)]
+      rw [show n + 1 + 2 = n + 2 + 1 from by omega]
+      have := Nat.fib_add_two (n := n + 2)
+      omega
+
+/-- f-vector at k=1 = edge count. thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_one_eq_edge (n : Nat) :
+    fibcubeFVector n 1 = fibcubeEdgeCount n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp [fibcubeEdgeCount]
+    | 1 => simp [fibcubeEdgeCount]
+    | n + 2 =>
+      simp only [fibcubeFVector_succ_succ, show (1 : Nat) ≠ 0 from by omega, ite_false,
+        show 1 - 1 = 0 from rfl]
+      rw [ih (n + 1) (by omega), ih n (by omega), fibcubeFVector_zero_eq_fib]
+      rfl
+
 end Omega
