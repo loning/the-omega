@@ -188,4 +188,35 @@ theorem collisionKernel_bf_det_ratio :
     bowenFranksMatrix3.det = 3 * bowenFranksMatrix2.det := by
   rw [bowenFranksMatrix2_det, bowenFranksMatrix3_det]; ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 216: A_4 BF det + S_5 base value + S_4 trace invariants
+-- ══════════════════════════════════════════════════════════════
+
+/-- BF matrix for A_4: I - collisionKernel4. prop:pom-collision-bf-snf-q234 -/
+def bowenFranksMatrix4 : Matrix (Fin 5) (Fin 5) ℤ :=
+  !![1, -1, 0, 0, 0;
+     0, 1, -1, 0, 0;
+     0, 0, 1, -1, 0;
+     0, 0, 0, 1, -1;
+     2, -2, 0, -7, -1]
+
+/-- det(I - A_4) = -8. prop:pom-collision-bf-snf-q234 -/
+theorem bowenFranksMatrix4_det : bowenFranksMatrix4.det = -8 := by native_decide
+
+/-- S_5 base values: m = 7,8. prop:pom-s5-recurrence -/
+@[simp] theorem momentSum_five_seven : momentSum 5 7 = 62168 := by
+  rw [← cMomentSum_eq]; native_decide
+@[simp] theorem momentSum_five_eight : momentSum 5 8 = 304456 := by
+  rw [← cMomentSum_eq]; native_decide
+
+/-- tr(A_4^2) = 18. rem:pom-s4-zero-coefficient-lock -/
+theorem collisionKernel4_trace_sq :
+    (collisionKernel4 ^ 2).trace = 18 := by native_decide
+
+/-- Newton identity: tr(A_4^2) = tr(A_4)^2 - 2*e_2(A_4), so e_2(A_4) = (4-18)/2 = -7.
+    rem:pom-s4-zero-coefficient-lock -/
+theorem collisionKernel4_e2 :
+    collisionKernel4.trace ^ 2 - (collisionKernel4 ^ 2).trace = -14 := by
+  rw [collisionKernel4_trace, collisionKernel4_trace_sq]; ring
+
 end Omega
