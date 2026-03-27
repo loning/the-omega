@@ -551,4 +551,33 @@ theorem lucasNum_fib_wronskian_odd (n : Nat) (hn : 1 ≤ n) (hodd : ¬ Even n) :
   have hcas := fib_cassini_odd n hodd
   nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n - 1))]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 202: Lucas-Fibonacci squared identity
+-- ══════════════════════════════════════════════════════════════
+
+/-- L(n)^2 = 5*F(n)^2 + 4 for even n >= 1.
+    bridge:lucas-fibonacci-identity -/
+theorem lucasNum_sq_even (n : Nat) (hn : 1 ≤ n) (heven : Even n) :
+    lucasNum n ^ 2 = 5 * Nat.fib n ^ 2 + 4 := by
+  rw [lucasNum_eq_fib n hn]
+  have h1 := Nat.fib_add_two (n := n)
+  have h2 := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at h2
+  have hcas := fib_cassini_even n heven
+  nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n - 1)),
+             sq_nonneg (Nat.fib (n + 1))]
+
+/-- L(n)^2 + 4 = 5*F(n)^2 for odd n.
+    bridge:lucas-fibonacci-identity -/
+theorem lucasNum_sq_odd (n : Nat) (hodd : ¬ Even n) :
+    lucasNum n ^ 2 + 4 = 5 * Nat.fib n ^ 2 := by
+  have hn : 1 ≤ n := by rcases n with _ | n; exact absurd ⟨0, rfl⟩ hodd; omega
+  rw [lucasNum_eq_fib n hn]
+  have h1 := Nat.fib_add_two (n := n)
+  have h2 := Nat.fib_add_two (n := n - 1)
+  rw [show n - 1 + 2 = n + 1 from by omega, show n - 1 + 1 = n from by omega] at h2
+  have hcas := fib_cassini_odd n hodd
+  nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n - 1)),
+             sq_nonneg (Nat.fib (n + 1))]
+
 end Omega

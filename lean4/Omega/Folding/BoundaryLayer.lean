@@ -92,4 +92,23 @@ theorem odd_card_no_free_involution {α : Type*} [Fintype α] [DecidableEq α]
   push_neg at hc
   exact hodd (involution_no_fixedpoint_even σ hinv hc)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 202: Sym-invariant grading obstruction
+-- ══════════════════════════════════════════════════════════════
+
+/-- No nontrivial Sym-invariant Z₂-grading on Fin 3.
+    prop:bdry-sheet-parity-extension-obstruction-m7 -/
+theorem no_nontrivial_sym_invariant_grading_fin3
+    (f : Fin 3 → Fin 2)
+    (hinv : ∀ σ : Equiv.Perm (Fin 3), ∀ x, f (σ x) = f x) :
+    ∀ x y : Fin 3, f x = f y := by
+  -- swap(0,1) gives f(0) = f(1); swap(0,2) gives f(0) = f(2)
+  have h01 : f 0 = f 1 := by
+    have := hinv (Equiv.swap 0 1) 0
+    simp [Equiv.swap_apply_left] at this; exact this.symm
+  have h02 : f 0 = f 2 := by
+    have := hinv (Equiv.swap 0 2) 0
+    simp [Equiv.swap_apply_left] at this; exact this.symm
+  intro x y; fin_cases x <;> fin_cases y <;> simp_all
+
 end Omega
