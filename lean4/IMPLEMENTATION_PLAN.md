@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~30,062 |
-| 定理/定义数 | ~2,407 |
+| 总行数 | ~30,152 |
+| 定理/定义数 | ~2,414 |
 | 论文接口包装 | 346 |
 | 文件数 | 67 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 220: wordReverse Z₂对称 + xReverse对合 + Theta类对称性（Round 220）**：两文件 No11.lean（+35行）+ FibonacciCube.lean（+55行）——wordReverse def（thm:pom-fibcube-aut-z2：Word 翻转映射定义，No11.lean）; no11_reverse（thm:pom-fibcube-aut-z2：翻转保持 No11，No11.lean）; wordReverse_involutive（thm:pom-fibcube-aut-z2：翻转是对合，FibonacciCube.lean）; wordReverse_apply（辅助：位映射 i↦m-1-i，FibonacciCube.lean，无论文标签）; xReverse def（thm:pom-fibcube-aut-z2：X m 上的指标翻转映射，FibonacciCube.lean）; xReverse_involutive（thm:pom-fibcube-aut-z2：xReverse 是对合，FibonacciCube.lean）; coordOneCount_symm（thm:pom-fibcube-theta-class-size：Theta类指标对称性 coordOneCount n i = coordOneCount n (n-1-i)，FibonacciCube.lean）——thm:pom-fibcube-aut-z2 为新注册标签；thm:pom-fibcube-theta-class-size 已在 Phase 217 注册——POM +1（+1 新标签：thm:pom-fibcube-aut-z2）（Phase 220）
+
 **Phase 219: Fibonacci乘积分裂 + 边数Fibonacci卷积（Round 219）**：一文件 FibonacciCube.lean（+52行）——fib_product_split（thm:pom-fib-product-split：F(n)=F(i)·F(n-i+1)+F(i-1)·F(n-i) for 1≤i≤n，Fibonacci 乘积分裂恒等式，FibonacciCube.lean:675）; fibcubeEdgeCount_eq_fib_conv（cor:pom-fibcube-edge-fib-conv：e(n)=Σ_{i<n} F(i+1)·F(n-i)，边数 Fibonacci 卷积表达，FibonacciCube.lean:685）——推迟：coordOneCount_eq_fib_prod（需 Fin-embedding 基础设施）——两个论文标签均为新注册——Combinatorics +2（+2 新标签：thm:pom-fib-product-split, cor:pom-fibcube-edge-fib-conv）（Phase 219）
 
 **Phase 218: FibCube f-向量k=2 + fibPoly(-1)周期6 + S₂幂均值界（Round 218）**：三文件 FibonacciCube.lean（+30行）+ FibonacciPolynomial.lean（+37行）+ MomentBounds.lean（含 Phase 217 @[simp] 修正 + 新增）——fibcubeFVector_two_recurrence（thm:pom-fibcube-fvector-closed：f(n+2,2)=f(n+1,2)+f(n,2)+f(n,1)，FibonacciCube.lean）; fibcubeFVector_two_two/three/four/five/six（thm:pom-fibcube-fvector-closed：f(2..6,2)=0/1/3/9/22，FibonacciCube.lean）; fibPoly_eval_neg_one_period（def:pom-fibonacci-polynomial：F_n(-1) 基值周期 n=0..5，FibonacciPolynomial.lean）; fibPoly_eval_neg_one_rec（def:pom-fibonacci-polynomial：F_{n+2}(-1)=F_{n+1}(-1)-F_n(-1) 递推，FibonacciPolynomial.lean）; fibPoly_eval_neg_one_periodic（def:pom-fibonacci-polynomial：F_{n+6}(-1)=F_n(-1) 周期6，FibonacciPolynomial.lean）; momentSum_two_pow_le（prop:pom-sq-quasi-multiplicative：S_2(m)^q ≤ S_{2q}(m)·F(m+2)^{q-1}，幂均值不等式，MomentBounds.lean）——注：Phase 218 同时修正 Phase 217 的 momentSum_four_strict_mono 范围（m≤10→m≤9），去除 @[simp]——prop:pom-sq-quasi-multiplicative 为新注册标签；thm:pom-fibcube-fvector-closed/def:pom-fibonacci-polynomial 已注册——POM ~522→~523（+1 新标签：prop:pom-sq-quasi-multiplicative）（Phase 218）
@@ -188,15 +190,15 @@
 
 ### Lean4 形式化状态
 
-- **1,272 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,486 个 Lean4 定理（含内部引理）
+- **1,273 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,493 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1329/10,588 = **12.6%** |
+| 全局覆盖率 | 1330/10,588 = **12.6%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -210,13 +212,13 @@
 | 新生算术 | 151 | ~93 | ~61.6% |
 | Folding | 317 | ~100 | ~31.5% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~523 | ~34.2% |
+| POM | 1,525 | ~524 | ~34.4% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1329** | **12.6%** |
+| **总计** | **10,588** | **1330** | **12.6%** |
 
 ## 3. 未来工作：30 条具体计划
 
