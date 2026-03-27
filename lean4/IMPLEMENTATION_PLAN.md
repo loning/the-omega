@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~29,762 |
-| 定理/定义数 | ~2,377 |
+| 总行数 | ~29,814 |
+| 定理/定义数 | ~2,384 |
 | 论文接口包装 | 346 |
 | 文件数 | 67 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 215: Bowen-Franks行列式 + f-向量k=1递推 + fenceDet加性（Round 215）**：三文件 CollisionKernel.lean（+19行）+ FibonacciCube.lean（+8行）+ Fib.lean（+25行）——bowenFranksMatrix2（def）+ bowenFranksMatrix2_det（prop:pom-collision-bf-snf-q234：BF₂行列式=-1，native_decide，CollisionKernel.lean:177/179）; bowenFranksMatrix3（def）+ bowenFranksMatrix3_det（prop:pom-collision-bf-snf-q234：BF₃行列式=-3，native_decide，CollisionKernel.lean:182/184）; collisionKernel_bf_det_ratio（prop:pom-collision-bf-snf-q234：det(BF₃)=3·det(BF₂)，CollisionKernel.lean:187）; fibcubeFVector_one_recurrence（thm:pom-fibcube-fvector-closed：f-向量k=1递推恒等式，FibonacciCube.lean:617）; fenceDet_additive（cor:pom-Lk-golden-coupling-unique：D(k+j)≥D(k)·D(j) 加性下界，Fib.lean:1050）; fenceDet_succ_lt_triple（cor:pom-Lk-golden-coupling-unique：D(k+1) < 3·D(k)，Fib.lean:1063）——prop:pom-collision-bf-snf-q234, cor:pom-Lk-golden-coupling-unique 为新标签；thm:pom-fibcube-fvector-closed 已注册（Phase 214）——POM ~518→~520（+2 新标签：prop:pom-collision-bf-snf-q234, cor:pom-Lk-golden-coupling-unique）（Phase 215）
 **Phase 214: S5伴随矩阵 + 幂和严格超加性 + FibCube f-向量（Round 214）**：四文件 CollisionKernel.lean（+15行）+ PowerInequality.lean（新建，+45行）+ FibonacciCube.lean（+53行）+ Omega.lean（+1 import）——collisionKernel5（def：S_5 递推 5×5 伴随矩阵定义，CollisionKernel.lean:163）; collisionKernel5_trace（prop:pom-s5-recurrence：tr=-2，native_decide，CollisionKernel.lean:167）; collisionKernel5_det（prop:pom-s5-recurrence：det=10，native_decide，CollisionKernel.lean:170）; pow_add_strict_super（prop:pom-coarsegraining-collision-moment-strict-monotonicity：(a+b)^q > a^q + b^q for a,b≥1, q≥2，PowerInequality.lean:8）; fibcubeFVector（def：Fibonacci 超立方体 f-向量定义，FibonacciCube.lean:568）; fibcubeFVector_zero_eq_fib（thm:pom-fibcube-fvector-closed：f_0(n)=F_{n+2}，FibonacciCube.lean:587）; fibcubeFVector_one_eq_edge（thm:pom-fibcube-fvector-closed：f_1(n)=边数，FibonacciCube.lean:602）——三个论文标签均为新注册——POM ~515→~518（+3 新标签：prop:pom-s5-recurrence, prop:pom-coarsegraining-collision-moment-strict-monotonicity, thm:pom-fibcube-fvector-closed）（Phase 214）
 **Phase 213: Fib间隙递推 + 跨阶矩不等式（Round 213）**：两文件 FiberSplit.lean（+26行）+ MomentBounds.lean（+11行）——fib_gap_recurrence（lem:pom-forbidden-pair-fib-gap：F(k+4)-F(k+3)≥F(k+1) for k≥6，禁对 Fibonacci 间隙递推，FiberSplit.lean:259）; momentSum_crossq_from_base（prop:pom-crossq-g-monotone：S_q(m+1) ≥ g(q)·S_q(m) 跨阶矩单调性，MomentBounds.lean:728）——两个论文标签均为新注册——推迟：cSecondMaxFiberMult_even_closed（需递推基础设施）——POM ~513→~515（+2 新标签：lem:pom-forbidden-pair-fib-gap, prop:pom-crossq-g-monotone）（Phase 213）
 **Phase 212: fibcube边数闭式 + Fib位移恒等式 + 路径独立集上界（Round 212）**：三文件 FibonacciCube.lean（+35行）+ ZeckendorfSignature.lean（+25行）+ PathIndSet.lean（+47行）——fibcubeEdgeCount_closed（cor:pom-fibcube-edge-closed-form：Fibonacci 超立方体边数闭式 = n·F_{n+1}，FibonacciCube.lean:547）; fib_shift3（prop:resolution-shift4-fib-matrix-law：F(n+3)=3·F(n)+2·F(n-1) for n ≥ 1，ZeckendorfSignature.lean:465）; fib_shift4（prop:resolution-shift4-fib-matrix-law：F(n+4)=5·F(n)+3·F(n-1) for n ≥ 1，ZeckendorfSignature.lean:475）; half_injOn_pathInd（内部辅助引理，PathIndSet.lean:371）; pathIndSet_card_le（thm:pom-fibcube-eccentricity-closed-form：路径独立集基数上界 |S| ≤ ⌈n/2⌉，PathIndSet.lean:397）——三个论文标签均为新注册——POM ~511→~512，Combinatorics +2，群统一/新生算术 ~92→~93（+3 新标签：cor:pom-fibcube-edge-closed-form, prop:resolution-shift4-fib-matrix-law, thm:pom-fibcube-eccentricity-closed-form）（Phase 212）
@@ -180,15 +181,15 @@
 
 ### Lean4 形式化状态
 
-- **1,265 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,456 个 Lean4 定理（含内部引理）
+- **1,267 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,463 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1324/10,588 = **12.5%** |
+| 全局覆盖率 | 1326/10,588 = **12.5%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -202,13 +203,13 @@
 | 新生算术 | 151 | ~93 | ~61.6% |
 | Folding | 317 | ~100 | ~31.5% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~518 | ~34.0% |
+| POM | 1,525 | ~520 | ~34.1% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1324** | **12.5%** |
+| **总计** | **10,588** | **1326** | **12.5%** |
 
 ## 3. 未来工作：30 条具体计划
 
