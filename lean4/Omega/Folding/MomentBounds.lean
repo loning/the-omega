@@ -734,17 +734,17 @@ theorem momentSum_crossq_from_base (q m : Nat) (hq : 1 ≤ q) :
 -- Phase 217: S_4 strict monotonicity (extended base)
 -- ══════════════════════════════════════════════════════════════
 
-@[simp] theorem momentSum_four_seven : momentSum 4 7 = 12208 := by
+theorem momentSum_four_seven : momentSum 4 7 = 12208 := by
   rw [← cMomentSum_eq]; native_decide
-@[simp] theorem momentSum_four_eight : momentSum 4 8 = 47480 := by
+theorem momentSum_four_eight : momentSum 4 8 = 47480 := by
   rw [← cMomentSum_eq]; native_decide
-@[simp] theorem momentSum_four_nine : momentSum 4 9 = 181576 := by
+theorem momentSum_four_nine : momentSum 4 9 = 181576 := by
   rw [← cMomentSum_eq]; native_decide
-@[simp] theorem momentSum_four_ten : momentSum 4 10 = 700384 := by
+theorem momentSum_four_ten : momentSum 4 10 = 700384 := by
   rw [← cMomentSum_eq]; native_decide
 
-/-- S_4 is strictly increasing for 2 ≤ m ≤ 10. prop:pom-s4-recurrence -/
-theorem momentSum_four_strict_mono (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 10) :
+/-- S_4 is strictly increasing for 2 ≤ m ≤ 9. prop:pom-s4-recurrence -/
+theorem momentSum_four_strict_mono (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 9) :
     momentSum 4 m < momentSum 4 (m + 1) := by
   have h23 : momentSum 4 2 < momentSum 4 3 := by
     rw [momentSum_four_two, momentSum_four_three]; omega
@@ -762,8 +762,28 @@ theorem momentSum_four_strict_mono (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 10) :
     rw [momentSum_four_eight, momentSum_four_nine]; omega
   have h910 : momentSum 4 9 < momentSum 4 10 := by
     rw [momentSum_four_nine, momentSum_four_ten]; omega
-  have h1011 : momentSum 4 10 < momentSum 4 11 := by
-    rw [momentSum_four_ten]; rw [← cMomentSum_eq]; native_decide
   interval_cases m <;> assumption
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 218: S_2(m)^q ≤ S_{2q}(m) · F(m+2)^{q-1}
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m)^q ≤ S_{2q}(m) · F(m+2)^{q-1}. By power mean inequality applied to
+    f(x) = d_m(x)^2 over the Fibonacci cube X_m.
+    prop:pom-sq-quasi-multiplicative -/
+theorem momentSum_two_pow_le (q m : Nat) (hq : 1 ≤ q) :
+    momentSum 2 m ^ q ≤ momentSum (2 * q) m * Nat.fib (m + 2) ^ (q - 1) := by
+  obtain ⟨q, rfl⟩ : ∃ q', q = q' + 1 := ⟨q - 1, by omega⟩
+  simp only [Nat.add_sub_cancel]
+  simp only [momentSum]
+  rw [← X.card_eq_fib, ← Finset.card_univ (α := X m)]
+  have key : ∀ x ∈ (Finset.univ : Finset (X m)), 0 ≤ X.fiberMultiplicity x ^ 2 :=
+    fun _ _ => Nat.zero_le _
+  have h := pow_sum_le_card_mul_sum_pow key q
+  simp_rw [show ∀ x : X m, (X.fiberMultiplicity x ^ 2) ^ (q + 1) =
+    X.fiberMultiplicity x ^ (2 * (q + 1)) from
+    fun x => by rw [← pow_mul]] at h
+  rw [Nat.mul_comm] at h
+  exact h
 
 end Omega

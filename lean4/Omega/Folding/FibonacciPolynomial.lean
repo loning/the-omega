@@ -147,4 +147,41 @@ theorem fibPoly_derivative (n : Nat) :
   simp only [fibPoly_succ_succ, map_add, Polynomial.derivative_mul, Polynomial.derivative_X]
   ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 218: fibPoly eval(-1) periodicity
+-- ══════════════════════════════════════════════════════════════
+
+/-- fibPoly at t=-1 base values: F_0(-1)=0, F_1(-1)=1, F_2(-1)=1,
+    F_3(-1)=0, F_4(-1)=-1, F_5(-1)=-1.
+    def:pom-fibonacci-polynomial -/
+theorem fibPoly_eval_neg_one_period :
+    (fibPoly 0).eval (-1 : ℤ) = 0 ∧ (fibPoly 1).eval (-1 : ℤ) = 1 ∧
+    (fibPoly 2).eval (-1 : ℤ) = 1 ∧ (fibPoly 3).eval (-1 : ℤ) = 0 ∧
+    (fibPoly 4).eval (-1 : ℤ) = -1 ∧ (fibPoly 5).eval (-1 : ℤ) = -1 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [fibPoly, eval_add, eval_mul, eval_X]
+
+/-- Recurrence at t=-1: F_{n+2}(-1) = F_{n+1}(-1) - F_n(-1).
+    def:pom-fibonacci-polynomial -/
+theorem fibPoly_eval_neg_one_rec (n : Nat) :
+    (fibPoly (n + 2)).eval (-1 : ℤ) =
+    (fibPoly (n + 1)).eval (-1 : ℤ) - (fibPoly n).eval (-1 : ℤ) := by
+  simp only [fibPoly_succ_succ, eval_add, eval_mul, eval_X]
+  ring
+
+/-- fibPoly(-1) is period-6: F_{n+6}(-1) = F_n(-1).
+    def:pom-fibonacci-polynomial -/
+theorem fibPoly_eval_neg_one_periodic (n : Nat) :
+    (fibPoly (n + 6)).eval (-1 : ℤ) = (fibPoly n).eval (-1 : ℤ) := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp [fibPoly, eval_add, eval_mul, eval_X]
+    | 1 => simp [fibPoly, eval_add, eval_mul, eval_X]
+    | n + 2 =>
+      rw [fibPoly_eval_neg_one_rec (n + 6)]
+      rw [fibPoly_eval_neg_one_rec n]
+      rw [show n + 6 + 1 = (n + 1) + 6 from by omega]
+      rw [ih (n + 1) (by omega), ih n (by omega)]
+
 end Omega

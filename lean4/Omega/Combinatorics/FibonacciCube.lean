@@ -635,4 +635,34 @@ noncomputable def coordOneCount (n : Nat) (i : Fin n) : Nat :=
 -- independent left/right No11 segments, which needs Fin-embedding infrastructure
 -- not currently available.
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 218: FibCube f-vector k=2 base values + recurrence
+-- ══════════════════════════════════════════════════════════════
+
+/-- f-vector k=2 recurrence: f(n+2,2) = f(n+1,2) + f(n,2) + f(n,1).
+    thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_two_recurrence (n : Nat) :
+    fibcubeFVector (n + 2) 2 = fibcubeFVector (n + 1) 2 + fibcubeFVector n 2 +
+      fibcubeFVector n 1 := by
+  simp only [fibcubeFVector_succ_succ, show (2 : Nat) ≠ 0 from by omega, ite_false,
+    show 2 - 1 = 1 from rfl]
+
+/-- f(2, 2) = 0. thm:pom-fibcube-fvector-closed -/
+@[simp] theorem fibcubeFVector_two_two : fibcubeFVector 2 2 = 0 := by
+  simp [fibcubeFVector]
+
+/-- f(3, 2) = 1. thm:pom-fibcube-fvector-closed -/
+@[simp] theorem fibcubeFVector_two_three : fibcubeFVector 3 2 = 1 := by
+  simp [fibcubeFVector]
+
+/-- f(4, 2) = 3. thm:pom-fibcube-fvector-closed -/
+@[simp] theorem fibcubeFVector_two_four : fibcubeFVector 4 2 = 3 := by
+  simp [fibcubeFVector]
+
+/-- f(5, 2) = 9. thm:pom-fibcube-fvector-closed -/
+@[simp] theorem fibcubeFVector_two_five : fibcubeFVector 5 2 = 9 := by native_decide
+
+/-- f(6, 2) = 22. thm:pom-fibcube-fvector-closed -/
+@[simp] theorem fibcubeFVector_two_six : fibcubeFVector 6 2 = 22 := by native_decide
+
 end Omega
