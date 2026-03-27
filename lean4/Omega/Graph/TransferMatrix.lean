@@ -370,4 +370,19 @@ theorem goldenMeanAdjacency_fusion_rule :
     goldenMeanAdjacency ^ 2 = goldenMeanAdjacency + 1 :=
   goldenMeanAdjacency_sq
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 222: Transfer matrix symmetry
+-- ══════════════════════════════════════════════════════════════
+
+/-- Transfer matrix is symmetric: A^T = A.
+    prop:Phi_m-entropy -/
+theorem goldenMeanAdjacency_symmetric :
+    goldenMeanAdjacency.transpose = goldenMeanAdjacency := by native_decide
+
+/-- A^m is symmetric for all m.
+    prop:Phi_m-entropy -/
+theorem goldenMeanAdjacency_pow_symmetric (m : Nat) :
+    (goldenMeanAdjacency ^ m).transpose = goldenMeanAdjacency ^ m := by
+  rw [Matrix.transpose_pow, goldenMeanAdjacency_symmetric]
+
 end Omega.Graph

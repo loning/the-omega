@@ -679,4 +679,16 @@ theorem lucasNum_sq_sum : ∀ (n : Nat), 1 ≤ n →
       rw [Nat.mul_add, sq]; ring_nf
     rw [h1, h2]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 222: Lucas numbers strictly increasing
+-- ══════════════════════════════════════════════════════════════
+
+/-- Lucas numbers strictly increasing for n >= 1: L(n) < L(n+1).
+    thm:pom-parry-limit-chain-explicit -/
+theorem lucasNum_strict_mono (n : Nat) (hn : 1 ≤ n) : lucasNum n < lucasNum (n + 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+  -- Goal: L(m+1) < L(m+2) = L(m+1) + L(m)
+  rw [lucasNum_succ_succ]
+  exact Nat.lt_add_of_pos_right (lucasNum_pos m)
+
 end Omega

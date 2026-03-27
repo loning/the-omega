@@ -238,4 +238,15 @@ theorem collisionKernel_det_family :
   ⟨collisionKernel2_det, collisionKernel3_det,
    collisionKernel4_det, collisionKernel5_det⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 222: A_5 Cayley-Hamilton
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cayley-Hamilton for A_5: A^5 + 2A^4 + 11A^3 + 8A^2 + 20A - 10·I = 0.
+    prop:pom-s5-recurrence -/
+theorem collisionKernel5_cayley_hamilton :
+    collisionKernel5 ^ 5 + 2 * collisionKernel5 ^ 4 + 11 * collisionKernel5 ^ 3 +
+    8 * collisionKernel5 ^ 2 + 20 * collisionKernel5 - 10 * (1 : Matrix (Fin 5) (Fin 5) ℤ) = 0 := by
+  ext i j; fin_cases i <;> fin_cases j <;> native_decide
+
 end Omega
