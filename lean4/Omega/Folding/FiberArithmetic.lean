@@ -499,3 +499,8 @@ theorem carryIndicator_stableZero_left (x : X (m + 1)) :
   carryIndicator_zero_of_lt _ _ (by
     rw [stableValue_stableZero, Nat.zero_add]
     exact Nat.lt_of_lt_of_le (stableValue_lt_fib x) (Nat.fib_mono (by omega)))
+
+/-- sv(x+y) = (sv(x)+sv(y)) % F(m+2). thm:add-definitional -/
+theorem stableValue_stableAdd_eq (x y : X m) :
+    stableValue (stableAdd x y) = (stableValue x + stableValue y) % Nat.fib (m + 2) :=
+  stableValue_stableAdd x y
