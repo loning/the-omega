@@ -632,4 +632,51 @@ theorem lucasNum_partial_sum (n : Nat) :
     have := lucasNum_pos (n + 2)
     omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 209: Lucas square sum
+-- ══════════════════════════════════════════════════════════════
+
+/-- L(n)*L(n+1) >= 2 for n >= 1. -/
+private theorem lucasNum_mul_succ_ge_two : ∀ n : Nat, 1 ≤ n →
+    2 ≤ lucasNum n * lucasNum (n + 1)
+  | 1, _ => by simp [lucasNum_succ_succ]
+  | n + 2, _ => by
+    have h1 := lucasNum_pos (n + 2)
+    have h2 := lucasNum_pos (n + 3)
+    have : 1 ≤ lucasNum (n + 2) := h1
+    have : 2 ≤ lucasNum (n + 3) := by
+      rw [show n + 3 = (n + 1) + 1 + 1 from by omega, lucasNum_succ_succ]
+      have := lucasNum_pos (n + 1 + 1)
+      have := lucasNum_pos (n + 1)
+      omega
+    calc 2 ≤ 1 * 2 := by omega
+      _ ≤ lucasNum (n + 2) * lucasNum (n + 2 + 1) := Nat.mul_le_mul ‹_› ‹_›
+
+/-- Lucas square sum: Sigma_{k=1}^n L(k)^2 = L(n)*L(n+1) - 2.
+    bridge:lucas-sq-sum -/
+theorem lucasNum_sq_sum : ∀ (n : Nat), 1 ≤ n →
+    ∑ k ∈ Finset.range n, lucasNum (k + 1) ^ 2 = lucasNum n * lucasNum (n + 1) - 2
+  | 0, h => by omega
+  | 1, _ => by simp [lucasNum_succ_succ]
+  | n + 2, _ => by
+    rw [Finset.sum_range_succ]
+    -- Normalize n+1+1 to n+2 everywhere
+    have hnorm : lucasNum (n + 1 + 1) = lucasNum (n + 2) := by congr 1
+    rw [hnorm]
+    rw [lucasNum_sq_sum (n + 1) (by omega), hnorm]
+    -- Goal: L(n+1)*L(n+2) - 2 + L(n+2)^2 = L(n+2)*L(n+3) - 2
+    have hrec : lucasNum (n + 2 + 1) = lucasNum (n + 2) + lucasNum (n + 1) := by
+      rw [show n + 2 + 1 = (n + 1) + 1 + 1 from by omega]; rfl
+    rw [hrec]
+    have hge := lucasNum_mul_succ_ge_two (n + 1) (by omega)
+    rw [hnorm] at hge
+    -- Key: L(n+1)*L(n+2) - 2 + L(n+2)^2 = L(n+2)*(L(n+2)+L(n+1)) - 2
+    -- Both sides equal L(n+1)*L(n+2) + L(n+2)^2 - 2
+    have h1 : lucasNum (n + 1) * lucasNum (n + 2) - 2 + lucasNum (n + 2) ^ 2 =
+        lucasNum (n + 1) * lucasNum (n + 2) + lucasNum (n + 2) ^ 2 - 2 := by omega
+    have h2 : lucasNum (n + 2) * (lucasNum (n + 2) + lucasNum (n + 1)) - 2 =
+        lucasNum (n + 1) * lucasNum (n + 2) + lucasNum (n + 2) ^ 2 - 2 := by
+      rw [Nat.mul_add, sq]; ring_nf
+    rw [h1, h2]
+
 end Omega
