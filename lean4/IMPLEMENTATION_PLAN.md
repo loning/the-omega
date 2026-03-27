@@ -6,10 +6,10 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~29,278 |
-| 定理/定义数 | ~2,343 |
+| 总行数 | ~29,318 |
+| 定理/定义数 | ~2,347 |
 | 论文接口包装 | 346 |
-| 文件数 | 64 |
+| 文件数 | 65 |
 | 公理数 | 0 |
 
 ### 1.2 已完成模块
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 199: 互素消零 + Z/21Z 幂等元 + Z²字符计数（Round 199）**：新建 CoprimeSMul.lean + 修改 ZeckendorfSignature.lean + Omega.lean（+1 import）——coprime_smul_eq_zero_of_both（thm:pom-anom-coprime-two-point-test：互素矩阶消零原理，Bezout 在交换群中的应用，CoprimeSMul.lean:15）; zmod21_idempotent_count（prop:congruence-m6-idempotents-four：Z/21Z 幂等元恰有 4 个，ZeckendorfSignature.lean）; zmod13_sq_eq_one_count（prop:unitgroup-z2-character-count-m5-m6：Z/13Z 中 x²≡1 的解有 2 个，ZeckendorfSignature.lean）; zmod21_sq_eq_one_count（prop:unitgroup-z2-character-count-m5-m6：Z/21Z 中 x²≡1 的解有 4 个，ZeckendorfSignature.lean）——群统一 ~103 → ~105，POM ~504 → ~505（+3 条目：thm:pom-anom-coprime-two-point-test, prop:congruence-m6-idempotents-four, prop:unitgroup-z2-character-count-m5-m6）（Phase 199）
 **Phase 198: 边界三窗唯一性 + delta34 + totient 种子 + 单位群阶12（Round 198）**：一文件 ZeckendorfSignature.lean（+67 行）——bdry_three_window_sum12_unique_even_triple（thm:bdry-three-window-sum12-unique-even-triple：偶窗三元组 F(m₁-2)+F(m₂-2)+F(m₃-2)=12 唯一解为 (4,6,8)）; bdry_delta34_m11_uniqueness（thm:bdry-delta34-m11-uniqueness：F(m-2)=34 唯一解 m=11）; bdry_delta34_identity（thm:bdry-delta34-m11-uniqueness 恒等式：F(9)=F(10)-F(8)）; totient_fib_7（bridge: φ(F(7))=12，种子值）; totient_fib_8（bridge: φ(F(8))=12，种子值）; congruence_unitgroup_order12_bounded（thm:congruence-unitgroup-order12-m56：φ(F(m+2))=12 且 m≤10 → m∈{5,6}）——群统一 ~100 → ~103（+3 条目：thm:bdry-three-window-sum12-unique-even-triple, thm:bdry-delta34-m11-uniqueness, thm:congruence-unitgroup-order12-m56）（Phase 198）
 **Phase 197: Fibonacci Pell 二次型 + 缩放推论 + 交叉乘积（Round 197）**：一文件 Fib.lean（837→886 行）——fib_pell_quadratic（prop:pom-fib-pell-quadratic-characterization：F_{k+1}² - F_{k+1}·F_k - F_k² = (-1)^k，Fib.lean:843）; fib_pell_quadratic_scaled（prop:pom-fib-pell-quadratic-characterization 缩放推论：(2F_{k+1})² - (2F_{k+1})(2F_k) - (2F_k)² = 4·(-1)^k，Fib.lean:867）; fib_cross_product（bridge:fib-cross-product：F_{k+1}·F_{k-1} + F_k·F_{k+1} = F_{k+1}²，Fib.lean:875）——POM ~503 → ~504（+1 条目：prop:pom-fib-pell-quadratic-characterization，bridge 不计）（Phase 197）
 **Phase 196: FenceDet指数下界 + Pisano统一表 + 非仿射纤维计数（Round 196）**：两文件 Fib.lean + Window6.lean——fenceDet_ge_pow_two（cor:pom-Lk-surface-free-energy 指数下界：2^k ≤ D_k for k ≥ 1，Fib.lean）; pisano_entry_point_table（prop:crt-235-min-depth Pisano 统一表：mod 2→3, mod 3→4, mod 5→5, mod 7→8, mod 8→6，Fib.lean）; conclusion_window6_nonaffine_count（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory 非仿射纤维：11 affine + 10 non-affine = 21，Window6.lean）——三个论文标签均已在前序 Phase 注册，覆盖率不变，+3 Lean 定理（Phase 196）
@@ -185,8 +186,8 @@
 | SPG | 127 | ~70 | ~55% |
 | 新生算术 | 151 | ~88 | ~58% |
 | Folding | 317 | ~91 | ~29% |
-| 群统一 | 457 | ~103 | ~22.5% |
-| POM | 1,525 | ~504 | ~33.1% |
+| 群统一 | 457 | ~105 | ~23.0% |
+| POM | 1,525 | ~505 | ~33.1% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
