@@ -580,4 +580,14 @@ theorem lucasNum_sq_odd (n : Nat) (hodd : ¬ Even n) :
   nlinarith [sq_nonneg (Nat.fib n), sq_nonneg (Nat.fib (n - 1)),
              sq_nonneg (Nat.fib (n + 1))]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 205: Trace = Lucas number (lucasNum form)
+-- ══════════════════════════════════════════════════════════════
+
+/-- tr(N_tau^m) = L(m), trace of golden mean adjacency power = Lucas number.
+    thm:folding-stable-syntax-fib-fusion-ring -/
+theorem goldenMeanAdjacency_pow_trace_lucas (m : Nat) (hm : 1 ≤ m) :
+    (Graph.goldenMeanAdjacency ^ m).trace = (lucasNum m : ℤ) := by
+  rw [goldenMeanAdjacency_pow_trace m hm, lucasNum_eq_fib m hm]; push_cast; ring
+
 end Omega

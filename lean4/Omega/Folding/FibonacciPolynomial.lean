@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Data.Nat.Fib.Basic
+import Mathlib.Tactic.LinearCombination
 
 namespace Omega
 
@@ -73,5 +74,47 @@ theorem pathIndSetPoly_zero_val : pathIndSetPoly 0 = 1 := fibPoly_two
 /-- Paper: pathIndSetPoly(1) = 1 + X.
     thm:pom-path-indset-poly-closed -/
 theorem pathIndSetPoly_one_val : pathIndSetPoly 1 = 1 + Polynomial.X := fibPoly_three
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 205: Fibonacci polynomial Cassini identity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fibonacci polynomial Cassini identity:
+    F_{n+2}(x) * F_n(x) - F_{n+1}(x)^2 = (-1)^(n+1) * X^n.
+    thm:fold-gauge-anomaly-spectral-curve-fibonacci-polynomial-cassini -/
+theorem fibPoly_cassini : ∀ n : Nat,
+    fibPoly (n + 2) * fibPoly n - fibPoly (n + 1) ^ 2 = (-1) ^ (n + 1) * X ^ n
+  | 0 => by simp [fibPoly]
+  | 1 => by simp [fibPoly]
+  | n + 2 => by
+    have ih := fibPoly_cassini (n + 1)
+    -- Expand fibPoly(n+4) via recurrence
+    simp only [fibPoly_succ_succ (n + 2)]
+    -- Goal: (F_{n+3}+X·F_{n+2})·F_{n+2} - F_{n+3}^2 = (-1)^(n+3)·X^(n+2)
+    -- = F_{n+3}·F_{n+2} + X·F_{n+2}^2 - F_{n+3}^2
+    -- From ih: F_{n+3}·F_{n+1} - F_{n+2}^2 = (-1)^(n+2)·X^(n+1)
+    -- We need: -(F_{n+3}^2 - F_{n+3}·F_{n+2} - X·F_{n+2}^2) = (-1)^(n+3)·X^(n+2)
+    -- Rewrite F_{n+2} = F_{n+1} + X·F_n from recurrence? No, simpler:
+    -- F_{n+3} = F_{n+2} + X·F_{n+1}
+    -- So LHS = (F_{n+2}+X·F_{n+1})·F_{n+2}+X·F_{n+2}^2-(F_{n+2}+X·F_{n+1})^2
+    -- Actually, just use F_{n+3} = fibPoly(n+2+1) = fibPoly(n+2) + X*fibPoly(n+1)
+    -- and expand everything, then use ih via linear_combination
+    -- Try: the key algebraic identity is
+    -- LHS = -(F_{n+3}*(F_{n+3}-F_{n+2})-X*F_{n+2}^2)
+    --     = -(F_{n+3}*X*F_{n+1}-X*F_{n+2}^2) since F_{n+3}-F_{n+2}=X*F_{n+1}
+    --     = -X*(F_{n+3}*F_{n+1}-F_{n+2}^2)
+    --     = -X*ih_rhs
+    -- So LHS = -X * ((-1)^(n+2)*X^(n+1)) = (-1)^(n+3)*X^(n+2)
+    -- Step 1: show the algebraic manipulation
+    have key : (fibPoly (n + 2 + 1) + X * fibPoly (n + 2)) * fibPoly (n + 2) -
+        fibPoly (n + 2 + 1) ^ 2 =
+        -(X * (fibPoly (n + 2 + 1) * fibPoly (n + 1) - fibPoly (n + 2) ^ 2)) := by
+      -- Expand F_{n+3} = F_{n+2} + X*F_{n+1} in the ih term
+      have hrec : fibPoly (n + 2 + 1) = fibPoly (n + 1 + 1) + X * fibPoly (n + 1) := rfl
+      rw [hrec]; ring
+    rw [key, ih]
+    -- Goal: -(X * ((-1)^(n+2)*X^(n+1))) = (-1)^(n+2+1)*X^(n+2)
+    rw [show n + 2 + 1 = (n + 1) + 2 from by omega]
+    ring
 
 end Omega
