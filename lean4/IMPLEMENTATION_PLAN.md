@@ -1,4 +1,4 @@
-# Lean4 无公理形式化实施方案（2026-03-27 登记同步版）
+# Lean4 无公理形式化实施方案（2026-03-28 登记同步版）
 
 ## 1. 项目现状
 
@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~30,824 |
-| 定理/定义数 | ~2,453 |
+| 总行数 | ~30,868 |
+| 定理/定义数 | ~2,455 |
 | 论文接口包装 | 353 |
 | 文件数 | 67 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 231: D四步递推有界验证 + coordOneCount Fibonacci乘积有界验证（Round 231）**：两文件 FiberSplit.lean（+16行）+ FibonacciCube.lean（+31行）——maxFiberMultiplicity_four_step_verified（cor:pom-D-rec：最大纤维多重度四步递推 D(m+4) ≤ 2D(m+2)+D(m+1)+D(m) 在 6≤m≤10 范围内验证，FiberSplit.lean:287）; coordOneCount_eq_fib_prod_verified（cor:pom-fibcube-marginal-boundary-layer：坐标1计数等于Fibonacci乘积 coordOneCount n i = F(i+2)·F(n-i+1) 在 n≤6 范围内验证，FibonacciCube.lean:726）——两个标签均为新注册——POM ~533→~535（+2 新标签：cor:pom-D-rec, cor:pom-fibcube-marginal-boundary-layer）（Phase 231）
 **Phase 230: pathIndCount Cassini恒等式 + hammingDist全零词=popcount（Round 230）**：两文件 PathIndSet.lean（+32行）+ HammingDist.lean（+12行）——pathIndCount_cassini（thm:pom-path-indset-thermo-constants：路径独立集计数 Cassini 恒等式 I(n+1)·I(n-1)-I(n)²=(-1)^n，PathIndSet.lean:455）; hammingDist_allFalse_eq_popcount（thm:pom-fibcube-eccentricity-closed-form：d(w, allFalse) = popcount(w)，全零词 Hamming 距离等于 popcount，HammingDist.lean:139）——thm:pom-path-indset-thermo-constants 为新注册标签；thm:pom-fibcube-eccentricity-closed-form 已在 Phase 212 注册——注：team-lead 预期中的 momentSum_two_eleven_rec 未在本 commit 中出现——Combinatorics +1（+1 新标签：thm:pom-path-indset-thermo-constants）（Phase 230）
 
 **Phase 229: 路径独立集最大可达性 + Lucas≥Fib + E00对称求和（Round 229）**：三文件 PathIndSet.lean（+36行）+ ShiftDynamics.lean（+15行）+ MomentRecurrence.lean（+34行）——pathIndSet_exists_max（thm:pom-fibcube-eccentricity-closed-form：路径独立集最大基数可达性，∃ S⊆ Γ_n, |S|=⌈n/2⌉，PathIndSet.lean:419）; lucasNum_ge_fib（thm:pom-parry-limit-chain-explicit：F(n) ≤ L(n) for all n，Lucas数不小于Fibonacci数，ShiftDynamics.lean:726）; exactWeightCollision_eq_symmetric_sum（prop:fold-fiber-count-reciprocity：E00(m) = Σ_{r<F(m+2)} ewc(m,r)² + ewc(m,F(m+2)-r-2)²，E00 对称求和表达式，MomentRecurrence.lean:876）——三个论文标签均已注册（thm:pom-fibcube-eccentricity-closed-form: Phase 212, thm:pom-parry-limit-chain-explicit: Phase 222, prop:fold-fiber-count-reciprocity: Phase 172），本轮为深化定理——+3 Lean 定理，覆盖率数字不变（Phase 229）
@@ -199,7 +200,7 @@
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
-## 2. 论文总覆盖率分析（2026-03-27 登记同步版）
+## 2. 论文总覆盖率分析（2026-03-28 登记同步版）
 
 ### 论文规模
 
@@ -210,15 +211,15 @@
 
 ### Lean4 形式化状态
 
-- **1,284 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,512 个 Lean4 定理（含内部引理）
+- **1,286 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,514 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1341/10,588 = **12.7%** |
+| 全局覆盖率 | 1343/10,588 = **12.7%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -232,13 +233,13 @@
 | 新生算术 | 151 | ~93 | ~61.6% |
 | Folding | 317 | ~101 | ~31.9% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~533 | ~35.0% |
+| POM | 1,525 | ~535 | ~35.1% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1341** | **12.7%** |
+| **总计** | **10,588** | **1343** | **12.7%** |
 
 ## 3. 未来工作：30 条具体计划
 
