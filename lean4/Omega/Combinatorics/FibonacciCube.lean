@@ -717,4 +717,59 @@ theorem fibcubeEdgeCount_eq_fib_conv (n : Nat) :
       rw [Finset.sum_range_succ (fun i => Nat.fib (i + 1) * Nat.fib (n - i))]
       simp only [Nat.sub_self, Nat.fib_zero, Nat.mul_zero, Nat.add_zero]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 220: Word reversal involution + xReverse + coordOneCount symmetry
+-- ══════════════════════════════════════════════════════════════
+
+/-- Word reversal is an involution. thm:pom-fibcube-aut-z2 -/
+theorem wordReverse_involutive (w : Word m) : wordReverse (wordReverse w) = w := by
+  funext i
+  simp only [wordReverse]
+  congr 1
+  apply Fin.ext
+  simp only [Fin.val_mk]
+  omega
+
+/-- wordReverse maps bit i to bit (m-1-i). thm:pom-fibcube-aut-z2 -/
+theorem wordReverse_apply (w : Word m) (i : Fin m) :
+    wordReverse w i = w ⟨m - 1 - i.val, by omega⟩ := rfl
+
+/-- Index reversal on X m. thm:pom-fibcube-aut-z2 -/
+def xReverse (x : X m) : X m := ⟨wordReverse x.1, no11_reverse x.2⟩
+
+/-- xReverse is involutive. thm:pom-fibcube-aut-z2 -/
+theorem xReverse_involutive : Function.Involutive (xReverse (m := m)) := by
+  intro x; exact Subtype.ext (wordReverse_involutive x.1)
+
+/-- Theta-class symmetry under index reversal: coordOneCount n i = coordOneCount n (n-1-i).
+    thm:pom-fibcube-theta-class-size -/
+theorem coordOneCount_symm (n : Nat) (i : Fin n) :
+    coordOneCount n i = coordOneCount n ⟨n - 1 - i.val, by omega⟩ := by
+  -- coordOneCount uses Classical.decPred internally; unfold and work at the Finset level
+  unfold coordOneCount
+  -- Both sides use Classical.decPred, so the Finset.filter instances match
+  -- Construct bijection via wordReverse
+  apply Finset.card_bij (fun w _ => wordReverse w)
+  · -- Map property: w ∈ {No11 ∧ w[i]=true} → wordReverse w ∈ {No11 ∧ w[n-1-i]=true}
+    intro w hw
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw ⊢
+    exact ⟨no11_reverse hw.1, by
+      show wordReverse w ⟨n - 1 - i.val, _⟩ = true
+      rw [wordReverse_apply]
+      have : (⟨n - 1 - (n - 1 - i.val), by omega⟩ : Fin n) = i := by
+        apply Fin.ext; simp; omega
+      rw [this]; exact hw.2⟩
+  · -- Injectivity
+    intro w₁ _ w₂ _ h
+    have := congr_arg wordReverse h
+    rwa [wordReverse_involutive, wordReverse_involutive] at this
+  · -- Surjectivity
+    intro w' hw'
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hw'
+    refine ⟨wordReverse w', ?_, wordReverse_involutive w'⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨no11_reverse hw'.1, by
+      show wordReverse w' i = true
+      rw [wordReverse_apply]; exact hw'.2⟩
+
 end Omega
