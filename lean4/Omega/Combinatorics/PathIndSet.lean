@@ -446,4 +446,36 @@ theorem pathIndSet_exists_max (n : Nat) (hn : 1 ≤ n) :
       exact ⟨⟨i / 2, hlt⟩, Finset.mem_coe.mpr (Finset.mem_univ _),
         Fin.ext (by simp only [Fin.val_mk]; omega)⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 230: Cassini identity for pathIndCount
+-- ══════════════════════════════════════════════════════════════
+
+/-- Cassini identity for path independent set counts.
+    thm:pom-path-indset-thermo-constants -/
+theorem pathIndCount_cassini (n : Nat) :
+    pathIndCount (n + 2) * pathIndCount n + (n + 1) % 2 =
+    pathIndCount (n + 1) ^ 2 + n % 2 := by
+  simp only [path_independent_set_count]
+  -- Goal: F(n+4)*F(n+2) + (n+1)%2 = F(n+3)^2 + n%2
+  by_cases heven : Even n
+  · -- Even n: (n+1)%2 = 1, n%2 = 0
+    have h1 : (n + 1) % 2 = 1 := by rcases heven with ⟨k, rfl⟩; omega
+    have h0 : n % 2 = 0 := by rcases heven with ⟨k, rfl⟩; omega
+    rw [h1, h0, Nat.add_zero]
+    -- F(n+2) is even, so fib_cassini_even at (n+2): F(n+2)*F(n+4) + 1 = F(n+3)^2
+    have heven2 : Even (n + 2) := by rcases heven with ⟨k, rfl⟩; exact ⟨k + 1, by omega⟩
+    have := fib_cassini_even (n + 2) heven2
+    linarith [Nat.mul_comm (Nat.fib (n + 2)) (Nat.fib (n + 4))]
+  · -- Odd n: (n+1)%2 = 0, n%2 = 1
+    have hmod : n % 2 = 1 := by
+      rcases Nat.even_or_odd n with ⟨k, rfl⟩ | ⟨k, rfl⟩
+      · exact absurd ⟨k, rfl⟩ heven
+      · omega
+    have h0 : (n + 1) % 2 = 0 := by omega
+    rw [h0, hmod, Nat.add_zero]
+    -- F(n+2) is odd, so fib_cassini_odd at (n+2): F(n+2)*F(n+4) = F(n+3)^2 + 1
+    have hodd2 : ¬ Even (n + 2) := by intro ⟨k, hk⟩; exact heven ⟨k - 1, by omega⟩
+    have := fib_cassini_odd (n + 2) hodd2
+    linarith [Nat.mul_comm (Nat.fib (n + 2)) (Nat.fib (n + 4))]
+
 end Omega

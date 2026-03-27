@@ -131,4 +131,16 @@ theorem hammingDist_le_popcount_add (a b : Word m) :
         (Finset.univ.filter (fun i : Fin m => b i = true)).card :=
       Finset.card_union_le _ _
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 230: Hamming distance from all-false = popcount
+-- ══════════════════════════════════════════════════════════════
+
+/-- d(allFalse, w) = popcount(w). thm:pom-fibcube-eccentricity-closed-form -/
+theorem hammingDist_allFalse_eq_popcount (w : Word m) :
+    hammingDist (fun _ => false) w = popcount w := by
+  simp only [hammingDist, popcount, wordSupport]
+  congr 1; ext i
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  cases w i <;> simp
+
 end Omega
