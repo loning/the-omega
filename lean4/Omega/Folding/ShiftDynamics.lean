@@ -611,11 +611,11 @@ theorem lucasNum_add_formula : ∀ (m n : Nat),
     push_cast [h1, lucasNum_add_formula m (n + 1), lucasNum_add_formula m n]
     -- F(n+4) = F(n+3) + F(n+2), F(n+3) = F(n+2) + F(n+1)
     have hf1 : (Nat.fib (n + 2 + 2) : ℤ) = Nat.fib (n + 2 + 1) + Nat.fib (n + 2) := by
-      have := Nat.fib_add_two (n := n + 2); push_cast [this]
+      have := Nat.fib_add_two (n := n + 2); push_cast [this]; ring
     have hf2 : (Nat.fib (n + 2 + 1) : ℤ) = Nat.fib (n + 1 + 1) + Nat.fib (n + 1) := by
-      have : Nat.fib (n + 2 + 1) = Nat.fib (n + 1 + 1) + Nat.fib (n + 1) := by
-        rw [show n + 2 + 1 = (n + 1) + 2 from by omega]; exact Nat.fib_add_two
-      push_cast [this]
+      have := Nat.fib_add_two (n := n + 1)
+      rw [show n + 1 + 2 = n + 2 + 1 from by omega, show n + 1 + 1 = n + 1 + 1 from rfl] at this
+      push_cast [this]; ring
     rw [hf1, hf2]; ring
 
 /-- Lucas partial sum: Σ_{k=0}^n L(k) = L(n+2) - 1.
@@ -625,7 +625,10 @@ theorem lucasNum_partial_sum (n : Nat) :
   induction n with
   | zero => simp
   | succ n ih =>
-    rw [Finset.sum_range_succ, ih, lucasNum_succ_succ]
+    rw [Finset.sum_range_succ, ih]
+    have hrec : lucasNum (n + 1 + 2) = lucasNum (n + 2) + lucasNum (n + 1) := by
+      rw [show n + 1 + 2 = (n + 2) + 1 from by omega]; rfl
+    rw [hrec]
     have := lucasNum_pos (n + 2)
     omega
 
