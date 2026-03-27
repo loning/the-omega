@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 202: Lucas²恒等式 + Sym不变分次阻断 + 扭阶整除性（Round 202）**：三文件 CoprimeSMul.lean（+30行）+ BoundaryLayer.lean（+19行）+ ShiftDynamics.lean（+29行）——smul_eq_zero_iff_order_dvd（thm:pom-anom-torsion-eliminability-min-order：q•a=0 ↔ ord(a)|q，极小阶整除刻画，CoprimeSMul.lean）; no_nontrivial_sym_invariant_grading_fin3（prop:bdry-sheet-parity-extension-obstruction-m7：Fin 3 上无非平凡 Sym 不变 Z₂-分次，BoundaryLayer.lean）; lucasNum_sq_even（bridge:lucas-fibonacci-identity：L(n)²=5F(n)²+4 for even n≥1，ShiftDynamics.lean）; lucasNum_sq_odd（bridge:lucas-fibonacci-identity：L(n)²+4=5F(n)² for odd n，ShiftDynamics.lean）——POM ~507→~508，群统一 ~108→~109（+2 论文条目：thm:pom-anom-torsion-eliminability-min-order, prop:bdry-sheet-parity-extension-obstruction-m7；bridge 不计）（Phase 202）
 **Phase 201: Fib尾矩阵行列式 + 对合阻断 + Lie共振稀缺性（Round 201）**：三文件 Fib.lean（+24行）+ BoundaryLayer.lean（+29行）+ ZeckendorfSignature.lean（+27行）——fib_tail_matrix_det_even（prop:fib-tail-reversibility：G_m行列式偶m时=1，Fib.lean）; fib_tail_matrix_det_odd（prop:fib-tail-reversibility：G_m行列式奇m时=-1，Fib.lean）; involution_no_fixedpoint_even（prop:bdry-three-layer-obstructs-free-z2：无不动点对合 → 偶基数，BoundaryLayer.lean）; odd_card_no_free_involution（prop:bdry-three-layer-obstructs-free-z2：奇基数集无无不动点对合，BoundaryLayer.lean）; fib_lie_resonance_su2（cor:fib-lie-resonance-scarcity-su2-su3：F(4)=3=dim(su(2))=2²-1，ZeckendorfSignature.lean）; fib_lie_resonance_su3（cor:fib-lie-resonance-scarcity-su2-su3：F(6)=8=dim(su(3))=3²-1，ZeckendorfSignature.lean）; fib_lie_no_resonance_m3_to_m8（cor:fib-lie-resonance-scarcity-su2-su3：m∈{3,5,6,7,8}时F(m+2)+1非完全平方数，ZeckendorfSignature.lean）——新生算术 ~88→~89，群统一 ~106→~108（+3 条目：prop:fib-tail-reversibility, prop:bdry-three-layer-obstructs-free-z2, cor:fib-lie-resonance-scarcity-su2-su3）（Phase 201）
 **Phase 200: torsion-free消零 + 全矩阶坍缩 + 双12约束唯一交汇（Round 200）**：两文件 CoprimeSMul.lean（+2 定理）+ ZeckendorfSignature.lean（+1 定理）——torsion_free_smul_eq_zero_iff（cor:pom-anom-one-point-zero-test：torsion-free 群中 q•a=0 ↔ a=0，CoprimeSMul.lean:34）; anom_oracle_collapse（thm:pom-anom-all-moments-collapse-to-two：全矩阶消零 ↔ 存在互素对消零，CoprimeSMul.lean:43）; double_12_constraints_intersection_m6（cor:double-12-constraints-unique-intersection-m6：双12约束唯一交汇 m=6，ZeckendorfSignature.lean:411）——POM ~505 → ~507，群统一 ~105 → ~106（+3 条目：cor:pom-anom-one-point-zero-test, thm:pom-anom-all-moments-collapse-to-two, cor:double-12-constraints-unique-intersection-m6）（Phase 200）
 **Phase 199: 互素消零 + Z/21Z 幂等元 + Z²字符计数（Round 199）**：新建 CoprimeSMul.lean + 修改 ZeckendorfSignature.lean + Omega.lean（+1 import）——coprime_smul_eq_zero_of_both（thm:pom-anom-coprime-two-point-test：互素矩阶消零原理，Bezout 在交换群中的应用，CoprimeSMul.lean:15）; zmod21_idempotent_count（prop:congruence-m6-idempotents-four：Z/21Z 幂等元恰有 4 个，ZeckendorfSignature.lean）; zmod13_sq_eq_one_count（prop:unitgroup-z2-character-count-m5-m6：Z/13Z 中 x²≡1 的解有 2 个，ZeckendorfSignature.lean）; zmod21_sq_eq_one_count（prop:unitgroup-z2-character-count-m5-m6：Z/21Z 中 x²≡1 的解有 4 个，ZeckendorfSignature.lean）——群统一 ~103 → ~105，POM ~504 → ~505（+3 条目：thm:pom-anom-coprime-two-point-test, prop:congruence-m6-idempotents-four, prop:unitgroup-z2-character-count-m5-m6）（Phase 199）
@@ -167,7 +168,7 @@
 
 ### Lean4 形式化状态
 
-- **1,241 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- **1,243 个论文标签已注册**到 SourceMap（bridge 标签另计）
 - ~2,436 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
@@ -175,7 +176,7 @@
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1300/10,588 = **12.3%** |
+| 全局覆盖率 | 1302/10,588 = **12.3%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -188,14 +189,14 @@
 | SPG | 127 | ~70 | ~55% |
 | 新生算术 | 151 | ~89 | ~59% |
 | Folding | 317 | ~91 | ~29% |
-| 群统一 | 457 | ~108 | ~23.6% |
-| POM | 1,525 | ~507 | ~33.2% |
+| 群统一 | 457 | ~109 | ~23.9% |
+| POM | 1,525 | ~508 | ~33.3% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1300** | **12.3%** |
+| **总计** | **10,588** | **1302** | **12.3%** |
 
 ## 3. 未来工作：30 条具体计划
 
