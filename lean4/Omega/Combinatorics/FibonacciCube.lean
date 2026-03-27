@@ -612,4 +612,12 @@ theorem fibcubeFVector_one_eq_edge (n : Nat) :
       rw [ih (n + 1) (by omega), ih n (by omega), fibcubeFVector_zero_eq_fib]
       rfl
 
+/-- f-vector k=1 recurrence: C(n+2,1) = C(n+1,1) + C(n,1) + F(n+2).
+    thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_one_recurrence (n : Nat) :
+    fibcubeFVector (n + 2) 1 = fibcubeFVector (n + 1) 1 + fibcubeFVector n 1 +
+      Nat.fib (n + 2) := by
+  simp only [fibcubeFVector_succ_succ, show (1 : Nat) ≠ 0 from by omega, ite_false,
+    show 1 - 1 = 0 from rfl, fibcubeFVector_zero_eq_fib]
+
 end Omega

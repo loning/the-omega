@@ -169,4 +169,23 @@ theorem collisionKernel5_trace : collisionKernel5.trace = -2 := by native_decide
 /-- prop:pom-s5-recurrence (det) -/
 theorem collisionKernel5_det : collisionKernel5.det = 10 := by native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 215: Bowen-Franks determinants
+-- ══════════════════════════════════════════════════════════════
+
+/-- BF det for collision kernel 2: det(I-A_2) = -1. prop:pom-collision-bf-snf-q234 -/
+def bowenFranksMatrix2 : Matrix (Fin 3) (Fin 3) ℤ :=
+  !![1, -1, 0; 0, 1, -1; 2, -2, -1]
+theorem bowenFranksMatrix2_det : bowenFranksMatrix2.det = -1 := by native_decide
+
+/-- BF det for collision kernel 3: det(I-A_3) = -3. prop:pom-collision-bf-snf-q234 -/
+def bowenFranksMatrix3 : Matrix (Fin 3) (Fin 3) ℤ :=
+  !![1, -1, 0; 0, 1, -1; 2, -4, -1]
+theorem bowenFranksMatrix3_det : bowenFranksMatrix3.det = -3 := by native_decide
+
+/-- BF det ratio: det(I-A_3) = 3 * det(I-A_2). prop:pom-collision-bf-snf-q234 -/
+theorem collisionKernel_bf_det_ratio :
+    bowenFranksMatrix3.det = 3 * bowenFranksMatrix2.det := by
+  rw [bowenFranksMatrix2_det, bowenFranksMatrix3_det]; ring
+
 end Omega

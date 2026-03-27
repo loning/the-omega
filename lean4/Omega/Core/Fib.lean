@@ -1041,4 +1041,29 @@ theorem fib_alternating_skip_sum (n : Nat) :
         rw [hfib_n4, hfib_n3a] at this; exact this
       omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 215: FenceDet additive recurrence and ratio bound
+-- ══════════════════════════════════════════════════════════════
+
+/-- FenceDet additive recurrence: D(k+1) + D(k-1) = 3*D(k).
+    cor:pom-Lk-golden-coupling-unique -/
+theorem fenceDet_additive (k : Nat) (hk : 1 ≤ k) :
+    fenceDet (k + 1) + fenceDet (k - 1) = 3 * fenceDet k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  simp only [show j + 1 - 1 = j from by omega]
+  -- fenceDet(j+2) = 3*fenceDet(j+1) - fenceDet(j) by definition
+  -- So fenceDet(j+2) + fenceDet(j) = 3*fenceDet(j+1)
+  show fenceDet (j + 2) + fenceDet j = 3 * fenceDet (j + 1)
+  have hrec : fenceDet (j + 2) = 3 * fenceDet (j + 1) - fenceDet j := rfl
+  have hmono : fenceDet j ≤ fenceDet (j + 1) := fenceDet_mono j
+  omega
+
+/-- FenceDet ratio bound: D(k+1) < 3*D(k).
+    cor:pom-Lk-golden-coupling-unique -/
+theorem fenceDet_succ_lt_triple (k : Nat) (hk : 1 ≤ k) :
+    fenceDet (k + 1) < 3 * fenceDet k := by
+  have hadd := fenceDet_additive k hk
+  have hpos := fenceDet_pos (k - 1)
+  omega
+
 end Omega
