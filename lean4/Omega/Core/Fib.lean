@@ -65,7 +65,8 @@ theorem fib_gt_one_of_ge_two (hm : 1 ≤ m) : 1 < Nat.fib (m + 2) := by
     _ = Nat.fib 3 := by native_decide
     _ ≤ Nat.fib (m + 2) := Nat.fib_mono (by omega)
 
-/-- Upper bound: F(m+2) ≤ 2^(m+1) for all m. -/
+/-- Upper bound: F(m+2) ≤ 2^(m+1) for all m.
+    fib-growth-upper-bound -/
 theorem fib_le_pow_two : ∀ m : Nat, Nat.fib (m + 2) ≤ 2 ^ (m + 1)
   | 0 => by simp
   | 1 => by native_decide
@@ -78,29 +79,37 @@ theorem fib_le_pow_two : ∀ m : Nat, Nat.fib (m + 2) ≤ 2 ^ (m + 1)
           Nat.add_le_add_left (Nat.pow_le_pow_right (by omega) (by omega)) _
       _ = 2 ^ (m + 2 + 1) := by ring
 
-/-- gcd(F_m, F_n) = F_{gcd(m,n)} (strong divisibility). -/
+/-- gcd(F_m, F_n) = F_{gcd(m,n)} (strong divisibility).
+    fib-gcd
+    lem:fib-divisibility-iff -/
 theorem fib_gcd (m n : Nat) : Nat.gcd (Nat.fib m) (Nat.fib n) = Nat.fib (Nat.gcd m n) :=
   (Nat.fib_gcd m n).symm
 
-/-- F_m and F_{m+1} are coprime. -/
+/-- F_m and F_{m+1} are coprime.
+    fib-coprime-succ -/
 theorem fib_coprime_succ (m : Nat) : Nat.Coprime (Nat.fib m) (Nat.fib (m + 1)) :=
   Nat.fib_coprime_fib_succ m
 
-/-- F_m divides F_{k*m}. -/
+/-- F_m divides F_{k*m}.
+    fib-dvd-mul
+    lem:fib-divisibility-chain -/
 theorem fib_dvd_mul (m k : Nat) : Nat.fib m ∣ Nat.fib (k * m) :=
   Nat.fib_dvd m (k * m) ⟨k, (Nat.mul_comm m k).symm⟩
 
-/-- F_{2n} = F_n · (2·F_{n+1} - F_n). -/
+/-- F_{2n} = F_n · (2·F_{n+1} - F_n).
+    prop:fib-double-formula -/
 theorem fib_double (n : Nat) :
     Nat.fib (2 * n) = Nat.fib n * (2 * Nat.fib (n + 1) - Nat.fib n) :=
   Nat.fib_two_mul n
 
-/-- F_{2n+1} = F_{n+1}² + F_n². -/
+/-- F_{2n+1} = F_{n+1}² + F_n².
+    prop:fib-double-plus-one-formula -/
 theorem fib_double_plus_one (n : Nat) :
     Nat.fib (2 * n + 1) = Nat.fib (n + 1) ^ 2 + Nat.fib n ^ 2 :=
   Nat.fib_two_mul_add_one n
 
-/-- F_n² + F_{n+1}² = F_{2n+1}. -/
+/-- F_n² + F_{n+1}² = F_{2n+1}.
+    prop:fib-sq-add-sq -/
 theorem fib_sq_add_sq (n : Nat) :
     Nat.fib n ^ 2 + Nat.fib (n + 1) ^ 2 = Nat.fib (2 * n + 1) := by
   rw [Nat.add_comm]; exact (Nat.fib_two_mul_add_one n).symm
@@ -109,11 +118,13 @@ theorem fib_sq_add_sq (n : Nat) :
 -- Fibonacci parity / Pisano period mod 2
 -- ══════════════════════════════════════════════════════════════
 
-/-- 3|n → 2|F_n. -/
+/-- 3|n → 2|F_n.
+    thm:fib-even-of-three-dvd -/
 theorem fib_even_of_three_dvd (n : Nat) (h : 3 ∣ n) : 2 ∣ Nat.fib n := by
   exact dvd_trans (show (2 : Nat) ∣ Nat.fib 3 from by decide) (Nat.fib_dvd 3 n h)
 
-/-- 2|F_n → 3|n. -/
+/-- 2|F_n → 3|n.
+    thm:three-dvd-of-fib-even -/
 theorem three_dvd_of_fib_even (n : Nat) (h : 2 ∣ Nat.fib n) : 3 ∣ n := by
   induction n using Nat.strongRecOn with
   | _ n ih =>
@@ -149,11 +160,13 @@ theorem three_dvd_of_fib_even (n : Nat) (h : 2 ∣ Nat.fib n) : 3 ∣ n := by
         have := ih n (by omega) heven
         omega
 
-/-- F_n is even iff 3|n. -/
+/-- F_n is even iff 3|n.
+    thm:fib-even-iff-three-dvd -/
 theorem fib_even_iff_three_dvd (n : Nat) : 2 ∣ Nat.fib n ↔ 3 ∣ n :=
   ⟨three_dvd_of_fib_even n, fib_even_of_three_dvd n⟩
 
-/-- F_n % 2 = F_{n%3} % 2. -/
+/-- F_n % 2 = F_{n%3} % 2.
+    thm:fib-mod-two-period -/
 theorem fib_mod_two_period (n : Nat) :
     Nat.fib n % 2 = Nat.fib (n % 3) % 2 := by
   by_cases h : 3 ∣ n
@@ -167,7 +180,8 @@ theorem fib_mod_two_period (n : Nat) :
     have : Nat.fib n % 2 = 1 := by omega
     rcases hmod with hm | hm <;> rw [hm] <;> simp only [Nat.fib_one, Nat.fib_two] <;> omega
 
-/-- F_n is odd iff 3∤n. -/
+/-- F_n is odd iff 3∤n.
+    thm:fib-odd-iff-not-three-dvd -/
 theorem fib_odd_iff_not_three_dvd (n : Nat) : ¬ (2 ∣ Nat.fib n) ↔ ¬ (3 ∣ n) := by
   rw [fib_even_iff_three_dvd]
 
@@ -175,7 +189,8 @@ theorem fib_odd_iff_not_three_dvd (n : Nat) : ¬ (2 ∣ Nat.fib n) ↔ ¬ (3 ∣
 -- Fibonacci summation identities
 -- ══════════════════════════════════════════════════════════════
 
-/-- Σ_{k<n} F_{k+1} = F_{n+2} - 1. -/
+/-- Σ_{k<n} F_{k+1} = F_{n+2} - 1.
+    thm:fib-partial-sum -/
 theorem fib_partial_sum (n : Nat) :
     ∑ k ∈ Finset.range n, Nat.fib (k + 1) = Nat.fib (n + 2) - 1 := by
   induction n with
@@ -190,7 +205,8 @@ theorem fib_partial_sum (n : Nat) :
     have := fib_succ_pos n; have := fib_succ_pos (n + 1)
     omega
 
-/-- Σ_{k<n} F_{k+2} = F_{n+3} - 2. -/
+/-- Σ_{k<n} F_{k+2} = F_{n+3} - 2.
+    thm:fib-partial-sum-from-two -/
 theorem fib_partial_sum_from_two (n : Nat) :
     ∑ k ∈ Finset.range n, Nat.fib (k + 2) = Nat.fib (n + 3) - 2 := by
   induction n with
@@ -210,7 +226,8 @@ theorem fib_partial_sum_from_two (n : Nat) :
     have : 2 ≤ Nat.fib (n + 4) := by omega
     omega
 
-/-- Σ_{k<n} F_{k+1}² = F_n · F_{n+1}. -/
+/-- Σ_{k<n} F_{k+1}² = F_n · F_{n+1}.
+    thm:fib-sq-sum -/
 theorem fib_sq_sum (n : Nat) :
     ∑ k ∈ Finset.range n, Nat.fib (k + 1) ^ 2 = Nat.fib n * Nat.fib (n + 1) := by
   induction n with
@@ -222,7 +239,8 @@ theorem fib_sq_sum (n : Nat) :
     rw [show Nat.fib (n + 1) ^ 2 = Nat.fib (n + 1) * Nat.fib (n + 1) from sq _, hfib]
     ring
 
-/-- Σ_{k<n} F_{2(k+1)} = F_{2n+1} - 1. -/
+/-- Σ_{k<n} F_{2(k+1)} = F_{2n+1} - 1.
+    thm:fib-even-sum -/
 theorem fib_even_sum (n : Nat) :
     ∑ k ∈ Finset.range n, Nat.fib (2 * (k + 1)) = Nat.fib (2 * n + 1) - 1 := by
   induction n with
@@ -242,7 +260,8 @@ theorem fib_even_sum (n : Nat) :
     have : 0 < Nat.fib (2 * n + 2) := fib_succ_pos (2 * n + 1)
     omega
 
-/-- Σ_{k<n} F_{2k+1} = F_{2n}. -/
+/-- Σ_{k<n} F_{2k+1} = F_{2n}.
+    thm:fib-odd-sum -/
 theorem fib_odd_sum (n : Nat) :
     ∑ k ∈ Finset.range n, Nat.fib (2 * k + 1) = Nat.fib (2 * n) := by
   induction n with
@@ -259,7 +278,8 @@ theorem fib_odd_sum (n : Nat) :
 -- Advanced Fibonacci identities
 -- ══════════════════════════════════════════════════════════════
 
-/-- 3 ∣ F(n) ↔ 4 ∣ n. -/
+/-- 3 ∣ F(n) ↔ 4 ∣ n.
+    thm:pom-fib-div-three-iff -/
 theorem fib_div_three_iff (n : Nat) : 3 ∣ Nat.fib n ↔ 4 ∣ n := by
   constructor
   · -- 3|F(n) → 4|n: by strong induction + Pisano period
@@ -294,7 +314,8 @@ theorem fib_div_three_iff (n : Nat) : 3 ∣ Nat.fib n ↔ 4 ∣ n := by
     intro ⟨k, hk⟩; rw [hk]
     exact dvd_trans (show (3 : Nat) ∣ Nat.fib 4 from by decide) (Nat.fib_dvd 4 (4 * k) ⟨k, rfl⟩)
 
-/-- F(n+1) ≤ 2·F(n) for n ≥ 1. -/
+/-- F(n+1) ≤ 2·F(n) for n ≥ 1.
+    bridge:fib-ratio-bound -/
 theorem fib_succ_le_double (n : Nat) (hn : 1 ≤ n) :
     Nat.fib (n + 1) ≤ 2 * Nat.fib n := by
   -- F(n+1) = F(n-1) + F(n) ≤ F(n) + F(n) = 2F(n)
@@ -333,7 +354,8 @@ theorem fib_lt_pow_two_of_ge_two (m : Nat) (hm : 2 ≤ m) :
 -- Phase 173
 -- ══════════════════════════════════════════════════════════════
 
-/-- The fence determinant recursion: D(k+2) = 3·D(k+1) - D(k), D(0)=1, D(1)=2. -/
+/-- The fence determinant recursion: D(k+2) = 3·D(k+1) - D(k), D(0)=1, D(1)=2.
+    def:pom-fence-det -/
 def fenceDet : Nat → Nat
   | 0 => 1
   | 1 => 2
@@ -641,7 +663,8 @@ theorem fenceDet_cassini (k : Nat) (hk : 1 ≤ k) :
     show fenceDet (k + 2) ^ 2 + 1 = fenceDet (k + 3) * fenceDet k.succ
     linarith
 
-/-- CRT minimum depth: 30|F_n ↔ 60|n. -/
+/-- CRT minimum depth: 30|F_n ↔ 60|n.
+    prop:crt-235-min-depth -/
 theorem crt_235_min_depth :
     (30 ∣ Nat.fib 60) ∧ (∀ n, 0 < n → n < 60 → ¬(30 ∣ Nat.fib n)) := by
   constructor
@@ -675,6 +698,7 @@ def fenceDetZero : Nat → Nat
   | 1 => 1
   | n + 2 => 2 * fenceDetZero (n + 1) - fenceDetZero n
 
+/-- prop:pom-Lk-det-coeff-binomial -/
 theorem fenceDetZero_eq_one (k : Nat) : fenceDetZero k = 1 := by
   induction k using Nat.strongRecOn with
   | _ k ih =>
@@ -684,6 +708,7 @@ theorem fenceDetZero_eq_one (k : Nat) : fenceDetZero k = 1 := by
     | k + 2 => simp [fenceDetZero, ih (k + 1) (by omega), ih k (by omega)]
 
 /-- Strict log-convexity: D_k² < D_{k-1}·D_{k+1} for k ≥ 1.
+    /-- cor:pom-Lk-det-logconvex-ratio -/
     cor:pom-Lk-det-logconvex-ratio. -/
 theorem fenceDet_log_convex (k : Nat) (hk : 1 ≤ k) :
     fenceDet k ^ 2 < fenceDet (k - 1) * fenceDet (k + 1) := by
@@ -721,7 +746,8 @@ theorem fib_six_eight_coprime : Nat.Coprime (Nat.fib 6) (Nat.fib 8) := by
 -- Phase 194
 -- ══════════════════════════════════════════════════════════════
 
-/-- fenceDet strictly increasing: D_k < D_{k+1} for k ≥ 1. -/
+/-- fenceDet strictly increasing: D_k < D_{k+1} for k ≥ 1.
+    cor:pom-Lk-surface-free-energy -/
 theorem fenceDet_strict_mono (k : Nat) (hk : 1 ≤ k) :
     fenceDet k < fenceDet (k + 1) := by
   have h := fenceDet_double_lower k hk
@@ -788,7 +814,8 @@ theorem fenceDet_le_pow_three (k : Nat) : fenceDet k ≤ 3 ^ k := by
         _ ≤ 3 * 3 ^ (k + 1) := Nat.mul_le_mul_left 3 ih1
         _ = 3 ^ (k + 2) := by ring
 
-/-- F_a | F_b ↔ a | b for a ≥ 3 (where F_a ≥ 2 ensures injectivity). -/
+/-- F_a | F_b ↔ a | b for a ≥ 3 (where F_a ≥ 2 ensures injectivity).
+    prop:crt-235-min-depth -/
 theorem fib_dvd_iff (a b : Nat) (ha : 3 ≤ a) : Nat.fib a ∣ Nat.fib b ↔ a ∣ b := by
   constructor
   · intro hdvd
@@ -812,7 +839,8 @@ theorem fib_dvd_iff (a b : Nat) (ha : 3 ≤ a) : Nat.fib a ∣ Nat.fib b ↔ a �
 -- Phase 196
 -- ══════════════════════════════════════════════════════════════
 
-/-- 2^k ≤ D_k for k ≥ 1. Completes 2^k ≤ D_k ≤ 3^k sandwich. -/
+/-- 2^k ≤ D_k for k ≥ 1. Completes 2^k ≤ D_k ≤ 3^k sandwich.
+    cor:pom-Lk-surface-free-energy -/
 theorem fenceDet_ge_pow_two (k : Nat) (hk : 1 ≤ k) : 2 ^ k ≤ fenceDet k := by
   induction k with
   | zero => omega
@@ -824,7 +852,8 @@ theorem fenceDet_ge_pow_two (k : Nat) (hk : 1 ≤ k) : 2 ^ k ≤ fenceDet k := b
         _ ≤ 2 * fenceDet (k + 1) := Nat.mul_le_mul_left 2 (ih (by omega))
         _ ≤ fenceDet (k + 2) := fenceDet_double_lower (k + 1) (by omega)
 
-/-- Unified Pisano entry point table for p=2,3,5,7,8. -/
+/-- Unified Pisano entry point table for p=2,3,5,7,8.
+    prop:crt-235-min-depth -/
 theorem pisano_entry_point_table :
     (∀ n, 2 ∣ Nat.fib n ↔ 3 ∣ n) ∧
     (∀ n, 3 ∣ Nat.fib n ↔ 4 ∣ n) ∧
@@ -871,7 +900,8 @@ theorem fib_pell_quadratic_scaled (k : Nat) (hk : 1 ≤ k) :
   nlinarith
 
 /-- Fibonacci cross-product identity: F_{k+1}·F_{k-1} + F_k·F_{k+1} = F_{k+1}².
-    Auxiliary for Pell-Fibonacci bridge. -/
+    Auxiliary for Pell-Fibonacci bridge.
+    bridge:fib-cross-product -/
 theorem fib_cross_product (k : Nat) (hk : 1 ≤ k) :
     (Nat.fib (k + 1) : ℤ) * Nat.fib (k - 1) + (Nat.fib k : ℤ) * Nat.fib (k + 1) =
     (Nat.fib (k + 1) : ℤ) ^ 2 := by

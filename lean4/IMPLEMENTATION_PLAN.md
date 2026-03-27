@@ -1,4 +1,4 @@
-# Lean4 无公理形式化实施方案（2026-03-26 登记同步版）
+# Lean4 无公理形式化实施方案（2026-03-27 登记同步版）
 
 ## 1. 项目现状
 
@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~29,162 |
-| 定理/定义数 | ~2,334 |
+| 总行数 | ~29,211 |
+| 定理/定义数 | ~2,337 |
 | 论文接口包装 | 346 |
 | 文件数 | 64 |
 | 公理数 | 0 |
@@ -112,6 +112,7 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 197: Fibonacci Pell 二次型 + 缩放推论 + 交叉乘积（Round 197）**：一文件 Fib.lean（837→886 行）——fib_pell_quadratic（prop:pom-fib-pell-quadratic-characterization：F_{k+1}² - F_{k+1}·F_k - F_k² = (-1)^k，Fib.lean:843）; fib_pell_quadratic_scaled（prop:pom-fib-pell-quadratic-characterization 缩放推论：(2F_{k+1})² - (2F_{k+1})(2F_k) - (2F_k)² = 4·(-1)^k，Fib.lean:867）; fib_cross_product（bridge:fib-cross-product：F_{k+1}·F_{k-1} + F_k·F_{k+1} = F_{k+1}²，Fib.lean:875）——POM ~503 → ~504（+1 条目：prop:pom-fib-pell-quadratic-characterization，bridge 不计）（Phase 197）
 **Phase 196: FenceDet指数下界 + Pisano统一表 + 非仿射纤维计数（Round 196）**：两文件 Fib.lean + Window6.lean——fenceDet_ge_pow_two（cor:pom-Lk-surface-free-energy 指数下界：2^k ≤ D_k for k ≥ 1，Fib.lean）; pisano_entry_point_table（prop:crt-235-min-depth Pisano 统一表：mod 2→3, mod 3→4, mod 5→5, mod 7→8, mod 8→6，Fib.lean）; conclusion_window6_nonaffine_count（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory 非仿射纤维：11 affine + 10 non-affine = 21，Window6.lean）——三个论文标签均已在前序 Phase 注册，覆盖率不变，+3 Lean 定理（Phase 196）
 **Phase 195: FenceDet指数上界 + Fib整除iff + BinFold正常着色（Round 195）**：两文件 Fib.lean + Window6.lean——fenceDet_le_pow_three（cor:pom-Lk-surface-free-energy 指数上界：D_k ≤ 3^k，Fib.lean）; fib_dvd_iff（prop:crt-235-min-depth 核心引理：F_a | F_b ↔ a | b for a ≥ 3，Fib.lean）; conclusion_window6_binfold_proper_coloring（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory edge separation：BinFold 是 6-超立方体正常着色，Window6.lean）——三个论文标签均已在前序 Phase 注册，覆盖率不变，+3 Lean 定理（Phase 195）
 **Phase 194: FenceDet严格单调 + Pisano mod 8 + unit group φ(21)=12（Round 194）**：两文件 Fib.lean + Window6.lean——fenceDet_strict_mono（cor:pom-Lk-surface-free-energy 严格单调：D_k < D_{k+1} for k ≥ 1，Fib.lean）; six_dvd_of_fib_eight_dvd（bridge: 8|F_n → 6|n，private，Fib.lean）; fib_eight_dvd_of_six_dvd（bridge: 6|n → 8|F_n，private，Fib.lean）; fib_eight_dvd_iff（bridge: Pisano mod 8: 8|F_n ↔ 6|n，Fib.lean）; conclusion_window6_unit_group_structure（thm:conclusion-foldbin-stable-collapse-ordered-k0-memory unit group：φ(21)=12=2×6=(3-1)(7-1)，Window6.lean）——两个论文标签均已在前序 Phase 注册，覆盖率不变，+5 Lean 定理（Phase 194）
@@ -151,7 +152,7 @@
 **Binet 最近整数（Round 40）**：goldenAngle 定义（θ=φ⁻¹，满足 θ²=1-θ）; |ψ^n/√5| < 1/2（abs_psi_pow_div_sqrt5_lt_half）; fib_nearest_integer（|F(n)-φ^n/√5| < 1/2，prop:cdim-fibonacci-nearest-integer，圆维度核心定理首个形式化）
 **拓扑**：cylinder clopen, 前缀确定性代数, fromWordSet 分配律
 
-## 2. 论文总覆盖率分析（2026-03-26 登记同步版）
+## 2. 论文总覆盖率分析（2026-03-27 登记同步版）
 
 ### 论文规模
 
@@ -184,7 +185,7 @@
 | 新生算术 | 151 | ~88 | ~58% |
 | Folding | 317 | ~91 | ~29% |
 | 群统一 | 457 | ~100 | ~22% |
-| POM | 1,525 | ~503 | ~33.0% |
+| POM | 1,525 | ~504 | ~33.1% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
