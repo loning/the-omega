@@ -939,4 +939,32 @@ theorem fib_tail_matrix_det_odd (m : Nat) (hm : ¬ Even m) :
   have hodd : ¬ Even (m + 2) := by intro ⟨k, hk⟩; exact hm ⟨k - 1, by omega⟩
   exact fib_cassini_odd (m + 2) hodd
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 203: Fibonacci subtraction + coprimality
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(n+2) - F(n+1) = F(n), the Fibonacci subtraction identity.
+    thm:bdry-uplift-second-difference-residual-law -/
+theorem fib_sub_consecutive (n : Nat) :
+    Nat.fib (n + 2) - Nat.fib (n + 1) = Nat.fib n := by
+  have h := Nat.fib_add_two (n := n); omega
+
+/-- F(11) - F(10) = F(9) = 34.
+    thm:bdry-uplift-second-difference-residual-law (m=7) -/
+theorem bdry_uplift_second_diff_m7 :
+    Nat.fib 11 - Nat.fib 10 = Nat.fib 9 :=
+  fib_sub_consecutive 9
+
+/-- F(12) - F(11) = F(10) = 55.
+    thm:bdry-uplift-second-difference-residual-law (m=8) -/
+theorem bdry_uplift_second_diff_m8 :
+    Nat.fib 12 - Nat.fib 11 = Nat.fib 10 :=
+  fib_sub_consecutive 10
+
+/-- Consecutive Fibonacci numbers are coprime: gcd(F(n), F(n+1)) = 1.
+    bridge:fib-coprime-consecutive -/
+theorem fib_coprime_consecutive_general (n : Nat) :
+    Nat.gcd (Nat.fib n) (Nat.fib (n + 1)) = 1 :=
+  fib_coprime_succ n
+
 end Omega

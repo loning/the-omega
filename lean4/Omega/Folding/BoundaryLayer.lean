@@ -111,4 +111,22 @@ theorem no_nontrivial_sym_invariant_grading_fin3
     simp [Equiv.swap_apply_left] at this; exact this.symm
   intro x y; fin_cases x <;> fin_cases y <;> simp_all
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 203: Pigeonhole bit-width bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- Distinguishing 3 alternatives requires more than 1 bit: no injection Fin 3 → Fin 2.
+    cor:bdry-sheet-parity-extension-min-register -/
+theorem three_alternative_needs_two_bits :
+    ¬ ∃ (f : Fin 3 → Fin 2), Function.Injective f := by
+  intro ⟨f, hf⟩
+  have h := Fintype.card_le_of_injective f hf
+  simp at h
+
+/-- 2 bits suffice for 3 alternatives: injection Fin 3 → Fin 4 exists.
+    cor:bdry-sheet-parity-extension-min-register -/
+theorem three_alternative_two_bits_suffice :
+    ∃ (f : Fin 3 → Fin 4), Function.Injective f :=
+  ⟨Fin.castLE (by omega), Fin.castLE_injective _⟩
+
 end Omega
