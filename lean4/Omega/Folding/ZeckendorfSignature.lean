@@ -1,5 +1,7 @@
 import Omega.Core.Fib
 import Mathlib.Data.Nat.Factorization.Defs
+import Mathlib.Data.Nat.Totient
+import Mathlib.Tactic.IntervalCases
 
 /-! ### Zeckendorf signatures of Lie algebra dimensions
 
