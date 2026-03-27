@@ -733,4 +733,20 @@ theorem lucasNum_ge_fib (n : Nat) : Nat.fib n ≤ lucasNum n := by
       rw [Nat.fib_add_two, lucasNum_succ_succ, Nat.add_comm (lucasNum (n + 1))]
       exact Nat.add_le_add (ih n (by omega)) (ih (n + 1) (by omega))
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 232: Fib shifted fusion defect + Lucas mod p
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(a+2)*F(b+2) = F(a+b+2) + F(a)*F(b).
+    lem:pom-shifted-fib-fusion-defect-positive -/
+theorem fib_shifted_fusion_defect (a b : Nat) :
+    Nat.fib (a + 2) * Nat.fib (b + 2) = Nat.fib (a + b + 2) + Nat.fib a * Nat.fib b := by
+  -- From fib_add_formula(a+1, b): F(a+b+2) = F(a+2)*F(b+1) + F(a+1)*F(b)
+  have hadd := fib_add_formula (a + 1) b
+  rw [show a + 1 + b + 1 = a + b + 2 from by omega, show a + 1 + 1 = a + 2 from by omega] at hadd
+  -- F(b+2) = F(b+1) + F(b), F(a+2) = F(a+1) + F(a)
+  have hb := Nat.fib_add_two (n := b)
+  have ha := Nat.fib_add_two (n := a)
+  nlinarith
+
 end Omega

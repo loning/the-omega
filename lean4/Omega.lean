@@ -65,3 +65,4 @@ import Omega.Frontier.Conjectures
 import Omega.Frontier.Certificates
 import Omega.Combinatorics.PathIndSet
 import Omega.Combinatorics.FibonacciCube
+import Omega.Combinatorics.GramDet
