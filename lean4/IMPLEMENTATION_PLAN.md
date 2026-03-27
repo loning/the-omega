@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~29,915 |
-| 定理/定义数 | ~2,395 |
+| 总行数 | ~30,010 |
+| 定理/定义数 | ~2,405 |
 | 论文接口包装 | 346 |
 | 文件数 | 67 |
 | 公理数 | 0 |
@@ -112,7 +112,9 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
-**Phase 217: 碰撞核族签名 + Theta类计数定义 + S₄严格单调（Round 217）**：三文件 CollisionKernel.lean（+19行）+ FibonacciCube.lean（+15行）+ MomentBounds.lean（+36行）——collisionKernel_trace_family（prop:pom-collision-kernel-family：碰撞核迹族 q=2..5 签名联合，collisionKernel{2,3,4,5}_trace 四合取，CollisionKernel.lean）; collisionKernel_det_family（prop:pom-collision-kernel-family：碰撞核行列式族 q=2..4 均为 -2, q=5 为 10，CollisionKernel.lean）; coordOneCount（def:thm:pom-fibcube-theta-class-size：No11 词中第 i 位为 1 的计数定义，FibonacciCube.lean；coordOneCount_eq_fib_prod 推迟）; momentSum_four_seven/eight/nine/ten（prop:pom-s4-recurrence 基值扩展：S_4(7..10)=12208/47480/181576/700384，native_decide，MomentBounds.lean）; momentSum_four_strict_mono（prop:pom-s4-recurrence 严格单调：S_4(m) < S_4(m+1) for 2≤m≤10，interval_cases+base cache，MomentBounds.lean）——prop:pom-collision-kernel-family 为新注册标签；prop:pom-s4-recurrence 已在 Phase 183 注册——POM ~521→~522（+1 新标签：prop:pom-collision-kernel-family）（Phase 217）
+**Phase 218: FibCube f-向量k=2 + fibPoly(-1)周期6 + S₂幂均值界（Round 218）**：三文件 FibonacciCube.lean（+30行）+ FibonacciPolynomial.lean（+37行）+ MomentBounds.lean（含 Phase 217 @[simp] 修正 + 新增）——fibcubeFVector_two_recurrence（thm:pom-fibcube-fvector-closed：f(n+2,2)=f(n+1,2)+f(n,2)+f(n,1)，FibonacciCube.lean）; fibcubeFVector_two_two/three/four/five/six（thm:pom-fibcube-fvector-closed：f(2..6,2)=0/1/3/9/22，FibonacciCube.lean）; fibPoly_eval_neg_one_period（def:pom-fibonacci-polynomial：F_n(-1) 基值周期 n=0..5，FibonacciPolynomial.lean）; fibPoly_eval_neg_one_rec（def:pom-fibonacci-polynomial：F_{n+2}(-1)=F_{n+1}(-1)-F_n(-1) 递推，FibonacciPolynomial.lean）; fibPoly_eval_neg_one_periodic（def:pom-fibonacci-polynomial：F_{n+6}(-1)=F_n(-1) 周期6，FibonacciPolynomial.lean）; momentSum_two_pow_le（prop:pom-sq-quasi-multiplicative：S_2(m)^q ≤ S_{2q}(m)·F(m+2)^{q-1}，幂均值不等式，MomentBounds.lean）——注：Phase 218 同时修正 Phase 217 的 momentSum_four_strict_mono 范围（m≤10→m≤9），去除 @[simp]——prop:pom-sq-quasi-multiplicative 为新注册标签；thm:pom-fibcube-fvector-closed/def:pom-fibonacci-polynomial 已注册——POM ~522→~523（+1 新标签：prop:pom-sq-quasi-multiplicative）（Phase 218）
+
+**Phase 217: 碰撞核族签名 + Theta类计数定义 + S₄严格单调（Round 217）**：三文件 CollisionKernel.lean（+19行）+ FibonacciCube.lean（+15行）+ MomentBounds.lean（+36行）——collisionKernel_trace_family（prop:pom-collision-kernel-family：碰撞核迹族 q=2..5 签名联合，collisionKernel{2,3,4,5}_trace 四合取，CollisionKernel.lean）; collisionKernel_det_family（prop:pom-collision-kernel-family：碰撞核行列式族 q=2..4 均为 -2, q=5 为 10，CollisionKernel.lean）; coordOneCount（def:thm:pom-fibcube-theta-class-size：No11 词中第 i 位为 1 的计数定义，FibonacciCube.lean；coordOneCount_eq_fib_prod 推迟）; momentSum_four_seven/eight/nine/ten（prop:pom-s4-recurrence 基值扩展：S_4(7..10)=12208/47480/181576/700384，native_decide，MomentBounds.lean）; momentSum_four_strict_mono（prop:pom-s4-recurrence 严格单调：S_4(m) < S_4(m+1) for 2≤m≤10，interval_cases+base cache，MomentBounds.lean；Phase 218 已修正范围为 m≤9）——prop:pom-collision-kernel-family 为新注册标签；prop:pom-s4-recurrence 已在 Phase 183 注册——POM ~521→~522（+1 新标签：prop:pom-collision-kernel-family）（Phase 217）
 
 **Phase 216: BF₄行列式 + S5基值m=7,8 + A₄迹不变量（Round 216）**：一文件 CollisionKernel.lean（+31行）——bowenFranksMatrix4（def）+ bowenFranksMatrix4_det（prop:pom-collision-bf-snf-q234：BF₄行列式=-8，native_decide，CollisionKernel.lean:196/204）; momentSum_five_seven（prop:pom-s5-recurrence：S_5(7)=62168，native_decide，CollisionKernel.lean:207）; momentSum_five_eight（prop:pom-s5-recurrence：S_5(8)=304456，native_decide，CollisionKernel.lean:209）; collisionKernel4_trace_sq（rem:pom-s4-zero-coefficient-lock：tr(A₄²)=18，CollisionKernel.lean:213）; collisionKernel4_e2（rem:pom-s4-zero-coefficient-lock：e₂(A₄)=-7，CollisionKernel.lean:218）——prop:pom-collision-bf-snf-q234 已注册（Phase 215）；prop:pom-s5-recurrence 已注册（Phase 214）；rem:pom-s4-zero-coefficient-lock 为新标签——注：analyst 规格数值有误，formalizer 已修正——POM ~520→~521（+1 新标签：rem:pom-s4-zero-coefficient-lock）（Phase 216）
 **Phase 215: Bowen-Franks行列式 + f-向量k=1递推 + fenceDet加性（Round 215）**：三文件 CollisionKernel.lean（+19行）+ FibonacciCube.lean（+8行）+ Fib.lean（+25行）——bowenFranksMatrix2（def）+ bowenFranksMatrix2_det（prop:pom-collision-bf-snf-q234：BF₂行列式=-1，native_decide，CollisionKernel.lean:177/179）; bowenFranksMatrix3（def）+ bowenFranksMatrix3_det（prop:pom-collision-bf-snf-q234：BF₃行列式=-3，native_decide，CollisionKernel.lean:182/184）; collisionKernel_bf_det_ratio（prop:pom-collision-bf-snf-q234：det(BF₃)=3·det(BF₂)，CollisionKernel.lean:187）; fibcubeFVector_one_recurrence（thm:pom-fibcube-fvector-closed：f-向量k=1递推恒等式，FibonacciCube.lean:617）; fenceDet_additive（cor:pom-Lk-golden-coupling-unique：D(k+j)≥D(k)·D(j) 加性下界，Fib.lean:1050）; fenceDet_succ_lt_triple（cor:pom-Lk-golden-coupling-unique：D(k+1) < 3·D(k)，Fib.lean:1063）——prop:pom-collision-bf-snf-q234, cor:pom-Lk-golden-coupling-unique 为新标签；thm:pom-fibcube-fvector-closed 已注册（Phase 214）——POM ~518→~520（+2 新标签：prop:pom-collision-bf-snf-q234, cor:pom-Lk-golden-coupling-unique）（Phase 215）
@@ -184,8 +186,8 @@
 
 ### Lean4 形式化状态
 
-- **1,269 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,474 个 Lean4 定理（含内部引理）
+- **1,270 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,484 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
@@ -206,7 +208,7 @@
 | 新生算术 | 151 | ~93 | ~61.6% |
 | Folding | 317 | ~100 | ~31.5% |
 | 群统一 | 457 | ~110 | ~24.1% |
-| POM | 1,525 | ~522 | ~34.2% |
+| POM | 1,525 | ~523 | ~34.2% |
 | 圆维度 | 342 | 62 | 18.1% |
 | Zeta 有限部分 | 4,437 | ~255 | ~6% |
 | 结论 | 1,727 | 83 | 4.8% |
