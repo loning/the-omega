@@ -749,4 +749,65 @@ theorem fib_shifted_fusion_defect (a b : Nat) :
   have ha := Nat.fib_add_two (n := a)
   nlinarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 233: Fib determinant volume law + fusion defect cocycle
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(a+2)*F(b+2) - F(a)*F(b) = F(a+b+2) in ℤ.
+    cor:pom-fib-determinant-volume-law -/
+theorem fib_determinant_volume_law (a b : Nat) :
+    (Nat.fib (a + 2) : ℤ) * Nat.fib (b + 2) - (Nat.fib a : ℤ) * Nat.fib b =
+    Nat.fib (a + b + 2) := by
+  have := fib_shifted_fusion_defect a b; push_cast; omega
+
+/-- Fusion defect 2-cocycle: associativity consistency of ω(a,b)=F(a)*F(b).
+    prop:pom-fusion-defect-2cocycle-identity -/
+theorem fib_fusion_defect_cocycle (a b c : Nat) :
+    Nat.fib a * Nat.fib b * Nat.fib (c + 2) + Nat.fib (a + b) * Nat.fib c =
+    Nat.fib b * Nat.fib c * Nat.fib (a + 2) + Nat.fib (b + c) * Nat.fib a := by
+  -- Work in ℤ to use ring reasoning
+  suffices h : (Nat.fib a * Nat.fib b * Nat.fib (c + 2) + Nat.fib (a + b) * Nat.fib c : ℤ) =
+      (Nat.fib b * Nat.fib c * Nat.fib (a + 2) + Nat.fib (b + c) * Nat.fib a : ℤ) by
+    exact_mod_cast h
+  -- Abbreviate
+  set Fa := (Nat.fib a : ℤ); set Fa1 := (Nat.fib (a + 1) : ℤ)
+  set Fb := (Nat.fib b : ℤ); set Fb1 := (Nat.fib (b + 1) : ℤ)
+  set Fc := (Nat.fib c : ℤ); set Fc1 := (Nat.fib (c + 1) : ℤ)
+  set Fab := (Nat.fib (a + b) : ℤ); set Fbc := (Nat.fib (b + c) : ℤ)
+  -- Key lemma: from two expansions of F(a+b+c+1)
+  have h1 := fib_add_formula a (b + c)
+  have h2 := fib_add_formula (a + b) c
+  have h3 := fib_add_formula a b
+  have h4 := fib_add_formula b c
+  rw [show a + (b + c) + 1 = a + b + c + 1 from by omega] at h1
+  -- h1 = h2 gives: Fa1*F(b+c+1) + Fa*Fbc = F(a+b+1)*Fc1 + Fab*Fc
+  -- Substituting h4 and h3:
+  -- Fa1*(Fb1*Fc1 + Fb*Fc) + Fa*Fbc = (Fa1*Fb1 + Fa*Fb)*Fc1 + Fab*Fc
+  -- Cancel Fa1*Fb1*Fc1: Fa1*Fb*Fc + Fa*Fbc = Fa*Fb*Fc1 + Fab*Fc
+  -- From h1=h2 and h3,h4: derive the key identity
+  -- h1: F(a+b+c+1) = Fa1*F(b+c+1) + Fa*Fbc
+  -- h4: F(b+c+1) = Fb1*Fc1 + Fb*Fc
+  -- So: F(a+b+c+1) = Fa1*(Fb1*Fc1 + Fb*Fc) + Fa*Fbc
+  --                 = Fa1*Fb1*Fc1 + Fa1*Fb*Fc + Fa*Fbc
+  -- h2: F(a+b+c+1) = F(a+b+1)*Fc1 + Fab*Fc
+  -- h3: F(a+b+1) = Fa1*Fb1 + Fa*Fb
+  -- So: F(a+b+c+1) = (Fa1*Fb1 + Fa*Fb)*Fc1 + Fab*Fc
+  --                 = Fa1*Fb1*Fc1 + Fa*Fb*Fc1 + Fab*Fc
+  -- Equating: Fa1*Fb*Fc + Fa*Fbc = Fa*Fb*Fc1 + Fab*Fc
+  have haux : Fa1 * Fb * Fc + Fa * Fbc = Fa * Fb * Fc1 + Fab * Fc := by
+    have eq1 : (Nat.fib (a + b + c + 1) : ℤ) =
+        Fa1 * Fb1 * Fc1 + Fa1 * Fb * Fc + Fa * Fbc := by
+      have := h1; have := h4; push_cast at h1 h4 ⊢; nlinarith
+    have eq2 : (Nat.fib (a + b + c + 1) : ℤ) =
+        Fa1 * Fb1 * Fc1 + Fa * Fb * Fc1 + Fab * Fc := by
+      have := h2; have := h3; push_cast at h2 h3 ⊢; nlinarith
+    linarith
+  -- Target: Fa*Fb*F(c+2) + Fab*Fc = Fb*Fc*F(a+2) + Fbc*Fa
+  -- Expand F(c+2) = Fc1+Fc, F(a+2) = Fa1+Fa
+  have hc : (Nat.fib (c + 2) : ℤ) = Fc1 + Fc := by
+    push_cast [Nat.fib_add_two]; ring
+  have ha : (Nat.fib (a + 2) : ℤ) = Fa1 + Fa := by
+    push_cast [Nat.fib_add_two]; ring
+  push_cast; rw [hc, ha]; nlinarith
+
 end Omega

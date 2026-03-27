@@ -796,6 +796,29 @@ theorem step_locallyConfluent {a b c : DigitCfg} (hab : Step a b) (hac : Step a 
     Relation.Join (Relation.ReflTransGen Step) b c :=
   step_confluent (Relation.ReflTransGen.single hab) (Relation.ReflTransGen.single hac)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 233: Weight rigidity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight rigidity: w(k+2)=w(k+1)+w(k) with w(0)=1,w(1)=2 forces w=digitWeight.
+    lem:fold-local-weight-rigidity-fibonacci -/
+theorem weight_rigidity_fibonacci (w : Nat → Nat)
+    (hadj : ∀ k, w k + w (k + 1) = w (k + 2))
+    (hw0 : w 0 = 1) (hw1 : w 1 = 2) :
+    ∀ k, w k = digitWeight k := by
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    match k with
+    | 0 => rw [hw0, digitWeight_zero]
+    | 1 => rw [hw1, digitWeight_one]
+    | k + 2 =>
+      have hadj' := hadj k
+      have h1 := ih k (by omega)
+      have h2 := ih (k + 1) (by omega)
+      have h3 := digitWeight_adj k
+      omega
+
 end Rewrite
 
 end Omega
