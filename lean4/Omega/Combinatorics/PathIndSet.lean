@@ -363,4 +363,51 @@ theorem pathIndCount_strict_mono (n : Nat) (hn : 2 ≤ n) :
   rw [path_independent_set_count, path_independent_set_count]
   exact fib_strict_mono (n + 2) (by omega)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 212: Path independent set size upper bound
+-- ══════════════════════════════════════════════════════════════
+
+/-- The halving map i ↦ i/2 is injective on path-independent sets. -/
+private theorem half_injOn_pathInd (n : Nat) (S : Finset (Fin n))
+    (hS : IsPathIndependent n S) :
+    Set.InjOn (fun i : Fin n => i.val / 2) (↑S) := by
+  intro i hi j hj (heq : i.val / 2 = j.val / 2)
+  ext
+  by_contra hne
+  -- WLOG i.val < j.val
+  have hne_val : i.val ≠ j.val := hne
+  rcases Nat.lt_or_gt_of_ne hne_val with hlt | hlt
+  · have hnotadj : ¬ (i.val + 1 = j.val) := hS i hi j hj
+    have hge2 : i.val + 2 ≤ j.val := by omega
+    have : (i.val + 2) / 2 ≤ j.val / 2 := Nat.div_le_div_right hge2
+    have : i.val / 2 + 1 ≤ j.val / 2 := by
+      calc i.val / 2 + 1 = (i.val + 2) / 2 := by omega
+        _ ≤ j.val / 2 := this
+    omega
+  · have hnotadj : ¬ (j.val + 1 = i.val) := hS j hj i hi
+    have hge2 : j.val + 2 ≤ i.val := by omega
+    have : (j.val + 2) / 2 ≤ i.val / 2 := Nat.div_le_div_right hge2
+    have : j.val / 2 + 1 ≤ i.val / 2 := by
+      calc j.val / 2 + 1 = (j.val + 2) / 2 := by omega
+        _ ≤ i.val / 2 := this
+    omega
+
+/-- Any path-independent set on P_n has at most ⌈n/2⌉ elements.
+    thm:pom-fibcube-eccentricity-closed-form -/
+theorem pathIndSet_card_le (n : Nat) (S : Finset (Fin n))
+    (hS : IsPathIndependent n S) :
+    S.card ≤ (n + 1) / 2 := by
+  have hInj := half_injOn_pathInd n S hS
+  have hImage : S.image (fun i : Fin n => i.val / 2) ⊆ Finset.range ((n + 1) / 2) := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨i, _, rfl⟩ := hx
+    simp only [Finset.mem_range]
+    exact Nat.div_lt_of_lt_mul (by omega)
+  calc S.card
+      = (S.image (fun i : Fin n => i.val / 2)).card :=
+          (Finset.card_image_of_injOn hInj).symm
+      _ ≤ (Finset.range ((n + 1) / 2)).card := Finset.card_le_card hImage
+      _ = (n + 1) / 2 := Finset.card_range _
+
 end Omega

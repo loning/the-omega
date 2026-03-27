@@ -524,4 +524,39 @@ theorem weight_le_popcount_mul_fib (w : Word m) (hm : 1 ≤ m) :
       simp [Finset.sum_const, smul_eq_mul]
     · rw [Finset.sum_const, smul_eq_mul]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 212: FibCube edge count
+-- ══════════════════════════════════════════════════════════════
+
+/-- Edge count of the Fibonacci cube Gamma_n satisfies
+    e(0)=0, e(1)=1, e(n+2)=e(n+1)+e(n)+F(n+2).
+    cor:pom-fibcube-edge-closed-form -/
+def fibcubeEdgeCount : Nat → Nat
+  | 0 => 0
+  | 1 => 1
+  | n + 2 => fibcubeEdgeCount (n + 1) + fibcubeEdgeCount n + Nat.fib (n + 2)
+
+@[simp] theorem fibcubeEdgeCount_zero : fibcubeEdgeCount 0 = 0 := rfl
+@[simp] theorem fibcubeEdgeCount_one : fibcubeEdgeCount 1 = 1 := rfl
+@[simp] theorem fibcubeEdgeCount_succ_succ (n : Nat) :
+    fibcubeEdgeCount (n + 2) = fibcubeEdgeCount (n + 1) + fibcubeEdgeCount n + Nat.fib (n + 2) :=
+  rfl
+
+/-- 5 * e(n) = n * F(n+1) + 2*(n+1)*F(n).
+    cor:pom-fibcube-edge-closed-form -/
+theorem fibcubeEdgeCount_closed (n : Nat) :
+    5 * fibcubeEdgeCount n = n * Nat.fib (n + 1) + 2 * (n + 1) * Nat.fib n := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp
+    | 1 => simp
+    | n + 2 =>
+      simp only [fibcubeEdgeCount_succ_succ]
+      have ih1 := ih (n + 1) (by omega)
+      have ih0 := ih n (by omega)
+      have hfib := Nat.fib_add_two (n := n)
+      have hfib1 := Nat.fib_add_two (n := n + 1)
+      nlinarith
+
 end Omega

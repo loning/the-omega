@@ -457,4 +457,29 @@ theorem fib_lie_no_resonance_m3_to_m8 :
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> intro ⟨k, hk⟩ <;> (have hk_le : k ≤ 8 := by nlinarith) <;>
     interval_cases k <;> omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 212: Fibonacci shift identities
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(n+3) = 3*F(n) + 2*F(n-1). prop:resolution-shift4-fib-matrix-law -/
+theorem fib_shift3 (n : Nat) (hn : 1 ≤ n) :
+    Nat.fib (n + 3) = 3 * Nat.fib n + 2 * Nat.fib (n - 1) := by
+  obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
+  simp only [show j + 1 - 1 = j from by omega]
+  have h1 := Nat.fib_add_two (n := j)
+  have h2 := Nat.fib_add_two (n := j + 1)
+  have h3 := Nat.fib_add_two (n := j + 2)
+  linarith
+
+/-- F(n+4) = 5*F(n) + 3*F(n-1). prop:resolution-shift4-fib-matrix-law -/
+theorem fib_shift4 (n : Nat) (hn : 1 ≤ n) :
+    Nat.fib (n + 4) = 5 * Nat.fib n + 3 * Nat.fib (n - 1) := by
+  obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
+  simp only [show j + 1 - 1 = j from by omega]
+  have h1 := Nat.fib_add_two (n := j)
+  have h2 := Nat.fib_add_two (n := j + 1)
+  have h3 := Nat.fib_add_two (n := j + 2)
+  have h4 := Nat.fib_add_two (n := j + 3)
+  linarith
+
 end Omega.ZeckSig
