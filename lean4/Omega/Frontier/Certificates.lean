@@ -38,6 +38,7 @@ structure RewriteStepCertificate where
   source : Rewrite.DigitCfg
   target : Rewrite.DigitCfg
 
+/-- cert:rewrite-step -/
 def RewriteStepCertificate.Valid (c : RewriteStepCertificate) : Prop :=
   Rewrite.Step c.source c.target
 
@@ -66,6 +67,7 @@ structure FoldCertificate where
   input : Word m
   claimed : X m
 
+/-- cert:fold -/
 def FoldCertificate.Valid (c : FoldCertificate) : Prop :=
   Fold c.input = c.claimed
 
@@ -90,6 +92,7 @@ structure ScanErrorCertificate (α β : Type*) [Fintype α] [Fintype β] where
   event : Set α
   claimed : ENNReal
 
+/-- cert:scan-error -/
 def ScanErrorCertificate.Valid {α β : Type*} [Fintype α] [Fintype β]
     (c : ScanErrorCertificate α β) : Prop :=
   SPG.scanError c.μ c.obs c.event = c.claimed
@@ -144,6 +147,7 @@ structure PrefixZeroScanCertificate where
   μ : PMF (Word n)
   event : Set (Word m)
 
+/-- cert:prefix-zero-scan -/
 def PrefixZeroScanCertificate.Valid (c : PrefixZeroScanCertificate) : Prop :=
   SPG.prefixScanError c.μ c.h (SPG.prefixEvent c.h c.event) = 0
 

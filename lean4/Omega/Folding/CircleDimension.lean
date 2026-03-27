@@ -9,15 +9,18 @@ namespace Omega
 
 noncomputable section
 
-/-- Fibonacci radius parameter appearing in the circle-dimension phase gate. -/
+/-- Fibonacci radius parameter appearing in the circle-dimension phase gate.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 def fibRadius (m : ℕ) : ℝ :=
   (Nat.fib m : ℝ) / (Nat.fib m + 2)
 
-/-- Poisson time parameter associated to a radius. -/
+/-- Poisson time parameter associated to a radius.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 def poissonTimeOfRadius (ρ : ℝ) : ℝ :=
   2 * ρ / (1 - ρ)
 
-/-- For the Poisson radius parametrization, the induced time equals the Fibonacci value. -/
+/-- For the Poisson radius parametrization, the induced time equals the Fibonacci value.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem poissonTimeOf_fibRadius (m : ℕ) :
     poissonTimeOfRadius (fibRadius m) = Nat.fib m := by
   unfold poissonTimeOfRadius fibRadius
@@ -25,25 +28,29 @@ theorem poissonTimeOf_fibRadius (m : ℕ) :
   field_simp [h]
   ring
 
-/-- General algebraic form of `1 - ρ^2` under the Poisson radius parametrization away from the pole `t = -2`. -/
+/-- General algebraic form of `1 - ρ^2` under the Poisson radius parametrization away from the pole `t = -2`.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem one_sub_sq_of_poissonTime_param (t : ℝ) (ht : t + 2 ≠ 0) :
     1 - (t / (t + 2)) ^ 2 = 4 * (t + 1) / (t + 2) ^ 2 := by
   field_simp [ht]
   ring
 
-/-- Algebraic identity for the squared complement of the Fibonacci radius. -/
+/-- Algebraic identity for the squared complement of the Fibonacci radius.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem one_sub_fibRadius_sq (m : ℕ) :
     1 - (fibRadius m) ^ 2 = 4 * (Nat.fib m + 1) / (Nat.fib m + 2) ^ 2 := by
   have ht : ((Nat.fib m : ℝ) + 2) ≠ 0 := by positivity
   simpa [fibRadius] using one_sub_sq_of_poissonTime_param (Nat.fib m : ℝ) ht
 
-/-- Natural-number specialization of `one_sub_sq_of_poissonTime_param`. -/
+/-- Natural-number specialization of `one_sub_sq_of_poissonTime_param`.
+    con:cdim-fibonacci-radius-time-conjugacy -/
 theorem one_sub_sq_of_poissonTime_param_nat (n : ℕ) :
     1 - ((n : ℝ) / (n + 2)) ^ 2 = 4 * (n + 1) / (n + 2) ^ 2 := by
   have ht : ((n : ℝ) + 2) ≠ 0 := by positivity
   simpa using one_sub_sq_of_poissonTime_param (n : ℝ) ht
 
-/-- Fibonacci times factor through the additive semigroup law and commute in either order. -/
+/-- Fibonacci times factor through the additive semigroup law and commute in either order.
+    con:cdim-fibonacci-poisson-semigroup-factorization -/
 theorem fib_semigroup_factorization
     {α : Type*}
     (T : ℕ → α → α)
@@ -58,7 +65,8 @@ theorem fib_semigroup_factorization
   · rw [hfib, h_add]
     exact h_comm _ _
 
-/-- Right-handed Fibonacci semigroup factorization obtained from the left factorization and commutativity. -/
+/-- Right-handed Fibonacci semigroup factorization obtained from the left factorization and commutativity.
+    con:cdim-fibonacci-poisson-semigroup-factorization -/
 theorem fib_semigroup_factorization_right
     {α : Type*}
     (T : ℕ → α → α)
@@ -71,7 +79,8 @@ theorem fib_semigroup_factorization_right
   funext x
   exact h_comm _ _ x
 
-/-- Independent right-handed Fibonacci semigroup factorization from the additive law and pairwise commutativity. -/
+/-- Independent right-handed Fibonacci semigroup factorization from the additive law and pairwise commutativity.
+    con:cdim-fibonacci-poisson-semigroup-factorization -/
 theorem fib_semigroup_factorization_right'
     {α : Type*}
     (T : ℕ → α → α)

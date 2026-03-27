@@ -10,11 +10,13 @@ namespace Omega
 
 section Computable
 
-/-- The multiset of all fiber multiplicities at resolution m. -/
+/-- The multiset of all fiber multiplicities at resolution m.
+    def:pom-top-fiber-spectrum-computable-defs -/
 def cFiberMultiset (m : Nat) : Multiset Nat :=
   (@Finset.univ (X m) (fintypeX m)).val.map cFiberMult
 
-/-- The sorted descending list of distinct fiber multiplicities at resolution m. -/
+/-- The sorted descending list of distinct fiber multiplicities at resolution m.
+    def:pom-fiber-spectrum -/
 def cFiberSpectrum (m : Nat) : List Nat :=
   (cFiberMultiset m).dedup.sort (· ≥ ·)
 
@@ -27,11 +29,13 @@ def cNthMaxFiber (m k : Nat) : Nat :=
 @[simp] theorem cached_cNthMaxFiber_zero_eq_5 : cNthMaxFiber 5 0 = cMaxFiberMult 5 := by native_decide
 @[simp] theorem cached_cNthMaxFiber_zero_eq_7 : cNthMaxFiber 7 0 = cMaxFiberMult 7 := by native_decide
 
+/-- def:pom-top-fiber-spectrum-consistency-check -/
 theorem cNthMaxFiber_zero_eq_0 : cNthMaxFiber 0 0 = cMaxFiberMult 0 := by simp
 theorem cNthMaxFiber_zero_eq_5 : cNthMaxFiber 5 0 = cMaxFiberMult 5 := by simp
 theorem cNthMaxFiber_zero_eq_7 : cNthMaxFiber 7 0 = cMaxFiberMult 7 := by simp
 
-/-- Number of stable words achieving the maximum fiber multiplicity. -/
+/-- Number of stable words achieving the maximum fiber multiplicity.
+    thm:pom-max-achievers-phase-stabilization-def -/
 def cMaxFiberAchievers (m : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x = cMaxFiberMult m) |>.card
 
@@ -53,11 +57,13 @@ theorem cMaxFiberAchievers_five : cMaxFiberAchievers 5 = 1 := by simp
 theorem cMaxFiberAchievers_six : cMaxFiberAchievers 6 = 2 := by simp
 theorem cMaxFiberAchievers_seven : cMaxFiberAchievers 7 = 4 := by simp
 
+/-- thm:pom-max-achievers-phase-stabilization-bound -/
 theorem cMaxFiberAchievers_le_univ (m : Nat) :
     cMaxFiberAchievers m ≤ (@Finset.univ (X m) (fintypeX m)).card := by
   exact Finset.card_filter_le _ _
 
-/-- Fiber histogram: number of stable words with fiber multiplicity exactly k. -/
+/-- Fiber histogram: number of stable words with fiber multiplicity exactly k.
+    def:pom-fiber-histogram -/
 def cFiberHist (m k : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x = k) |>.card
 
@@ -65,6 +71,7 @@ def cFiberHist (m k : Nat) : Nat :=
 @[simp] theorem cached_cFiberHist_4_2 : cFiberHist 4 2 = 4 := by native_decide
 @[simp] theorem cached_cFiberHist_4_3 : cFiberHist 4 3 = 2 := by native_decide
 
+/-- cor:pom-fiber-histogram-m4 -/
 theorem cFiberHist_4_1 : cFiberHist 4 1 = 2 := by simp
 theorem cFiberHist_4_2 : cFiberHist 4 2 = 4 := by simp
 theorem cFiberHist_4_3 : cFiberHist 4 3 = 2 := by simp
@@ -75,6 +82,7 @@ theorem cFiberHist_4_3 : cFiberHist 4 3 = 2 := by simp
 @[simp] theorem cached_cFiberHist_6_4 : cFiberHist 6 4 = 5 := by native_decide
 @[simp] theorem cached_cFiberHist_6_5 : cFiberHist 6 5 = 2 := by native_decide
 
+/-- cor:pom-fiber-histogram-m6 -/
 theorem cFiberHist_6_1 : cFiberHist 6 1 = 2 := by simp
 theorem cFiberHist_6_2 : cFiberHist 6 2 = 4 := by simp
 theorem cFiberHist_6_3 : cFiberHist 6 3 = 8 := by simp
@@ -86,7 +94,8 @@ end Computable
 namespace X
 noncomputable section
 
-/-- The set of distinct fiber multiplicities at resolution m. -/
+/-- The set of distinct fiber multiplicities at resolution m.
+    def:pom-top-fiber-spectrum-noncomputable-set -/
 noncomputable def fiberValueSet (m : Nat) : Finset Nat :=
   (Finset.univ : Finset (X m)).image fiberMultiplicity
 
@@ -110,6 +119,7 @@ section BaseValues
 @[simp] theorem cached_cFiberSpectrum_six : cFiberSpectrum 6 = [5, 4, 3, 2, 1] := by native_decide
 @[simp] theorem cached_cFiberSpectrum_seven : cFiberSpectrum 7 = [6, 5, 4, 3, 2, 1] := by native_decide
 
+/-- def:pom-top-fiber-spectrum-base-values -/
 theorem cFiberSpectrum_zero : cFiberSpectrum 0 = [1] := by simp
 theorem cFiberSpectrum_one : cFiberSpectrum 1 = [1] := by simp
 theorem cFiberSpectrum_two : cFiberSpectrum 2 = [2, 1] := by simp
@@ -125,6 +135,7 @@ theorem cFiberSpectrum_seven : cFiberSpectrum 7 = [6, 5, 4, 3, 2, 1] := by simp
 @[simp] theorem cached_cNthMaxFiber_second_six : cNthMaxFiber 6 1 = 4 := by native_decide
 @[simp] theorem cached_cNthMaxFiber_second_seven : cNthMaxFiber 7 1 = 5 := by native_decide
 
+/-- def:pom-top-fiber-spectrum-second-values -/
 theorem cNthMaxFiber_second_four : cNthMaxFiber 4 1 = 2 := by simp
 theorem cNthMaxFiber_second_five : cNthMaxFiber 5 1 = 3 := by simp
 theorem cNthMaxFiber_second_six : cNthMaxFiber 6 1 = 4 := by simp
@@ -136,6 +147,7 @@ theorem cNthMaxFiber_second_seven : cNthMaxFiber 7 1 = 5 := by simp
 @[simp] theorem cached_cNthMaxFiber_third_six : cNthMaxFiber 6 2 = 3 := by native_decide
 @[simp] theorem cached_cNthMaxFiber_third_seven : cNthMaxFiber 7 2 = 4 := by native_decide
 
+/-- def:pom-top-fiber-spectrum-third-values -/
 theorem cNthMaxFiber_third_four : cNthMaxFiber 4 2 = 1 := by simp
 theorem cNthMaxFiber_third_five : cNthMaxFiber 5 2 = 2 := by simp
 theorem cNthMaxFiber_third_six : cNthMaxFiber 6 2 = 3 := by simp
@@ -178,11 +190,13 @@ end BaseValues
 
 section Parity
 
-/-- Count of stable words with odd fiber multiplicity. -/
+/-- Count of stable words with odd fiber multiplicity.
+    cor:pom-fiber-parity-odd-def -/
 def cOddFiberCount (m : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x % 2 = 1) |>.card
 
-/-- Count of stable words with even fiber multiplicity. -/
+/-- Count of stable words with even fiber multiplicity.
+    cor:pom-fiber-parity-even-def -/
 def cEvenFiberCount (m : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).filter (fun x => cFiberMult x % 2 = 0) |>.card
 
@@ -217,6 +231,22 @@ theorem cEvenFiberCount_three : cEvenFiberCount 3 = 3 := by simp
 theorem cEvenFiberCount_four : cEvenFiberCount 4 = 4 := by simp
 theorem cEvenFiberCount_five : cEvenFiberCount 5 = 5 := by simp
 theorem cEvenFiberCount_six : cEvenFiberCount 6 = 9 := by simp
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 227: odd+even fiber partition
+-- ══════════════════════════════════════════════════════════════
+
+/-- Odd+even fiber counts = |X_m|. cor:pom-fiber-parity-mod3 -/
+theorem oddEvenFiber_sum_eq_card (m : Nat) :
+    cOddFiberCount m + cEvenFiberCount m = Fintype.card (X m) := by
+  simp only [cOddFiberCount, cEvenFiberCount]
+  rw [← Finset.card_union_of_disjoint (by
+    apply Finset.disjoint_filter.mpr
+    intro x _ h1 h2; omega)]
+  congr 1
+  ext x
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+  rcases Nat.even_or_odd (cFiberMult x) with ⟨k, hk⟩ | ⟨k, hk⟩ <;> simp [hk] <;> omega
 
 end Parity
 

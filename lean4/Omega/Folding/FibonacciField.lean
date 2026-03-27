@@ -4,17 +4,23 @@ import Omega.Folding.FiberArithmetic
 
 namespace Omega
 
+/-- cor:field-phase-fib-prime-3 -/
 theorem fib_four_prime : Nat.Prime (Nat.fib 4) := by native_decide
+/-- cor:field-phase-fib-prime-4 -/
 theorem fib_five_prime : Nat.Prime (Nat.fib 5) := by native_decide
+/-- cor:field-phase-fib-prime-6 -/
 theorem fib_seven_prime : Nat.Prime (Nat.fib 7) := by native_decide
+/-- cor:field-phase-fib-prime-8-neg -/
 theorem fib_nine_not_prime : ¬ Nat.Prime (Nat.fib 9) := by native_decide
+/-- cor:field-phase-fib-prime-12 -/
 theorem fib_thirteen_prime : Nat.Prime (Nat.fib 13) := by native_decide
 
 namespace X
 
 noncomputable section
 
-/-- When F(m+2) is prime, every nonzero element has a multiplicative inverse. -/
+/-- When F(m+2) is prime, every nonzero element has a multiplicative inverse.
+    cor:field-phase-fib-prime-inv -/
 theorem stableMul_inv_of_prime (hp : Nat.Prime (Nat.fib (m + 2))) (x : X m)
     (hx : x ≠ stableZero) :
     ∃ y : X m, stableMul x y = stableOne := by

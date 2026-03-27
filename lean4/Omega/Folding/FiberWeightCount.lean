@@ -7,14 +7,16 @@ namespace Omega
 -- All-false word characterization
 -- ══════════════════════════════════════════════════════════════
 
-/-- X.ofNat m 0 is the all-false stable word. -/
+/-- X.ofNat m 0 is the all-false stable word.
+    thm:pom-ofNat-zero-allFalse -/
 theorem X.ofNat_zero (m : Nat) :
     X.ofNat m 0 = ⟨fun _ => false, no11_allFalse⟩ := by
   have h : stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) = 0 := stableValue_allFalse
   rw [show (0 : Nat) = stableValue (⟨fun _ => false, no11_allFalse⟩ : X m) from h.symm]
   exact X.ofNat_stableValue _
 
-/-- Words with weight exactly F_{m+2} fold to the all-false stable word. -/
+/-- Words with weight exactly F_{m+2} fold to the all-false stable word.
+    thm:pom-Fold-allFalse-weight-fib -/
 theorem Fold_eq_allFalse_of_weight_eq_fib (w : Word m)
     (hw : weight w = Nat.fib (m + 2)) :
     Fold w = ⟨fun _ => false, no11_allFalse⟩ := by
@@ -50,7 +52,8 @@ private theorem eq_allFalse_of_weight_zero {m : Nat} (w : Word m) (hw : weight w
     · have : i = ⟨m, Nat.lt_succ_self m⟩ := Fin.ext (Nat.eq_of_lt_succ_of_not_lt i.isLt hi)
       rw [this, hLast]
 
-/-- The fiber of allFalse has size 1 + #{weight = F_{m+2}}. -/
+/-- The fiber of allFalse has size 1 + #{weight = F_{m+2}}.
+    thm:pom-fiberMultiplicity-allFalse -/
 theorem fiberMultiplicity_allFalse (m : Nat) :
     X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m) =
     1 + (Finset.univ.filter (fun w : Word m => weight w = Nat.fib (m + 2))).card := by
@@ -110,18 +113,22 @@ theorem fiberMultiplicity_allFalse (m : Nat) :
 -- exactWeightCount: counting words of a given weight
 -- ══════════════════════════════════════════════════════════════
 
-/-- Number of m-bit words with exactly weight n. -/
+/-- Number of m-bit words with exactly weight n.
+    def:pom-exactWeightCount -/
 def exactWeightCount (m n : Nat) : Nat :=
   (Finset.univ.filter (fun w : Word m => weight w = n)).card
 
+/-- thm:pom-ewc-zero-zero -/
 theorem exactWeightCount_zero_zero : exactWeightCount 0 0 = 1 := by decide
 
+/-- thm:pom-ewc-zero-succ -/
 theorem exactWeightCount_zero_succ (n : Nat) : exactWeightCount 0 (n + 1) = 0 := by
   unfold exactWeightCount
   simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff, Finset.mem_univ, true_implies,
     weight, not_true_eq_false]; omega
 
-/-- Last-bit split: ewc(m+1, n) = ewc(m, n) + ewc(m, n - F_{m+2}). -/
+/-- Last-bit split: ewc(m+1, n) = ewc(m, n) + ewc(m, n - F_{m+2}).
+    thm:pom-ewc-succ -/
 theorem exactWeightCount_succ (m n : Nat) :
     exactWeightCount (m + 1) n =
     exactWeightCount m n +
@@ -175,6 +182,7 @@ theorem exactWeightCount_succ (m n : Nat) :
 -- Upper bound: no word has weight ≥ F(m+3)
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-ewc-zero-ge-fib -/
 theorem exactWeightCount_eq_zero_of_ge_fib (m n : Nat) (hn : Nat.fib (m + 3) ≤ n) :
     exactWeightCount m n = 0 := by
   unfold exactWeightCount
@@ -188,7 +196,8 @@ theorem exactWeightCount_eq_zero_of_ge_fib (m n : Nat) (hn : Nat.fib (m + 3) ≤
 -- Fiber multiplicity = two exactWeightCount terms
 -- ══════════════════════════════════════════════════════════════
 
-/-- Fiber multiplicity = ewc at stableValue + ewc at stableValue + F. -/
+/-- Fiber multiplicity = ewc at stableValue + ewc at stableValue + F.
+    thm:pom-fiberMultiplicity-two-ewc -/
 theorem fiberMultiplicity_eq_two_ewc (x : X m) :
     X.fiberMultiplicity x =
     exactWeightCount m (stableValue x) +
@@ -228,6 +237,7 @@ theorem fiberMultiplicity_eq_two_ewc (x : X m) :
 -- Double-step split for exactWeightCount
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-ewc-succ-succ -/
 theorem exactWeightCount_succ_succ (m n : Nat) :
     exactWeightCount (m + 2) n =
     exactWeightCount m n +
@@ -272,6 +282,7 @@ private theorem exactWeightCount_zero_eq_one (m : Nat) : exactWeightCount m 0 = 
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
   exact ⟨fun hw => eq_allFalse_of_weight_zero w hw, fun hw => by rw [hw]; exact weight_allFalse⟩
 
+/-- thm:pom-ewc-fib-shift -/
 theorem exactWeightCount_fib_shift (m : Nat) :
     exactWeightCount (m + 2) (Nat.fib (m + 4)) = exactWeightCount m (Nat.fib (m + 2)) + 1 := by
   have hfib4 : Nat.fib (m + 4) = Nat.fib (m + 2) + Nat.fib (m + 3) := by
@@ -297,6 +308,7 @@ theorem exactWeightCount_fib_shift (m : Nat) :
 -- allFalse fiber recurrence
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-fM-allFalse-recurrence -/
 theorem fiberMultiplicity_allFalse_recurrence (m : Nat) :
     X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X (m + 2)) =
     X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m) + 1 := by
@@ -314,6 +326,7 @@ theorem fiberMultiplicity_allFalse_recurrence (m : Nat) :
 -- allFalse fiber closed form
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-fM-allFalse-closed -/
 theorem fiberMultiplicity_allFalse_closed (m : Nat) :
     X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m) = m / 2 + 1 := by
   induction m using Nat.strongRecOn with
@@ -347,11 +360,13 @@ theorem fiberMultiplicity_allFalse_closed (m : Nat) :
 -- Weight congruence class count
 -- ══════════════════════════════════════════════════════════════
 
-/-- Weight congruence class count: #{w : Word m | weight w % F_{m+2} = r}. -/
+/-- Weight congruence class count: #{w : Word m | weight w % F_{m+2} = r}.
+    def:pom-wcc -/
 def weightCongruenceCount (m r : Nat) : Nat :=
   (Finset.univ.filter (fun w : Word m => weight w % Nat.fib (m + 2) = r)).card
 
-/-- wcc = ewc(r) + ewc(r + F). -/
+/-- wcc = ewc(r) + ewc(r + F).
+    thm:pom-wcc-eq-sum-ewc -/
 theorem weightCongruenceCount_eq_sum_ewc (m r : Nat) (hr : r < Nat.fib (m + 2)) :
     weightCongruenceCount m r =
     exactWeightCount m r + exactWeightCount m (r + Nat.fib (m + 2)) := by
@@ -383,7 +398,8 @@ theorem weightCongruenceCount_eq_sum_ewc (m r : Nat) (hr : r < Nat.fib (m + 2)) 
     · rw [h]; exact Nat.mod_eq_of_lt hr
     · rw [h, Nat.add_mod_right]; exact Nat.mod_eq_of_lt hr
 
-/-- d(x) = wcc(m, stableValue x). -/
+/-- d(x) = wcc(m, stableValue x).
+    thm:pom-fiberMultiplicity-eq-wcc -/
 theorem fiberMultiplicity_eq_wcc (x : X m) :
     X.fiberMultiplicity x = weightCongruenceCount m (stableValue x) := by
   rw [fiberMultiplicity_eq_weight_congr_count]; rfl
@@ -392,7 +408,8 @@ theorem fiberMultiplicity_eq_wcc (x : X m) :
 -- S_2 = sum of squared congruence class sizes
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m) = sum of squared congruence class sizes. -/
+/-- S_2(m) = sum of squared congruence class sizes.
+    prop:pom-moment-congruence-q -/
 theorem momentSum_two_eq_congr_sq_sum (m : Nat) :
     momentSum 2 m =
     ∑ r ∈ Finset.range (Nat.fib (m + 2)), weightCongruenceCount m r ^ 2 := by
@@ -430,7 +447,8 @@ theorem fiberMultiplicity_ge_ewc_via_snoc (m n : Nat) (hn : n < Nat.fib (m + 3))
     (fun w₁ _ w₂ _ h => by
       have := congr_arg truncate h; simp at this; exact this)
 
-/-- Σ ewc(m,n) = 2^m: exact weight counts partition the word space. -/
+/-- Σ ewc(m,n) = 2^m: exact weight counts partition the word space.
+    prop:pom-moment-congruence-q -/
 theorem exactWeightCount_sum (m : Nat) :
     ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n = 2 ^ m := by
   -- Σ ewc(n) = Σ |{w : weight w = n}| = |Word m| = 2^m
@@ -446,9 +464,105 @@ theorem exactWeightCount_sum (m : Nat) :
     apply Finset.disjoint_filter.mpr
     intro w _ h1 h2; exact hne (h1.symm.trans h2)
 
-/-- For n < F_{m+2}, ewc(m+1,n) = ewc(m,n): no contribution from the last bit. -/
+/-- For n < F_{m+2}, ewc(m+1,n) = ewc(m,n): no contribution from the last bit.
+    bridge:ewc-level-stability -/
 theorem exactWeightCount_succ_of_lt (m n : Nat) (hn : n < Nat.fib (m + 2)) :
     exactWeightCount (m + 1) n = exactWeightCount m n := by
   rw [exactWeightCount_succ]; simp [show ¬(Nat.fib (m + 2) ≤ n) from by omega]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 147: sum over words grouped by weight
+-- ══════════════════════════════════════════════════════════════
+
+/-- Sum over words grouped by weight: Σ_w f(weight w) = Σ_n ewc(m,n) · f(n).
+    bridge:weight-fiber-counting -/
+theorem sum_word_apply_weight (f : Nat → Nat) :
+    ∑ w : Word m, f (weight w) =
+    ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n * f n := by
+  classical
+  let wsets := fun n => Finset.univ.filter (fun w : Word m => weight w = n)
+  have hDisjoint : (↑(Finset.range (Nat.fib (m + 3))) : Set Nat).PairwiseDisjoint wsets := by
+    intro n _ n' _ hne
+    exact Finset.disjoint_filter.mpr (fun w _ h1 h2 => hne (h1.symm.trans h2))
+  have hUnion : (Finset.univ : Finset (Word m)) =
+      (Finset.range (Nat.fib (m + 3))).biUnion wsets := by
+    ext w; simp only [wsets, Finset.mem_univ, Finset.mem_biUnion, Finset.mem_range,
+      Finset.mem_filter, true_and, true_iff]
+    exact ⟨weight w, X.weight_lt_fib w, rfl⟩
+  change Finset.univ.sum (fun w => f (weight w)) = _
+  rw [hUnion, Finset.sum_biUnion hDisjoint]
+  apply Finset.sum_congr rfl; intro n _
+  have : ∀ w ∈ wsets n, f (weight w) = f n :=
+    fun w hw => by rw [(Finset.mem_filter.mp hw).2]
+  rw [Finset.sum_congr rfl this, Finset.sum_const, smul_eq_mul, exactWeightCount]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 224: exactWeightCount upper bound
+-- ══════════════════════════════════════════════════════════════
+
+private theorem exactWeightCount_zero_le_one (n : Nat) : exactWeightCount 0 n ≤ 1 := by
+  rcases n with _ | n
+  · rw [exactWeightCount_zero_zero]
+  · rw [exactWeightCount_zero_succ]; omega
+
+/-- Helper: ewc(m+1, n) ≤ 2^m for all n. -/
+private theorem exactWeightCount_succ_le (m n : Nat) :
+    exactWeightCount (m + 1) n ≤ 2 ^ m := by
+  induction m generalizing n with
+  | zero =>
+    -- ewc(1, n) = ewc(0,n) + (if 1≤n then ewc(0,n-1) else 0); case split on n
+    rw [exactWeightCount_succ]
+    simp only [show Nat.fib (0 + 2) = 1 from by simp [Nat.fib]]
+    rcases n with _ | _ | n
+    · simp [exactWeightCount_zero_zero]
+    · simp [exactWeightCount_zero_succ, exactWeightCount_zero_zero]
+    · simp [exactWeightCount_zero_succ]
+  | succ m ih =>
+    rw [exactWeightCount_succ]
+    have h1 := ih n
+    have hpow : 2 ^ m + 2 ^ m = 2 ^ (m + 1) := by ring
+    split
+    · have h2 := ih (n - Nat.fib (m + 1 + 2)); linarith
+    · linarith
+
+/-- Each weight class has at most 2^(m-1) words.
+    prop:pom-ewc-upper-bound -/
+theorem exactWeightCount_le_pow (m n : Nat) (hm : 1 ≤ m) :
+    exactWeightCount m n ≤ 2 ^ (m - 1) := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : m ≠ 0)
+  exact exactWeightCount_succ_le m n
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 224: pigeonhole on maxFiberMultiplicity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Σ d(x) = 2^m (wrapper with paper tag). prop:pom-fold-partition -/
+theorem fiberMultiplicity_sum_eq_pow' (m : Nat) :
+    ∑ x : X m, X.fiberMultiplicity x = 2 ^ m :=
+  X.fiberMultiplicity_sum_eq_pow m
+
+/-- 2^m ≤ D(m) * F(m+2) (pigeonhole). cor:pom-D-le-avg -/
+theorem pow_le_maxFiberMultiplicity_mul_fib (m : Nat) :
+    2 ^ m ≤ X.maxFiberMultiplicity m * Nat.fib (m + 2) := by
+  calc 2 ^ m = ∑ x : X m, X.fiberMultiplicity x := (X.fiberMultiplicity_sum_eq_pow m).symm
+    _ ≤ ∑ _ : X m, X.maxFiberMultiplicity m :=
+        Finset.sum_le_sum (fun x _ => X.fiberMultiplicity_le_max x)
+    _ = Fintype.card (X m) * X.maxFiberMultiplicity m := by
+        rw [Finset.sum_const, smul_eq_mul, Finset.card_univ]
+    _ = X.maxFiberMultiplicity m * Fintype.card (X m) := Nat.mul_comm _ _
+    _ = X.maxFiberMultiplicity m * Nat.fib (m + 2) := by
+        rw [X.card_eq_fib]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 227: weightCongruenceCount positivity
+-- ══════════════════════════════════════════════════════════════
+
+/-- wcc(m,r) > 0 for r < F(m+2). prop:pom-moment-congruence-q -/
+theorem weightCongruenceCount_pos (m : Nat) (r : Nat) (hr : r < Nat.fib (m + 2)) :
+    0 < weightCongruenceCount m r := by
+  -- wcc(m, r) = fiberMultiplicity(ofNat m r) which is always positive
+  rw [show r = stableValue (X.ofNat m r) from (X.stableValue_ofNat_lt r hr).symm,
+    ← fiberMultiplicity_eq_wcc]
+  exact X.fiberMultiplicity_pos _
 
 end Omega

@@ -6,7 +6,8 @@ namespace Omega
 /-- Project-level name for mathlib's Zeckendorf representation type. -/
 abbrev ZeckendorfRep := {l : List Nat // l.IsZeckendorfRep}
 
-/-- Project-level alias for mathlib's Zeckendorf equivalence. -/
+/-- Project-level alias for mathlib's Zeckendorf equivalence.
+    bridge:mathlib-zeckendorf-equiv -/
 abbrev natZeckendorfEquiv : Nat ≃ ZeckendorfRep := Nat.zeckendorfEquiv
 
 @[simp] theorem sum_nat_zeckendorf_fib (n : Nat) :
@@ -78,6 +79,7 @@ theorem head_zeckIndices_append_zero_lt_of_endsInZero :
           have hb : b ∈ zeckIndices (restrict x) := by simp [hTail]
           exact mem_zeckIndices_lt (restrict x) hb
 
+/-- bridge:stable-word-is-zeckendorf-rep -/
 theorem zeckIndices_isZeckendorfRep : ∀ {m : Nat} (x : X m),
     (zeckIndices x).IsZeckendorfRep
   | 0, _x => by
@@ -98,7 +100,8 @@ theorem zeckIndices_isZeckendorfRep : ∀ {m : Nat} (x : X m),
 def zeckRep (x : X m) : ZeckendorfRep :=
   ⟨zeckIndices x, zeckIndices_isZeckendorfRep x⟩
 
-/-- The stable value is the sum of the active Fibonacci indices. -/
+/-- The stable value is the sum of the active Fibonacci indices.
+    bridge:stable-value-zeck-indices -/
 theorem stableValue_eq_sum_fib_zeckIndices : ∀ {m : Nat} (x : X m),
     stableValue x = ((zeckIndices x).map Nat.fib).sum
   | 0, x => by
@@ -158,7 +161,8 @@ theorem stableValue_eq_of_zeckIndices_eq {x y : X m} (h : zeckIndices x = zeckIn
     stableValue x = stableValue y := by
   rw [stableValue_eq_sum_fib_zeckIndices x, stableValue_eq_sum_fib_zeckIndices y, h]
 
-/-- The all-false stable word has empty Zeckendorf indices. -/
+/-- The all-false stable word has empty Zeckendorf indices.
+    lem:zeckIndices-allFalse -/
 @[simp] theorem zeckIndices_allFalse :
     zeckIndices (⟨fun _ => false, no11_allFalse⟩ : X m) = [] := by
   induction m with

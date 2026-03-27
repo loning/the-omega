@@ -1,6 +1,8 @@
 import Omega.Core.Fib
 import Omega.Core.Word
 import Omega.Core.No11
+import Omega.Core.CoprimeSMul
+import Omega.Core.PowerInequality
 import Omega.Folding.StableSyntax
 import Omega.Folding.Weight
 import Omega.Folding.Value
@@ -14,6 +16,11 @@ import Omega.Folding.FiberWeightCount
 import Omega.Folding.CollisionDecomp
 import Omega.Folding.MomentRecurrence
 import Omega.Folding.MomentTriple
+import Omega.Folding.MomentBounds
+import Omega.Folding.EWTTelescope
+import Omega.Folding.S3Recurrence
+import Omega.Folding.CCSPrimeTelescope
+import Omega.Folding.CCSPrime8Split
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FiberArithmeticProperties
@@ -58,7 +65,4 @@ import Omega.Frontier.Conjectures
 import Omega.Frontier.Certificates
 import Omega.Combinatorics.PathIndSet
 import Omega.Combinatorics.FibonacciCube
--- Audit files excluded from default build (large, no proof content)
--- import Omega.Audit.SourceMap
--- import Omega.Audit.Inventory
--- import Omega.Audit.NoAxiom
+import Omega.Combinatorics.GramDet

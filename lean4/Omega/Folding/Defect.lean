@@ -1,4 +1,5 @@
 import Omega.Folding.InverseLimit
+import Omega.Folding.MaxFiber
 
 namespace Omega
 
@@ -73,6 +74,12 @@ theorem restrictLE_comp (h₁ : m ≤ n) (h₂ : n ≤ k) (x : X k) :
   apply Subtype.ext
   exact restrictWord_trans_succ h x.1
 
+/-- Restriction is functorial: restrictLE(m3→m1) = restrictLE(m2→m1) ∘ restrictLE(m3→m2).
+    lem:pi-functorial-golden -/
+theorem restrict_functorial (h₁ : m₁ ≤ m₂) (h₂ : m₂ ≤ m₃) (x : X m₃) :
+    restrictLE h₁ (restrictLE h₂ x) = restrictLE (Nat.le_trans h₁ h₂) x :=
+  restrictLE_comp h₁ h₂ x
+
 end X
 
 /-- The zero defect word. -/
@@ -142,7 +149,8 @@ theorem xorWord_cancel_far (a b c : Word m) :
     _ = xorWord c a := xorWord_cancel_middle c b a
     _ = xorWord a c := xorWord_comm _ _
 
-/-- The one-step local exchange defect `κ_{m+1→m}`. -/
+/-- The one-step local exchange defect `κ_{m+1→m}`.
+    def:fold-local-curvature-defect -/
 def localDefect (η : Word (m + 1)) : Word m :=
   xorWord (Fold (truncate η)).1 (X.restrict (Fold η)).1
 
@@ -150,7 +158,8 @@ def localDefect (η : Word (m + 1)) : Word m :=
 def localCurvature (η : Word (m + 1)) : Prop :=
   localDefect η ≠ zeroWord m
 
-/-- The global exchange defect `D_{n→m}`. -/
+/-- The global exchange defect `D_{n→m}`.
+    def:fold-global-stokes-defect -/
 def globalDefect (h : m ≤ n) (ω : Word n) : Word m :=
   xorWord (Fold (restrictWord h ω)).1 (X.restrictLE h (Fold ω)).1
 
@@ -181,7 +190,8 @@ def defectChain (m : Nat) : ∀ k : Nat, Word (m + k) → Word m
         (restrictWord (Nat.le_add_right m k) (localDefect ω))
         (defectChain m k (truncate ω))
 
-/-- Finite-layer discrete Stokes identity in recursive form. -/
+/-- Finite-layer discrete Stokes identity in recursive form.
+    thm:fold-discrete-stokes-defect -/
 theorem globalDefect_eq_defectChain (m k : Nat) (ω : Word (m + k)) :
     globalDefect (Nat.le_add_right m k) ω = defectChain m k ω := by
   induction k with
@@ -405,5 +415,83 @@ theorem defectChain_step_eq (m k : Nat) (ω : Word (m + k + 1)) :
       xorWord (restrictWord (Nat.le_add_right m k) (localDefect ω))
         (defectChain m k (truncate ω)) :=
   rfl
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 171
+-- ══════════════════════════════════════════════════════════════
+
+/-- Stable words have zero local defect: Fold commutes with truncation on X_{m+1}.
+    thm:fold-discrete-stokes-defect -/
+theorem localDefect_of_stable (x : X (m + 1)) :
+    localDefect x.1 = zeroWord m := by
+  -- localDefect x.1 = xorWord (Fold (truncate x.1)).1 (X.restrict (Fold x.1)).1
+  -- Fold x.1 = x (by Fold_stable), so X.restrict (Fold x.1) = X.restrict x
+  -- truncate x.1 = (X.restrict x).1, and X.restrict x is stable,
+  -- so Fold (truncate x.1) = X.restrict x
+  -- Thus both sides are equal → xorWord_self → zeroWord
+  rw [localDefect_eq_zero_iff_fold_commutes]
+  rw [Fold_stable x]
+  exact Fold_stable (X.restrict x)
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 173
+-- ══════════════════════════════════════════════════════════════
+
+/-- The all-false word has zero local defect.
+    thm:fold-discrete-stokes-defect -/
+theorem localDefect_allFalse (m : Nat) :
+    localDefect (m := m) (fun _ => false) = zeroWord m :=
+  localDefect_of_stable ⟨fun _ => false, no11_allFalse⟩
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 175
+-- ══════════════════════════════════════════════════════════════
+
+/-- The all-false word has zero global defect at any resolution pair.
+    thm:fold-discrete-stokes-defect -/
+theorem globalDefect_allFalse (h : m ≤ n) :
+    globalDefect h (fun _ : Fin n => false) = zeroWord m := by
+  simp only [globalDefect]
+  -- Fold allFalse = ⟨allFalse, _⟩ (stable)
+  have hFoldN := Fold_stable (⟨fun _ => false, no11_allFalse⟩ : X n)
+  have hFoldM := Fold_stable (⟨fun _ => false, no11_allFalse⟩ : X m)
+  -- restrictWord allFalse = allFalse
+  have hrestr : restrictWord h (fun _ : Fin n => false) = (fun _ : Fin m => false) := by
+    funext i; rfl
+  conv_lhs => rw [hrestr, hFoldM, hFoldN]
+  -- Now xorWord ⟨allFalse,_⟩.1 (X.restrictLE h ⟨allFalse,_⟩).1
+  simp only [X.restrictLE, xorWord]
+  ext i; simp [zeroWord, restrictWord]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 186
+-- ══════════════════════════════════════════════════════════════
+
+/-- Two consecutive local defects compose to the global defect across two resolutions.
+    thm:fold-discrete-stokes-defect -/
+theorem localDefect_compose (η : Word (m + 2)) :
+    globalDefect (Nat.le_of_succ_le (Nat.le_succ (m + 1))) η =
+    xorWord (restrictWord (Nat.le_succ m) (localDefect η))
+      (localDefect (truncate η)) := by
+  have h := globalDefect_step (h := Nat.le_succ m) (ω := η)
+  rw [localDefect_eq_globalDefect] at h
+  convert h using 2
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 210: Last-false defect vanishes
+-- ══════════════════════════════════════════════════════════════
+
+/-- If the last bit of a word is false, its local defect vanishes.
+    prop:fold-rewrite-newman -/
+theorem localDefect_lastFalse (w : Word (m + 1)) (h : w ⟨m, Nat.lt_succ_self m⟩ = false) :
+    localDefect w = zeroWord m := by
+  cases m with
+  | zero => funext i; exact (Nat.not_lt_zero i.1 i.isLt).elim
+  | succ k =>
+    rw [localDefect_eq_zero_iff_fold_commutes]
+    have hw : w = snoc (truncate w) false := by
+      rw [← h]; exact (X.snoc_truncate_last w).symm
+    rw [hw, truncate_snoc]
+    exact (restrict_Fold_snoc_false (truncate w)).symm
 
 end Omega

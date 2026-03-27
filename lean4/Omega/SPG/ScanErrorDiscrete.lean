@@ -49,7 +49,8 @@ def cellComplMass {α β : Type*} [Fintype α] (μ : PMF α) (obs : α → β) (
 def cellMass {α β : Type*} [Fintype α] (μ : PMF α) (obs : α → β) (b : β) : ENNReal :=
   setMass μ (observableCell obs b)
 
-/-- The discrete scan-error profile induced by the observable `obs`. -/
+/-- The discrete scan-error profile induced by the observable `obs`.
+    def:spg-discrete-scan-error -/
 def scanError {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) : ENNReal :=
   ∑ b, min (cellEventMass μ obs P b) (cellComplMass μ obs P b)
@@ -64,7 +65,8 @@ theorem cellComplMass_le_cellMass {α β : Type*} [Fintype α]
     cellComplMass μ obs P b ≤ cellMass μ obs b :=
   setMass_mono μ (by intro x hx; exact hx.1)
 
-/-- Cell event mass plus cell complement mass equals cell total mass (partition identity). -/
+/-- Cell event mass plus cell complement mass equals cell total mass (partition identity).
+    thm:cell-partition-identity -/
 theorem cellEventMass_add_cellComplMass_eq_cellMass {α β : Type*} [Fintype α]
     (μ : PMF α) (obs : α → β) (P : Set α) (b : β) :
     cellEventMass μ obs P b + cellComplMass μ obs P b = cellMass μ obs b := by
@@ -180,6 +182,7 @@ def boundaryCells {α β : Type*} [Fintype α] [Fintype β]
   · simp [boundaryCells, hA]
   · simp [boundaryCells, hA]
 
+/-- thm:spg-scan-error-boundary-decomposition -/
 theorem scanError_eq_sum_boundary {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     scanError μ obs P
@@ -236,6 +239,7 @@ def prefixScanError (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) : ENNRe
 def prefixBoundaryCells (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) : Finset (Word m) :=
   boundaryCells μ (prefixObservation h) P
 
+/-- thm:spg-prefix-boundary-decomposition -/
 theorem prefixScanError_eq_sum_boundary (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixScanError μ h P
       = Finset.sum (prefixBoundaryCells μ h P) (fun b =>
@@ -249,17 +253,20 @@ theorem prefixScanError_le_boundaryMass (μ : PMF (Word n)) (h : m ≤ n) (P : S
           cellMass μ (prefixObservation h) b) := by
   exact scanError_le_boundaryMass μ (prefixObservation h) P
 
+/-- cor:spg-prefix-boundary-upper-bound -/
 theorem prefixScanError_le_boundaryCard_mul (μ : PMF (Word n)) (h : m ≤ n)
     (P : Set (Word n)) (κ : ENNReal)
     (hκ : ∀ b, cellMass μ (prefixObservation h) b ≤ κ) :
     prefixScanError μ h P ≤ (prefixBoundaryCells μ h P).card * κ := by
   exact scanError_le_boundaryCard_mul μ (prefixObservation h) P κ hκ
 
+/-- cor:spg-prefix-event-empty-boundary -/
 @[simp] theorem prefixBoundaryCells_prefixEvent_eq_empty
     (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
     prefixBoundaryCells μ h (prefixEvent h A) = ∅ := by
   exact boundaryCells_observableEvent_eq_empty μ (prefixObservation h) A
 
+/-- cor:spg-prefix-event-zero-error -/
 theorem prefixScanError_eq_zero_of_prefixEvent (μ : PMF (Word n)) (h : m ≤ n) (A : Set (Word m)) :
     prefixScanError μ h (prefixEvent h A) = 0 :=
   scanError_observableEvent_eq_zero μ (prefixObservation h) A
@@ -296,7 +303,8 @@ theorem cellComplMass_compl {α β : Type*} [Fintype α]
   have : observableCell obs b \ Set.univ = (∅ : Set α) := by ext x; simp
   rw [cellComplMass, this, setMass_empty]
 
-/-- Scan error is invariant under complementation of the event. -/
+/-- Scan error is invariant under complementation of the event.
+    thm:spg-discrete-complement-symmetry -/
 theorem scanError_compl {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     scanError μ obs Pᶜ = scanError μ obs P := by
@@ -304,7 +312,8 @@ theorem scanError_compl {α β : Type*} [Fintype α] [Fintype β]
   refine Finset.sum_congr rfl (fun b _ => ?_)
   rw [cellEventMass_compl, cellComplMass_compl, min_comm]
 
-/-- Discrete observable purity: every observation cell is all-in or all-out. -/
+/-- Discrete observable purity: every observation cell is all-in or all-out.
+    def:spg-discrete-observable-purity -/
 def ObservablePure {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) : Prop :=
   ∀ b, cellEventMass μ obs P b = 0 ∨ cellComplMass μ obs P b = 0
@@ -317,6 +326,7 @@ theorem observablePure_observableEvent {α β : Type*} [Fintype α] [Fintype β]
   · right; simp [hb]
   · left; simp [hb]
 
+/-- thm:spg-discrete-purity-boundary-empty -/
 theorem observablePure_iff_boundaryCells_eq_empty {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     ObservablePure μ obs P ↔ boundaryCells μ obs P = ∅ := by
@@ -383,22 +393,26 @@ theorem observablePure_of_scanError_eq_zero {α β : Type*} [Fintype α] [Fintyp
   (observablePure_iff_boundaryCells_eq_empty μ obs P).2
     (boundaryCells_eq_empty_of_scanError_eq_zero μ obs P hZero)
 
+/-- thm:spg-discrete-zero-iff-pure -/
 theorem scanError_eq_zero_iff_observablePure {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     scanError μ obs P = 0 ↔ ObservablePure μ obs P :=
   ⟨observablePure_of_scanError_eq_zero μ obs P,
    scanError_eq_zero_of_observablePure μ obs P⟩
 
+/-- thm:spg-discrete-zero-iff-boundary-empty -/
 theorem scanError_eq_zero_iff_boundaryCells_eq_empty {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     scanError μ obs P = 0 ↔ boundaryCells μ obs P = ∅ := by
   rw [scanError_eq_zero_iff_observablePure, observablePure_iff_boundaryCells_eq_empty]
 
+/-- cor:spg-discrete-empty-zero -/
 @[simp] theorem scanError_empty {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) :
     scanError μ obs ∅ = 0 :=
   scanError_eq_zero_of_observablePure μ obs ∅ (fun b => Or.inl (cellEventMass_empty μ obs b))
 
+/-- cor:spg-discrete-univ-zero -/
 @[simp] theorem scanError_univ {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) :
     scanError μ obs Set.univ = 0 :=
@@ -423,24 +437,29 @@ theorem prefixObservablePure_of_scanError_eq_zero (μ : PMF (Word n)) (h : m ≤
     ObservablePure μ (prefixObservation h) P :=
   observablePure_of_scanError_eq_zero μ (prefixObservation h) P hZero
 
+/-- thm:spg-discrete-prefix-zero-iff-pure -/
 theorem prefixScanError_eq_zero_iff_observablePure (μ : PMF (Word n)) (h : m ≤ n)
     (P : Set (Word n)) :
     prefixScanError μ h P = 0 ↔ ObservablePure μ (prefixObservation h) P :=
   scanError_eq_zero_iff_observablePure μ (prefixObservation h) P
 
+/-- thm:spg-discrete-prefix-zero-iff-boundary-empty -/
 theorem prefixScanError_eq_zero_iff_boundaryCells_eq_empty (μ : PMF (Word n)) (h : m ≤ n)
     (P : Set (Word n)) :
     prefixScanError μ h P = 0 ↔ prefixBoundaryCells μ h P = ∅ :=
   scanError_eq_zero_iff_boundaryCells_eq_empty μ (prefixObservation h) P
 
+/-- thm:spg-discrete-prefix-complement -/
 theorem prefixScanError_compl (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixScanError μ h Pᶜ = prefixScanError μ h P :=
   scanError_compl μ (prefixObservation h) P
 
+/-- cor:spg-discrete-prefix-empty-zero -/
 @[simp] theorem prefixScanError_empty (μ : PMF (Word n)) (h : m ≤ n) :
     prefixScanError μ h ∅ = 0 :=
   scanError_empty μ (prefixObservation h)
 
+/-- cor:spg-discrete-prefix-univ-zero -/
 @[simp] theorem prefixScanError_univ (μ : PMF (Word n)) (h : m ≤ n) :
     prefixScanError μ h Set.univ = 0 :=
   scanError_univ μ (prefixObservation h)
@@ -470,7 +489,8 @@ theorem cellComplMass_refines_sum {α β γ : Type*} [Fintype α] [Fintype γ] [
   simp_rw [← cellEventMass_compl]
   exact cellEventMass_refines_sum μ obs₁ obs₂ f hRef Pᶜ b
 
-/-- Finer observation reduces scan error: if obs₁ = f ∘ obs₂, then SE(obs₂) ≤ SE(obs₁). -/
+/-- Finer observation reduces scan error: if obs₁ = f ∘ obs₂, then SE(obs₂) ≤ SE(obs₁).
+    thm:spg-observation-refinement-monotonicity -/
 theorem scanError_antitone_of_refines {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
     (μ : PMF α) (obs₁ : α → β) (obs₂ : α → γ) (f : γ → β)
     (hRef : ∀ x, obs₁ x = f (obs₂ x)) (P : Set α) :
@@ -500,7 +520,8 @@ theorem scanError_antitone_of_refines {α β γ : Type*} [Fintype α] [Fintype �
         rw [cellEventMass_refines_sum μ obs₁ obs₂ f hRef P b,
             cellComplMass_refines_sum μ obs₁ obs₂ f hRef P b]
 
-/-- Prefix scan error is monotonically non-increasing in the prefix resolution. -/
+/-- Prefix scan error is monotonically non-increasing in the prefix resolution.
+    cor:spg-prefix-scan-error-monotonicity -/
 theorem prefixScanError_antitone {m₁ m₂ n : Nat}
     (μ : PMF (Word n)) (h₁ : m₁ ≤ n) (h₂ : m₂ ≤ n) (hm : m₁ ≤ m₂)
     (P : Set (Word n)) :
@@ -508,7 +529,8 @@ theorem prefixScanError_antitone {m₁ m₂ n : Nat}
   scanError_antitone_of_refines μ (prefixObservation h₁) (prefixObservation h₂)
     (restrictWord hm) (fun w => (restrictWord_comp hm h₂ w).symm) P
 
-/-- Cell event masses partition the total event mass. -/
+/-- Cell event masses partition the total event mass.
+    thm:spg-cell-event-mass-partition -/
 theorem cellEventMass_sum_eq_setMass {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     ∑ b, cellEventMass μ obs P b = setMass μ P := by
@@ -521,14 +543,16 @@ theorem cellEventMass_sum_eq_setMass {α β : Type*} [Fintype α] [Fintype β]
   · simp only [hxP, true_and, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   · simp only [hxP, false_and, ite_false, Finset.sum_const_zero]
 
-/-- Cell complement masses partition the total complement mass. -/
+/-- Cell complement masses partition the total complement mass.
+    thm:spg-cell-compl-mass-partition -/
 theorem cellComplMass_sum_eq_setMass_compl {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     ∑ b, cellComplMass μ obs P b = setMass μ Pᶜ := by
   simp_rw [← cellEventMass_compl]
   exact cellEventMass_sum_eq_setMass μ obs Pᶜ
 
-/-- Total cell masses partition the total probability mass. -/
+/-- Total cell masses partition the total probability mass.
+    thm:spg-cell-mass-total-partition -/
 theorem cellMass_sum_eq_setMass_univ {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) :
     ∑ b, cellMass μ obs b = setMass μ Set.univ := by
@@ -537,7 +561,8 @@ theorem cellMass_sum_eq_setMass_univ {α β : Type*} [Fintype α] [Fintype β]
   simp_rw [this]
   exact cellEventMass_sum_eq_setMass μ obs Set.univ
 
-/-- Scan error is bounded by the smaller of event mass and complement mass (Bayes optimality). -/
+/-- Scan error is bounded by the smaller of event mass and complement mass (Bayes optimality).
+    thm:spg-scan-error-bayes-optimality -/
 theorem scanError_le_min_setMass {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     scanError μ obs P ≤ min (setMass μ P) (setMass μ Pᶜ) := by
@@ -549,7 +574,8 @@ theorem scanError_le_min_setMass {α β : Type*} [Fintype α] [Fintype β]
     _ = min (setMass μ P) (setMass μ Pᶜ) := by
         rw [cellEventMass_sum_eq_setMass, cellComplMass_sum_eq_setMass_compl]
 
-/-- Observable purity is symmetric under complement of the event (discrete). -/
+/-- Observable purity is symmetric under complement of the event (discrete).
+    thm:observable-pure-compl-discrete -/
 theorem observablePure_compl {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     ObservablePure μ obs Pᶜ ↔ ObservablePure μ obs P := by
@@ -563,7 +589,8 @@ theorem observablePure_compl {α β : Type*} [Fintype α] [Fintype β]
     · exact Or.inr h
     · exact Or.inl h
 
-/-- Boundary cells are the same for the event and its complement (discrete). -/
+/-- Boundary cells are the same for the event and its complement (discrete).
+    thm:boundary-cells-compl-discrete -/
 theorem boundaryCells_compl {α β : Type*} [Fintype α] [Fintype β]
     (μ : PMF α) (obs : α → β) (P : Set α) :
     boundaryCells μ obs Pᶜ = boundaryCells μ obs P := by
@@ -578,7 +605,8 @@ theorem boundaryCells_compl {α β : Type*} [Fintype α] [Fintype β]
     rw [cellEventMass_compl, cellComplMass_compl]
     exact ⟨hb.2, hb.1⟩
 
-/-- Prefix boundary cells are the same for the event and its complement (discrete). -/
+/-- Prefix boundary cells are the same for the event and its complement (discrete).
+    thm:prefix-boundary-cells-compl-discrete -/
 theorem prefixBoundaryCells_compl (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixBoundaryCells μ h Pᶜ = prefixBoundaryCells μ h P :=
   boundaryCells_compl μ (prefixObservation h) P

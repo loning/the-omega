@@ -265,6 +265,87 @@ A_5=A_6=\frac1{16}>\frac1{40}=A_3
 可见保持率随 Hamming 深度并不单调下降，故其恢复机制不能解释为单纯的局域稳健性，而只能来自更高阶的组合抵消。证毕。
 \end{proof}
 
+\begin{theorem}[window-\texorpdfstring{$6$}{6} 稳定概率的再入极小值]\label{thm:conclusion-window6-stability-probability-unique-internal-minimum}
+设
+\[
+P_S(p)=1-6p+\frac{31}{2}p^2-\frac{43}{2}p^3+\frac{139}{8}p^4-\frac{63}{8}p^5+\frac{25}{16}p^6
+\]
+为 window-\(6\) 的稳定概率闭式。则 \(P_S\) 在区间 \([0,1]\) 上存在唯一严格极小点 \(p_*\in(0,1)\)，且 \(p_*\) 是四次方程
+\[
+75p^4-240p^3+316p^2-200p+48=0
+\]
+在 \((0,1)\) 中的唯一实根。数值上
+\[
+p_*\approx 0.5778453100834101,
+\qquad
+P_S(p_*)\approx 0.0481324504724345.
+\]
+特别地，
+\[
+P_S(1)=\frac1{16}>P_S(p_*),
+\qquad
+P_S\!\left(\frac12\right)=\frac{53}{1024}>P_S(p_*).
+\]
+故完全翻转并非平均意义下最具破坏性的噪声；最具破坏性的是一个严格位于内部的代数噪声强度。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:terminal-foldbin6-stability-noise-closed-form}，\(P_S(p)\) 的精确多项式闭式如上。直接求导得
+\[
+P_S'(p)
+=
+\frac{p-1}{8}\bigl(75p^4-240p^3+316p^2-200p+48\bigr).
+\]
+Sturm 判别表明，该四次式在 \((0,1)\) 中恰有一个实根 \(p_*\)。又其在端点取值满足
+\[
+75\cdot 0^4-240\cdot 0^3+316\cdot 0^2-200\cdot 0+48=48>0,
+\]
+\[
+75-240+316-200+48=-1<0,
+\]
+故 \(P_S'(p)<0\) 于 \(0\le p<p_*\)，而 \(P_S'(p)>0\) 于 \(p_*<p<1\)。于是 \(p_*\) 为唯一严格极小点。将 \(p=1\) 与 \(p=\frac12\) 代入 \(P_S\) 即得
+\[
+P_S(1)=\frac1{16},
+\qquad
+P_S\!\left(\frac12\right)=\frac{53}{1024},
+\]
+从而二者都严格大于 \(P_S(p_*)\)。证毕。
+\end{proof}
+
+\begin{corollary}[Hamming 尾部的双层平台]\label{cor:conclusion-window6-hamming-tail-twolevel-platform}
+设
+\[
+K=d_H(W,W^{\mathrm f}),
+\qquad
+A_k=\PP(S\mid K=k).
+\]
+则
+\[
+(A_0,A_1,A_2,A_3,A_4,A_5,A_6)
+=
+\left(
+1,\,
+0,\,
+\frac1{30},\,
+\frac1{40},\,
+\frac7{120},\,
+\frac1{16},\,
+\frac1{16}
+\right).
+\]
+因此
+\[
+\PP(S\mid K=5)=\PP(S\mid K=6)=\frac1{16}.
+\]
+亦即，当已有五位被翻转后，再翻转最后一位，平均稳定率不再继续下降。
+\end{corollary}
+\begin{proof}
+这只是定理 \ref{thm:conclusion-window6-noise-local-fragility-high-order-return} 中显式闭式的尾部读取。由
+\[
+A_5=A_6=\frac1{16}
+\]
+立即得到所述双层平台。证毕。
+\end{proof}
+
 \begin{theorem}[三域 Frobenius 指纹的严格张量乘积密度]\label{thm:conclusion-leyang-three-domain-frobenius-tensor-density}
 设
 \[
@@ -461,6 +542,8 @@ D_{2m-2}=F_{m+1},
 逐项相除即得所列三式。再代入 \(m=6,8,10,12\) 即得到四个显式赔率。证毕。
 \end{proof}
 
+\input{thm__conclusion-window6-cyclic-orbit-parity-superselection}
+
 \begin{conjecture}[偶数窗的全塔边分离刚性]\label{conj:conclusion-even-window-global-edge-separation}
 对每个偶数 \(m\ge 6\)，设
 \[
@@ -485,6 +568,6 @@ window-\(6\) 的定理 \ref{thm:conclusion-window6-samelabel-hamming-enumerator}
 \end{conjecture}
 
 \paragraph{统一读法}
-上述链条表明，window-\(6\) 的深层结构并不止于“可映成根系”这一单一现象。更实质的事实是：其 cyclic 核上的 Weyl 不变量已经完全塌缩为单一重量变量的三次代数；boundary 三点与这一 radial 几何之间存在严格正的横截缺陷；独立位翻转稳定概率又可完整反演为同标签 Hamming 距离枚举，因此折叠纤维的内部度量结构已被闭式恢复；三域 Frobenius 指纹在类函数层面形成严格张量乘积测度，并在中心化观测上退化为一阶块对角正交；而审计偶数窗中的极小扇区与更深层极大纤维又被黄金邻项赔率精确焊接。故同一份 finite window 数据已同时闭合了 Weyl 壳层、boundary 横截、距离枚举、Chebotarev 张量独立与 Fibonacci 跨尺度五条链，而这正是该框架从局部现象走向统一数学骨架的关键标志。
+上述链条表明，window-\(6\) 的深层结构并不止于“可映成根系”这一单一现象。更实质的事实是：其 cyclic 核上的 Weyl 不变量已经完全塌缩为单一重量变量的三次代数，六点轨道又由显式三次投影子 \(p_{\mathrm{orb}}\) 单独切出，并与八重 boundary parity 角色直积成 \(16\) 个 orbit--parity 超选块；boundary 三点与这一 radial 几何之间存在严格正的横截缺陷；独立位翻转稳定概率又可完整反演为同标签 Hamming 距离枚举，因此折叠纤维的内部度量结构已被闭式恢复；三域 Frobenius 指纹在类函数层面形成严格张量乘积测度，并在中心化观测上退化为一阶块对角正交；而审计偶数窗中的极小扇区与更深层极大纤维又被黄金邻项赔率精确焊接。故同一份 finite window 数据已同时闭合了 Weyl 壳层、orbit--parity 超选、boundary 横截、距离枚举、Chebotarev 张量独立与 Fibonacci 跨尺度六条链，而这正是该框架从局部现象走向统一数学骨架的关键标志。
 
 \endinput

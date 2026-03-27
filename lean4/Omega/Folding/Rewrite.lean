@@ -11,7 +11,8 @@ namespace Rewrite
 
 open Finsupp
 
-/-- Finite-support nonnegative digit configurations for local folding rewrites. -/
+/-- Finite-support nonnegative digit configurations for local folding rewrites.
+    def:fib-moves -/
 abbrev DigitCfg := Nat →₀ Nat
 
 /-- Fibonacci weight carried by the zero-based digit position `k`. -/
@@ -253,6 +254,7 @@ theorem iota_pos_iff_get_true {m : Nat} (w : Word m) {k : Nat} :
 def normalPrefix (a : DigitCfg) (m : Nat) : X m :=
   X.ofNat m (value a)
 
+/-- cor:foldm-order-indep-bridge -/
 @[simp] theorem normalPrefix_iota_eq_Fold (w : Word m) :
     normalPrefix (iota w) m = Fold w := by
   simp [normalPrefix, Fold, value_iota]
@@ -426,6 +428,7 @@ inductive Step : DigitCfg → DigitCfg → Prop
   | dedupSucc (a : DigitCfg) (k : Nat) (hk : 1 < a (k + 2)) :
       Step a (dedupSuccTarget a k)
 
+/-- prop:fold-rewrite-value-preserving -/
 theorem step_value {a b : DigitCfg} (h : Step a b) : value b = value a := by
   cases h with
   | adj k hk hk1 =>
@@ -645,7 +648,8 @@ theorem step_rankLex {a b : DigitCfg} (h : Step a b) : rankLex b < rankLex a := 
 theorem step_wellFounded : WellFounded (flip Step) :=
   WellFounded.mono (InvImage.wf rankLex wellFounded_lt) (fun _ _ h => step_rankLex h)
 
-/-- The local rewrite relation is strongly terminating. -/
+/-- The local rewrite relation is strongly terminating.
+    thm:fold-rewrite-strong-termination -/
 theorem step_stronglyTerminating : WellFounded (flip Step) :=
   step_wellFounded
 
@@ -663,6 +667,7 @@ theorem irreducible_iota_normalPrefix (a : DigitCfg) (m : Nat) :
 @[simp] theorem irreducible_iota_Fold (w : Word m) : Irreducible (iota (Fold w).1) :=
   irreducible_iota_of_stable (Fold w)
 
+/-- thm:fold-rewrite-supported-normal-form -/
 theorem irreducible_supported_eq_iota_normalPrefix {a : DigitCfg}
     (hIrr : Irreducible a) (hSup : SupportedBelow a m) :
     a = iota (normalPrefix a m).1 := by
@@ -677,6 +682,7 @@ theorem irreducible_supported_eq_iota_normalPrefix {a : DigitCfg}
     a = iota x.1 := hIota.symm
     _ = iota (normalPrefix a m).1 := by rw [hNorm]
 
+/-- cor:fold-rewrite-irred-unique-on-window -/
 theorem irreducible_eq_of_normalPrefix_eq {a b : DigitCfg}
     (hIrrA : Irreducible a) (hIrrB : Irreducible b)
     (hSupA : SupportedBelow a m) (hSupB : SupportedBelow b m)
@@ -686,6 +692,7 @@ theorem irreducible_eq_of_normalPrefix_eq {a b : DigitCfg}
     irreducible_supported_eq_iota_normalPrefix hIrrB hSupB]
   simp [hNorm]
 
+/-- thm:fold-rewrite-rtrans-preserves-normalprefix -/
 theorem reflTransGen_normalPrefix {a b : DigitCfg} (h : Relation.ReflTransGen Step a b) :
     normalPrefix b m = normalPrefix a m := by
   induction h with
@@ -704,6 +711,7 @@ theorem irreducible_reflTransGen_eq_iota_normalPrefix {a b : DigitCfg}
     _ = iota (normalPrefix a m).1 := by
       rw [reflTransGen_normalPrefix hab]
 
+/-- thm:fold-rewrite-terminal-irred-unique -/
 theorem irreducible_terminal_unique {a b c : DigitCfg}
     (hab : Relation.ReflTransGen Step a b) (hac : Relation.ReflTransGen Step a c)
     (hIrrB : Irreducible b) (hIrrC : Irreducible c)
@@ -712,6 +720,7 @@ theorem irreducible_terminal_unique {a b c : DigitCfg}
   rw [irreducible_reflTransGen_eq_iota_normalPrefix hab hIrrB hSupB,
     irreducible_reflTransGen_eq_iota_normalPrefix hac hIrrC hSupC]
 
+/-- cor:fold-rewrite-terminal-equals-fold -/
 theorem irreducible_terminal_eq_fold {w : Word m} {b : DigitCfg}
     (hab : Relation.ReflTransGen Step (iota w) b)
     (hIrr : Irreducible b) (hSup : SupportedBelow b m) :
@@ -749,6 +758,7 @@ theorem irreducible_eq_of_value_eq {a b : DigitCfg}
     simp [normalPrefix, hVal]
   exact irreducible_eq_of_normalPrefix_eq hIrrA hIrrB hSupA hSupB hNorm
 
+/-- thm:fold-rewrite-terminal-irred-unique-unbounded -/
 theorem irreducible_terminal_unique_unbounded {a b c : DigitCfg}
     (hab : Relation.ReflTransGen Step a b) (hac : Relation.ReflTransGen Step a c)
     (hIrrB : Irreducible b) (hIrrC : Irreducible c) :
@@ -758,6 +768,7 @@ theorem irreducible_terminal_unique_unbounded {a b c : DigitCfg}
     value b = value a := reflTransGen_value hab
     _ = value c := (reflTransGen_value hac).symm
 
+/-- thm:fold-rewrite-terminal-exists -/
 theorem exists_irreducible_descendant (a : DigitCfg) :
     ∃ b, Relation.ReflTransGen Step a b ∧ Irreducible b := by
   let S : Set DigitCfg := {b | Relation.ReflTransGen Step a b}
@@ -768,6 +779,7 @@ theorem exists_irreducible_descendant (a : DigitCfg) :
   have hcS : S c := Relation.ReflTransGen.tail hbS hStep
   exact hmin c hcS hStep
 
+/-- thm:fold-rewrite-confluent -/
 theorem step_confluent {a b c : DigitCfg}
     (hab : Relation.ReflTransGen Step a b) (hac : Relation.ReflTransGen Step a c) :
     Relation.Join (Relation.ReflTransGen Step) b c := by
@@ -779,9 +791,37 @@ theorem step_confluent {a b c : DigitCfg}
   refine ⟨nb, hbn, ?_⟩
   simpa [hEq] using hcn
 
+/-- thm:fold-rewrite-locally-confluent -/
 theorem step_locallyConfluent {a b c : DigitCfg} (hab : Step a b) (hac : Step a c) :
     Relation.Join (Relation.ReflTransGen Step) b c :=
   step_confluent (Relation.ReflTransGen.single hab) (Relation.ReflTransGen.single hac)
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 233: Weight rigidity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Weight rigidity: w(k+2)=w(k+1)+w(k) with w(0)=1,w(1)=2 forces w=digitWeight.
+    lem:fold-local-weight-rigidity-fibonacci -/
+theorem weight_rigidity_fibonacci (w : Nat → Nat)
+    (hadj : ∀ k, w k + w (k + 1) = w (k + 2))
+    (hw0 : w 0 = 1) (hw1 : w 1 = 2) :
+    ∀ k, w k = digitWeight k := by
+  intro k
+  induction k using Nat.strongRecOn with
+  | _ k ih =>
+    match k with
+    | 0 => rw [hw0, digitWeight_zero]
+    | 1 => rw [hw1, digitWeight_one]
+    | k + 2 =>
+      have hadj' := hadj k
+      have h1 := ih k (by omega)
+      have h2 := ih (k + 1) (by omega)
+      have h3 := digitWeight_adj k
+      omega
+
+/-- Value is invariant under all rewrite rules. prop:val-invariant -/
+theorem value_invariant_step (a b : DigitCfg) (h : Step a b) : value a = value b :=
+  (step_value h).symm
 
 end Rewrite
 

@@ -23,12 +23,14 @@ def cellMeasure {α β : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α) (obs : α → β) (b : β) : ENNReal :=
   μ (observableCell obs b)
 
-/-- Scan error for a finite observable under a general measure. -/
+/-- Scan error for a finite observable under a general measure.
+    def:spg-measure-scan-error -/
 def scanErrorMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : ENNReal :=
   ∑ b, min (cellEventMeasure μ obs P b) (cellComplMeasure μ obs P b)
 
-/-- Purity of an event relative to a finite observable: every observation cell is all-in or all-out. -/
+/-- Purity of an event relative to a finite observable: every observation cell is all-in or all-out.
+    def:spg-measure-observable-purity -/
 def ObservablePureMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : Prop :=
   ∀ b, cellEventMeasure μ obs P b = 0 ∨ cellComplMeasure μ obs P b = 0
@@ -53,6 +55,7 @@ def ObservablePureMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     cellComplMeasure μ obs (observableEvent obs A) b = cellMeasure μ obs b := by
   rw [cellComplMeasure, cellMeasure, cell_diff_observableEvent_of_not_mem obs A b hb]
 
+/-- thm:spg-measure-observable-zero-error -/
 theorem scanErrorMeasure_observableEvent_eq_zero {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (A : Set β) :
     scanErrorMeasure μ obs (observableEvent obs A) = 0 := by
@@ -78,6 +81,7 @@ theorem observablePureMeasure_observableEvent {α β : Type*} [MeasurableSpace �
   · left
     simp [hb]
 
+/-- thm:spg-measure-purity-zero-scan -/
 theorem scanErrorMeasure_eq_zero_of_observablePure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α)
     (hPure : ObservablePureMeasure μ obs P) :
@@ -98,6 +102,7 @@ def boundaryCellsMeasure {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : Finset β :=
   Finset.univ.filter fun b => cellEventMeasure μ obs P b ≠ 0 ∧ cellComplMeasure μ obs P b ≠ 0
 
+/-- thm:spg-measure-purity-boundary-empty -/
 theorem observablePureMeasure_iff_boundaryCellsMeasure_eq_empty
     {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
@@ -184,6 +189,7 @@ theorem scanErrorMeasure_eq_zero_iff_boundaryCellsMeasure_eq_empty
   · simp [boundaryCellsMeasure, hA]
   · simp [boundaryCellsMeasure, hA]
 
+/-- thm:spg-measure-boundary-decomposition -/
 theorem scanErrorMeasure_eq_sum_boundary {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     scanErrorMeasure μ obs P
@@ -213,6 +219,7 @@ theorem scanErrorMeasure_le_boundaryMass {α β : Type*} [MeasurableSpace α] [F
     unfold cellEventMeasure cellMeasure
     exact MeasureTheory.measure_mono (by intro x hx; exact hx.2)
 
+/-- cor:spg-measure-boundary-upper-bound -/
 theorem scanErrorMeasure_le_boundaryCard_mul {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (κ : ENNReal)
     (hκ : ∀ b, cellMeasure μ obs b ≤ κ) :
@@ -238,6 +245,7 @@ def prefixBoundaryCellsMeasure [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) : Finset (Word m) :=
   boundaryCellsMeasure μ (prefixObservation h) P
 
+/-- thm:spg-measure-prefix-boundary-decomposition -/
 theorem prefixScanErrorMeasure_eq_sum_boundary [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixScanErrorMeasure μ h P
@@ -253,6 +261,7 @@ theorem prefixScanErrorMeasure_le_boundaryMass [MeasurableSpace (Word n)]
           cellMeasure μ (prefixObservation h) b) := by
   exact scanErrorMeasure_le_boundaryMass μ (prefixObservation h) P
 
+/-- cor:spg-measure-prefix-boundary-upper-bound -/
 theorem prefixScanErrorMeasure_le_boundaryCard_mul [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) (κ : ENNReal)
     (hκ : ∀ b, cellMeasure μ (prefixObservation h) b ≤ κ) :
@@ -264,6 +273,7 @@ theorem prefixScanErrorMeasure_le_boundaryCard_mul [MeasurableSpace (Word n)]
     prefixBoundaryCellsMeasure μ h (prefixEvent h A) = ∅ := by
   exact boundaryCellsMeasure_observableEvent_eq_empty μ (prefixObservation h) A
 
+/-- cor:spg-measure-prefix-event-zero-error -/
 theorem prefixScanErrorMeasure_eq_zero_of_prefixEvent [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (A : Set (Word m)) :
     prefixScanErrorMeasure μ h (prefixEvent h A) = 0 :=
@@ -320,6 +330,7 @@ theorem cellMeasure_toMeasure_eq_cellMass {α β : Type*} [Fintype α] [Measurab
     cellMeasure μ.toMeasure obs b = cellMass μ obs b := by
   rw [cellMeasure, cellMass, setMass, PMF.toMeasure_apply_fintype]
 
+/-- bridge:spg-pmf-to-measure-scan-error -/
 theorem scanErrorMeasure_toMeasure_eq_scanError {α β : Type*} [Fintype α] [Fintype β]
     [MeasurableSpace α] [MeasurableSingletonClass α] (μ : PMF α) (obs : α → β) (P : Set α) :
     scanErrorMeasure μ.toMeasure obs P = scanError μ obs P := by
@@ -334,6 +345,7 @@ theorem boundaryCellsMeasure_toMeasure_eq_boundaryCells {α β : Type*} [Fintype
   simp [boundaryCellsMeasure, boundaryCells, cellEventMeasure_toMeasure_eq_cellEventMass,
     cellComplMeasure_toMeasure_eq_cellComplMass]
 
+/-- bridge:spg-prefix-pmf-to-measure-scan-error -/
 theorem prefixScanErrorMeasure_toMeasure_eq_prefixScanError {m n : Nat}
     [MeasurableSpace (Word n)] [MeasurableSingletonClass (Word n)]
     (μ : PMF (Word n)) (h : m ≤ n) (P : Set (Word n)) :
@@ -368,7 +380,8 @@ theorem cellComplMeasure_compl {α β : Type*} [MeasurableSpace α]
   have : observableCell obs b \ Set.univ = (∅ : Set α) := by ext x; simp
   rw [cellComplMeasure, this, MeasureTheory.measure_empty]
 
-/-- Scan error under a general measure is invariant under complementation of the event. -/
+/-- Scan error under a general measure is invariant under complementation of the event.
+    thm:spg-measure-complement-symmetry -/
 theorem scanErrorMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     scanErrorMeasure μ obs Pᶜ = scanErrorMeasure μ obs P := by
@@ -376,18 +389,21 @@ theorem scanErrorMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
   refine Finset.sum_congr rfl (fun b _ => ?_)
   rw [cellEventMeasure_compl, cellComplMeasure_compl, min_comm]
 
+/-- cor:spg-measure-empty-zero -/
 @[simp] theorem scanErrorMeasure_empty {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) :
     scanErrorMeasure μ obs ∅ = 0 :=
   scanErrorMeasure_eq_zero_of_observablePure μ obs ∅
     (fun b => Or.inl (cellEventMeasure_empty μ obs b))
 
+/-- cor:spg-measure-univ-zero -/
 @[simp] theorem scanErrorMeasure_univ {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) :
     scanErrorMeasure μ obs Set.univ = 0 :=
   scanErrorMeasure_eq_zero_of_observablePure μ obs Set.univ
     (fun b => Or.inr (cellComplMeasure_univ μ obs b))
 
+/-- bridge:spg-purity-pmf-to-measure -/
 theorem observablePureMeasure_toMeasure_iff_observablePure {α β : Type*} [Fintype α] [Fintype β]
     [MeasurableSpace α] [MeasurableSingletonClass α]
     (μ : PMF α) (obs : α → β) (P : Set α) :
@@ -396,28 +412,33 @@ theorem observablePureMeasure_toMeasure_iff_observablePure {α β : Type*} [Fint
     cellEventMeasure_toMeasure_eq_cellEventMass,
     cellComplMeasure_toMeasure_eq_cellComplMass]
 
+/-- thm:spg-measure-prefix-complement -/
 theorem prefixScanErrorMeasure_compl [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixScanErrorMeasure μ h Pᶜ = prefixScanErrorMeasure μ h P :=
   scanErrorMeasure_compl μ (prefixObservation h) P
 
+/-- cor:spg-measure-prefix-empty-zero -/
 @[simp] theorem prefixScanErrorMeasure_empty [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
     prefixScanErrorMeasure μ h ∅ = 0 :=
   scanErrorMeasure_empty μ (prefixObservation h)
 
+/-- cor:spg-measure-prefix-univ-zero -/
 @[simp] theorem prefixScanErrorMeasure_univ [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) :
     prefixScanErrorMeasure μ h Set.univ = 0 :=
   scanErrorMeasure_univ μ (prefixObservation h)
 
-/-- Finite sums distribute under min: ∑ min(aᵢ, bᵢ) ≤ min(∑ aᵢ, ∑ bᵢ). -/
+/-- Finite sums distribute under min: ∑ min(aᵢ, bᵢ) ≤ min(∑ aᵢ, ∑ bᵢ).
+    ineq:sum-min-le-min-sum -/
 theorem sum_min_le_min_sum {ι : Type*} [Fintype ι] (a b : ι → ENNReal) :
     ∑ i, min (a i) (b i) ≤ min (∑ i, a i) (∑ i, b i) :=
   le_min (Finset.sum_le_sum (fun i _ => min_le_left _ _))
     (Finset.sum_le_sum (fun i _ => min_le_right _ _))
 
-/-- Scan error under a general measure is bounded by the minimum of event and complement mass. -/
+/-- Scan error under a general measure is bounded by the minimum of event and complement mass.
+    thm:spg-measure-scan-error-bayes-bound -/
 theorem scanErrorMeasure_le_min {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     scanErrorMeasure μ obs P ≤ min (∑ b, cellEventMeasure μ obs P b)
@@ -435,16 +456,19 @@ theorem prefixScanErrorMeasure_le_min [MeasurableSpace (Word n)]
         (∑ b, cellComplMeasure μ (prefixObservation h) P b) :=
   scanErrorMeasure_le_min μ (prefixObservation h) P
 
-/-- Boundary cylinder count: the cardinality of non-pure observation cells (paper Definition 3.5). -/
+/-- Boundary cylinder count: the cardinality of non-pure observation cells (paper Definition 3.5).
+    def:boundary-cylinder-count -/
 def boundaryCylinderCount {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) : ℕ :=
   (boundaryCellsMeasure μ obs P).card
 
-/-- Prefix boundary cylinder count at resolution m (paper N_m(∂P)). -/
+/-- Prefix boundary cylinder count at resolution m (paper N_m(∂P)).
+    def:prefix-boundary-cylinder-count -/
 def prefixBoundaryCylinderCount [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) : ℕ :=
   (prefixBoundaryCellsMeasure μ h P).card
 
+/-- thm:boundary-count-zero-iff-pure -/
 theorem boundaryCylinderCount_eq_zero_iff_observablePure
     {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
@@ -452,6 +476,7 @@ theorem boundaryCylinderCount_eq_zero_iff_observablePure
   rw [boundaryCylinderCount, Finset.card_eq_zero,
     ← observablePureMeasure_iff_boundaryCellsMeasure_eq_empty]
 
+/-- thm:scan-error-zero-iff-boundary-count-zero -/
 theorem scanErrorMeasure_eq_zero_iff_boundaryCylinderCount_eq_zero
     {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
@@ -489,6 +514,7 @@ theorem prefixBoundaryCylinderCount_prefixEvent_eq_zero
   (prefixBoundaryCylinderCount_eq_zero_iff_observablePure μ h _).mpr
     (prefixObservablePureMeasure_prefixEvent μ h A)
 
+/-- thm:boundary-count-pmf-bridge -/
 theorem boundaryCylinderCount_toMeasure_eq {α β : Type*} [Fintype α] [Fintype β]
     [MeasurableSpace α] [MeasurableSingletonClass α]
     (μ : PMF α) (obs : α → β) (P : Set α) :
@@ -502,14 +528,16 @@ theorem prefixBoundaryCylinderCount_toMeasure_eq {m n : Nat}
   simp [prefixBoundaryCylinderCount,
     prefixBoundaryCellsMeasure_toMeasure_eq_prefixBoundaryCells]
 
-/-- Cell event mass is bounded by cell total mass (measure monotonicity). -/
+/-- Cell event mass is bounded by cell total mass (measure monotonicity).
+    thm:cell-event-measure-le -/
 theorem cellEventMeasure_le_cellMeasure {α β : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
     cellEventMeasure μ obs P b ≤ cellMeasure μ obs b := by
   unfold cellEventMeasure cellMeasure
   exact MeasureTheory.measure_mono Set.inter_subset_right
 
-/-- Cell complement mass is bounded by cell total mass (measure monotonicity). -/
+/-- Cell complement mass is bounded by cell total mass (measure monotonicity).
+    thm:cell-compl-measure-le -/
 theorem cellComplMeasure_le_cellMeasure {α β : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β) :
     cellComplMeasure μ obs P b ≤ cellMeasure μ obs b := by
@@ -517,7 +545,8 @@ theorem cellComplMeasure_le_cellMeasure {α β : Type*} [MeasurableSpace α]
   exact MeasureTheory.measure_mono Set.diff_subset
 
 /-- Cell partition identity under a measurable event: μ(P ∩ C) + μ(C \ P) = μ(C).
-    This is the measure-theoretic analogue of `cellEventMass_add_cellComplMass_eq_cellMass`. -/
+    This is the measure-theoretic analogue of `cellEventMass_add_cellComplMass_eq_cellMass`.
+    thm:cell-partition-identity-measure -/
 theorem cellEventMeasure_add_cellComplMeasure_eq_cellMeasure {α β : Type*} [MeasurableSpace α]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) (b : β)
     (hP : MeasurableSet P) :
@@ -526,7 +555,8 @@ theorem cellEventMeasure_add_cellComplMeasure_eq_cellMeasure {α β : Type*} [Me
   rw [Set.inter_comm P (observableCell obs b)]
   exact MeasureTheory.measure_inter_add_diff _ hP
 
-/-- Observable purity is symmetric under complement of the event (measure). -/
+/-- Observable purity is symmetric under complement of the event (measure).
+    thm:observable-pure-compl-measure -/
 theorem observablePureMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     ObservablePureMeasure μ obs Pᶜ ↔ ObservablePureMeasure μ obs P := by
@@ -540,7 +570,8 @@ theorem observablePureMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintyp
     · exact Or.inr h
     · exact Or.inl h
 
-/-- Boundary cells are the same for the event and its complement (measure). -/
+/-- Boundary cells are the same for the event and its complement (measure).
+    thm:boundary-cells-compl-measure -/
 theorem boundaryCellsMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     boundaryCellsMeasure μ obs Pᶜ = boundaryCellsMeasure μ obs P := by
@@ -555,19 +586,22 @@ theorem boundaryCellsMeasure_compl {α β : Type*} [MeasurableSpace α] [Fintype
     rw [cellEventMeasure_compl, cellComplMeasure_compl]
     exact ⟨hb.2, hb.1⟩
 
-/-- Boundary cylinder count is the same for the event and its complement (measure). -/
+/-- Boundary cylinder count is the same for the event and its complement (measure).
+    thm:boundary-cylinder-count-compl -/
 theorem boundaryCylinderCount_compl {α β : Type*} [MeasurableSpace α] [Fintype β]
     (μ : MeasureTheory.Measure α) (obs : α → β) (P : Set α) :
     boundaryCylinderCount μ obs Pᶜ = boundaryCylinderCount μ obs P := by
   simp only [boundaryCylinderCount, boundaryCellsMeasure_compl]
 
-/-- Prefix boundary cells are the same for the event and its complement (measure). -/
+/-- Prefix boundary cells are the same for the event and its complement (measure).
+    thm:prefix-boundary-cells-compl-measure -/
 theorem prefixBoundaryCellsMeasure_compl [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixBoundaryCellsMeasure μ h Pᶜ = prefixBoundaryCellsMeasure μ h P :=
   boundaryCellsMeasure_compl μ (prefixObservation h) P
 
-/-- Prefix boundary cylinder count is the same for the event and its complement (measure). -/
+/-- Prefix boundary cylinder count is the same for the event and its complement (measure).
+    thm:prefix-boundary-cylinder-count-compl -/
 theorem prefixBoundaryCylinderCount_compl [MeasurableSpace (Word n)]
     (μ : MeasureTheory.Measure (Word n)) (h : m ≤ n) (P : Set (Word n)) :
     prefixBoundaryCylinderCount μ h Pᶜ = prefixBoundaryCylinderCount μ h P := by

@@ -6,7 +6,8 @@ namespace Omega
 -- S_2 recurrence consequences
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m+3) = 2·S_2(m+2) + 2·S_2(m+1) - 2·S_2(m). Subtraction form. -/
+/-- S_2(m+3) = 2·S_2(m+2) + 2·S_2(m+1) - 2·S_2(m). Subtraction form.
+    thm:pom-s2-recurrence-sub -/
 theorem momentSum_two_recurrence_sub (m : Nat) :
     momentSum 2 (m + 3) = 2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1) - 2 * momentSum 2 m := by
   have h := momentSum_two_recurrence m; omega
@@ -15,7 +16,8 @@ theorem momentSum_two_recurrence_sub (m : Nat) :
 -- Positivity
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m) > 0 for all m. -/
+/-- S_2(m) > 0 for all m.
+    thm:pom-s2-pos -/
 theorem momentSum_two_pos' (m : Nat) : 0 < momentSum 2 m := by
   calc 0 < 2 ^ m := Nat.pos_of_ne_zero (by positivity)
     _ ≤ momentSum 2 m := momentSum_two_ge_pow m
@@ -24,7 +26,8 @@ theorem momentSum_two_pos' (m : Nat) : 0 < momentSum 2 m := by
 -- Monotonicity
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2 is monotone: S_2(m) ≤ S_2(m+1). -/
+/-- S_2 is monotone: S_2(m) ≤ S_2(m+1).
+    thm:pom-s2-mono -/
 theorem momentSum_two_mono' (m : Nat) : momentSum 2 m ≤ momentSum 2 (m + 1) := by
   induction m using Nat.strongRecOn with
   | _ m ih =>
@@ -61,7 +64,8 @@ theorem momentSum_two_mono' (m : Nat) : momentSum 2 m ≤ momentSum 2 (m + 1) :=
       -- S(m+3) ≥ S(m+2) ≥ S(m+1) (by IH), so S(m+3)+2S(m+2) ≥ 3S(m+1) ≥ 2S(m+1). ✓
       linarith
 
-/-- S_2 is strictly monotone for m ≥ 1. -/
+/-- S_2 is strictly monotone for m ≥ 1.
+    thm:pom-s2-strict-mono -/
 theorem momentSum_two_strict_mono' (m : Nat) (hm : 1 ≤ m) :
     momentSum 2 m < momentSum 2 (m + 1) := by
   induction m using Nat.strongRecOn with
@@ -87,7 +91,8 @@ theorem momentSum_two_strict_mono' (m : Nat) (hm : 1 ≤ m) :
 -- General S_q = Σ wcc^q
 -- ══════════════════════════════════════════════════════════════
 
-/-- General q-moment = Σ wcc^q. Generalizes momentSum_two_eq_congr_sq_sum to all q. -/
+/-- General q-moment = Σ wcc^q. Generalizes momentSum_two_eq_congr_sq_sum to all q.
+    prop:pom-moment-congruence-q-general -/
 theorem momentSum_eq_congr_pow_sum (q m : Nat) :
     momentSum q m =
     ∑ r ∈ Finset.range (Nat.fib (m + 2)), weightCongruenceCount m r ^ q := by
@@ -106,7 +111,8 @@ theorem momentSum_eq_congr_pow_sum (q m : Nat) :
 -- exactWeightTriple definition
 -- ══════════════════════════════════════════════════════════════
 
-/-- Sum of cubed exact weight counts. -/
+/-- Sum of cubed exact weight counts.
+    def:pom-exactWeightTriple -/
 def exactWeightTriple (m : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n ^ 3
 
@@ -114,7 +120,8 @@ def exactWeightTriple (m : Nat) : Nat :=
 -- S_q positivity
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_q(m) > 0 for all q, m. -/
+/-- S_q(m) > 0 for all q, m.
+    thm:pom-sq-pos-general -/
 theorem momentSum_pos' (q m : Nat) : 0 < momentSum q m := by
   unfold momentSum
   apply Finset.sum_pos
@@ -126,7 +133,8 @@ theorem momentSum_pos' (q m : Nat) : 0 < momentSum q m := by
 -- S_3 = triple collision count
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_3(m) = #{(w1,w2,w3) : Fold w1 = Fold w2 = Fold w3}. -/
+/-- S_3(m) = #{(w1,w2,w3) : Fold w1 = Fold w2 = Fold w3}.
+    thm:pom-s3-triple-collision -/
 theorem momentSum_three_eq_triple_collision (m : Nat) :
     momentSum 3 m = (Finset.univ.filter
       (fun p : Word m × Word m × Word m =>
@@ -148,7 +156,8 @@ theorem momentSum_three_eq_triple_collision (m : Nat) :
     intro ⟨w1, w2, w3⟩ ⟨hw1, _, _⟩ ⟨hw1', _, _⟩
     exact hne (hw1.symm.trans hw1')
 
-/-- Triple collision ↔ weight triple congruence. -/
+/-- Triple collision ↔ weight triple congruence.
+    thm:pom-triple-collision-weight-mod -/
 theorem triple_collision_iff_weight_mod (m : Nat) :
     (Finset.univ.filter (fun p : Word m × Word m × Word m =>
       Fold p.1 = Fold p.2.1 ∧ Fold p.2.1 = Fold p.2.2)).card =
@@ -165,7 +174,8 @@ theorem triple_collision_iff_weight_mod (m : Nat) :
 -- S_q universal inequalities
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_q(m) ≥ 2^m for q ≥ 1. -/
+/-- S_q(m) ≥ 2^m for q ≥ 1.
+    thm:pom-sq-ge-pow -/
 theorem momentSum_ge_pow' (q m : Nat) (hq : 1 ≤ q) : 2 ^ m ≤ momentSum q m := by
   calc 2 ^ m = ∑ x : X m, X.fiberMultiplicity x := (X.fiberMultiplicity_sum_eq_pow m).symm
     _ ≤ ∑ x : X m, X.fiberMultiplicity x ^ q := by
@@ -173,20 +183,23 @@ theorem momentSum_ge_pow' (q m : Nat) (hq : 1 ≤ q) : 2 ^ m ≤ momentSum q m :
         exact le_self_pow (X.fiberMultiplicity_pos x) (by omega)
     _ = momentSum q m := rfl
 
-/-- S_q(m) ≤ S_{q+1}(m). -/
+/-- S_q(m) ≤ S_{q+1}(m).
+    thm:pom-sq-le-succ -/
 theorem momentSum_le_succ' (q m : Nat) : momentSum q m ≤ momentSum (q + 1) m := by
   simp only [momentSum]
   apply Finset.sum_le_sum; intro x _
   exact pow_le_pow_right' (X.fiberMultiplicity_pos x) (Nat.le_succ q)
 
-/-- Cauchy-Schwarz: S_2(m) · F_{m+2} ≥ 4^m. -/
+/-- Cauchy-Schwarz: S_2(m) · F_{m+2} ≥ 4^m.
+    thm:pom-s2-cauchy-schwarz -/
 theorem momentSum_two_mul_card_ge (m : Nat) :
     momentSum 2 m * Nat.fib (m + 2) ≥ 4 ^ m := by
   have hcs := momentSum_cauchy_schwarz m
   rw [show (2 ^ m) ^ 2 = 4 ^ m from by rw [← pow_mul, show 4 = 2 ^ 2 from by norm_num, ← pow_mul]; ring_nf] at hcs
   linarith [Nat.mul_comm (momentSum 2 m) (Nat.fib (m + 2))]
 
-/-- S_q(m) ≥ F_{m+2} for all q. -/
+/-- S_q(m) ≥ F_{m+2} for all q.
+    thm:pom-sq-ge-card -/
 theorem momentSum_ge_card' (q m : Nat) : Nat.fib (m + 2) ≤ momentSum q m := by
   calc Nat.fib (m + 2) = Fintype.card (X m) := (X.card_eq_fib m).symm
     _ = ∑ _ : X m, 1 := by simp
@@ -195,7 +208,8 @@ theorem momentSum_ge_card' (q m : Nat) : Nat.fib (m + 2) ≤ momentSum q m := by
         exact Nat.one_le_pow q _ (X.fiberMultiplicity_pos x)
     _ = momentSum q m := rfl
 
-/-- S_q(m) ≤ D_m^{q-1} · 2^m (wrapper of momentSum_le_max_pow). -/
+/-- S_q(m) ≤ D_m^{q-1} · 2^m (wrapper of momentSum_le_max_pow).
+    thm:pom-sq-upper-bound -/
 theorem momentSum_upper_bound' (q m : Nat) (hq : 1 ≤ q) :
     momentSum q m ≤ X.maxFiberMultiplicity m ^ (q - 1) * 2 ^ m :=
   momentSum_le_max_pow q m hq
@@ -204,7 +218,8 @@ theorem momentSum_upper_bound' (q m : Nat) (hq : 1 ≤ q) :
 -- S_2 number-theoretic properties
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m) is even for m ≥ 1. -/
+/-- S_2(m) is even for m ≥ 1.
+    thm:pom-s2-even -/
 theorem momentSum_two_even (m : Nat) (hm : 1 ≤ m) : 2 ∣ momentSum 2 m := by
   induction m using Nat.strongRecOn with
   | _ m ih =>
@@ -223,7 +238,8 @@ theorem momentSum_two_even (m : Nat) (hm : 1 ≤ m) : 2 ∣ momentSum 2 m := by
       have hmono2 := momentSum_two_mono' (m + 1)
       exact ⟨2 * b + 2 * a - momentSum 2 m, by omega⟩
 
-/-- S_2(m+1) / 2 = E00(m) + E01(m) (collision pair halving). -/
+/-- S_2(m+1) / 2 = E00(m) + E01(m) (collision pair halving).
+    thm:pom-s2-succ-half -/
 theorem momentSum_two_succ_half (m : Nat) :
     momentSum 2 (m + 1) / 2 =
     (Finset.univ.filter (fun p : Word m × Word m =>
@@ -233,7 +249,8 @@ theorem momentSum_two_succ_half (m : Nat) :
       (weight p.2 + Nat.fib (m + 2)) % Nat.fib (m + 3))).card := by
   have h := momentSum_two_succ_two_term m; omega
 
-/-- S_2(m+1) ≥ 2·S_2(m) for m ≥ 2. -/
+/-- S_2(m+1) ≥ 2·S_2(m) for m ≥ 2.
+    thm:pom-s2-succ-ge-double -/
 theorem momentSum_two_succ_ge_double (m : Nat) (hm : 2 ≤ m) :
     2 * momentSum 2 m ≤ momentSum 2 (m + 1) := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 2 := ⟨m - 2, by omega⟩
@@ -241,7 +258,8 @@ theorem momentSum_two_succ_ge_double (m : Nat) (hm : 2 ≤ m) :
   have hmono := momentSum_two_mono' k
   linarith
 
-/-- S_2(m+1) ≤ 4·S_2(m). -/
+/-- S_2(m+1) ≤ 4·S_2(m).
+    thm:pom-s2-succ-le-quadruple -/
 theorem momentSum_two_succ_le_quadruple (m : Nat) :
     momentSum 2 (m + 1) ≤ 4 * momentSum 2 m := by
   match m with
@@ -252,7 +270,8 @@ theorem momentSum_two_succ_le_quadruple (m : Nat) :
     have hmono := momentSum_two_mono' (m + 1)
     linarith
 
-/-- Additive form: S_2(m+1) + 2·S_2(m-2) = 2·S_2(m) + 2·S_2(m-1) for m ≥ 2. -/
+/-- Additive form: S_2(m+1) + 2·S_2(m-2) = 2·S_2(m) + 2·S_2(m-1) for m ≥ 2.
+    thm:pom-s2-succ-excess -/
 theorem momentSum_two_succ_excess (m : Nat) (hm : 2 ≤ m) :
     momentSum 2 (m + 1) + 2 * momentSum 2 (m - 2) =
     2 * momentSum 2 m + 2 * momentSum 2 (m - 1) := by
@@ -264,14 +283,16 @@ theorem momentSum_two_succ_excess (m : Nat) (hm : 2 ≤ m) :
 -- S_2 divisibility
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m) is odd iff m = 0. -/
+/-- S_2(m) is odd iff m = 0.
+    thm:pom-s2-odd-iff -/
 theorem momentSum_two_odd_iff (m : Nat) :
     ¬ (2 ∣ momentSum 2 m) ↔ m = 0 := by
   constructor
   · intro h; by_contra hne; exact h (momentSum_two_even m (Nat.pos_of_ne_zero hne))
   · intro h; rw [h, momentSum_two_zero]; omega
 
-/-- 4 ∣ S_2(m) for m ≥ 4. -/
+/-- 4 ∣ S_2(m) for m ≥ 4.
+    thm:pom-s2-mod-four -/
 theorem momentSum_two_mod_four (m : Nat) (hm : 4 ≤ m) : 4 ∣ momentSum 2 m := by
   induction m using Nat.strongRecOn with
   | _ m ih =>
@@ -301,7 +322,8 @@ theorem momentSum_two_mod_four (m : Nat) (hm : 4 ≤ m) : 4 ∣ momentSum 2 m :=
 -- S_2 vs E00 comparison
 -- ══════════════════════════════════════════════════════════════
 
-/-- E00(m) ≤ S_2(m) for m ≥ 1. -/
+/-- E00(m) ≤ S_2(m) for m ≥ 1.
+    thm:pom-s2-ge-e00 -/
 theorem momentSum_two_ge_exactWeightCollision (m : Nat) (hm : 1 ≤ m) :
     exactWeightCollision m ≤ momentSum 2 m := by
   induction m using Nat.strongRecOn with
@@ -322,14 +344,16 @@ theorem momentSum_two_ge_exactWeightCollision (m : Nat) (hm : 1 ≤ m) :
       have him := ih (m + 2) (by omega) (by omega)
       linarith
 
-/-- E00(m+1) ≥ 2·E00(m) for m ≥ 1. -/
+/-- E00(m+1) ≥ 2·E00(m) for m ≥ 1.
+    thm:pom-e00-double -/
 theorem exactWeightCollision_double (m : Nat) (hm : 1 ≤ m) :
     2 * exactWeightCollision m ≤ exactWeightCollision (m + 1) := by
   rw [exactWeightCollision_succ]
   have := momentSum_two_ge_exactWeightCollision m hm
   omega
 
-/-- E00(m) ≥ m for all m. -/
+/-- E00(m) ≥ m for all m.
+    thm:pom-e00-ge-linear -/
 theorem exactWeightCollision_ge_linear (m : Nat) : m ≤ exactWeightCollision m := by
   induction m with
   | zero => omega
@@ -342,7 +366,8 @@ theorem exactWeightCollision_ge_linear (m : Nat) : m ≤ exactWeightCollision m 
 -- Recurrence uniqueness
 -- ══════════════════════════════════════════════════════════════
 
-/-- A 3rd-order recurrence is uniquely determined by its initial values. -/
+/-- A 3rd-order recurrence is uniquely determined by its initial values.
+    thm:pom-s2-recurrence-unique -/
 theorem recurrence_unique {f g : Nat → Nat}
     (hf : ∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 2 * f (m + 1))
     (hg : ∀ m, g (m + 3) + 2 * g m = 2 * g (m + 2) + 2 * g (m + 1))
@@ -359,7 +384,8 @@ theorem recurrence_unique {f g : Nat → Nat}
       have := ih m (by omega); have := ih (m + 1) (by omega); have := ih (m + 2) (by omega)
       omega
 
-/-- S_2 is the unique sequence satisfying the recurrence with initial values 1, 2, 6. -/
+/-- S_2 is the unique sequence satisfying the recurrence with initial values 1, 2, 6.
+    thm:pom-s2-determined -/
 theorem momentSum_two_determined {f : Nat → Nat}
     (hrec : ∀ m, f (m + 3) + 2 * f m = 2 * f (m + 2) + 2 * f (m + 1))
     (h0 : f 0 = 1) (h1 : f 1 = 2) (h2 : f 2 = 6) :
@@ -373,12 +399,14 @@ theorem momentSum_two_determined {f : Nat → Nat}
 -- S_2 high-order values by pure recurrence (no native_decide)
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-s2-seven-rec -/
 theorem momentSum_two_seven_rec : momentSum 2 7 = 544 := by
   have h := momentSum_two_recurrence 4
   simp only [show (4 : Nat) + 3 = 7 from rfl, show (4 : Nat) + 2 = 6 from rfl,
     show (4 : Nat) + 1 = 5 from rfl, momentSum_two_four, momentSum_two_five, momentSum_two_six] at h
   omega
 
+/-- thm:pom-s2-eight-rec -/
 theorem momentSum_two_eight_rec : momentSum 2 8 = 1352 := by
   have h := momentSum_two_recurrence 5
   simp only [show (5 : Nat) + 3 = 8 from rfl, show (5 : Nat) + 2 = 7 from rfl,
@@ -386,6 +414,7 @@ theorem momentSum_two_eight_rec : momentSum 2 8 = 1352 := by
     momentSum_two_seven_rec] at h
   omega
 
+/-- thm:pom-s2-nine-rec -/
 theorem momentSum_two_nine_rec : momentSum 2 9 = 3352 := by
   have h := momentSum_two_recurrence 6
   simp only [show (6 : Nat) + 3 = 9 from rfl, show (6 : Nat) + 2 = 8 from rfl,
@@ -397,7 +426,8 @@ theorem momentSum_two_nine_rec : momentSum 2 9 = 3352 := by
 -- Fiber structure bounds
 -- ══════════════════════════════════════════════════════════════
 
-/-- D(m) · F_{m+2} ≥ 2^m (average fiber bound). -/
+/-- D(m) · F_{m+2} ≥ 2^m (average fiber bound).
+    thm:pom-d-ge-avg -/
 theorem maxFiberMultiplicity_ge_avg (m : Nat) :
     X.maxFiberMultiplicity m * Nat.fib (m + 2) ≥ 2 ^ m := by
   calc 2 ^ m = ∑ x : X m, X.fiberMultiplicity x := (X.fiberMultiplicity_sum_eq_pow m).symm
@@ -407,7 +437,8 @@ theorem maxFiberMultiplicity_ge_avg (m : Nat) :
         simp [Finset.sum_const, Finset.card_univ, Nat.mul_comm]
     _ = X.maxFiberMultiplicity m * Nat.fib (m + 2) := by rw [X.card_eq_fib]
 
-/-- D(m) ≤ 2^m. -/
+/-- D(m) ≤ 2^m.
+    thm:pom-d-le-pow -/
 theorem maxFiberMultiplicity_le_pow (m : Nat) :
     X.maxFiberMultiplicity m ≤ 2 ^ m := by
   obtain ⟨x, hx⟩ := X.maxFiberMultiplicity_achieved m
@@ -416,16 +447,19 @@ theorem maxFiberMultiplicity_le_pow (m : Nat) :
     _ ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
     _ = 2 ^ m := by simp [Fintype.card_fin, Fintype.card_bool]
 
-/-- d(x) ≤ 2^m for all x. -/
+/-- d(x) ≤ 2^m for all x.
+    thm:pom-fiber-le-pow -/
 theorem fiberMultiplicity_le_pow (x : X m) :
     X.fiberMultiplicity x ≤ 2 ^ m :=
   (X.fiberMultiplicity_le_max x).trans (maxFiberMultiplicity_le_pow m)
 
-/-- D(m) ≥ 1. -/
+/-- D(m) ≥ 1.
+    thm:pom-d-ge-one -/
 theorem maxFiberMultiplicity_ge_one (m : Nat) :
     1 ≤ X.maxFiberMultiplicity m := X.maxFiberMultiplicity_pos m
 
-/-- At least one element achieves the max fiber multiplicity. -/
+/-- At least one element achieves the max fiber multiplicity.
+    thm:pom-achievers-pos -/
 theorem maxFiberMultiplicity_achievers_pos (m : Nat) :
     0 < ((Finset.univ : Finset (X m)).filter
       (fun x => X.fiberMultiplicity x = X.maxFiberMultiplicity m)).card := by
@@ -437,7 +471,8 @@ theorem maxFiberMultiplicity_achievers_pos (m : Nat) :
 -- Weight extremes
 -- ══════════════════════════════════════════════════════════════
 
-/-- Weight of all-true word = F_{m+3} - 2. -/
+/-- Weight of all-true word = F_{m+3} - 2.
+    thm:pom-weight-allTrue -/
 theorem weight_allTrue (m : Nat) :
     weight (fun (_ : Fin m) => true) = Nat.fib (m + 3) - 2 := by
   induction m with
@@ -462,7 +497,8 @@ theorem weight_allTrue (m : Nat) :
     have h2 : 0 < Nat.fib (m + 2) := fib_succ_pos (m + 1)
     omega
 
-/-- Weight is bounded by F_{m+3} - 2. -/
+/-- Weight is bounded by F_{m+3} - 2.
+    thm:pom-weight-le-allTrue -/
 theorem weight_le_allTrue (w : Word m) :
     weight w ≤ Nat.fib (m + 3) - 2 := by
   rw [← weight_allTrue m]
@@ -478,12 +514,14 @@ theorem weight_le_allTrue (w : Word m) :
     · simp only [hb, Bool.false_eq_true, ↓reduceIte, Nat.add_zero]; omega
     · simp only [hb, ↓reduceIte]; omega
 
-/-- Fold of all-true word. -/
+/-- Fold of all-true word.
+    thm:pom-fold-allTrue -/
 theorem Fold_allTrue (m : Nat) :
     Fold (fun (_ : Fin m) => true) = X.ofNat m (Nat.fib (m + 3) - 2) := by
   unfold Fold; rw [weight_allTrue]
 
-/-- ewc(m, 0) = 1 (only all-false has weight 0). -/
+/-- ewc(m, 0) = 1 (only all-false has weight 0).
+    thm:pom-ewc-zero-one -/
 theorem exactWeightCount_zero_eq_one' (m : Nat) : exactWeightCount m 0 = 1 := by
   unfold exactWeightCount; rw [Finset.card_eq_one]
   refine ⟨fun _ => false, ?_⟩
@@ -517,18 +555,22 @@ theorem exactWeightCount_zero_eq_one' (m : Nat) : exactWeightCount m 0 = 1 := by
 /-- Bitwise complement of a word. -/
 def complement (w : Word m) : Word m := fun i => !w i
 
+/-- thm:pom-complement-involution -/
 theorem complement_involution (w : Word m) : complement (complement w) = w := by
   funext i; simp [complement]
 
+/-- thm:pom-truncate-complement -/
 theorem truncate_complement (w : Word (m + 1)) :
     truncate (complement w) = complement (truncate w) := by
   funext i; simp [truncate, complement]
 
+/-- thm:pom-complement-allFalse -/
 theorem complement_allFalse (m : Nat) :
     complement (fun (_ : Fin m) => false) = fun _ => true := by
   funext i; simp [complement]
 
-/-- weight(complement w) + weight(w) = F_{m+3} - 2. -/
+/-- weight(complement w) + weight(w) = F_{m+3} - 2.
+    thm:pom-weight-complement -/
 theorem weight_complement (w : Word m) :
     weight (complement w) + weight w = Nat.fib (m + 3) - 2 := by
   rw [← weight_allTrue]
@@ -547,7 +589,8 @@ theorem weight_complement (w : Word m) :
     · simp only [complement, hb, Bool.not_true, Bool.false_eq_true, ↓reduceIte, Nat.add_zero, ite_true]
       omega
 
-/-- ewc is symmetric: ewc(m, n) = ewc(m, F_{m+3}-2-n). -/
+/-- ewc is symmetric: ewc(m, n) = ewc(m, F_{m+3}-2-n).
+    thm:pom-ewc-symmetric -/
 theorem exactWeightCount_symmetric (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) :
     exactWeightCount m n = exactWeightCount m (Nat.fib (m + 3) - 2 - n) := by
   unfold exactWeightCount
@@ -570,10 +613,12 @@ theorem exactWeightCount_symmetric (m n : Nat) (hn : n ≤ Nat.fib (m + 3) - 2) 
 -- Fold complement duality
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-weight-complement-sub -/
 theorem weight_complement_sub (w : Word m) :
     weight (complement w) = Nat.fib (m + 3) - 2 - weight w := by
   have h := weight_complement w; have hle := weight_le_allTrue w; omega
 
+/-- thm:pom-fold-complement -/
 theorem Fold_complement (w : Word m) :
     Fold (complement w) = X.ofNat m (Nat.fib (m + 3) - 2 - weight w) := by
   unfold Fold; rw [weight_complement_sub]
@@ -582,6 +627,7 @@ theorem Fold_complement (w : Word m) :
 -- Gauss sum of stableValues
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-stableValue-sum -/
 theorem stableValue_sum (m : Nat) :
     ∑ x : X m, stableValue x = Nat.fib (m + 2) * (Nat.fib (m + 2) - 1) / 2 := by
   -- stableValueFin is a bijection X m → Fin(F_{m+2})
@@ -603,14 +649,16 @@ theorem stableValue_sum (m : Nat) :
 -- S_2 cross-verification and growth bounds
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2 recurrence matches the Cayley-Hamilton of the collision kernel. -/
+/-- S_2 recurrence matches the Cayley-Hamilton of the collision kernel.
+    thm:pom-momentSum-two-recurrence-matches-charpoly -/
 theorem momentSum_two_recurrence_matches_charpoly :
     (∀ m, momentSum 2 (m + 3) + 2 * momentSum 2 m =
       2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1)) ∧
     collisionKernel2 ^ 3 = 2 • collisionKernel2 ^ 2 + 2 • collisionKernel2 - 2 • 1 :=
   ⟨momentSum_two_recurrence, collisionKernel2_cayley_hamilton⟩
 
-/-- Complete S_2 value chain for m = 0..7. -/
+/-- Complete S_2 value chain for m = 0..7.
+    thm:pom-momentSum-two-chain -/
 theorem momentSum_two_chain :
     momentSum 2 0 = 1 ∧ momentSum 2 1 = 2 ∧ momentSum 2 2 = 6 ∧
     momentSum 2 3 = 14 ∧ momentSum 2 4 = 36 ∧ momentSum 2 5 = 88 ∧
@@ -619,13 +667,15 @@ theorem momentSum_two_chain :
     momentSum_two_three, momentSum_two_four, momentSum_two_five,
     momentSum_two_six, momentSum_two_seven_rec⟩
 
-/-- S_2 growth ratio bounds: 2·S_2(m) ≤ S_2(m+1) ≤ 4·S_2(m) for m ≥ 2. -/
+/-- S_2 growth ratio bounds: 2·S_2(m) ≤ S_2(m+1) ≤ 4·S_2(m) for m ≥ 2.
+    thm:pom-momentSum-two-ratio-bounds -/
 theorem momentSum_two_ratio_bounds' (m : Nat) (hm : 2 ≤ m) :
     2 * momentSum 2 m ≤ momentSum 2 (m + 1) ∧
     momentSum 2 (m + 1) ≤ 4 * momentSum 2 m :=
   ⟨momentSum_two_succ_ge_double m hm, momentSum_two_succ_le_quadruple m⟩
 
-/-- The excess: S_2(m+1) > 2·S_2(m) for m ≥ 3. -/
+/-- The excess: S_2(m+1) > 2·S_2(m) for m ≥ 3.
+    thm:pom-momentSum-two-excess-pos -/
 theorem momentSum_two_excess_pos (m : Nat) (hm : 3 ≤ m) :
     2 * momentSum 2 m < momentSum 2 (m + 1) := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 3 := ⟨m - 3, by omega⟩
@@ -633,7 +683,8 @@ theorem momentSum_two_excess_pos (m : Nat) (hm : 3 ≤ m) :
   have hsmono := momentSum_two_strict_mono' (k + 1) (by omega)
   linarith
 
-/-- S_2(m) ≥ 2·F_{m+1} for m ≥ 2. -/
+/-- S_2(m) ≥ 2·F_{m+1} for m ≥ 2.
+    thm:pom-momentSum-two-ge-two-fib -/
 theorem momentSum_two_ge_two_fib (m : Nat) (hm : 2 ≤ m) :
     2 * Nat.fib (m + 1) ≤ momentSum 2 m := by
   induction m using Nat.strongRecOn with
@@ -662,33 +713,39 @@ theorem momentSum_two_ge_two_fib (m : Nat) (hm : 2 ≤ m) :
 -- Fiber discriminants
 -- ══════════════════════════════════════════════════════════════
 
-/-- Stable words have hiddenBit = 0. -/
+/-- Stable words have hiddenBit = 0.
+    thm:pom-hiddenBit-stable -/
 theorem hiddenBit_stable (x : X m) : hiddenBit x.1 = 0 := by
   unfold hiddenBit
   have := stableValue_lt_fib x
   simp only [stableValue] at this
   exact if_neg (not_le.mpr this)
 
-/-- Fold(w).1 = w iff w satisfies No11. -/
+/-- Fold(w).1 = w iff w satisfies No11.
+    thm:pom-Fold-eq-self-iff -/
 theorem Fold_eq_self_iff (w : Word m) : (Fold w).1 = w ↔ No11 w :=
   ⟨fun h => h ▸ (Fold w).2, fun h => congr_arg Subtype.val (Fold_stable ⟨w, h⟩)⟩
 
-/-- weight of a stable word equals its stableValue. -/
+/-- weight of a stable word equals its stableValue.
+    thm:pom-weight-stable-eq-stableValue -/
 theorem weight_stable_eq_stableValue (x : X m) : weight x.1 = stableValue x := rfl
 
-/-- ewc at stableValue is at least 1 (the word itself witnesses). -/
+/-- ewc at stableValue is at least 1 (the word itself witnesses).
+    thm:pom-ewc-stableValue-pos -/
 theorem ewc_stableValue_pos (x : X m) : 1 ≤ exactWeightCount m (stableValue x) := by
   unfold exactWeightCount
   rw [Nat.one_le_iff_ne_zero, Finset.card_ne_zero]
   exact ⟨x.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩⟩
 
-/-- Forward: d(x) = 1 → ewc(sv+F) = 0. -/
+/-- Forward: d(x) = 1 → ewc(sv+F) = 0.
+    thm:pom-fiberMultiplicity-one-imp-ewc-zero -/
 theorem fiberMultiplicity_one_imp_ewc_zero (x : X m) (hd : X.fiberMultiplicity x = 1) :
     exactWeightCount m (stableValue x + Nat.fib (m + 2)) = 0 := by
   rw [fiberMultiplicity_eq_two_ewc] at hd
   have := ewc_stableValue_pos x; omega
 
-/-- Fiber multiplicity as sum of two ewc terms. -/
+/-- Fiber multiplicity as sum of two ewc terms.
+    thm:pom-fiberMultiplicity-ge-ewc -/
 theorem fiberMultiplicity_ge_ewc (x : X m) :
     exactWeightCount m (stableValue x) ≤ X.fiberMultiplicity x := by
   rw [fiberMultiplicity_eq_two_ewc]; omega
@@ -697,34 +754,39 @@ theorem fiberMultiplicity_ge_ewc (x : X m) :
 -- Pisano applications + parity
 -- ══════════════════════════════════════════════════════════════
 
-/-- allFalse fiber multiplicity is odd iff m ≡ 0,1 (mod 4). -/
+/-- allFalse fiber multiplicity is odd iff m ≡ 0,1 (mod 4).
+    thm:pom-fiberMultiplicity-allFalse-odd-iff -/
 theorem fiberMultiplicity_allFalse_odd_iff (m : Nat) :
     ¬ (2 ∣ X.fiberMultiplicity (⟨fun _ => false, no11_allFalse⟩ : X m)) ↔
     m % 4 = 0 ∨ m % 4 = 1 := by
   rw [fiberMultiplicity_allFalse_closed]; omega
 
-/-- hiddenBit = 1 iff weight ≥ F_{m+2}. -/
+/-- hiddenBit = 1 iff weight ≥ F_{m+2}.
+    thm:pom-hiddenBit-eq-one-iff -/
 theorem hiddenBit_eq_one_iff (w : Word m) :
     hiddenBit w = 1 ↔ Nat.fib (m + 2) ≤ weight w := by
   unfold hiddenBit; constructor
   · intro h; by_contra hlt; simp [not_le.mp hlt] at h
   · intro h; simp [h]
 
-/-- hiddenBit = 0 iff weight < F_{m+2}. -/
+/-- hiddenBit = 0 iff weight < F_{m+2}.
+    thm:pom-hiddenBit-eq-zero-iff -/
 theorem hiddenBit_eq_zero_iff (w : Word m) :
     hiddenBit w = 0 ↔ weight w < Nat.fib (m + 2) := by
   unfold hiddenBit; constructor
   · intro h; by_contra hge; push_neg at hge; simp [hge] at h
   · intro h; exact if_neg (not_le.mpr h)
 
-/-- Fiber decomposition (named alias). -/
+/-- Fiber decomposition (named alias).
+    thm:pom-fiber-hidden-bit-split -/
 theorem fiber_hidden_bit_split (x : X m) :
     X.fiberMultiplicity x =
     exactWeightCount m (stableValue x) +
     exactWeightCount m (stableValue x + Nat.fib (m + 2)) :=
   fiberMultiplicity_eq_two_ewc x
 
-/-- S_2 mod 6 base values. -/
+/-- S_2 mod 6 base values.
+    thm:pom-momentSum-two-mod-six-base -/
 theorem momentSum_two_mod_six_base :
     momentSum 2 0 % 6 = 1 ∧ momentSum 2 1 % 6 = 2 ∧
     momentSum 2 2 % 6 = 0 ∧ momentSum 2 3 % 6 = 2 ∧
@@ -796,5 +858,48 @@ theorem momentSum_three_pos (m : Nat) : 0 < momentSum 3 m :=
 /-- S_3(m) ≤ S_4(m). -/
 theorem momentSum_four_ge_three (m : Nat) : momentSum 3 m ≤ momentSum 4 m :=
   momentSum_le_succ' 3 m
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 181
+-- ══════════════════════════════════════════════════════════════
+
+/-- weight(w) + weight(complement w) = F_{m+3} - 2 (total weight conservation). -/
+theorem weight_add_complement (w : Word m) :
+    weight w + weight (complement w) = Nat.fib (m + 3) - 2 := by
+  have := weight_complement w; omega
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 229: E00 symmetric rewrite
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00 = Σ ewc(n)*ewc(F-2-n). prop:fold-fiber-count-reciprocity -/
+theorem exactWeightCollision_eq_symmetric_sum (m : Nat) :
+    exactWeightCollision m =
+    ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+      exactWeightCount m n * exactWeightCount m (Nat.fib (m + 3) - 2 - n) := by
+  unfold exactWeightCollision
+  -- Peel off the last term n = F-1 where ewc(F-1)=0 (weight never achieves F-1)
+  have hF : 2 ≤ Nat.fib (m + 3) :=
+    le_trans (show 2 ≤ Nat.fib 3 from by decide) (Nat.fib_mono (by omega))
+  rw [show Nat.fib (m + 3) = Nat.fib (m + 3) - 1 + 1 from by omega,
+    Finset.range_succ, Finset.sum_insert (by simp [Finset.mem_range]),
+    Finset.sum_insert (by simp [Finset.mem_range])]
+  -- At n = F-1: ewc(F-1) = 0 by exactWeightCount_eq_zero_of_ge_fib (F-1 ≥ F-1, but F ≤ F-1?)
+  -- Actually weight(w) ≤ F-2 for No11 words, so ewc(F-1)=0. Use weight_complement:
+  -- The complement of a word with weight F-2-k has weight k. So all weights are ≤ F-2.
+  have hewc_last : exactWeightCount m (Nat.fib (m + 3) - 1) = 0 := by
+    unfold exactWeightCount
+    rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+    intro w _
+    have := X.weight_lt_fib w
+    have := weight_complement w
+    -- weight(w) + weight(compl w) = F-2, so weight(w) ≤ F-2 < F-1
+    omega
+  rw [hewc_last]
+  simp only [show (0 : Nat) ^ 2 = 0 from by norm_num, Nat.zero_mul, Nat.zero_add]
+  conv_rhs => arg 2; ext x; rw [show Nat.fib (m + 3) - 1 + 1 = Nat.fib (m + 3) from by omega]
+  apply Finset.sum_congr rfl; intro n hn
+  rw [Finset.mem_range] at hn
+  rw [sq, exactWeightCount_symmetric m n (by omega)]
 
 end Omega

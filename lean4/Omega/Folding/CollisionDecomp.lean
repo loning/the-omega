@@ -1,5 +1,6 @@
 import Omega.Folding.FiberWeightCount
 import Omega.Folding.CollisionZeta
+import Mathlib.Algebra.Order.Chebyshev
 
 namespace Omega
 
@@ -222,7 +223,8 @@ theorem collision_same_eq_exactWeightCollision (m : Nat) :
 -- Cross-weight correlation
 -- ══════════════════════════════════════════════════════════════
 
-/-- Cross-weight correlation: Σ_r ewc(m,r) · ewc(m,r+F). -/
+/-- Cross-weight correlation: Σ_r ewc(m,r) · ewc(m,r+F).
+    def:pom-crossWeightCorrelation -/
 def crossWeightCorrelation (m : Nat) : Nat :=
   ∑ r ∈ Finset.range (Nat.fib (m + 2)),
     exactWeightCount m r * exactWeightCount m (r + Nat.fib (m + 2))
@@ -232,6 +234,7 @@ def crossWeightCorrelation (m : Nat) : Nat :=
 -- E(0,0)(m+1) = E(0,0)(m) + S_2(m)
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-e00-succ -/
 theorem exactWeightCollision_succ (m : Nat) :
     exactWeightCollision (m + 1) = exactWeightCollision m + momentSum 2 m := by
   classical
@@ -341,6 +344,7 @@ theorem exactWeightCollision_succ (m : Nat) :
 -- E(0,0) telescoping sum
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-e00-telescoping -/
 theorem exactWeightCollision_eq_sum (m : Nat) :
     exactWeightCollision m = 1 + ∑ k ∈ Finset.range m, momentSum 2 k := by
   induction m with
@@ -358,12 +362,14 @@ theorem exactWeightCollision_eq_sum (m : Nat) :
 -- Cross-correlation at shift d
 -- ══════════════════════════════════════════════════════════════
 
-/-- Cross-correlation at shift d. -/
+/-- Cross-correlation at shift d.
+    def:pom-crossCorr -/
 def crossCorr (m d : Nat) : Nat :=
   ∑ n ∈ Finset.range (Nat.fib (m + 3)),
     exactWeightCount m n * exactWeightCount m (n + d)
 
-/-- C_0(m) = E(0,0)(m). -/
+/-- C_0(m) = E(0,0)(m).
+    thm:pom-crossCorr-zero -/
 theorem crossCorr_zero_eq (m : Nat) :
     crossCorr m 0 = exactWeightCollision m := by
   simp [crossCorr, exactWeightCollision, sq]
@@ -372,7 +378,8 @@ theorem crossCorr_zero_eq (m : Nat) :
 -- E(0,1) = crossCorr(F_{m+2}) + crossCorr(F_{m+1})
 -- ══════════════════════════════════════════════════════════════
 
-/-- E(0,1) = crossCorr(F) + crossCorr(F-1). -/
+/-- E(0,1) = crossCorr(F) + crossCorr(F-1).
+    thm:pom-e01-crossCorr -/
 theorem collision_cross_eq_two_crossCorr (m : Nat) :
     (Finset.univ.filter (fun p : Word m × Word m =>
       weight p.1 % Nat.fib (m + 3) =
@@ -493,7 +500,8 @@ theorem collision_cross_eq_two_crossCorr (m : Nat) :
 -- S_2(m+1) = 2E00 + 2·crossCorr(F) + 2·crossCorr(F-1)
 -- ══════════════════════════════════════════════════════════════
 
-/-- S_2(m+1) = 2·E00(m) + 2·crossCorr(m,F_{m+2}) + 2·crossCorr(m,F_{m+1}). -/
+/-- S_2(m+1) = 2·E00(m) + 2·crossCorr(m,F_{m+2}) + 2·crossCorr(m,F_{m+1}).
+    thm:pom-s2-three-term -/
 theorem momentSum_two_succ_three_term (m : Nat) :
     momentSum 2 (m + 1) =
     2 * exactWeightCollision m +
@@ -684,7 +692,8 @@ private theorem crossCorr_as_collision' (m d : Nat) :
       Finset.mem_univ, true_and]
     intro ⟨v1, _⟩ ⟨h1, _⟩ ⟨h1', _⟩; exact hne (h1.symm.trans h1')
 
-/-- S_2(m) = E00(m) + 2·crossCorr(m, F_{m+2}). -/
+/-- S_2(m) = E00(m) + 2·crossCorr(m, F_{m+2}).
+    thm:pom-s2-exact-crossCorr -/
 theorem momentSum_two_eq_exact_plus_crossCorr (m : Nat) :
     momentSum 2 m = exactWeightCollision m + 2 * crossCorr m (Nat.fib (m + 2)) := by
   classical
@@ -740,6 +749,7 @@ theorem momentSum_two_eq_exact_plus_crossCorr (m : Nat) :
 -- crossCorr(m+1, F) = S_2(m) — algebraic
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-crossCorr-fib-prev -/
 theorem crossCorr_fib_prev_eq_momentSum (m : Nat) :
     crossCorr (m + 1) (Nat.fib (m + 2)) = momentSum 2 m := by
   rw [crossCorr_fib_succ, momentSum_two_eq_exact_plus_crossCorr]; ring
@@ -748,6 +758,7 @@ theorem crossCorr_fib_prev_eq_momentSum (m : Nat) :
 -- S_2(m+2) expansion and UNCONDITIONAL RECURRENCE
 -- ══════════════════════════════════════════════════════════════
 
+/-- thm:pom-s2-expand -/
 theorem momentSum_two_succ_succ_expand (m : Nat) :
     momentSum 2 (m + 2) =
     exactWeightCollision (m + 1) + momentSum 2 (m + 1) + 2 * momentSum 2 m := by
@@ -764,7 +775,8 @@ theorem momentSum_two_succ_succ_expand (m : Nat) :
     linarith
   rw [crossCorr_fib_prev_eq_momentSum]; linarith
 
-/-- S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1). UNCONDITIONAL. -/
+/-- S_2(m+3) + 2·S_2(m) = 2·S_2(m+2) + 2·S_2(m+1). UNCONDITIONAL.
+    prop:pom-s2-recurrence -/
 theorem momentSum_two_recurrence (m : Nat) :
     momentSum 2 (m + 3) + 2 * momentSum 2 m =
     2 * momentSum 2 (m + 2) + 2 * momentSum 2 (m + 1) := by
@@ -772,5 +784,100 @@ theorem momentSum_two_recurrence (m : Nat) :
   have h2 := momentSum_two_succ_succ_expand (m + 1)
   have h3 := exactWeightCollision_succ (m + 1)
   linarith
+
+/-- E00 satisfies the S_2 three-step recurrence.
+    bridge:e00-recurrence -/
+theorem exactWeightCollision_recurrence (m : Nat) :
+    exactWeightCollision (m + 3) + 2 * exactWeightCollision m =
+    2 * exactWeightCollision (m + 2) + 2 * exactWeightCollision (m + 1) := by
+  induction m with
+  | zero => native_decide
+  | succ m ih =>
+    show exactWeightCollision (m + 4) + 2 * exactWeightCollision (m + 1) =
+        2 * exactWeightCollision (m + 3) + 2 * exactWeightCollision (m + 2)
+    have es0 := exactWeightCollision_succ m
+    have es1 : exactWeightCollision (m + 2) = exactWeightCollision (m + 1) +
+        momentSum 2 (m + 1) := by have := exactWeightCollision_succ (m + 1); linarith
+    have es2 : exactWeightCollision (m + 3) = exactWeightCollision (m + 2) +
+        momentSum 2 (m + 2) := by have := exactWeightCollision_succ (m + 2); linarith
+    have es3 : exactWeightCollision (m + 4) = exactWeightCollision (m + 3) +
+        momentSum 2 (m + 3) := by have := exactWeightCollision_succ (m + 3); linarith
+    have sr := momentSum_two_recurrence m
+    linarith
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 228: E00 Cauchy-Schwarz + crossCorr bound
+-- ══════════════════════════════════════════════════════════════
+
+/-- E00(m) * F(m+3) ≥ 4^m (Cauchy-Schwarz on ewc). thm:pom-s2-exact-crossCorr -/
+theorem exactWeightCollision_cauchy_schwarz (m : Nat) :
+    4 ^ m ≤ exactWeightCollision m * Nat.fib (m + 3) := by
+  -- Cauchy-Schwarz: (Σ f)² ≤ |S| * Σ f²
+  -- Here f = ewc, S = range(F(m+3)), Σ ewc = 2^m, Σ ewc² = E00
+  have hCS : (∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n) ^ 2 ≤
+      (Finset.range (Nat.fib (m + 3))).card *
+      ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n ^ 2 :=
+    sq_sum_le_card_mul_sum_sq
+  rw [exactWeightCount_sum, Finset.card_range] at hCS
+  rw [show 4 = 2 * 2 from rfl, Nat.mul_pow, show (2 ^ m) * (2 ^ m) = (2 ^ m) ^ 2 from by ring]
+  calc (2 ^ m) ^ 2 ≤ Nat.fib (m + 3) * exactWeightCollision m := hCS
+    _ = exactWeightCollision m * Nat.fib (m + 3) := Nat.mul_comm _ _
+
+/-- Shifted ewc² sum is bounded by E00. -/
+private theorem shifted_ewc_sq_le (m d : Nat) :
+    ∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m (n + d) ^ 2 ≤
+    exactWeightCollision m := by
+  unfold exactWeightCollision
+  -- Split into terms where n+d < F(m+3) (contribute to E00) and n+d ≥ F(m+3) (contribute 0)
+  rw [← Finset.sum_filter_add_sum_filter_not (Finset.range (Nat.fib (m + 3)))
+    (fun n => n + d < Nat.fib (m + 3))]
+  -- The "out of range" terms are all zero
+  have hzero : ∑ n ∈ (Finset.range (Nat.fib (m + 3))).filter
+      (fun n => ¬(n + d < Nat.fib (m + 3))),
+      exactWeightCount m (n + d) ^ 2 = 0 := by
+    apply Finset.sum_eq_zero; intro n hn
+    simp only [Finset.mem_filter, Finset.mem_range] at hn
+    rw [exactWeightCount_eq_zero_of_ge_fib m (n + d) (by omega)]; simp
+  rw [hzero, Nat.add_zero]
+  -- The "in range" terms inject into the full E00 sum
+  let S := (Finset.range (Nat.fib (m + 3))).filter (fun n => n + d < Nat.fib (m + 3))
+  let T := Finset.range (Nat.fib (m + 3))
+  -- Map n ↦ n+d sends S injectively into T
+  calc ∑ n ∈ S, exactWeightCount m (n + d) ^ 2
+      = ∑ n ∈ S.image (· + d), exactWeightCount m n ^ 2 := by
+        rw [Finset.sum_image]; intro n₁ _ n₂ _ h; simp only [Nat.add_right_cancel_iff] at h; exact h
+    _ ≤ ∑ n ∈ T, exactWeightCount m n ^ 2 := by
+        apply Finset.sum_le_sum_of_subset
+        intro k hk; simp only [S, T, Finset.mem_image, Finset.mem_filter, Finset.mem_range] at hk ⊢
+        obtain ⟨n, hn, rfl⟩ := hk; exact hn.2
+
+/-- C(m,d) ≤ E00(m). thm:pom-s2-exact-crossCorr -/
+theorem crossCorr_le_exactWeightCollision (m d : Nat) :
+    crossCorr m d ≤ exactWeightCollision m := by
+  -- AM-GM: 2*a*b ≤ a² + b², so 2*C ≤ Σ(ewc(n)² + ewc(n+d)²) = E00 + shifted_E00 ≤ 2*E00
+  -- Hence C ≤ E00
+  suffices h : 2 * crossCorr m d ≤ 2 * exactWeightCollision m by omega
+  calc 2 * crossCorr m d
+      = 2 * ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+          exactWeightCount m n * exactWeightCount m (n + d) := rfl
+    _ = ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+          2 * (exactWeightCount m n * exactWeightCount m (n + d)) := by
+        rw [Finset.mul_sum]
+    _ ≤ ∑ n ∈ Finset.range (Nat.fib (m + 3)),
+          (exactWeightCount m n ^ 2 + exactWeightCount m (n + d) ^ 2) := by
+        apply Finset.sum_le_sum; intro n _
+        -- 2ab ≤ a² + b² (cast to ℤ then nlinarith on (a-b)² ≥ 0)
+        have : (2 * (exactWeightCount m n * exactWeightCount m (n + d)) : ℤ) ≤
+            (exactWeightCount m n ^ 2 + exactWeightCount m (n + d) ^ 2 : ℤ) := by
+          nlinarith [sq_nonneg ((exactWeightCount m n : ℤ) - exactWeightCount m (n + d))]
+        exact_mod_cast this
+    _ = (∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m n ^ 2) +
+        (∑ n ∈ Finset.range (Nat.fib (m + 3)), exactWeightCount m (n + d) ^ 2) :=
+        Finset.sum_add_distrib
+    _ ≤ exactWeightCollision m + exactWeightCollision m := by
+        apply Nat.add_le_add
+        · exact le_refl _
+        · exact shifted_ewc_sq_le m d
+    _ = 2 * exactWeightCollision m := by ring
 
 end Omega
