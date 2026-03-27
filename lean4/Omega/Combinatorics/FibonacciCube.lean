@@ -665,4 +665,56 @@ theorem fibcubeFVector_two_recurrence (n : Nat) :
 /-- f(6, 2) = 22. thm:pom-fibcube-fvector-closed -/
 @[simp] theorem fibcubeFVector_two_six : fibcubeFVector 6 2 = 22 := by native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 219: Fib product split + edge count convolution
+-- ══════════════════════════════════════════════════════════════
+
+/-- F(n) = F(i)*F(n-i+1) + F(i-1)*F(n-i) for 1 ≤ i ≤ n.
+    Follows from fib_add_formula with m = i-1, k = n-i.
+    thm:pom-fib-product-split -/
+theorem fib_product_split (n i : Nat) (hi : 1 ≤ i) (hin : i ≤ n) :
+    Nat.fib n = Nat.fib i * Nat.fib (n - i + 1) + Nat.fib (i - 1) * Nat.fib (n - i) := by
+  have h := fib_add_formula (i - 1) (n - i)
+  rw [show i - 1 + (n - i) + 1 = n from by omega,
+      show i - 1 + 1 = i from by omega,
+      show n - i + 1 = n - i + 1 from rfl] at h
+  exact h
+
+/-- Edge count equals Fibonacci convolution: e(n) = Σ_{i<n} F(i+1)*F(n-i).
+    cor:pom-fibcube-edge-fib-conv -/
+theorem fibcubeEdgeCount_eq_fib_conv (n : Nat) :
+    fibcubeEdgeCount n = ∑ i ∈ Finset.range n, Nat.fib (i + 1) * Nat.fib (n - i) := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 => simp
+    | 1 => simp [fibcubeEdgeCount, Nat.fib]
+    | n + 2 =>
+      rw [fibcubeEdgeCount_succ_succ, ih (n + 1) (by omega), ih n (by omega)]
+      -- Goal: (Σ i<n+1, F(i+1)*F(n+1-i)) + (Σ i<n, F(i+1)*F(n-i)) + F(n+2)
+      --      = Σ i<n+2, F(i+1)*F(n+2-i)
+      symm
+      -- Goal: Σ i<n+2, F(i+1)*F(n+2-i) = LHS
+      -- Step 1: Peel last term from range(n+2)
+      have hpeel : ∑ i ∈ Finset.range (n + 2), Nat.fib (i + 1) * Nat.fib (n + 2 - i) =
+          (∑ i ∈ Finset.range (n + 1), Nat.fib (i + 1) * Nat.fib (n + 2 - i)) +
+          Nat.fib (n + 2) := by
+        rw [Finset.sum_range_succ]
+        congr 1
+        simp [Nat.sub_self]
+      rw [hpeel]
+      -- Step 2: Split F(n+2-i) = F(n+1-i) + F(n-i) for i < n+1
+      have hsplit : ∀ i ∈ Finset.range (n + 1),
+          Nat.fib (i + 1) * Nat.fib (n + 2 - i) =
+          Nat.fib (i + 1) * Nat.fib (n + 1 - i) + Nat.fib (i + 1) * Nat.fib (n - i) := by
+        intro i hi
+        rw [Finset.mem_range] at hi
+        rw [show n + 2 - i = (n - i) + 2 from by omega, Nat.fib_add_two,
+          show n - i + 1 = n + 1 - i from by omega]
+        ring
+      rw [Finset.sum_congr rfl hsplit, Finset.sum_add_distrib]
+      -- Step 3: Peel last term from Σ_{i<n+1} F(i+1)*F(n-i)
+      rw [Finset.sum_range_succ (fun i => Nat.fib (i + 1) * Nat.fib (n - i))]
+      simp only [Nat.sub_self, Nat.fib_zero, Nat.mul_zero, Nat.add_zero]
+
 end Omega
