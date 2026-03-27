@@ -834,4 +834,53 @@ theorem pisano_entry_point_table :
   ⟨fib_even_iff_three_dvd, fib_div_three_iff, fib_five_dvd_iff,
    fib_seven_dvd_iff, fib_eight_dvd_iff⟩
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 197
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fibonacci Pell quadratic form: F_{k+1}² - F_{k+1}·F_k - F_k² = (-1)^k.
+    prop:pom-fib-pell-quadratic-characterization (direction 1⇒2). -/
+theorem fib_pell_quadratic (k : Nat) (hk : 1 ≤ k) :
+    (Nat.fib (k + 1) : ℤ) ^ 2 - (Nat.fib (k + 1) : ℤ) * Nat.fib k -
+    (Nat.fib k : ℤ) ^ 2 = (-1 : ℤ) ^ k := by
+  obtain ⟨k, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  induction k with
+  | zero => simp [Nat.fib]
+  | succ k ih =>
+    have ih' := ih (by omega)
+    -- F_{k+3} = F_{k+1} + F_{k+2}
+    have h1 := Nat.fib_add_two (n := k + 1)
+    rw [show k + 1 + 2 = k + 3 from rfl, show k + 1 + 1 = k + 2 from rfl] at h1
+    have hcast : (Nat.fib (k + 3) : ℤ) = Nat.fib (k + 1) + Nat.fib (k + 2) := by
+      exact_mod_cast h1
+    -- Goal: F_{k+3}² - F_{k+3}·F_{k+2} - F_{k+2}² = (-1)^(k+2)
+    -- = (F_{k+1}+F_{k+2})² - (F_{k+1}+F_{k+2})·F_{k+2} - F_{k+2}²
+    -- = F_{k+1}² + F_{k+1}·F_{k+2} - F_{k+2}²
+    -- = -(F_{k+2}² - F_{k+2}·F_{k+1} - F_{k+1}²) = -(-1)^(k+1) = (-1)^(k+2)
+    rw [show k + 1 + 1 + 1 = k + 3 from by omega, show k + 1 + 1 = k + 2 from by omega]
+    rw [hcast]
+    have hpow : (-1 : ℤ) ^ (k + 2) = -(-1) ^ (k + 1) := by ring
+    rw [hpow]; linarith
+
+/-- Fibonacci Pell scaled: (2·F_{k+1})² - (2·F_{k+1})·(2·F_k) - (2·F_k)² = 4·(-1)^k.
+    prop:pom-fib-pell-quadratic-characterization (scaling corollary). -/
+theorem fib_pell_quadratic_scaled (k : Nat) (hk : 1 ≤ k) :
+    (2 * Nat.fib (k + 1) : ℤ) ^ 2 - (2 * Nat.fib (k + 1) : ℤ) * (2 * Nat.fib k) -
+    (2 * Nat.fib k : ℤ) ^ 2 = 4 * (-1 : ℤ) ^ k := by
+  have h := fib_pell_quadratic k hk
+  nlinarith
+
+/-- Fibonacci cross-product identity: F_{k+1}·F_{k-1} + F_k·F_{k+1} = F_{k+1}².
+    Auxiliary for Pell-Fibonacci bridge. -/
+theorem fib_cross_product (k : Nat) (hk : 1 ≤ k) :
+    (Nat.fib (k + 1) : ℤ) * Nat.fib (k - 1) + (Nat.fib k : ℤ) * Nat.fib (k + 1) =
+    (Nat.fib (k + 1) : ℤ) ^ 2 := by
+  -- F_{k-1} = F_{k+1} - F_k, so LHS = F_{k+1}·(F_{k+1} - F_k) + F_k·F_{k+1} = F_{k+1}²
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  simp only [show j + 1 - 1 = j from by omega, show j + 1 + 1 = j + 2 from by omega]
+  have h := Nat.fib_add_two (n := j)
+  -- F_{j+2} = F_j + F_{j+1}, so F_j = F_{j+2} - F_{j+1}
+  have hfj : (Nat.fib j : ℤ) = Nat.fib (j + 2) - Nat.fib (j + 1) := by omega
+  rw [hfj]; ring
+
 end Omega
