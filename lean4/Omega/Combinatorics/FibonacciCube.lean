@@ -698,10 +698,35 @@ noncomputable def coordOneCount (n : Nat) (i : Fin n) : Nat :=
   haveI : DecidablePred (fun w : Word n => No11 w ∧ w i = true) := Classical.decPred _
   (Finset.univ.filter (fun w : Word n => No11 w ∧ w i = true)).card
 
--- Note: coordOneCount_eq_fib_prod (coordOneCount n i = F(i+1)*F(n-i)) deferred —
+-- Note: coordOneCount_eq_fib_prod general proof deferred —
 -- requires bijective decomposition of No11 words with a fixed bit into
--- independent left/right No11 segments, which needs Fin-embedding infrastructure
--- not currently available.
+-- independent left/right No11 segments. Bounded verification below.
+
+/-- Computable version of coordOneCount. -/
+private def cCoordOneCount (n : Nat) (i : Fin n) : Nat :=
+  (@Finset.univ (X n) (fintypeX n)).filter (fun x => x.1 i = true) |>.card
+
+private theorem cCoordOneCount_eq_coordOneCount (n : Nat) (i : Fin n) :
+    cCoordOneCount n i = coordOneCount n i := by
+  classical
+  simp only [cCoordOneCount, coordOneCount]
+  -- Both count |{w : Word n | No11 w ∧ w i = true}|, just with different Fintype instances
+  have : ∀ x : X n, x ∈ (Finset.univ.filter (fun x : X n => x.1 i = true)) ↔
+      x.1 ∈ (Finset.univ.filter (fun w : Word n => No11 w ∧ w i = true)) := by
+    intro x; simp [Finset.mem_filter, x.2]
+  exact Finset.card_bij (fun x _ => x.1)
+    (fun x hx => by simp [Finset.mem_filter] at hx ⊢; exact ⟨x.2, hx⟩)
+    (fun x₁ _ x₂ _ h => Subtype.ext h)
+    (fun w hw => by
+      simp [Finset.mem_filter] at hw
+      exact ⟨⟨w, hw.1⟩, by simp [Finset.mem_filter, hw.2], rfl⟩)
+
+/-- coordOneCount n i = F(i+1)*F(n-i) for n ≤ 6, all i.
+    cor:pom-fibcube-marginal-boundary-layer -/
+theorem coordOneCount_eq_fib_prod_verified (n : Nat) (hn : n ≤ 6) (i : Fin n) :
+    coordOneCount n i = Nat.fib (i.val + 1) * Nat.fib (n - i.val) := by
+  rw [← cCoordOneCount_eq_coordOneCount]
+  interval_cases n <;> fin_cases i <;> native_decide
 
 -- ══════════════════════════════════════════════════════════════
 -- Phase 218: FibCube f-vector k=2 base values + recurrence

@@ -278,4 +278,20 @@ theorem fib_gap_recurrence (k : Nat) (hk : 6 ≤ k) :
 
 end
 end X
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 231: D(m) = D(m-2) + D(m-4) four-step recurrence
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(m) = D(m-2) + D(m-4) for 6 ≤ m ≤ 10 (verified range). cor:pom-D-rec -/
+theorem maxFiberMultiplicity_four_step_verified (m : Nat) (hm1 : 6 ≤ m) (hm2 : m ≤ 10) :
+    X.maxFiberMultiplicity m =
+    X.maxFiberMultiplicity (m - 2) + X.maxFiberMultiplicity (m - 4) := by
+  interval_cases m
+  · exact X.maxFiberMultiplicity_two_step_6
+  · exact X.maxFiberMultiplicity_two_step_7
+  · exact X.maxFiberMultiplicity_two_step_8
+  · exact X.maxFiberMultiplicity_two_step_9
+  · exact X.maxFiberMultiplicity_two_step_10
+
 end Omega
