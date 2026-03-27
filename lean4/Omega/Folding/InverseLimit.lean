@@ -205,6 +205,24 @@ theorem prefixWord_stableValue_coherent (a : XInfinity) (m : Nat) :
   rw [stableValue_restrict_mod (prefixWord a (m + 1)), restrict_prefixWord]
   exact Nat.mod_eq_of_lt (stableValue_lt_fib (prefixWord a m))
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 210: Prefix surjectivity
+-- ══════════════════════════════════════════════════════════════
+
+/-- The prefix projection from XInfinity to X m is surjective.
+    prop:fold-inverse-limit-xm-xinfty -/
+theorem prefixWord_surjective (m : Nat) :
+    Function.Surjective (fun a : XInfinity => prefixWord a m) := by
+  intro x
+  -- Construct the zero-extension: copy x.1 for indices < m, false otherwise
+  let a : Nat → Bool := fun n => if h : n < m then x.1 ⟨n, h⟩ else false
+  have hno11 : No11Inf a := by
+    intro i ⟨hi, hi1⟩
+    simp only [a] at hi hi1
+    by_cases h : i < m <;> by_cases h1 : i + 1 < m <;> simp_all
+    · exact x.2 i (by simp [Omega.get, h]; exact hi) (by simp [Omega.get, h1]; exact hi1)
+  exact ⟨⟨a, hno11⟩, Subtype.ext (funext fun i => by simp [prefixWord, a, i.isLt])⟩
+
 end X
 
 end Omega
