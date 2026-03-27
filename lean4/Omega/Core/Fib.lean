@@ -915,4 +915,28 @@ theorem fib_cross_product (k : Nat) (hk : 1 ≤ k) :
   have hfj : (Nat.fib j : ℤ) = Nat.fib (j + 2) - Nat.fib (j + 1) := by omega
   rw [hfj]; ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 201: Fibonacci tail matrix determinant
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fibonacci tail matrix G_m has det = 1 when m is even:
+    F(m+3)^2 = F(m+2)*F(m+4) + 1.
+    prop:fib-tail-reversibility -/
+theorem fib_tail_matrix_det_even (m : Nat) (hm : Even m) :
+    Nat.fib (m + 3) ^ 2 = Nat.fib (m + 2) * Nat.fib (m + 4) + 1 := by
+  -- Cassini even: F(n)*F(n+2) + 1 = F(n+1)^2 for even n.
+  -- Apply with n = m+2 (even since m is even): F(m+2)*F(m+4) + 1 = F(m+3)^2.
+  have heven : Even (m + 2) := by obtain ⟨k, rfl⟩ := hm; exact ⟨k + 1, by omega⟩
+  exact (fib_cassini_even (m + 2) heven).symm
+
+/-- Fibonacci tail matrix G_m has det = -1 when m is odd:
+    F(m+2)*F(m+4) = F(m+3)^2 + 1.
+    prop:fib-tail-reversibility -/
+theorem fib_tail_matrix_det_odd (m : Nat) (hm : ¬ Even m) :
+    Nat.fib (m + 2) * Nat.fib (m + 4) = Nat.fib (m + 3) ^ 2 + 1 := by
+  -- Cassini odd: F(n)*F(n+2) = F(n+1)^2 + 1 for odd n.
+  -- Apply with n = m+2 (odd since m is odd).
+  have hodd : ¬ Even (m + 2) := by intro ⟨k, hk⟩; exact hm ⟨k - 1, by omega⟩
+  exact fib_cassini_odd (m + 2) hodd
+
 end Omega

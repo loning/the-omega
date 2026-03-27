@@ -63,4 +63,33 @@ theorem cFirstBitTrueCount_eq_fib (m : Nat) (hm1 : 3 ≤ m) (hm : m ≤ 7) :
     cFirstBitTrueCount m = Nat.fib m := by
   interval_cases m <;> native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 201: Involution obstruction
+-- ══════════════════════════════════════════════════════════════
+
+/-- An involution on a finite set with no fixed points implies even cardinality.
+    prop:bdry-three-layer-obstructs-free-z2 -/
+theorem involution_no_fixedpoint_even {α : Type*} [Fintype α] [DecidableEq α]
+    (σ : Equiv.Perm α) (hinv : σ * σ = 1)
+    (hno_fix : ∀ x : α, σ x ≠ x) :
+    Even (Fintype.card α) := by
+  -- σ.support = univ (no fixed points)
+  have hsupp : σ.support = Finset.univ := by
+    ext x; simp [Equiv.Perm.mem_support, hno_fix x]
+  -- σ^2 = 1 implies 2 | σ.support.card (mathlib: two_dvd_card_support)
+  have hsq : σ ^ 2 = 1 := by rwa [sq, Equiv.Perm.mul_def]
+  have h2dvd := Equiv.Perm.two_dvd_card_support hsq
+  rw [hsupp, Finset.card_univ] at h2dvd
+  exact even_iff_two_dvd.mpr h2dvd
+
+/-- A set of odd cardinality admits no fixed-point-free involution.
+    prop:bdry-three-layer-obstructs-free-z2 -/
+theorem odd_card_no_free_involution {α : Type*} [Fintype α] [DecidableEq α]
+    (hodd : ¬ Even (Fintype.card α))
+    (σ : Equiv.Perm α) (hinv : σ * σ = 1) :
+    ∃ x : α, σ x = x := by
+  by_contra hc
+  push_neg at hc
+  exact hodd (involution_no_fixedpoint_even σ hinv hc)
+
 end Omega
