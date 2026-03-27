@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Algebra.Polynomial.Derivative
 import Mathlib.Data.Nat.Fib.Basic
 import Mathlib.Tactic.LinearCombination
 
@@ -135,5 +136,15 @@ theorem pathIndSetPoly_three_val : pathIndSetPoly 3 = 1 + 3 * X + X ^ 2 := by
     def:pom-fibonacci-polynomial -/
 theorem pathIndSetPoly_four_val : pathIndSetPoly 4 = 1 + 4 * X + 3 * X ^ 2 := by
   simp [pathIndSetPoly, fibPoly_succ_succ]; ring
+
+/-- Fibonacci polynomial derivative recurrence:
+    (F_{n+2})' = (F_{n+1})' + F_n + X·(F_n)'.
+    def:pom-fibonacci-polynomial -/
+theorem fibPoly_derivative (n : Nat) :
+    Polynomial.derivative (fibPoly (n + 2)) =
+    Polynomial.derivative (fibPoly (n + 1)) + fibPoly n +
+    Polynomial.X * Polynomial.derivative (fibPoly n) := by
+  simp only [fibPoly_succ_succ, map_add, Polynomial.derivative_mul, Polynomial.derivative_X]
+  ring
 
 end Omega
