@@ -691,4 +691,19 @@ theorem lucasNum_strict_mono (n : Nat) (hn : 1 ≤ n) : lucasNum n < lucasNum (n
   rw [lucasNum_succ_succ]
   exact Nat.lt_add_of_pos_right (lucasNum_pos m)
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 223: Total closed paths = Lucas number
+-- ══════════════════════════════════════════════════════════════
+
+/-- Total closed paths of length m = A^m[0,0] + A^m[1,1] = L(m) (Lucas number).
+    thm:pom-parry-limit-chain-explicit -/
+theorem goldenMean_total_closed_paths (m : Nat) (hm : 1 ≤ m) :
+    (Graph.goldenMeanAdjacency ^ m) 0 0 + (Graph.goldenMeanAdjacency ^ m) 1 1 =
+      (lucasNum m : ℤ) := by
+  obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
+  rw [Graph.goldenMeanAdjacency_pow_00, Graph.goldenMeanAdjacency_pow_11,
+    lucasNum_eq_fib (k + 1) (by omega)]
+  simp only [show k + 1 - 1 = k from by omega]
+  push_cast; ring
+
 end Omega
