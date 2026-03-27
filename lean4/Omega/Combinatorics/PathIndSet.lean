@@ -352,4 +352,15 @@ theorem path_independent_set_count' (n : Nat) :
     = Nat.fib (n + 2) :=
   path_independent_set_count n
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 208: Strict monotonicity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Path independent set count is strictly increasing for n >= 2.
+    prop:folding-stable-syntax-fibonacci-count -/
+theorem pathIndCount_strict_mono (n : Nat) (hn : 2 ≤ n) :
+    pathIndCount n < pathIndCount (n + 1) := by
+  rw [path_independent_set_count, path_independent_set_count]
+  exact fib_strict_mono (n + 2) (by omega)
+
 end Omega

@@ -1,4 +1,5 @@
 import Omega.Folding.Fold
+import Omega.Folding.Value
 
 namespace Omega
 
@@ -192,6 +193,17 @@ theorem No11Inf_ofFamily (F : CompatibleFamily) : No11Inf (ofFamily F).1 :=
 theorem CompatibleFamily_complete :
     Function.Bijective (ofFamily : CompatibleFamily → XInfinity) :=
   inverseLimitEquiv.bijective
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 208: Inverse limit coherence
+-- ══════════════════════════════════════════════════════════════
+
+/-- stableValue at resolution m+1 mod F(m+2) equals stableValue at resolution m.
+    prop:fold-inverse-limit-xm-xinfty -/
+theorem prefixWord_stableValue_coherent (a : XInfinity) (m : Nat) :
+    stableValue (prefixWord a (m + 1)) % Nat.fib (m + 2) = stableValue (prefixWord a m) := by
+  rw [stableValue_restrict_mod (prefixWord a (m + 1)), restrict_prefixWord]
+  exact Nat.mod_eq_of_lt (stableValue_lt_fib (prefixWord a m))
 
 end X
 

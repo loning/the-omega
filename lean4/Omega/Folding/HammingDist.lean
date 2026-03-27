@@ -1,6 +1,7 @@
 import Omega.Folding.MaxFiber
 import Omega.Folding.Defect
 import Omega.Combinatorics.FibonacciCube
+import Omega.Folding.MomentRecurrence
 
 /-! ### Hamming distance on binary words
 
@@ -93,5 +94,18 @@ theorem hammingDist_eq_zero_iff {a b : Word m} :
       Finset.mem_filter.mpr ⟨Finset.mem_univ _, hne⟩
     rw [h] at this; simp at this
   · intro h; rw [h]; exact hammingDist_self
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 208: Complement distance
+-- ══════════════════════════════════════════════════════════════
+
+/-- d(w, complement w) = m. Every bit flipped.
+    prop:fold-fiber-count-reciprocity -/
+theorem hammingDist_complement (w : Word m) :
+    hammingDist w (complement w) = m := by
+  unfold hammingDist
+  have h : Finset.univ.filter (fun i : Fin m => w i ≠ complement w i) = Finset.univ := by
+    ext i; simp [complement]
+  rw [h, Finset.card_univ, Fintype.card_fin]
 
 end Omega
