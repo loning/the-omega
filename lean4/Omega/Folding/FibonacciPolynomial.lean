@@ -117,4 +117,23 @@ theorem fibPoly_cassini : ∀ n : Nat,
     rw [show n + 2 + 1 = (n + 1) + 2 from by omega]
     ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 206: pathIndSetPoly small value expansions
+-- ══════════════════════════════════════════════════════════════
+
+/-- I_2(x) = 1 + 2x.
+    def:pom-fibonacci-polynomial -/
+theorem pathIndSetPoly_two_val : pathIndSetPoly 2 = 1 + 2 * X := by
+  simp [pathIndSetPoly, fibPoly_succ_succ]; ring
+
+/-- I_3(x) = 1 + 3x + x^2.
+    def:pom-fibonacci-polynomial -/
+theorem pathIndSetPoly_three_val : pathIndSetPoly 3 = 1 + 3 * X + X ^ 2 := by
+  simp [pathIndSetPoly, fibPoly_succ_succ]; ring
+
+/-- I_4(x) = 1 + 4x + 3x^2.
+    def:pom-fibonacci-polynomial -/
+theorem pathIndSetPoly_four_val : pathIndSetPoly 4 = 1 + 4 * X + 3 * X ^ 2 := by
+  simp [pathIndSetPoly, fibPoly_succ_succ]; ring
+
 end Omega

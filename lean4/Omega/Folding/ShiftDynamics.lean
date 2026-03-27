@@ -590,4 +590,43 @@ theorem goldenMeanAdjacency_pow_trace_lucas (m : Nat) (hm : 1 ≤ m) :
     (Graph.goldenMeanAdjacency ^ m).trace = (lucasNum m : ℤ) := by
   rw [goldenMeanAdjacency_pow_trace m hm, lucasNum_eq_fib m hm]; push_cast; ring
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 206: Lucas addition formula + partial sum
+-- ══════════════════════════════════════════════════════════════
+
+/-- Lucas-Fibonacci addition formula: L(m+n+2) = L(m+1)*F(n+2) + L(m)*F(n+1).
+    bridge:lucas-fib-addition-formula -/
+theorem lucasNum_add_formula : ∀ (m n : Nat),
+    (lucasNum (m + n + 2) : ℤ) =
+    (lucasNum (m + 1) : ℤ) * (Nat.fib (n + 2) : ℤ) +
+    (lucasNum m : ℤ) * (Nat.fib (n + 1) : ℤ)
+  | m, 0 => by simp [lucasNum_succ_succ]
+  | m, 1 => by
+    simp only [lucasNum_succ_succ, show Nat.fib 3 = 2 from rfl, show Nat.fib 2 = 1 from rfl]
+    push_cast; ring
+  | m, n + 2 => by
+    -- L(m+n+4) = L(m+n+3) + L(m+n+2) by Lucas recurrence
+    have h1 : lucasNum (m + (n + 2) + 2) = lucasNum (m + (n + 1) + 2) + lucasNum (m + n + 2) := by
+      rw [show m + (n + 2) + 2 = (m + (n + 1) + 2) + 1 from by omega]; rfl
+    push_cast [h1, lucasNum_add_formula m (n + 1), lucasNum_add_formula m n]
+    -- F(n+4) = F(n+3) + F(n+2), F(n+3) = F(n+2) + F(n+1)
+    have hf1 : (Nat.fib (n + 2 + 2) : ℤ) = Nat.fib (n + 2 + 1) + Nat.fib (n + 2) := by
+      have := Nat.fib_add_two (n := n + 2); push_cast [this]
+    have hf2 : (Nat.fib (n + 2 + 1) : ℤ) = Nat.fib (n + 1 + 1) + Nat.fib (n + 1) := by
+      have : Nat.fib (n + 2 + 1) = Nat.fib (n + 1 + 1) + Nat.fib (n + 1) := by
+        rw [show n + 2 + 1 = (n + 1) + 2 from by omega]; exact Nat.fib_add_two
+      push_cast [this]
+    rw [hf1, hf2]; ring
+
+/-- Lucas partial sum: Σ_{k=0}^n L(k) = L(n+2) - 1.
+    bridge:lucas-partial-sum -/
+theorem lucasNum_partial_sum (n : Nat) :
+    ∑ k ∈ Finset.range (n + 1), lucasNum k = lucasNum (n + 2) - 1 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih, lucasNum_succ_succ]
+    have := lucasNum_pos (n + 2)
+    omega
+
 end Omega
