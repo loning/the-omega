@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~30,598 |
-| 定理/定义数 | ~2,441 |
+| 总行数 | ~30,695 |
+| 定理/定义数 | ~2,448 |
 | 论文接口包装 | 352 |
 | 文件数 | 67 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 228: E00 Cauchy-Schwarz + crossCorr界 + f-向量k=3（Round 228）**：两文件 CollisionDecomp.lean（+76行）+ FibonacciCube.lean（+21行）——exactWeightCollision_cauchy_schwarz（thm:pom-s2-exact-crossCorr：E00(m)² ≤ F(m+2)·S_2(m)，E00 Cauchy-Schwarz 不等式，CollisionDecomp.lean:813）; crossCorr_le_exactWeightCollision（thm:pom-s2-exact-crossCorr：C(m,d) ≤ E00(m) for all d，crossCorr 上界，CollisionDecomp.lean:855）; fibcubeFVector_three_recurrence（thm:pom-fibcube-fvector-closed：f(n+3,3)=f(n+2,3)+f(n+1,3)+f(n+1,2)+f(n,2)，k=3 递推，FibonacciCube.lean:997）; 基值 fibcubeFVector_three_{three,four,five,six}（f(3..6,3)=0/0/1/4，thm:pom-fibcube-fvector-closed，FibonacciCube.lean:1003-1011）——两个论文标签均已注册（thm:pom-s2-exact-crossCorr: Phase 83, thm:pom-fibcube-fvector-closed: Phase 214），本轮为深化定理——+6 Lean 定理（2论文+1private+4基值），覆盖率数字不变（Phase 228）
+
 **Phase 227: 奇偶纤维分拆 + wcc正性（Round 227）**：两文件 FiberSpectrum.lean（+16行）+ FiberWeightCount.lean（+12行）——oddEvenFiber_sum_eq_card（cor:pom-fiber-parity-mod3：奇纤维计数+偶纤维计数=|X_m|，奇偶纤维分拆等式，FiberSpectrum.lean:240）; weightCongruenceCount_pos（prop:pom-moment-congruence-q：wcc(m,r)>0 for r<F(m+2)，同余类计数正性，FiberWeightCount.lean:561）——cor:pom-fiber-parity-mod3 为新注册标签；prop:pom-moment-congruence-q 已在 Phase 78 注册——POM ~532→~533（+1 新标签：cor:pom-fiber-parity-mod3）（Phase 227）
 
 **Phase 226: f-向量k=2严格单调 + S₂严格倍增 + Lucas²整数恒等式（Round 226）**：三文件 FibonacciCube.lean（+18行）+ MomentBounds.lean（+30行）+ ShiftDynamics.lean（+12行）——fibcubeFVector_two_strict_mono（thm:pom-fibcube-fvector-closed：f(n+1,2)>f(n,2) for n≥3，f-向量k=2严格单调，FibonacciCube.lean:979）; momentSum_two_succ_gt_double（prop:pom-s2-recurrence：S_2(m+1) > 2·S_2(m) for m≥2，S₂严格超倍增，MomentBounds.lean:794）; lucasNum_sq_eq_int（thm:pom-parry-limit-chain-explicit：L(n)²=5·F(n)²+4·(-1)^n 整数版，ShiftDynamics.lean:715）——三个论文标签均已注册（thm:pom-fibcube-fvector-closed: Phase 214, prop:pom-s2-recurrence: Phase 83, thm:pom-parry-limit-chain-explicit: Phase 222），本轮为一般性强化证明——+3 Lean 定理，覆盖率数字不变（Phase 226）
