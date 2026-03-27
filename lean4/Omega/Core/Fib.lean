@@ -967,4 +967,78 @@ theorem fib_coprime_consecutive_general (n : Nat) :
     Nat.gcd (Nat.fib n) (Nat.fib (n + 1)) = 1 :=
   fib_coprime_succ n
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 204: Fibonacci alternating skip sum
+-- ══════════════════════════════════════════════════════════════
+
+/-- Σ_{k < ⌊(n+1)/2⌋} F(n+1-2k) = F(n+2) - 1, the alternating skip Fibonacci sum.
+    prop:fold-endpoint-Mm-minus-one-unique -/
+theorem fib_alternating_skip_sum (n : Nat) :
+    ∑ k ∈ Finset.range ((n + 1) / 2), Nat.fib (n + 1 - 2 * k) = Nat.fib (n + 2) - 1 := by
+  -- Prove the "+1" version: ∑ + 1 = F(n+2), avoiding Nat subtraction on the RHS
+  suffices h : ∑ k ∈ Finset.range ((n + 1) / 2), Nat.fib (n + 1 - 2 * k) + 1 = Nat.fib (n + 2) by
+    omega
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+  match n with
+  | 0 => simp
+  | 1 => simp [Finset.sum_range_succ]; rfl
+  | n + 2 =>
+    -- (n+3)/2 = (n+1)/2 + 1
+    rw [show (n + 2 + 1) / 2 = (n + 1) / 2 + 1 from by omega, Finset.sum_range_succ]
+    -- Shift remaining terms: F(n+3-2k) = F((n+1-2k)+2) for k < (n+1)/2
+    have hshift : ∀ k ∈ Finset.range ((n + 1) / 2),
+        Nat.fib (n + 2 + 1 - 2 * k) = Nat.fib ((n + 1 - 2 * k) + 2) := by
+      intro k hk; congr 1; have := Finset.mem_range.mp hk; omega
+    rw [Finset.sum_congr rfl hshift]
+    -- Expand F(a+2) = F(a) + F(a+1)
+    have hexp : ∀ k ∈ Finset.range ((n + 1) / 2),
+        Nat.fib ((n + 1 - 2 * k) + 2) =
+          Nat.fib (n + 1 - 2 * k) + Nat.fib ((n + 1 - 2 * k) + 1) := by
+      intro k _; exact Nat.fib_add_two
+    rw [Finset.sum_congr rfl hexp, Finset.sum_add_distrib]
+    -- First sub-sum = F(n+2) - 1 by IH(n)
+    have ih_n := ih n (by omega)
+    -- Second sub-sum: ∑_{k<(n+1)/2} F(n+1+1-2k)
+    -- Shift to match IH(n+1): F((n+1-2k)+1) = F(n+1+1-2k) for k < (n+1)/2
+    have hshift2 : ∀ k ∈ Finset.range ((n + 1) / 2),
+        Nat.fib ((n + 1 - 2 * k) + 1) = Nat.fib (n + 1 + 1 - 2 * k) := by
+      intro k hk; congr 1; have := Finset.mem_range.mp hk; omega
+    rw [Finset.sum_congr rfl hshift2]
+    -- IH(n+1): ∑_{k<(n+2)/2} F(n+2-2k) + 1 = F(n+3)
+    have ih_n1 := ih (n + 1) (by omega)
+    -- Normalize Fib indices to canonical form
+    have hfib_n4 : Nat.fib (n + 2 + 2) = Nat.fib (n + 4) := by congr 1
+    have hfib_n3a : Nat.fib (n + 2 + 1) = Nat.fib (n + 3) := by congr 1
+    have hfib_n3b : Nat.fib (n + 1 + 2) = Nat.fib (n + 3) := by congr 1
+    rw [hfib_n4]
+    -- Relate our ∑_{k<(n+1)/2} F(n+2-2k) to ih_n1's ∑_{k<(n+2)/2} F(n+2-2k)
+    rw [hfib_n3b] at ih_n1
+    by_cases hpar : (n + 1 + 1) / 2 = (n + 1) / 2
+    · -- odd n case: (n+2)/2 = (n+1)/2, ranges match directly
+      rw [hpar] at ih_n1
+      have htail : Nat.fib (n + 2 + 1 - 2 * ((n + 1) / 2)) = 1 := by
+        have : n + 2 + 1 - 2 * ((n + 1) / 2) = 2 := by omega
+        rw [this]; rfl
+      rw [htail]
+      have hfib : Nat.fib (n + 4) = Nat.fib (n + 2) + Nat.fib (n + 3) := by
+        have := Nat.fib_add_two (n := n + 2)
+        rw [hfib_n4, hfib_n3a] at this; exact this
+      omega
+    · -- even n case: (n+2)/2 = (n+1)/2 + 1
+      have hrng : (n + 1 + 1) / 2 = (n + 1) / 2 + 1 := by omega
+      rw [hrng, Finset.sum_range_succ] at ih_n1
+      have hextra : n + 1 + 1 - 2 * ((n + 1) / 2) = 2 := by omega
+      rw [hextra] at ih_n1
+      have hfib2 : Nat.fib 2 = 1 := rfl
+      rw [hfib2] at ih_n1
+      have htail : Nat.fib (n + 2 + 1 - 2 * ((n + 1) / 2)) = 2 := by
+        have : n + 2 + 1 - 2 * ((n + 1) / 2) = 3 := by omega
+        rw [this]; rfl
+      rw [htail]
+      have hfib : Nat.fib (n + 4) = Nat.fib (n + 2) + Nat.fib (n + 3) := by
+        have := Nat.fib_add_two (n := n + 2)
+        rw [hfib_n4, hfib_n3a] at this; exact this
+      omega
+
 end Omega
