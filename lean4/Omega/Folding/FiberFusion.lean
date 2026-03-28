@@ -252,7 +252,7 @@ theorem fib_splitting_exact (a b : Nat) (ha : 1 ≤ a) (hb : 1 ≤ b) :
   have h4 := Nat.fib_add_two (n := a' + b' + 1)
   rw [show a' + b' + 1 + 2 = a' + b' + 3 from by omega,
       show a' + b' + 1 + 1 = a' + b' + 2 from by omega] at h4
-  omega
+  nlinarith
 
 /-- 2 * F(n+4) = 3 * F(n+3) + F(n) for all n.
     prop:pom-multiplicity-fixed-r-extrema (min proof, step 1) -/

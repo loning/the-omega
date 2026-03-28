@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~31,168 |
-| 定理/定义数 | ~2,469 |
+| 总行数 | ~31,225 |
+| 定理/定义数 | ~2,472 |
 | 论文接口包装 | 353 |
 | 文件数 | 68 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 237: Fib分拆精确式 + Fib替换增益 + Fib合并增益（Round 237）**：单文件 FiberFusion.lean（+57行）——fib_splitting_exact（prop:pom-multiplicity-fixed-r-extrema（max proof）：2·F(a+b+1)=F(a+2)·F(b+2)+F(a-1)·F(b-1) for a,b≥1，Fibonacci分拆精确恒等式，FiberFusion.lean:232）; fib_replace_12_gain（prop:pom-multiplicity-fixed-r-extrema（min proof step 1）：2·F(n+4)=3·F(n+3)+F(n)，替换12增益，FiberFusion.lean:257）; fib_merge_22_gain（prop:pom-multiplicity-fixed-r-extrema（min proof step 2）：F(a+4)·F(b+4)=3·F(a+b+4)+F(a)·F(b)，合并22增益，FiberFusion.lean:268）——prop:pom-multiplicity-fixed-r-extrema 已在 Phase 235 注册——+3 Lean 定理，论文覆盖率数字不变（Phase 237）
+
 **Phase 236: Fib三倍恒等式 + Fib移位积下界 + Fib移位积上界（Round 236）**：单文件 FiberFusion.lean（+45行）——fib_three_mul（aux:pom-fib-triple-identity：3·F(n+2)=F(n+4)+F(n)，Fibonacci三倍恒等式，FiberFusion.lean:153）; fib_shifted_prod_lower_bound（prop:pom-path-component-multiplicity-refinement-monotone-extrema（下界）：∏F(lᵢ+2)≥F(sum+2) for 正列表，移位积下界，FiberFusion.lean:193）; fib_shifted_prod_upper_bound（prop:pom-path-component-multiplicity-refinement-monotone-extrema（上界）：∏F(lᵢ+2)≤2^(sum ls) for 正列表，移位积上界，FiberFusion.lean:207）——aux:pom-fib-triple-identity 为新注册标签；prop:pom-path-component-multiplicity-refinement-monotone-extrema 已在 Phase 234 注册——+3 Lean 定理，论文覆盖率数字不变（Phase 236）
 
 **Phase 235: minMatrix迹倍 + Fib分拆细化增益 + 值步不变量（Round 235）**：三文件 GramDet.lean（+15行）+ FiberFusion.lean（+35行）+ Rewrite.lean（+4行）——minMatrix_trace_double（cor:pom-Kk-sine-product-sum：minMatrix k×k 迹 = 2k，K_k 正弦乘积求和推论，GramDet.lean:80）; fib_splitting_refinement_gain（prop:pom-multiplicity-fixed-r-extrema：Fibonacci 分拆细化增益 F(a+b)·G ≥ F(a)·F(b)·G for a,b≥2，FiberFusion.lean:114）; value_invariant_step（prop:val-invariant：Step关系保持value不变，Rewrite.lean:823）——三个标签均为新注册——Folding ~103→~104, POM ~540→~542（+3 新标签：cor:pom-Kk-sine-product-sum, prop:pom-multiplicity-fixed-r-extrema, prop:val-invariant）（Phase 235）
@@ -218,7 +220,7 @@
 ### Lean4 形式化状态
 
 - **1,296 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,528 个 Lean4 定理（含内部引理）
+- ~2,531 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率

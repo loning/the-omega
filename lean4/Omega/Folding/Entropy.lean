@@ -150,7 +150,7 @@ theorem one_le_of_eventually_ge_tendsto_one
   have ha' : a < 1 := lt_of_not_ge ha
   have hu' : ∀ᶠ m in atTop, a < u m := by
     exact hu (isOpen_Ioi.mem_nhds ha')
-  filter_upwards [hu', hbound] with m hm_lt hm_le
+  obtain ⟨m, hm_lt, hm_le⟩ := (hu'.and hbound).exists
   linarith
 
 /-- For a probability measure, the reverse KL divergence to an exponential tilt splits into the
