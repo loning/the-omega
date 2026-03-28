@@ -222,4 +222,61 @@ theorem fib_shifted_prod_upper_bound (ls : List Nat) (hpos : ∀ l ∈ ls, 1 ≤
           Nat.mul_le_mul (fib_le_two_pow a) ih'
       _ = 2 ^ (a + tl.sum) := (Nat.pow_add 2 a tl.sum).symm
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 237: Fib splitting exact + replacement identities
+-- ══════════════════════════════════════════════════════════════
+
+/-- 2*F(a+b+1) = F(a+2)*F(b+2) + F(a-1)*F(b-1) for a, b ≥ 1.
+    Quantifies the gain from splitting (a,b) → (1, a+b-1).
+    prop:pom-multiplicity-fixed-r-extrema (max proof) -/
+theorem fib_splitting_exact (a b : Nat) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    2 * Nat.fib (a + b + 1) =
+    Nat.fib (a + 2) * Nat.fib (b + 2) + Nat.fib (a - 1) * Nat.fib (b - 1) := by
+  obtain ⟨a', rfl⟩ := Nat.exists_eq_add_of_le ha
+  obtain ⟨b', rfl⟩ := Nat.exists_eq_add_of_le hb
+  simp only [show 1 + a' - 1 = a' from by omega, show 1 + b' - 1 = b' from by omega,
+             show 1 + a' + 2 = a' + 3 from by omega, show 1 + b' + 2 = b' + 3 from by omega,
+             show 1 + a' + (1 + b') + 1 = a' + b' + 3 from by omega]
+  -- Goal: 2*F(a'+b'+3) = F(a'+3)*F(b'+3) + F(a')*F(b')
+  -- fib_shifted_fusion_aux: F(a'+3)*F(b'+3) = F(a'+b'+4) + F(a'+1)*F(b'+1)
+  have h1 := fib_shifted_fusion_aux (a' + 1) (b' + 1)
+  rw [show a' + 1 + 2 = a' + 3 from by omega, show b' + 1 + 2 = b' + 3 from by omega,
+      show a' + 1 + (b' + 1) + 2 = a' + b' + 4 from by omega] at h1
+  -- Nat.fib_add a' b': F(a'+b'+1) = F(a')*F(b') + F(a'+1)*F(b'+1)
+  have h2 := Nat.fib_add a' b'
+  -- F(a'+b'+4) = F(a'+b'+2) + F(a'+b'+3)
+  have h3 := Nat.fib_add_two (n := a' + b' + 2)
+  rw [show a' + b' + 2 + 2 = a' + b' + 4 from by omega,
+      show a' + b' + 2 + 1 = a' + b' + 3 from by omega] at h3
+  -- F(a'+b'+3) = F(a'+b'+1) + F(a'+b'+2)
+  have h4 := Nat.fib_add_two (n := a' + b' + 1)
+  rw [show a' + b' + 1 + 2 = a' + b' + 3 from by omega,
+      show a' + b' + 1 + 1 = a' + b' + 2 from by omega] at h4
+  omega
+
+/-- 2 * F(n+4) = 3 * F(n+3) + F(n) for all n.
+    prop:pom-multiplicity-fixed-r-extrema (min proof, step 1) -/
+theorem fib_replace_12_gain (n : Nat) :
+    2 * Nat.fib (n + 4) = 3 * Nat.fib (n + 3) + Nat.fib n := by
+  have h1 := Nat.fib_add_two (n := n + 2)
+  have h2 := Nat.fib_add_two (n := n + 1)
+  have h3 := Nat.fib_add_two (n := n)
+  simp only [show n + 2 + 2 = n + 4 from by omega,
+             show n + 2 + 1 = n + 3 from by omega,
+             show n + 1 + 1 = n + 2 from by omega] at h1 h2
+  omega
+
+/-- F(a+4)*F(b+4) = 3*F(a+b+4) + F(a)*F(b) for all a, b.
+    prop:pom-multiplicity-fixed-r-extrema (min proof, step 2) -/
+theorem fib_merge_22_gain (a b : Nat) :
+    Nat.fib (a + 4) * Nat.fib (b + 4) = 3 * Nat.fib (a + b + 4) + Nat.fib a * Nat.fib b := by
+  have h1 := fib_shifted_fusion_aux (a + 2) (b + 2)
+  rw [show a + 2 + 2 = a + 4 from by omega, show b + 2 + 2 = b + 4 from by omega,
+      show a + 2 + (b + 2) + 2 = a + b + 6 from by omega] at h1
+  have h2 := fib_shifted_fusion_aux a b
+  have h3 := fib_three_mul (a + b + 2)
+  rw [show a + b + 2 + 2 = a + b + 4 from by omega,
+      show a + b + 2 + 4 = a + b + 6 from by omega] at h3
+  omega
+
 end Omega
