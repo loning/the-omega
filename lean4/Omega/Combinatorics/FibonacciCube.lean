@@ -1035,4 +1035,21 @@ theorem fibcubeFVector_three_recurrence (n : Nat) :
 
 @[simp] theorem fibcubeFVector_three_six : fibcubeFVector 6 3 = 4 := by native_decide
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 238: FibCube edge bound
+-- ══════════════════════════════════════════════════════════════
+
+/-- 2*e(n) ≤ (n+1)*F(n+2): average degree at most n+1.
+    cor:pom-fibcube-edge-closed-form (weak bound) -/
+theorem fibcubeEdgeCount_double_bound (n : Nat) :
+    2 * fibcubeEdgeCount n ≤ (n + 1) * Nat.fib (n + 2) := by
+  rcases n with _ | n
+  · simp [fibcubeEdgeCount]
+  · have hclosed := fibcubeEdgeCount_closed (n + 1)
+    have hfib := Nat.fib_add_two (n := n + 1)
+    rw [show n + 1 + 1 = n + 2 from by omega] at hfib
+    have hfpos : 0 < Nat.fib (n + 2) := Nat.fib_pos.mpr (by omega)
+    have hfpos2 : 0 < Nat.fib (n + 1) := Nat.fib_pos.mpr (by omega)
+    nlinarith
+
 end Omega

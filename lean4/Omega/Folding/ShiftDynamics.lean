@@ -829,4 +829,62 @@ theorem lucasNum_ge_fib_succ (n : Nat) (hn : 1 ≤ n) :
     Nat.fib (n + 1) ≤ lucasNum n := by
   rw [lucasNum_eq_fib n hn]; omega
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 238: Lucas-Fib cross identities
+-- ══════════════════════════════════════════════════════════════
+
+/-- L(m)*F(n) + L(n)*F(m) = 2*F(m+n) for m, n ≥ 1.
+    Fundamental Lucas-Fibonacci cross product identity.
+    bridge:lucas-fib-cross-sum -/
+theorem lucasNum_fib_cross_sum (m n : Nat) (hm : 1 ≤ m) (hn : 1 ≤ n) :
+    lucasNum m * Nat.fib n + lucasNum n * Nat.fib m = 2 * Nat.fib (m + n) := by
+  obtain ⟨m', rfl⟩ := Nat.exists_eq_add_of_le hm
+  obtain ⟨n', rfl⟩ := Nat.exists_eq_add_of_le hn
+  simp only [show 1 + m' = m' + 1 from by omega, show 1 + n' = n' + 1 from by omega]
+  rw [lucasNum_eq_fib (m' + 1) (by omega), lucasNum_eq_fib (n' + 1) (by omega)]
+  simp only [show m' + 1 + 1 = m' + 2 from by omega, show m' + 1 - 1 = m' from by omega,
+             show n' + 1 + 1 = n' + 2 from by omega, show n' + 1 - 1 = n' from by omega]
+  -- LHS = (F(m'+2)+F(m'))*F(n'+1) + (F(n'+2)+F(n'))*F(m'+1)
+  -- Nat.fib_add m' (n'+1): F(m'+n'+2) = F(m')*F(n'+1) + F(m'+1)*F(n'+2)
+  have h1 := Nat.fib_add m' (n' + 1)
+  rw [show m' + (n' + 1) + 1 = m' + n' + 2 from by omega,
+      show n' + 1 + 1 = n' + 2 from by omega] at h1
+  -- Nat.fib_add (m'+1) n': F(m'+n'+2) = F(m'+1)*F(n') + F(m'+2)*F(n'+1)
+  have h2 := Nat.fib_add (m' + 1) n'
+  rw [show m' + 1 + n' + 1 = m' + n' + 2 from by omega,
+      show m' + 1 + 1 = m' + 2 from by omega] at h2
+  rw [show m' + 1 + (n' + 1) = m' + n' + 2 from by omega]
+  nlinarith
+
+/-- L(m+n+1)*F(n+1) - L(n+1)*F(m+n+1) = 2*(-1)^n * F(m) in ℤ.
+    bridge:lucas-fib-cross-diff -/
+theorem lucasNum_fib_cross_diff (m n : Nat) :
+    (lucasNum (m + n + 1) : ℤ) * Nat.fib (n + 1) -
+    (lucasNum (n + 1) : ℤ) * Nat.fib (m + n + 1) =
+    2 * (-1) ^ n * Nat.fib m := by
+  rw [lucasNum_eq_fib (m + n + 1) (by omega), lucasNum_eq_fib (n + 1) (by omega)]
+  simp only [show m + n + 1 + 1 = m + n + 2 from by omega,
+             show m + n + 1 - 1 = m + n from by omega,
+             show n + 1 + 1 = n + 2 from by omega,
+             show n + 1 - 1 = n from by omega]
+  push_cast
+  -- Nat.fib_add m (n+1): F(m+n+2) = F(m)*F(n+1) + F(m+1)*F(n+2)
+  have hadd1 := Nat.fib_add m n
+  have hadd2 := Nat.fib_add m (n + 1)
+  rw [show m + (n + 1) + 1 = m + n + 2 from by omega,
+      show n + 1 + 1 = n + 2 from by omega] at hadd2
+  -- Cassini: F(n+2)*F(n) - F(n+1)^2 = (-1)^(n+1)
+  have hcas := Graph.fib_cassini (n + 1) (by omega)
+  simp only [show n + 1 + 1 = n + 2 from by omega, show n + 1 - 1 = n from by omega] at hcas
+  -- F(n+1)^2 - F(n)*F(n+2) = (-1)^n
+  have key : (Nat.fib (n + 1) : ℤ) ^ 2 - (Nat.fib n : ℤ) * Nat.fib (n + 2) =
+      (-1 : ℤ) ^ n := by
+    have : (-1 : ℤ) ^ (n + 1) = (-1) ^ n * (-1) := pow_succ (-1) n
+    linarith
+  -- fib_add_two
+  have hfn := Nat.fib_add_two (n := n)
+  have hfmn := Nat.fib_add_two (n := m + n)
+  push_cast at hadd1 hadd2 hfn hfmn ⊢
+  nlinarith [key, sq_nonneg ((Nat.fib (n + 1) : ℤ))]
+
 end Omega
