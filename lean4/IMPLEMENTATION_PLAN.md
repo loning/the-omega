@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~31,415 |
-| 定理/定义数 | ~2,481 |
+| 总行数 | ~31,440 |
+| 定理/定义数 | ~2,483 |
 | 论文接口包装 | 353 |
 | 文件数 | 68 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 241: 轨道值保持 + 边界邻接恒等式（Round 241，2/3）**：两文件 Rewrite.lean（+13行）+ ScanErrorDiscrete.lean（+12行）——paper_orbits_preserve_val（prop:orbits-preserve-val（**新标签**）：F(k+2)+F(k+3)=F(k+4)，轨道保持值，Rewrite.lean:831）; paper_boundary_vs_adjacency（prop:spg-dyadic-polyclube-boundary-vs-adjacency-identity（**新标签**）：F+2E=2nN 边界邻接恒等式，ScanErrorDiscrete.lean:1065）——2 个新标签（prop:orbits-preserve-val → Folding ~104→~105, prop:spg-dyadic-polyclube-boundary-vs-adjacency-identity → SPG ~70→~71）——推迟：paper_lucas_mod_prime（lem:pom-lucas-modp）因 mathlib 缺少 Fibonacci mod prime 理论——Folding ~104→~105, SPG ~70→~71, 全局 1353→1355（Phase 241）
+
 **Phase 240: f-向量k=3严格单调 + 边数n·Fib下界 + S₂全局严格单调（Round 240）**：两文件 FibonacciCube.lean（+37行）+ MomentRecurrence.lean（+12行）——fibcubeFVector_three_strict_mono（thm:pom-fibcube-fvector-closed：f(n,3)<f(n+1,3) for n≥5，f-向量k=3严格单调，FibonacciCube.lean:1104）; fibcubeEdgeCount_ge_n_fib（cor:pom-fibcube-edge-closed-form：n·F(n)≤2·e(n) for n≥3，边数n·Fibonacci下界，FibonacciCube.lean:1121）; momentSum_two_strict_mono_all（prop:pom-s2-recurrence：S₂(m)<S₂(m+1) for all m，S₂全局严格单调，MomentRecurrence.lean:933）——三个论文标签均已注册（thm:pom-fibcube-fvector-closed: Phase 214, cor:pom-fibcube-edge-closed-form: Phase 212, prop:pom-s2-recurrence: Phase 83）——+3 Lean 定理，论文覆盖率数字不变（Phase 240）
 
 **Phase 239: S₂下界强化 + 边数Fib下界 + f-向量Fib下界（Round 239）**：两文件 MomentRecurrence.lean（+22行）+ FibonacciCube.lean（+44行）——momentSum_two_ge_two_fib_succ（prop:pom-s2-recurrence（strengthened lower bound）：S₂(m)≥2·F(m+2) for m≥2，S₂强化下界，MomentRecurrence.lean:909）; fibcubeEdgeCount_ge_fib（cor:pom-fibcube-edge-closed-form（lower bound）：e(n)≥F(n+1) for n≥2，边数Fibonacci下界，FibonacciCube.lean:1060）; fibcubeFVector_two_ge_fib（thm:pom-fibcube-fvector-closed（lower bound）：f(n,2)≥F(n) for n≥4，f-向量k=2的Fibonacci下界，FibonacciCube.lean:1079）——三个论文标签均已注册（prop:pom-s2-recurrence: Phase 83, cor:pom-fibcube-edge-closed-form: Phase 212, thm:pom-fibcube-fvector-closed: Phase 214）——+3 Lean 定理，论文覆盖率数字不变（Phase 239）
@@ -225,15 +227,15 @@
 
 ### Lean4 形式化状态
 
-- **1,296 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,540 个 Lean4 定理（含内部引理）
+- **1,298 个论文标签已注册**到 SourceMap（bridge 标签另计）
+- ~2,542 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
 
 | 度量 | 数值 |
 |---|---|
-| 全局覆盖率 | 1353/10,588 = **12.8%** |
+| 全局覆盖率 | 1355/10,588 = **12.8%** |
 | 强覆盖（一般性 ∀ 证明） | ~52 (0.5%) |
 | 中覆盖（有界 + 条件） | ~161 (1.5%) |
 | 弱覆盖（native_decide / 代理） | ~723 (6.8%) |
@@ -243,9 +245,9 @@
 
 | 章节 | LaTeX 定理数 | SourceMap 注册 | 覆盖率 |
 |---|---|---|---|
-| SPG | 127 | ~70 | ~55% |
+| SPG | 127 | ~71 | ~55.9% |
 | 新生算术 | 151 | ~93 | ~61.6% |
-| Folding | 317 | ~104 | ~32.8% |
+| Folding | 317 | ~105 | ~33.1% |
 | 群统一 | 457 | ~110 | ~24.1% |
 | POM | 1,525 | ~542 | ~35.5% |
 | 圆维度 | 342 | 62 | 18.1% |
@@ -253,7 +255,7 @@
 | 结论 | 1,727 | 83 | 4.8% |
 | 未追踪 body | 143 | 2 | ~1% |
 | 附录 | 1,316 | 0 | 0% |
-| **总计** | **10,588** | **1353** | **12.8%** |
+| **总计** | **10,588** | **1355** | **12.8%** |
 
 ## 3. 未来工作：30 条具体计划
 
