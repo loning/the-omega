@@ -1052,4 +1052,48 @@ theorem fibcubeEdgeCount_double_bound (n : Nat) :
     have hfpos2 : 0 < Nat.fib (n + 1) := Nat.fib_pos.mpr (by omega)
     nlinarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 239: FibCube edge and f-vector bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- e(n) ≥ F(n+1) for n ≥ 2.
+    cor:pom-fibcube-edge-closed-form (lower bound) -/
+theorem fibcubeEdgeCount_ge_fib (n : Nat) (hn : 2 ≤ n) :
+    Nat.fib (n + 1) ≤ fibcubeEdgeCount n := by
+  -- 5*e(n) = n*F(n+1) + 2*(n+1)*F(n), need 5*F(n+1) ≤ n*F(n+1) + 2*(n+1)*F(n)
+  obtain ⟨k, rfl⟩ : ∃ k, n = k + 2 := ⟨n - 2, by omega⟩
+  have hclosed := fibcubeEdgeCount_closed (k + 2)
+  have hfpos : 0 < Nat.fib (k + 3) := Nat.fib_pos.mpr (by omega)
+  have hfpos2 : 0 < Nat.fib (k + 2) := Nat.fib_pos.mpr (by omega)
+  -- (k+2)*F(k+3) + 2*(k+3)*F(k+2) ≥ 5*F(k+3)
+  -- iff (k-3)*F(k+3) + 2*(k+3)*F(k+2) ≥ 0
+  -- For k ≥ 3: both terms ≥ 0
+  -- For k = 0,1,2: (3-k)*F(k+3) ≤ 2*(k+3)*F(k+2), verify
+  match k with
+  | 0 => simp [fibcubeEdgeCount, Nat.fib]
+  | 1 => simp [fibcubeEdgeCount, Nat.fib]
+  | 2 => simp [fibcubeEdgeCount, Nat.fib]
+  | k + 3 => nlinarith
+
+/-- f(n, 2) ≥ F(n) for n ≥ 4.
+    thm:pom-fibcube-fvector-closed (lower bound) -/
+theorem fibcubeFVector_two_ge_fib (n : Nat) (hn : 4 ≤ n) :
+    Nat.fib n ≤ fibcubeFVector n 2 := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    match n with
+    | 0 | 1 | 2 | 3 => omega
+    | 4 => simp [fibcubeFVector_two_four, Nat.fib]
+    | 5 => simp [fibcubeFVector_two_five, Nat.fib]
+    | n + 6 =>
+      have ih1 := ih (n + 5) (by omega) (by omega)
+      have ih2 := ih (n + 4) (by omega) (by omega)
+      have hrec := fibcubeFVector_two_recurrence (n + 4)
+      rw [show n + 4 + 2 = n + 6 from by omega, show n + 4 + 1 = n + 5 from by omega] at hrec
+      have hfib := Nat.fib_add_two (n := n + 4)
+      rw [show n + 4 + 2 = n + 6 from by omega, show n + 4 + 1 = n + 5 from by omega] at hfib
+      -- f(n+6,2) = f(n+5,2) + f(n+4,2) + f(n+4,1)
+      -- ≥ F(n+5) + F(n+4) + 0 = F(n+6)
+      linarith
+
 end Omega

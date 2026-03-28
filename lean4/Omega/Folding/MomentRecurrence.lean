@@ -902,4 +902,26 @@ theorem exactWeightCollision_eq_symmetric_sum (m : Nat) :
   rw [Finset.mem_range] at hn
   rw [sq, exactWeightCount_symmetric m n (by omega)]
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 239: moment lower bound
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m) ≥ 2·F(m+2) for m ≥ 2.
+    prop:pom-s2-recurrence (strengthened lower bound) -/
+theorem momentSum_two_ge_two_fib_succ (m : Nat) (hm : 2 ≤ m) :
+    2 * Nat.fib (m + 2) ≤ momentSum 2 m := by
+  induction m using Nat.strongRecOn with
+  | _ m ih =>
+    match m with
+    | 0 | 1 => omega
+    | 2 => rw [momentSum_two_two]; simp [Nat.fib]
+    | 3 => rw [momentSum_two_three]; simp [Nat.fib]
+    | m + 4 =>
+      have h3 := ih (m + 3) (by omega) (by omega)
+      have hge := momentSum_two_succ_ge_double (m + 3) (by omega)
+      have hfib := Nat.fib_add_two (n := m + 4)
+      rw [show m + 4 + 2 = m + 6 from by omega, show m + 4 + 1 = m + 5 from by omega] at hfib
+      have hmono : Nat.fib (m + 4) ≤ Nat.fib (m + 5) := Nat.fib_mono (by omega)
+      linarith
+
 end Omega
