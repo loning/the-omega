@@ -823,6 +823,19 @@ theorem weight_rigidity_fibonacci (w : Nat → Nat)
 theorem value_invariant_step (a b : DigitCfg) (h : Step a b) : value a = value b :=
   (step_value h).symm
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 241
+-- ══════════════════════════════════════════════════════════════
+
+/-- The adjacency rewrite e_{k+1}+e_{k+2} → e_{k+3} preserves Val.
+    Equivalently: F(k+2) + F(k+3) = F(k+4) for all k.
+    prop:orbits-preserve-val -/
+theorem paper_orbits_preserve_val (k : Nat) :
+    Nat.fib (k + 2) + Nat.fib (k + 3) = Nat.fib (k + 4) := by
+  have := Nat.fib_add_two (n := k + 2)
+  rw [show k + 2 + 2 = k + 4 from by omega, show k + 2 + 1 = k + 3 from by omega] at this
+  omega
+
 end Rewrite
 
 end Omega
