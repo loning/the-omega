@@ -924,4 +924,16 @@ theorem momentSum_two_ge_two_fib_succ (m : Nat) (hm : 2 ≤ m) :
       have hmono : Nat.fib (m + 4) ≤ Nat.fib (m + 5) := Nat.fib_mono (by omega)
       linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 240: S_2 global strict monotonicity
+-- ══════════════════════════════════════════════════════════════
+
+/-- S_2(m) < S_2(m+1) for all m (including m=0).
+    prop:pom-s2-recurrence -/
+theorem momentSum_two_strict_mono_all (m : Nat) :
+    momentSum 2 m < momentSum 2 (m + 1) := by
+  match m with
+  | 0 => rw [momentSum_two_zero, momentSum_two_one]; omega
+  | m + 1 => exact momentSum_two_strict_mono' (m + 1) (by omega)
+
 end Omega

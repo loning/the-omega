@@ -1096,4 +1096,41 @@ theorem fibcubeFVector_two_ge_fib (n : Nat) (hn : 4 ≤ n) :
       -- ≥ F(n+5) + F(n+4) + 0 = F(n+6)
       linarith
 
+-- ══════════════════════════════════════════════════════════════
+-- Phase 240: FibCube monotonicity + edge bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- f(n,3) strictly increases for n ≥ 5.
+    thm:pom-fibcube-fvector-closed -/
+theorem fibcubeFVector_three_strict_mono (n : Nat) (hn : 5 ≤ n) :
+    fibcubeFVector n 3 < fibcubeFVector (n + 1) 3 := by
+  obtain ⟨k, rfl⟩ : ∃ k, n = k + 5 := ⟨n - 5, by omega⟩
+  -- f(k+6,3) = f(k+5,3) + f(k+4,3) + f(k+4,2)
+  show fibcubeFVector (k + 5) 3 < fibcubeFVector (k + 5 + 1) 3
+  rw [show k + 5 + 1 = k + 4 + 2 from by omega]
+  rw [fibcubeFVector_three_recurrence (k + 4)]
+  rw [show k + 4 + 1 = k + 5 from by omega]
+  -- Need: f(k+4,3) + f(k+4,2) > 0
+  have hf2 : 0 < fibcubeFVector (k + 4) 2 := by
+    have : fibcubeFVector 4 2 = 3 := fibcubeFVector_two_four
+    have hmono := fibcubeFVector_two_strict_mono (k + 3) (by omega)
+    linarith [fibcubeFVector_two_four]
+  linarith
+
+/-- 2*e(n) ≥ n*F(n) for n ≥ 3: linear average degree growth.
+    cor:pom-fibcube-edge-closed-form -/
+theorem fibcubeEdgeCount_ge_n_fib (n : Nat) (hn : 3 ≤ n) :
+    n * Nat.fib n ≤ 2 * fibcubeEdgeCount n := by
+  have hclosed := fibcubeEdgeCount_closed n
+  -- 10*e(n) = 2*n*F(n+1) + 4*(n+1)*F(n)
+  -- Need: 5*n*F(n) ≤ 2*n*F(n+1) + 4*(n+1)*F(n)
+  -- i.e. n*(5*F(n) - 2*F(n+1)) ≤ 4*(n+1)*F(n)
+  -- F(n+1) = F(n) + F(n-1), so 5*F(n) - 2*F(n+1) = 3*F(n) - 2*F(n-1)
+  -- For n ≥ 3: F(n) ≥ F(n-1), so 3*F(n) - 2*F(n-1) ≤ 3*F(n) and n*3*F(n) ≤ 4*(n+1)*F(n)
+  -- Actually simpler: need n*F(n) ≤ 2*e(n), i.e. 5*n*F(n) ≤ 10*e(n) = 2*n*F(n+1)+4*(n+1)*F(n)
+  -- Since F(n+1) ≥ F(n) and 4*(n+1) ≥ 3*n for n ≥ 3:
+  have hfmono : Nat.fib n ≤ Nat.fib (n + 1) := Nat.fib_mono (by omega)
+  have hfpos : 0 < Nat.fib n := Nat.fib_pos.mpr (by omega)
+  nlinarith
+
 end Omega
