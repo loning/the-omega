@@ -6,8 +6,8 @@
 
 | 指标 | 数值 |
 |---|---|
-| 总行数 | ~31,300 |
-| 定理/定义数 | ~2,475 |
+| 总行数 | ~31,366 |
+| 定理/定义数 | ~2,478 |
 | 论文接口包装 | 353 |
 | 文件数 | 68 |
 | 公理数 | 0 |
@@ -112,6 +112,8 @@
 **Fibonacci 多项式深化（Round 16，计划11前置）**：$F_n(0)$ 评估（fibPoly_eval_zero：$F_0(0)=0$，$F_n(0)=1$ for $n \ge 1$）; $I_\ell(0)=1$（pathIndSetPoly_eval_zero）; 路径独立集多项式递推（pathIndSetPoly_recurrence：$I_{\ell+2}=I_{\ell+1}+X \cdot I_\ell$）
 **圆维度半径–Poisson 时间共轭（Round 116）**：fibRadius（Fibonacci 半径参数）; poissonTimeOfRadius（Poisson 时间参数）; poissonTimeOf_fibRadius（$t(\varrho_m)=F_m$）; one_sub_sq_of_poissonTime_param（一般恒等式 $1-(t/(t+2))^2=4(t+1)/(t+2)^2$）; one_sub_fibRadius_sq（$1-\varrho_m^2=4(F_m+1)/(F_m+2)^2$）; one_sub_sq_of_poissonTime_param_nat（自然数特化）
 **圆维度半径–Poisson 时间共轭渐近式（Round 117）**：phi_rpow_neg_nat_tendsto_zero（$\varphi^{-m}\to0$）; fib_mul_phi_neg_tendsto_inv_sqrt5（$F_m\varphi^{-m}\to1/\sqrt5$）; fib_add_two_mul_phi_neg_tendsto_inv_sqrt5（$(F_m+2)\varphi^{-m}\to1/\sqrt5$）; one_sub_fibRadius_sq_tendsto（归一化极限趋于 $1$）; one_sub_fibRadius_sq_isEquivalent（$1-\varrho_m^2\sim 4\sqrt5\,\varphi^{-m}$）
+**Phase 239: S₂下界强化 + 边数Fib下界 + f-向量Fib下界（Round 239）**：两文件 MomentRecurrence.lean（+22行）+ FibonacciCube.lean（+44行）——momentSum_two_ge_two_fib_succ（prop:pom-s2-recurrence（strengthened lower bound）：S₂(m)≥2·F(m+2) for m≥2，S₂强化下界，MomentRecurrence.lean:909）; fibcubeEdgeCount_ge_fib（cor:pom-fibcube-edge-closed-form（lower bound）：e(n)≥F(n+1) for n≥2，边数Fibonacci下界，FibonacciCube.lean:1060）; fibcubeFVector_two_ge_fib（thm:pom-fibcube-fvector-closed（lower bound）：f(n,2)≥F(n) for n≥4，f-向量k=2的Fibonacci下界，FibonacciCube.lean:1079）——三个论文标签均已注册（prop:pom-s2-recurrence: Phase 83, cor:pom-fibcube-edge-closed-form: Phase 212, thm:pom-fibcube-fvector-closed: Phase 214）——+3 Lean 定理，论文覆盖率数字不变（Phase 239）
+
 **Phase 238: Lucas-Fib交叉和差 + 边数双倍上界（Round 238）**：两文件 ShiftDynamics.lean（+58行）+ FibonacciCube.lean（+17行）——lucasNum_fib_cross_sum（bridge:lucas-fib-cross-sum：L(m)·F(n)+L(n)·F(m)=2·F(m+n) for m,n≥1，Lucas-Fibonacci交叉和，ShiftDynamics.lean:838）; lucasNum_fib_cross_diff（bridge:lucas-fib-cross-diff：L(m+n+1)·F(n+1)-L(n+1)·F(m+n+1)=2·(-1)^n·F(m) in ℤ，Lucas-Fibonacci交叉差，ShiftDynamics.lean:860）; fibcubeEdgeCount_double_bound（cor:pom-fibcube-edge-closed-form（weak bound）：2·e(n)≤(n+1)·F(n+2)，边数双倍上界，FibonacciCube.lean:1044）——bridge 标签不计入论文覆盖率；cor:pom-fibcube-edge-closed-form 已在 Phase 212 注册——+3 Lean 定理，论文覆盖率数字不变（Phase 238）
 
 **Phase 237: Fib分拆精确式 + Fib替换增益 + Fib合并增益（Round 237）**：单文件 FiberFusion.lean（+57行）——fib_splitting_exact（prop:pom-multiplicity-fixed-r-extrema（max proof）：2·F(a+b+1)=F(a+2)·F(b+2)+F(a-1)·F(b-1) for a,b≥1，Fibonacci分拆精确恒等式，FiberFusion.lean:232）; fib_replace_12_gain（prop:pom-multiplicity-fixed-r-extrema（min proof step 1）：2·F(n+4)=3·F(n+3)+F(n)，替换12增益，FiberFusion.lean:257）; fib_merge_22_gain（prop:pom-multiplicity-fixed-r-extrema（min proof step 2）：F(a+4)·F(b+4)=3·F(a+b+4)+F(a)·F(b)，合并22增益，FiberFusion.lean:268）——prop:pom-multiplicity-fixed-r-extrema 已在 Phase 235 注册——+3 Lean 定理，论文覆盖率数字不变（Phase 237）
@@ -222,7 +224,7 @@
 ### Lean4 形式化状态
 
 - **1,296 个论文标签已注册**到 SourceMap（bridge 标签另计）
-- ~2,534 个 Lean4 定理（含内部引理）
+- ~2,537 个 Lean4 定理（含内部引理）
 - 0 公理，0 sorry，lake build 通过
 
 ### 覆盖率
