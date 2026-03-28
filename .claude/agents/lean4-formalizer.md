@@ -181,8 +181,15 @@ model: opus
    - analyst 在规格中会提供论文标签，直接写入即可
    - **不写标签的定理将无法被追踪**
 
-8. **完成后立即 commit 代码**
-   - `lake build` 通过后，立即执行：
+8. **全量编译验证（commit 前必须，不可跳过）**
+   - **必须运行 `timeout 300 lake build` 全量编译**，不能仅靠 `lake env lean` 单文件验证
+   - `lake env lean` 只检查单文件，无法发现跨文件依赖问题、pre-existing 错误、或 `nlinarith` vs `omega` 等全局问题
+   - 如果全量编译发现 pre-existing 错误（非本轮引入），**也必须修复后再 commit**
+   - 常见陷阱：`omega` 无法处理 Fibonacci 乘法项，必须用 `nlinarith`；`filter_upwards` 不支持 `False` goal
+   - **验证顺序**：`lean_diagnostic_messages` → `lake env lean`（快速迭代）→ **`timeout 300 lake build`（commit 前必须）**
+
+9. **commit 代码**
+   - 全量 `lake build` 通过后，立即执行：
      ```bash
      # 从项目根目录执行
      git add lean4/Omega/
@@ -193,6 +200,7 @@ model: opus
    - **不要 git push**（留给 registrar push）
    - **不要 add IMPLEMENTATION_PLAN.md**（由 registrar 处理）
    - commit 后通过 SendMessage 将结果报告发回 team lead
+   - **报告中必须明确写 "`lake build` passes (N jobs)"**，不能只写 "`lake env lean` zero errors"
    - 然后**可以立即接收下一轮任务**（不需要等 registrar）
 
 9. **提交结果后可立即接收下一轮**

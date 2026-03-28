@@ -277,10 +277,17 @@ Agent(
 **三层验证梯度**（每次编辑必须遵循）：
 - 逐编辑：lean_diagnostic_messages(file)（亚秒）
 - 文件门禁：lake env lean <path>（秒级，从项目根运行）
-- 项目门禁：timeout 300 lake build（commit 前）
+- **项目门禁：timeout 300 lake build（commit 前必须，不可跳过）**
 - 永远不要用 lake build <文件名>，用 lake env lean
+- **commit 前必须全量 lake build 通过，不能仅靠 lake env lean 单文件验证**
+- 如果发现 pre-existing 编译错误，也必须修复后再 commit
+- 报告中必须写 'lake build passes (N jobs)'，不能只写 'lake env lean zero errors'
 
 **stuck 时必须提供证据**：已尝试的 LSP 查询 + lean_multi_attempt 结果 + 当前 goal state
+
+**常见陷阱**：
+- omega 无法处理 Fibonacci 乘法项 → 用 nlinarith
+- filter_upwards 不支持 False goal → 用 .exists 提取 witness
 
 **编译性能规范**（硬限制）：
 - 禁止 set_option maxHeartbeats > 400000
@@ -782,7 +789,8 @@ Phase N committed as [commit hash], zero sorry.
 - `[名称]`：[阻塞原因]
 
 **Quality:** zero sorry, zero admit, zero axiom, [native_decide 数量].
-`lake build` passes ([job 数] jobs). [文件名] [行数] lines.
+**Full build:** `lake build` passes ([job 数] jobs, zero errors). ← 必须是全量 lake build，不是 lake env lean
+[文件名] [行数] lines.
 Ready for Phase N+1.
 ")
 ```
