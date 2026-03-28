@@ -113,31 +113,113 @@ theorem fib_component_fusion_gain_ge (l l' : Nat) (hl : 1 ≤ l) (hl' : 1 ≤ l'
     prop:pom-multiplicity-fixed-r-extrema -/
 theorem fib_splitting_refinement_gain (a b : Nat) (ha : 2 ≤ a) (hb : 2 ≤ b) :
     Nat.fib (a + 2) * Nat.fib (b + 2) < 2 * Nat.fib (a + b + 1) := by
-  -- From fib_add_formula: F(a+b+1) = F(a+1)*F(b+1) + F(a)*F(b)
-  have hadd := fib_add_formula a b
-  -- F(a+2) = F(a+1)+F(a), F(b+2) = F(b+1)+F(b)
+  -- F(a+b+1) = F(a)*F(b) + F(a+1)*F(b+1)
+  have hadd := Nat.fib_add a b
+  -- F(a+2) = F(a) + F(a+1), F(b+2) = F(b) + F(b+1)
   have ha2 := Nat.fib_add_two (n := a)
   have hb2 := Nat.fib_add_two (n := b)
-  -- F(a+b-1) = F(a)*F(b) + F(a-1)*F(b-1) from fib_fusion
-  have hfus := fib_fusion a b (by omega) (by omega)
-  -- F(a-1)*F(b-1) > 0
-  have hpos : 0 < Nat.fib (a - 1) * Nat.fib (b - 1) :=
-    Nat.mul_pos (Nat.fib_pos.mpr (by omega)) (Nat.fib_pos.mpr (by omega))
-  -- F(a+b+1) = F(a+b) + F(a+b-1)
-  have hrec := Nat.fib_add_two (n := a + b - 1)
-  rw [show a + b - 1 + 2 = a + b + 1 from by omega,
-      show a + b - 1 + 1 = a + b from by omega] at hrec
-  -- Key: F(a) < F(a+1) and F(b-1) > 0 (since a>=2, b>=2)
-  have ha_lt : Nat.fib a < Nat.fib (a + 1) := Nat.fib_lt_fib_succ (by omega)
+  -- Rewrite LHS
+  rw [ha2, hb2]
+  -- Goal: (F(a)+F(a+1))*(F(b)+F(b+1)) < 2*(F(a)*F(b)+F(a+1)*F(b+1))
+  rw [hadd]
+  -- Expand LHS using distributivity
+  rw [Nat.add_mul, Nat.mul_add, Nat.mul_add]
+  -- Goal: F(a)*F(b)+F(a)*F(b+1)+F(a+1)*F(b)+F(a+1)*F(b+1) < 2*(F(a)*F(b)+F(a+1)*F(b+1))
+  -- i.e. F(a)*F(b+1)+F(a+1)*F(b) < F(a)*F(b)+F(a+1)*F(b+1)
+  -- F(b+1) = F(b-1) + F(b)
   have hb_rec := Nat.fib_add_two (n := b - 1)
   rw [show b - 1 + 2 = b + 1 from by omega, show b - 1 + 1 = b from by omega] at hb_rec
-  -- F(b+1) = F(b-1) + F(b), so F(b+1) - F(b) = F(b-1) > 0
+  have ha_lt : Nat.fib a < Nat.fib (a + 1) := Nat.fib_lt_fib_succ (by omega)
   have hbm1_pos : 0 < Nat.fib (b - 1) := Nat.fib_pos.mpr (by omega)
-  -- F(a+2)*F(b+2) = (F(a)+F(a+1))*(F(b)+F(b+1))
-  -- 2*F(a+b+1) = 2*(F(a+1)*F(b+1) + F(a)*F(b))
-  -- Need: (F(a)+F(a+1))*(F(b)+F(b+1)) < 2*(F(a+1)*F(b+1) + F(a)*F(b))
-  -- i.e. F(a)*(F(b+1)-F(b)) < F(a+1)*(F(b+1)-F(b))
-  -- i.e. F(a)*F(b-1) < F(a+1)*F(b-1), from F(a) < F(a+1)
-  nlinarith [Nat.mul_lt_mul_of_pos_right ha_lt hbm1_pos]
+  have hkey := Nat.mul_lt_mul_of_pos_right ha_lt hbm1_pos
+  -- F(a)*F(b+1) = F(a)*F(b-1) + F(a)*F(b)
+  -- F(a+1)*F(b+1) = F(a+1)*F(b-1) + F(a+1)*F(b)
+  rw [hb_rec, Nat.mul_add, Nat.mul_add (Nat.fib (a + 1))]
+  -- Now goal is linear in the products
+  omega
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 236: Fib triple identity + shifted product bounds
+-- ══════════════════════════════════════════════════════════════
+
+/-- 3 * F(n+2) = F(n+4) + F(n) for all n.
+    aux:pom-fib-triple-identity -/
+theorem fib_three_mul (n : Nat) :
+    3 * Nat.fib (n + 2) = Nat.fib (n + 4) + Nat.fib n := by
+  -- F(n+2) = F(n) + F(n+1)
+  have h3 := Nat.fib_add_two (n := n)
+  -- F(n+3) = F(n+1) + F(n+2)
+  have h2 := Nat.fib_add_two (n := n + 1)
+  -- F(n+4) = F(n+2) + F(n+3)
+  have h1 := Nat.fib_add_two (n := n + 2)
+  -- Normalize: n+2+2 = n+4, n+2+1 = n+3, n+1+2 = n+3, n+1+1 = n+2
+  simp only [show n + 2 + 2 = n + 4 from by omega,
+             show n + 2 + 1 = n + 3 from by omega,
+             show n + 1 + 1 = n + 2 from by omega] at h1 h2
+  omega
+
+private theorem fib_shifted_fusion_aux (a b : Nat) :
+    Nat.fib (a + 2) * Nat.fib (b + 2) =
+      Nat.fib (a + b + 2) + Nat.fib a * Nat.fib b := by
+  -- Nat.fib_add (a+1) b: F(a+b+2) = F(a+1)*F(b) + F(a+2)*F(b+1)
+  have hadd := Nat.fib_add (a + 1) b
+  rw [show a + 1 + b + 1 = a + b + 2 from by omega,
+      show a + 1 + 1 = a + 2 from by omega] at hadd
+  -- F(b+2) = F(b) + F(b+1), F(a+2) = F(a) + F(a+1)
+  have hb := Nat.fib_add_two (n := b)
+  have ha := Nat.fib_add_two (n := a)
+  -- LHS = F(a+2)*(F(b)+F(b+1)) = F(a+2)*F(b) + F(a+2)*F(b+1)
+  rw [hb, Nat.mul_add]
+  -- RHS = F(a+1)*F(b) + F(a+2)*F(b+1) + F(a)*F(b)
+  --     = (F(a) + F(a+1))*F(b) + F(a+2)*F(b+1)
+  --     = F(a+2)*F(b) + F(a+2)*F(b+1)
+  rw [hadd, ha]
+  ring
+
+private theorem fib_le_two_pow : ∀ m : Nat, Nat.fib (m + 2) ≤ 2 ^ m
+  | 0 => by simp
+  | 1 => by simp [Nat.fib]
+  | m + 2 => by
+    have h1 := fib_le_two_pow (m + 1)
+    have h2 := fib_le_two_pow m
+    have hrec := Nat.fib_add_two (n := m + 2)
+    rw [show m + 2 + 2 = m + 4 from by omega,
+        show m + 2 + 1 = m + 3 from by omega] at hrec
+    calc Nat.fib (m + 4) = Nat.fib (m + 2) + Nat.fib (m + 3) := hrec
+      _ ≤ 2 ^ m + 2 ^ (m + 1) := Nat.add_le_add h2 h1
+      _ ≤ 2 ^ (m + 1) + 2 ^ (m + 1) :=
+          Nat.add_le_add_right (Nat.pow_le_pow_right (by omega) (by omega)) _
+      _ = 2 ^ (m + 2) := by ring
+
+/-- For a list of positive naturals, ∏ F(l_i+2) ≥ F(sum+2).
+    prop:pom-path-component-multiplicity-refinement-monotone-extrema (lower bound) -/
+theorem fib_shifted_prod_lower_bound (ls : List Nat) (hpos : ∀ l ∈ ls, 1 ≤ l) :
+    Nat.fib (ls.sum + 2) ≤ (ls.map (fun l => Nat.fib (l + 2))).prod := by
+  induction ls with
+  | nil => simp
+  | cons a tl ih =>
+    simp only [List.sum_cons, List.map_cons, List.prod_cons]
+    have htl : ∀ l ∈ tl, 1 ≤ l := fun l hl => hpos l (List.mem_cons_of_mem a hl)
+    have ih' := ih htl
+    have hfuse := fib_shifted_fusion_aux a tl.sum
+    calc Nat.fib (a + tl.sum + 2)
+        ≤ Nat.fib (a + 2) * Nat.fib (tl.sum + 2) := by omega
+      _ ≤ Nat.fib (a + 2) * (tl.map (fun l => Nat.fib (l + 2))).prod :=
+          Nat.mul_le_mul_left _ ih'
+
+/-- For a list of positive naturals, ∏ F(l_i+2) ≤ 2^(sum ls).
+    prop:pom-path-component-multiplicity-refinement-monotone-extrema (upper bound) -/
+theorem fib_shifted_prod_upper_bound (ls : List Nat) (hpos : ∀ l ∈ ls, 1 ≤ l) :
+    (ls.map (fun l => Nat.fib (l + 2))).prod ≤ 2 ^ ls.sum := by
+  induction ls with
+  | nil => simp
+  | cons a tl ih =>
+    simp only [List.sum_cons, List.map_cons, List.prod_cons]
+    have htl : ∀ l ∈ tl, 1 ≤ l := fun l hl => hpos l (List.mem_cons_of_mem a hl)
+    have ih' := ih htl
+    calc Nat.fib (a + 2) * (tl.map (fun l => Nat.fib (l + 2))).prod
+        ≤ 2 ^ a * 2 ^ tl.sum :=
+          Nat.mul_le_mul (fib_le_two_pow a) ih'
+      _ = 2 ^ (a + tl.sum) := (Nat.pow_add 2 a tl.sum).symm
 
 end Omega
