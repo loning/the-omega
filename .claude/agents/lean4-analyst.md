@@ -76,10 +76,23 @@ subagent_type: general-purpose
    - 读相关模块的.lean文件，找到已有的定义和定理
    - 确认哪些前置依赖已形式化，哪些缺失
 
-3. **查找mathlib支持**
-   - 识别定理证明中可能用到的mathlib引理
-   - 确认mathlib中是否已有等价或近似的结果
-   - 列出需要的mathlib import路径
+3. **查找 mathlib 支持（lean4-skills LSP 搜索协议）**
+
+   加载 Lean4 skills 后，使用以下 LSP 工具搜索 mathlib：
+
+   | 搜索场景 | 工具 | 用法 |
+   |----------|------|------|
+   | 知道关键词 | `lean_local_search("keyword")` | 无限额，永远先调这个 |
+   | 知道数学描述 | `lean_leanfinder("goal or description")` | 语义搜索，goal-aware（10/30s） |
+   | 知道输入/输出类型 | `lean_loogle("?a → ?b → _")` | 类型模式匹配 |
+   | 自然语言回退 | `lean_leansearch("natural language")` | 3/30s |
+
+   **搜索规则**：
+   - 写引理名之前，先用 `lean_local_search` 确认它存在于当前 mathlib 版本
+   - 用 `lean_hover_info(file, line, col)` 检查引理的完整签名
+   - 被限速时等 30s 或切换到 `lean_local_search`（无限额）
+   - 确认 mathlib 中是否已有等价或近似的结果
+   - 列出需要的 mathlib import 路径
 
 4. **生成规格**
 
@@ -202,3 +215,29 @@ theorem paperThm_xxx :
 - 不遗漏任何隐式依赖
 - 不建议引入新的axiom
 - 证明策略必须具体（不能只说"用归纳法"，要说"对m归纳，基础情形用xxx引理"）
+
+## 与 lean4-skills 工具的集成
+
+### 存在性验证
+
+规格中引用的每个 mathlib 引理，必须用 LSP 工具验证存在：
+- `lean_local_search("lemma_name")` — 确认引理在当前项目/mathlib 中存在
+- `lean_hover_info(file, line, col)` — 确认引理签名与预期一致
+
+### 为 formalizer 提供 tactic 级联建议
+
+规格中的推荐证明策略应包含 lean4-skills 自动化 tactic 级联的具体映射：
+```
+rfl → simp → ring → linarith → nlinarith → omega → exact? → apply? → grind → aesop
+```
+
+对每个证明步骤，建议使用级联中的哪个 tactic，以及可能需要的 `simp` 引理列表。
+
+### 难度评估与 formalizer 工具建议
+
+| 难度 | 建议 formalizer 使用的 lean4-skills 工具 |
+|------|----------------------------------------|
+| 低 | `lean_multi_attempt` 并行测试 2-3 个 tactic |
+| 中 | `lean_goal` + `lean_local_search` + `lean_multi_attempt` |
+| 高 | 全套 LSP 搜索 + `lean_hammer_premise` + 可能需要 codex-consultant |
+| 极高 | 可能需要 `lean4:proof-repair` 或 `lean4:sorry-filler-deep` plugin agent |

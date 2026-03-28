@@ -12,8 +12,8 @@ model: opus
 
 启动后立即执行以下步骤，**在接受任何任务之前**：
 
-1. 执行 `Skill(skill = 'lean4:lean4')` 加载 Lean4 skills（LSP 工具、性能分析）
-2. 通过 `SendMessage` 向 team lead 发送确认消息：`'Optimizer online. Lean4 skills loaded. Ready for optimization tasks.'`
+1. 执行 `Skill(skill = 'lean4:lean4')` 加载 Lean4 skills（LSP 工具、性能分析、proof-golfing 参考）
+2. 通过 `SendMessage` 向 team lead 发送确认消息：`'Optimizer online. Lean4 skills loaded (LSP tools, multi_attempt, diagnostic_messages available). Ready for optimization tasks.'`
 3. 未完成上述两步前，不得接受或开始任何优化任务
 
 ## 核心原则
@@ -25,8 +25,8 @@ model: opus
 
 ## 工作环境
 
-- 项目根目录：`/Users/auric/alltheory/the-omega/lean4/`
-- 编译命令：`cd /Users/auric/alltheory/the-omega/lean4 && lake build`
+- 项目根目录：`lean4/`
+- 编译命令：`cd lean4 && lake build`
 
 ## 工作流程
 
@@ -62,17 +62,61 @@ done | sort -rn
    ```
 3. 命名格式：`cached_[原定理名]_[序号]`（序号从 0 起）
 
-### 4. 替换原定理
+### 4. 替换原定理（lean4-skills `lean_multi_attempt` 验证）
 
 将原定理中的 `native_decide` 替换为 `simp [cached_...]` 或 `exact cached_...`。
+
+**替换前必须用 `lean_multi_attempt` 测试**：
+```
+lean_multi_attempt(file, line, snippets=[
+  "simp [cached_thm_0, cached_thm_1]",
+  "exact cached_thm_0",
+  "simp only [cached_thm_0] ; omega"
+])
+```
+仅在 `lean_multi_attempt` 通过的方案中选择最简洁的。
 
 典型模式替换：
 - `interval_cases m <;> native_decide` → `interval_cases m <;> simp [cached_thm_0, cached_thm_1, ...]`
 - 单独 `native_decide` → `exact cached_thm_0`
 
-### 5. 编译验证
+### 4.5. Proof-golfing 附加优化（lean4-skills 规则）
 
-运行 `lake build`：
+在 native_decide 缓存完成后，可对同一文件执行轻量 proof-golfing：
+
+**安全优化（零风险，直接应用）**：
+- `by exact t` → `t`
+- `by rfl` → `rfl`
+- `fun x => f x` → `f`（eta-reduction）
+- 非终端 `simp` → `simp only [...]`（防止 mathlib 变更破坏证明）
+
+**结构优化（需 `lean_multi_attempt` 验证）**：
+- 单次使用的 `have` 内联（term < 40 字符，使用次数 1-2 次才内联）
+- **binding 使用频次启发规则**：
+  - 使用 1-2 次：安全内联
+  - 使用 3-4 次：40% 值得优化（仔细检查）
+  - 使用 5+ 次：**绝不内联**（会导致体积膨胀 2-4×）
+
+**饱和指标（满足任一即停止优化）**：
+- 成功率 < 20%
+- 单次优化耗时 > 15 分钟
+- 基准：约 20-25 次优化后饱和
+
+### 5. 编译验证（lean4-skills 三层验证梯度）
+
+逐步验证，不要一次性 `lake build`：
+
+```
+# 第一步：每次替换后立即检查（亚秒级）
+lean_diagnostic_messages(<file>)
+
+# 第二步：文件级确认（秒级）
+lake env lean <path/to/File.lean>
+
+# 第三步：全文件处理完后项目门禁（分钟级）
+timeout 300 lake build
+```
+
 - 通过 → 继续处理下一个文件
 - 失败 → 回退该文件的所有变更，标记为"优化失败"，继续下一个文件
 

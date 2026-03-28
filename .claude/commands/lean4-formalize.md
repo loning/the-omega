@@ -152,14 +152,39 @@ formalizer 遇到编译超时时：
 4. 主证明改为 `interval_cases m <;> simp <;> omega`
 5. 用 `timeout 300 lake build` 验证不超过 5 分钟
 
-### formalizer 编译验证命令
+### formalizer 验证梯度（来自 lean4-skills）
 
-```bash
-# 标准验证（5分钟超时）
-timeout 300 lake env lean lean4/Omega/Folding/MomentBounds.lean
+formalizer 使用三层验证梯度（稳态工作流，非冷启动）：
 
-# 如果超时，说明需要优化
-```
+| 层级 | 工具 | 何时 | 速度 |
+|------|------|------|------|
+| 逐编辑 | `lean_diagnostic_messages(file)` | 每次编辑后 | 亚秒 |
+| 文件编译 | `lake env lean <path/to/File.lean>` | 文件级门禁（从项目根运行） | 秒级 |
+| 项目门禁 | `timeout 300 lake build` | commit 前最终检查 | 分钟级 |
+
+**永远不要用 `lake build <文件名>`** — `lake build` 不接受文件路径参数。用 `lake env lean` 做单文件编译。
+
+### formalizer LSP 驱动证明开发（来自 lean4-skills）
+
+formalizer 的证明开发必须遵循 LSP-first 协议：
+
+1. **搜索先于编写**：写任何引理引用前，先 `lean_local_search` / `lean_leanfinder` 确认存在
+2. **并行测试**：对每个 sorry，用 `lean_multi_attempt(file, line, snippets=[...])` 并行测试 2-3 个候选方案
+3. **自动化 tactic 级联**：`rfl → simp → ring → linarith → nlinarith → omega → exact? → apply? → grind → aesop`
+4. **stuck 判定**：同一 sorry 失败 2-3 次、同一错误重复 2 次、LSP 搜索枯竭 → 触发升级
+5. **修复预算**：同一错误签名最多修复 2 次，单轮总修复 ≤ 8 次
+
+### formalizer stuck 时的升级路径（来自 lean4-skills plugin agents）
+
+| 升级阶段 | 触发条件 | spawn 的 agent | lean4-skills 来源 |
+|---------|---------|---------------|-----------------|
+| 自助 | 默认 | — | LSP 工具搜索 + `lean_multi_attempt` |
+| codex-consultant | LSP 搜索枯竭 | `lean4-codex-consultant` | — |
+| 编译修复 | 同一编译错误重复 2-3x | `lean4:proof-repair` | 编译器驱动两阶段修复（fast→strong），K=1 |
+| 深度 sorry | fast pass 填充失败 | `lean4:sorry-filler-deep` | 可跨文件重构、提取 helper lemma |
+| axiom 消除 | 非标准 axiom 检出 | `lean4:axiom-eliminator` | 系统性 mathlib 替代搜索 |
+
+**formalizer 请求升级时必须提供 stuck 证据**：已尝试的 LSP 查询、`lean_multi_attempt` 结果、当前 goal state。
 
 ## 实时状态表
 
@@ -241,11 +266,23 @@ Agent(
 你将通过 SendMessage 收到 team lead 的实现任务和规格。
 收到任务后按 lean4-formalizer 规格实现证明，完成后将结果通过 SendMessage 发回 team lead。
 实现完成后，可直接通知 registrar 进行登记（抄送 team lead）。
-遇到 API 不确定时，优先使用 lean_local_search / lean_leanfinder / lean_leansearch 搜索 mathlib。
-遇到 tactic 选择困难时，使用 lean_multi_attempt 并行测试多个方案。
+
+**LSP-first 证明开发协议**（来自 lean4-skills）：
+- 搜索优先级：lean_local_search（无限）→ lean_leanfinder（10/30s）→ lean_loogle（无限 local）→ lean_leansearch（3/30s）
+- 写任何引理引用前，先 lean_local_search / lean_leanfinder 确认存在
+- 用 lean_hover_info 检查引理签名后再使用
+- 每个 sorry 用 lean_multi_attempt(file, line, snippets=[...]) 并行测试 2-3 个候选方案
+- 自动化 tactic 级联：rfl → simp → ring → linarith → nlinarith → omega → exact? → apply? → grind → aesop
+
+**三层验证梯度**（每次编辑必须遵循）：
+- 逐编辑：lean_diagnostic_messages(file)（亚秒）
+- 文件门禁：lake env lean <path>（秒级，从项目根运行）
+- 项目门禁：timeout 300 lake build（commit 前）
+- 永远不要用 lake build <文件名>，用 lake env lean
+
+**stuck 时必须提供证据**：已尝试的 LSP 查询 + lean_multi_attempt 结果 + 当前 goal state
 
 **编译性能规范**（硬限制）：
-- 单文件编译 ≤ 5 分钟（用 timeout 300 lake build 验证）
 - 禁止 set_option maxHeartbeats > 400000
 - native_decide 只允许在 @[simp] 基值引理中使用，禁止在主定理证明中直接使用
 - 主证明统一用 interval_cases m <;> simp <;> omega
@@ -326,9 +363,16 @@ SendMessage(to = "registrar", message = "请登记上一轮成果。[详情]")
 **三条消息必须在同一个 turn 中发出，不要分批发送。**
 
 4. **如果 formalizer 报告技术阻塞或推迟任务**（API 不匹配、tactic 选择困难、数学路线疑问、proof engineering 复杂等）：
-   - **积极 spawn codex-consultant**，不要轻易接受"推迟"——先让 Codex 提供独立技术建议
+
+   **升级路径（按优先级逐步升级，不要轻易接受"推迟"）**：
+
+   **第一步：确认 formalizer 已用尽 LSP 工具**
+   - formalizer 的 stuck 报告必须包含：已尝试的 LSP 查询、`lean_multi_attempt` 结果、当前 goal state
+   - 如果 stuck 证据不完整，要求 formalizer 补充后再升级
+
+   **第二步：codex-consultant**（API/语法/tactic 层面）
    - 先转发问题给 analyst 获取数学层面的指导
-   - 同时/之后 spawn codex-consultant 获取 Lean4 API/语法/tactic 层面的具体代码建议：
+   - 同时 spawn codex-consultant：
 
    ```
    Agent(
@@ -339,14 +383,59 @@ SendMessage(to = "registrar", message = "请登记上一轮成果。[详情]")
      prompt = "你是 lean4-formalization 团队的 Codex 技术顾问。请用 Codex 分析以下技术问题并给出具体的 Lean4 代码建议：
 
      [formalizer 的具体技术问题]
+     [formalizer 的 stuck 证据：LSP 查询结果、multi_attempt 结果、goal state]
 
-     项目路径：/Users/auric/alltheory/the-omega/lean4/
+     项目路径：lean4/
+     注意：先用 lean_goal / lean_local_search / lean_hover_info 收集上下文，再调用 Codex。
+     用 lean_multi_attempt 验证 Codex 返回的建议是否编译通过。
      完成后将建议通过 SendMessage 发回 team lead。"
    )
    ```
 
    - 收到 codex-consultant 建议后，转发给 formalizer，然后 shutdown codex-consultant
-   - 等待 formalizer 继续迭代
+
+   **第三步：lean4-skills plugin subagent**（编译器驱动修复 / 深度 sorry 填充）
+
+   如果 codex-consultant + formalizer 仍无法解决，根据阻塞类型 spawn 对应的 lean4-skills plugin agent：
+
+   | 阻塞类型 | spawn 的 agent | 说明 |
+   |----------|---------------|------|
+   | 编译错误反复出现（type mismatch / unknown ident / synth instance） | `lean4:proof-repair` | 编译器驱动的两阶段修复（fast→strong），K=1 小采样预算 |
+   | 顽固 sorry 无法填充（fast pass 失败） | `lean4:sorry-filler-deep` | 可跨文件重构、提取 helper lemma、使用 snapshot/rollback |
+   | 检测到非标准 axiom 需消除 | `lean4:axiom-eliminator` | 系统性搜索 mathlib 替代、组合构造、结构重构 |
+
+   ```
+   // 编译错误修复
+   Agent(
+     name = "proof-repairer",
+     subagent_type = "lean4:proof-repair",
+     team_name = "lean4-formalization",
+     description = "编译器驱动证明修复（按需）",
+     prompt = "[JSON error context from formalizer: errorType, message, file, line, goal, localContext]"
+   )
+
+   // 深度 sorry 填充
+   Agent(
+     name = "deep-filler",
+     subagent_type = "lean4:sorry-filler-deep",
+     team_name = "lean4-formalization",
+     description = "深度sorry填充（按需）",
+     prompt = "Target: [file:line]. Why fast pass failed: [context]. Permission: target scope only."
+   )
+
+   // Axiom 消除
+   Agent(
+     name = "axiom-killer",
+     subagent_type = "lean4:axiom-eliminator",
+     team_name = "lean4-formalization",
+     description = "Axiom消除（按需）",
+     prompt = "Eliminate custom axioms in [file]. Permission: refactor within module."
+   )
+   ```
+
+   - 收到 plugin agent 结果后，转发给 formalizer 继续迭代
+   - shutdown plugin agent
+   - 仅在全部升级路径都失败后才接受"推迟"
 
 5. 收到 formalizer 结果后**立即告知其暂停等待审核**：
    ```
@@ -428,12 +517,42 @@ SendMessage(to = "registrar", message = "请登记上一轮成果。[详情]")
 
 **已废弃事后 optimizer 模式。** 编译性能现在是 formalizer 的源头责任：
 
-- formalizer 必须用 `timeout 300 lake build` 验证每次提交
+- formalizer 使用三层验证梯度：`lean_diagnostic_messages` → `lake env lean` → `lake build`
 - `native_decide` 只允许出现在 `@[simp]` 基值引理中
 - 主证明统一使用 `simp + omega`
 - 超时则当场优化，不等事后补救
 
-**仅在存量代码编译变慢时**（如累积的旧 `native_decide` 导致全量编译超 5 分钟），team lead 才按需 spawn optimizer 做一次性清理。
+**按需 spawn 的性能工具**（两种模式）：
+
+1. **存量 native_decide 清理**（累积的旧代码导致全量编译超 5 分钟时）：
+   ```
+   Agent(
+     name = "optimizer",
+     subagent_type = "lean4-optimizer",
+     description = "存量 native_decide 清理",
+     prompt = "扫描 top 3 native_decide 热点文件，批量缓存为 @[simp] 引理。
+     使用 lean_diagnostic_messages 逐编辑验证，lean_multi_attempt 测试替换方案。"
+   )
+   ```
+
+2. **Proof golfing 优化**（可选，每 10 轮或代码膨胀时）：
+   ```
+   Agent(
+     name = "golfer",
+     subagent_type = "lean4:proof-golfer",
+     description = "证明优化（按需）",
+     prompt = "Optimize [file]. Search mode: quick. Max 3 hunks × 60 lines.
+     安全优化：by exact→term, by rfl→rfl, eta-reduction, simp→simp only。
+     结构优化需 lean_multi_attempt 验证。饱和指标：成功率<20%时停止。"
+   )
+   ```
+
+   proof-golfer 来自 lean4-skills plugin，具备：
+   - 安全的 let/have 内联检查（1-2 次使用才内联，5+ 次绝不内联）
+   - `lean_multi_attempt` 测试替代证明
+   - mathlib 引理替换搜索（`lean_local_search` / `lean_leanfinder`）
+   - 自动回退失败的优化
+   - 饱和检测（成功率 < 20% 时停止）
 
 ### Phase 5：循环控制（永不停止）
 

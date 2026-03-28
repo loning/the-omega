@@ -20,7 +20,7 @@ model: sonnet
 
 ## 工作环境
 
-- 项目根目录：`/Users/auric/alltheory/the-omega/lean4/`
+- 项目根目录：`lean4/`
 - 实施方案：`IMPLEMENTATION_PLAN.md`
 
 ## 工作流程
@@ -41,7 +41,7 @@ model: sonnet
 ### 步骤2：提交并推送
 
 ```bash
-cd /Users/auric/alltheory/the-omega
+cd .
 
 # 1. 确认 formalizer 的代码 commit 已存在
 git log --oneline -3
