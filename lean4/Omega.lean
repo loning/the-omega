@@ -1,6 +1,8 @@
 import Omega.Core.Fib
 import Omega.Core.Word
 import Omega.Core.No11
+import Omega.Core.CoprimeSMul
+import Omega.Core.PowerInequality
 import Omega.Folding.StableSyntax
 import Omega.Folding.Weight
 import Omega.Folding.Value
@@ -8,6 +10,17 @@ import Omega.Folding.Zeckendorf
 import Omega.Folding.Fold
 import Omega.Folding.Fiber
 import Omega.Folding.MaxFiber
+import Omega.Folding.MaxFiberHigh
+import Omega.Folding.MaxFiberTwoStep
+import Omega.Folding.FiberWeightCount
+import Omega.Folding.CollisionDecomp
+import Omega.Folding.MomentRecurrence
+import Omega.Folding.MomentTriple
+import Omega.Folding.MomentBounds
+import Omega.Folding.EWTTelescope
+import Omega.Folding.S3Recurrence
+import Omega.Folding.CCSPrimeTelescope
+import Omega.Folding.CCSPrime8Split
 import Omega.Folding.FiberSpectrum
 import Omega.Folding.FiberArithmetic
 import Omega.Folding.FiberArithmeticProperties
@@ -22,6 +35,7 @@ import Omega.Folding.CarryDefect
 import Omega.Folding.FiberFusion
 import Omega.Folding.InverseLimit
 import Omega.Folding.InverseLimitTopology
+import Omega.Folding.CircleDimension
 import Omega.Folding.ShiftDynamics
 import Omega.Folding.Rewrite
 import Omega.Folding.Defect
@@ -49,6 +63,6 @@ import Omega.Frontier.ConditionalArithmetic
 import Omega.Frontier.ConditionalSummary
 import Omega.Frontier.Conjectures
 import Omega.Frontier.Certificates
-import Omega.Audit.SourceMap
-import Omega.Audit.Inventory
-import Omega.Audit.NoAxiom
+import Omega.Combinatorics.PathIndSet
+import Omega.Combinatorics.FibonacciCube
+import Omega.Combinatorics.GramDet

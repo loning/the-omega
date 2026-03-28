@@ -6,7 +6,8 @@ namespace X
 
 noncomputable section
 
-/-- The finite preimage of a stable word under `Fold`. -/
+/-- The finite preimage of a stable word under `Fold`.
+    def:fold-fiber -/
 def fiber (x : X m) : Finset (Word m) := by
   classical
   exact Finset.univ.filter fun w => Fold w = x
@@ -20,6 +21,7 @@ def fiber (x : X m) : Finset (Word m) := by
   classical
   simp [fiber]
 
+/-- cor:fold-fiber-nonempty -/
 theorem fiber_nonempty (x : X m) : (fiber x).Nonempty :=
   ⟨x.1, self_mem_fiber x⟩
 
@@ -68,15 +70,18 @@ noncomputable def fiberElemEquivFiberPoint (x : X m) : FiberElem x ≃ FiberPoin
     cases w
     rfl
 
-/-- Noncomputable ranking of a fiber element by its position in `Fin card`. -/
+/-- Noncomputable ranking of a fiber element by its position in `Fin card`.
+    def:fold-fiber-rank -/
 noncomputable def rank (x : X m) : FiberElem x ≃ Fin (fiber x).card :=
   (fiberElemEquivSubtype x).trans <|
     Fintype.equivFinOfCardEq (by rw [Fintype.card_coe])
 
-/-- Noncomputable unranking map for a fiber. -/
+/-- Noncomputable unranking map for a fiber.
+    def:fold-fiber-unrank -/
 noncomputable def unrank (x : X m) : Fin (fiber x).card → FiberElem x :=
   (rank x).symm
 
+/-- cor:fold-fiber-rank-unrank -/
 @[simp] theorem rank_unrank (x : X m) (i : Fin (fiber x).card) :
     rank x (unrank x i) = i := by
   simp [rank, unrank]
@@ -93,6 +98,7 @@ noncomputable def unrankWord (x : X m) (i : Fin (fiber x).card) : Word m :=
     unrankWord x i ∈ fiber x :=
   (unrank x i).2
 
+/-- cor:fold-fiber-unrank-fold -/
 @[simp] theorem Fold_unrankWord (x : X m) (i : Fin (fiber x).card) :
     Fold (unrankWord x i) = x := by
   exact (mem_fiber).1 (unrankWord_mem_fiber x i)
@@ -113,11 +119,13 @@ noncomputable def rankOfFoldEq (x : X m) (w : Word m) (h : Fold w = x) :
     unrankWord x (rankOfFoldEq x (choosePreimage x) (Fold_choosePreimage x)) = choosePreimage x := by
   exact unrankWord_rankOfFoldEq x (choosePreimage x) (Fold_choosePreimage x)
 
-/-- The word space has cardinality 2^m. -/
+/-- The word space has cardinality 2^m.
+    thm:word-card -/
 theorem Word_card (m : Nat) : Fintype.card (Word m) = 2 ^ m := by
   rw [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
 
-/-- Fiber cardinalities sum to the total word count (fibers partition `Word m`). -/
+/-- Fiber cardinalities sum to the total word count (fibers partition `Word m`).
+    thm:fiber-card-sum -/
 theorem fiber_card_sum (m : Nat) :
     ∑ x : X m, (fiber x).card = Fintype.card (Word m) := by
   classical
@@ -135,7 +143,8 @@ theorem fiber_card_sum (m : Nat) :
     _ = (Finset.univ : Finset (Word m)).card := by rw [← hUnion]
     _ = Fintype.card (Word m) := Finset.card_univ
 
-/-- Fiber cardinalities sum to 2^m. -/
+/-- Fiber cardinalities sum to 2^m.
+    thm:fiber-card-sum-eq-pow -/
 theorem fiber_card_sum_eq_pow (m : Nat) :
     ∑ x : X m, (fiber x).card = 2 ^ m := by
   rw [fiber_card_sum, Word_card]

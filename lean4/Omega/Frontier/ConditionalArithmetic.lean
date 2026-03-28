@@ -637,11 +637,13 @@ theorem inverse_limit_round_right (a : X.XInfinity) :
 
 /-! ### Coverage: Ring/Field structure registrations -/
 
-/-- X_m ≅ ZMod(F_{m+2}) ring isomorphism (coverage wrapper). -/
+/-- X_m ≅ ZMod(F_{m+2}) ring isomorphism (coverage wrapper).
+    thm:finite-resolution-mod -/
 theorem stable_ring_isomorphism (m : Nat) :
     Nonempty (X m ≃+* ZMod (Nat.fib (m + 2))) := ⟨X.stableValueRingEquiv m⟩
 
-/-- When F_{m+2} is prime, X_m admits a field structure (coverage wrapper). -/
+/-- When F_{m+2} is prime, X_m admits a field structure (coverage wrapper).
+    cor:field-phase-fib-prime -/
 theorem stable_field_of_prime (hp : Nat.Prime (Nat.fib (m + 2))) :
     Nonempty (Field (X m)) := ⟨X.instFieldOfPrime hp⟩
 

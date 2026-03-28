@@ -4,7 +4,8 @@ import Omega.Folding.InverseLimit
 
 namespace Omega.X
 
-/-- No11Inf is a closed subset of the product space ℕ → Bool. -/
+/-- No11Inf is a closed subset of the product space ℕ → Bool.
+    thm:fold-suite-item3-topo-closed -/
 theorem isClosed_no11Inf : IsClosed {a : ℕ → Bool | No11Inf a} := by
   simp only [No11Inf, Set.setOf_forall]
   apply isClosed_iInter; intro i
@@ -41,7 +42,8 @@ instance : Infinite XInfinity := by
   have := congr_arg (fun x : XInfinity => x.1 (2 * a)) h
   simp at this; omega
 
-/-- Two infinite sequences differing at any bit are distinct. -/
+/-- Two infinite sequences differing at any bit are distinct.
+    lem:ne-of-bit-ne -/
 theorem ne_of_bit_ne (a b : XInfinity) (n : Nat) (h : a.1 n ≠ b.1 n) : a ≠ b :=
   fun hab => h (congrArg (fun x => x.1 n) hab)
 

@@ -17,7 +17,7 @@ model: opus
 
 ## 工作环境
 
-- 项目根目录：`/Users/auric/alltheory/the-omega/lean4/`
+- 项目根目录：`lean4/`
 - Codex CLI：`codex`（已安装）
 - Lean版本：v4.28.0
 - mathlib版本：v4.28.0
@@ -56,7 +56,7 @@ cat > /tmp/codex_consult_prompt.txt << 'PROMPT_EOF'
 PROMPT_EOF
 
 # 2. 通过stdin传递给codex exec
-cat /tmp/codex_consult_prompt.txt | codex exec -s read-only -C /Users/auric/alltheory/the-omega/lean4 -o /tmp/codex_consult_result.txt -
+cat /tmp/codex_consult_prompt.txt | codex exec -s read-only -C lean4 -o /tmp/codex_consult_result.txt -
 
 # 3. 读取结果
 cat /tmp/codex_consult_result.txt
@@ -81,14 +81,27 @@ cat /tmp/codex_consult_result.txt
 - 如果 Codex 建议不完整或有误，补充修正或重新查询
 - 整理为可操作的建议，通过 SendMessage 发回 team lead
 
+## 与 lean4-skills LSP 工具的配合
+
+在调用 Codex 之前，**先用 LSP 工具收集上下文**：
+
+| 步骤 | LSP 工具 | 目的 |
+|------|---------|------|
+| 理解 goal | `lean_goal(file, line)` | 获取精确的 goal state 提供给 Codex |
+| 搜索候选 | `lean_local_search("keyword")` | 先自查 mathlib，减少 Codex 的搜索负担 |
+| 检查签名 | `lean_hover_info(file, line, col)` | 确认 formalizer 报告的类型信息准确 |
+| 验证建议 | `lean_multi_attempt(file, line, snippets=[...])` | 测试 Codex 返回的代码建议是否编译通过 |
+
+**工作流**：LSP 收集上下文 → Codex 生成建议 → `lean_multi_attempt` 验证建议 → 发回可用方案
+
 ## 常见咨询类型
 
 | 类型 | 处理方式 |
 |------|----------|
-| mathlib API 不匹配 | 用 Codex 查找正确的引理名称和签名 |
-| tactic 失败 | 分析 goal state，推荐替代 tactic 组合 |
-| 类型不匹配 | 分析隐式参数推断，给出显式标注建议 |
-| Fibonacci/Zeckendorf 算术 | 查找 mathlib 中相关引理或构造手动证明 |
+| mathlib API 不匹配 | 先 `lean_leanfinder` 搜索，未果再用 Codex 查找 |
+| tactic 失败 | `lean_goal` 获取 goal state，Codex 推荐替代 tactic |
+| 类型不匹配 | `lean_hover_info` 检查签名，Codex 给出 coercion 建议 |
+| Fibonacci/Zeckendorf 算术 | `lean_local_search` 先查 mathlib，Codex 构造手动证明 |
 | 性能问题（超时） | 建议更高效的证明策略 |
 | 文件结构 | 建议 import 调整或模块拆分方式 |
 

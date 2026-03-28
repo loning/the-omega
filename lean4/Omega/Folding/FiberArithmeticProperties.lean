@@ -1,4 +1,6 @@
 import Omega.Folding.FiberArithmetic
+import Omega.Folding.MaxFiberTwoStep
+import Omega.Folding.FiberRing
 
 namespace Omega
 
@@ -430,3 +432,79 @@ theorem even_odd_card_sum (m : Nat) :
   congr 1; ext x
   simp only [Finset.mem_union, evenElements, oddElements, Finset.mem_filter, Finset.mem_univ, true_and]
   rcases Nat.mod_two_eq_zero_or_one (stableValue x) with h | h <;> simp [h]
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 116: Fold factorization + stableValue characterizations
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fold factors through ofNat: Fold w = X.ofNat m (weight w). Named alias.
+    prop:pom-fold-as-section -/
+theorem Fold_factorization (w : Word m) : Fold w = X.ofNat m (weight w) := rfl
+
+/-- stableValue x = 0 iff x is the all-false word.
+    thm:pom-max-fiber -/
+theorem stableValue_eq_zero_iff (x : X m) :
+    stableValue x = 0 ↔ x = ⟨fun _ => false, no11_allFalse⟩ := by
+  constructor
+  · intro h; exact eq_of_stableValue_eq (h.trans stableValue_allFalse.symm)
+  · intro h; rw [h]; exact stableValue_allFalse
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 119: Ring corollaries
+-- ══════════════════════════════════════════════════════════════
+
+/-- stableValue of negation: sv(-x) = (F - sv(x)) % F. -/
+theorem stableValue_neg (x : X m) :
+    stableValue (-x) = (Nat.fib (m + 2) - stableValue x) % Nat.fib (m + 2) :=
+  stableValue_stableNeg x
+
+/-- Fold respects addition: Fold(w1) + Fold(w2) = ofNat(m, (wt w1 + wt w2) % F).
+    thm:stable-add-value-consistency -/
+theorem Fold_add_weight (w1 w2 : Word m) :
+    Fold w1 + Fold w2 = X.ofNat m ((weight w1 + weight w2) % Nat.fib (m + 2)) := by
+  show stableAdd (Fold w1) (Fold w2) = _
+  apply eq_of_stableValue_eq
+  rw [stableValue_stableAdd, stableValue_ofNat_mod,
+      stableValue_Fold_mod, stableValue_Fold_mod]
+  simp [Nat.mod_mod, Nat.add_mod]
+
+/-- Paper label: stableAdd definition.
+    def:stable-add -/
+theorem paper_stable_add_def (x y : X m) :
+    stableAdd x y = X.ofNat m ((stableValue x + stableValue y) % Nat.fib (m + 2)) := by
+  unfold stableAdd; rfl
+
+/-- Paper label: Fold addition.
+    cor:add-as-fold -/
+theorem paper_add_as_fold (w1 w2 : Word m) :
+    stableAdd (Fold w1) (Fold w2) =
+    X.ofNat m ((weight w1 + weight w2) % Nat.fib (m + 2)) :=
+  Fold_add_weight w1 w2
+
+/-- Paper label: stableAdd has zero as identity.
+    prop:stable-add-no-null-creation -/
+theorem paper_stable_add_no_null :
+    (∀ x : X m, stableAdd stableZero x = x) ∧
+    (∀ x : X m, stableAdd x stableZero = x) :=
+  ⟨stableAdd_zero_left, stableAdd_zero_right⟩
+
+/-- Paper label: one fold is the normal form (idempotent).
+    thm:pom-one-fold-normal-form -/
+theorem paper_one_fold_normal_form (w : Word m) :
+    Fold (Fold w).1 = Fold w := Fold_idempotent w
+
+/-- Paper: Fold is idempotent + stable + surjective.
+    cor:foldm-order-indep -/
+theorem paper_fold_order_independent :
+    (∀ w : Word m, Fold (Fold w).1 = Fold w) ∧
+    (∀ w : Word m, No11 (Fold w).1) ∧
+    Function.Surjective (Fold (m := m)) :=
+  ⟨Fold_idempotent, fun w => (Fold w).2, Fold_surjective m⟩
+
+/-- Truncation does not commute with Fold in general:
+    there exists a word w such that Fold(truncate w) ≠ restrict(Fold w).
+    Witness: w = [false, true, true] at level 3.
+    prop:pom-truncation-not-commute -/
+theorem paper_truncation_not_commute :
+    ∃ (w : Word 3), Fold (truncate w) ≠ X.restrict (Fold w) := by
+  native_decide

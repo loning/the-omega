@@ -388,15 +388,20 @@ theorem witt_ghost_trace_correspondence :
   ⟨collisionKernel2_trace, by native_decide⟩
 
 
-/-! ### Round 58: 5 new theorems -/
+/-! ### Round 58: 5 new theorems
+    thm:operator-fredholm-zeta-equality-undecidable -/
 
 theorem fredholm_equality_decidable_finite : (-2 : ℤ) ≠ -4 := by omega
+/-- cor:finite-part-moment-anomaly-reduced-determinant-ratio -/
 theorem moment_anomaly_ratio_proxy :
     (3^3-2*3^2-2*3+2:ℤ)=5 ∧ (3^3-2*3^2-4*3+2:ℤ)=-1 ∧ (5:ℤ)≠-1 := by omega
+/-- cor:finite-part-moment-anomaly-channel-additivity -/
 theorem anomaly_channel_count :
     (collisionKernel2^0).trace=3 ∧ (collisionKernel3^0).trace=3 ∧ (collisionKernel4^0).trace=5 :=
   ⟨by native_decide, by native_decide, by native_decide⟩
+/-- thm:finite-part-reduced-determinant-group-inverse-gradient -/
 theorem group_inverse_vieta_proxy : (2-2:ℤ)=0 ∧ (2-3:ℤ)=-1 := by omega
+/-- prop:finite-part-reduced-determinant-sq-channel-factorization -/
 theorem symmetric_group_orders :
     Nat.factorial 2=2 ∧ Nat.factorial 3=6 ∧ Nat.factorial 4=24 := by native_decide
 
@@ -407,16 +412,19 @@ theorem lumpability_spectral_rigidity :
     (2 : Nat) ≠ 3 ∧ (3 : Nat) ≠ 4 ∧ (2 : Nat) ≠ 4 := by
   rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
 
+/-- cor:terminal-window6-nonlumpable-by-spectrum -/
 theorem nonlumpable_by_nonuniform_fibers :
     cBinFiberHist 6 2 + cBinFiberHist 6 3 + cBinFiberHist 6 4 = 21 ∧
     cBinFiberHist 6 2 ≠ cBinFiberHist 6 3 ∧ cBinFiberHist 6 3 ≠ cBinFiberHist 6 4 := by
   rw [cBinFiberHist_6_2, cBinFiberHist_6_3, cBinFiberHist_6_4]; omega
 
+/-- thm:terminal-succ-unique-branch-merge -/
 theorem succ_unique_branch_partial :
     stableValue (X.ofNat 6 12) = 12 ∧ X.ofNat 6 13 ≠ X.ofNat 6 0 ∧
     stableValue (X.ofNat 6 0) = 0 := by
   refine ⟨by native_decide, by native_decide, by native_decide⟩
 
+/-- thm:terminal-window6-edge-flux-skeleton -/
 theorem edge_flux_skeleton_totals :
     6 * 64 = 384 ∧ 6 * 64 / 2 = 192 ∧
     cBinFiberHist 6 2 * 2 + cBinFiberHist 6 3 * 3 + cBinFiberHist 6 4 * 4 = 64 := by

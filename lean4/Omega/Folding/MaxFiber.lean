@@ -16,18 +16,22 @@ noncomputable section
 
 instance instNonempty (m : Nat) : Nonempty (X m) := ⟨⟨fun _ => false, no11_allFalse⟩⟩
 
+/-- def:pom-top-fiber-spectrum -/
 noncomputable def maxFiberMultiplicity (m : Nat) : Nat :=
   Finset.sup' Finset.univ Finset.univ_nonempty (fun x : X m => fiberMultiplicity x)
 
+/-- thm:pom-max-fiber-achieved -/
 theorem maxFiberMultiplicity_achieved (m : Nat) :
     ∃ x : X m, fiberMultiplicity x = maxFiberMultiplicity m := by
   obtain ⟨x, _, hx⟩ := Finset.exists_mem_eq_sup' Finset.univ_nonempty
     (fun x : X m => fiberMultiplicity x); exact ⟨x, hx.symm⟩
 
+/-- thm:pom-max-fiber-le-max -/
 theorem fiberMultiplicity_le_max (x : X m) :
     fiberMultiplicity x ≤ maxFiberMultiplicity m :=
   Finset.le_sup' _ (Finset.mem_univ x)
 
+/-- thm:pom-max-fiber-pos -/
 theorem maxFiberMultiplicity_pos (m : Nat) : 0 < maxFiberMultiplicity m := by
   obtain ⟨x, hx⟩ := maxFiberMultiplicity_achieved m; rw [← hx]; exact fiberMultiplicity_pos x
 
@@ -94,30 +98,45 @@ def cMaxFiberMult (m : Nat) : Nat :=
   (@Finset.univ (X m) (fintypeX m)).sup'
     (@Finset.univ_nonempty _ (fintypeX m) (X.instNonempty m)) (fun x => cFiberMult x)
 
-private theorem cMaxFiberMult_eq (m : Nat) : cMaxFiberMult m = X.maxFiberMultiplicity m := by
+theorem cMaxFiberMult_eq (m : Nat) : cMaxFiberMult m = X.maxFiberMultiplicity m := by
   simp only [cMaxFiberMult, X.maxFiberMultiplicity]; apply le_antisymm
   · exact Finset.sup'_le _ _ fun x _ => by rw [cFiberMult_eq]; exact X.fiberMultiplicity_le_max x
   · exact Finset.sup'_le _ _ fun x _ => by
       rw [← cFiberMult_eq]; exact Finset.le_sup' _ (@Finset.mem_univ _ (fintypeX m) x)
+
+-- Cached @[simp] lemmas for cMaxFiberMult (m ≤ 7 only — fast)
+-- m = 8,9,10 are in MaxFiberHigh.lean (expensive, compiled separately)
+@[simp] theorem cached_cMaxFiberMult_0 : cMaxFiberMult 0 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_1 : cMaxFiberMult 1 = 1 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_2 : cMaxFiberMult 2 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_3 : cMaxFiberMult 3 = 2 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_4 : cMaxFiberMult 4 = 3 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_5 : cMaxFiberMult 5 = 4 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_6 : cMaxFiberMult 6 = 5 := by native_decide
+@[simp] theorem cached_cMaxFiberMult_7 : cMaxFiberMult 7 = 6 := by native_decide
 
 end Computable
 
 namespace X
 section ClosedForm
 
-theorem maxFiberMultiplicity_zero : maxFiberMultiplicity 0 = 1 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_one : maxFiberMultiplicity 1 = 1 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_two : maxFiberMultiplicity 2 = 2 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_three : maxFiberMultiplicity 3 = 2 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_four : maxFiberMultiplicity 4 = 3 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_five : maxFiberMultiplicity 5 = 4 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_six : maxFiberMultiplicity 6 = 5 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_seven : maxFiberMultiplicity 7 = 6 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_eight : maxFiberMultiplicity 8 = 8 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_nine : maxFiberMultiplicity 9 = 10 := by rw [← cMaxFiberMult_eq]; native_decide
-theorem maxFiberMultiplicity_ten : maxFiberMultiplicity 10 = 13 := by rw [← cMaxFiberMult_eq]; native_decide
--- m=11 takes ~9min via native_decide, so we verify it separately and use the value.
--- D(11) = 16, verified by: rw [← cMaxFiberMult_eq]; native_decide
+/-- cor:pom-D-rec-base-zero -/
+theorem maxFiberMultiplicity_zero : maxFiberMultiplicity 0 = 1 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-one -/
+theorem maxFiberMultiplicity_one : maxFiberMultiplicity 1 = 1 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-two -/
+theorem maxFiberMultiplicity_two : maxFiberMultiplicity 2 = 2 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-three -/
+theorem maxFiberMultiplicity_three : maxFiberMultiplicity 3 = 2 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-four -/
+theorem maxFiberMultiplicity_four : maxFiberMultiplicity 4 = 3 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-five -/
+theorem maxFiberMultiplicity_five : maxFiberMultiplicity 5 = 4 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-six -/
+theorem maxFiberMultiplicity_six : maxFiberMultiplicity 6 = 5 := by rw [← cMaxFiberMult_eq]; simp
+/-- cor:pom-D-rec-base-seven -/
+theorem maxFiberMultiplicity_seven : maxFiberMultiplicity 7 = 6 := by rw [← cMaxFiberMult_eq]; simp
+-- m=8,9,10 values are in MaxFiberHigh.lean (expensive native_decide, compiled separately)
 
 /-! ### Two-step recurrence and closed-form expressions
 
@@ -135,42 +154,39 @@ induction on k. The unconditional versions (`maxFiberMultiplicity_even` and
 `maxFiberMultiplicity_odd`) cover the computationally verified range.
 -/
 
-/-- Two-step recurrence verified computationally for m = 6..10 (cor:pom-D-rec). -/
+/-- Two-step recurrence verified for m = 6..7 (cor:pom-D-rec). m=8..10 in MaxFiberHigh. -/
 theorem maxFiberMultiplicity_two_step_6 :
     maxFiberMultiplicity 6 = maxFiberMultiplicity 4 + maxFiberMultiplicity 2 := by
   rw [maxFiberMultiplicity_six, maxFiberMultiplicity_four, maxFiberMultiplicity_two]
 theorem maxFiberMultiplicity_two_step_7 :
     maxFiberMultiplicity 7 = maxFiberMultiplicity 5 + maxFiberMultiplicity 3 := by
   rw [maxFiberMultiplicity_seven, maxFiberMultiplicity_five, maxFiberMultiplicity_three]
-theorem maxFiberMultiplicity_two_step_8 :
-    maxFiberMultiplicity 8 = maxFiberMultiplicity 6 + maxFiberMultiplicity 4 := by
-  rw [maxFiberMultiplicity_eight, maxFiberMultiplicity_six, maxFiberMultiplicity_four]
-theorem maxFiberMultiplicity_two_step_9 :
-    maxFiberMultiplicity 9 = maxFiberMultiplicity 7 + maxFiberMultiplicity 5 := by
-  rw [maxFiberMultiplicity_nine, maxFiberMultiplicity_seven, maxFiberMultiplicity_five]
-theorem maxFiberMultiplicity_two_step_10 :
-    maxFiberMultiplicity 10 = maxFiberMultiplicity 8 + maxFiberMultiplicity 6 := by
-  rw [maxFiberMultiplicity_ten, maxFiberMultiplicity_eight, maxFiberMultiplicity_six]
 
-/-- Even closed form: D(2k) = F(k+2) for 1 ≤ k ≤ 5. -/
-theorem maxFiberMultiplicity_even (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 5) :
+/-- Even closed form: D(2k) = F(k+2) for 1 ≤ k ≤ 3. Extended to k≤5 in MaxFiberHigh.
+    thm:pom-max-fiber-even-closed -/
+theorem maxFiberMultiplicity_even (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 3) :
     maxFiberMultiplicity (2 * k) = Nat.fib (k + 2) := by
   interval_cases k <;> first
     | exact maxFiberMultiplicity_two
     | exact maxFiberMultiplicity_four
     | exact maxFiberMultiplicity_six
-    | exact maxFiberMultiplicity_eight
-    | exact maxFiberMultiplicity_ten
 
-/-- Odd closed form: D(2k+1) = 2 * F(k+1) for 1 ≤ k ≤ 4.
-    2 * F(k+1) = 2 * Nat.fib(k+1) in standard Fibonacci indexing. -/
-theorem maxFiberMultiplicity_odd (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 4) :
+/-- Odd closed form: D(2k+1) = 2 * F(k+1) for 1 ≤ k ≤ 3. Extended to k≤4 in MaxFiberHigh.
+    thm:pom-max-fiber-odd-closed -/
+theorem maxFiberMultiplicity_odd (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 3) :
     maxFiberMultiplicity (2 * k + 1) = 2 * Nat.fib (k + 1) := by
   interval_cases k <;> first
     | exact maxFiberMultiplicity_three
     | exact maxFiberMultiplicity_five
     | exact maxFiberMultiplicity_seven
-    | exact maxFiberMultiplicity_nine
+
+/-- D(2k) is even iff k+2 ≡ 0 (mod 3), verified for k = 1..3. Extended in MaxFiberHigh.
+    cor:pom-fiber-parity-mod3-max -/
+theorem maxFiberMultiplicity_even_parity (k : Nat) (hk : 1 ≤ k) (hk' : k ≤ 3) :
+    Even (maxFiberMultiplicity (2 * k)) ↔ (k + 2) % 3 = 0 := by
+  interval_cases k <;> simp_all only [show 2 * 1 = 2 from rfl, show 2 * 2 = 4 from rfl,
+    show 2 * 3 = 6 from rfl,
+    maxFiberMultiplicity_two, maxFiberMultiplicity_four, maxFiberMultiplicity_six] <;> decide
 
 /-- Auxiliary: even closed form for all j ≤ n, by bounded strong induction. -/
 private theorem maxFiberMultiplicity_even_aux
@@ -308,14 +324,14 @@ theorem ofNat_add_fib {m : Nat} (k : Nat) (hk : m + 2 ≤ k)
     rw [Nat.zeckendorf_of_pos hn_pos, hGF_n]; simp only [List.mem_cons]
     exact ⟨fun h => h.elim (by omega) (Or.inr ·), fun h => h.elim (by omega) (Or.inr ·)⟩
 
-private theorem fib_le_of_mem_zeckendorf {k n : Nat} (h : k ∈ Nat.zeckendorf n) :
+theorem fib_le_of_mem_zeckendorf {k n : Nat} (h : k ∈ Nat.zeckendorf n) :
     Nat.fib k ≤ n := by
   have hMem : Nat.fib k ∈ (Nat.zeckendorf n).map Nat.fib := List.mem_map.mpr ⟨k, h, rfl⟩
   calc Nat.fib k ≤ ((Nat.zeckendorf n).map Nat.fib).sum :=
         List.single_le_sum (fun _ _ => Nat.zero_le _) _ hMem
     _ = n := Nat.sum_zeckendorf_fib n
 
-private theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < Nat.fib (m + 3)) :
+theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < Nat.fib (m + 3)) :
     X.ofNat (m + 2) (wt + Nat.fib (m + 3)) ≠ X.ofNat (m + 2) (wt + Nat.fib (m + 4)) := by
   intro heq
   have hFib4 : Nat.fib (m + 4) = Nat.fib (m + 2) + Nat.fib (m + 3) := Nat.fib_add_two
@@ -392,6 +408,7 @@ private theorem ofNat_ne_of_shift {m : Nat} (wt : Nat) (hwt : wt < Nat.fib (m + 
         exact absurd (fib_le_of_mem_zeckendorf h) (by omega)
     exact hM2_not_n1 (hBitM.mpr hM2_in_n2)
 
+/-- thm:pom-max-fiber-recurrence-upper-bound -/
 theorem maxFiberMultiplicity_le_add (m : Nat) :
     maxFiberMultiplicity (m + 2) ≤ maxFiberMultiplicity (m + 1) + maxFiberMultiplicity m := by
   apply Finset.sup'_le; intro x _; classical

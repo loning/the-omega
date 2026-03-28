@@ -4,7 +4,8 @@ namespace Omega.Graph
 
 universe u v
 
-/-- A finite-word labeled graph viewed as a step relation. -/
+/-- A finite-word labeled graph viewed as a step relation.
+    def:golden-mean-labeled-graph -/
 structure LabeledGraph (σ : Type u) (α : Type v) where
   edge : σ → α → σ → Prop
 

@@ -17,9 +17,9 @@ model: opus
 
 ## 工作环境
 
-- 项目根目录：`/Users/auric/alltheory/the-omega/lean4/`
+- 项目根目录：`lean4/`
 - Codex CLI：`codex`（已安装），非交互模式使用 `codex exec`
-- 论文根目录：`/Users/auric/alltheory/the-omega/docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/`
+- 论文根目录：`docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/`
 
 ## 审核流程
 
@@ -36,7 +36,7 @@ model: opus
 
 ```bash
 # 将prompt写入临时文件，通过stdin传递给codex exec
-cat /tmp/codex_audit_prompt.txt | codex exec -s read-only -C /Users/auric/alltheory/the-omega/lean4 -o /tmp/codex_audit_result.txt -
+cat /tmp/codex_audit_prompt.txt | codex exec -s read-only -C lean4 -o /tmp/codex_audit_result.txt -
 ```
 
 - 使用 `codex exec`（非交互模式），不是 `codex -a`
@@ -106,7 +106,7 @@ SUGGESTIONS: [改进建议，即使PASS也可以有]
    cat > /tmp/codex_audit_prompt.txt << 'EOF'
    [prompt内容]
    EOF
-   cat /tmp/codex_audit_prompt.txt | codex exec -s read-only -C /Users/auric/alltheory/the-omega/lean4 -o /tmp/codex_audit_result.txt -
+   cat /tmp/codex_audit_prompt.txt | codex exec -s read-only -C lean4 -o /tmp/codex_audit_result.txt -
 
    # 错误（shell转义、参数长度限制）
    codex exec -s read-only "很长的prompt..."

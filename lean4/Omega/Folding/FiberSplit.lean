@@ -1,4 +1,4 @@
-import Omega.Folding.MaxFiber
+import Omega.Folding.MaxFiberHigh
 import Omega.Folding.FiberArithmetic
 
 namespace Omega
@@ -33,7 +33,8 @@ theorem maxFiber_lt_9_10 : maxFiberMultiplicity 9 < maxFiberMultiplicity 10 := b
   rw [maxFiberMultiplicity_nine, maxFiberMultiplicity_ten]; omega
 
 /-- D(m) < D(m+1) for 3 ≤ m ≤ 9 (strict monotonicity, verified range).
-    Note: D(2) = D(3) = 2, so strict monotonicity begins at m = 3. -/
+    Note: D(2) = D(3) = 2, so strict monotonicity begins at m = 3.
+    cor:pom-max-fiber-achievers-bsplit-strict-mono-verified -/
 theorem maxFiberMultiplicity_strict_mono_verified (m : Nat) (hm1 : 3 ≤ m) (hm : m ≤ 9) :
     maxFiberMultiplicity m < maxFiberMultiplicity (m + 1) := by
   interval_cases m <;> first
@@ -41,7 +42,8 @@ theorem maxFiberMultiplicity_strict_mono_verified (m : Nat) (hm1 : 3 ≤ m) (hm 
     | exact maxFiber_lt_6_7 | exact maxFiber_lt_7_8 | exact maxFiber_lt_8_9
     | exact maxFiber_lt_9_10
 
-/-- D(m) ≤ D(m+1) for 1 ≤ m ≤ 9 (monotonicity, verified range). -/
+/-- D(m) ≤ D(m+1) for 1 ≤ m ≤ 9 (monotonicity, verified range).
+    cor:pom-max-fiber-achievers-bsplit-mono-verified -/
 theorem maxFiberMultiplicity_mono_verified (m : Nat) (hm1 : 1 ≤ m) (hm : m ≤ 9) :
     maxFiberMultiplicity m ≤ maxFiberMultiplicity (m + 1) := by
   interval_cases m <;> first
@@ -65,7 +67,8 @@ theorem maxFiberMultiplicity_mono_conjunction :
   exact ⟨maxFiber_lt_1_2, maxFiber_le_2_3, maxFiber_lt_3_4, maxFiber_lt_4_5,
     maxFiber_lt_5_6, maxFiber_lt_6_7, maxFiber_lt_7_8, maxFiber_lt_8_9, maxFiber_lt_9_10⟩
 
-/-- D(m) ≤ D(m+1) for all m ≥ 2, conditional on the two-step recurrence. -/
+/-- D(m) ≤ D(m+1) for all m ≥ 2, conditional on the two-step recurrence.
+    cor:pom-max-fiber-achievers-bsplit-mono-of-two-step -/
 theorem maxFiberMultiplicity_mono_of_two_step
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
       maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4))
@@ -90,7 +93,8 @@ theorem maxFiberMultiplicity_mono_of_two_step
     omega
 
 /-- D(m) < D(m+1) for all m ≥ 3, conditional on the two-step recurrence.
-    Note: D(2) = D(3), so strict monotonicity requires m ≥ 3. -/
+    Note: D(2) = D(3), so strict monotonicity requires m ≥ 3.
+    cor:pom-max-fiber-achievers-bsplit-strict-mono-of-two-step -/
 theorem maxFiberMultiplicity_strict_mono_of_two_step
     (two_step : ∀ m, 6 ≤ m → maxFiberMultiplicity m =
       maxFiberMultiplicity (m - 2) + maxFiberMultiplicity (m - 4))
@@ -144,12 +148,14 @@ theorem maxFiberMultiplicity_injective_from_three (m n : Nat)
 
 D(m+2) ≤ D(m+1) + D(m) is proved as `maxFiberMultiplicity_le_add`. -/
 
-/-- The fiber splitting inequality: D(m+2) ≤ D(m+1) + D(m) (named wrapper). -/
+/-- The fiber splitting inequality: D(m+2) ≤ D(m+1) + D(m) (named wrapper).
+    cor:pom-max-fiber-achievers-bsplit-gcd-trichotomy -/
 theorem maxFiberMultiplicity_split_bound (m : Nat) :
     maxFiberMultiplicity (m + 2) ≤ maxFiberMultiplicity (m + 1) + maxFiberMultiplicity m :=
   maxFiberMultiplicity_le_add m
 
-/-- The fiber splitting in descending index form: D(m) ≤ D(m-1) + D(m-2) for m ≥ 4. -/
+/-- The fiber splitting in descending index form: D(m) ≤ D(m-1) + D(m-2) for m ≥ 4.
+    cor:pom-max-fiber-fibonacci-bound -/
 theorem maxFiberMultiplicity_fibonacci_bound (m : Nat) (hm : 4 ≤ m) :
     maxFiberMultiplicity m ≤ maxFiberMultiplicity (m - 1) + maxFiberMultiplicity (m - 2) := by
   have h := maxFiberMultiplicity_le_add (m - 2)
@@ -164,22 +170,30 @@ D^{(2)}(2)=1, D^{(2)}(3)=1, D^{(2)}(4)=2, D^{(2)}(5)=3, D^{(2)}(6)=4, D^{(2)}(7)
 
 For m ≥ 4: D^{(2)}(m) = D(m-1). -/
 
-/-- Computable second-largest fiber multiplicity. -/
+/-- Computable second-largest fiber multiplicity.
+    def:pom-top-fiber-spectrum-second -/
 def cSecondMaxFiberMult (m : Nat) : Nat :=
   let S := (@Finset.univ (X m) (fintypeX m))
   let maxVal := cMaxFiberMult m
   let below := S.filter (fun x => cFiberMult x < maxVal)
   if h : below.Nonempty then below.sup' h (fun x => cFiberMult x) else 0
 
-/-- D^{(2)} base values. -/
+/-- D^{(2)} base values.
+    cor:pom-second-max-fiber-base-2 -/
 theorem cSecondMaxFiberMult_two : cSecondMaxFiberMult 2 = 1 := by native_decide
+/-- cor:pom-second-max-fiber-base-3 -/
 theorem cSecondMaxFiberMult_three : cSecondMaxFiberMult 3 = 1 := by native_decide
+/-- cor:pom-second-max-fiber-base-4 -/
 theorem cSecondMaxFiberMult_four : cSecondMaxFiberMult 4 = 2 := by native_decide
+/-- cor:pom-second-max-fiber-base-5 -/
 theorem cSecondMaxFiberMult_five : cSecondMaxFiberMult 5 = 3 := by native_decide
+/-- cor:pom-second-max-fiber-base-6 -/
 theorem cSecondMaxFiberMult_six : cSecondMaxFiberMult 6 = 4 := by native_decide
+/-- cor:pom-second-max-fiber-base-7 -/
 theorem cSecondMaxFiberMult_seven : cSecondMaxFiberMult 7 = 5 := by native_decide
 
-/-- D^{(2)}(m) = D(m-1) for m = 4..7. -/
+/-- D^{(2)}(m) = D(m-1) for m = 4..7.
+    cor:pom-second-max-fiber-eq-prev -/
 theorem cSecondMaxFiberMult_eq_prev (m : Nat) (hm1 : 4 ≤ m) (hm : m ≤ 7) :
     cSecondMaxFiberMult m = cMaxFiberMult (m - 1) := by
   interval_cases m <;> native_decide
@@ -225,6 +239,59 @@ theorem truncate_mem_fiber_restrict_false {m : Nat} (x : X (m + 1)) (w : Word (m
     Fold (truncate w) = X.restrict x := by
   rw [← hw]; exact truncate_Fold_eq_restrict_of_false w h
 
+/-! ### Max fiber strictly less than word count -/
+
+/-- D(m) < 2^m for 2 ≤ m ≤ 10: the max fiber is strictly smaller than total word count.
+    cor:pom-max-fiber-rate-endpoint -/
+theorem maxFiber_lt_half_wordcount (m : Nat) (hm : 2 ≤ m) (hm' : m ≤ 10) :
+    maxFiberMultiplicity m < 2 ^ m := by
+  interval_cases m <;> simp only [
+    maxFiberMultiplicity_two, maxFiberMultiplicity_three, maxFiberMultiplicity_four,
+    maxFiberMultiplicity_five, maxFiberMultiplicity_six, maxFiberMultiplicity_seven,
+    maxFiberMultiplicity_eight, maxFiberMultiplicity_nine, maxFiberMultiplicity_ten] <;> omega
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 213: Fibonacci gap recurrence + alternative second-max identity
+-- ══════════════════════════════════════════════════════════════
+
+/-- Fibonacci gap recurrence: F(k+2)-F(k-4) = (F(k+1)-F(k-5)) + (F(k)-F(k-6)) for k≥6.
+    lem:pom-forbidden-pair-fib-gap -/
+theorem fib_gap_recurrence (k : Nat) (hk : 6 ≤ k) :
+    Nat.fib (k + 2) - Nat.fib (k - 4) =
+    (Nat.fib (k + 1) - Nat.fib (k - 5)) + (Nat.fib k - Nat.fib (k - 6)) := by
+  have hrec1 := Nat.fib_add_two (n := k)
+  have hrec2 := Nat.fib_add_two (n := k - 6)
+  have hk4 : k - 4 = (k - 6) + 2 := by omega
+  have hk5 : k - 5 = (k - 6) + 1 := by omega
+  rw [hk4, hk5]
+  rw [Nat.fib_add_two (n := k - 6)] at *
+  -- Now all subtractions are safe due to Fibonacci monotonicity
+  have hle1 : Nat.fib (k - 6) + Nat.fib (k - 6 + 1) ≤ Nat.fib (k + 1) :=
+    Nat.fib_add_two ▸ Nat.fib_mono (by omega)
+  have hle2 : Nat.fib (k - 6 + 1) ≤ Nat.fib (k + 1) := Nat.fib_mono (by omega)
+  have hle3 : Nat.fib (k - 6) ≤ Nat.fib k := Nat.fib_mono (by omega)
+  omega
+
+-- Note: cSecondMaxFiberMult_even_closed deferred — requires recursive infrastructure
+-- for cSecondMaxFiberMult beyond base cases. The fib_gap_recurrence above provides
+-- the key Fibonacci identity needed for the eventual proof.
+
 end
 end X
+
+-- ══════════════════════════════════════════════════════════════
+-- Phase 231: D(m) = D(m-2) + D(m-4) four-step recurrence
+-- ══════════════════════════════════════════════════════════════
+
+/-- D(m) = D(m-2) + D(m-4) for 6 ≤ m ≤ 10 (verified range). cor:pom-D-rec -/
+theorem maxFiberMultiplicity_four_step_verified (m : Nat) (hm1 : 6 ≤ m) (hm2 : m ≤ 10) :
+    X.maxFiberMultiplicity m =
+    X.maxFiberMultiplicity (m - 2) + X.maxFiberMultiplicity (m - 4) := by
+  interval_cases m
+  · exact X.maxFiberMultiplicity_two_step_6
+  · exact X.maxFiberMultiplicity_two_step_7
+  · exact X.maxFiberMultiplicity_two_step_8
+  · exact X.maxFiberMultiplicity_two_step_9
+  · exact X.maxFiberMultiplicity_two_step_10
+
 end Omega

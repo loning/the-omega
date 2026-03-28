@@ -27,7 +27,8 @@ theorem prefixDetermined_isClopen {s : Set OmegaInfinity} (m : Nat)
   rcases (prefixDetermined_iff_exists_fromWordSet s m).1 hs with ⟨A, rfl⟩
   exact isClopen_fromWordSet A
 
-/-- The SPG-facing clopen theorem: any event cut out by finitely many prefixes is clopen. -/
+/-- The SPG-facing clopen theorem: any event cut out by finitely many prefixes is clopen.
+    prop:spg-decidable-clopen -/
 theorem spg_decidableClopen (A : Set (Word m)) : IsClopen (fromWordSet A) :=
   isClopen_fromWordSet A
 
